@@ -1,0 +1,60 @@
+<!-- TODO: evtl add div to the corresponding inc -->
+
+<!-- empty div needed to clear the floating style again -->
+<div id="navbar"><!-- no html element alowed between first ul and the first li child -->
+<ul id="navigation">
+	<li class="menu-title"><a href="$ctx.siteUrl">home</a>
+	<ul class="menu-list">
+	#foreach($m in $ext.menu.home.childs)
+		<li><a href="$m.fullLink">$m.title</a></li>
+	#end
+	</ul>
+	</li>
+
+	<li class="menu-title"><a href="$ctx.siteUrl/tools/About-Genes-Mapserver-3.0">tools</a>
+	<ul class="menu-list">
+	#foreach($m in $ext.menu.tools.childs)
+		<li><a href="$m.fullLink">$m.title</a></li>
+	#end
+	</ul>
+	</li>
+#set($menuBrowse=$ext.menu.browse)
+	<li class="menu-title"><a href="$menuBrowse.fullLink">$menuBrowse.title</a>
+	<ul class="menu-list">
+	#foreach($m in $menuBrowse.childs)
+		<li><a href="$m.fullLink">$m.title</a></li>
+	#end
+	</ul>
+	</li>
+
+	<li class="menu-title"><a href="$ctx.siteUrl/portal/edutainment.html">edutainment</a>
+	<ul class="menu-list">
+		<li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer</a></li>
+	</ul>
+	</li>
+
+	<li class="menu-title"><a href="$ctx.siteUrl/portal/toolbox.html">portal</a>
+	<ul class="menu-list">
+		<li><a href="$ctx.siteUrl/portal/toolbox.html"><b>Overview</b></a></li>
+		<li class="menugroup"><b>Maintained</b></li>
+		<li><a href="http://www.jcoast.net">JCoast</a></li>
+
+		<li><a href="#">MicHanThi</a></li>
+		<li><a href="#">MetaBar</a></li>
+		<li><a href="#">MADA</a></li>
+		<li><a href="#">Ribalign</a></li>
+		<li><a href="http://soma.arb-silva.de">TaxSOM</a></li>
+		<li class="menugroup"><b>Unmaintained</b></li>
+
+		<li><a href="#">MetaLook</a></li>
+		<li><a href="#">MetaMine</a></li>
+		<li><a href="#">Tetra</a></li>
+	</ul>
+	</li>
+</ul>
+</div>
+<noscript>
+<h1 style="color: red;">To get the full functionality, please,
+activate javascript in your browser!</h1>
+
+</noscript>

@@ -1,0 +1,38 @@
+
+
+<div id="header_area">
+<div id="title_logo">
+	<a href="$ctx.siteUrl"><img src="$ctx.siteUrl/images/megx_logo.png" style="" alt="" /></a>
+</div>
+#if($req.user)
+<div style="text-align: right;">
+	Welcome $req.user.name, 
+	<a href="$ctx.siteUrl/admin/logout.do">logout</a>
+	##<br /> role: $req.user.role
+</div>
+#end
+<div id="clickpath">
+<div class="deep">$!this.desription</div>$!this.title </div>
+
+<div id="nav_right">
+<a href="$ctx.siteUrl/portal/faq.html">faq</a>
+
+<span class="strich">|</span>
+<a href="$ctx.siteUrl/portal/contact.html">contact</a>
+<span class="strich">|</span>
+<a href="$ctx.siteUrl/portal/news/news.html">news</a>
+
+
+#if($req.user)
+	##if($req.user.role >= 10 )
+	<span class="strich">|</span>
+	<a href="$ctx.siteUrl/admin/index.do">admin</a>
+	##end
+#else
+<span class="strich">|</span>
+<a href="$ctx.siteUrl/admin/index.do">log in</a>
+#end
+
+</div>
+#parse("pages/fragments/nav_bar.html")
+</div>

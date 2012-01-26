@@ -1,0 +1,23 @@
+<div id="content_area">
+#if($user && $user.role=='admin')
+<div style="border-top: dashed green 1px; border-bottom: dashed green 1px;">
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td>
+			$this.path
+		</td>
+		<td>
+			<div style="text-align: right;"><a href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit</a></div>
+		</td>
+	</tr>
+</table>
+</div>
+#end
+
+#if($this.introText && $this.introText != "")
+<b>$this.introText</b>
+#end
+
+$this.htmlText
+
+</div>
