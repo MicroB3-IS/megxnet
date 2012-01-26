@@ -1,0 +1,16 @@
+<div id="footer_area">
+
+	#foreach($m in $ext.menu.footer.childs)
+	#if($velocityCount > 1 )
+		<span class='strich'>|</span>
+	#end
+		<a href="$m.fullLink">$m.title</a>
+	#end
+
+#set($lastModified=$ext.utils.formatDate($this.jcrLastModified, 'dd.MM.yyyy'))
+
+#if($lastModified)
+<div id="update">last update $lastModified</div>
+#end
+
+</div>

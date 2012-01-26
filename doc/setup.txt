@@ -1,0 +1,27 @@
+--------------------------------------------------------------------------------
+ Build Megx.Net
+--------------------------------------------------------------------------------
+trunk = https://projects.mpi-bremen.de/micro-b3/svn/megx.net/trunk
+
+0. install postgres 9.1.x JDBC driver
+
+mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> \
+    -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
+
+    e.g. mvn install:install-file -Dfile=/home/rkottman/progs/postgresql-9.1-901.jdbc4.jar -DgroupId=org.postgresql -DartifactId=postgresql-9.1-jdbc4 -Dversion=9.1-901 -Dpackaging=jar -DupdateReleaseInfo=true -DgeneratePom=true
+
+Take care that file is existing, Maven will NOT complain
+
+1. Build plugins
+	cd ${trunk}/bundles
+	mvn package
+
+2. Unpack Repository to work dir
+	cd ${trunk}/app/megx.net-repo
+	mvn install
+
+3. Build and Run megx.net-web
+	cd ${trunk}/app/megx.net-web
+
+	mvn jetty:run
+--------------------------------------------------------------------------------

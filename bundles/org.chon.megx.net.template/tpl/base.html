@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+	<title>$this.title</title> 
+#if($ctx.base) 
+	<base href="$ctx.base" /> 
+#end
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+	<meta name="keywords" content="$!this.keywords"> 
+	<meta name="description" content="$!this.description">
+	 
+	<link rel="stylesheet" href="$ctx.siteUrl/stylesheets/main.css" type="text/css"> 
+	<link rel="stylesheet" href="$ctx.siteUrl/gms-res/gms.css" type="text/css">
+	#foreach($css in $ctx.get('head:css'))
+	<link rel="stylesheet" href="$ctx.siteUrl/$css" type="text/css" media="screen" />
+	#end
+	
+	#foreach($script in $ctx.get('head:scripts'))
+	<script src="$ctx.siteUrl/$script" type="text/javascript"></script>
+	#end
+</head> 
+<body>
+<div id="container">
+	<div id="header">
+		#parse('header.html')
+	</div>	
+	${BODY}
+	<div id="footer">
+		#parse('footer.html')
+	</div>
+</div>
+</body> 
+</html>
