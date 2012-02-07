@@ -25,3 +25,28 @@ Take care that file is existing, Maven will NOT complain
 
 	mvn jetty:run
 --------------------------------------------------------------------------------
+
+
+Setup bundles in eclipse:
+
+	1. Setup Target Platform
+		a) open ${trunk}/bundles/target-definition/chon.target in eclipse
+		b) eclipse will detect the file is target definition and open it with PDE editor
+		c) Click on the link "Set as Target Platform"
+		d) wait eclipse to download target platform bundles
+		
+	2. Import bundles
+		a) File -> Import -> General -> Import existing projects
+		b) Select ${trunk}/bundles
+		c) Check bundles you want to import
+			- org.chon.megx.net
+			- org.chon.megx.net.services
+			- org.chon.megx.net.services.ui
+			- org.chon.megx.net.template
+		d) Optional; note: it might be good idea to organize bundles in working sets
+		
+	3. Build a bundle using PDE (Export)
+		a) Select bundle from eclipse project explorer
+		b) File -> Export -> Deployable plug-ins and fragments
+		c) Select "Directory" location for export (note: eclipse will autocreate subfolder plugins if not exits)
+		d) In options change "Qualifier Replacement" to SNAPSHOT 
