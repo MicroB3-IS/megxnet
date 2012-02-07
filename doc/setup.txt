@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
  Build Megx.Net
 --------------------------------------------------------------------------------
-trunk = https://projects.mpi-bremen.de/megxnet/svn/megxnet-java/chon
+trunk = https://projects.mpi-bremen.de/micro-b3/svn/megxnet-java/trunk
 
-0. install postgres 9.1.x JDBC driver
+0. install postgres 9.1.x JDBC driver into local Maven repository
 
 mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> \
     -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
