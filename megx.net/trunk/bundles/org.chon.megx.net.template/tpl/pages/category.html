@@ -1,15 +1,11 @@
-<div id="content_area">
-<div style="width: 500px; margin: 0px auto">
 <h2>$this.description</h2>
 <ul>
 #foreach($c in $this.childs)
-	<li style="list-style: none; margin: 10px;">
+	<li>
 		<a href="$ctx.siteUrl/$c.path">$c.name</a>
-		<div>$c.introText</div>
-		<div style="text-align: right;">$ext.utils.formatDate($c.jcrLastModified, "MM/dd/yyyy")</div>
+			<div>$c.introText</div>
+		<div class="FR">$ext.utils.formatDate($c.jcrLastModified, "MM/dd/yyyy")</div>
+		<div class="clear"></div>
 	</li>
 #end
 </ul>
-</div>
-
-</div>

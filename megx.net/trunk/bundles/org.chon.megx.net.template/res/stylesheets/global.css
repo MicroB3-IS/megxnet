@@ -1,0 +1,120 @@
+/*
+body, input, form, select, textarea, button, submit, label			{ 
+					color: #666; 
+					font-size: 12px;
+					font-family: Calibri, "Trebuchet MS", Tahoma;
+					}
+
+*/
+header, footer, article, section, nav, menu, hgroup {  
+   display: block;  
+} 
+/* Headings
+-------------------------------------------------------------- */
+h1 					{ font-weight: normal; padding: .7em 1em!important; color: #0e4e96; }	
+h2,h3,h4,h5,h6		{ font-weight: normal; margin: .7em 1em!important; color: #0e4e96; }	
+h1 					{ font-size: 2.1em; }
+h2 					{ font-size: 1.9em; }
+h3 					{ font-size: 1.7em; padding: 0em 0em 0em 1em; }
+h4 					{ font-size: 1.5em; }
+h5 					{ font-size: 1.3em; }
+h6 					{ font-size: 1.1em; }
+h3 					{ background-image: url(../images/titleDot.png); background-repeat: no-repeat;	background-position: 0em .3em; }
+
+.marginNone {marigin:0!important;}
+/* Text elements
+-------------------------------------------------------------- */
+p           		{ margin: .4em!important; line-height:150%; font-size:1em; text-align: justify;}
+p img.left  		{ float: left; margin: .5em 1.5em .5em 0em; padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
+p img.right 		{ float: right; margin: .5em 0em .5em 1.5em;padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
+img 				{ border: 0; }
+a 					{ color:#0000ff; text-decoration: none; font-size:1em;
+
+					/* FADE IN TRANSITION */
+					-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+					-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+					-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+					}     
+a:hover 			{ 
+					color:#000;
+					text-decoration: underline;
+					}  
+
+
+blockquote p		{ 
+					padding-left:20px; 
+					color: #666; 
+					font-style: italic;
+					border-left:1px solid #ccc;
+					}
+strong      		{ font-weight: bold; }
+em,dfn      		{ font-style: italic; }
+dfn         		{ font-weight: bold; }
+sup, sub    		{ line-height: 0; }
+
+abbr, 
+acronym     		{ border-bottom: 1px dotted #666; }
+address     		{ margin: 0 0 1.5em; font-style: italic; }
+del         		{ color:#666; text-decoration: line-through; }
+
+pre 				{ margin: 1.5em 0; white-space: pre; }
+pre,code,tt 		{ font: 1em 'andale mono', 'lucida console', monospace; }
+
+
+/*---------------------------------------------------------*/
+/*** Lists 
+-----------------------------------------------------------*/
+li ul,li ol			{ margin: 0!important; padding: .3em 0 .3em .3em; }
+ul, ol				{ margin: 0 0 2em 0; padding-left: 2em; }
+ul          		{ list-style-type: disk; list-style-position: inside;}
+ol          		{ list-style-type: decimal; list-style-position: inside;}
+li					{ padding: .0em .0em!important; }
+dl          		{ margin: 0 0 1.5em 0; }
+dl dt       		{ font-weight: bold; }
+dd          		{ margin-left: 0em; display: inline-block;}
+/*** End of Lists
+-----------------------------------------------------------*/
+
+
+
+
+
+
+/* Forms
+---------------------------------------------------------------------
+
+#form_login 		{margin: 0px auto; text-align: left; padding: 20px; width: 250px;}
+#form_login label 	{color:#fff; display:block; margin-bottom: 3px!important;}
+
+
+#form_login .registerPassword {
+	float: left;
+	display: block;
+	color: #ca1961;
+	background-image: url(../images/arrow_pink.png);
+	background-repeat: no-repeat;
+	background-position: 5px -2px;
+	padding: 0px 15px 0px 15px;
+}
+#form_login .registerPassword a 					{color: #3a3a3a;text-decoration: none;}
+#form_login .registerPassword a:hover 				{color: #ff70aa;text-decoration: none;}
+#form_login .registerPassword a:visited, a:active 	{color: #3a3a3a;text-decoration: none;}
+
+input:focus			{padding:2px 5px 3px 5px; margin-bottom:10px!important;margin-top:1px!important;}
+input 				{padding:2px 5px 3px 5px; margin-bottom:10px!important;margin-top:1px!important;}
+textarea 			{padding:3px 5px 4px 5px; margin-bottom:10px!important;}
+#button				{padding:2px 5px 3px 5px; margin-bottom:10px!important;}
+
+/* Tables
+-------------------------------------------------------------- 
+thead th          	{ font-weight: bold; }
+tr.even td  		{ background: #333; }
+tr, th, td 			{ text-align: left; vertical-align:top; }
+caption     		{ background: #eee; }
+
+/* Misc Classes
+---------------------------------------------------------------------*/
+.debug1	{ background:#ccc; }
+.debug2 { background:#666; }
+.debug3	{ background:#000; }
+.debug4 { background:#fff; }
