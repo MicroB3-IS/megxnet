@@ -72,6 +72,10 @@
 		<!-- also used for war file name -->
 		<finalName>megx.net-web</finalName>
 		<plugins>
+			 <plugin>
+                  <groupId>org.mortbay.jetty</groupId>
+                  <artifactId>maven-jetty-plugin</artifactId>
+             </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
