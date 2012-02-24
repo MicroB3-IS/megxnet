@@ -43,6 +43,15 @@ items: [{
 		},{
 			name: 'Labels',
 			link: 'labels.do',
+		}, {
+			name: 'Display Lists',
+			link: 'display.lists.dashboard.do'
+		},{
+			name: 'Forms',
+			link: 'com.choncms.webpage.forms.list.do',
+		},{
+			name: 'HTML Fragments',
+			link: 'org.chon.cms.ui.fragments.list.do',
 		}]
 	}]
 }
