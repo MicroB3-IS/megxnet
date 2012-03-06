@@ -26,6 +26,12 @@
 	<link rel="stylesheet" href="$ctx.siteUrl/$css" type="text/css" media="screen" />
 	#end
 	
+	<script type="text/javascript">
+	   ctx = {
+	      siteUrl: "$ctx.siteUrl"
+	      };
+	</script>
+	
 	#foreach($script in $ctx.get('head:scripts'))
 	<script src="$ctx.siteUrl/$script" type="text/javascript"></script>
 	#end
