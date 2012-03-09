@@ -14,7 +14,7 @@ items: [{
 			link: 'listActions.do'
 		}, {
 			name: 'Query Repo',
-			link: 'query.do'
+			link: 'org.choncms.dev.tools.queryRepo.do'
 		}]
 	}, {
 		name: 'Create / Edit Cotent',
@@ -35,15 +35,6 @@ items: [{
 		icon: 'plugin-icon',
 		link: '#',
 		childs: [{
-			name: 'Templates',
-			link: 'templates.do'
-		},{
-			name: 'Menus',
-			link: 'menu.list.do',
-		},{
-			name: 'Labels',
-			link: 'labels.do',
-		}, {
 			name: 'Display Lists',
 			link: 'display.lists.dashboard.do'
 		},{
