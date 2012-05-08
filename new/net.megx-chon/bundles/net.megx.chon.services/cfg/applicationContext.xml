@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+	<!-- JDBC configuration -->
+	<context:property-placeholder location="classpath:com/iw/megx/ws/resources/datasource.properties, classpath:com/iw/megx/ws/resources/misc.properties"/>
+	
+	<!--  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.gscdb.driverClassName}"/>
+	    <property name="url"             value="${jdbc.gscdb.jdbcUrl}"/>
+	    <property name="username"        value="${jdbc.gscdb.user}"/>
+	    <property name="password"        value="${jdbc.gscdb.password}"/>
+	</bean> -->
+	
+	<bean id="dataSourceMPI" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="org.postgresql.Driver"/>
+		<!-- 	    <property name="url"             value="jdbc:postgresql://192.168.1.240/test_dev_3"/> -->
+	    <property name="url"             value="jdbc:postgresql://192.168.1.240/webdb_r8"/>
+	    <property name="username"        value="postgres"/>
+	    <property name="password"        value="pg-admin-iw"/>
+	</bean>
+	<!-- 	
+	<bean id="txManager"
+				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+ 	-->
+	<bean id="txManagerMPI"
+				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceMPI" />
+	</bean>
+	
+	<!-- // END JDBC configuration -->
+	
+	<!-- enable the configuration of transactional behavior based on annotations 
+	http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/transaction.html#transaction-declarative
+	-->
+	<!--     <tx:annotation-driven transaction-manager="txManager"/> -->
+	<tx:annotation-driven transaction-manager="txManagerMPI"/>
+	
+	
+	<!-- MyBatis-Spring integration -->
+<!-- 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" > 
+ 		<property name="dataSource" ref="dataSource" /> 
+ 		<property name="configLocation" value="classpath:my-batis-config.xml"></property> 
+ 	</bean> -->
+
+	<!-- MyBatis-Spring integration -->
+	<bean id="sqlSessionFactoryMPI" class="org.mybatis.spring.SqlSessionFactoryBean" >
+		<property name="dataSource" ref="dataSourceMPI" />
+		<property name="configLocation" value="classpath:mpi-my-batis-config.xml"></property>
+	</bean>
+
+
+	<!--
+		Just not to make this configuration ridiculously large, it has been split as follows:
+		* DAO beans are defined in dao-beans.xml
+		* Service beans are defined in service-beans.xml
+	 -->
+	
+	
+	
+</beans>
