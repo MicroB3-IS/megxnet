@@ -15,11 +15,8 @@
 	</properties>
 
 	<modules>
-		
-		<module>net.megx.chon.core</module>		
+	
 		<module>net.megx.chon.template</module>
-		<module>net.megx.chon.services</module>
-		<module>net.megx.chon.services.ui</module>
 		
 		
 		<module>target-definition</module>

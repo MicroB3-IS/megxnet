@@ -22,7 +22,7 @@ public class Activator extends ResTplConfiguredActivator {
 
 	@Override
 	protected String getName() {
-		return "org.chon.megx.net.template";
+		return "net.megx.chon.template";
 	}
 
 	@Override
