@@ -4,10 +4,13 @@
 <product name="net.megx Product" uid="net.megx.product.id" id="net.megx.product" useFeatures="false" includeLaunchers="false">
 
    <plugins>
+		<plugin id="net.megx.chon.template"/>
+		<!--
       <plugin id="net.megx.chon.core"/>
-	  <plugin id="net.megx.chon.template"/>
 	  <plugin id="net.megx.chon.services"/>
 	  <plugin id="net.megx.chon.services.ui"/>
+		-->
+		
       <plugin id="com.choncms.webpage.forms"/>
       <plugin id="com.springsource.javax.servlet"/>
       <plugin id="org.apache.felix.fileinstall"/>
