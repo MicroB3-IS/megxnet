@@ -54,7 +54,7 @@
 
 	<profiles>
 		<profile>
-			<id>renzo</id>
+			<id>renzo-linux</id>
 			<activation>
 				<property>
 					<name>user.name</name>
@@ -64,6 +64,22 @@
 			<properties>
 				<tomcat.home>${user.home}/progs/tomcat</tomcat.home>
 				<tomcat.port>8199</tomcat.port>
+			</properties>
+		</profile>
+		<profile>
+			<id>renzo-win</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+				<property>
+					<name>user.name</name>
+					<value>rkottman</value>
+				</property>
+			</activation>
+			<properties>
+				<tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</tomcat.home>
+				<tomcat.port>8080</tomcat.port>
 			</properties>
 		</profile>
 	</profiles>
@@ -116,17 +132,30 @@
 						<!-- Location of installation -->
 						<home>${tomcat.home}</home>
 						<timeout>50000</timeout>
+
 					</container>
 					<configuration>
-						<!-- container config -->
-						<type>standalone</type>
+						<!-- container configuration -->
+						<!-- installed should be the default one -->
+						<type>existing</type>
 						<!-- basically CATALINA.HOME (the container runtime dirs) -->
-						<home>target/tomcat6x</home>
+						<home>${tomcat.home}</home> -->
 						<properties>
 							<cargo.servlet.port>${tomcat.port}</cargo.servlet.port>
 						</properties>
+						<deployables>
+							<deployable>
+								<groupId>${project.groupId}</groupId>
+								<artifactId>${project.artifactId}</artifactId>
+								<type>war</type>
+								<properties>
+									<context>megx.net-web</context>
+								</properties>
+							</deployable>
+						</deployables>
 					</configuration>
 				</configuration>
+
 			</plugin>
 
 			<plugin>
@@ -205,4 +234,5 @@
 
 		</plugins>
 	</build>
+
 </project>
