@@ -7,6 +7,21 @@
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 
+	<organization>
+		<name>Micro B3</name>
+		<url>http://www.microb3.eu</url>
+	</organization>
+
+	<repositories>
+		<repository>
+			<id>chon-repo</id>
+			<layout>p2</layout>
+			<url>http://p2.choncms.com/SNAPSHOT
+		 </url>
+		</repository>
+	</repositories>
+
+
 	<properties>
 		<!-- just dump defaults: need to be overwritten in profiles etc. -->
 		<tomcat.home>${user.home}/tomcat</tomcat.home>
@@ -20,6 +35,7 @@
 
 
 	<modules>
+		<!-- <module>target-definition</module> -->
 		<module>web-content-repository</module>
 
 		<module>net.megx.chon.core</module>
@@ -57,25 +73,21 @@
 
 	<build>
 		<!-- configuring for inheritance -->
+		<!-- Plugin Management contains plugin elements in much the same way, except 
+			that rather than configuring plugin information for this particular project 
+			build, it is intended to configure project builds that inherit from this 
+			one. However, this only configures plugins that are actually referenced within 
+			the plugins element in the children. The children have every right to override 
+			pluginManagement definitions. https://maven.apache.org/pom.html#Plugin_Management -->
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>target-platform-configuration</artifactId>
 					<version>${tycho.version}</version>
-					<configuration>
-						<resolver>p2</resolver>
-						<target>
-							<artifact>
-								<groupId>megx.net</groupId>
-								<artifactId>target-definition</artifactId>
-								<version>0.0.1-SNAPSHOT</version>
-								<classifier>chon</classifier>
-							</artifact>
-						</target>
-						<ignoreTychoRepositories>true</ignoreTychoRepositories>
-					</configuration>
+
 				</plugin>
+
 				<plugin>
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>tycho-maven-plugin</artifactId>
@@ -113,7 +125,20 @@
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<target>
+						<artifact>
+							<groupId>net.megx</groupId>
+							<artifactId>target-definition</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
+							<classifier>chon</classifier>
+						</artifact>
+					</target>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
