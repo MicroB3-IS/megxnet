@@ -35,19 +35,23 @@
 
 
 	<modules>
-		<!-- <module>target-definition</module> -->
+		<!-- create repository from scratch: TODO take care if it already exists -->
 		<module>web-content-repository</module>
-
+		<!-- build megx.net core bundle -->
 		<module>net.megx.chon.core</module>
-
+		<!-- build megx.net web services related: TODO refactor -> delete -->
 		<module>net.megx.chon.services</module>
-
+		<!-- build megx.net web services related: TODO refactor -> delete -->
 		<module>net.megx.chon.services.ui</module>
-
+		<!-- build megx.net velocity templates -->
 		<module>net.megx.chon.template</module>
 
-		<module>net.megx.product</module>
+		<!-- where and what is chon and get all chon bundles -->
+		<module>target-definition</module>
 
+		<!-- what bundles will be included in the final build -->
+		<module>net.megx.product</module>
+		<!-- does not need to be build always: TODO configure the setup.proporteis according to build -->
 		<module>megx.net-web</module>
 	</modules>
 
