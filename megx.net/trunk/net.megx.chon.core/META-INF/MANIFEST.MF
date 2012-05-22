@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Megx
 Bundle-SymbolicName: net.megx.chon.core
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.chon.megx.net.Activator
+Bundle-Activator: net.megx.chon.core.Activator
 Bundle-Vendor: INTERWORKS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
