@@ -32,6 +32,7 @@
       <plugin id="org.chon.jcr.client"/>
       <plugin id="org.chon.web"/>
       <plugin id="org.choncms.bnd-libs"/>
+      <plugin id="org.choncms.chon-rest-libs"/>
       <plugin id="org.choncms.dev.tools"/>
       <plugin id="org.choncms.display.lists"/>
       <plugin id="osgi.compendium"/>
