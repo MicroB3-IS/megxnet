@@ -23,6 +23,7 @@ import org.chon.cms.model.content.IContentNodeFactory;
 import org.chon.cms.model.content.INodeRenderer;
 import org.chon.megx.net.factory.MegxModuleContentNodeFactory;
 import org.chon.megx.net.renderers.ModuleNodeRenderer;
+import org.chon.megx.net.rest.TestRest;
 import org.chon.megx.net.ui.GenomesExtension;
 import org.chon.megx.net.ui.MetagenomesExtension;
 import org.chon.megx.net.ui.PhagesExtension;
@@ -33,8 +34,6 @@ import org.chon.megx.net.ui.TagCloudExtenstion;
 import org.chon.megx.net.ui.WOA5Extension;
 import org.chon.megx.net.ui.WOD5Extension;
 
-import com.iw.megx.ws.dto.mpiws.Metagenome;
-
 public class Activator extends ResTplConfiguredActivator {
 
 	@Override
@@ -44,6 +43,9 @@ public class Activator extends ResTplConfiguredActivator {
 
 	@Override
 	protected void registerExtensions(JCRApplication app) {
+		
+		getBundleContext().registerService(TestRest.class.getName(),
+				new TestRest(), null);
 
 		//ServiceReference ref = getBundleContext().getServiceReference(MixsWsService.class.getName());
 		//MixsWsService svc = (MixsWsService) getBundleContext().getService(ref);
