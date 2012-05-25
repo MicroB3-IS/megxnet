@@ -1,16 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<prerequisites>
+		<maven>3.0.0</maven>
+	</prerequisites>
 
 	<groupId>net.megx</groupId>
 	<artifactId>web-app</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
-
-	<organization>
-		<name>Micro B3</name>
-		<url>http://www.microb3.eu</url>
-	</organization>
 
 	<repositories>
 		<repository>
@@ -35,8 +33,6 @@
 
 
 	<modules>
-		<!-- create repository from scratch: TODO take care if it already exists -->
-		<module>web-content-repository</module>
 		<!-- build megx.net core bundle -->
 		<module>net.megx.chon.core</module>
 		<!-- build megx.net web services related: TODO refactor -> delete -->
@@ -51,10 +47,45 @@
 
 		<!-- what bundles will be included in the final build -->
 		<module>net.megx.product</module>
-		<!-- does not need to be build always: TODO configure the setup.proporteis according to build -->
+		<!-- does not need to be build always: TODO configure the setup.proporteis 
+			according to build -->
 		<module>megx.net-web</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>megx.net-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.chon.core</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.chon.services</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.chon.services.ui</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.chon.template</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>web-content-repository</artifactId>
+				<version>1.0-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<profiles>
 		<profile>
@@ -69,6 +100,23 @@
 				<tomcat.home>${user.home}/progs/tomcat</tomcat.home>
 				<tomcat.port>8199</tomcat.port>
 				<web.repos.dir>/tmp/${work.dir.name}</web.repos.dir>
+			</properties>
+		</profile>
+		<profile>
+			<id>renzo-win</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+				<property>
+					<name>user.name</name>
+					<value>rkottman</value>
+				</property>
+			</activation>
+			<properties>
+				<web.repos.dir>E:\dev\${work.dir.name}</web.repos.dir>
+				<tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</tomcat.home>
+				<tomcat.port>8080</tomcat.port>
 			</properties>
 		</profile>
 	</profiles>
@@ -89,7 +137,6 @@
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>target-platform-configuration</artifactId>
 					<version>${tycho.version}</version>
-
 				</plugin>
 
 				<plugin>
@@ -98,33 +145,24 @@
 					<version>${tycho.version}</version>
 					<extensions>true</extensions>
 				</plugin>
-
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.4</version>
-					<executions>
-						<execution>
-							<id>copy</id>
-							<phase>package</phase>
-							<goals>
-								<goal>copy</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>${web.repos.dir}/plugins</outputDirectory>
-								<overWriteReleases>false</overWriteReleases>
-								<overWriteSnapshots>true</overWriteSnapshots>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-
-
 			</plugins>
+
 		</pluginManagement>
 
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${web.repos.dir}</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
@@ -149,35 +187,38 @@
 				<version>${tycho.version}</version>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>${project.artifactId}</artifactId>
-									<version>${project.version}</version>
-									<type>${project.packaging}</type>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
 		</plugins>
-
-
-
 	</build>
-
+	<organization>
+		<name>Micro B3</name>
+		<url>http://www.microb3.eu</url>
+	</organization>
+	<inceptionYear>2012</inceptionYear>
+	<developers>
+		<!-- in alphabetical order of last Name -->
+		<developer>
+			<name>Sebastian Gross</name>
+		</developer>
+		<developer>
+			<name>Jovica Jonoski</name>
+		</developer>
+		<developer>
+			<name>Renzo Kottmann</name>
+		</developer>
+		<developer>
+			<name>Pavle Jonoski</name>
+		</developer>
+		<developer>
+			<name>Michael Schneider</name>
+		</developer>
+		<developer>
+			<name>Julia Schnetzer</name>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>Apache 2 License</name>
+		</license>
+	</licenses>
 </project>
