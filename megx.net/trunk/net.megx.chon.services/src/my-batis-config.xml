@@ -11,4 +11,5 @@
   	<mappers>
   		<mapper  resource="com/iw/megx/ws/resources/mixsws/MixsWsMapper_2_1.xml"/>
   	</mappers>
+  	
 </configuration>
