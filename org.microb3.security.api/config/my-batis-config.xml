@@ -19,10 +19,10 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="org.microb3.security.auth.Consumer" alias="Consumer"/>
-		<typeAlias type="org.microb3.security.auth.Token" alias="Token"/>
-		<typeAlias type="org.microb3.security.auth.UserInfo" alias="User"/>
-		<typeAlias type="org.microb3.security.auth.Role" alias="Role"/>
+		<typeAlias type="net.megx.security.auth.Consumer" alias="Consumer"/>
+		<typeAlias type="net.megx.security.auth.Token" alias="Token"/>
+		<typeAlias type="net.megx.security.auth.UserInfo" alias="User"/>
+		<typeAlias type="net.megx.security.auth.Role" alias="Role"/>
 	</typeAliases>
 	
 	<mappers>
