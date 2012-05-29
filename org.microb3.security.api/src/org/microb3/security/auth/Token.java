@@ -23,7 +23,7 @@ public class Token {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((secret == null) ? 0 : secret.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		return result;
 	}
 	@Override
@@ -40,33 +40,32 @@ public class Token {
 				return false;
 		} else if (!secret.equals(other.secret))
 			return false;
-		if (value == null) {
-			if (other.value != null)
+		if (token == null) {
+			if (other.token != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!token.equals(other.token))
 			return false;
 		return true;
 	}
-	private String value;
+	private String token;
 	private String secret;
 	private String verifier;
 	private String callbackUrl;
 	private String consumerKey;
 	private boolean accessToken;
 	private long timestamp;
-	private UserInfo user;
+	private User user;
 	
 	
 	
 	public Token() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Token(String value, String secret, String verifier,
 			String callbackUrl, String consumerKey, boolean accessToken,
-			long timestamp, UserInfo user) {
+			long timestamp, User user) {
 		super();
-		this.value = value;
+		this.token = value;
 		this.secret = secret;
 		this.verifier = verifier;
 		this.callbackUrl = callbackUrl;
@@ -75,11 +74,11 @@ public class Token {
 		this.timestamp = timestamp;
 		this.user = user;
 	}
-	public String getValue() {
-		return value;
+	public String getToken() {
+		return token;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public String getSecret() {
 		return secret;
@@ -117,10 +116,10 @@ public class Token {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
-	public UserInfo getUser() {
+	public User getUser() {
 		return user;
 	}
-	public void setUser(UserInfo user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 }

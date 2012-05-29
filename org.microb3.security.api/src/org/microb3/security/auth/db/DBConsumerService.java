@@ -24,47 +24,97 @@ import org.microb3.security.auth.ConsumerService;
 
 
 
-public class DBConsumerService implements ConsumerService{
+public class DBConsumerService extends BaseDBService implements ConsumerService{
 	
-	private ConsumerMapper mapper;
+	//private ConsumerMapper mapper;
 	
-	public void setMapper(ConsumerMapper mapper) {
-		this.mapper = mapper;
+	//public void setMapper(ConsumerMapper mapper) {
+	//	this.mapper = mapper;
+	//}
+
+	public Consumer getConsumer(final String name) throws Exception {
+		//return mapper.getConsumerForName(name);
+		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
+
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				return mapper.getConsumerForName(name);
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
-	public Consumer getConsumer(String name) throws Exception {
-		return mapper.getConsumerForName(name);
-	}
+	public Consumer getConsumerForKey(final String key) throws Exception {
+		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
 
-	public Consumer getConsumerForKey(String key) throws Exception {
-		return mapper.getConsumerForKey(key);
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				return mapper.getConsumerForName(key);
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
 	
-	public Consumer addConsumer(Consumer consumer) throws Exception {
-		mapper.addConsumer(consumer);
-		return consumer;
+	public Consumer addConsumer(final Consumer consumer) throws Exception {
+		
+		return doInTransaction(new DBTask<ConsumerMapper, Consumer>() {
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				mapper.addConsumer(consumer);
+				return null;
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
-	public Consumer getConsumerForKeyAndName(String key, String name)
+	public Consumer getConsumerForKeyAndName(final String key, final String name)
 			throws Exception {
-		return mapper.getConsumerForKeyAndName(key, name);
+		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
+
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				return mapper.getConsumerForKeyAndName(key, name);
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
 	
-	public void removeConsumer(Consumer consumer) throws Exception {
-		mapper.removeTokensForConsumer(consumer.getKey());
-		mapper.removeConsumer(consumer);
+	public void removeConsumer(final Consumer consumer) throws Exception {
+		doInTransaction(new DBTask<ConsumerMapper, Consumer>() {
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				mapper.removeTokensForConsumer(consumer.getKey());
+				mapper.removeConsumer(consumer);
+				return null;
+			}
+			
+		}, ConsumerMapper.class);
+		
 	}
 
 	
-	public Consumer updateConsumer(Consumer consumer) throws Exception {
-		 mapper.updateConsumer(consumer);
-		 return mapper.getConsumerForName(consumer.getName());
+	public Consumer updateConsumer(final Consumer consumer) throws Exception {
+		return doInTransaction(new DBTask<ConsumerMapper, Consumer>() {
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				mapper.updateConsumer(consumer);
+				 return mapper.getConsumerForName(consumer.getName());
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
-	public List<Consumer> getConsumersForUser(String userId) throws Exception {
-		return mapper.getConsumersForUserId(userId);
+	public List<Consumer> getConsumersForUser(final String userId) throws Exception {
+		return doInSession(new DBTask<ConsumerMapper, List<Consumer>>() {
+			@Override
+			public List<Consumer> execute(ConsumerMapper mapper)
+					throws Exception {
+				return mapper.getConsumersForUserId(userId);
+			}
+			
+		}, ConsumerMapper.class);
 	}
 
 	

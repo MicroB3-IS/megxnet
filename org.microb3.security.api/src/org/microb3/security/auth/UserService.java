@@ -20,14 +20,13 @@ package org.microb3.security.auth;
 import java.util.List;
 
 public interface UserService {
-	public UserInfo getUserByUserId(String userId) throws Exception;
-	//public UserInfo getUserById(int id)throws Exception;
-	public UserInfo getUserByConsumerKey(String consumerKey) throws Exception;
-	public UserInfo getUser(String username, String password) throws Exception;
-	public UserInfo getUser(String uniqueIdentifier) throws Exception;
-	public UserInfo addUser(UserInfo info) throws Exception;
-	public UserInfo updateUser(UserInfo userInfo) throws Exception;
-	public UserInfo removeUser(String userid) throws Exception;
+	public User getUserByUserId(String userId) throws Exception;
+	public User getUserByConsumerKey(String consumerKey) throws Exception;
+	public User getUser(String username, String password) throws Exception;
+	public User getUser(String uniqueIdentifier) throws Exception;
+	public User addUser(User info) throws Exception;
+	public User updateUser(User userInfo) throws Exception;
+	public User removeUser(String userid) throws Exception;
 	public Role    createRole(Role role)throws Exception;
 	public List<Role> getAvailableRoles() throws Exception;
 	public List<Role> getDefaultRoles() throws Exception;
