@@ -21,25 +21,25 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.microb3.security.auth.Role;
-import org.microb3.security.auth.UserInfo;
+import org.microb3.security.auth.User;
 
 
 public interface UserMapper {
 	
 
-	public UserInfo getUserByUserId(String userId) throws Exception;
+	public User getUserByUserId(String userId) throws Exception;
 
-	public UserInfo getUserByConsumerKey(String key) throws Exception;
+	public User getUserByConsumerKey(String key) throws Exception;
 
-	public UserInfo getUserForUsernameAndPassword(
+	public User getUserForUsernameAndPassword(
 			@Param("username") String username,
 			@Param("password") String password) throws Exception;
 
-	public UserInfo getUserByUniqueIdentifier(String uniqueIdentifier)
+	public User getUserByUniqueIdentifier(String uniqueIdentifier)
 			throws Exception;
 	
-	public void addUser(UserInfo info) throws Exception;
-	public void updateUser(UserInfo info) throws Exception;
+	public void addUser(User info) throws Exception;
+	public void updateUser(User info) throws Exception;
 	public void removeUser(String userId) throws Exception;
 	
 	

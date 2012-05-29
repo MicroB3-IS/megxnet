@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.microb3.security.auth.Role;
-import org.microb3.security.auth.UserInfo;
+import org.microb3.security.auth.User;
 import org.microb3.security.auth.UserService;
 
 
@@ -38,38 +38,38 @@ public class DBUserService implements UserService{
 		this.mapper = mapper;
 	}
 
-	public UserInfo getUserByUserId(String userId) throws Exception {
+	public User getUserByUserId(String userId) throws Exception {
 		return mapper.getUserByUserId(userId);
 	}
 
 	
-	public UserInfo getUserByConsumerKey(String consumerKey) throws Exception {
+	public User getUserByConsumerKey(String consumerKey) throws Exception {
 		return mapper.getUserByConsumerKey(consumerKey);
 	}
 
-	public UserInfo getUser(String username, String password) throws Exception {
+	public User getUser(String username, String password) throws Exception {
 		return mapper.getUserForUsernameAndPassword(username, password);
 	}
 
-	public UserInfo getUser(String uniqueIdentifier) throws Exception {
+	public User getUser(String uniqueIdentifier) throws Exception {
 		return mapper.getUserByUniqueIdentifier(uniqueIdentifier);
 	}
 
 	
-	public UserInfo addUser(UserInfo info) throws Exception {
+	public User addUser(User info) throws Exception {
 		mapper.addUser(info);
 		List<Role> roles = info.getRoles();
 		if(roles != null){
 			for(Role role: roles){
-				mapper.grantRole(info.getUserId(), role.getRoleId());
+				//mapper.grantRole(info.getUserId(), role.getRoleId());
 			}
 		}
-		return mapper.getUserByUserId(info.getUserId());
+		return mapper.getUserByUserId(info.getLogname());
 	}
 
 	
-	public UserInfo updateUser(UserInfo userInfo) throws Exception {
-		UserInfo old = getUserByUserId(userInfo.getUserId());
+	public User updateUser(User userInfo) throws Exception {
+		User old = getUserByUserId(userInfo.getLogname());
 		List<Role> oldRoles = old.getRoles();
 		List<Role> newRoles = userInfo.getRoles();
 		
@@ -86,22 +86,22 @@ public class DBUserService implements UserService{
 		mapper.updateUser(userInfo);
 		
 		for(Role gr: granted){
-			mapper.grantRole(userInfo.getUserId(), gr.getRoleId());
+			//mapper.grantRole(userInfo.getUserId(), gr.getRoleId());
 		}
 		for(Role rr: revoked){
-			mapper.revokeRole(userInfo.getUserId(), rr.getRoleId());
+			//mapper.revokeRole(userInfo.getUserId(), rr.getRoleId());
 		}
 		return userInfo;
 	}
 
 	
-	public UserInfo removeUser(String userid) throws Exception {
+	public User removeUser(String userid) throws Exception {
 		
-		UserInfo user = mapper.getUserByUserId(userid);
+		User user = mapper.getUserByUserId(userid);
 		
 		List<Role> roles = user.getRoles();
 		for(Role role: roles){
-			mapper.revokeRole(user.getUserId(), role.getRoleId());
+			//mapper.revokeRole(user.getUserId(), role.getRoleId());
 		}
 		mapper.removeUser(userid);
 		return user;
@@ -109,7 +109,7 @@ public class DBUserService implements UserService{
 
 	public Role createRole(Role role) throws Exception {
 		int roleId = mapper.createRole(role);
-		role.setRoleId(roleId);
+		//role.setRoleId(roleId);
 		return role;
 	}
 

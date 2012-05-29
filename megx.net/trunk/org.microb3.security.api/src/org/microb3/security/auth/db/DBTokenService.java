@@ -23,37 +23,60 @@ import org.microb3.security.auth.Token;
 import org.microb3.security.auth.TokenService;
 
 
-public class DBTokenService implements TokenService {
+public class DBTokenService extends BaseDBService implements TokenService {
+	
 
-	private TokenMapper mapper;
-
-	public void setMapper(TokenMapper mapper) {
-		this.mapper = mapper;
+	public Token getToken(final String value) throws Exception {
+		return doInSession(new DBTask<TokenMapper, Token>() {
+			@Override
+			public Token execute(TokenMapper mapper) throws Exception {
+				return mapper.getToken(value);
+			}
+			
+		}, TokenMapper.class);
 	}
 
-	public Token getToken(String value) throws Exception {
-		Token token = mapper.getToken(value);
-		return token;
+	public Token saveToken(final String value, final Token token) throws Exception {
+		
+		return doInTransaction(new DBTask<TokenMapper, Token>() {
+			@Override
+			public Token execute(TokenMapper mapper) throws Exception {
+				token.setValue(value);
+				mapper.saveToken(token);
+				return token;
+			}
+		}, TokenMapper.class);
 	}
 
-	public Token saveToken(String value, Token token) throws Exception {
-		mapper.saveToken(token);
-		return token;
-	}
-
-	public Token removeToken(String value) throws Exception {
-		Token token = getToken(value);
-		mapper.removeToken(value);
-		return token;
+	public Token removeToken(final String value) throws Exception {
+		return doInTransaction(new DBTask<TokenMapper, Token>() {
+			@Override
+			public Token execute(TokenMapper mapper) throws Exception {
+				Token token = getToken(value);
+				mapper.removeToken(value);
+				return token;
+			}
+		}, TokenMapper.class);
+		
 	}
 
 	
-	public int cleanupTokens(long beforeTimestamp) throws Exception {
-		return mapper.removeTokensBeforeTimestamp(beforeTimestamp);
+	public int cleanupTokens(final long beforeTimestamp) throws Exception {
+		return doInTransaction(new DBTask<TokenMapper, Integer>() {
+			@Override
+			public Integer execute(TokenMapper mapper) throws Exception {
+				return mapper.removeTokensBeforeTimestamp(beforeTimestamp);
+			}
+		}, TokenMapper.class);
 	}
 
-	public List<Token> getTokensForUser(String userid) throws Exception {
-		return mapper.getTokensForUser(userid);
+	public List<Token> getTokensForUser(final String userid) throws Exception {
+		return doInSession(new DBTask<TokenMapper, List<Token>>() {
+			@Override
+			public List<Token> execute(TokenMapper mapper) throws Exception {
+				return mapper.getTokensForUser(userid);
+			}
+		}, TokenMapper.class);
 	}
 
 }

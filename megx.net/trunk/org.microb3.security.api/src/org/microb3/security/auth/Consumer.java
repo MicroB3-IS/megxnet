@@ -18,16 +18,16 @@ public class Consumer {
 	private String resource;
 	private String roles;
 	
-	private String userId;
+	private String logname;
 
 	private String callbackUrl;
 	
-	public String getUserId() {
-		return userId;
+	public String getLogname() {
+		return logname;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setLogname(String logname) {
+		this.logname = logname;
 	}
 
 	
@@ -37,7 +37,7 @@ public class Consumer {
 	
 	public Consumer(String name, String description, String key, String secret,
 			boolean oob, Date expirationDate, boolean trusted, String resource,
-			String roles, String userId, String callbackUrl) {
+			String roles, String logname, String callbackUrl) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -48,7 +48,7 @@ public class Consumer {
 		this.trusted = trusted;
 		this.resource = resource;
 		this.roles = roles;
-		this.userId = userId;
+		this.logname = logname;
 		this.callbackUrl = callbackUrl == null ? "oob":callbackUrl;
 	}
 
@@ -57,8 +57,8 @@ public class Consumer {
 		return "Consumer [name=" + name + ", descripton=" + description
 				+ ", key=" + key + ", secret=" + secret + ", oob=" + oob
 				+ ", expirationDate=" + expirationDate + ", trusted=" + trusted
-				+ ", resource=" + resource + ", roles=" + roles + ", userId="
-				+ userId + "]";
+				+ ", resource=" + resource + ", roles=" + roles + ", login(user)="
+				+ logname + "]";
 	}
 
 	public String getName() {
