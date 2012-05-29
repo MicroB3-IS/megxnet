@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: My Plugin
-Bundle-SymbolicName: org.microb3.security.api
+Bundle-SymbolicName: net.megx.security.api
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: org.microb3.security.api.Activator
+Bundle-Activator: net.megx.security.api.Activator
 Import-Package: javax.jcr;version="2.0.0",
  javax.jcr.lock;version="2.0.0",
  javax.jcr.nodetype;version="2.0.0",

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: My Plugin
-Bundle-SymbolicName: org.microb3.apps-manager
+Bundle-SymbolicName: net.megx.apps-manager
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.microb3.apps-manager.Activator
 Import-Package: javax.jcr;version="2.0.0",

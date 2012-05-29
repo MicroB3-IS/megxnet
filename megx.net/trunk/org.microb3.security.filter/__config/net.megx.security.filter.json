@@ -1,0 +1,4 @@
+{
+	path: '$resources/net.megx.security.filter',
+	exampleProperty: 'Example Value'
+}
