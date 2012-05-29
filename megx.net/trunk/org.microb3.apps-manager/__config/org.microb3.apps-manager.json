@@ -1,0 +1,4 @@
+{
+	path: '$resources/org.microb3.apps-manager',
+	exampleProperty: 'Example Value'
+}
