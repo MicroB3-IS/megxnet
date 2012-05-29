@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+Copyright 2011 Max Planck Institute for Marine Microbiology 
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iw.megx.security.auth.db.UserMapper">
+	<resultMap type="User" id="user_map">
+		<id column="userid" property="userId"/>
+		<result property="fullName" column="fullname"/>
+		<result property="password" column="password"/>
+		<result property="providerName" column="providername"/>
+		<result property="eMail" column="email"/>
+		<result property="address" column="address"/>
+		<result property="city" column="city"/>
+		<result property="zipCode" column="zipcode"/>
+		<result property="country" column="country"/>
+		<result property="birthDate" column="birthdate"/>
+		<result property="uniqueIdentifier" column="uniqueidentifier"/>
+		<result property="enabled" column="account_enabled"/>
+		<result property="firstName" column="first_name"/>
+		<result property="lastName" column="last_name"/>
+		<association property="roles" select="getRolesForUser" column="userid"/>
+	</resultMap>
+	
+	<resultMap type="Role" id="role_map">
+		<id column="roleid" property="roleId"/>
+		<result property="name" column="name"/>
+		<result property="value" column="value"/>
+	</resultMap>
+	
+	
+	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
+		select auth.roles.roleid, auth.roles.name, auth.roles.value from auth.roles 
+			inner join auth.granted on auth.roles.roleid=auth.granted.roleid 
+						where auth.granted.userid=#{userid}
+	</select>
+	
+	<select id="getUserByUserId" resultMap="user_map" parameterType="string">
+		select * from auth.users where userid=#{userid}
+	</select>
+	
+	
+	
+	<select id="getUserByConsumerKey" resultMap="user_map" parameterType="string">
+		SELECT
+			u.userid,
+			u.fullname,
+			u.password,
+			u.providername,
+			u.email,
+			u.address,
+			u.city,
+			u.zipcode,
+			u.country,
+			u.birthdate,
+			u.uniqueidentifier,
+			u.account_enabled,
+			u.account_created,
+			u.last_name,
+			u.first_name
+			FROM auth.users as u inner join auth.consumers as c on c.userid=u.userid
+			where c.key=#{key}
+	</select>
+	
+	<select id="getUserForUsernameAndPassword" resultMap="user_map" parameterType="map">
+		select * from auth.users where userid=#{username} and 
+			(password=#{password} OR password IS NULL)
+	</select>
+	
+	<select id="getUserByUniqueIdentifier" resultMap="user_map" parameterType="string">
+		select * from auth.users where uniqueidentifier=#{id}
+	</select>
+	
+	<insert id="addUser" parameterType="User">
+		INSERT INTO auth.users
+			(userid,
+			fullname,
+			password,
+			providername,
+			email,
+			address,
+			city,
+			zipcode,
+			country,
+			birthdate,
+			uniqueidentifier,
+			account_enabled,
+			account_created,
+			first_name,
+			last_name)
+			VALUES
+			(
+				#{userId},
+				#{fullName},
+				#{password},
+				#{providerName},
+				#{eMail},
+				#{address},
+				#{city},
+				#{zipCode},
+				#{country},
+				#{birthDate},
+				#{uniqueIdentifier},
+				#{enabled},
+				NOW(),
+				#{firstName},
+				#{lastName}
+			)
+	</insert>
+	
+	<update id="updateUser" parameterType="User">
+		UPDATE auth.users
+			SET
+			userid = #{userId},
+			fullname = #{fullName},
+			password = #{password},
+			providername = #{providerName},
+			email = #{eMail},
+			address = #{address},
+			city = #{city},
+			zipcode = #{zipCode},
+			country = #{country},
+			birthdate = #{birthDate},
+			uniqueidentifier = #{uniqueIdentifier},
+			account_enabled = #{enabled},
+			first_name=#{firstName},
+			last_name=#{lastName}
+			WHERE userid=#{userid}
+		
+	</update>
+	
+	<delete id="removeUser" parameterType="string">
+		delete from auth.users where userid=#{userid}
+	</delete>
+	
+	<delete id="revokeRole" parameterType="map">
+		DELETE FROM auth.granted 
+			WHERE roleid=#{roleId} AND
+					userid=#{userId}
+	</delete>
+	
+	<insert id="grantRole"  parameterType="map">
+		INSERT INTO auth.granted (roleid, userid)
+			VALUES (#{roleId},#{userId})
+	</insert>
+	
+	<insert id="createRole" useGeneratedKeys="true" parameterType="Role">
+		INSERT INTO auth.roles (name,value)
+			VALUES (#{name},#{value})
+	</insert>
+	
+	<select id="getAllRoles" resultMap="role_map">
+		select * from auth.roles
+	</select>
+	
+	<delete id="removeRole" parameterType="int">
+		delete from auth.roles where roleid=#{roleid}
+	</delete>
+	
+	<select id="getRole" resultMap="role_map" parameterType="int">
+		select * from auth.roles where roleid=#{id}
+	</select>
+	
+	
+	<select id="getRolesForNames" resultMap="role_map" parameterType="map">
+		select * from auth.roles where name in 
+		<foreach collection="names" item="roleName" separator="," open="(" close=")">
+		#{roleName}	
+		</foreach>
+		
+	</select>
+</mapper>
