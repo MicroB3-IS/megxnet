@@ -17,7 +17,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.iw.megx.security.auth.db.ConsumerMapper">
+<mapper namespace="net.megx.security.auth.services.db.ConsumerMapper">
 	<resultMap type="Consumer" id="consumer_map">
 		<id column="id" property="id"/>
 		<result property="key" column="key"/>
@@ -26,10 +26,10 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="name" column="name"/>
 		<result property="description" column="description"/>
 		<result property="trusted" column="trusted"/>
-		<result property="expirationDate" column="expiration_date"/>
+		<result property="expirationDate" column="expiration"/>
 		<result property="roles" column="roles"/>
 		<result property="resource" column="resource"/>
-		<result property="userId" column="userid"/>
+		<result property="logname" column="logname"/>
 		<result property="callbackUrl" column="callback_url"/>
 	</resultMap>
 	
@@ -46,23 +46,21 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	<insert id="addConsumer" parameterType="Consumer" useGeneratedKeys="true">
-		insert into auth.consumers (key, secret, oob, name, description, trusted, expiration_date,  resource, userid, callback_url)
-					values (#{key},#{secret},#{oob}, #{name}, #{description},#{trusted}, #{expirationDate}, #{resource}, #{userId}, #{callbackUrl})
+		insert into auth.consumers (key, secret, oob, name, description, trusted, expiration,  resource, logname, callback_url)
+					values (#{key},#{secret},#{oob}, #{name}, #{description},#{trusted}, #{expirationDate}, #{resource}, #{logname}, #{callbackUrl})
 	</insert>
 	
 	<update id="updateConsumer" parameterType="Consumer">
 		UPDATE auth.consumers
 		SET
-		key = #{key},
-		secret = #{secret},
-		name = #{name},
-		description = #{description},
-		oob = #{oob},
-		trusted = #{trusted},
-		resource = #{resource},
-		expiration_date = #{expirationDate},
-		userid = #{userId},
-		callback_url=#{callbackUrl}
+			secret = #{secret},
+			name = #{name},
+			description = #{description},
+			oob = #{oob},
+			trusted = #{trusted},
+			resource = #{resource},
+			expiration = #{expirationDate},
+			callback_url=#{callbackUrl}
 		WHERE key=#{key}
 		
 	</update>
@@ -72,7 +70,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</delete>
 	
 	<select id="getConsumersForUserId" parameterType="string" resultMap="consumer_map">
-		select * from auth.consumers where userid=#{userid}
+		select * from auth.consumers where logname=#{value}
 	</select>
 	
 	<delete id="removeTokensForConsumer" parameterType="string">
