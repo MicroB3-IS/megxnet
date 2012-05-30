@@ -95,3 +95,16 @@ create table has_permissions(
         references roles(label) on update cascade
                                 on delete cascade
 );
+
+-- ref users M---M roles
+create table has_roles(
+    role text not null,
+    user_login text not null,
+    constraint pk_has_roles primary key (role, user_login),
+    constraint fk_has_roles_roles foreign key(role) 
+                references roles (label) on update cascade
+                                         on delete cascade,
+    constraint fk_has_roles_users foreign key (user_login)
+                references users (logname) on update cascade
+                                           on delete cascade
+);
