@@ -22,20 +22,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.chon.cms.core.JCRApplication;
-import org.chon.cms.core.ResTplConfiguredActivator;
+import org.chon.cms.core.JCRAppConfgEnabledActivator;
 import org.chon.web.RegUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends ResTplConfiguredActivator {
-
-	Log log = LogFactory.getLog(getClass());
-	@Override
-	protected void registerExtensions(JCRApplication app) {
-		
-	}
+public class Activator extends JCRAppConfgEnabledActivator {
+	private static final Log log = LogFactory.getLog(Activator.class);
 
 	@Override
 	protected String getName() {
