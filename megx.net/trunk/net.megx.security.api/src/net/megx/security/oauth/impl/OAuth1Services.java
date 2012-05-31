@@ -183,7 +183,9 @@ public class OAuth1Services extends BaseOAuthServices{
 		try {
 			OAuthAccessor accessToken = getAccessorForAccessToken(message.getToken());
 			getValidator().validateMessage(message, accessToken);
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e){
+			throw new OAuthProblemException(e.getMessage());
+		}catch (URISyntaxException e) {
 			throw new OAuthProblemException(e.getMessage());
 		}
 	}
