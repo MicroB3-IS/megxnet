@@ -34,4 +34,6 @@ Bundle-ClassPath: .,
  lib/slf4j-api-1.6.2.jar,
  lib/slf4j-log4j12-1.6.2.jar,
  lib/commons-codec-1.6.jar,
- config/
+ config/,
+ lib/oauth-20100601.jar,
+ lib/oauth-provider-20100601.jar

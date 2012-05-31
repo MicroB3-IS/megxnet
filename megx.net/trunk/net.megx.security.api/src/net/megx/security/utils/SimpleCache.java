@@ -17,6 +17,9 @@
 
 package net.megx.security.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -35,6 +38,15 @@ public class SimpleCache implements Cache{
 	public Object removeObject(Object key) {
 		Object object = getObject(key); // FIXME
 		return cache.remove(key, object);
+	}
+
+	@Override
+	public List<Object> getCached() {
+		List<Object> cached = new ArrayList<Object>(cache.size());
+		for(Map.Entry<Object, Object> e: cache.entrySet()){
+			cached.add(e.getValue());
+		}
+		return cached;
 	}
 
 }
