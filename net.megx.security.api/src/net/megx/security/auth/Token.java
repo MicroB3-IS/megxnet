@@ -55,7 +55,7 @@ public class Token {
 	private boolean accessToken;
 	private long timestamp;
 	private User user;
-	
+	private boolean authorized; // only for request tokens...
 	
 	
 	public Token() {
@@ -121,5 +121,11 @@ public class Token {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public boolean isAuthorized() {
+		return authorized;
+	}
+	public void setAuthorized(boolean authorized) {
+		this.authorized = authorized;
 	}
 }
