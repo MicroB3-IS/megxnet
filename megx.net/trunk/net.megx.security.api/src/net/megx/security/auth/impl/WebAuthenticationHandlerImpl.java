@@ -26,7 +26,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 	public Authentication createAuthentication(HttpServletRequest request) {
 		SecurityContext context = getSecurityContext();
 		if(context == null){
-			context = new SecuirtyContextContainer();
+			context = new SecurityContextContainer();
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
 		Authentication authentication = context.getAuthentication();

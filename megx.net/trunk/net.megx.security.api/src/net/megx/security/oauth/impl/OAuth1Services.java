@@ -9,8 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.Token;
+import net.megx.security.auth.web.WebAuthenticationHandler;
 import net.megx.security.auth.web.WebContextUtils;
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -22,6 +24,9 @@ import net.oauth.server.OAuthServlet;
 
 public class OAuth1Services extends BaseOAuthServices{
 
+	
+	private WebAuthenticationHandler oAuthHandler;
+	
 	@Override
 	public void processRequestTokenRequest(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
@@ -188,6 +193,11 @@ public class OAuth1Services extends BaseOAuthServices{
 		}catch (URISyntaxException e) {
 			throw new OAuthProblemException(e.getMessage());
 		}
+	}
+
+	@Override
+	public Authentication getAuthentication(HttpServletRequest fromRequest) {
+		return oAuthHandler.createAuthentication(fromRequest);
 	}
 
 }

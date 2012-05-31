@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.megx.security.auth.Authentication;
 import net.oauth.OAuthException;
 import net.oauth.OAuthProblemException;
 
@@ -20,4 +21,6 @@ public interface OAuthServices {
 			HttpServletResponse response) throws IOException, ServletException;
 	
 	public void validateRequest(HttpServletRequest request) throws OAuthException, OAuthProblemException;
+	
+	public Authentication getAuthentication(HttpServletRequest fromRequest);
 }
