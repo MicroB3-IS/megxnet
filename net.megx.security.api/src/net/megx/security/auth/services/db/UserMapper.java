@@ -36,19 +36,19 @@ public interface UserMapper {
 			@Param("username") String username,
 			@Param("password") String password) throws Exception;
 
-	public User getUserByUniqueIdentifier(String uniqueIdentifier)
-			throws Exception;
+	//public User getUserByUniqueIdentifier(String uniqueIdentifier)
+	//		throws Exception;
 	
-	public void addUser(User info) throws Exception;
-	public void updateUser(User info) throws Exception;
-	public void removeUser(String userId) throws Exception;
+	public void addUser(User user) throws Exception;
+	public void updateUser(User user) throws Exception;
+	public void removeUser(String login) throws Exception;
 	
 	
-	public void revokeRole(@Param("userId")String userId, @Param("roleId")int roleId) throws Exception;
-	public void grantRole(@Param("userId")String userId, @Param("roleId")int roleId) throws Exception;
+	public void revokeRole(@Param("login")String login, @Param("role")String role) throws Exception;
+	public void grantRole(@Param("login")String login, @Param("role")String role) throws Exception;
 	public int createRole(Role role) throws Exception;
 	public List<Role> getAllRoles() throws Exception;
 	public List<Role> getRolesForNames(@Param("names")List<String> names) throws Exception;
-	public void removeRole(int roleId) throws Exception;
-	public Role getRole(int roleId) throws Exception;
+	public void removeRole(String role) throws Exception;
+	public Role getRole(String role) throws Exception;
 }
