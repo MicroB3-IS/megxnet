@@ -37,3 +37,9 @@ Bundle-ClassPath: .,
  config/,
  lib/oauth-20100601.jar,
  lib/oauth-provider-20100601.jar
+Export-Package: net.megx.security.auth,
+ net.megx.security.auth.services,
+ net.megx.security.auth.web,
+ net.megx.security.crypto,
+ net.megx.security.oauth,
+ net.megx.security.utils
