@@ -33,5 +33,5 @@ public interface UserService {
 	public Role    createRole(Role role)throws Exception;
 	public List<Role> getAvailableRoles() throws Exception;
 	public List<Role> getDefaultRoles() throws Exception;
-	public Role removeRole(int roleId) throws Exception;
+	public Role removeRole(String role) throws Exception;
 }

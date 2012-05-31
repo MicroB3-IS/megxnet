@@ -21,12 +21,22 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	<typeAliases>
 		<typeAlias type="net.megx.security.auth.Consumer" alias="Consumer"/>
 		<typeAlias type="net.megx.security.auth.Token" alias="Token"/>
-		<typeAlias type="net.megx.security.auth.UserInfo" alias="User"/>
+		<typeAlias type="net.megx.security.auth.User" alias="User"/>
 		<typeAlias type="net.megx.security.auth.Role" alias="Role"/>
 		<typeAlias type="net.megx.security.auth.Permission" alias="Permission"/>
 		<typeAlias type="net.megx.security.auth.WebResource" alias="WebResource"/>
 	</typeAliases>
-	
+	<environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${development.driver}"/>
+				<property name="url" value="${development.url}"/>
+				<property name="username" value="${development.username}"/>
+				<property name="password" value="${development.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
 	<mappers>
 		<mapper resource="mappers/consumer-mapper.xml"/>
 		<mapper resource="mappers/token-mapper.xml"/>
