@@ -23,6 +23,7 @@ Import-Package: javax.jcr;version="2.0.0",
  net.megx.security.crypto,
  net.megx.security.oauth,
  net.megx.security.utils,
+ net.oauth,
  org.apache.commons.logging;version="1.1.1",
  org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

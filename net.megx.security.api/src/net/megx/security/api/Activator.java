@@ -53,35 +53,40 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	
 	private void registerServices(BundleContext context) throws Exception{
 		try{
-			System.out.println("LATEST-VERSION!");
-		System.out.println(String.format("Config: %s", getConfig().toString(3)));
-		System.out.println("Config resource path="+getString(getConfig(),    "myBatisConfigFile"));
-		URL url = context.getBundle().getResource(getString(getConfig(), "myBatisConfigFile"));
-		System.out.println("Config resource as:" + url);
-		Reader reader = new InputStreamReader(url.openStream());
-		 
-		System.out.println("Read config resource > " + reader);
-		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("config/my-batis-config.xml"), getDatabaseProperties());
-		System.out.println("Build sql session factory > " + factory);
-		registerBaseDBService(DBUserService.class, UserService.class, factory);
-		registerBaseDBService(DBConsumerService.class, ConsumerService.class, factory);
-		registerBaseDBService(DBTokenService.class, TokenService.class, factory);
-		registerBaseDBService(DBWebResourcesService.class, WebResourcesService.class, factory);
-		
-		DBUserService us = new DBUserService();
-		us.setSqlSessionFactory(factory);
-		try{
-		List<Role> roles = us.getAvailableRoles();
-		if(roles == null){
-			System.out.println("ROLES=NULL");
-			return;
-		}
-		for(Role role: roles){
-			System.out.println("ROLE: " + role.getLabel());
-		}
-		}catch (Exception e) {
-			e.printStackTrace(System.out);
-		}
+			log.info("LOGGER -> INFO");
+			log.warn("LOGGER -> INFO");
+			log.error("LOGGER -> ERROR");
+			log.fatal("LOGGER -> FATA");
+			log.debug("LOGGER -> DEBUGO");
+			
+			System.out.println(String.format("Config: %s", getConfig().toString(3)));
+			System.out.println("Config resource path="+getString(getConfig(),    "myBatisConfigFile"));
+			URL url = context.getBundle().getResource(getString(getConfig(), "myBatisConfigFile"));
+			System.out.println("Config resource as:" + url);
+			Reader reader = new InputStreamReader(url.openStream());
+			 
+			System.out.println("Read config resource > " + reader);
+			SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("config/my-batis-config.xml"), getDatabaseProperties());
+			System.out.println("Build sql session factory > " + factory);
+			registerBaseDBService(DBUserService.class, UserService.class, factory);
+			registerBaseDBService(DBConsumerService.class, ConsumerService.class, factory);
+			registerBaseDBService(DBTokenService.class, TokenService.class, factory);
+			registerBaseDBService(DBWebResourcesService.class, WebResourcesService.class, factory);
+			
+			DBUserService us = new DBUserService();
+			us.setSqlSessionFactory(factory);
+			try{
+			List<Role> roles = us.getAvailableRoles();
+			if(roles == null){
+				System.out.println("ROLES=NULL");
+				return;
+			}
+			for(Role role: roles){
+				System.out.println("ROLE: " + role.getLabel());
+			}
+			}catch (Exception e) {
+				e.printStackTrace(System.out);
+			}
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
 		}

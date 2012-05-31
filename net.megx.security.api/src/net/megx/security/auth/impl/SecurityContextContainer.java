@@ -3,7 +3,7 @@ package net.megx.security.auth.impl;
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
 
-public class SecuirtyContextContainer implements SecurityContext{
+public class SecurityContextContainer implements SecurityContext{
 	
 	private Authentication authentication;
 	private String lastRequest;

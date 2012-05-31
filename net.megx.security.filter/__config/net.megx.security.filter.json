@@ -1,4 +1,25 @@
 {
 	path: '$resources/net.megx.security.filter',
-	exampleProperty: 'Example Value'
+	filter:{
+		enabled: true,
+		entrypoints:[
+			{
+				name: 'standardLogin',
+				class: 'net.megx.security.filter.impl.WebLoginSecurity',
+				urlPattern: '',
+				order: 1
+			},
+			{
+				name: 'oauth_v1_security',
+				class: 'net.megx.security.filter.impl.OAuth_1_Security',
+				urlPattern: '/pubmap/*',
+				order: 0
+			}
+		],
+		managers:[
+			{
+				name: 'default'
+			}
+		]
+	}
 }

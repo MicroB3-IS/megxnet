@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.impl.SecurityContextContainer;
 
 public class WebContextUtils {
 	
@@ -30,4 +31,19 @@ public class WebContextUtils {
 		}
 		return securityContext;
 	}
+	
+	public static void clearSecurityContext(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		if(session != null){
+			session.setAttribute(SECURITY_CONTEXT_SESSION_ATTR, null);
+		}
+	}
+	
+	public static SecurityContext newSecurityContext(HttpServletRequest request){
+		clearSecurityContext(request);
+		SecurityContext context = new SecurityContextContainer();
+		replaceSecurityContext(context, request, true);
+		return context;
+	}
+	
 }
