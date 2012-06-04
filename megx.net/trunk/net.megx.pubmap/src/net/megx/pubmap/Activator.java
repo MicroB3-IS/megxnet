@@ -11,8 +11,11 @@ public class Activator extends ResTplConfiguredActivator {
 	
 	@Override
 	protected void registerExtensions(JCRApplication app) {
-		// TODO register extensions
 		log.debug("Start PubMap bundle");
+		
+		PubMapExtension pubMapExt = new PubMapExtension();
+		log.debug("Registering pubmap extension.");
+		app.regExtension("pubmap", pubMapExt);
 	}
 
 	@Override
