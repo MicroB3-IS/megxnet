@@ -12,6 +12,11 @@ import org.osgi.framework.BundleContext;
 public class WebUtils {
 	public static String getRequestPath(HttpServletRequest request, boolean withQuery){
 		String requestedPath = request.getRequestURI().substring(request.getContextPath().length());
+		
+		if(withQuery){
+			requestedPath += "?" + request.getQueryString();
+		}
+		
 		System.out.println("------------------------------------");
 		System.out.println("RequestURI: "+request.getRequestURI());
 		System.out.println("RequestURL: "+ request.getRequestURL().toString());

@@ -74,6 +74,7 @@ etc={type:'sys.etc'}
 		megx.module.login={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.LoginModule'}
 		megx.module.wms={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WMS_Module'}
 		megx.module.woa={bubbleToParnet: true, type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WOA_Module'}
+		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: ''}
 		
 var={type:'sys.var'}
 	log={type:'folder'}

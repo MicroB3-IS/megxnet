@@ -22,6 +22,8 @@ import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.http.HttpRequestWrapper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +31,8 @@ import org.osgi.framework.BundleContext;
 
 public class SecurityFilter implements Filter{
 
+	private Log log = LogFactory.getLog(getClass());
+	
 	private BundleContext context;
 	private JSONObject bundleConfig;
 	private AuthenticationManager authenticationManager;
@@ -50,18 +54,20 @@ public class SecurityFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		log.debug("Security filter start...");
 		if(request instanceof HttpServletRequest && response instanceof HttpServletResponse){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			if(!enabled){
+				log.debug("Secuirty filter is not enabled. Will pass the request to the chain.");
 				chain.doFilter(request, response);
 				return;
 			}
 			boolean hasMatched = false;
 			for(EntryPointWrapper entryPoint: entryPoints){
-					System.out.println(String.format("Matching enty-point %s",entryPoint.name));
+					log.debug(String.format("Matching enty-point %s",entryPoint.name));
 					if(entryPoint.matches(WebUtils.getRequestPath(httpRequest, false))){
-						System.out.println("\t -> match");
+						log.debug("\t -> match");
 						hasMatched = true;
 						try {
 							entryPoint.entrypoint.doFilter(httpRequest, httpResponse);
@@ -85,15 +91,18 @@ public class SecurityFilter implements Filter{
 			if(context != null){
 				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
 			}
+			log.debug("Security filter - pass chain.");
 			chain.doFilter(httpRequest, httpResponse);
 		}else{
 			throw new ServletException("Wrong Request Type.");
 		}
 		
-		
+		log.debug("Security filter end.");
 	}
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		log.debug(e);
+		storeRequestURL(request);
 		if(e instanceof IOException ){
 			throw (IOException)e;
 		}else if(e instanceof ServletException){
@@ -104,6 +113,15 @@ public class SecurityFilter implements Filter{
 		}else{
 			throw new ServletException(e);
 		}
+	}
+	
+	private void storeRequestURL(HttpServletRequest request){
+		SecurityContext context = WebContextUtils.getSecurityContext(request);
+		if(context == null){
+			context = WebContextUtils.newSecurityContext(request);
+			WebContextUtils.replaceSecurityContext(context, request, true);
+		}
+		context.storeLastRequestedURL(WebUtils.getRequestPath(request, true));
 	}
 	
 	protected void checkAuthenticationResult(HttpServletRequest request, HttpServletResponse response) 
@@ -132,16 +150,22 @@ public class SecurityFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {		
+		log.debug("Initializing security filter chain...");
+		System.out.println("BOOM!");
 		try {
 			JSONObject filterConfig = bundleConfig.getJSONObject("filter");
+			if(log.isDebugEnabled()){
+				log.debug(String.format("Filter configuration: %s", filterConfig.toString(3)));
+			}
 			enabled = Boolean.TRUE.equals(filterConfig.optBoolean("enabled"));
 			JSONArray entryPoints = filterConfig.getJSONArray("entrypoints");
 			
+			log.debug("Initializing secuirty entrypoints...");
 			for(int i = 0; i < entryPoints.length(); i++){
 				JSONObject entryPointConfig = entryPoints.getJSONObject(i);
 				buildEntryPoint(entryPointConfig);
 			}
-			
+			log.debug("Entrypoint built.");
 			Collections.sort(this.entryPoints);
 			
 			OSGIUtils.requestService(AuthenticationManager.class.getName(), context, 
@@ -150,15 +174,17 @@ public class SecurityFilter implements Filter{
 				@Override
 				public void serviceAvailable(AuthenticationManager service) {
 					SecurityFilter.this.authenticationManager = service;
-					System.out.println("AuthenticationManager was obtained: " + service);
+					log.debug("Obtained authentication manager instance: " + service.toString());
 				}
 				
 			});
 			
 			
 		} catch (Exception e) {
+			log.error(e);
 			throw new ServletException(e);
 		}
+		log.debug("Secuirty filter successfully initialized.");
 	}
 
 	
@@ -168,10 +194,14 @@ public class SecurityFilter implements Filter{
 		String urlPattern = config.getString("urlPattern");
 		String clazz = config.getString("class");
 		int order = config.optInt("order");
+		
+		log.debug(String.format("Building entrypoint (name='%s',urlPattern='%s',class='%s',order='%d')",name, urlPattern,clazz, order));
+		log.debug("Full configuration for entrypoint: " + config);
 		Class<? extends SecurityFilterEntrypoint> epClass = (Class<? extends SecurityFilterEntrypoint>)getClassLoader().loadClass(clazz);
 		SecurityFilterEntrypoint entrypoint = epClass.newInstance();
 		entrypoint.initialize(context, config);
 		entryPoints.add(new EntryPointWrapper(entrypoint, urlPattern, name, order));
+		log.debug("Entry-point successfuly built.");
 	}
 	
 	
