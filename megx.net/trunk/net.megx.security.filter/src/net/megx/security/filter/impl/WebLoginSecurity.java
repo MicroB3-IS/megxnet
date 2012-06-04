@@ -7,21 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
-import net.megx.security.auth.web.WebAuthenticationHandler;
+import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.filter.SecurityException;
 import net.megx.security.filter.StopFilterException;
 
 public class WebLoginSecurity extends BaseSecurityEntrypoint{
 
 	
-	WebAuthenticationHandler webLoginHandler;
+	WebLoginHandler webLoginHandler;
 	
 	@Override
 	public void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
 		if(webLoginHandler == null){
-			throw new SecurityException(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			throw new SecurityException("WebAuthenticationHandler service is not available yet!",HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		}
 		Authentication authentication = webLoginHandler.createAuthentication(request);
 		if(authentication != null){
@@ -31,10 +31,10 @@ public class WebLoginSecurity extends BaseSecurityEntrypoint{
 
 	@Override
 	protected void doInitialize() {
-		requestService("net.megx.security.auth.web.WebLoginHandler", new OnServiceAvailable<WebAuthenticationHandler>() {
+		requestService(WebLoginHandler.class.getName(), new OnServiceAvailable<WebLoginHandler>() {
 
 			@Override
-			public void serviceAvailable(WebAuthenticationHandler service) {
+			public void serviceAvailable(WebLoginHandler service) {
 				WebLoginSecurity.this.webLoginHandler = service;
 			}
 			

@@ -121,7 +121,7 @@
 				</property>
 			</activation>
 			<properties>
-				<web.repos.dir>E:\dev\${work.dir.name}</web.repos.dir>
+				<web.repos.dir>/home/pavle/${work.dir.name}</web.repos.dir>
 				<tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</tomcat.home>
 				<tomcat.port>8080</tomcat.port>
 			</properties>

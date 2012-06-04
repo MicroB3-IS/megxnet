@@ -22,6 +22,18 @@ public class OAuthTokenServices implements TokenServices{
 		return (Token)cache.getObject(token);
 	}
 
+	public void setTokenService(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
+
+	public void setKeySecretProvider(KeySecretProvider keySecretProvider) {
+		this.keySecretProvider = keySecretProvider;
+	}
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
+	}
+
 	@Override
 	public Token getAccessToken(String token) {
 		try {

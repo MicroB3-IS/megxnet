@@ -49,7 +49,7 @@ public class DBConsumerService extends BaseDBService implements ConsumerService{
 
 			@Override
 			public Consumer execute(ConsumerMapper mapper) throws Exception {
-				return mapper.getConsumerForName(key);
+				return mapper.getConsumerForKey(key);
 			}
 			
 		}, ConsumerMapper.class);

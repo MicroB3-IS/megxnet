@@ -20,6 +20,7 @@ import net.megx.security.auth.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
+import net.megx.security.filter.http.HttpRequestWrapper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,9 +36,10 @@ public class SecurityFilter implements Filter{
 	List<EntryPointWrapper> entryPoints = new ArrayList<SecurityFilter.EntryPointWrapper>();
 	private boolean enabled;
 	
-	public SecurityFilter(BundleContext context) {
+	public SecurityFilter(BundleContext context, JSONObject bundleConfig) {
 		super();
 		this.context = context;
+		this.bundleConfig = bundleConfig;
 	}
 
 	@Override
@@ -57,14 +59,17 @@ public class SecurityFilter implements Filter{
 			}
 			boolean hasMatched = false;
 			for(EntryPointWrapper entryPoint: entryPoints){
+					System.out.println(String.format("Matching enty-point %s",entryPoint.name));
 					if(entryPoint.matches(WebUtils.getRequestPath(httpRequest, false))){
+						System.out.println("\t -> match");
 						hasMatched = true;
 						try {
 							entryPoint.entrypoint.doFilter(httpRequest, httpResponse);
 						} catch (StopFilterException e) {
-							break;
+							return;
 						} catch (Exception e) {
 							handleException(e, httpRequest, httpResponse);
+							return;
 						}
 					}
 			}
@@ -73,11 +78,19 @@ public class SecurityFilter implements Filter{
 					checkAuthenticationResult(httpRequest, httpResponse);
 				} catch (SecurityException e) {
 					handleException(e, httpRequest, httpResponse);
+					return;
 				}
 			}
+			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
+			if(context != null){
+				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
+			}
+			chain.doFilter(httpRequest, httpResponse);
 		}else{
 			throw new ServletException("Wrong Request Type.");
 		}
+		
+		
 	}
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
@@ -86,7 +99,8 @@ public class SecurityFilter implements Filter{
 		}else if(e instanceof ServletException){
 			throw (ServletException)e;
 		}else if(e instanceof SecurityException){
-			response.sendError(((SecurityException)e).getResponseCode());
+			if(!response.isCommitted())
+				response.sendError(((SecurityException)e).getResponseCode(),e.getMessage());
 		}else{
 			throw new ServletException(e);
 		}
@@ -117,7 +131,7 @@ public class SecurityFilter implements Filter{
 	}
 
 	@Override
-	public void init(FilterConfig config) throws ServletException {
+	public void init(FilterConfig config) throws ServletException {		
 		try {
 			JSONObject filterConfig = bundleConfig.getJSONObject("filter");
 			enabled = Boolean.TRUE.equals(filterConfig.optBoolean("enabled"));
@@ -129,6 +143,18 @@ public class SecurityFilter implements Filter{
 			}
 			
 			Collections.sort(this.entryPoints);
+			
+			OSGIUtils.requestService(AuthenticationManager.class.getName(), context, 
+					new OSGIUtils.OnServiceAvailable<AuthenticationManager>() {
+
+				@Override
+				public void serviceAvailable(AuthenticationManager service) {
+					SecurityFilter.this.authenticationManager = service;
+					System.out.println("AuthenticationManager was obtained: " + service);
+				}
+				
+			});
+			
 			
 		} catch (Exception e) {
 			throw new ServletException(e);
@@ -166,6 +192,7 @@ public class SecurityFilter implements Filter{
 		}
 
 		public boolean matches(String path){
+			System.out.println(String.format("\t matching '%s' to pattern '%s'",path, urlPattern));
 			return path.matches(urlPattern);
 		}
 

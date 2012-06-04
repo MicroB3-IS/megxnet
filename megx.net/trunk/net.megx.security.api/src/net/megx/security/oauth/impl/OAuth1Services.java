@@ -200,4 +200,8 @@ public class OAuth1Services extends BaseOAuthServices{
 		return oAuthHandler.createAuthentication(fromRequest);
 	}
 
+	public void setoAuthHandler(WebAuthenticationHandler oAuthHandler) {
+		this.oAuthHandler = oAuthHandler;
+	}
+
 }
