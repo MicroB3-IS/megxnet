@@ -3,10 +3,11 @@ package net.megx.security.api;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
 
-import net.megx.security.auth.Role;
+import net.megx.security.auth.AuthenticationManager;
+import net.megx.security.auth.impl.OAuth1AuthenticationHandlerImpl;
+import net.megx.security.auth.impl.WebAuthenticationHandlerImpl;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.TokenService;
 import net.megx.security.auth.services.UserService;
@@ -16,6 +17,17 @@ import net.megx.security.auth.services.db.DBConsumerService;
 import net.megx.security.auth.services.db.DBTokenService;
 import net.megx.security.auth.services.db.DBUserService;
 import net.megx.security.auth.services.db.DBWebResourcesService;
+import net.megx.security.auth.web.OAuth1Handler;
+import net.megx.security.auth.web.WebLoginHandler;
+import net.megx.security.auth.web.impl.WebLoginAuthenticationManager;
+import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.crypto.impl.DefaultKeySecretProvider;
+import net.megx.security.oauth.OAuthServices;
+import net.megx.security.oauth.TokenServices;
+import net.megx.security.oauth.impl.OAuth1Services;
+import net.megx.security.oauth.impl.OAuthTokenServices;
+import net.megx.security.utils.Cache;
+import net.megx.security.utils.SimpleCache;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,12 +65,6 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	
 	private void registerServices(BundleContext context) throws Exception{
 		try{
-			log.info("LOGGER -> INFO");
-			log.warn("LOGGER -> INFO");
-			log.error("LOGGER -> ERROR");
-			log.fatal("LOGGER -> FATA");
-			log.debug("LOGGER -> DEBUGO");
-			
 			System.out.println(String.format("Config: %s", getConfig().toString(3)));
 			System.out.println("Config resource path="+getString(getConfig(),    "myBatisConfigFile"));
 			URL url = context.getBundle().getResource(getString(getConfig(), "myBatisConfigFile"));
@@ -68,37 +74,58 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			System.out.println("Read config resource > " + reader);
 			SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("config/my-batis-config.xml"), getDatabaseProperties());
 			System.out.println("Build sql session factory > " + factory);
-			registerBaseDBService(DBUserService.class, UserService.class, factory);
-			registerBaseDBService(DBConsumerService.class, ConsumerService.class, factory);
-			registerBaseDBService(DBTokenService.class, TokenService.class, factory);
-			registerBaseDBService(DBWebResourcesService.class, WebResourcesService.class, factory);
+			UserService userService = (UserService)registerBaseDBService(DBUserService.class, UserService.class, factory);
+			ConsumerService consumerService = (ConsumerService)registerBaseDBService(DBConsumerService.class, ConsumerService.class, factory);
+			TokenService tokenService = (TokenService)registerBaseDBService(DBTokenService.class, TokenService.class, factory);
+			WebResourcesService webResourcesService = (WebResourcesService)registerBaseDBService(DBWebResourcesService.class, WebResourcesService.class, factory);
 			
-			DBUserService us = new DBUserService();
-			us.setSqlSessionFactory(factory);
-			try{
-			List<Role> roles = us.getAvailableRoles();
-			if(roles == null){
-				System.out.println("ROLES=NULL");
-				return;
-			}
-			for(Role role: roles){
-				System.out.println("ROLE: " + role.getLabel());
-			}
-			}catch (Exception e) {
-				e.printStackTrace(System.out);
-			}
+			AuthenticationManager authenticationManager = new WebLoginAuthenticationManager();
+			RegUtils.reg(context, AuthenticationManager.class.getName(), 
+					authenticationManager, null);
+			System.out.println("Registered AuthenticationManager of class: "+ authenticationManager.getClass().getName());
+			
+			WebAuthenticationHandlerImpl webLoginHandler = new WebAuthenticationHandlerImpl(null);
+			webLoginHandler.setUserService(userService);
+			RegUtils.reg(context, WebLoginHandler.class.getName(), webLoginHandler, null);
+			
+			OAuth1Services oAuthServices = new OAuth1Services();
+			oAuthServices.setConsumerService(consumerService);
+			
+			OAuthTokenServices tokenServices = new OAuthTokenServices();
+			Cache cache = new SimpleCache();
+			KeySecretProvider keySecretProvider = new DefaultKeySecretProvider();
+			tokenServices.setCache(cache);
+			tokenServices.setTokenService(tokenService);
+			tokenServices.setKeySecretProvider(keySecretProvider);
+			oAuthServices.setTokenServices(tokenServices);
+			
+			OAuth1AuthenticationHandlerImpl authenticationHandlerImpl = new OAuth1AuthenticationHandlerImpl(null);
+			authenticationHandlerImpl.setTokenServices(tokenServices);
+			
+			oAuthServices.setoAuthHandler(authenticationHandlerImpl);
+			
+			
+			
+			// register services
+			RegUtils.reg(context, Cache.class.getName(), cache, null);
+			RegUtils.reg(context, KeySecretProvider.class.getName(), keySecretProvider, null);
+			RegUtils.reg(context, TokenServices.class.getName(), tokenServices, null);
+			RegUtils.reg(context, OAuth1Handler.class.getName(), authenticationHandlerImpl, null);
+			RegUtils.reg(context, OAuthServices.class.getName(), oAuthServices, null);
+			
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
 	}
 	
 	
-	private void registerBaseDBService(Class<? extends BaseDBService> cls, Class<?> registerAs, SqlSessionFactory factory){
+	private Object registerBaseDBService(Class<? extends BaseDBService> cls, Class<?> registerAs, SqlSessionFactory factory){
 		try {
 			BaseDBService dbService = cls.newInstance();
 			dbService.setSqlSessionFactory(factory);
 			System.out.println(String.format("Registering service instance %s of class (%s) as (%s)",dbService.toString(),cls.getName(), registerAs.getName()));
 			RegUtils.reg(getBundleContext(), registerAs.getName(), dbService, null);
+			return dbService;
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +133,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	private Properties getDatabaseProperties(){

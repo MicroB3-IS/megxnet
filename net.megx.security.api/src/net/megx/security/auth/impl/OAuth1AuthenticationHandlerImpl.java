@@ -6,13 +6,13 @@ import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.Token;
 import net.megx.security.auth.User;
-import net.megx.security.auth.web.WebAuthenticationHandler;
+import net.megx.security.auth.web.OAuth1Handler;
 import net.megx.security.oauth.TokenServices;
 import net.oauth.OAuthMessage;
 import net.oauth.server.OAuthServlet;
 
 public class OAuth1AuthenticationHandlerImpl extends BaseAuthenticationHandler
-		implements WebAuthenticationHandler {
+		implements OAuth1Handler {
 
 	private TokenServices tokenServices;
 	
@@ -33,6 +33,10 @@ public class OAuth1AuthenticationHandlerImpl extends BaseAuthenticationHandler
 			// intentionally silencing
 		}
 		return null;
+	}
+
+	public void setTokenServices(TokenServices tokenServices) {
+		this.tokenServices = tokenServices;
 	}
 
 }

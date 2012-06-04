@@ -6,10 +6,11 @@ import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.User;
 import net.megx.security.auth.services.UserService;
-import net.megx.security.auth.web.WebAuthenticationHandler;
 import net.megx.security.auth.web.WebContextUtils;
+import net.megx.security.auth.web.WebLoginHandler;
+import net.megx.security.auth.web.WebUtils;
 
-public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler implements WebAuthenticationHandler{
+public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler implements WebLoginHandler{
 
 	
 	private String usernameField = "j_username";
@@ -49,9 +50,10 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 
 	
 	protected String getRequestPath(HttpServletRequest request){
-		String requestURL = request.getRequestURL().toString();
-		return "";
+		return WebUtils.getRequestPath(request, false);
 	}
 	
-	
+	public void setUserService(UserService userService){
+		this.userService = userService;
+	}
 }

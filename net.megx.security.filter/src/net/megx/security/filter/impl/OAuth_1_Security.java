@@ -69,6 +69,7 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 			@Override
 			public void serviceAvailable(OAuthServices service) {
 				OAuth_1_Security.this.oAuthServices = service;
+				System.out.println("Obtained OAuth services: " + service);
 			}
 			
 		});

@@ -28,7 +28,7 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	protected ConsumerService consumerService;
 	protected TokenServices tokenServices;
 	
-	protected Properties oAuthConfig;
+	protected Properties oAuthConfig = new Properties();
 	
 	
 	public void setUserService(UserService userService) {
@@ -85,8 +85,11 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	}
 	
 	protected OAuthAccessor getAccessorForAccessToken(String aToken)throws IOException, OAuthProblemException{
+		if(aToken == null){
+			throw new OAuthProblemException("Invalid oAuth parameters - access token not supplied!");
+		}
 		OAuthAccessor accessor = null;
-		Token accessToken = tokenServices.getRequestToken(aToken);
+		Token accessToken = tokenServices.getAccessToken(aToken);
 		if(accessToken == null){
 			throw new OAuthProblemException("token_expired");
 		}
@@ -108,6 +111,9 @@ public abstract class BaseOAuthServices implements OAuthServices{
     }
 	
 	protected OAuthAccessor getAccessorForRequestToken(String token) throws IOException, OAuthProblemException{
+		if(token == null){
+			throw new OAuthProblemException("Invalid oAuth parameters - request token not supplied!");
+		}
 		OAuthAccessor accessor = null;
 		Token requestToken = tokenServices.getRequestToken(token);
 		if(requestToken == null){
