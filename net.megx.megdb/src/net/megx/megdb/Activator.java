@@ -28,4 +28,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		return "net.megx.megdb";
 	}
 	
+	
+	
+	
 }
