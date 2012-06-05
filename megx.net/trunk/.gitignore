@@ -1,9 +1,0 @@
-*/target/*
-*/bin/*
-*/.settings/*
-pom.xml
-megx.net-web/pom.xml
-megx.net-web/src/main/webapp/WEB-INF/system.properties
-megx.net-web/.classpath
-megx.net-web/.project
-*~
