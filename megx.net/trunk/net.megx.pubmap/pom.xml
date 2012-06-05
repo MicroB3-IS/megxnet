@@ -9,8 +9,7 @@
     <artifactId>parent-microb3-is</artifactId>
   </parent>
   
-  
   <groupId>net.megx</groupId>
   <artifactId>net.megx.pubmap</artifactId>
-   <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-plugin</packaging>
 </project>
