@@ -31,13 +31,12 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<!-- just a dump defaults: need to be overwritten in profiles etc. -->
-		<mvn.tomcat.home>${user.home}/tomcat</mvn.tomcat.home>
-		<mvn.tomcat.port>8080</mvn.tomcat.port>
-	</properties>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>1.7</version>
+		</dependency>
 		<dependency>
 			<groupId>com.choncms</groupId>
 			<artifactId>choncms.starter</artifactId>
@@ -86,8 +85,8 @@
 						</goals>
 						<configuration>
 							<target>
-								<!-- Using copy instead of unzip guarantees that the repository files do 
-									not get overwritten if they already exists -->
+								<!-- Using copy instead of unzip guarantees that the repository files 
+									do not get overwritten if they already exists -->
 								<copy todir="${mvn.work.dir.path}/" preservelastmodified="true">
 									<zipfileset src="web-content-repository.zip" />
 								</copy>
@@ -140,49 +139,18 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<!-- 
-			<plugin>
-			
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${mvn.work.dir.path}/plugins</outputDirectory>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>net.megx.chon.core</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>net.megx.chon.services</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>net.megx.chon.services.ui</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>net.megx.chon.template</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
- -->
+
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.4</version> <executions> <execution> <id>copy</id> <phase>pre-integration-test</phase> 
+				<goals> <goal>copy</goal> </goals> <configuration> <outputDirectory>${mvn.work.dir.path}/plugins</outputDirectory> 
+				<artifactItems> <artifactItem> <groupId>${project.groupId}</groupId> <artifactId>net.megx.chon.core</artifactId> 
+				<version>1.0.0-SNAPSHOT</version> </artifactItem> <artifactItem> <groupId>${project.groupId}</groupId> 
+				<artifactId>net.megx.chon.services</artifactId> <version>1.0.0-SNAPSHOT</version> 
+				</artifactItem> <artifactItem> <groupId>${project.groupId}</groupId> <artifactId>net.megx.chon.services.ui</artifactId> 
+				<version>1.0.0-SNAPSHOT</version> </artifactItem> <artifactItem> <groupId>${project.groupId}</groupId> 
+				<artifactId>net.megx.chon.template</artifactId> <version>1.0.0-SNAPSHOT</version> 
+				</artifactItem> </artifactItems> </configuration> </execution> </executions> 
+				</plugin> -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
@@ -227,7 +195,6 @@
 						<type>existing</type>
 						<!-- basically CATALINA.HOME (the container runtime dirs) -->
 						<home>${mvn.tomcat.home}</home>
-						-->
 						<properties>
 							<cargo.servlet.port>${mvn.tomcat.port}</cargo.servlet.port>
 						</properties>
