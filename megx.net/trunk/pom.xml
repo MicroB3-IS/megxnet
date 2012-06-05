@@ -22,12 +22,13 @@
 
 
 	<properties>
+		<!-- all maven properties get the mvn prefix -->
 		<!-- just dump defaults: need to be overwritten in profiles etc. -->
-		<tomcat.home>${user.home}/tomcat</tomcat.home>
-		<tomcat.port>8080</tomcat.port>
-		<work.dir.name>megx.net-work.dir</work.dir.name>
+		<mvn.tomcat.home>${user.home}/tomcat</mvn.tomcat.home>
+		<mvn.tomcat.port>8080</mvn.tomcat.port>
+		<mvn.work.dir.name>megx.net-work.dir</mvn.work.dir.name>
 		<!-- not sure if should stay here -->
-		<web.repos.dir>${user.home}/${work.dir.name}</web.repos.dir>
+		<mvn.work.dir.path>${user.home}/${mvn.work.dir.name}</mvn.work.dir.path>
 		<tycho.version>0.14.0</tycho.version>
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 	</properties>
@@ -96,7 +97,7 @@
 
 	<profiles>
 		<profile>
-			<id>renzo</id>
+			<id>renzo-linux</id>
 			<activation>
 				<property>
 					<name>user.name</name>
@@ -104,13 +105,13 @@
 				</property>
 			</activation>
 			<properties>
-				<tomcat.home>${user.home}/progs/tomcat</tomcat.home>
-				<tomcat.port>8199</tomcat.port>
-				<web.repos.dir>/tmp/${work.dir.name}</web.repos.dir>
+				<mvn.tomcat.home>${user.home}/progs/tomcat</mvn.tomcat.home>
+				<mvn.tomcat.port>8199</mvn.tomcat.port>
+				<mvn.work.dir.path>/tmp/${mvn.work.dir.name}</mvn.work.dir.path>
 			</properties>
 		</profile>
 		<profile>
-			<id>renzo-win</id>
+			<id>renzo-laptop</id>
 			<activation>
 				<os>
 					<family>windows</family>
@@ -121,9 +122,26 @@
 				</property>
 			</activation>
 			<properties>
-				<web.repos.dir>E:\dev\${work.dir.name}</web.repos.dir>
-				<tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</tomcat.home>
-				<tomcat.port>8080</tomcat.port>
+				<mvn.work.dir.path>E:\dev\${mvn.work.dir.name}</mvn.work.dir.path>
+				<mvn.tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</mvn.tomcat.home>
+				<mvn.tomcat.port>8080</mvn.tomcat.port>
+			</properties>
+		</profile>
+		<profile>
+			<id>julia-laptop</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+				<property>
+					<name>user.name</name>
+					<value>jschnetz</value>
+				</property>
+			</activation>
+			<properties>
+				<mvn.work.dir.path>D:\${mvn.work.dir.name}</mvn.work.dir.path>
+				<mvn.tomcat.home>D:\Programs\apache-tomcat-7.0.27</mvn.tomcat.home>
+				<mvn.tomcat.port>8080</mvn.tomcat.port>
 			</properties>
 		</profile>
 	</profiles>
@@ -164,7 +182,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>${web.repos.dir}</directory>
+							<directory>${mvn.work.dir.path}</directory>
 						</fileset>
 					</filesets>
 				</configuration>
