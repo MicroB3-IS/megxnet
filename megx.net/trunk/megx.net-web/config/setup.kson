@@ -12,12 +12,15 @@ www={type:'sys.public'}
 	marker_genes={type:'html'}
 	sites={type:'html'}
 	login.do={type: 'megx.module.login'}
+	authorize={type:'megx.module.oauth.authorize'}
+	test={type:'html', template:'authorize.html'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}
 	guest={type:'user'}
 	jveljan.gmail.com={type:'user'}
+	pjonoski={type:'user'}
 	
 root={type:'sys.root'}
 
@@ -55,6 +58,7 @@ etc={type:'sys.etc'}
 	passwd={type:'usr.container'}
 		jveljanovski={ type: 'usr.info', password: 'd00eb4753f735d3e86792609da365e4e', role: 10}
 		rkottman={ type: 'usr.info', password: 'f935abd40c732dddaf5e64d0e1af4cd3', role: 10}
+		pjonoski={ type: 'usr.info', password: '8fbe18a18042fa8ba9ade46ce26964a4', role: 10}
 		jveljan.gmail.com={ type: 'megx.external.user', role: 10}
 	types={type:'typeDescRoot'}
 		sys.public={type:'typeDesc', renderer: 'org.chon.cms.core.model.renderers.VTplNodeRenderer', contentNode: 'org.chon.cms.core.model.types.ContentNode'}
@@ -74,7 +78,7 @@ etc={type:'sys.etc'}
 		megx.module.login={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.LoginModule'}
 		megx.module.wms={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WMS_Module'}
 		megx.module.woa={bubbleToParnet: true, type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WOA_Module'}
-		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: ''}
+		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
 		
 var={type:'sys.var'}
 	log={type:'folder'}
