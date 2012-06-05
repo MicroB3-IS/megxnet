@@ -5,14 +5,12 @@
     
   <parent>
     <groupId>net.megx</groupId>
-    <artifactId>web-app</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
+    <artifactId>parent-microb3-is</artifactId>
   </parent>
   
   
   <groupId>net.megx</groupId>
   <artifactId>net.megx.pubmap</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+   <packaging>eclipse-plugin</packaging>
 </project>
