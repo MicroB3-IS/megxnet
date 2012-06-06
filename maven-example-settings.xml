@@ -11,11 +11,12 @@
 					<family>Windows</family>
 				</os>
 				<property>
-					<name>env.USERNAME</name>
+					<name>user.name</name>
 					<value>rkottman</value>
 				</property>
 			</activation>
 			<properties>
+				<mvn.work.dir.name>megx-dev-dir</mvn.work.dir.name>
 				<mvn.work.dir.path>E:\dev\${mvn.work.dir.name}</mvn.work.dir.path>
 				<mvn.tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</mvn.tomcat.home>
 				<mvn.tomcat.port>8080</mvn.tomcat.port>
