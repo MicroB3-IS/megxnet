@@ -13,16 +13,16 @@ public class WebUtils {
 	public static String getRequestPath(HttpServletRequest request, boolean withQuery){
 		String requestedPath = request.getRequestURI().substring(request.getContextPath().length());
 		
-		if(withQuery){
+		if(withQuery && request.getQueryString() != null){
 			requestedPath += "?" + request.getQueryString();
 		}
 		
 		System.out.println("------------------------------------");
-		System.out.println("RequestURI: "+request.getRequestURI());
-		System.out.println("RequestURL: "+ request.getRequestURL().toString());
-		System.out.println("ContextPAth: "+request.getContextPath());
-		System.out.println("Query String: " + request.getQueryString());
-		System.out.println("------------------");
+		//System.out.println("RequestURI: "+request.getRequestURI());
+		//System.out.println("RequestURL: "+ request.getRequestURL().toString());
+		//System.out.println("ContextPAth: "+request.getContextPath());
+		//System.out.println("Query String: " + request.getQueryString());
+		//System.out.println("------------------");
 		System.out.println("REQUESTED_PATH: " + requestedPath);
 		System.out.println("------------------------------------");
 		return requestedPath;

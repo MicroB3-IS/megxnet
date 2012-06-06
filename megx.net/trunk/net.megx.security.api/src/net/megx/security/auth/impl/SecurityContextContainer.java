@@ -8,6 +8,10 @@ public class SecurityContextContainer implements SecurityContext{
 	private Authentication authentication;
 	private String lastRequest;
 	
+	public SecurityContextContainer() {
+		System.out.println("NEW CONTEXT");
+	}
+	
 	@Override
 	public Authentication getAuthentication() {
 		return authentication;

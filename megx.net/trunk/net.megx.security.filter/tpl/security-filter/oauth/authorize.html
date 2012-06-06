@@ -1,8 +1,9 @@
 <form method="post">
-	<input type="hidden" name="oauth_callback" value="{CALLBACK from request}">
-	<input type="hidden" name="oauth_token" value="{TOKEN from request}">
+	<!--input type="hidden" name="oauth_callback" value="$req.servletRequest.getAttribute("CALLBACK")"-->
+	<input type="hidden" name="oauth_callback" value="http://google.com">
+	<input type="hidden" name="oauth_token" value="$req.servletRequest.getAttribute("TOKEN")">
 	<p>
-	Do you wish to authorize the application {CONS_DESC from request} to access your some of your resources on Megx?
+	Do you wish to authorize the application $req.servletRequest.getAttribute("CONS_DESC") to access your some of your resources on Megx?
 	</p>
 	<div style="text-align: right; width: 100%;">
 		<input type="button" id="cancel" value="Deny">

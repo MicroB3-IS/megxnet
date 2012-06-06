@@ -29,6 +29,7 @@ import net.megx.security.filter.http.impl.AuthorizePageNode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.model.content.IContentNodeFactory;
+import org.chon.cms.model.content.INodeRenderer;
 import org.chon.web.RegUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,6 +96,10 @@ public class SecurityFilter implements Filter{
 			}
 			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
 			if(context != null){
+				//if(checkRedirect(context, httpRequest, httpResponse)){
+				//	log.debug("Redirecting to last request URL...");
+				//	return;
+				//}
 				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
 			}
 			log.debug("Security filter - pass chain.");
@@ -106,8 +111,19 @@ public class SecurityFilter implements Filter{
 		log.debug("Security filter end.");
 	}
 	
+	protected boolean checkRedirect(SecurityContext context, HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String redirectURL = context.getLastRequestedURL();
+		if(redirectURL != null){
+			context.storeLastRequestedURL(null);
+			log.debug(" ### REDIRECT -> " + redirectURL);
+			response.sendRedirect(redirectURL);
+			return true;
+		}
+		return false;
+	}
+	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-		log.debug(e);
+		log.debug("Exception: ",e);
 		storeRequestURL(request);
 		if(e instanceof IOException ){
 			throw (IOException)e;
@@ -122,12 +138,15 @@ public class SecurityFilter implements Filter{
 	}
 	
 	private void storeRequestURL(HttpServletRequest request){
+		log.debug("Saving last request: " + request);
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){
 			context = WebContextUtils.newSecurityContext(request);
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
-		context.storeLastRequestedURL(WebUtils.getRequestPath(request, true));
+		String requestURL = WebUtils.getRequestPath(request, true);
+		log.debug("   -> Last Request URL: " + requestURL);
+		context.storeLastRequestedURL(requestURL);
 	}
 	
 	protected void checkAuthenticationResult(HttpServletRequest request, HttpServletResponse response) 
@@ -185,6 +204,16 @@ public class SecurityFilter implements Filter{
 				
 			});
 			
+			OSGIUtils.requestService(WebResourcesService.class.getName(), context, 
+					new OSGIUtils.OnServiceAvailable<WebResourcesService>() {
+
+						@Override
+						public void serviceAvailable(WebResourcesService service) {
+							SecurityFilter.this.resourcesService = service;
+							log.debug("Obtained WebResourcesService instance:  " + service);
+						}
+					});
+			
 			initializeEndpoints();
 		} catch (Exception e) {
 			log.error(e);
@@ -223,7 +252,7 @@ public class SecurityFilter implements Filter{
 		
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("renderer", TemplatePageRenderer.class.getName());
-		RegUtils.reg(context, TemplatePageRenderer.class.getName(), new TemplatePageRenderer(), props);
+		RegUtils.reg(context, INodeRenderer.class.getName(), new TemplatePageRenderer(), props);
 		log.debug("Initializing endpoints renderers complete.");
 	}
 	

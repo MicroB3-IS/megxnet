@@ -39,6 +39,9 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 			}else if(path.matches(authorizationUrl)){
 				oAuthServices.processAuthorization(request, response);
 				//throw new StopFilterException();
+				if(response.isCommitted()){
+					throw new StopFilterException();
+				}
 			}else if(path.matches(accessTokenUrl)){
 				oAuthServices.processAccessTokenRequest(request, response);
 				throw new StopFilterException();

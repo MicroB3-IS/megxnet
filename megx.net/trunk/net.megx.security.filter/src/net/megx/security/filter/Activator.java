@@ -16,19 +16,20 @@ public class Activator extends ResTplConfiguredActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		System.out.println("=============================================");
-		super.start(context);
-		System.out.println("=============================================");
-		System.out.println(super.toString());
-		System.out.println("=============================================");
 		try{
-		System.out.println(">>Starting security filter");
-		
-		JSONObject cfg = getConfig();
-		
-		Filter filter = new  SecurityFilter(context, cfg);
-		WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
-		
-		log.debug(cfg.optString("exampleProperty", "default value"));
+			super.start(context);
+			System.out.println("=============================================");
+			System.out.println(super.toString());
+			System.out.println("=============================================");
+			
+			System.out.println(">>Starting security filter");
+			
+			JSONObject cfg = getConfig();
+			
+			Filter filter = new  SecurityFilter(context, cfg);
+			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
+			
+			log.debug(cfg.optString("exampleProperty", "default value"));
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
 		}

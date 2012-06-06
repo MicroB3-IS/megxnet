@@ -20,7 +20,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 <mapper namespace="net.megx.security.auth.services.db.UserMapper">
 	<resultMap type="User" id="user_map">
 		<result property="login" column="logname"/>
-		<result property="fisrtName" column="first_name"/>
+		<result property="firstName" column="first_name"/>
 		<result property="initials" column="initials"/>
 		<result property="lastName" column="last_name"/>
 		<result property="description" column="description"/>
@@ -38,7 +38,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
 		select r.label, r.description from auth.roles r
-			left join auth.has_role h on r.label = h.role 
+			left join auth.has_roles h on r.label = h.role 
 				where h.user_login=#{logname}
 	</select>
 	
@@ -88,7 +88,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
             diabled
             	
             	from auth.users where logname=#{username} and 
-			(pass=#{password} OR password IS NULL)
+			(pass=#{password} OR pass IS NULL)
 	</select>
 	<!-- 
 	<select id="getUserByUniqueIdentifier" resultMap="user_map" parameterType="string">
