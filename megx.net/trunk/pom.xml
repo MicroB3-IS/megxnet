@@ -24,6 +24,7 @@
 	<properties>
 		<!-- all maven properties get the mvn prefix -->
 		<!-- just dump defaults: need to be overwritten in profiles etc. -->
+		<mvn.cargo.container.id>tomcat7x</mvn.cargo.container.id>
 		<mvn.tomcat.home>${user.home}/tomcat</mvn.tomcat.home>
 		<mvn.tomcat.port>8080</mvn.tomcat.port>
 		<mvn.work.dir.name>megx.net-work.dir</mvn.work.dir.name>

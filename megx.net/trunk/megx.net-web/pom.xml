@@ -159,7 +159,7 @@
 				<!-- cargo plugin config -->
 				<configuration>
 					<container>
-						<containerId>tomcat6x</containerId>
+						<containerId>${mvn.cargo.container.id}</containerId>
 						<!-- Location of installation -->
 						<home>${mvn.tomcat.home}</home>
 						<timeout>50000</timeout>
