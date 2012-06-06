@@ -82,7 +82,7 @@ public class OAuth1Services extends BaseOAuthServices{
 	
 	private void returnToConsumer(HttpServletRequest request, 
             HttpServletResponse response, OAuthAccessor accessor)
-    throws IOException, ServletException{
+    throws IOException, ServletException {
         // send the user back to site's callBackUrl
         String callback = request.getParameter("oauth_callback");
         if("none".equals(callback) 
@@ -109,9 +109,13 @@ public class OAuth1Services extends BaseOAuthServices{
             if (token != null) {
                 callback = OAuth.addParameters(callback, "oauth_token", token);
             }
-
+            
             response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", callback);
+            response.flushBuffer();
+            
+            //WebContextUtils.getSecurityContext(request).storeLastRequestedURL(callback);
+            //response.sendRedirect(callback);
         }
     }
 

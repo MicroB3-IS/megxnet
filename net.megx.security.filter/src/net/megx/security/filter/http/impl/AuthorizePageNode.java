@@ -29,6 +29,7 @@ public class AuthorizePageNode extends TemplatePageNode{
 	@Override
 	public void process(Request req, Response resp, ServerInfo serverInfo)
 			throws Exception {
+		
 		log.debug("AuthorizePageNode > Will render the authorize page template...");
 		Map<String, Object> params = new HashMap<String, Object>();
 		VTplNodeRenderer.render("base.html", "security-filter/oauth/authorize.html", this, req, resp, serverInfo, params);
