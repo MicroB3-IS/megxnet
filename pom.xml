@@ -29,7 +29,7 @@
 		<mvn.work.dir.name>megx.net-work.dir</mvn.work.dir.name>
 		<!-- not sure if should stay here -->
 		<mvn.work.dir.path>${user.home}/${mvn.work.dir.name}</mvn.work.dir.path>
-		<tycho.version>0.14.0</tycho.version>
+		<tycho.version>0.15.0</tycho.version>
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 	</properties>
 
@@ -44,9 +44,7 @@
 		<!-- build megx.net velocity templates -->
 		<module>net.megx.chon.template</module>
 
-		<!-- where and what is chon and get all chon bundles -->
-		<module>target-definition</module>
-
+		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
 		<!-- what bundles will be included in the final build -->
 		<module>net.megx.product</module>
 		<!-- does not need to be build always: TODO configure the setup.proporteis 
@@ -110,6 +108,7 @@
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>target-platform-configuration</artifactId>
 					<version>${tycho.version}</version>
+
 				</plugin>
 
 				<plugin>
@@ -145,15 +144,38 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					
 					<resolver>p2</resolver>
-					<target>
-						<artifact>
-							<groupId>net.megx</groupId>
-							<artifactId>target-definition</artifactId>
-							<version>1.0.0-SNAPSHOT</version>
-							<classifier>chon</classifier>
-						</artifact>
-					</target>
+					<!-- <target> <artifact> <groupId>net.megx</groupId> <artifactId>target-definition</artifactId> 
+						<version>1.0.0-SNAPSHOT</version> <classifier>chon</classifier> </artifact> 
+						</target> -->
+<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
 					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 				</configuration>
 			</plugin>
