@@ -1,0 +1,25 @@
+﻿<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<profiles>
+		<profile>
+			<id>renzo-laptop</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+				<property>
+					<name>env.USERNAME</name>
+					<value>rkottman</value>
+				</property>
+			</activation>
+			<properties>
+				<mvn.work.dir.path>E:\dev\${mvn.work.dir.name}</mvn.work.dir.path>
+				<mvn.tomcat.home>E:\dev\apache-tomcat-6.0.35-windows-x64</mvn.tomcat.home>
+				<mvn.tomcat.port>8080</mvn.tomcat.port>
+			</properties>
+		</profile>
+	</profiles>
+</settings>

@@ -8,4 +8,11 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>settings.xml</name>
+			<type>1</type>
+			<location>C:/Users/rkottman.NBHB-000-/.m2/settings.xml</location>
+		</link>
+	</linkedResources>
 </projectDescription>
