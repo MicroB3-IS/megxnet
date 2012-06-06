@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.chon.cms.core.JCRAppConfgEnabledActivator;
 import org.chon.web.RegUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
@@ -17,13 +18,21 @@ import org.osgi.framework.BundleContext;
 public class Activator extends JCRAppConfgEnabledActivator {
 	
 	private static final Log log = LogFactory.getLog(Activator.class);
+	private SqlSessionFactory factory = null;
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		//super.start will read json config
 		super.start(context);
 		JSONObject cfg = getConfig();
-		log.debug("Started net.megx.megdb; json config: " + cfg.toString(3));
+		log.debug("Megdb Services starting up...");
+		try{
+			factory = buildSQLSessionFactory(cfg);
+			buildDBServices(cfg.getJSONArray("dbServices"), factory);
+			log.info("Megdb Services layer bundle startup success.");
+		}catch (Exception e) {
+			log.error("Megdb Services failed to startup successfuly: ", e);
+		}
 	}
 
 	@Override
@@ -63,7 +72,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		return properties;
 	}
 	
-	protected Object registerBaseDBService(Class<? extends BaseMegdbService> cls, Class<?> registerAs, SqlSessionFactory factory){
+	protected BaseMegdbService registerBaseDBService(Class<? extends BaseMegdbService> cls, Class<?> registerAs, SqlSessionFactory factory){
 		try {
 			BaseMegdbService dbService = cls.newInstance();
 			dbService.setSqlSessionFactory(factory);
@@ -71,12 +80,38 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			RegUtils.reg(getBundleContext(), registerAs.getName(), dbService, null);
 			return dbService;
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warn(e);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warn(e);
 		}
 		return null;
+	}
+	
+	protected void buildDBServices(JSONArray servicesConfig, SqlSessionFactory sessionFactory) throws JSONException, ClassNotFoundException{
+		log.debug(" -----------------------------------------");
+		log.debug(" Building DB Services: ");
+		for(int i = 0; i < servicesConfig.length(); i++){
+			JSONObject config = servicesConfig.getJSONObject(i);
+			log.debug(" > Building Service: "+config.toString());
+			BaseMegdbService service = buildBaseDBService(config, sessionFactory);
+			if(service == null){
+				log.warn("Failed to build service.");
+			}else{
+				log.debug(" > Serivice build and ready: " + service);
+			}
+		}
+		log.debug(" -----------------------------------------");
+	}
+
+	@SuppressWarnings("unchecked")
+	protected BaseMegdbService buildBaseDBService(JSONObject config,
+			SqlSessionFactory sessionFactory) throws JSONException, ClassNotFoundException {
+		String serviceName = config.getString("name");
+		String implementingClass = config.getString("class");
+		return registerBaseDBService((Class<? extends BaseMegdbService>)loadClass(implementingClass),loadClass(serviceName) , sessionFactory);
+	}
+	
+	protected Class<?> loadClass(String className) throws ClassNotFoundException{
+		return Activator.class.getClassLoader().loadClass(className);
 	}
 }

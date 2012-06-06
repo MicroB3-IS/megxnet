@@ -12,8 +12,8 @@ www={type:'sys.public'}
 	marker_genes={type:'html'}
 	sites={type:'html'}
 	login.do={type: 'megx.module.login'}
-	authorize={type:'megx.module.oauth.authorize'}
-	test={type:'html', template:'authorize.html'}
+	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
+		authorize={type:'html', template:'security-filter/oauth/authorize.html'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
