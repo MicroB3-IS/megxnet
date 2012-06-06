@@ -3,6 +3,7 @@ package net.megx.security.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -21,9 +22,14 @@ import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.http.HttpRequestWrapper;
+import net.megx.security.filter.http.TemplatePageNodeFactory;
+import net.megx.security.filter.http.TemplatePageRenderer;
+import net.megx.security.filter.http.impl.AuthorizePageNode;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.chon.cms.model.content.IContentNodeFactory;
+import org.chon.web.RegUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -179,7 +185,7 @@ public class SecurityFilter implements Filter{
 				
 			});
 			
-			
+			initializeEndpoints();
 		} catch (Exception e) {
 			log.error(e);
 			throw new ServletException(e);
@@ -204,6 +210,22 @@ public class SecurityFilter implements Filter{
 		log.debug("Entry-point successfuly built.");
 	}
 	
+	
+	private void initializeEndpoints() {
+		log.debug("Initializing endpoints renderers...");
+		RegUtils.reg(context, IContentNodeFactory.class.getName(), new TemplatePageNodeFactory() {
+			
+			@Override
+			protected void initialize() {
+				register(AuthorizePageNode.class);
+			}
+		}, null);
+		
+		Hashtable<String, String> props = new Hashtable<String, String>();
+		props.put("renderer", TemplatePageRenderer.class.getName());
+		RegUtils.reg(context, TemplatePageRenderer.class.getName(), new TemplatePageRenderer(), props);
+		log.debug("Initializing endpoints renderers complete.");
+	}
 	
 	protected class EntryPointWrapper implements Comparable<EntryPointWrapper>{
 		public SecurityFilterEntrypoint entrypoint;

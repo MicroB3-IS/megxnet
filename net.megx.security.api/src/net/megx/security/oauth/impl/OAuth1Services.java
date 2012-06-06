@@ -126,9 +126,9 @@ public class OAuth1Services extends BaseOAuthServices{
         request.setAttribute("CONS_DESC", consumer_description);
         request.setAttribute("CALLBACK", callback);
         request.setAttribute("TOKEN", accessor.requestToken);
-        request.getRequestDispatcher //
-                    ("/oauth/authorize.html").forward(request,
-                        response);
+        //request.getRequestDispatcher //
+         //           ("/authorize.html").forward(request,
+          //              response);
         
     }
 	

@@ -15,7 +15,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 	
 	private String usernameField = "j_username";
 	private String passwordField = "j_password";
-	private String loginEndpointUrl = "j_security_check";
+	private String loginEndpointUrl = "/j_security_check";
 	
 	private UserService userService;
 	

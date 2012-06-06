@@ -16,4 +16,9 @@
         <servlet-name>proxy</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    
+    <error-page>
+    	<error-code>401</error-code>
+    	<location>/login</location>
+    </error-page>
 </web-app>

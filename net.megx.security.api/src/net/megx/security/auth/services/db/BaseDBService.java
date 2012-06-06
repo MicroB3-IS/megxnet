@@ -1,5 +1,7 @@
 package net.megx.security.auth.services.db;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -16,6 +18,7 @@ public class BaseDBService {
 		}
 	}
 	
+	protected Log log = LogFactory.getLog(getClass());
 	protected SqlSessionFactory sessionFactory;
 	
 	public void setSqlSessionFactory(SqlSessionFactory factory){
@@ -31,6 +34,7 @@ public class BaseDBService {
 			session.commit();
 			return result;
 		} catch (Exception e) {
+			log.error("Database error: ", e);
 			session.rollback();
 			throw e;
 		} finally{
@@ -45,6 +49,7 @@ public class BaseDBService {
 			R result = task.execute(mapper);
 			return result;
 		} catch (Exception e) {
+			log.error("Database error: ", e);
 			throw e;
 		} finally{
 			session.close();

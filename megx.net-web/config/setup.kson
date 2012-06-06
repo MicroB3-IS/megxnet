@@ -13,7 +13,8 @@ www={type:'sys.public'}
 	sites={type:'html'}
 	login.do={type: 'megx.module.login'}
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
-		authorize={type:'html', template:'security-filter/oauth/authorize.html'}
+		authorize={type:'megx.module.oauth.authorize'}
+	login={type:'html', template:'security-filter/login.html'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
