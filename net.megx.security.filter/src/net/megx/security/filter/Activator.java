@@ -6,20 +6,24 @@ import net.megx.security.auth.web.WebUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.chon.cms.core.JCRAppConfgEnabledActivator;
+import org.chon.cms.core.JCRApplication;
+import org.chon.cms.core.ResTplConfiguredActivator;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends JCRAppConfgEnabledActivator {
+public class Activator extends ResTplConfiguredActivator {
 	private static final Log log = LogFactory.getLog(Activator.class);
 	@Override
 	public void start(BundleContext context) throws Exception {
+		System.out.println("=============================================");
+		super.start(context);
+		System.out.println("=============================================");
+		System.out.println(super.toString());
+		System.out.println("=============================================");
 		try{
 		System.out.println(">>Starting security filter");
-		super.start(context);
+		
 		JSONObject cfg = getConfig();
-		
-		
 		
 		Filter filter = new  SecurityFilter(context, cfg);
 		WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
@@ -39,4 +43,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	protected String getName() {
 		return "net.megx.security.filter";
 	}
+
+	@Override
+	protected void registerExtensions(JCRApplication arg0) { }
 }
