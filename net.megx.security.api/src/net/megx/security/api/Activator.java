@@ -35,8 +35,6 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.chon.cms.core.JCRAppConfgEnabledActivator;
-import org.chon.cms.core.JCRApplication;
-import org.chon.cms.core.ResTplConfiguredActivator;
 import org.chon.web.RegUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
