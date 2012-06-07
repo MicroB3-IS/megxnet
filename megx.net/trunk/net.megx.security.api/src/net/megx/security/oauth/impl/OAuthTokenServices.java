@@ -2,6 +2,7 @@ package net.megx.security.oauth.impl;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Date;
 
 import net.megx.security.auth.Token;
 import net.megx.security.auth.User;
@@ -54,7 +55,7 @@ public class OAuthTokenServices implements TokenServices{
 			token.setAccessToken(false);
 			token.setAuthorized(false);
 			token.setConsumerKey(consumerKey);
-			token.setTimestamp(System.currentTimeMillis());
+			token.setTimestamp(new Date());
 			token.setToken(keySecret.getKey());
 			token.setSecret(keySecret.getSecret());
 			
@@ -81,7 +82,7 @@ public class OAuthTokenServices implements TokenServices{
 			
 			token.setAccessToken(true);
 			token.setConsumerKey(consumerKey);
-			token.setTimestamp(System.currentTimeMillis());
+			token.setTimestamp(new Date());
 			token.setToken(keySecret.getKey());
 			token.setSecret(keySecret.getSecret());
 			

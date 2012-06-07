@@ -17,6 +17,8 @@
 
 package net.megx.security.auth;
 
+import java.util.Date;
+
 public class Token {
 	@Override
 	public int hashCode() {
@@ -53,7 +55,7 @@ public class Token {
 	private String callbackUrl;
 	private String consumerKey;
 	private boolean accessToken;
-	private long timestamp;
+	private Date timestamp;
 	private User user;
 	private boolean authorized; // only for request tokens...
 	
@@ -63,7 +65,7 @@ public class Token {
 	}
 	public Token(String value, String secret, String verifier,
 			String callbackUrl, String consumerKey, boolean accessToken,
-			long timestamp, User user) {
+			Date timestamp, User user) {
 		super();
 		this.token = value;
 		this.secret = secret;
@@ -110,10 +112,10 @@ public class Token {
 	public void setAccessToken(boolean accessToken) {
 		this.accessToken = accessToken;
 	}
-	public long getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	public User getUser() {

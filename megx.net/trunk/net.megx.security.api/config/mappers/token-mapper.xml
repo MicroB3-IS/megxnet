@@ -30,7 +30,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<resultMap type="User" id="user_map">
 		<result property="login" column="logname"/>
-		<result property="fisrtName" column="first_name"/>
+		<result property="firstName" column="first_name"/>
 		<result property="initials" column="initials"/>
 		<result property="lastName" column="last_name"/>
 		<result property="description" column="description"/>
@@ -49,7 +49,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
 		select r.label, r.description from auth.roles r 
 			left join auth.has_roles h on r.label = h.role 
-				where h.user_login=#logname
+				where h.user_login=#{logname}
 	</select>
 	
 	<select id="getUser" parameterType="string" resultMap="user_map">
@@ -57,7 +57,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
        		pass, diabled
   			from auth.users
   			
-  			where logname=#user_log
+  			where logname=#{user_log}
 	</select>
 	
 	<select id="getToken" resultMap="token_map" parameterType="string">
@@ -70,7 +70,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<insert id="saveToken" parameterType="Token">
 		insert into auth.access_tokens (token, secret, verifier, callback_url, consumer_key, token_created, user_log)
-						values(#{value}, #{secret}, #{verifier}, #{callbackUrl}, #{consumerKey},#{timestamp},#{user.login})
+						values(#{token}, #{secret}, #{verifier}, #{callbackUrl}, #{consumerKey},#{timestamp},#{user.login})
 	</insert>
 	
 	<delete id="removeToken" parameterType="string">
