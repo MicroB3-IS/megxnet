@@ -15,6 +15,7 @@ www={type:'sys.public'}
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
 		authorize={type:'megx.module.oauth.authorize'}
 	login={type:'html', template:'security-filter/login.html'}
+	pubmap={type:'html', template:'pubmap/start.html'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
