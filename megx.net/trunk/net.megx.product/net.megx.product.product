@@ -21,6 +21,7 @@
       <plugin id="org.chon.cms.admin.explorer"/>
       <plugin id="org.chon.cms.content"/>
       <plugin id="org.chon.cms.core"/>
+      <plugin id="org.chon.cms.light.mvc"/>
       <plugin id="org.chon.cms.menu"/>
       <plugin id="org.chon.cms.model"/>
       <plugin id="org.chon.cms.services.mailer"/>
