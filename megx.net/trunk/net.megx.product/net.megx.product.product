@@ -10,6 +10,7 @@
       <plugin id="net.megx.chon.services"/>
       <plugin id="net.megx.chon.services.ui"/>
       <plugin id="net.megx.chon.template"/>
+      <plugin id="net.megx.pubmap"/>
       <plugin id="org.apache.felix.fileinstall"/>
       <plugin id="org.apache.felix.framework"/>
       <plugin id="org.apache.felix.http.api"/>
