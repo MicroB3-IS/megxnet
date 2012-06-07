@@ -44,6 +44,7 @@
 		<module>net.megx.chon.services.ui</module>
 		<!-- build megx.net velocity templates -->
 		<module>net.megx.chon.template</module>
+		<module>net.megx.pubmap</module>
 
 		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
 		<!-- what bundles will be included in the final build -->
