@@ -34,12 +34,16 @@ public class OAuth1Services extends BaseOAuthServices{
 			OAuthMessage message = OAuthServlet.getMessage(request, null);
 			OAuthConsumer consumer = getConsumer(message.getConsumerKey());
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
+			
 			validateMessage(message, accessor);
 			Token requestToken = tokenServices.generateRequestToken(consumer.consumerKey);
 			accessor.requestToken = requestToken.getToken();
 			accessor.tokenSecret = requestToken.getSecret();
 			accessor.accessToken = null;
-			
+			requestToken.setCallbackUrl( message.getParameter("oauth_callback"));
+			if(requestToken.getCallbackUrl() == null){
+				requestToken.setCallbackUrl("none");
+			}
 			response.setContentType("text/plain");
             OutputStream out = response.getOutputStream();
             OAuth.formEncode(OAuth.newList("oauth_token", accessor.requestToken,
@@ -103,8 +107,13 @@ public class OAuth1Services extends BaseOAuthServices{
             out.close();
         } else {
             // if callback is not passed in, use the callback from config
-            if(callback == null || callback.length() <=0 )
+            if(callback == null || callback.length() <=0 ){
                 callback = accessor.consumer.callbackURL;
+                if(callback == null || "none".equals(callback)){
+                	callback = accessor.getProperty("oauth_callback") != null ? 
+                			accessor.getProperty("oauth_callback").toString() : "none";
+                }
+            }
             String token = accessor.requestToken;
             if (token != null) {
                 callback = OAuth.addParameters(callback, "oauth_token", token);
@@ -123,6 +132,9 @@ public class OAuth1Services extends BaseOAuthServices{
             HttpServletResponse response, OAuthAccessor accessor)
     throws IOException, ServletException{
         String callback = request.getParameter("oauth_callback");
+        if(callback == null){
+        	callback = accessor.getProperty("oauth_callback") != null ? accessor.getProperty("oauth_callback").toString() : null;
+        }
         if(callback == null || callback.length() <=0) {
             callback = "none";
         }

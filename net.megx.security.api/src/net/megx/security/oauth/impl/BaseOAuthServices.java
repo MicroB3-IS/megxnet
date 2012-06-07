@@ -125,6 +125,7 @@ public abstract class BaseOAuthServices implements OAuthServices{
 		accessor.tokenSecret = requestToken.getSecret();
 		accessor.accessToken = null;
 		accessor.setProperty("authorized", requestToken.isAuthorized());
+		accessor.setProperty("oauth_callback", requestToken.getCallbackUrl());
 		return accessor;
 	}
 }

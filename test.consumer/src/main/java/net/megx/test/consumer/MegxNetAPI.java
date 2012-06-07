@@ -22,7 +22,7 @@ public class MegxNetAPI extends DefaultApi10a{
 
 	@Override
 	public String getAuthorizationUrl(Token requestToken) {
-		return authorizationURL+"?oauth_token="+requestToken.getToken();
+		return authorizationURL+"?oauth_token="+requestToken.getToken() ;
 	}
 
 	public MegxNetAPI(String requestTokenEndpoint, String accessTokenEndpoint,

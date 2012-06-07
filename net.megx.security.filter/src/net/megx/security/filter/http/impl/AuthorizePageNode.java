@@ -32,6 +32,11 @@ public class AuthorizePageNode extends TemplatePageNode{
 		
 		log.debug("AuthorizePageNode > Will render the authorize page template...");
 		Map<String, Object> params = new HashMap<String, Object>();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(req.getServletRequset().getAttribute("CALLBACK"));
+		System.out.println(req.getServletRequset().getAttribute("TOKEN"));
+		System.out.println(req.getServletRequset().getAttribute("CONS_DESC"));
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		VTplNodeRenderer.render("base.html", "security-filter/oauth/authorize.html", this, req, resp, serverInfo, params);
 	}
 

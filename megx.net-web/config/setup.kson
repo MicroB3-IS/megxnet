@@ -55,7 +55,7 @@ usr={type:'sys.usr'}
 
 
 etc={type:'sys.etc'}
-	host.config={type:'config', siteUrl:'http://joco-pc:8080/chon'}
+	host.config={type:'config', siteUrl:'http://localhost:8080/megx.net'}
 	passwd={type:'usr.container'}
 		jveljanovski={ type: 'usr.info', password: 'd00eb4753f735d3e86792609da365e4e', role: 10}
 		rkottman={ type: 'usr.info', password: 'f935abd40c732dddaf5e64d0e1af4cd3', role: 10}
