@@ -7,6 +7,9 @@ Bundle-Activator: net.megx.chon.core.Activator
 Bundle-Vendor: INTERWORKS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: 
+ com.iw.megx.ws.dto.mpiws,
+ com.iw.megx.ws.service.mixsws,
+ com.iw.megx.ws.service.mpiws,
  javax.jcr,
  javax.jcr.lock,
  javax.jcr.nodetype,
