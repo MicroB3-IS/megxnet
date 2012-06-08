@@ -20,7 +20,7 @@ public class Activator extends ResTplConfiguredActivator {
 	protected void registerExtensions(JCRApplication app) {
 		log.debug("Start PubMap bundle");
 		
-//		trackMVCService();
+		trackMVCService();
 		
 		PubMapExtension pubMapExt = new PubMapExtension();
 		log.debug("Registering pubmap extension.");

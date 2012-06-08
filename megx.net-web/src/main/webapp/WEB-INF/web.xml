@@ -18,7 +18,7 @@
     </servlet-mapping>
     
     <error-page>
-    	<error-code>401</error-code>
+    	<error-code>403</error-code>
     	<location>/login</location>
     </error-page>
 </web-app>

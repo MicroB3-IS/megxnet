@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.megx.security.auth.AccessDeniedException;
 import net.megx.security.auth.AuthenticationManager;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.WebResource;
@@ -132,6 +133,8 @@ public class SecurityFilter implements Filter{
 		}else if(e instanceof SecurityException){
 			if(!response.isCommitted())
 				response.sendError(((SecurityException)e).getResponseCode(),e.getMessage());
+		}else if(e instanceof AccessDeniedException){
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}else{
 			throw new ServletException(e);
 		}
@@ -153,10 +156,10 @@ public class SecurityFilter implements Filter{
 			throws ServletException, SecurityException{
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){
-			throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
 		}
 		if(context.getAuthentication() == null){
-			throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
 		}
 		
 		List<WebResource> resources = null;
