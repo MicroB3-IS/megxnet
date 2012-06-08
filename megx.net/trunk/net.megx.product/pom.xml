@@ -14,17 +14,15 @@
 	<packaging>eclipse-repository</packaging>
 
 	<name>megx.net Complete Bundle Product</name>
-	
+
 	<repositories>
 		<repository>
 			<id>indigo</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/releases/indigo</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
 		</repository>
 	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -38,11 +36,39 @@
 							<goal>materialize-products</goal>
 						</goals>
 					</execution>
+					<!-- note: not really needed <execution> <id>archive-products</id> <goals> 
+						<goal>archive-products</goal> </goals> </execution> -->
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
 					<execution>
-						<id>archive-products</id>
+						<id>copy-chon-plugins</id>
+						<phase>pre-integration-test</phase>
 						<goals>
-							<goal>archive-products</goal>
+							<goal>run</goal>
 						</goals>
+						<configuration>
+							<target>
+								<copy todir="${mvn.work.dir.path}/plugins">
+									<fileset dir="${project.build.directory}/repository/plugins" />
+									<firstmatchmapper>
+										<!-- copying and stripping of the build identifier -->
+										<regexpmapper from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.jar$$"
+											to="\1.jar" />
+										<regexpmapper
+											from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.[0-9A-Z]{6,}\.jar$$" to="\1.jar" />
+											<regexpmapper
+											from="^(osgi.compendium_[0-9]+\.[0-9]+\.[0-9]+).build-[0-9A-Z]{6,}\.jar$$" to="\1.jar" />
+											
+									</firstmatchmapper>
+								</copy>
+							</target>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

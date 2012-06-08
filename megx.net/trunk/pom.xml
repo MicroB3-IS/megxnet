@@ -32,6 +32,8 @@
 		<mvn.work.dir.path>${user.home}/${mvn.work.dir.name}</mvn.work.dir.path>
 		<tycho.version>0.15.0</tycho.version>
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
+		<mvn.ant.failonerror>false</mvn.ant.failonerror>
+		<mvn.module.default.version>1.0.0.SNAPSHOT</mvn.module.default.version>
 	</properties>
 
 
@@ -57,6 +59,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+			</dependency>
+			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>megx.net-web</artifactId>
 				<version>${project.version}</version>
@@ -64,12 +71,12 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>net.megx.chon.core</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>net.megx.chon.services</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -79,19 +86,14 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>net.megx.chon.template</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>web-content-repository</artifactId>
-				<version>1.0-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>${project.groupId}</groupId>
-				<artifactId>net.megx.product</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.pubmap</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -128,28 +130,15 @@
 		</pluginManagement>
 
 		<plugins>
-			
+
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					
 					<resolver>p2</resolver>
-					<!-- <target> <artifact> <groupId>net.megx</groupId> <artifactId>target-definition</artifactId> 
-						<version>1.0.0-SNAPSHOT</version> <classifier>chon</classifier> </artifact> 
-						</target> -->
-<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
+					<environments>
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
@@ -158,18 +147,33 @@
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
-					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>copy-chon-plugins</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<copy todir="${mvn.work.dir.path}/plugins"
+									file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+									overwrite="true" failonerror="${mvn.ant.failonerror}" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- TODO maybe take this out here -->
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>

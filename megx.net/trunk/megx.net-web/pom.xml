@@ -39,7 +39,6 @@
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-antrun-plugin</artifactId>
-			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.choncms</groupId>
@@ -61,7 +60,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
 				<executions>
 					<execution>
 						<id>copy-repository</id>
@@ -75,10 +73,6 @@
 									do not get overwritten if they already exists -->
 								<copy todir="${mvn.work.dir.path}/" preservelastmodified="true">
 									<zipfileset src="web-content-repository.zip" />
-								</copy>
-								<copy todir="${mvn.work.dir.path}/plugins">
-									<fileset
-										dir="../net.megx.product/target/repository/plugins" />
 								</copy>
 							</target>
 						</configuration>

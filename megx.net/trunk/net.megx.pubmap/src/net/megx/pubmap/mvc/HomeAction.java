@@ -7,7 +7,10 @@ public class HomeAction extends AbstractAction {
 
 	@Override
 	public Result exec() {
-		return R.template("pubmap/start_search.html");
+		//R is really a bad name for a variable
+		//another comment
+		//and another comment
+		return R.template("pubmap/start.html");
 	}
 
 }
