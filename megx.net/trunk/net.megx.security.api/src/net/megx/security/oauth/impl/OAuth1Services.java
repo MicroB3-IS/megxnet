@@ -96,7 +96,7 @@ public class OAuth1Services extends BaseOAuthServices{
             callback = accessor.consumer.callbackURL;
         }
         
-        if( "none".equals(callback) ) {
+        if( "none".equals(callback) || "oob".equals(callback)) {
             // no call back it must be a client
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();

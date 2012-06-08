@@ -49,7 +49,7 @@ public class Consumer {
 		this.resource = resource;
 		this.roles = roles;
 		this.logname = logname;
-		this.callbackUrl = callbackUrl == null ? "oob":callbackUrl;
+		this.callbackUrl = callbackUrl;// == null ? "oob":callbackUrl;
 	}
 
 	@Override
