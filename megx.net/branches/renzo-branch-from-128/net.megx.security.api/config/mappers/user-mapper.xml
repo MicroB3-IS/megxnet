@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+Copyright 2011 Max Planck Institute for Marine Microbiology 
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.security.auth.services.db.UserMapper">
+	<resultMap type="User" id="user_map">
+		<result property="login" column="logname"/>
+		<result property="firstName" column="first_name"/>
+		<result property="initials" column="initials"/>
+		<result property="lastName" column="last_name"/>
+		<result property="description" column="description"/>
+		<result property="joinedOn" column="join_date"/>
+		<result property="password" column="pass"/>
+		<result property="disabled" column="diabled"/>
+		<association property="roles" select="getRolesForUser" column="logname"/>
+	</resultMap>
+	
+	<resultMap type="Role" id="role_map">
+		<result property="label" column="label"/>
+		<result property="description" column="description"/>
+	</resultMap>
+	
+	
+	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
+		select r.label, r.description from auth.roles r
+			left join auth.has_roles h on r.label = h.role 
+				where h.user_login=#{logname}
+	</select>
+	
+	<select id="getUserByUserId" resultMap="user_map" parameterType="string">
+		select 
+			logname, 
+			first_name, 
+			initials, 
+			last_name, 
+			description, 
+			join_date, 
+            pass, 
+            diabled
+  			
+  			from auth.users
+  			
+  				where logname=#{logname}
+	</select>
+	
+	
+	
+	<select id="getUserByConsumerKey" resultMap="user_map" parameterType="string">
+		select 
+			logname, 
+			first_name, 
+			initials, 
+			last_name, 
+			description, 
+			join_date, 
+            pass, 
+            diabled
+  			
+  			from auth.users as u 
+  				inner join auth.consumers as c on c.logname=u.logname
+			where c.key=#{key}
+	</select>
+	
+	<select id="getUserForUsernameAndPassword" resultMap="user_map" parameterType="map">
+		select 
+			logname, 
+			first_name, 
+			initials, 
+			last_name, 
+			description, 
+			join_date, 
+            pass, 
+            diabled
+            	
+            	from auth.users where logname=#{username} and 
+			(pass=#{password} OR pass IS NULL)
+	</select>
+	<!-- 
+	<select id="getUserByUniqueIdentifier" resultMap="user_map" parameterType="string">
+		select 
+			logname, 
+			first_name, 
+			initials, 
+			last_name, 
+			description, 
+			join_date, 
+            pass, 
+            diabled
+             from auth.users where uniqueidentifier=#{id}
+	</select>
+	 -->
+	 
+	<insert id="addUser" parameterType="User">
+		insert int auth.users
+			(logname,first_name,initials,last_name,	description, join_date, pass, diabled)
+			values
+			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled})
+	</insert>
+	
+	<update id="updateUser" parameterType="User">
+		update auth.users
+			set logname=#{login}, 
+				first_name=#{firstName}, 
+				initials=#{initials},
+				last_name=#{lastName},
+				description=#{description},
+				join_date=#{joinedOn},
+	            pass=#{password},
+	            diabled=#{disabled}
+			
+			where logname=#{login}
+	</update>
+	
+	<delete id="removeUser" parameterType="string">
+		delete from auth.users where logname=#{value}
+	</delete>
+	
+	<delete id="revokeRole" parameterType="map">
+		DELETE FROM auth.has_roles 
+			WHERE role=#{role} AND
+					user_login=#{login}
+	</delete>
+	
+	<insert id="grantRole"  parameterType="map">
+		INSERT INTO auth.has_roles (role, user_login)
+			VALUES (#{role},#{login})
+	</insert>
+	
+	<insert id="createRole" useGeneratedKeys="true" parameterType="Role">
+		INSERT INTO auth.roles (label,description)
+			VALUES (#{label},#{description})
+	</insert>
+	
+	<select id="getAllRoles" resultMap="role_map">
+		select r.label, r.description from auth.roles as r
+	</select>
+	
+	<delete id="removeRole" parameterType="int">
+		delete from auth.roles where role=#{role}
+	</delete>
+	
+	<select id="getRole" resultMap="role_map" parameterType="string">
+		select r.label, r.description from auth.roles as r where role=#{value}
+	</select>
+	
+	
+	<select id="getRolesForNames" resultMap="role_map" parameterType="map">
+		select r.label, r.description from auth.roles as r where name in 
+		<foreach collection="names" item="roleName" separator="," open="(" close=")">
+		#{roleName}	
+		</foreach>
+		
+	</select>
+</mapper>

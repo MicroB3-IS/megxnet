@@ -1,0 +1,61 @@
+#wrapper {
+	border-top: 2px solid #0e4e96;
+	margin: 0em auto;
+	width: 960px;
+	background-color: #fff;	
+	box-shadow: #333 0px 0px 10px;
+}
+header {
+	margin: 0em auto;
+	height: 148px;
+	width: 960px;
+	background-image: url(../images/headerBackground.png);
+	background-repeat: no-repeat;
+}
+.headerBorder {
+	background-image: url(../images/headerBottomBorder.png);
+	background-repeat: repeat-x;
+	height: 6px;
+	width: 960px;
+	margin: -1em 0em 0em 0em;
+}
+section {
+	padding: 1.75em;	
+}
+article.Box {
+	float: left;
+}
+aside {
+	float: left;	
+}
+.news {
+	width: 23em;
+	min-height: 15em;
+	background-image: url(../images/border.png);
+	background-repeat: no-repeat;
+	background-position: 0em 0em;	
+}
+.menuSidebar {
+	width: 20em;	
+}
+.content {
+	width: 48em;
+
+	float: right;	
+}
+footer {
+	background-image: url(../images/footerBackground.png);
+	background-repeat: no-repeat;
+	height: 2.8em;
+	margin: 1em 0em 0em 0em;
+}
+footer > section > ul {
+	float: left;
+	margin: 0!important	;
+	padding: 0;
+}
+footer > section > ul > li {
+	display: block;
+	margin: 0em .5em!important;
+	padding: 0;
+}

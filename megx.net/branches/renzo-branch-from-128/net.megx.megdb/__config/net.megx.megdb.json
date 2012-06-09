@@ -1,0 +1,16 @@
+{
+	path: '$resources/net.megx.megdb',
+	myBatisConfigFile: 'config/my-batis-config.xml',
+	dbConfig:{
+		development.url: 'jdbc:postgresql://localhost/authdb',
+		development.username: 'postgres',
+		development.password:'pg-admin-iw',
+		development.driver: 'org.postgresql.Driver'
+	},
+	dbServices:[
+		{
+			name: 'net.megx.megdb.pubmap.PubMapService',
+			class: 'net.megx.megdb.pubmap.impl.DBPubMapService'
+		}
+	]
+}
