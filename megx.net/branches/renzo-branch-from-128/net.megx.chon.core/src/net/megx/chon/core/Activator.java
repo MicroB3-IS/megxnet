@@ -75,6 +75,6 @@ public class Activator extends ResTplConfiguredActivator {
 		app.regExtension("woa5", new WOA5Extension(this.getBundleContext()));
 		app.regExtension("wod5", new WOD5Extension(this.getBundleContext()));
 		
-		app.regExtension("test_svc", new TestServicesExtenstion(this.getBundleContext()));
+		app.regExtension("test_svc", new TestServicesExtension(this.getBundleContext()));
 	}
 }

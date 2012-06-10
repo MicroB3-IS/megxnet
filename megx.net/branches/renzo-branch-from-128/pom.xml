@@ -32,7 +32,9 @@
 		<mvn.work.dir.path>${user.home}/${mvn.work.dir.name}</mvn.work.dir.path>
 		<tycho.version>0.15.0</tycho.version>
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
-		<mvn.ant.failonerror>false</mvn.ant.failonerror>
+		<!-- to configure if failed copy of bundle to plugins dir should fail the 
+			maven build -->
+		<mvn.ant.failonerror>true</mvn.ant.failonerror>
 		<mvn.module.default.version>1.0.0.SNAPSHOT</mvn.module.default.version>
 	</properties>
 
@@ -108,23 +110,50 @@
 			pluginManagement definitions. https://maven.apache.org/pom.html#Plugin_Management -->
 		<pluginManagement>
 			<plugins>
+				<!-- Tycho for OSDG bundle creation -->
 				<plugin>
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>target-platform-configuration</artifactId>
 					<version>${tycho.version}</version>
-
 				</plugin>
-
 				<plugin>
 					<groupId>${tycho.groupid}</groupId>
 					<artifactId>tycho-maven-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<extensions>true</extensions>
 				</plugin>
+				<!-- general maven plugin configuration -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.7</version>
+					<configuration>
+						<failOnError>${mvn.ant.failonerror}</failOnError>
+					</configuration>
+					<executions>
+						<execution>
+							<id>copy-chon-plugins</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target name="copy-single-bundle">
+									<copy todir="${mvn.work.dir.path}/plugins"
+										file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+										overwrite="true" />
+								</target>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -152,27 +181,8 @@
 					</environments>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>copy-chon-plugins</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<copy todir="${mvn.work.dir.path}/plugins"
-									file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-									overwrite="true" failonerror="${mvn.ant.failonerror}" />
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				</plugin> -->
 			<!-- TODO maybe take this out here -->
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
@@ -211,7 +221,9 @@
 	</developers>
 	<licenses>
 		<license>
-			<name>Apache 2 License</name>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<comments>A business-friendly permisseve OSS license</comments>
 		</license>
 	</licenses>
 </project>
