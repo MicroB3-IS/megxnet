@@ -19,7 +19,7 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
-import net.megx.security.auth.Consumer;
+import net.megx.security.auth.model.Consumer;
 
 import org.apache.ibatis.annotations.Param;
 

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import net.megx.security.auth.Authentication;
-import net.megx.security.auth.Role;
+import net.megx.security.auth.model.Role;
 
 public class HttpRequestWrapper extends HttpServletRequestWrapper{
 

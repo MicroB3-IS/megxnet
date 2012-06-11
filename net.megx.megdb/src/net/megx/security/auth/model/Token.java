@@ -15,7 +15,7 @@
  */
 
 
-package net.megx.security.auth;
+package net.megx.security.auth.model;
 
 import java.util.Date;
 

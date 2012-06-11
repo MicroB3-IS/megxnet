@@ -33,4 +33,7 @@ Bundle-ClassPath: .,
  lib/mybatis-3.2.0-SNAPSHOT.jar,
  config/
 Export-Package: net.megx.megdb,
- net.megx.megdb.pubmap
+ net.megx.megdb.pubmap,
+ net.megx.security.auth.model,
+ net.megx.security.auth.services,
+ net.megx.utils

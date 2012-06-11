@@ -19,7 +19,7 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
-import net.megx.security.auth.Token;
+import net.megx.security.auth.model.Token;
 
 public interface TokenService {
 	public Token getToken(String value) throws Exception;

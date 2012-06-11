@@ -2,7 +2,7 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
-import net.megx.security.auth.Consumer;
+import net.megx.security.auth.model.Consumer;
 
 public interface ConsumerService {
 	public Consumer getConsumer(String name) throws Exception;

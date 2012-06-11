@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
-import net.megx.security.auth.User;
+import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebLoginHandler;

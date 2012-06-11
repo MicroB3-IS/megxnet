@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Date;
 
-import net.megx.security.auth.Token;
-import net.megx.security.auth.User;
+import net.megx.security.auth.model.Token;
+import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.TokenService;
 import net.megx.security.crypto.KeySecret;
 import net.megx.security.crypto.KeySecretProvider;

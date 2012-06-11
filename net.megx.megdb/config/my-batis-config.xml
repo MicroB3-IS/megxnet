@@ -19,14 +19,12 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-	    <!-- 
-		<typeAlias type="net.megx.security.auth.Consumer" alias="Consumer"/>
-		<typeAlias type="net.megx.security.auth.Token" alias="Token"/>
-		<typeAlias type="net.megx.security.auth.User" alias="User"/>
-		<typeAlias type="net.megx.security.auth.Role" alias="Role"/>
-		<typeAlias type="net.megx.security.auth.Permission" alias="Permission"/>
-		<typeAlias type="net.megx.security.auth.WebResource" alias="WebResource"/>
-		 -->
+		<typeAlias type="net.megx.security.auth.model.Consumer" alias="Consumer"/>
+		<typeAlias type="net.megx.security.auth.model.Token" alias="Token"/>
+		<typeAlias type="net.megx.security.auth.model.User" alias="User"/>
+		<typeAlias type="net.megx.security.auth.model.Role" alias="Role"/>
+		<typeAlias type="net.megx.security.auth.model.Permission" alias="Permission"/>
+		<typeAlias type="net.megx.security.auth.model.WebResource" alias="WebResource"/>
 	</typeAliases>
 	<environments default="development">
         <environment id="development">
@@ -41,5 +39,11 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
     </environments>
 	<mappers>
 		<mapper resource="pubmap/pubmap-mapper.xml"/>
+		
+		<!-- security API DB services mappers -->
+		<mapper resource="security/consumer-mapper.xml"/>
+		<mapper resource="security/token-mapper.xml"/>
+		<mapper resource="security/user-mapper.xml"/>
+		<mapper resource="security/web-resources-mapper.xml"/>
 	</mappers>
 </configuration>

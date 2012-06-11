@@ -19,8 +19,8 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
-import net.megx.security.auth.Role;
-import net.megx.security.auth.User;
+import net.megx.security.auth.model.Role;
+import net.megx.security.auth.model.User;
 
 public interface UserService {
 	public User getUserByUserId(String userId) throws Exception;

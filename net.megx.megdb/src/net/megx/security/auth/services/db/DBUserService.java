@@ -21,12 +21,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.megx.security.auth.Role;
-import net.megx.security.auth.User;
+import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.Role;
+import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 
 
-public class DBUserService extends BaseDBService implements UserService{
+public class DBUserService extends BaseMegdbService implements UserService{
 	
 	
 	private static List<String> DEFAULT_ROLES = new ArrayList<String>(1);

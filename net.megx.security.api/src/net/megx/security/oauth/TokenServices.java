@@ -1,6 +1,6 @@
 package net.megx.security.oauth;
 
-import net.megx.security.auth.Token;
+import net.megx.security.auth.model.Token;
 
 public interface TokenServices {
 	public Token getRequestToken(String token);

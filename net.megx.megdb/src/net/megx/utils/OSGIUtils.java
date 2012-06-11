@@ -1,9 +1,7 @@
-package net.megx.security.filter;
+package net.megx.utils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,13 +23,21 @@ public class OSGIUtils {
 		public void servicesAvailable(Map<String, Object> services);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <S> void requestService(final String name, final BundleContext context,final OnServiceAvailable<S> callback){
 		if(log.isDebugEnabled()){
 			log.debug(String.format("Registering listener for service '%s' with callback: '%s'.",name, callback.toString()));
 		}
+		ServiceReference ref = context.getServiceReference(name);
+		if( ref!= null ){
+			Object svc = context.getService(ref);
+			if(svc != null){
+				callback.serviceAvailable(name, (S)svc);
+				return;
+			}
+		}
 		ServiceListener listener = new ServiceListener() {
 
-			@SuppressWarnings("unchecked")
 			@Override
 			public void serviceChanged(ServiceEvent ev) {
 				ServiceReference reference = ev.getServiceReference();
