@@ -62,7 +62,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		Properties properties = new Properties();
 
 		JSONObject dbConfig = config.optJSONObject("dbConfig");
-
+ 
 		String[] keys = JSONObject.getNames(dbConfig);
 
 		if (keys != null) {
@@ -87,9 +87,9 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					null);
 			return dbService;
 		} catch (InstantiationException e) {
-			log.warn(e);
+			log.error(e);
 		} catch (IllegalAccessException e) {
-			log.warn(e);
+			log.error(e);
 		}
 		return null;
 	}
@@ -97,7 +97,6 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	protected void buildDBServices(JSONArray servicesConfig,
 			SqlSessionFactory sessionFactory) throws JSONException,
 			ClassNotFoundException {
-		log.debug(" -----------------------------------------");
 		log.debug(" Building DB Services: ");
 		for (int i = 0; i < servicesConfig.length(); i++) {
 			JSONObject config = servicesConfig.getJSONObject(i);
@@ -105,12 +104,11 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			BaseMegdbService service = buildBaseDBService(config,
 					sessionFactory);
 			if (service == null) {
-				log.warn("Failed to build service.");
+				log.error("Failed to build service.");
 			} else {
-				log.debug(" > Serivice build and ready: " + service);
+				log.debug(" > Service built and ready: " + service);
 			}
 		}
-		log.debug(" -----------------------------------------");
 	}
 
 	@SuppressWarnings("unchecked")
