@@ -11,4 +11,7 @@ public interface WebResourcesService {
 	public void addWebResourceMapping(WebResource resource) throws Exception;
 	public void updateWebResource(WebResource resource) throws Exception;
 	public void removeWebResource(WebResource resource) throws Exception;
+	
+	public List<WebResource> getAll(int from, int count) throws Exception;
+	
 }

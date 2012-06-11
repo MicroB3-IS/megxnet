@@ -30,8 +30,10 @@ public class OSGIUtils {
 		}
 		ServiceReference ref = context.getServiceReference(name);
 		if( ref!= null ){
+			log.debug(String.format("Service Reference for %s found.",name));
 			Object svc = context.getService(ref);
 			if(svc != null){
+				log.debug(String.format("Service (%s) is already available. Service Instance: (%s)",name, svc));
 				callback.serviceAvailable(name, (S)svc);
 				return;
 			}

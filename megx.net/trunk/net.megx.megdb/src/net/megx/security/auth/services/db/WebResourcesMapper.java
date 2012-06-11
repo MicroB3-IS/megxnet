@@ -12,4 +12,7 @@ public interface WebResourcesMapper {
 			@Param("method") String method) throws Exception;
 	public void insertWebResource(WebResource resource) throws Exception;
 	public void deleteWebResource(WebResource resource) throws Exception;
+	public List<WebResource> getAll(
+			@Param("from")int from, 
+			@Param("count") int count) throws Exception;
 }

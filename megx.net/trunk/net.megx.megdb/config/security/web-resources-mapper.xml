@@ -26,6 +26,14 @@
 							order by path_len DESC
     </select>
     
+    <select id="getAll" parameterType="map" resultMap="web_resource_map">
+        select url_path, http_method, url_path
+        	from auth.web_resource_permissions
+        	limit #{count}
+        	offset #{from}
+    </select>
+    
+    
     <select id="selectRolesForWebResource" parameterType="map" resultMap="role_map">
         select auth.roles.label, auth.roles.description 
         	from auth.roles

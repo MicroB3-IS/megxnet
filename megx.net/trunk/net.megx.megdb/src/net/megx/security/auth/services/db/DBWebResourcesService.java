@@ -53,4 +53,10 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 		}, WebResourcesMapper.class);
 	}
 
+	@Override
+	public List<WebResource> getAll(int from, int count) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

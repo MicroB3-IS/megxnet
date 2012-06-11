@@ -21,7 +21,9 @@ import net.oauth.OAuthMessage;
 import net.oauth.OAuthProblemException;
 import net.oauth.OAuthValidator;
 import net.oauth.SimpleOAuthValidator;
-import net.oauth.server.OAuthServlet;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class BaseOAuthServices implements OAuthServices{
 	protected UserService userService;
@@ -30,6 +32,7 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	
 	protected Properties oAuthConfig = new Properties();
 	
+	protected Log log = LogFactory.getLog(getClass());
 	
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -105,9 +108,13 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	protected void handleException(Exception e, HttpServletRequest request,
             HttpServletResponse response, boolean sendBody)
             throws IOException, ServletException {
+		/*
         String realm = (request.isSecure())?"https://":"http://";
         realm += request.getLocalName();
-        OAuthServlet.handleException(response, e, realm, sendBody); 
+        OAuthServlet.handleException(response, e, realm, sendBody);
+        */ 
+		log.debug("Error during OAuth step.",e);
+		throw new ServletException("OAuth error",e);
     }
 	
 	protected OAuthAccessor getAccessorForRequestToken(String token) throws IOException, OAuthProblemException{
