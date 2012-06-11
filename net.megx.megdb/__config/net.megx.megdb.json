@@ -4,7 +4,7 @@
 	dbConfig:{
 		development.url: 'jdbc:postgresql://localhost/authdb',
 		development.username: 'postgres',
-		development.password:'pg-admin-iw',
+		development.password:'',
 		development.driver: 'org.postgresql.Driver'
 	},
 	dbServices:[
