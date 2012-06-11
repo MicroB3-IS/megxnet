@@ -19,12 +19,13 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
-import net.megx.security.auth.Consumer;
+import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.Consumer;
 import net.megx.security.auth.services.ConsumerService;
 
 
 
-public class DBConsumerService extends BaseDBService implements ConsumerService{
+public class DBConsumerService extends BaseMegdbService implements ConsumerService{
 	
 	//private ConsumerMapper mapper;
 	

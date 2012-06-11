@@ -2,7 +2,7 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
-import net.megx.security.auth.WebResource;
+import net.megx.security.auth.model.WebResource;
 
 public interface WebResourcesService {
 	public List<WebResource> match(String uri, String method) throws Exception;

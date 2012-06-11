@@ -19,11 +19,12 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
-import net.megx.security.auth.Token;
+import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.Token;
 import net.megx.security.auth.services.TokenService;
 
 
-public class DBTokenService extends BaseDBService implements TokenService {
+public class DBTokenService extends BaseMegdbService implements TokenService {
 	
 
 	public Token getToken(final String value) throws Exception {

@@ -2,10 +2,11 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
-import net.megx.security.auth.WebResource;
+import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
 
-public class DBWebResourcesService extends BaseDBService implements WebResourcesService{
+public class DBWebResourcesService extends BaseMegdbService implements WebResourcesService{
 
 	@Override
 	public List<WebResource> match(final String uri, final String method) throws Exception {

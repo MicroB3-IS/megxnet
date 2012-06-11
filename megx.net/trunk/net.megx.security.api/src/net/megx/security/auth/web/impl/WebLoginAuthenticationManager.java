@@ -3,9 +3,9 @@ package net.megx.security.auth.web.impl;
 import net.megx.security.auth.AccessDeniedException;
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.InsufficientAuthenticationException;
-import net.megx.security.auth.Role;
-import net.megx.security.auth.WebResource;
 import net.megx.security.auth.impl.BaseAuthenticationManager;
+import net.megx.security.auth.model.Role;
+import net.megx.security.auth.model.WebResource;
 
 public class WebLoginAuthenticationManager extends BaseAuthenticationManager{
 

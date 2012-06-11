@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.megx.security.auth.AccessDeniedException;
 import net.megx.security.auth.AuthenticationManager;
 import net.megx.security.auth.SecurityContext;
-import net.megx.security.auth.WebResource;
+import net.megx.security.auth.model.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
@@ -200,7 +200,7 @@ public class SecurityFilter implements Filter{
 					new OSGIUtils.OnServiceAvailable<AuthenticationManager>() {
 
 				@Override
-				public void serviceAvailable(AuthenticationManager service) {
+				public void serviceAvailable(String serviceName,AuthenticationManager service) {
 					SecurityFilter.this.authenticationManager = service;
 					log.debug("Obtained authentication manager instance: " + service.toString());
 				}
@@ -211,9 +211,10 @@ public class SecurityFilter implements Filter{
 					new OSGIUtils.OnServiceAvailable<WebResourcesService>() {
 
 						@Override
-						public void serviceAvailable(WebResourcesService service) {
+						public void serviceAvailable(String serviceName, WebResourcesService service) {
 							SecurityFilter.this.resourcesService = service;
 							log.debug("Obtained WebResourcesService instance:  " + service);
+							System.out.println("Obtained WebResourcesService instance:  " + service);
 						}
 					});
 			

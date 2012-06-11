@@ -11,6 +11,22 @@
 		{
 			name: 'net.megx.megdb.pubmap.PubMapService',
 			class: 'net.megx.megdb.pubmap.impl.DBPubMapService'
+		},
+		{
+			name: 'net.megx.security.auth.services.ConsumerService',
+			class: 'net.megx.security.auth.services.db.DBConsumerService'
+		},
+		{
+			name: 'net.megx.security.auth.services.TokenService',
+			class: 'net.megx.security.auth.services.db.DBTokenService'
+		},
+		{
+			name: 'net.megx.security.auth.services.UserService',
+			class: 'net.megx.security.auth.services.db.DBUserService'
+		},
+		{
+			name: 'net.megx.security.auth.services.WebResourcesService',
+			class: 'net.megx.security.auth.services.db.DBWebResourcesService'
 		}
 	]
 }

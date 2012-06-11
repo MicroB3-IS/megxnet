@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
-import net.megx.security.auth.Token;
+import net.megx.security.auth.model.Token;
 import net.megx.security.auth.web.WebAuthenticationHandler;
 import net.megx.security.auth.web.WebContextUtils;
 import net.oauth.OAuth;

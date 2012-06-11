@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import net.megx.security.auth.WebResource;
+import net.megx.security.auth.model.WebResource;
 
 public interface WebResourcesMapper {
 	public List<WebResource> matchWebResources(

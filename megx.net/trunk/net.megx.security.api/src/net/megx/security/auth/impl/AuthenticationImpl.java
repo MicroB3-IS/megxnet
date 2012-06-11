@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.megx.security.auth.Authentication;
-import net.megx.security.auth.Role;
-import net.megx.security.auth.User;
+import net.megx.security.auth.model.Role;
+import net.megx.security.auth.model.User;
 
 public class AuthenticationImpl implements Authentication{
 	
