@@ -7,7 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
  * Base MegDB service. This class is intended to be sub-classed by concrete
  * implementation for specific DataBase access object.
  * It provides helper methods for getting MyBatis mappers and executing 
- * database related queries in trasaction or in session.
+ * database queries in transactions or in sessions.
  * <p>
  * A concrete example would be as following:
  * <code>
@@ -38,12 +38,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
   </pre>
  * </code>
  * 
- * As seen from the example, UserDBService implements two methods - query for user and removeal of user.
+ * As seen from the example, UserDBService implements two methods - query for user and removal of user.
  * A precondition here is that the UserMapper needs to exist. This is the MyBatis mapper interface, and User is
  * the DTO for database access.
  * 
  * The first method performs a simple query and this would be logical place not to use transaction.
- * The second methid uses the helper "doInTransation", which explicitly sets a transaction for the "execute" method.
+ * The second method uses the helper "doInTransation", which explicitly sets a transaction for the "execute" method.
  * @author pavle
  *
  */

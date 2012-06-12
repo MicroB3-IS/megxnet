@@ -12,4 +12,14 @@
 	<groupId>net.megx</groupId>
 	<artifactId>net.megx.chon.template</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<!-- main configuration is in parent pom -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

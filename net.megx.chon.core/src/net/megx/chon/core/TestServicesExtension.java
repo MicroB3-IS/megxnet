@@ -27,11 +27,11 @@ import org.osgi.framework.ServiceReference;
 
 import com.iw.megx.ws.service.mixsws.MixsWsService;
 
-public class TestServicesExtenstion implements Extension {
+public class TestServicesExtension implements Extension {
 
 	private BundleContext context;
 
-	public TestServicesExtenstion(BundleContext bundleContext) {
+	public TestServicesExtension(BundleContext bundleContext) {
 		this.context = bundleContext;
 	}
 

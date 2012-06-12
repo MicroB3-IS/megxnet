@@ -10,10 +10,15 @@
 
 	<groupId>net.megx</groupId>
 	<artifactId>net.megx.product</artifactId>
-
 	<packaging>eclipse-repository</packaging>
 
 	<name>megx.net Complete Bundle Product</name>
+
+	<properties>
+		<!-- just a local child property to skip an ant target the value does not 
+			matter. ant skips it just by the presence of this property -->
+		<mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -44,7 +49,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
 				<executions>
 					<execution>
 						<id>copy-chon-plugins</id>
@@ -53,7 +57,10 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<target>
+							<target name="copy-single-bundle" unless="mvn.ant.target.copy-single-bundle.skip"></target>
+							<target name="copy-product-bundles">
+								<!-- Note the combine.self! It prevents merged inheritance from parent 
+									see https://maven.apache.org/pom.html#Plugins -->
 								<copy todir="${mvn.work.dir.path}/plugins">
 									<fileset dir="${project.build.directory}/repository/plugins" />
 									<firstmatchmapper>
@@ -62,9 +69,9 @@
 											to="\1.jar" />
 										<regexpmapper
 											from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.[0-9A-Z]{6,}\.jar$$" to="\1.jar" />
-											<regexpmapper
-											from="^(osgi.compendium_[0-9]+\.[0-9]+\.[0-9]+).build-[0-9A-Z]{6,}\.jar$$" to="\1.jar" />
-											
+										<regexpmapper
+											from="^(osgi.compendium_[0-9]+\.[0-9]+\.[0-9]+).build-[0-9A-Z]{6,}\.jar$$"
+											to="\1.jar" />
 									</firstmatchmapper>
 								</copy>
 							</target>
