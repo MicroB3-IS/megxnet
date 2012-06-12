@@ -7,15 +7,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
+import net.megx.megdb.pubmap.PubMapArticle;
+import net.megx.megdb.pubmap.PubMapService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-
-import net.megx.megdb.pubmap.PubMapArticle;
-import net.megx.megdb.pubmap.PubMapService;
-
-import com.google.gson.Gson;
 
 @Path("/pubmap")
 public class PubMapRest {
@@ -23,7 +21,7 @@ public class PubMapRest {
 	
 	private BundleContext bundleContext;
 	
-	private Gson gson = new Gson();	
+	//private Gson gson = new Gson();	
 
 	public PubMapRest(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
@@ -45,6 +43,7 @@ public class PubMapRest {
 		log.debug("Called pubmap/getAllArticles");
 		// http://localhost:8080/megx.net-web/services/pubmap/getAllArticles
 		List<PubMapArticle> articles = getDBService().getAllArticles();
-		return gson.toJson(articles);
+		//return gson.toJson(articles);
+		return "TODO: articles to json";
 	}
 }
