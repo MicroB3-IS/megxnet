@@ -46,6 +46,9 @@
 		<module>net.megx.chon.services.ui</module>
 		<!-- build megx.net velocity templates -->
 		<module>net.megx.chon.template</module>
+		
+		<module>net.megx.megdb</module>
+		
 		<module>net.megx.pubmap</module>
 
 		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
@@ -88,7 +91,11 @@
 				<artifactId>net.megx.chon.template</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>net.megx.megdb</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>net.megx.pubmap</artifactId>
