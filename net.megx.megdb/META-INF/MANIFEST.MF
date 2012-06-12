@@ -31,8 +31,10 @@ Bundle-ClassPath: .,
  lib/cglib-2.2.2.jar,
  lib/commons-codec-1.6.jar,
  lib/mybatis-3.2.0-SNAPSHOT.jar,
- config/
-Export-Package: net.megx.megdb,
+ config/,
+ lib/gson-2.2.1.jar
+Export-Package: com.google.gson,
+ net.megx.megdb,
  net.megx.megdb.pubmap,
  net.megx.security.auth.model,
  net.megx.security.auth.services,
