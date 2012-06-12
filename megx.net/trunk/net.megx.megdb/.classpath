@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="config/"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-3.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cglib-2.2.2.jar"/>
