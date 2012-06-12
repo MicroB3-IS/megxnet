@@ -16,13 +16,13 @@ html, body {
 	margin: 0em;
 	padding: 0em;
 	font-size: 1em;
-	background-image: url(../images/bodyBackground.png);
+/* 	background-image: url(../images/bodyBackground.png); */
 	background-repeat: repeat;
 }
 body {
 	font-family: 'Ubuntu', sans-serif;
 	font-size: .8em;
-	background-image: url(../images/background.png);
+/* 	background-image: url(../images/background.png); */
 	background-repeat: repeat-x;		
 }
 .FL {float:left;} 

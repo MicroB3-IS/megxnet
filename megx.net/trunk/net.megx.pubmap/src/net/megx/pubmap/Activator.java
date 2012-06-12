@@ -40,32 +40,5 @@ public class Activator extends ResTplConfiguredActivator {
 		return "net.megx.pubmap";
 	}
 	
-	private void trackMVCService() {
-		ServiceTracker t = new ServiceTracker(getBundleContext(),
-				LightMVCService.class.getName(), null) {
-			@Override
-			public Object addingService(ServiceReference reference) {
-				LightMVCService mvc = (LightMVCService) super.addingService(reference);
-				registerMVCModel(mvc);
-				return mvc;
-			}
 
-			@Override
-			public void removedService(ServiceReference reference,
-					Object service) {
-			}
-		};
-		t.open();
-	}
-
-	protected void registerMVCModel(LightMVCService mvc) {
-		Map<String, Class<? extends AbstractAction>> actions = new HashMap<String, Class<? extends AbstractAction>>();
-		PubMapActions.registerActions(actions);
-		try {
-			mvc.setupController(PubMapActions.ACTIONS_ROOT, actions);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
