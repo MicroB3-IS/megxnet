@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import net.megx.model.auth.Consumer;
 import net.megx.security.auth.model.Token;
@@ -49,7 +50,7 @@ public class AppsManager {
 	
 	@Path("all")
 	@GET
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Consumer> getConsumers(@Context HttpServletRequest request){
 		String user = request.getUserPrincipal().getName();
 		try {
@@ -63,7 +64,7 @@ public class AppsManager {
 	
 	@Path("{key}/accessToken")
 	@GET
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Token generateAccessToken(@Context HttpServletRequest request, @PathParam("key") String appKey){
 		try{
 			String user = request.getUserPrincipal().getName();
@@ -98,7 +99,7 @@ public class AppsManager {
 	
 	@PUT
 	@Path("{key}")
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Consumer updateConsumer(
 			@PathParam("key") String appKey,
 			InputStream input, 
@@ -136,7 +137,7 @@ public class AppsManager {
 	}
 	
 	@POST
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Consumer addConsumer(@FormParam("name") String name,
 			@FormParam("description")String description,
 			@FormParam("callback") String callback,
@@ -170,7 +171,7 @@ public class AppsManager {
 	
 	@Path("{key}")
 	@DELETE
-	@Produces("text/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Consumer removeConsumer(@PathParam("key") String appKey,
 			@Context HttpServletRequest request){
 		Consumer consumer = new Consumer();

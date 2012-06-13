@@ -37,6 +37,7 @@ public class WebLoginSecurity extends BaseSecurityEntrypoint{
 			String redirectURL = context.getLastRequestedURL();
 			if(redirectURL != null){
 				log.debug(" ### Redirect ===> " + redirectURL);
+				context.storeLastRequestedURL(null);
 				response.sendRedirect(request.getContextPath() + redirectURL);
 				throw new StopFilterException();
 			}
