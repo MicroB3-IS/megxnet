@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.TokenService;
+import net.megx.security.crypto.KeySecretProvider;
 import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
@@ -28,9 +29,12 @@ public class Activator extends ResTplConfiguredActivator {
 								.get(TokenService.class.getName());
 						ConsumerService consumerService = (ConsumerService) services
 								.get(ConsumerService.class.getName());
-
+						
+						KeySecretProvider keySecretProvider = (KeySecretProvider)services
+								.get(KeySecretProvider.class.getName());
+						
 						AppsManager appsManager = new AppsManager(
-								consumerService, tokenService);
+								consumerService, tokenService, keySecretProvider);
 						getBundleContext().registerService(
 								AppsManager.class.getName(), appsManager, null);
 						}catch (Exception e) {
@@ -39,7 +43,7 @@ public class Activator extends ResTplConfiguredActivator {
 
 					}
 				}, ConsumerService.class.getName(), TokenService.class
-						.getName());
+						.getName(), KeySecretProvider.class.getName());
 	}
 	
 	@Override
