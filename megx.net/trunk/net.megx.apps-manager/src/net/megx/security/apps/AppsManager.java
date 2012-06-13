@@ -31,6 +31,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 
 @Path("/apps")
 public class AppsManager {
@@ -40,6 +42,9 @@ public class AppsManager {
 	private KeySecretProvider keySecretProvider;
 	
 	private Log log = LogFactory.getLog(getClass());
+	
+	private Gson gson = new Gson();
+	
 	
 	public AppsManager(ConsumerService consumerService,
 			TokenService tokenService) {
@@ -51,10 +56,10 @@ public class AppsManager {
 	@Path("all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Consumer> getConsumers(@Context HttpServletRequest request){
+	public String getConsumers(@Context HttpServletRequest request){
 		String user = request.getUserPrincipal().getName();
 		try {
-			return consumerService.getConsumersForUser(user);
+			return gson.toJson(consumerService.getConsumersForUser(user));
 		} catch (Exception e) {
 			log.error("Error while fetching applications:",e);
 		}
@@ -65,13 +70,13 @@ public class AppsManager {
 	@Path("{key}/accessToken")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Token generateAccessToken(@Context HttpServletRequest request, @PathParam("key") String appKey){
+	public String generateAccessToken(@Context HttpServletRequest request, @PathParam("key") String appKey){
 		try{
 			String user = request.getUserPrincipal().getName();
 			List<Token> allTokens = tokenService.getTokensForUser(user);
 			for(Token token: allTokens){
 				if(token.getConsumerKey().equals(appKey)){
-					return token;
+					return gson.toJson(token);
 				}
 			}
 			
@@ -90,7 +95,7 @@ public class AppsManager {
 			u.setLogin(user);
 			token.setUser(u);
 			tokenService.saveToken(token.getToken(), token);
-			return token;
+			return gson.toJson(token);
 		}catch (Exception e) {
 			log.error("Failed to generate access token: ", e);
 		}
@@ -100,7 +105,7 @@ public class AppsManager {
 	@PUT
 	@Path("{key}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Consumer updateConsumer(
+	public String updateConsumer(
 			@PathParam("key") String appKey,
 			InputStream input, 
 			@Context HttpServletRequest request){
@@ -128,7 +133,7 @@ public class AppsManager {
 				consumer.setOob(jsonConsumer.getBoolean("oob"));
 			
 			consumerService.updateConsumer(consumer);
-			return consumer;
+			return  gson.toJson(consumer);
 			
 		}catch (Exception e) {
 			log.error("Unable to update consumer",e);
@@ -138,7 +143,7 @@ public class AppsManager {
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Consumer addConsumer(@FormParam("name") String name,
+	public String addConsumer(@FormParam("name") String name,
 			@FormParam("description")String description,
 			@FormParam("callback") String callback,
 			@FormParam("oob") Boolean oob, 
@@ -162,7 +167,7 @@ public class AppsManager {
 				consumer.setOob(true); // out of band anyway
 			}
 			
-			return consumerService.addConsumer(consumer);
+			return gson.toJson(consumerService.addConsumer(consumer));
 		}catch (Exception e) {
 			log.error("Unable to add consumer",e);
 		}
@@ -172,13 +177,13 @@ public class AppsManager {
 	@Path("{key}")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
-	public Consumer removeConsumer(@PathParam("key") String appKey,
+	public String removeConsumer(@PathParam("key") String appKey,
 			@Context HttpServletRequest request){
 		Consumer consumer = new Consumer();
 		consumer.setKey(appKey);
 		try{
 			consumerService.removeConsumer(consumer);
-			return consumer;
+			return gson.toJson(consumer);
 		}catch (Exception e) {
 			log.error("Failed to remove Consumer: ",e);
 		}
