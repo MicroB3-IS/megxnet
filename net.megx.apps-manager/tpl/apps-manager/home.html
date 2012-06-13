@@ -1,0 +1,149 @@
+<script type="text/javascript" src="$ctx.siteUrl/apps-manager.js"></script>
+<link rel="stylesheet" href="$ctx.siteUrl/jquery/css/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="screen" />
+<style>
+
+.apps-action-hint{
+	font-size: 10px;
+	/*color: rgb(14,78,150);*/
+}
+
+.apps-action{
+	font-size: 16px;
+	color: rgb(14,78,150);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.apps-action-edit{
+	float: right;
+}
+.apps-action-remove{
+	float: right;
+}
+.apps-app-wrapper{
+	margin-left: 15px;
+	margin-right: 15px;
+	border: solid 1px #999;
+	padding: 20px;
+}
+.apps-content{
+	margin-left: 200px;
+}
+
+.apps-app-header{
+	color: rgb(14,78,150);
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.apps-app-description{
+	padding: 10px;
+	font-size: 12px;
+}
+
+.apps-action-details{
+	font-size: 10px;
+	color: #999;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.apps-label{
+	width: 200px;
+	float: left;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.apps-details{
+	padding: 15px;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	manager = new apps.Manager('$ctx.siteUrl/services/apps');
+	
+	var Apps = {};
+	
+	
+	
+	var appInputPanel = function(app){
+		var m = [
+			'<div>',
+				'<div><label class="apps-label">Name: </label><span>',app.name,'</span></div>',
+			'</div>'
+		].join('');
+	};
+	
+	
+	
+	$(".apps-view-apps").click(function(){
+		manager.getApps(function(apps){
+			for(var i = 0; i < apps.length; i++){
+				var m = [
+				   '<div class="apps-app-wrapper ui-corner-all">',
+				   		'<div class="apps-app-header">', 
+				   			apps[i].name,
+				   			'<div style="float: right;">',
+				   				'<div class="ui-state-default ui-corner-all apps-action-remove"><span class="ui-icon ui-icon-circle-close ">Remove</span></div>',
+				   				'<div class="ui-state-default ui-corner-all apps-action-edit"><span class="ui-icon ui-icon-pencil"></span></div>',
+				   			'</div>',
+				   		'</div>',
+				   		'<div class="apps-app-description">',apps[i].description,'</div>',
+				   		'<div>',
+				   			'<div class="apps-action-details"><span class="ui-icon ui-icon-triangle-1-e apps-expand-details" style="display: inline-block;"></span> Details</div>',
+				   			'<div class="apps-details">',
+				   			     '<div><label class="apps-label">Desktop App (Out Of Band): </label><span>',apps[i].oob ? 'Yes':'No','</span></div>',
+				   			     '<div><label class="apps-label">Callback URL: </label><span>',apps[i].callbackUrl ? apps[i].callabckUrl : 'none','</span></div>',
+				   			     '<div style="text-align: right;">',
+				   			     	'<input type="button" class="apps-action-edit-btn" value="Edit"/>',
+				   			        '<input type="button" class="apps-action-remove-btn" value="Remove"/>',
+				   			     '</div>',
+				   			'</div>',
+				   		'</div>',
+				   '</div>'
+				].join('');
+				
+				
+				var e = $(m)[0];
+				
+				$('.apps-action-details',e).click(function(){
+					this.hidden = this.hidden === undefined ? true : this.hidden; 
+					if(this.hidden){
+						$('span',this).removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+						$('.apps-details', e).show();
+						this.hidden = false;
+					}else{
+						$('span',this).removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+						$('.apps-details', e).hide();
+						this.hidden = true;
+					}
+				});
+				
+				$('.apps-content').html('').append(e);
+			}
+		});
+	});	
+});
+</script>
+<div>
+	<h2>Create or view applications</h2>
+	<div>
+		<div style="float: left; margin-left: 25px;">
+			<div class="">
+				<div class="apps-view-apps apps-action">View Apps</div>
+				<div class="apps-action-hint">View your registered apps.</div>
+			</div>
+			<div class="">
+				<div class="apps-new-app apps-action">Create an app</div>
+				<div class="apps-action-hint">Create new app</div>
+			</div>
+		</div>
+		<div class="apps-notification">
+		
+		</div>
+		<div class="apps-content">
+			
+		</div>
+	</div>
+</div>

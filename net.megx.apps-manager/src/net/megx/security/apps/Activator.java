@@ -23,6 +23,7 @@ public class Activator extends ResTplConfiguredActivator {
 
 					@Override
 					public void servicesAvailable(Map<String, Object> services) {
+						try{
 						TokenService tokenService = (TokenService) services
 								.get(TokenService.class.getName());
 						ConsumerService consumerService = (ConsumerService) services
@@ -32,6 +33,9 @@ public class Activator extends ResTplConfiguredActivator {
 								consumerService, tokenService);
 						getBundleContext().registerService(
 								AppsManager.class.getName(), appsManager, null);
+						}catch (Exception e) {
+							System.err.println(e);
+						}
 
 					}
 				}, ConsumerService.class.getName(), TokenService.class
