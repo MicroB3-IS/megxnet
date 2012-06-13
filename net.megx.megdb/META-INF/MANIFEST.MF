@@ -31,9 +31,12 @@ Bundle-ClassPath: .,
  lib/cglib-2.2.2.jar,
  lib/commons-codec-1.6.jar,
  lib/mybatis-3.2.0-SNAPSHOT.jar,
- config/
+ config/,
+ net.megx.megdb/lib/postgresql-9.1-901.jdbc4.jar
 Export-Package: net.megx.megdb,
  net.megx.megdb.pubmap,
+ net.megx.model,
+ net.megx.model.auth,
  net.megx.security.auth.model,
- net.megx.security.auth.services,
- net.megx.utils
+ net.megx.security.auth.services;uses:="net.megx.model.auth,net.megx.security.auth.model",
+ net.megx.utils;uses:="org.osgi.framework"

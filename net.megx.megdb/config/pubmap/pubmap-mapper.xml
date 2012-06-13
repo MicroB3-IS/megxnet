@@ -3,5 +3,16 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.megx.megdb.pubmap.mappers.PubMapMapper">
+	<resultMap type="Article" id="article_map">
+		<result property="title" column="db_title"/>
+		<!-- 
+		TODO: 
+		 -->
+	</resultMap>
 
+	<select id="getAllArticles" resultMap="article_map">
+		select * from some.table
+	</select>
+	
+	<insert id="addArticle" parameterType="Article"></insert>
 </mapper>

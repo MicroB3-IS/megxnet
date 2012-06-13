@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="E:\dev\megx-chon\net.megx.megdb\lib\postgresql-9.1-901.jdbc4.jar" />
+	<context id="context1" targetRuntime="MyBatis3">
+		<jdbcConnection driverClass="org.postgresql.Driver"
+			connectionURL="jdbc:postgresql://localhost/megdb-9" userId="postgres"
+			password="" />
+		<javaModelGenerator targetPackage="net.megx.megdb.beans"
+			targetProject="net.megx.megdb" />
+		<sqlMapGenerator targetPackage="net.megx.megdb.mappers"
+			targetProject="net.megx.megdb" />
+		<javaClientGenerator targetPackage="net.megx.megdb.services"
+			targetProject="net.megx.megdb" type="XMLMAPPER" />
+
+		<table schema="core" modelType="flat" tableName="articles"
+			domainObjectName="Article" enableSelectByExample="false" enableDeleteByExample="false">
+			<columnOverride column="abstract" property="articleAbstract" />
+		</table>
+
+		<table schema="web_r8" modelType="flat" tableName="metagenomes"
+			domainObjectName="Metagenome" enableSelectByExample="false"
+			enableDeleteByExample="false">
+			<property name="rootClass" value="net.megx.model.Article" />
+
+		</table>
+	</context>
+</generatorConfiguration>
