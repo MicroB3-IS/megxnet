@@ -1,19 +1,12 @@
 package net.megx.pubmap;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.megx.pubmap.rest.PubMapRest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
-import org.chon.cms.light.mvc.AbstractAction;
-import org.chon.cms.light.mvc.LightMVCService;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
 
 public class Activator extends ResTplConfiguredActivator {
 	
@@ -22,11 +15,12 @@ public class Activator extends ResTplConfiguredActivator {
 	@Override
 	protected void registerExtensions(JCRApplication app) {
 		log.debug("Start PubMap bundle");
+		BundleContext bundleContext = getBundleContext();
 		
-		registerRestServices(getBundleContext());
+		registerRestServices(bundleContext);
 		//trackMVCService();
 		
-		PubMapExtension pubMapExt = new PubMapExtension();
+		PubMapExtension pubMapExt = new PubMapExtension(bundleContext);
 		log.debug("Registering pubmap extension.");
 		app.regExtension("pubmap", pubMapExt);
 	}
