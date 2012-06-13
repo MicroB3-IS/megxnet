@@ -1,4 +1,4 @@
 {
-	path: '/home/pavle/projects/iw/mb3/microb3/git-clone/megx.net/net.megx.apps-manager',
+	path: '$resources/net.megx.apps-manager',
 	exampleProperty: 'Example Value'
 }

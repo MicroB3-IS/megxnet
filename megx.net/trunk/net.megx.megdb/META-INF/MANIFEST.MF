@@ -32,8 +32,11 @@ Bundle-ClassPath: .,
  lib/commons-codec-1.6.jar,
  lib/mybatis-3.2.0-SNAPSHOT.jar,
  config/,
- net.megx.megdb/lib/postgresql-9.1-901.jdbc4.jar
-Export-Package: net.megx.megdb,
+ net.megx.megdb/lib/postgresql-9.1-901.jdbc4.jar,
+ lib/gson-2.2.1.jar,
+ lib/postgresql-9.1-901.jdbc4.jar
+Export-Package: com.google.gson,
+ net.megx.megdb,
  net.megx.megdb.pubmap,
  net.megx.model,
  net.megx.model.auth,
