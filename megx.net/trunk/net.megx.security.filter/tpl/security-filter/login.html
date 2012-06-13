@@ -1,11 +1,22 @@
+<style>
+.login-form-panel{
+	margin: 5px;
+	padding: 15px;
+	width: 250px;
+}
+.login-label{
+	font-size: 16px;
+	color: rgb(14,78,150);
+}
+</style>
 <form action="/megx.net/j_security_check" method="post">
-	<div style="width: 100%;">
+	<div class="login-form-panel ui-corner-all">
 		<div>
-			<div>Username:</div>
+			<div class="login-label">Username:</div>
 			<input type="text" name="j_username">
 		</div>
 		<div>
-			<div>Password:</div>
+			<div class="login-label">Password:</div>
 			<input type="password" name="j_password">
 		</div>
 		<div style="text-align: right; width: 100%;">

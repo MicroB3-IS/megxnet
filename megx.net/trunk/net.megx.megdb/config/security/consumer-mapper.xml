@@ -46,8 +46,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	<insert id="addConsumer" parameterType="Consumer" useGeneratedKeys="true">
-		insert into auth.consumers (key, secret, oob, name, description, trusted, expiration,  resource, logname, callback_url)
-					values (#{key},#{secret},#{oob}, #{name}, #{description},#{trusted}, #{expirationDate}, #{resource}, #{logname}, #{callbackUrl})
+		insert into auth.consumers (key, secret, oob, name, description, trusted, expiration,  logname, callback_url)
+					values (#{key},#{secret},#{oob}, #{name}, #{description},#{trusted}, #{expirationDate}, #{logname}, #{callbackUrl})
 	</insert>
 	
 	<update id="updateConsumer" parameterType="Consumer">
@@ -58,7 +58,6 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			description = #{description},
 			oob = #{oob},
 			trusted = #{trusted},
-			resource = #{resource},
 			expiration = #{expirationDate},
 			callback_url=#{callbackUrl}
 		WHERE key=#{key}
@@ -74,7 +73,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	<delete id="removeTokensForConsumer" parameterType="string">
-		delete from auth.tokens where consumer_key=#{consumerkey}
+		delete from auth.access_tokens where consumer_key=#{consumerkey}
 	</delete>
 	
 </mapper>

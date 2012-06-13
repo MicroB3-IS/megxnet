@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,10 +48,11 @@ public class AppsManager {
 	
 	
 	public AppsManager(ConsumerService consumerService,
-			TokenService tokenService) {
+			TokenService tokenService, KeySecretProvider keySecretProvider) {
 		super();
 		this.consumerService = consumerService;
 		this.tokenService = tokenService;
+		this.keySecretProvider = keySecretProvider;
 	}
 	
 	@Path("all")
@@ -62,6 +64,7 @@ public class AppsManager {
 			return gson.toJson(consumerService.getConsumersForUser(user));
 		} catch (Exception e) {
 			log.error("Error while fetching applications:",e);
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -80,7 +83,7 @@ public class AppsManager {
 				}
 			}
 			
-			Consumer consumer = consumerService.getConsumer(appKey);
+			Consumer consumer = consumerService.getConsumerForKey(appKey);
 			
 			Token token = new Token();
 			KeySecret keySecret = keySecretProvider.createKeySecretPair();
@@ -98,6 +101,7 @@ public class AppsManager {
 			return gson.toJson(token);
 		}catch (Exception e) {
 			log.error("Failed to generate access token: ", e);
+			e.printStackTrace();
 		}
 		return null;
  	}
@@ -108,35 +112,29 @@ public class AppsManager {
 	public String updateConsumer(
 			@PathParam("key") String appKey,
 			InputStream input, 
-			@Context HttpServletRequest request){
+			@Context HttpServletRequest request,
+			@FormParam("name") String name,
+			@FormParam("description") String description,
+			@FormParam("callbackUrl") String callback,
+			@FormParam("oob") Boolean oob){
 		try{
-			Consumer consumer = consumerService.getConsumer(appKey);
-			StringWriter writer = new StringWriter();
-			Reader reader = new InputStreamReader(input);
+			Consumer consumer = consumerService.getConsumerForKey(appKey);
 			
-			char [] buffer = new char[1024];
-			int r = 0;
-			while((r = reader.read(buffer, 0, buffer.length)) != -1){
-				writer.write(buffer,0,r);
-			}
-			reader.close();
-			
-			JSONObject jsonConsumer = new JSONObject(writer.toString());
-			
-			if(jsonConsumer.has("name"))
-				consumer.setName(jsonConsumer.getString("name"));
-			if(jsonConsumer.has("description"))
-				consumer.setDescription(jsonConsumer.getString("description"));
-			if(jsonConsumer.has("callback"))
-				consumer.setCallbackUrl(jsonConsumer.getString("callback"));
-			if(jsonConsumer.has("oob"))
-				consumer.setOob(jsonConsumer.getBoolean("oob"));
+			if(name != null)
+				consumer.setName(name);
+			if(description != null)
+				consumer.setDescription(description);
+			if(callback != null)
+				consumer.setCallbackUrl(callback);
+			if(oob != null)
+				consumer.setOob(oob);
 			
 			consumerService.updateConsumer(consumer);
 			return  gson.toJson(consumer);
 			
 		}catch (Exception e) {
 			log.error("Unable to update consumer",e);
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -145,7 +143,7 @@ public class AppsManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addConsumer(@FormParam("name") String name,
 			@FormParam("description")String description,
-			@FormParam("callback") String callback,
+			@FormParam("callbackUrl") String callback,
 			@FormParam("oob") Boolean oob, 
 			@Context HttpServletRequest request){
 		try{
@@ -163,6 +161,11 @@ public class AppsManager {
 			consumer.setOob(oob);
 			consumer.setCallbackUrl(callback);
 			
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 3);
+			consumer.setExpirationDate(calendar.getTime());
+			
 			if(callback == null){
 				consumer.setOob(true); // out of band anyway
 			}
@@ -170,6 +173,7 @@ public class AppsManager {
 			return gson.toJson(consumerService.addConsumer(consumer));
 		}catch (Exception e) {
 			log.error("Unable to add consumer",e);
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -186,6 +190,7 @@ public class AppsManager {
 			return gson.toJson(consumer);
 		}catch (Exception e) {
 			log.error("Failed to remove Consumer: ",e);
+			e.printStackTrace();
 		}
 		return null;
 	}

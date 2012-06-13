@@ -36,7 +36,7 @@
 		};
 		
 		this.updateApp = function(app, success, error){
-			this.request(app.key, app, "PUT", undefined, success, error);
+			this.request(app.key, "PUT", app, success, error);
 		};
 		
 		this.removeApp = function(appKey, success, error){

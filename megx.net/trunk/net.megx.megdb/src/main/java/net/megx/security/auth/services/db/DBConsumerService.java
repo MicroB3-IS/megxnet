@@ -27,25 +27,8 @@ import net.megx.security.auth.services.ConsumerService;
 
 public class DBConsumerService extends BaseMegdbService implements ConsumerService{
 	
-	//private ConsumerMapper mapper;
-	
-	//public void setMapper(ConsumerMapper mapper) {
-	//	this.mapper = mapper;
-	//}
 
-	public Consumer getConsumer(final String name) throws Exception {
-		//return mapper.getConsumerForName(name);
-		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
-
-			@Override
-			public Consumer execute(ConsumerMapper mapper) throws Exception {
-				return mapper.getConsumerForName(name);
-			}
-			
-		}, ConsumerMapper.class);
-	}
-
-	public Consumer getConsumerForKey(final String key) throws Exception {
+	public Consumer getConsumer(final String key) throws Exception {
 		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
 
 			@Override
@@ -56,9 +39,20 @@ public class DBConsumerService extends BaseMegdbService implements ConsumerServi
 		}, ConsumerMapper.class);
 	}
 
+	public Consumer getConsumerForKey(final String key) throws Exception {
+		return doInSession(new DBTask<ConsumerMapper, Consumer>() {
+
+			@Override
+			public Consumer execute(ConsumerMapper mapper) throws Exception {
+				System.out.println("GETTING CONSUMER FOR KEY: " + key);
+				return mapper.getConsumerForKey(key);
+			}
+			
+		}, ConsumerMapper.class);
+	}
+
 	
 	public Consumer addConsumer(final Consumer consumer) throws Exception {
-		
 		return doInTransaction(new DBTask<ConsumerMapper, Consumer>() {
 			@Override
 			public Consumer execute(ConsumerMapper mapper) throws Exception {
