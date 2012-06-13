@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.megx.security.auth.model.Consumer;
+import net.megx.model.auth.Consumer;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.UserService;

@@ -7,8 +7,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import net.megx.megdb.pubmap.PubMapArticle;
 import net.megx.megdb.pubmap.PubMapService;
+import net.megx.model.Article;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +42,12 @@ public class PubMapRest {
 	public String getAllArticles() throws ServiceNotFoundException {
 		log.debug("Called pubmap/getAllArticles");
 		// http://localhost:8080/megx.net-web/services/pubmap/getAllArticles
-		List<PubMapArticle> articles = getDBService().getAllArticles();
+		try {
+			List<Article> articles = getDBService().getAllArticles();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//return gson.toJson(articles);
 		return "TODO: articles to json";
 	}

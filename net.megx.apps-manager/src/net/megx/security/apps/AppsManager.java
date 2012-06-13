@@ -18,7 +18,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import net.megx.security.auth.model.Consumer;
+import net.megx.model.auth.Consumer;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.ConsumerService;
