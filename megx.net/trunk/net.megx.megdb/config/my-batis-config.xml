@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- 
-Copyright 2011 Max Planck Institute for Marine Microbiology 
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- -->
+<!-- Copyright 2011 Max Planck Institute for Marine Microbiology Licensed 
+	under the Apache License, Version 2.0 (the "License"); you may not use this 
+	file except in compliance with the License. You may obtain a copy of the 
+	License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by 
+	applicable law or agreed to in writing, software distributed under the License 
+	is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY 
+	KIND, either express or implied. See the License for the specific language 
+	governing permissions and limitations under the License. -->
 <!DOCTYPE configuration
     PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+	<properties resource="net/megx/megdb/mybatis-config.properties">
+		<!-- the inline properties get overwritten by the loaded properties -->
+		<property name="driver" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost/megdb-9" />
+		<property name="username" value="postgres" />
+		<property name="password" value="" />
+	</properties>
+
 	<typeAliases>
-		<typeAlias type="net.megx.security.auth.model.Consumer" alias="Consumer"/>
-		<typeAlias type="net.megx.security.auth.model.Token" alias="Token"/>
-		<typeAlias type="net.megx.security.auth.model.User" alias="User"/>
-		<typeAlias type="net.megx.security.auth.model.Role" alias="Role"/>
-		<typeAlias type="net.megx.security.auth.model.Permission" alias="Permission"/>
-		<typeAlias type="net.megx.security.auth.model.WebResource" alias="WebResource"/>
+		<typeAlias type="net.megx.model.auth.Consumer" alias="Consumer" />
+		<typeAlias type="net.megx.security.auth.model.Token" alias="Token" />
+		<typeAlias type="net.megx.security.auth.model.User" alias="User" />
+		<typeAlias type="net.megx.security.auth.model.Role" alias="Role" />
+		<typeAlias type="net.megx.security.auth.model.Permission"
+			alias="Permission" />
+		<typeAlias type="net.megx.security.auth.model.WebResource"
+			alias="WebResource" />
+
+		<typeAlias type="net.megx.model.Article" alias="Article" />
 	</typeAliases>
+
 	<environments default="development">
-        <environment id="development">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="${development.driver}"/>
-				<property name="url" value="${development.url}"/>
-				<property name="username" value="${development.username}"/>
-				<property name="password" value="${development.password}"/>
-            </dataSource>
-        </environment>
-    </environments>
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+
 	<mappers>
-		<mapper resource="pubmap/pubmap-mapper.xml"/>
-		
+		<mapper resource="pubmap/pubmap-mapper.xml" />
+
 		<!-- security API DB services mappers -->
-		<mapper resource="security/consumer-mapper.xml"/>
-		<mapper resource="security/token-mapper.xml"/>
-		<mapper resource="security/user-mapper.xml"/>
-		<mapper resource="security/web-resources-mapper.xml"/>
+		<mapper resource="security/consumer-mapper.xml" />
+		<mapper resource="security/token-mapper.xml" />
+		<mapper resource="security/user-mapper.xml" />
+		<mapper resource="security/web-resources-mapper.xml" />
 	</mappers>
 </configuration>
