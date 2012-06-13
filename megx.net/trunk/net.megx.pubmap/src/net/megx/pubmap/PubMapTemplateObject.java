@@ -1,5 +1,10 @@
 package net.megx.pubmap;
 
+import java.util.List;
+
+import net.megx.megdb.pubmap.PubMapService;
+import net.megx.model.Article;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.model.content.IContentNode;
@@ -21,14 +26,37 @@ import org.chon.web.api.Response;
 public class PubMapTemplateObject {
 	
 	private static final Log log = LogFactory.getLog(PubMapTemplateObject.class);
+	
+	private PubMapService pubMapService;
 	private Request req;
 	private Response resp;
 	private IContentNode node;
 	
-	public PubMapTemplateObject(Request req, Response resp, IContentNode node) {
+	public PubMapTemplateObject(PubMapService pubMapService, Request req, Response resp, IContentNode node) {
+		this.pubMapService = pubMapService;
 		this.req = req;
 		this.resp = resp;
 		this.node = node;
+	}
+	
+	/**
+	 * Get All articles from database
+	 * eg usage in template
+	 * 
+	 * #foreach($a in $ext.pubmap.allArticles)
+	 * 	 $a.title
+	 * #end
+	 * 
+	 * @return
+	 */
+	public List<Article> getAllArticles() {
+		try {
+			return pubMapService.getAllArticles();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public String hello() {
