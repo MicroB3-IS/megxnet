@@ -11,6 +11,7 @@ import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.SecurityException;
 import net.megx.security.filter.StopFilterException;
 import net.megx.security.oauth.OAuthServices;
+import net.megx.utils.OSGIUtils;
 import net.oauth.OAuthException;
 import net.oauth.OAuthProblemException;
 
@@ -67,10 +68,10 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 
 	@Override
 	protected void doInitialize() {
-		requestService(OAuthServices.class.getName(), new OnServiceAvailable<OAuthServices>() {
+		OSGIUtils.requestService(OAuthServices.class.getName(), this.context,  new OSGIUtils.OnServiceAvailable<OAuthServices>() {
 
 			@Override
-			public void serviceAvailable(OAuthServices service) {
+			public void serviceAvailable(String serviceName, OAuthServices service) {
 				OAuth_1_Security.this.oAuthServices = service;
 				System.out.println("Obtained OAuth services: " + service);
 			}

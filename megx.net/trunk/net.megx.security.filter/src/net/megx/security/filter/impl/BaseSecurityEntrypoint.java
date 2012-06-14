@@ -28,31 +28,6 @@ public abstract class BaseSecurityEntrypoint implements SecurityFilterEntrypoint
 	}
 
 	
-	protected <S> void requestService(String name, final OnServiceAvailable<S> onServiceAvailable){
-		ServiceListener listener = new ServiceListener() {
-			
-			@SuppressWarnings("unchecked")
-			@Override
-			public void serviceChanged(ServiceEvent ev) {
-				ServiceReference reference = ev.getServiceReference();
-				switch(ev.getType()){
-				case ServiceEvent.REGISTERED:
-					try{
-						onServiceAvailable.serviceAvailable((S)context.getService(reference));
-					}catch (Throwable e) {
-						System.out.println(e);
-					}
-				}
-			}
-		};
-		
-		String filter = "(objectclass=" + name + ")";
-		try {
-			context.addServiceListener(listener,filter);
-		} catch (InvalidSyntaxException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	
 	protected abstract void doInitialize();
