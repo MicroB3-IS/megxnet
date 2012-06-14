@@ -2,34 +2,64 @@ package net.megx.model;
 
 import java.util.Date;
 
-public class Article {
-	private String title;
-	private String author;
-	private String journalName;
-	private Date datePublished;
+public interface Article {
+
+	public String getTitle();
+
+	public void setTitle(String title);
+
+	public String getJournalName();
+
+	public void addAuthor();
+	public Author getAuthor(int position);
 	
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	public String getJournalName() {
-		return journalName;
-	}
-	public void setJournalName(String journalName) {
-		this.journalName = journalName;
-	}
-	public Date getDatePublished() {
-		return datePublished;
-	}
-	public void setDatePublished(Date datePublished) {
-		this.datePublished = datePublished;
-	}
+	public void addJournal(Journal journal);
+	public Journal getJournal();
+	
+
+	/**
+	 * @return the publicationMonth
+	 */
+	public String getPublicationMonth();
+
+	/**
+	 * @param publicationMonth
+	 *            the publicationMonth to set
+	 */
+	public void setPublicationMonth(String publicationMonth);
+
+	/**
+	 * @return the publicationYear
+	 */
+	public String getPublicationYear();
+
+	/**
+	 * @param publicationYear
+	 *            the publicationYear to set
+	 */
+	public void setPublicationYear(String publicationYear);
+
+	public String getPMID();
+	
+	public void setPMID(String pmid);
+	
+	public String getDOI();
+	
+	public void setDOI(String doi);
+	
+
+	/**
+	 * @param issue the issue to set
+	 */
+	public void setIssue(String issue);
+	
+	public String getVolume();
+	public void setVolume(String Volume);
+	
+	public String getFirstPage();
+	public void setFirstPage(String page);
+	
+	public String getLastPage();
+	public void setLastPage(String page);
+	
 }

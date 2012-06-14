@@ -42,7 +42,7 @@
 	<modules>
 		<!-- build megx.net core bundle -->
 		<module>net.megx.chon.core</module>
-		<!-- build megdb connection and data model-->
+		<!-- build megdb connection and data model -->
 		<module>net.megx.megdb</module>
 		<!-- build megx.net web services related: TODO refactor => delete -->
 		<module>net.megx.chon.services</module>
@@ -50,7 +50,7 @@
 		<module>net.megx.chon.services.ui</module>
 		<!-- build megx.net velocity templates -->
 		<module>net.megx.chon.template</module>
-		
+
 		<module>net.megx.pubmap</module>
 		<!-- build megx.net oauth and stuff -->
 		<module>net.megx.security.api</module>
@@ -70,6 +70,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>9.1-901.jdbc4</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -175,7 +181,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<resolver>p2</resolver>
+					<!-- <resolver>p2</resolver> -->
 					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 					<environments>
 						<environment>
@@ -183,17 +189,12 @@
 							<ws>win32</ws>
 							<arch>x86</arch>
 						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
+
 					</environments>
 				</configuration>
 			</plugin>
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
 				</plugin> -->
-			<!-- TODO maybe take this out here -->
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>

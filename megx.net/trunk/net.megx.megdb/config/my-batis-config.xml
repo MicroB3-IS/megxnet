@@ -31,6 +31,7 @@
 			alias="WebResource" />
 
 		<typeAlias type="net.megx.model.Article" alias="Article" />
+		<typeAlias type="net.megx.model.Journal" alias="Journal" />
 	</typeAliases>
 
 	<environments default="development">
