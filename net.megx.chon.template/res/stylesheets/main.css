@@ -1,21 +1,4 @@
 /* STRUCTURE */
-a {
-    text-decoration:none;
-    color:rgb(88,153,211);
-    background-color:inherit;
-}
-a:hover {
-    text-decoration:underline;
-    color:rgb(30,93,173);
-}
-a:visited {
-    color:9933CC;
-}
-
-h2 {
- color: cornflowerblue;
-}
-
 #header_area {
     margin:auto;
     width: 60em;
