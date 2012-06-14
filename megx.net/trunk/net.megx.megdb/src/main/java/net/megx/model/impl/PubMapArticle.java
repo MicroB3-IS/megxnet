@@ -37,16 +37,6 @@ public class PubMapArticle implements Article {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see net.megx.model.impl.Article#setTitle(java.lang.String)
-	 */
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see net.megx.model.impl.Article#getJournalName()
 	 */
 	@Override
@@ -55,6 +45,16 @@ public class PubMapArticle implements Article {
 			return journal.getTitle();
 		}
 		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.megx.model.impl.Article#setTitle(java.lang.String)
+	 */
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
@@ -139,6 +139,14 @@ public class PubMapArticle implements Article {
 	public void addAuthor() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int getNumAuthors() {
+		if(authors != null) {
+			return authors.size();
+		}
+		return 0;
 	}
 
 	@Override
