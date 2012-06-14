@@ -14,7 +14,8 @@ p, li, a, blockquote, input, textarea, checkbox, radio, button {font-family: 'Ub
 /* Headings
 -------------------------------------------------------------- */
 h1 					{ font-weight: normal; padding: .7em 0em!important; color: #0e4e96; }	
-h2,h3,h4,h5,h6		{ font-weight: normal; margin: .7em 0em!important; color: #0e4e96; }	
+h3 					{ font-weight: normal; margin: .7em 0em!important; color: #0e4e96; }	
+h2,h4,h5,h6			{ font-weight: normal; margin: .7em 0em!important; color: #00A0FF; }
 span.vers 			{ font-weight: normal; margin: .7em 0em!important; color: #333; font-size: .66em; }
 h1 					{ font-size: 2.1em; }
 h2 					{ font-size: 1.9em; }
@@ -23,6 +24,8 @@ h4 					{ font-size: 1.5em; }
 h5 					{ font-size: 1.3em; }
 h6 					{ font-size: 1.1em; }
 h3 					{ background-image: url(../images/titleDot.png); background-repeat: no-repeat;	background-position: 0em .5em; }
+
+h4 a, h5 a, h6 a, h4 a:hover, h5 a:hover, h6 a:hover {color: #00A0FF; text-decoration:none;}
 
 .marginNone {marigin:0!important;}
 /* Text elements
