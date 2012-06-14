@@ -3,6 +3,29 @@
 
 <product name="Megx.Net Product" uid="megx.net.product.id" id="megx.net.product" useFeatures="false" includeLaunchers="false">
 
+
+   <configIni>
+   </configIni>
+
+   <launcherArgs>
+   </launcherArgs>
+
+   <windowImages/>
+
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6</windows>
+   </vm>
+
+
    <plugins>
       <plugin id="com.choncms.webpage.forms"/>
       <plugin id="com.springsource.javax.servlet"/>
