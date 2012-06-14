@@ -127,6 +127,10 @@ caption     		{ background: #eee; }
 
 
 /* Begin Form Design */
+#feedback {
+	margin: 0px auto;
+	width: 500px;
+}
 form label {
 	display: block;
 	padding: .5em .5em;
@@ -177,10 +181,6 @@ form button {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
-form button:hover, #create button:focus {
-	color: #fff!important;
-}
-
 form button.blue {
 	background-color: #4ea5cd;
 	background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd);
@@ -190,6 +190,9 @@ form button.blue {
 	background-image: linear-gradient(top, #56a9cf, #4ea5cd);
 	color: #b1e1f8!important;
 }
+form button.blue:hover, form button.blue:focus {
+	color: #ffffff!important;
+	}
 /* End Form Design */
 
 
