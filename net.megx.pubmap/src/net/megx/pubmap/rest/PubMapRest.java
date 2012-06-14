@@ -1,5 +1,6 @@
 package net.megx.pubmap.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.ServiceNotFoundException;
@@ -9,6 +10,7 @@ import javax.ws.rs.Produces;
 
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
+import net.megx.pubmap.rest.json.ArticleDTO;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +49,11 @@ public class PubMapRest {
 		log.debug("Called pubmap/getAllArticles");
 		try {
 			List<Article> articles = getDBService().getAllArticles();
-			return gson.toJson(articles);
+			List<ArticleDTO> articleDTOs = new ArrayList<ArticleDTO>();
+			for(Article a : articles) {
+				articleDTOs.add(ArticleDTO.fromArticle(a));
+			}
+			return gson.toJson(articleDTOs);
 		} catch (Exception e) {
 			log.error(e);
 			return errorJSON(e);
