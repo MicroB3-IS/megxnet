@@ -70,11 +70,11 @@ pre,code,tt 		{ font: 1em 'andale mono', 'lucida console', monospace; }
 /*---------------------------------------------------------*/
 /*** Lists 
 -----------------------------------------------------------*/
-li ul,li ol			{ margin: 0!important; padding: .3em 0 .3em .3em; }
-ul, ol				{ margin: 0 0 2em 0; padding-left: 2em; }
+li ul,li ol		{ margin: 0!important; padding: .3em 0 .3em .3em; }
+ul, ol		{ margin: 0 0 2em 0; padding-left: 2em; }
 ul          		{ list-style-type: disk; list-style-position: inside;}
 ol          		{ list-style-type: decimal; list-style-position: inside;}
-li					{ padding: .0em .0em!important; }
+li			{ padding: .0em .0em!important; }
 dl          		{ margin: 0 0 1.5em 0; }
 dl dt       		{ font-weight: bold; }
 dd          		{ margin-left: 0em; display: inline-block;}
@@ -209,9 +209,3 @@ form button.blue:hover, form button.blue:focus {
 	color: #ffffff!important;
 	}
 /* End Form Design */
-
-
-ul.authors {}
-ul.authors li {}
-ul.authors li a {}
-ul.authors li a:hover{}

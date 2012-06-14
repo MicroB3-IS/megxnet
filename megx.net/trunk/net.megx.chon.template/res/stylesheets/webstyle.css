@@ -87,6 +87,7 @@ ul.uldotli li {
 	margin: .5em 0em;
 }
 ul.uldotli li a{color: #333;}
+
 ul.reflistlx li {
 	list-style: none;
 	margin: .5em .5em;
@@ -117,6 +118,16 @@ ul.reflistlx li a:hover {
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
 
+
+
+ul.authors {
+	list-style:none;
+	
+}
+ul.authors li {margin: .5em 0em;}
+ul.authors li a {color:#0000ff; text-decoration: none;}
+ul.authors li a:hover{color:#333;text-decoration: none;}
+ul.authors li p {color:#333;}
 
 
 .footNav {
