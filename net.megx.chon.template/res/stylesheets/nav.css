@@ -1,21 +1,26 @@
+/* Top Navigation Menu (Header) */
 nav {
 	padding: 8em 0 0 0!important;
-	width: 75em;
-	height: 3em;
-	background-image: url(../images/nav.png);
+	width: 74em;
+	height: 3em;/*background-image: url(../images/nav.png);
 	background-repeat: no-repeat;
-	background-position: 22em 7.9em;
+	background-position: 22em 7.9em;*/
 }
 nav ul {
 	float: right;
+	background-color: #e7e7e7;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 0em 1em;
 }
 nav li {
-	float:left;
-	display:inline-block;
-	list-style-type:none;
-	position:relative;
+	float: left;
+	display: inline-block;
+	list-style-type: none;
+	position: relative;
 	margin: 0em .75em!important;
-	overflow:hidden;
+	overflow: hidden;
 	line-height: 2.5em;
 }
 nav li span {
@@ -24,30 +29,28 @@ nav li span {
 }
 nav li a {
 	text-decoration: none;
-	color: #333;	
+	color: #00a0ff;
 }
 nav li a:hover {
 	text-decoration: none;
-	color: #666;	
+	color: #0e4e96;
 }
 nav li:hover {
-	overflow:visible;
+	overflow: visible;
 }
 nav li ul {
-	position:absolute;
-	display:block;
-	left:0px;
+	position: absolute;
+	display: block;
+	left: -1em;
 	top: 2.5em;
 	margin: 0em!important;
 	width: 15em;
 	z-index: 10000000;
 }
 nav li ul li {
-	float:none;
-	margin:0!important;
-	display:block;
-	padding:0 1em 0em!important;
+	float: none;
+	margin: 0!important;
+	display: block;
+	padding: 0 0em 0em .25em!important;
 	width: 13.2em;
-	border-bottom: 1px solid transparent;
-	background:url(../images/li-item.png) no-repeat;
 }

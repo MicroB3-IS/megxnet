@@ -1,14 +1,4 @@
 /* STRUCTURE */
-body {
-    min-width: 800px;
-    font-family:helvetica, arial, sans-serif;
-    font-size: 11pt;
-    font-weight: normal;
-    background-color:white;
-    color:black;
-    margin:auto;
-    text-align:center;
-}
 a {
     text-decoration:none;
     color:rgb(88,153,211);
