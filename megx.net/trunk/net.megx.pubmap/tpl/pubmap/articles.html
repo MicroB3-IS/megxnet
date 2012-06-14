@@ -1,0 +1,18 @@
+<h1>articles.html</h1>
+<div style="text-align: right; margin-right: 30px;">
+	<a href="..">Return to Pubmap Home</a>
+</div>
+<div id="content">
+	<ul>
+		#foreach($article in  $ext.pubmap.allArticles)
+			<li style="padding: 5px;">
+			<div style="margin-top: 10px">
+				<a href="">$article.title</a>
+			</div>
+			<div>
+				TODO: arthical important properties, eg. publicationYear: $article.publicationYear
+			</div>
+			</li>
+		#end
+	</ul>
+</div>

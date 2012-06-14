@@ -30,12 +30,26 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService{
 		Article art = new PubMapArticle();
 		art.setTitle("articele Title");
 		art.setDOI("doi/10.journal.article");
+		art.setPublicationYear("2011");
 		Journal j = new PubMapJournal();
 		j.setTitle("petrational geographic");
 		art.addJournal(j);
 		
 		List<Article> articles = new ArrayList<Article>();
 		articles.add(art);
+		
+		
+		
+		art = new PubMapArticle();
+		art.setTitle("Aticle title 2 lonnger title test on articlet. , das... dasd as");
+		art.setDOI("doi/10.journal.article");
+		art.setPublicationYear("2012");
+		j = new PubMapJournal();
+		j.setTitle("Journal Titel 2... ");
+		art.addJournal(j);
+		
+		articles.add(art);
+		
 		return articles;
 		
 //		SqlSession session = sessionFactory.openSession();
