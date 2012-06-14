@@ -9,6 +9,8 @@ body, input, form, select, textarea, button, submit, label			{
 header, footer, article, section, nav, menu, hgroup {  
    display: block;  
 } 
+h1,h2,h3,h4,h5,h6, {font-family: 'Ubuntu', sans-serif;}
+p, li, a, blockquote, input, textarea, checkbox, radio, button {font-family: 'Ubuntu', sans-serif; font-weight: normal!important;}
 /* Headings
 -------------------------------------------------------------- */
 h1 					{ font-weight: normal; padding: .7em 0em!important; color: #0e4e96; }	
@@ -121,3 +123,82 @@ caption     		{ background: #eee; }
 .debug4 { background:#fff; }
 .FL {float:left;} 
 .FR{float:right;} 
+
+
+
+/* Begin Form Design */
+form label {
+	display: block;
+	padding: .5em .5em;
+	font-size: 1em;
+	text-align: left;
+	background-color: transparent;
+}
+form input {
+	display: block;
+	padding: .5em .5em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 30em;
+	line-height: 13px;
+}
+form textarea {
+	display: block;
+	padding: .5em .5em;
+	margin:  .5em 0em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 30em;
+	height: 3em;
+}
+form input disabled, form input disabled:hover {
+	display: block;
+	padding: .5em .5em;
+	border: .1em solid #e7e7e7;
+	color: #666;
+}
+form input:hover {
+	display: block;
+	padding: .5em .5em;
+	border: .1em solid #e7e7e7;
+	color: #333;
+}
+form button {
+	display: block;
+	padding: .1em 1em .1em 1em!important;
+	font-weight: bold;
+	cursor: pointer;
+	text-align: center;
+	line-height: 25px;
+	min-width: 54px;
+	outline: 0;
+	border: .1em solid rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+form button:hover, #create button:focus {
+	color: #fff!important;
+}
+
+form button.blue {
+	background-color: #4ea5cd;
+	background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -moz-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -ms-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -o-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: linear-gradient(top, #56a9cf, #4ea5cd);
+	color: #b1e1f8!important;
+}
+/* End Form Design */
+
+
+
+
+
+
+
+ul.authors {}
+ul.authors li {}
+ul.authors li a {}
+ul.authors li a:hover{}
