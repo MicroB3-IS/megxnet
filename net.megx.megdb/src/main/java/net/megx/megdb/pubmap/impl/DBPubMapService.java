@@ -1,5 +1,6 @@
 package net.megx.megdb.pubmap.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -10,6 +11,8 @@ import net.megx.megdb.pubmap.PubMapService;
 import net.megx.megdb.pubmap.mappers.PubMapMapper;
 import net.megx.model.Article;
 import net.megx.model.Journal;
+import net.megx.model.impl.PubMapArticle;
+import net.megx.model.impl.PubMapJournal;
 
 public class DBPubMapService extends BaseMegdbService implements PubMapService{
 
@@ -24,20 +27,29 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService{
 			}
 		}, PubMapMapper.class);
 		*/
-		List<Article> articles = null;
+		Article art = new PubMapArticle();
+		art.setTitle("articele Title");
+		art.setDOI("doi/10.journal.article");
+		Journal j = new PubMapJournal();
+		j.setTitle("petrational geographic");
+		art.addJournal(j);
 		
-		SqlSession session = sessionFactory.openSession();
-		
-		try {
-			
-			session.commit();
-		} catch (Exception e) {
-			session.rollback();
-			throw e;
-		} finally{
-			session.close();
-		}
+		List<Article> articles = new ArrayList<Article>();
+		articles.add(art);
 		return articles;
+		
+//		SqlSession session = sessionFactory.openSession();
+//		
+//		try {
+//			
+//			session.commit();
+//		} catch (Exception e) {
+//			session.rollback();
+//			throw e;
+//		} finally{
+//			session.close();
+//		}
+//		return articles;
 	}
 	
 	@Override
