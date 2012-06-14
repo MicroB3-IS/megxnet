@@ -108,12 +108,24 @@ input 				{padding:2px 5px 3px 5px; margin-bottom:10px!important;margin-top:1px!
 textarea 			{padding:3px 5px 4px 5px; margin-bottom:10px!important;}
 #button				{padding:2px 5px 3px 5px; margin-bottom:10px!important;}
 
-/* Tables
--------------------------------------------------------------- 
-thead th          	{ font-weight: bold; }
-tr.even td  		{ background: #333; }
-tr, th, td 			{ text-align: left; vertical-align:top; }
-caption     		{ background: #eee; }
+/* tables design */
+table							{border-collapse: collapse;}
+tr, td								{padding: 1px 0px!important;}
+thead tr th						{font-weight: bold;}
+
+tbody tr td						{font-weight: normal;}
+tbody tr td ul, tbody tr td ol			{font-weight: normal; margin:0px; padding: 0px;}
+tbody tr td ul li, tbody tr td ol li		{font-weight: normal; margin:10px 0px 10px 0px; padding: 0px; text-indent: 0px;}
+tbody tr.even td					{background-color: #fff;}
+tbody tr.odd td					{background-color: #f8f8f8;}
+
+tbody tr:nth-child(even) 			{background: #fdfdfd;}
+tbody tr:nth-child(odd) 			{background: #ffffff; }
+
+tr, th, td 						{text-align: left; vertical-align:top;}
+caption							{background: #eee;}
+tfoot tr td							{font-weight: bold; color: #999;}
+
 
 /* Misc Classes
 ---------------------------------------------------------------------*/
@@ -194,11 +206,6 @@ form button.blue:hover, form button.blue:focus {
 	color: #ffffff!important;
 	}
 /* End Form Design */
-
-
-
-
-
 
 
 ul.authors {}
