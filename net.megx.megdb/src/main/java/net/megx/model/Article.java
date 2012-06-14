@@ -12,6 +12,7 @@ public interface Article {
 
 	public void addAuthor();
 	public Author getAuthor(int position);
+	public int getNumAuthors();
 	
 	public void addJournal(Journal journal);
 	public Journal getJournal();
