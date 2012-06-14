@@ -1,18 +1,18 @@
 {
 	path: '$resources/net.megx.security.filter',
 	filter:{
-		enabled: false,
+		enabled: true,
 		entrypoints:[
 			{
 				name: 'standardLogin',
 				class: 'net.megx.security.filter.impl.WebLoginSecurity',
-				urlPattern: '/(apps|services/|protected/|j_security_check).*',
+				urlPattern: '/(apps|services/|protected/|oauth/authorize|j_security_check).*',
 				order: 1
 			},
 			{
 				name: 'oauth_v1_security',
 				class: 'net.megx.security.filter.impl.OAuth_1_Security',
-				urlPattern: '/res/.*|',
+				urlPattern: '/services/(res|pubmap).*',
 				order: 0
 			}
 		],

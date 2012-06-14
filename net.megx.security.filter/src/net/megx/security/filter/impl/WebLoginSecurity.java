@@ -15,6 +15,7 @@ import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.filter.SecurityException;
 import net.megx.security.filter.StopFilterException;
+import net.megx.utils.OSGIUtils;
 
 public class WebLoginSecurity extends BaseSecurityEntrypoint{
 
@@ -46,10 +47,9 @@ public class WebLoginSecurity extends BaseSecurityEntrypoint{
 
 	@Override
 	protected void doInitialize() {
-		requestService(WebLoginHandler.class.getName(), new OnServiceAvailable<WebLoginHandler>() {
-
+		OSGIUtils.requestService(WebLoginHandler.class.getName(), this.context, new OSGIUtils.OnServiceAvailable<WebLoginHandler>() {
 			@Override
-			public void serviceAvailable(WebLoginHandler service) {
+			public void serviceAvailable(String serviceName, WebLoginHandler service) {
 				WebLoginSecurity.this.webLoginHandler = service;
 			}
 			
