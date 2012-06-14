@@ -12,8 +12,12 @@ import net.megx.model.Article;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+
+import com.google.gson.Gson;
 
 @Path("/pubmap")
 public class PubMapRest {
@@ -21,7 +25,7 @@ public class PubMapRest {
 	
 	private BundleContext bundleContext;
 	
-	//private Gson gson = new Gson();	
+	private Gson gson = new Gson();	
 
 	public PubMapRest(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
@@ -41,14 +45,24 @@ public class PubMapRest {
 	@Produces("application/json")
 	public String getAllArticles() throws ServiceNotFoundException {
 		log.debug("Called pubmap/getAllArticles");
-		// http://localhost:8080/megx.net-web/services/pubmap/getAllArticles
 		try {
 			List<Article> articles = getDBService().getAllArticles();
+			return gson.toJson(articles);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
+			return errorJSON(e);
 		}
-		//return gson.toJson(articles);
-		return "TODO: articles to json";
+	}
+
+	private String errorJSON(Exception e) {
+		JSONObject err = new JSONObject();
+		try {
+			err.put("status", "ERROR");
+			err.put("message", e.getMessage());
+			return err.toString();
+		} catch (JSONException e1) {
+			log.error(e);
+		}
+		return null;
 	}
 }
