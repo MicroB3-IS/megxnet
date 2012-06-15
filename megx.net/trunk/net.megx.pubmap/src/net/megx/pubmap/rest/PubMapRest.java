@@ -14,6 +14,7 @@ import net.megx.pubmap.rest.json.ArticleDTO;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
@@ -59,12 +60,32 @@ public class PubMapRest {
 			return errorJSON(e);
 		}
 	}
+	
+	//For debug in browser, pretty print the json ...
+	//TODO: remove this method!
+	@GET
+	@Path("getAllArticlesHtml")
+	@Produces("text/html")
+	public String getAllArticlesHtml() throws ServiceNotFoundException, JSONException {
+		String s = getAllArticles();
+		if(s.trim().startsWith("[")) {
+			s = new JSONArray(s).toString(4); 
+		} else {
+			s = new JSONObject(s).toString(4);
+		}
+		return "<pre>" + s + "</pre>";
+	}
 
 	private String errorJSON(Exception e) {
 		JSONObject err = new JSONObject();
 		try {
 			err.put("status", "ERROR");
 			err.put("message", e.getMessage());
+			JSONArray stackTrace = new JSONArray();
+			for(StackTraceElement ste : e.getStackTrace()) {
+				stackTrace.put(ste.toString());
+			}
+			err.put("stackTrace", stackTrace);
 			return err.toString();
 		} catch (JSONException e1) {
 			log.error(e);
