@@ -92,4 +92,13 @@ public class User{
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "User [login=" + login + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", initials=" + initials
+				+ ", description=" + description + ", joinedOn=" + joinedOn
+				+ ", disabled=" + disabled + ", roles=" + roles + "]";
+	}
+	
+	
 }

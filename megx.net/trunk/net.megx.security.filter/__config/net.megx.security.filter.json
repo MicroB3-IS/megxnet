@@ -6,7 +6,7 @@
 			{
 				name: 'standardLogin',
 				class: 'net.megx.security.filter.impl.WebLoginSecurity',
-				urlPattern: '/(apps|services/|protected/|oauth/authorize|j_security_check).*',
+				urlPattern: '/(apps|services/|protected/|oauth/authorize|admin|j_security_check).*',
 				order: 1
 			},
 			{

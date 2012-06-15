@@ -9,10 +9,6 @@ import net.megx.security.filter.SecurityFilterEntrypoint;
 
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
 
 public abstract class BaseSecurityEntrypoint implements SecurityFilterEntrypoint{
 

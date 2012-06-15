@@ -16,6 +16,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 	private String usernameField = "j_username";
 	private String passwordField = "j_password";
 	private String loginEndpointUrl = "/j_security_check";
+	private String logoutEndpointUrl = "/admin/logout\\.do";
 	
 	private UserService userService;
 	
@@ -43,7 +44,11 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 						e.printStackTrace();
 					}
 				}
-			}
+			} 
+		}
+		if(getRequestPath(request).matches(logoutEndpointUrl)){
+			WebContextUtils.clearSecurityContext(request);
+			return null;
 		}
 		return authentication;
 	}

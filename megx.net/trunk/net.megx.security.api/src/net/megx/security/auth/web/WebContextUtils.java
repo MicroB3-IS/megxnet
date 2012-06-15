@@ -3,11 +3,11 @@ package net.megx.security.auth.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.impl.ChonEnabledSecurityContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import net.megx.security.auth.SecurityContext;
-import net.megx.security.auth.impl.SecurityContextContainer;
 
 public class WebContextUtils {
 
@@ -35,7 +35,11 @@ public class WebContextUtils {
 		if (old != null) {
 			old.clearAuthentication();
 		}
-		HttpSession session = request.getSession(createSession);
+		
+		HttpSession session = request.getSession();
+		if(session == null){
+			session = request.getSession(createSession);
+		}
 		if (session != null) {
 			System.out.println(" >>> SESSION ID: " + session.getId());
 			log.debug("Storing SecurityContext " + securityContext + " in session [" + session.getId() + "]");
@@ -52,6 +56,12 @@ public class WebContextUtils {
 		if (session != null) {
 			log.debug("Clearing SecurityContext in session: " + session.getId());
 			System.out.println(" >>> SESSION ID: " + session.getId());
+			SecurityContext context = getSecurityContext(request);
+			if(context != null){
+				if(context.getAuthentication() != null){
+					context.clearAuthentication();
+				}
+			}
 			session.setAttribute(SECURITY_CONTEXT_SESSION_ATTR, null);
 		}
 	}
@@ -60,9 +70,10 @@ public class WebContextUtils {
 		log.debug("Requesting new securityContext...");
 		System.out.println("NEW SECURITY CONTEXT");
 		clearSecurityContext(request);
-		SecurityContext context = new SecurityContextContainer();
-		replaceSecurityContext(context, request, true);
+		SecurityContext context = new ChonEnabledSecurityContext(request.getSession());
+		replaceSecurityContext(context, request, false);
 		return context;
 	}
+	
 
 }

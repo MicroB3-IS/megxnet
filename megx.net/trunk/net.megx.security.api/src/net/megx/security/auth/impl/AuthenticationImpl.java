@@ -27,5 +27,8 @@ public class AuthenticationImpl implements Authentication{
 		return roles;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "AuthenticationImpl [user=" + user + "]";
+	}
 }

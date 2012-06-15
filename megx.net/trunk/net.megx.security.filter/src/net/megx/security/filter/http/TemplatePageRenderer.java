@@ -15,7 +15,6 @@ public class TemplatePageRenderer implements INodeRenderer{
 	@Override
 	public void render(IContentNode contentNode, Request request, Response response,
 			Application application, ServerInfo serverInfo) {
-		System.out.println("+++++++++++ here +++++++++++++++");
 		log.debug("Ok, got to render.");
 		if(contentNode instanceof TemplatePageNode){
 			log.debug("Trying to render...");

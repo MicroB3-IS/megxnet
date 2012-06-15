@@ -17,14 +17,14 @@ public class WebUtils {
 			requestedPath += "?" + request.getQueryString();
 		}
 		
-		System.out.println("------------------------------------");
+		//System.out.println("------------------------------------");
 		//System.out.println("RequestURI: "+request.getRequestURI());
 		//System.out.println("RequestURL: "+ request.getRequestURL().toString());
 		//System.out.println("ContextPAth: "+request.getContextPath());
 		//System.out.println("Query String: " + request.getQueryString());
 		//System.out.println("------------------");
-		System.out.println("REQUESTED_PATH: " + requestedPath);
-		System.out.println("------------------------------------");
+		//System.out.println("REQUESTED_PATH: " + requestedPath);
+		//System.out.println("------------------------------------");
 		return requestedPath;
 	}
 	

@@ -49,6 +49,8 @@ public class SecurityFilter implements Filter{
 	List<EntryPointWrapper> entryPoints = new ArrayList<SecurityFilter.EntryPointWrapper>();
 	private boolean enabled;
 	
+	private String ignorePattern = ".*\\.(js|png|jpg|jpeg|gif|tiff)";
+	
 	public SecurityFilter(BundleContext context, JSONObject bundleConfig) {
 		super();
 		this.context = context;
@@ -56,9 +58,7 @@ public class SecurityFilter implements Filter{
 	}
 
 	@Override
-	public void destroy() {
-		
-	}
+	public void destroy() {}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -67,6 +67,20 @@ public class SecurityFilter implements Filter{
 		if(request instanceof HttpServletRequest && response instanceof HttpServletResponse){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			
+			String requestPath = WebUtils.getRequestPath(httpRequest, false); 
+			
+			if(requestPath.matches(ignorePattern)){
+				log.debug("Ignored path: " + requestPath);
+				chain.doFilter(request, response);
+				return;
+			}
+			if(httpRequest.getSession() != null){
+				log.debug("Session at filter start: " + httpRequest.getSession().getId());
+			}else{
+				log.debug("No session at filter start");
+			}
+			//enabled = false;
 			if(!enabled){
 				log.debug("Secuirty filter is not enabled. Will pass the request to the chain.");
 				chain.doFilter(request, response);
@@ -75,7 +89,7 @@ public class SecurityFilter implements Filter{
 			boolean hasMatched = false;
 			for(EntryPointWrapper entryPoint: entryPoints){
 					log.debug(String.format("Matching enty-point %s",entryPoint.name));
-					if(entryPoint.matches(WebUtils.getRequestPath(httpRequest, false))){
+					if(entryPoint.matches(requestPath)){
 						log.debug("\t -> match");
 						hasMatched = true;
 						try {
@@ -98,31 +112,22 @@ public class SecurityFilter implements Filter{
 			}
 			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
 			if(context != null){
-				//if(checkRedirect(context, httpRequest, httpResponse)){
-				//	log.debug("Redirecting to last request URL...");
-				//	return;
-				//}
 				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
 			}
 			log.debug("Security filter - pass chain.");
+			if(httpRequest.getSession() != null){
+				log.debug("Session at filter end: " + httpRequest.getSession().getId());
+			}else{
+				log.debug("No session at filter end");
+			}
+			log.debug("Security filter end.");
 			chain.doFilter(httpRequest, httpResponse);
 		}else{
 			throw new ServletException("Wrong Request Type.");
 		}
-		
-		log.debug("Security filter end.");
 	}
 	
-	protected boolean checkRedirect(SecurityContext context, HttpServletRequest request, HttpServletResponse response) throws IOException{
-		String redirectURL = context.getLastRequestedURL();
-		if(redirectURL != null){
-			context.storeLastRequestedURL(null);
-			log.debug(" ### REDIRECT -> " + redirectURL);
-			response.sendRedirect(redirectURL);
-			return true;
-		}
-		return false;
-	}
+	
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		log.debug("Exception: ",e);
@@ -175,12 +180,12 @@ public class SecurityFilter implements Filter{
 		for(WebResource resource: resources){
 			authenticationManager.checkAuthentication(context.getAuthentication(), resource);
 		}
+		log.debug("Authentication successful: " + context.getAuthentication());
 	}
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {		
 		log.debug("Initializing security filter chain...");
-		System.out.println("BOOM!");
 		try {
 			JSONObject filterConfig = bundleConfig.getJSONObject("filter");
 			if(log.isDebugEnabled()){
@@ -196,6 +201,9 @@ public class SecurityFilter implements Filter{
 			}
 			log.debug("Entrypoint built.");
 			Collections.sort(this.entryPoints);
+			
+			
+			ignorePattern = filterConfig.optString("ignorePattern", ignorePattern);
 			
 			OSGIUtils.requestService(AuthenticationManager.class.getName(), context, 
 					new OSGIUtils.OnServiceAvailable<AuthenticationManager>() {
@@ -215,7 +223,6 @@ public class SecurityFilter implements Filter{
 						public void serviceAvailable(String serviceName, WebResourcesService service) {
 							SecurityFilter.this.resourcesService = service;
 							log.debug("Obtained WebResourcesService instance:  " + service);
-							System.out.println("Obtained WebResourcesService instance:  " + service);
 						}
 					});
 			
@@ -278,7 +285,6 @@ public class SecurityFilter implements Filter{
 		}
 
 		public boolean matches(String path){
-			System.out.println(String.format("\t matching '%s' to pattern '%s'",path, urlPattern));
 			return path.matches(urlPattern);
 		}
 

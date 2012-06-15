@@ -44,7 +44,6 @@ public class DBConsumerService extends BaseMegdbService implements ConsumerServi
 
 			@Override
 			public Consumer execute(ConsumerMapper mapper) throws Exception {
-				System.out.println("GETTING CONSUMER FOR KEY: " + key);
 				return mapper.getConsumerForKey(key);
 			}
 			

@@ -9,7 +9,7 @@ public class SecurityContextContainer implements SecurityContext{
 	private String lastRequest;
 	
 	public SecurityContextContainer() {
-		System.out.println("NEW CONTEXT");
+		
 	}
 	
 	@Override
@@ -24,7 +24,9 @@ public class SecurityContextContainer implements SecurityContext{
 
 	@Override
 	public void setAuthentication(Authentication authentication) {
-		this.authentication = authentication;
+		if(this.authentication == null){
+			this.authentication = authentication;
+		}
 	}
 
 	@Override
