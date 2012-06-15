@@ -107,7 +107,7 @@ public class ArticleDTO {
 		rv.identifiers = new HashMap<String, String>();
 		rv.identifiers.put("doi", a.getDOI());
 		rv.identifiers.put("pmid", a.getPMID());
-		rv.abstractUrl = "what is abstractUrl?";
+		rv.abstractUrl = ":::TODO:::";
 		rv.institute = author.getInstitute();
 		return rv;
 	}
