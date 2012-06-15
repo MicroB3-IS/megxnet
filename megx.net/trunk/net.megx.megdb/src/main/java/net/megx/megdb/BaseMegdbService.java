@@ -99,12 +99,6 @@ public class BaseMegdbService {
 		sessionFactory = factory;
 	}
 	
-	/*
-	 * TODO: this is a short term hack until discussed better solution with pavle
-	 */
-	public SqlSessionFactory getSessionFactory() {
-		return this.sessionFactory;
-	}
 	
 	protected <M,R> R  doInTransaction(Task<M, R> task, Class<M> mapperClass) throws Exception{
 		SqlSession session = sessionFactory.openSession();

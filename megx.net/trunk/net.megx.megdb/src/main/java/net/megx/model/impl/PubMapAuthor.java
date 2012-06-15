@@ -9,6 +9,7 @@ public class PubMapAuthor implements Author {
 	private String initials;
 	private Gender sex;
 	private String institute;
+	private String sexCode = "9";
 
 	@Override
 	public String getFirstName() {
@@ -72,7 +73,32 @@ public class PubMapAuthor implements Author {
 	public void setSex(Gender sex) {
 		this.sex = sex;
 	}
+	
+	public void setSexCode(String sex) {
+		switch (Integer.parseInt(sex)) {
+		case 1:
+			this.sex = Gender.MALE;
+			break;
 
+		case 2:
+			this.sex = Gender.FEMALE;
+			break;
+
+		case 9:
+			this.sex = Gender.NOT_APPLICABLE;
+			break;
+		default:
+			this.sex = Gender.UNKNOWN;
+			break;
+		}
+	}
+
+	public String getSexCode() {
+		return String.valueOf(sex.getCode());
+	}
+	
+	
+	
 	@Override
 	public String getInstitute() {
 		return this.institute;
@@ -83,6 +109,16 @@ public class PubMapAuthor implements Author {
 		if (institute != null) {
 			this.institute = institute.trim();
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PubMapAuthor [firstName=").append(firstName)
+				.append(", lastName=").append(lastName).append(", initials=")
+				.append(initials).append(", sex=").append(sex)
+				.append(", institute=").append(institute).append("]");
+		return builder.toString();
 	}
 
 }

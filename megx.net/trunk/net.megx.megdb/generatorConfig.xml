@@ -9,34 +9,43 @@
 		<jdbcConnection driverClass="org.postgresql.Driver"
 			connectionURL="jdbc:postgresql://localhost/megdb-9" userId="postgres"
 			password="" />
+			
 		<javaModelGenerator targetPackage="net.megx.megdb.beans"
 			targetProject="net.megx.megdb" />
 		<sqlMapGenerator targetPackage="net.megx.megdb.mappers"
 			targetProject="net.megx.megdb" />
+			
 		<javaClientGenerator targetPackage="net.megx.megdb.services"
 			targetProject="net.megx.megdb" type="XMLMAPPER" />
 
 		<table schema="core" modelType="flat" tableName="articles"
-			domainObjectName="Article" enableSelectByExample="false"
+			domainObjectName="ArticleDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
-			<columnOverride column="abstract" property="articleAbstract" />
-			<columnOverride column="pdf" javaType="String"/>
+			<property name="rootInterface" value="net.megx.model.Article"/>
+			<columnOverride column="abstract" property="abstractText" javaType="String"/>
+			<columnOverride column="journal" property="journal" javaType="net.megx.model.Journal"/>
+			<columnOverride column="pdf" javaType="String" jdbcType="VARCHAR"/>
 			<columnOverride column="linkout" javaType="String"/>
-			<columnOverride column="html_fulltext" javaType="String"/>
-			<columnOverride column="html_Abstract" javaType="String"/>
-			<columnOverride column="yr" property="year"/>
-			<columnOverride column="mon" property="month"/>
+			<columnOverride column="pubstatus" property="pubStatus" javaType="String"/>
+			<columnOverride column="firstpage" property="firstPage" javaType="String"/>
+			<columnOverride column="lastpage" property="lastPage" javaType="String"/>
+			<columnOverride column="html_fulltext" property="fullTextHTML" javaType="String" jdbcType="VARCHAR"/>
+			<columnOverride column="html_abstract" property="abstractHTML" javaType="String" jdbcType="VARCHAR"/>
+			<columnOverride column="yr" property="publicationYear"/>
+			<columnOverride column="mon" property="publicationMonth"/>
 		</table>
 		
 		<table schema="core" modelType="flat" tableName="journals"
 			domainObjectName="JournalDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
+			<property name="rootInterface" value="net.megx.model.Journal"/>
 			<columnOverride column="homepage" javaType="String"/>
 		</table>
 		
 		<table schema="core" modelType="flat" tableName="authors"
 			domainObjectName="AuthorDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
+			<property name="rootInterface" value="net.megx.model.Author"/>
 			<columnOverride column="sex" javaType="String"/>
 		</table>
 		

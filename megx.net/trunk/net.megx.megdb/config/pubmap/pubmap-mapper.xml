@@ -5,7 +5,30 @@
 
 <mapper namespace="net.megx.megdb.pubmap.mappers.PubMapMapper">
 
-	<resultMap id="JournalResultMap" type="net.megx.model.Journal">
+	<!-- author, journal, sample mapping missing -->
+	<resultMap id="articleMap" type="net.megx.model.Article">
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="pubstatus" jdbcType="VARCHAR" property="pubStatus" />
+		<result column="linkout" jdbcType="VARCHAR" property="linkout" />
+		<result column="journal" jdbcType="VARCHAR" property="journal" />
+		<result column="issue" jdbcType="VARCHAR" property="issue" />
+		<result column="volume" jdbcType="VARCHAR" property="volume" />
+		<result column="yr" jdbcType="VARCHAR" property="publicationYear" />
+		<result column="mon" jdbcType="VARCHAR" property="publicationMonth" />
+		<result column="firstpage" jdbcType="VARCHAR" property="firstPage" />
+		<result column="lastpage" jdbcType="VARCHAR" property="lastPage" />
+		<result column="abstract" jdbcType="VARCHAR" property="abstractText" />
+		<result column="published" jdbcType="BIT" property="published" />
+		<result column="pdf" jdbcType="VARCHAR" property="pdf" />
+		<result column="html_abstract" jdbcType="VARCHAR" property="abstractHTML" />
+		<result column="html_fulltext" jdbcType="VARCHAR" property="fullTextHTML" />
+		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+		<result column="updated" jdbcType="TIMESTAMP" property="updated" />
+		<result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+	</resultMap>
+
+	<resultMap id="journalMap" type="net.megx.model.Journal">
 		<id column="title" jdbcType="VARCHAR" property="title" />
 		<result column="publisher" jdbcType="VARCHAR" property="publisher" />
 		<result column="iso_abbr" jdbcType="VARCHAR" property="isoAbbr" />
@@ -17,44 +40,264 @@
 		<result column="pubstart" jdbcType="VARCHAR" property="pubstart" />
 		<result column="lang" jdbcType="VARCHAR" property="lang" />
 		<result column="nlmid" jdbcType="VARCHAR" property="nlmid" />
-		<!-- 
-		<result column="created" jdbcType="TIMESTAMP" property="created" />
-		<result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-		<result column="updated" jdbcType="TIMESTAMP" property="updated" />
-		<result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
-		 -->
+		<!-- <result column="created" jdbcType="TIMESTAMP" property="created" /> 
+			<result column="created_by" jdbcType="VARCHAR" property="createdBy" /> <result 
+			column="updated" jdbcType="TIMESTAMP" property="updated" /> <result column="updated_by" 
+			jdbcType="VARCHAR" property="updatedBy" /> -->
 	</resultMap>
 
-	<resultMap type="Article" id="article_map">
-		<result property="title" column="db_title" />
-		<!-- TODO: -->
+	<resultMap id="authorMap" type="net.megx.model.Author">
+		<id column="first_name" jdbcType="VARCHAR" property="firstName" />
+		<id column="last_name" jdbcType="VARCHAR" property="lastName" />
+		<id column="initials" jdbcType="VARCHAR" property="initials" />
+		<id column="sex" jdbcType="CHAR" javaType="String" property="sexCode" />
+		<result column="institute" jdbcType="VARCHAR" property="institute" />
 	</resultMap>
 
-	<select id="getAllArticles" resultMap="article_map">
-		select * from some.table
+	<sql id="Article_Column_List">
+		id, id_code, title, pubstatus, linkout, journal, issue,
+		volume, yr, mon,
+		firstpage,
+		lastpage, abstract, published, pdf,
+		html_abstract, html_fulltext, created,
+		created_by,
+		updated, updated_by
+	</sql>
+
+	<sql id="Author_Column_List">
+		first_name, last_name, initials, sex, institute
+	</sql>
+
+	<select id="selectArticle" parameterType="Article" resultMap="articleMap">
+		select
+		<include refid="Article_Column_List" />
+		from core.articles
+		<choose>
+			<when test="doi != null">
+				where id = #{doi,jdbcType=VARCHAR}
+				and id_code =
+				'doi'
+			</when>
+			<otherwise>
+				where id = #{pmid,jdbcType=VARCHAR}
+				and id_code = 'pmid'
+			</otherwise>
+		</choose>
 	</select>
 
-	<insert id="addArticle" parameterType="Article">
-		insert into core.articles (id, id_code, title,
-		journal,
-		issue, volume, yr,
-		mon
-		)
-		values (#{DOI,jdbcType=VARCHAR}, 'doi',
-		#{title,jdbcType=VARCHAR},
-		#{journal.title,jdbcType=VARCHAR},
-		#{issue,jdbcType=VARCHAR},
-		#{volume,jdbcType=VARCHAR},
-		#{publicationYear,jdbcType=VARCHAR},
-		#{publicationMonth,jdbcType=VARCHAR}
-		)
+	<select id="selectAuthor" parameterType="Author" resultMap="authorMap">
+		select
+		<include refid="Author_Column_List" />
+		from core.authors
+		where first_name = #{firstName,jdbcType=VARCHAR}
+		and
+		last_name = #{lastName,jdbcType=VARCHAR}
+		and initials =
+		#{initials,jdbcType=VARCHAR}
+		and sex = #{sexCode,jdbcType=VARCHAR}
+	</select>
 
+
+	<delete id="deleteArticle" parameterType="Article">
+		delete from
+		core.articles
+		<choose>
+			<when test="doi != null">
+				where id = #{doi,jdbcType=VARCHAR}
+				and id_code =
+				'doi'
+			</when>
+			<otherwise>
+				where id = #{pmid,jdbcType=VARCHAR}
+				and id_code = 'pmid'
+			</otherwise>
+		</choose>
+	</delete>
+
+	<delete id="deleteAuthor" parameterType="Author">
+		<!-- WARNING - @mbggenerated This element is automatically generated by 
+			MyBatis Generator, do not modify. This element was generated on Fri Jun 15 
+			03:30:10 CEST 2012. -->
+		delete from core.authors
+		where first_name = #{firstName,jdbcType=VARCHAR}
+		and last_name = #{lastName,jdbcType=VARCHAR}
+		and initials = #{initials,jdbcType=VARCHAR}
+		and sex = #{sexCode,jdbcType=VARCHAR}
+	</delete>
+
+
+
+	<insert id="insertArticle" parameterType="Article">
+		insert into core.articles (
+		<include refid="Article_Column_List" />
+		)
+		<choose>
+			<when test="doi != null">
+				#{doi,jdbcType=VARCHAR},
+				'doi',
+			</when>
+			<otherwise>
+				#{pmid,jdbcType=VARCHAR},
+				'pmid',
+			</otherwise>
+		</choose>
+		#{title,jdbcType=VARCHAR},
+		#{pubStatus,jdbcType=VARCHAR},
+		#{linkout,jdbcType=VARCHAR}, #{journal,jdbcType=VARCHAR},
+		#{issue,jdbcType=VARCHAR}, #{volume,jdbcType=VARCHAR},
+		#{publicationYear,jdbcType=VARCHAR},
+		#{publicationMonth,jdbcType=VARCHAR},
+		#{firstPage,jdbcType=VARCHAR},
+		#{lastPage,jdbcType=VARCHAR},
+		#{abstractText,jdbcType=VARCHAR},
+		#{published,jdbcType=BIT},
+		#{pdf,jdbcType=VARCHAR},
+		#{abstractHTML,jdbcType=VARCHAR},
+		#{fullTextHTML,jdbcType=VARCHAR},
+		#{created,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{updated,jdbcType=TIMESTAMP},
+		#{updatedBy,jdbcType=VARCHAR}
+		)
 	</insert>
 
+	<insert id="insertArticleSelective" parameterType="Article">
+		insert into core.articles
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+
+			id,
+			id_code,
+			<if test="title != null">
+				title,
+			</if>
+			<if test="pubStatus != null">
+				pubstatus,
+			</if>
+			<if test="linkout != null">
+				linkout,
+			</if>
+			<if test="journal.title != null">
+				journal,
+			</if>
+			<if test="issue != null">
+				issue,
+			</if>
+			<if test="volume != null">
+				volume,
+			</if>
+			<if test="publicationYear != null">
+				yr,
+			</if>
+			<if test="publicationMonth != null">
+				mon,
+			</if>
+			<if test="firstPage != null">
+				firstpage,
+			</if>
+			<if test="lastPage != null">
+				lastpage,
+			</if>
+			<if test="abstractText != null">
+				abstract,
+			</if>
+			<if test="published != null">
+				published,
+			</if>
+			<if test="pdf != null">
+				pdf,
+			</if>
+			<if test="abstractHTML != null">
+				html_abstract,
+			</if>
+			<if test="fullTextHTML != null">
+				html_fulltext,
+			</if>
+			<if test="created != null">
+				created,
+			</if>
+			<if test="createdBy != null">
+				created_by,
+			</if>
+			<if test="updated != null">
+				updated,
+			</if>
+			<if test="updatedBy != null">
+				updated_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<choose>
+				<when test="doi != null">
+					#{doi,jdbcType=VARCHAR},
+					'doi',
+				</when>
+				<otherwise>
+					#{pmid,jdbcType=VARCHAR},
+					'pmid',
+				</otherwise>
+			</choose>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="pubStatus != null">
+				#{pubStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="linkout != null">
+				#{linkout,jdbcType=VARCHAR},
+			</if>
+			<if test="journal != null">
+				#{journal.title,jdbcType=VARCHAR},
+			</if>
+			<if test="issue != null">
+				#{issue,jdbcType=VARCHAR},
+			</if>
+			<if test="volume != null">
+				#{volume,jdbcType=VARCHAR},
+			</if>
+			<if test="publicationYear != null">
+				#{publicationYear,jdbcType=VARCHAR},
+			</if>
+			<if test="publicationMonth != null">
+				#{publicationMonth,jdbcType=VARCHAR},
+			</if>
+			<if test="firstPage != null">
+				#{firstPage,jdbcType=VARCHAR},
+			</if>
+			<if test="lastPage != null">
+				#{lastPage,jdbcType=VARCHAR},
+			</if>
+			<if test="abstractText != null">
+				#{abstractText,jdbcType=VARCHAR},
+			</if>
+			<if test="published != null">
+				#{published,jdbcType=BIT},
+			</if>
+			<if test="pdf != null">
+				#{pdf,jdbcType=VARCHAR},
+			</if>
+			<if test="abstractHTML != null">
+				#{abstractHTML,jdbcType=VARCHAR},
+			</if>
+			<if test="fullTextHTML != null">
+				#{fullTextHTML,jdbcType=VARCHAR},
+			</if>
+			<if test="created != null">
+				#{created,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createdBy != null">
+				#{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="updated != null">
+				#{updated,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedBy != null">
+				#{updatedBy,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
 	<insert id="insertJournalSelective" parameterType="net.megx.model.Journal">
-		<!-- WARNING - @mbggenerated This element is automatically generated by 
-			MyBatis Generator, do not modify. This element was generated on Thu Jun 14 
-			04:36:50 CEST 2012. -->
 		insert into core.journals
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="title != null">
@@ -90,7 +333,7 @@
 			<if test="nlmid != null">
 				nlmid,
 			</if>
-		
+
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="title != null">
@@ -126,7 +369,45 @@
 			<if test="nlmid != null">
 				#{nlmid,jdbcType=VARCHAR},
 			</if>
-		
+		</trim>
+	</insert>
+
+
+	<insert id="insertAuthorSelective" parameterType="Author">
+		insert into core.authors
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="firstName != null">
+				first_name,
+			</if>
+			<if test="lastName != null">
+				last_name,
+			</if>
+			<if test="initials != null">
+				initials,
+			</if>
+			<if test="sexCode != null">
+				sex,
+			</if>
+			<if test="institute != null">
+				institute,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="firstName != null">
+				#{firstName,jdbcType=VARCHAR},
+			</if>
+			<if test="lastName != null">
+				#{lastName,jdbcType=VARCHAR},
+			</if>
+			<if test="initials != null">
+				#{initials,jdbcType=VARCHAR},
+			</if>
+			<if test="sexCode != null">
+				#{sexCode,jdbcType=VARCHAR},
+			</if>
+			<if test="institute != null">
+				#{institute,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 

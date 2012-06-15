@@ -3,6 +3,7 @@ package net.megx.megdb.pubmap.mappers;
 import java.util.List;
 
 import net.megx.model.Article;
+import net.megx.model.Author;
 import net.megx.model.Journal;
 /*
  * This is just for MyBatis to be able to do simple java calls which get automatically mapped to the XML mappers.
@@ -22,6 +23,8 @@ import net.megx.model.Journal;
  */
 public interface PubMapMapper {
 	public List<Article> getAllArticles();
-	public void addArticle(Article article);
+	public void insertArticleSelective(Article article);
 	public void insertJournalSelective(Journal journal);
+	public void insertAuthorSelective(Author author);
+	public void deleteArticle(Article article);
 }
