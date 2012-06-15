@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.megx.model.Article;
+import net.megx.model.Author;
 
 public class ArticleDTO {
 	private List<AuthorDTO> authors;
@@ -89,18 +90,25 @@ public class ArticleDTO {
 		
 		rv.authors = new ArrayList<AuthorDTO>();
 		int authorsCnt = a.getNumAuthors();
+		if(authorsCnt <= 0) {
+			throw new RuntimeException("Invalid article. Authors count is " + authorsCnt);
+		}
+		
 		for (int i = 0; i < authorsCnt; i++) {
 			rv.authors.add(AuthorDTO.fromDAO(a.getAuthor(i)));
 		}
-
-		rv.website = "what is website?";
+		
+		Author author = a.getAuthor(0);
+		
+		
+		rv.website = ":::TODO:::";
 		rv.year = a.getPublicationYear();
-		rv.journalArticle = JournalArticleDTO.fromDAO(a.getJournalName(), a.getJournal());
+		rv.journalArticle = JournalArticleDTO.fromDAO(a);
 		rv.identifiers = new HashMap<String, String>();
 		rv.identifiers.put("doi", a.getDOI());
 		rv.identifiers.put("pmid", a.getPMID());
 		rv.abstractUrl = "what is abstractUrl?";
-		rv.institute = "institute in DAO ? ";
+		rv.institute = author.getInstitute();
 		return rv;
 	}
 }

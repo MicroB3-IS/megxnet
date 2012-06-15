@@ -1,5 +1,7 @@
 package net.megx.pubmap.rest.json;
 
+import net.megx.model.Article;
+import net.megx.model.Author;
 import net.megx.model.Journal;
 
 public class JournalArticleDTO {
@@ -59,16 +61,18 @@ public class JournalArticleDTO {
 	public void setAbstractText(String abstractText) {
 		this.abstractText = abstractText;
 	}
-	public static JournalArticleDTO fromDAO(String journalName, Journal journal) {
+	public static JournalArticleDTO fromDAO(Article article) {
+		Journal journal = article.getJournal();
+		//Author author = article.getAuthor(0);
 		JournalArticleDTO rv = new JournalArticleDTO();
-		rv.issue = "TODO: from DAO";
+		rv.issue = ":::TODO:::";
 		rv.isoab = journal.getIsoAbbr();
-		rv.pages = "TODO: from DAO journal.get?";
+		rv.pages = ":::TODO:::";
 		rv.publication = journal.getPublisher();
-		rv.volume = "TODO: from DAO journal.getVo?";
-		//rv.month = journal.get;
-		//rv.day = day;
-		//rv.abstractText = abstractText;
+		rv.volume = ":::TODO:::";
+		rv.month = article.getPublicationMonth();
+		rv.day = ":::TODO:::";
+		rv.abstractText = ":::TODO:::";
 		return rv;
 	}
 }

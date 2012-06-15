@@ -36,8 +36,7 @@ public class AuthorDTO {
 		rv.forename = author.getFirstName();
 		rv.initials = author.getInitials();
 		rv.surename = author.getLastName();
-		// rv.position = author.get AUTHR POSITION?;
-		rv.position = "TODO: get FROM DAO";
+		rv.position = ":::TODO:::";
 		return rv;
 	}
 }
