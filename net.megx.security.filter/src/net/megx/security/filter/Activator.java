@@ -15,15 +15,9 @@ public class Activator extends ResTplConfiguredActivator {
 	private static final Log log = LogFactory.getLog(Activator.class);
 	@Override
 	public void start(BundleContext context) throws Exception {
-		System.out.println("=============================================");
 		try{
 			super.start(context);
-			System.out.println("=============================================");
 			System.out.println(super.toString());
-			System.out.println("=============================================");
-			
-			System.out.println(">>Starting security filter");
-			
 			JSONObject cfg = getConfig();
 			
 			Filter filter = new  SecurityFilter(context, cfg);

@@ -42,7 +42,6 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		System.out.println("Initializing...");
 		try{
 			registerServices(context);
 		}catch (Exception e) {
@@ -141,14 +140,11 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		JSONObject dbConfig = get(config, "dbConfig");
 		
 		String [] keys = JSONObject.getNames(dbConfig);
-		System.out.println("dbConfig: " + dbConfig);
-		System.out.println("names: " + keys);
 		if(keys != null){
 			for(String key: keys){
 				properties.put(key, getString(dbConfig, key));
 			}
 		}
-		System.out.println("Properties: " + properties);
 		return properties;
 	}
 	
