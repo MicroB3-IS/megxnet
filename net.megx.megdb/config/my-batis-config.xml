@@ -32,6 +32,7 @@
 
 		<typeAlias type="net.megx.model.Article" alias="Article" />
 		<typeAlias type="net.megx.model.Journal" alias="Journal" />
+		<typeAlias type="net.megx.model.Author" alias="Author" />
 	</typeAliases>
 
 	<environments default="development">

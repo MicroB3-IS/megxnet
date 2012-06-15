@@ -14,6 +14,15 @@ import net.megx.model.Journal;
 public class PubMapJournal implements Journal {
 
 	private String title;
+	private String publisher;
+	private String isoAbbr;
+	private String medAbbr;
+	private String homepage;
+	private String pissn;
+	private String eissn;
+	private String country;
+	private Date created;
+	private Date updated;
 
 	/*
 	 * (non-Javadoc)
@@ -42,8 +51,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getPublisher() {
-		// TODO Auto-generated method stub
-		return null;
+		return publisher;
 	}
 
 	/*
@@ -53,8 +61,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setPublisher(String publisher) {
-		// TODO Auto-generated method stub
-
+		this.publisher = publisher;
 	}
 
 	/*
@@ -64,8 +71,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getIsoAbbr() {
-		// TODO Auto-generated method stub
-		return null;
+		return isoAbbr;
 	}
 
 	/*
@@ -75,8 +81,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setIsoAbbr(String isoAbbr) {
-		// TODO Auto-generated method stub
-
+		this.isoAbbr = isoAbbr;
 	}
 
 	/*
@@ -86,8 +91,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getMedAbbr() {
-		// TODO Auto-generated method stub
-		return null;
+		return medAbbr;
 	}
 
 	/*
@@ -97,7 +101,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setMedAbbr(String medAbbr) {
-		// TODO Auto-generated method stub
+		this.medAbbr = medAbbr;
 
 	}
 
@@ -108,8 +112,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getHomepage() {
-		// TODO Auto-generated method stub
-		return null;
+		return homepage;
 	}
 
 	/*
@@ -119,8 +122,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setHomepage(String homepage) {
-		// TODO Auto-generated method stub
-
+		this.homepage = homepage;
 	}
 
 	/*
@@ -130,8 +132,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getPissn() {
-		// TODO Auto-generated method stub
-		return null;
+		return pissn;
 	}
 
 	/*
@@ -141,8 +142,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setPissn(String pissn) {
-		// TODO Auto-generated method stub
-
+		this.pissn = pissn;
 	}
 
 	/*
@@ -152,8 +152,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getEissn() {
-		// TODO Auto-generated method stub
-		return null;
+		return eissn;
 	}
 
 	/*
@@ -163,8 +162,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setEissn(String eissn) {
-		// TODO Auto-generated method stub
-
+		this.eissn = eissn;
 	}
 
 	/*
@@ -174,8 +172,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public String getCountry() {
-		// TODO Auto-generated method stub
-		return null;
+		return country;
 	}
 
 	/*
@@ -185,8 +182,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public void setCountry(String country) {
-		// TODO Auto-generated method stub
-
+		this.country = country;
 	}
 
 	/*
@@ -262,8 +258,7 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public Date getCreated() {
-		// TODO Auto-generated method stub
-		return null;
+		return created;
 	}
 
 	/*
@@ -273,8 +268,31 @@ public class PubMapJournal implements Journal {
 	 */
 	@Override
 	public Date getUpdated() {
+		return updated;
+	}
+
+	@Override
+	public String getCreatedBy() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setCreatedBy(String createdBy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getUpdatedBy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setUpdatedBy(String updatedBy) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

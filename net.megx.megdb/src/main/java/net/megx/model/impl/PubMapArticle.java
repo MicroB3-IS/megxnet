@@ -1,5 +1,6 @@
 package net.megx.model.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,14 +16,22 @@ public class PubMapArticle implements Article {
 	private String publicationMonth = "";
 	private String publicationYear = "";
 
-	private Date datePublished;
-	private String pmid ="";
+	private String pmid;
 	private String doi;
 	private Journal journal;
 	private String issue = "";
 	private String volume = "";
 	private String lastPage = "";
 	private String firstPage = "";
+	private String abstractHTML;
+	private String abstractText;
+	private Date created;
+	private String fullTextHTML;
+	private String pdf;
+	private String pubStatus;
+	private String linkout;
+	private Boolean published;
+	private Date updated;
 
 	/*
 	 * (non-Javadoc)
@@ -114,8 +123,15 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public String getPMID() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pmid;
+	}
+
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
 	}
 
 	@Override
@@ -125,25 +141,25 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public String getDOI() {
-		// TODO Auto-generated method stub
 		return this.doi;
 	}
 
 	@Override
 	public void setDOI(String doi) {
-		// TODO Auto-generated method stub
 		this.doi = doi;
 	}
 
 	@Override
-	public void addAuthor() {
-		// TODO Auto-generated method stub
-
+	public void addAuthor(Author author) {
+		if (this.authors == null) {
+			this.authors = new ArrayList<Author>();
+		}
+		authors.add(author);
 	}
 
 	@Override
 	public int getNumAuthors() {
-		if(authors != null) {
+		if (authors != null) {
 			return authors.size();
 		}
 		return 0;
@@ -151,7 +167,9 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public Author getAuthor(int position) {
-		// TODO Auto-generated method stub
+		if (authors != null) {
+			return authors.get(position);
+		}
 		return null;
 	}
 
@@ -172,7 +190,7 @@ public class PubMapArticle implements Article {
 	}
 
 	@Override
-	public void setVolume(String Volume) {
+	public void setVolume(String volume) {
 		this.volume = volume;
 	}
 
@@ -194,6 +212,103 @@ public class PubMapArticle implements Article {
 	@Override
 	public void setLastPage(String page) {
 		this.lastPage = page;
+	}
+
+	@Override
+	public String getAbstractHTML() {
+		return this.abstractHTML;
+	}
+
+	@Override
+	public String getAbstractText() {
+		return this.abstractText;
+	}
+
+	@Override
+	public Date getCreated() {
+		return this.created;
+	}
+
+	@Override
+	public String getCreatedBy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getFullTextHTML() {
+		return this.fullTextHTML;
+	}
+
+	@Override
+	public String getPdf() {
+		return this.pdf;
+	}
+
+	@Override
+	public String getUpdatedBy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAbstractHTML(String abstractHTML) {
+		this.abstractHTML = abstractHTML;
+	}
+
+	@Override
+	public void setAbstractText(String abstractText) {
+		this.abstractText = abstractText;
+
+	}
+
+	@Override
+	public void setCreatedBy(String createdBy) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void setFullTextHTML(String fullTextHTML) {
+		this.fullTextHTML = fullTextHTML;
+	}
+
+	@Override
+	public void setPdf(String pdf) {
+		this.pdf = pdf;
+	}
+
+	@Override
+	public void setUpdatedBy(String updatedBy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getPubStatus() {
+		return this.pubStatus;
+	}
+
+	@Override
+	public void setPubStatus(String status) {
+		this.pubStatus = status;
+	}
+
+	@Override
+	public String getLinkout() {
+		return this.linkout;
+	}
+
+	@Override
+	public void setLinkout(String linkout) {
+		this.linkout = linkout;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 }
