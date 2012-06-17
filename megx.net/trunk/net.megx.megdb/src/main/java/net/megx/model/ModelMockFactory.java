@@ -10,6 +10,7 @@ import net.megx.model.impl.Gender;
 import net.megx.model.impl.PubMapArticle;
 import net.megx.model.impl.PubMapAuthor;
 import net.megx.model.impl.PubMapJournal;
+import net.megx.model.impl.PubMapSample;
 
 /**
  * @author rkottman
@@ -37,8 +38,14 @@ public class ModelMockFactory extends ModelFactory {
 		author2.setLastName("Pop Ristova");
 		author2.setSex(Gender.FEMALE.toString());
 		
+		
+		Sample sample =  new PubMapSample();
+		sample.setLabel("Joco");
+		sample.setStudy("unknown");
+		
 		art.addAuthor(author2);
 		art.addJournal(j);
+		art.addSample(sample);
 		
 		return art; 
 	}

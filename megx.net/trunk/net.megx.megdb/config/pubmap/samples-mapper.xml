@@ -16,30 +16,29 @@
 		<result column="project" jdbcType="INTEGER" property="project" />
 		<result column="own" jdbcType="VARCHAR" property="own" />
 		<result column="pool" jdbcType="SMALLINT" property="pool" />
-		<result column="id" jdbcType="INTEGER" property="id" />
-		<result column="geom" jdbcType="OTHER" property="geom" />
 		<result column="device" jdbcType="VARCHAR" property="device" />
 		<result column="biome" jdbcType="VARCHAR" property="biome" />
 		<result column="feature" jdbcType="VARCHAR" property="feature" />
 	</resultMap>
 
 	<sql id="Base_Column_List"> study, label, max_uncertain, date_taken, date_res,
-		material, habitat, hab_lite, country, project, own, pool, id, geom,
-		device, biome, feature
+		material, habitat, hab_lite, country, project, own, pool, device, biome, feature
 	</sql>
 
-	<select id="selectByPrimaryKey" parameterType="map" resultMap="sampleMap">
+	<select id="selectSampleByPrimaryKey" parameterType="map" resultMap="sampleMap">
 		select
 		<include refid="Base_Column_List" />
 		from core.samples
 		where study = #{study,jdbcType=VARCHAR}
 		and label = #{label,jdbcType=VARCHAR}
 	</select>
-	<delete id="deleteByPrimaryKey" parameterType="map"> delete from
+
+	<delete id="deleteSampleByPrimaryKey" parameterType="map"> delete from
 		core.samples where study = #{study,jdbcType=VARCHAR} and label =
 		#{label,jdbcType=VARCHAR}
 	</delete>
-	<insert id="insertSelective" parameterType="Sample">
+	
+	<insert id="insertSampleSelective" parameterType="Sample">
 		insert into core.samples
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="study != null">
@@ -77,12 +76,6 @@
 			</if>
 			<if test="pool != null">
 				pool,
-			</if>
-			<if test="id != null">
-				id,
-			</if>
-			<if test="geom != null">
-				geom,
 			</if>
 			<if test="device != null">
 				device,
@@ -131,12 +124,6 @@
 			<if test="pool != null">
 				#{pool,jdbcType=SMALLINT},
 			</if>
-			<if test="id != null">
-				#{id,jdbcType=INTEGER},
-			</if>
-			<if test="geom != null">
-				#{geom,jdbcType=OTHER},
-			</if>
 			<if test="device != null">
 				#{device,jdbcType=VARCHAR},
 			</if>
@@ -181,12 +168,6 @@
 			</if>
 			<if test="pool != null">
 				pool = #{pool,jdbcType=SMALLINT},
-			</if>
-			<if test="id != null">
-				id = #{id,jdbcType=INTEGER},
-			</if>
-			<if test="geom != null">
-				geom = #{geom,jdbcType=OTHER},
 			</if>
 			<if test="device != null">
 				device = #{device,jdbcType=VARCHAR},

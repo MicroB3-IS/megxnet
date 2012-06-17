@@ -1,12 +1,12 @@
 package net.megx.model;
 
-import java.util.Date;
 
-public interface Article {
+public interface Article extends SimpleAudit {
 
 	public void addAuthor(Author author);
+
 	public void addJournal(Journal journal);
-	
+
 	public void addSample(Sample sam);
 
 	public String getAbstractHTML();
@@ -14,10 +14,6 @@ public interface Article {
 	public String getAbstractText();
 
 	public Author getAuthor(int position);
-
-	public Date getCreated();
-
-	public String getCreatedBy();
 
 	public String getDOI();
 
@@ -39,6 +35,8 @@ public interface Article {
 
 	public int getNumAuthors();
 
+	public int getNumSamples();
+
 	public String getPdf();
 
 	public String getPMID();
@@ -58,17 +56,11 @@ public interface Article {
 
 	public String getTitle();
 
-	public Date getUpdated();
-
-	public String getUpdatedBy();
-
 	public String getVolume();
 
 	public void setAbstractHTML(String abstractHTML);
 
 	public void setAbstractText(String abstractText);
-
-	public void setCreatedBy(String createdBy);
 
 	public void setDOI(String doi);
 
@@ -99,10 +91,6 @@ public interface Article {
 	public void setPubStatus(String status);
 
 	public void setTitle(String title);
-
-	public void setUpdated(Date updated);
-
-	public void setUpdatedBy(String updatedBy);
 
 	public void setVolume(String Volume);
 
