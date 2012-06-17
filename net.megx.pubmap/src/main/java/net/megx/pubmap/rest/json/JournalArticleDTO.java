@@ -13,6 +13,9 @@ public class JournalArticleDTO {
 	private String month;
 	private String day;
 	private String abstractText;
+	private String eissn;
+	private String pissn;
+	
 	public String getIssue() {
 		return issue;
 	}
@@ -61,6 +64,19 @@ public class JournalArticleDTO {
 	public void setAbstractText(String abstractText) {
 		this.abstractText = abstractText;
 	}
+	
+	public String getEissn() {
+		return eissn;
+	}
+	public void setEissn(String eissn) {
+		this.eissn = eissn;
+	}
+	public String getPissn() {
+		return pissn;
+	}
+	public void setPissn(String pissn) {
+		this.pissn = pissn;
+	}
 	public static JournalArticleDTO fromDAO(Article article) {
 		Journal journal = article.getJournal();
 		//Author author = article.getFirstAuthor();
@@ -76,6 +92,8 @@ public class JournalArticleDTO {
 		rv.month = article.getPublicationMonth();
 		//rv.day = ":::TODO:::";
 		rv.abstractText = article.getAbstractText();
+		rv.eissn = journal.getEissn();
+		rv.pissn = journal.getPissn();
 		return rv;
 	}
 	
@@ -95,6 +113,8 @@ public class JournalArticleDTO {
 		a.setVolume( this.volume );
 		a.setPublicationMonth( this.month );
 		a.setAbstractText( this.abstractText );
+		journal.setEissn( this.eissn );
+		journal.setPissn( this.pissn );
 		return journal;
 	}
 }
