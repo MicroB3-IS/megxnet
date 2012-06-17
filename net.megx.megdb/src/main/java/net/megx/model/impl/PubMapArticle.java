@@ -342,18 +342,20 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public void addSample(Sample sample) {
-		if (samples != null) {
-			samples.add(sample);
-		} else {
+		if (samples == null) {
 			samples = new ArrayList<Sample>();
-		}
+		} 
+		samples.add(sample);
 
 	}
 
 	@Override
 	public Sample getSample(int i) {
-		// TODO Auto-generated method stub
-		return null;
+		if (samples != null) {
+			return samples.get(i);
+		} else {
+			return null;
+		}
 	}
 
 }

@@ -9,7 +9,7 @@ public interface SamplesMapper {
 
 	int insert(net.megx.model.Sample record);
 
-	int insertSelective(net.megx.model.Sample record);
+	int insertSampleSelective(net.megx.model.Sample record);
 
 	net.megx.model.Sample selectByPrimaryKey(@Param("study") String study,
 			@Param("label") String label);

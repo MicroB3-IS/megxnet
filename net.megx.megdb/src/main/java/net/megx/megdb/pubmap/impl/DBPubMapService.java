@@ -6,16 +6,16 @@ import java.util.List;
 import net.megx.megdb.BaseMegdbService;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.megdb.pubmap.mappers.PubMapMapper;
+import net.megx.megdb.pubmap.mappers.SamplesMapper;
 import net.megx.model.Article;
 import net.megx.model.Author;
 import net.megx.model.Journal;
 import net.megx.model.ModelMockFactory;
+import net.megx.model.Sample;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 
 public class DBPubMapService extends BaseMegdbService implements PubMapService {
@@ -41,7 +41,8 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 		SqlSession sqlSession = super.sessionFactory.openSession(false);
 
 		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
-
+		SamplesMapper samMapper = sqlSession.getMapper(SamplesMapper.class);
+		
 		// first insert Journal
 		try {
 			mapper.insertJournalSelectiveIgnoreDups(article.getJournal());
@@ -50,15 +51,21 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 				author = article.getAuthor(i);
 				System.out.println(author);
 				mapper.insertAuthorSelectiveIgnoreDups(author);
-				
+
 			}
 			int r = mapper.insertArticleSelective(article);
 			System.out.println("row=" + r);
 			for (int i = 0; i < article.getNumAuthors(); i++) {
 				author = article.getAuthor(i);
-				mapper.insertAuthorList(article,author, i);
+				mapper.insertAuthorList(article, author, i);
 			}
-			
+
+			Sample sample = null;
+			for (int i = 0; i < article.getNumSamples(); i++) {
+				sample = article.getSample(i);
+				samMapper.insertSampleSelective(sample);
+			}
+
 			sqlSession.commit();
 		} catch (PersistenceException pe) {
 			throw new PersistenceException(pe);
