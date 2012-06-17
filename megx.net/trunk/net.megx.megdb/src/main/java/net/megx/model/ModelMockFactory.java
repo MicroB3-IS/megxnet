@@ -31,6 +31,13 @@ public class ModelMockFactory extends ModelFactory {
 		author.setSex(Gender.MALE.toString());
 		
 		art.addAuthor(author);
+		
+		Author author2 =  new PubMapAuthor();
+		author2.setFirstName("Petra");
+		author2.setLastName("Pop Ristova");
+		author2.setSex(Gender.FEMALE.toString());
+		
+		art.addAuthor(author2);
 		art.addJournal(j);
 		
 		return art; 

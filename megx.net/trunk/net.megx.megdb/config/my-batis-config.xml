@@ -33,6 +33,7 @@
 		<typeAlias type="net.megx.model.Article" alias="Article" />
 		<typeAlias type="net.megx.model.Journal" alias="Journal" />
 		<typeAlias type="net.megx.model.Author" alias="Author" />
+		<typeAlias type="net.megx.model.Sample" alias="Sample" />
 	</typeAliases>
 
 	<environments default="development">
@@ -50,6 +51,7 @@
 
 	<mappers>
 		<mapper resource="pubmap/pubmap-mapper.xml" />
+		<mapper resource="pubmap/samples-mapper.xml" />
 
 		<!-- security API DB services mappers -->
 		<mapper resource="security/consumer-mapper.xml" />

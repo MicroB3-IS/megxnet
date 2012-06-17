@@ -10,22 +10,22 @@
 		<result column="title" jdbcType="VARCHAR" property="title" />
 		<result column="pubstatus" jdbcType="VARCHAR" property="pubStatus" />
 		<result column="linkout" jdbcType="VARCHAR" property="linkout" />
-		<result column="journal" jdbcType="VARCHAR" property="journal" />
-		<result column="issue" jdbcType="VARCHAR" property="issue" />
 		<result column="volume" jdbcType="VARCHAR" property="volume" />
+		<result column="issue" jdbcType="VARCHAR" property="issue" />
 		<result column="yr" jdbcType="VARCHAR" property="publicationYear" />
 		<result column="mon" jdbcType="VARCHAR" property="publicationMonth" />
 		<result column="firstpage" jdbcType="VARCHAR" property="firstPage" />
 		<result column="lastpage" jdbcType="VARCHAR" property="lastPage" />
 		<result column="abstract" jdbcType="VARCHAR" property="abstractText" />
 		<result column="published" jdbcType="BIT" property="published" />
-		<result column="pdf" jdbcType="VARCHAR" property="pdf" />
-		<result column="html_abstract" jdbcType="VARCHAR" property="abstractHTML" />
-		<result column="html_fulltext" jdbcType="VARCHAR" property="fullTextHTML" />
-		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="pdf_url" jdbcType="VARCHAR" property="pdf" />
+		<result column="abstract_html_url" jdbcType="VARCHAR" property="abstractHTML" />
+		<result column="fulltext_url" jdbcType="VARCHAR" property="fullTextHTML" />
+		<result column="ctime" jdbcType="TIMESTAMP" property="created" />
 		<result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-		<result column="updated" jdbcType="TIMESTAMP" property="updated" />
+		<result column="utime" jdbcType="TIMESTAMP" property="updated" />
 		<result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+		<result column="journal" jdbcType="VARCHAR" property="journal" />
 	</resultMap>
 
 	<resultMap id="journalMap" type="net.megx.model.Journal">
@@ -58,10 +58,10 @@
 		id, id_code, title, pubstatus, linkout, journal, issue,
 		volume, yr, mon,
 		firstpage,
-		lastpage, abstract, published, pdf,
-		html_abstract, html_fulltext, created,
+		lastpage, abstract, published, pdf_url,
+		abstract_html_url, fulltext_url, ctime,
 		created_by,
-		updated, updated_by
+		utime, updated_by
 	</sql>
 
 	<sql id="Author_Column_List">
@@ -73,8 +73,8 @@
 		<include refid="Article_Column_List" />
 		from core.articles
 		<choose>
-			<when test="doi != null">
-				where id = #{doi,jdbcType=VARCHAR}
+			<when test="DOI != null">
+				where id = #{DOI,jdbcType=VARCHAR}
 				and id_code =
 				'doi'
 			</when>
@@ -102,8 +102,8 @@
 		delete from
 		core.articles
 		<choose>
-			<when test="doi != null">
-				where id = #{doi,jdbcType=VARCHAR}
+			<when test="DOI != null">
+				where id = #{DOI,jdbcType=VARCHAR}
 				and id_code =
 				'doi'
 			</when>
@@ -119,9 +119,12 @@
 			MyBatis Generator, do not modify. This element was generated on Fri Jun 15 
 			03:30:10 CEST 2012. -->
 		delete from core.authors
-		where first_name = #{firstName,jdbcType=VARCHAR}
-		and last_name = #{lastName,jdbcType=VARCHAR}
-		and initials = #{initials,jdbcType=VARCHAR}
+		where first_name =
+		#{firstName,jdbcType=VARCHAR}
+		and last_name =
+		#{lastName,jdbcType=VARCHAR}
+		and initials =
+		#{initials,jdbcType=VARCHAR}
 		and sex = #{sexCode,jdbcType=VARCHAR}
 	</delete>
 
@@ -132,8 +135,8 @@
 		<include refid="Article_Column_List" />
 		)
 		<choose>
-			<when test="doi != null">
-				#{doi,jdbcType=VARCHAR},
+			<when test="DOI != null">
+				#{DOI,jdbcType=VARCHAR},
 				'doi',
 			</when>
 			<otherwise>
@@ -204,22 +207,22 @@
 				published,
 			</if>
 			<if test="pdf != null">
-				pdf,
+				pdf_url,
 			</if>
 			<if test="abstractHTML != null">
-				html_abstract,
+				abstract_html_url,
 			</if>
 			<if test="fullTextHTML != null">
-				html_fulltext,
+				fulltext_url,
 			</if>
 			<if test="created != null">
-				created,
+				ctime,
 			</if>
 			<if test="createdBy != null">
 				created_by,
 			</if>
 			<if test="updated != null">
-				updated,
+				utime,
 			</if>
 			<if test="updatedBy != null">
 				updated_by,
@@ -227,8 +230,8 @@
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<choose>
-				<when test="doi != null">
-					#{doi,jdbcType=VARCHAR},
+				<when test="DOI != null">
+					#{DOI,jdbcType=VARCHAR},
 					'doi',
 				</when>
 				<otherwise>
@@ -293,6 +296,7 @@
 			<if test="updatedBy != null">
 				#{updatedBy,jdbcType=VARCHAR},
 			</if>
+
 		</trim>
 	</insert>
 
@@ -333,7 +337,6 @@
 			<if test="nlmid != null">
 				nlmid,
 			</if>
-
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="title != null">
@@ -370,8 +373,127 @@
 				#{nlmid,jdbcType=VARCHAR},
 			</if>
 		</trim>
+		Where (NOT EXISTS(select 1 FROM core.journals where title =
+		'#{title,jdbcType=VARCHAR}')
 	</insert>
-
+	<insert id="insertJournalSelectiveIgnoreDups" parameterType="net.megx.model.Journal">
+		<!-- trying to ignore entry of journal which already exists -->
+		INSERT INTO core.journals 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="title != null">
+				title,
+			</if>
+			<if test="publisher != null">
+				publisher,
+			</if>
+			<if test="isoAbbr != null">
+				iso_abbr,
+			</if>
+			<if test="medAbbr != null">
+				med_abbr,
+			</if>
+			<if test="homepage != null">
+				homepage,
+			</if>
+			<if test="pissn != null">
+				pissn,
+			</if>
+			<if test="eissn != null">
+				eissn,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="pubstart != null">
+				pubstart,
+			</if>
+			<if test="lang != null">
+				lang,
+			</if>
+			<if test="nlmid != null">
+				nlmid,
+			</if>
+		</trim>
+		
+		
+		(SELECT * FROM ( VALUES
+		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="publisher != null">
+				#{publisher,jdbcType=VARCHAR},
+			</if>
+			<if test="isoAbbr != null">
+				#{isoAbbr,jdbcType=VARCHAR},
+			</if>
+			<if test="medAbbr != null">
+				#{medAbbr,jdbcType=VARCHAR},
+			</if>
+			<if test="homepage != null">
+				#{homepage,jdbcType=VARCHAR},
+			</if>
+			<if test="pissn != null">
+				#{pissn,jdbcType=VARCHAR},
+			</if>
+			<if test="eissn != null">
+				#{eissn,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=VARCHAR},
+			</if>
+			<if test="pubstart != null">
+				#{pubstart,jdbcType=VARCHAR},
+			</if>
+			<if test="lang != null">
+				#{lang,jdbcType=VARCHAR},
+			</if>
+			<if test="nlmid != null">
+				#{nlmid,jdbcType=VARCHAR},
+			</if>
+		</trim>
+		) as tmp
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="title != null">
+				title,
+			</if>
+			<if test="publisher != null">
+				publisher,
+			</if>
+			<if test="isoAbbr != null">
+				iso_abbr,
+			</if>
+			<if test="medAbbr != null">
+				med_abbr,
+			</if>
+			<if test="homepage != null">
+				homepage,
+			</if>
+			<if test="pissn != null">
+				pissn,
+			</if>
+			<if test="eissn != null">
+				eissn,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="pubstart != null">
+				pubstart,
+			</if>
+			<if test="lang != null">
+				lang,
+			</if>
+			<if test="nlmid != null">
+				nlmid,
+			</if>
+		</trim>
+		WHERE NOT EXISTS (
+		SELECT 1 FROM core.journals m where
+		m.title =
+		tmp.title)
+		)
+	</insert>
 
 	<insert id="insertAuthorSelective" parameterType="Author">
 		insert into core.authors
@@ -409,6 +531,63 @@
 				#{institute,jdbcType=VARCHAR},
 			</if>
 		</trim>
+	</insert>
+
+	<sql id="iAuthorListCols">
+		first_name, last_name, initials, sex,institute
+	</sql>
+	<insert id="insertAuthorSelectiveIgnoreDups" parameterType="Author">
+		insert into core.authors (<include refid="iAuthorListCols"/>)
+		SELECT <include refid="iAuthorListCols"/> FROM ( VALUES
+		<trim prefix=" (" suffix=")" suffixOverrides=",">
+			#{firstName,jdbcType=VARCHAR},
+			#{lastName,jdbcType=VARCHAR},
+			#{initials,jdbcType=VARCHAR},
+			#{sexCode,jdbcType=VARCHAR},
+			#{institute,jdbcType=VARCHAR},
+		</trim>
+		) as t
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			first_name,
+			last_name,
+			initials,
+			sex,
+			institute
+		</trim>
+
+		WHERE NOT EXISTS (
+		SELECT * FROM core.authors m where
+		m.first_name =
+		t.first_name AND
+		m.last_name = t.last_name AND
+		m.initials = t.initials
+		AND
+		m.sex = t.sex
+		)
+
+	</insert>
+
+
+
+	<insert id="insertAuthorList">
+		INSERT INTO core.authorlists(
+		article_id, article_id_code, first_name,
+		initials, last_name,
+		sex, pos)
+		VALUES (
+		<choose>
+			<when test="article.DOI != null">
+				#{article.DOI,jdbcType=VARCHAR},
+				'doi',
+			</when>
+			<otherwise>
+				#{article.pmid,jdbcType=VARCHAR},
+				'pmid',
+			</otherwise>
+		</choose>
+		#{author.firstName}, #{author.initials}, #{author.lastName},
+		#{author.sexCode}, #{position});
+
 	</insert>
 
 </mapper>
