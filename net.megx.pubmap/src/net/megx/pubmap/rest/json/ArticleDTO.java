@@ -98,7 +98,7 @@ public class ArticleDTO {
 			rv.authors.add(AuthorDTO.fromDAO(a.getAuthor(i)));
 		}
 		
-		Author author = a.getAuthor(0);
+		Author author = a.getFirstAuthor();
 		
 		
 		rv.website = ":::TODO:::";
@@ -109,6 +109,7 @@ public class ArticleDTO {
 		rv.identifiers.put("pmid", a.getPMID());
 		rv.abstractUrl = ":::TODO:::";
 		rv.institute = author.getInstitute();
+		
 		return rv;
 	}
 }
