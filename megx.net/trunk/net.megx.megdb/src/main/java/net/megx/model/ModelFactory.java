@@ -4,6 +4,8 @@
 package net.megx.model;
 
 import net.megx.model.impl.PubMapArticle;
+import net.megx.model.impl.PubMapAuthor;
+import net.megx.model.impl.PubMapJournal;
 
 /**
  * @author rkottman
@@ -18,4 +20,11 @@ public class ModelFactory {
 		return article;
 	}
 	
+	public static Author createAuthor() {
+		return new PubMapAuthor();
+	}
+
+	public static Journal createJournal() {
+		return new PubMapJournal();
+	}
 }
