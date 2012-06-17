@@ -15,7 +15,6 @@ public class PubMapArticleDeleteTest extends PubMapServiceTestBase {
 		article = ModelMockFactory.createArticle();
 	}
 
-
 	@Test
 	public void deleteArticle() {
 		pms.deleteArticle(article);

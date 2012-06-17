@@ -3,53 +3,70 @@
 <generatorConfiguration>
 	<classPathEntry
 		location="E:\dev\megx-chon\net.megx.megdb\lib\postgresql-9.1-901.jdbc4.jar" />
-	
+
 	<context id="context1" targetRuntime="MyBatis3">
-	
+
 		<jdbcConnection driverClass="org.postgresql.Driver"
 			connectionURL="jdbc:postgresql://localhost/megdb-9" userId="postgres"
 			password="" />
-			
+
 		<javaModelGenerator targetPackage="net.megx.megdb.beans"
 			targetProject="net.megx.megdb" />
 		<sqlMapGenerator targetPackage="net.megx.megdb.mappers"
 			targetProject="net.megx.megdb" />
-			
+
 		<javaClientGenerator targetPackage="net.megx.megdb.services"
 			targetProject="net.megx.megdb" type="XMLMAPPER" />
 
 		<table schema="core" modelType="flat" tableName="articles"
 			domainObjectName="ArticleDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
-			<property name="rootInterface" value="net.megx.model.Article"/>
-			<columnOverride column="abstract" property="abstractText" javaType="String"/>
-			<columnOverride column="journal" property="journal" javaType="net.megx.model.Journal"/>
-			<columnOverride column="pdf" javaType="String" jdbcType="VARCHAR"/>
-			<columnOverride column="linkout" javaType="String"/>
-			<columnOverride column="pubstatus" property="pubStatus" javaType="String"/>
-			<columnOverride column="firstpage" property="firstPage" javaType="String"/>
-			<columnOverride column="lastpage" property="lastPage" javaType="String"/>
-			<columnOverride column="html_fulltext" property="fullTextHTML" javaType="String" jdbcType="VARCHAR"/>
-			<columnOverride column="html_abstract" property="abstractHTML" javaType="String" jdbcType="VARCHAR"/>
-			<columnOverride column="yr" property="publicationYear"/>
-			<columnOverride column="mon" property="publicationMonth"/>
+			<property name="rootInterface" value="net.megx.model.Article" />
+			<columnOverride column="abstract" property="abstractText"
+				javaType="String" />
+			<columnOverride column="journal" property="journal"
+				javaType="net.megx.model.Journal" />
+			<columnOverride column="pdf_url" javaType="String"
+				jdbcType="VARCHAR" />
+			<columnOverride column="linkout" javaType="String" />
+			<columnOverride column="pubstatus" property="pubStatus"
+				javaType="String" />
+			<columnOverride column="firstpage" property="firstPage"
+				javaType="String" />
+			<columnOverride column="lastpage" property="lastPage"
+				javaType="String" />
+			<columnOverride column="fulltext_url" property="fullTextHTML"
+				javaType="String" jdbcType="VARCHAR" />
+			<columnOverride column="abstract_html_url" property="abstractHTML"
+				javaType="String" jdbcType="VARCHAR" />
+			<columnOverride column="yr" property="publicationYear" />
+			<columnOverride column="mon" property="publicationMonth" />
+			<ignoreColumn column="fulltext_html" />
 		</table>
-		
+
 		<table schema="core" modelType="flat" tableName="journals"
 			domainObjectName="JournalDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
-			<property name="rootInterface" value="net.megx.model.Journal"/>
-			<columnOverride column="homepage" javaType="String"/>
+			<property name="rootInterface" value="net.megx.model.Journal" />
+			<columnOverride column="homepage" javaType="String" />
 		</table>
-		
+
 		<table schema="core" modelType="flat" tableName="authors"
 			domainObjectName="AuthorDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">
-			<property name="rootInterface" value="net.megx.model.Author"/>
-			<columnOverride column="sex" javaType="String"/>
+			<property name="rootInterface" value="net.megx.model.Author" />
+			<columnOverride column="sex" javaType="String" />
 		</table>
-		
-		
+
+		<table schema="core" tableName="samples" domainObjectName="SamplesDTO"
+			modelType="flat">
+			<property name="rooInterface" value="net.megx.model.Sample" />
+			<columnOverride column="date_res" javaType="String"/>
+			<ignoreColumn column="sid" />
+			<ignoreColumn column="attr"/>
+			<ignoreColumn column="old_geom"/>
+		</table>
+
 		<table schema="web_r8" modelType="flat" tableName="metagenomes"
 			domainObjectName="MetagenomeDTO" enableSelectByExample="false"
 			enableDeleteByExample="false">

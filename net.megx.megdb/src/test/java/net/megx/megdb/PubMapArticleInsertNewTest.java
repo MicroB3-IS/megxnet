@@ -1,6 +1,5 @@
 package net.megx.megdb;
 
-import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
 import net.megx.model.ModelMockFactory;
 

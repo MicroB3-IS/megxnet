@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.pubmap.mappers.SamplesMapper">
+
+	<resultMap id="sampleMap" type="net.megx.model.Sample">
+		<id column="study" jdbcType="VARCHAR" property="study" />
+		<id column="label" jdbcType="VARCHAR" property="label" />
+		<result column="max_uncertain" jdbcType="NUMERIC" property="maxUncertain" />
+		<result column="date_taken" jdbcType="TIMESTAMP" property="dateTaken" />
+		<result column="date_res" jdbcType="OTHER" javaType="String"
+			property="dateRes" />
+		<result column="material" jdbcType="VARCHAR" property="material" />
+		<result column="habitat" jdbcType="VARCHAR" property="habitat" />
+		<result column="hab_lite" jdbcType="VARCHAR" property="habLite" />
+		<result column="country" jdbcType="VARCHAR" property="country" />
+		<result column="project" jdbcType="INTEGER" property="project" />
+		<result column="own" jdbcType="VARCHAR" property="own" />
+		<result column="pool" jdbcType="SMALLINT" property="pool" />
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="geom" jdbcType="OTHER" property="geom" />
+		<result column="device" jdbcType="VARCHAR" property="device" />
+		<result column="biome" jdbcType="VARCHAR" property="biome" />
+		<result column="feature" jdbcType="VARCHAR" property="feature" />
+	</resultMap>
+
+	<sql id="Base_Column_List"> study, label, max_uncertain, date_taken, date_res,
+		material, habitat, hab_lite, country, project, own, pool, id, geom,
+		device, biome, feature
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="map" resultMap="sampleMap">
+		select
+		<include refid="Base_Column_List" />
+		from core.samples
+		where study = #{study,jdbcType=VARCHAR}
+		and label = #{label,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="map"> delete from
+		core.samples where study = #{study,jdbcType=VARCHAR} and label =
+		#{label,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insertSelective" parameterType="Sample">
+		insert into core.samples
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="study != null">
+				study,
+			</if>
+			<if test="label != null">
+				label,
+			</if>
+			<if test="maxUncertain != null">
+				max_uncertain,
+			</if>
+			<if test="dateTaken != null">
+				date_taken,
+			</if>
+			<if test="dateRes != null">
+				date_res,
+			</if>
+			<if test="material != null">
+				material,
+			</if>
+			<if test="habitat != null">
+				habitat,
+			</if>
+			<if test="habLite != null">
+				hab_lite,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="project != null">
+				project,
+			</if>
+			<if test="own != null">
+				own,
+			</if>
+			<if test="pool != null">
+				pool,
+			</if>
+			<if test="id != null">
+				id,
+			</if>
+			<if test="geom != null">
+				geom,
+			</if>
+			<if test="device != null">
+				device,
+			</if>
+			<if test="biome != null">
+				biome,
+			</if>
+			<if test="feature != null">
+				feature,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="study != null">
+				#{study,jdbcType=VARCHAR},
+			</if>
+			<if test="label != null">
+				#{label,jdbcType=VARCHAR},
+			</if>
+			<if test="maxUncertain != null">
+				#{maxUncertain,jdbcType=NUMERIC},
+			</if>
+			<if test="dateTaken != null">
+				#{dateTaken,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dateRes != null">
+				#{dateRes,jdbcType=OTHER},
+			</if>
+			<if test="material != null">
+				#{material,jdbcType=VARCHAR},
+			</if>
+			<if test="habitat != null">
+				#{habitat,jdbcType=VARCHAR},
+			</if>
+			<if test="habLite != null">
+				#{habLite,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=VARCHAR},
+			</if>
+			<if test="project != null">
+				#{project,jdbcType=INTEGER},
+			</if>
+			<if test="own != null">
+				#{own,jdbcType=VARCHAR},
+			</if>
+			<if test="pool != null">
+				#{pool,jdbcType=SMALLINT},
+			</if>
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="geom != null">
+				#{geom,jdbcType=OTHER},
+			</if>
+			<if test="device != null">
+				#{device,jdbcType=VARCHAR},
+			</if>
+			<if test="biome != null">
+				#{biome,jdbcType=VARCHAR},
+			</if>
+			<if test="feature != null">
+				#{feature,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="Sample">
+		update core.samples
+		<set>
+			<if test="maxUncertain != null">
+				max_uncertain = #{maxUncertain,jdbcType=NUMERIC},
+			</if>
+			<if test="dateTaken != null">
+				date_taken = #{dateTaken,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dateRes != null">
+				date_res = #{dateRes,jdbcType=OTHER},
+			</if>
+			<if test="material != null">
+				material = #{material,jdbcType=VARCHAR},
+			</if>
+			<if test="habitat != null">
+				habitat = #{habitat,jdbcType=VARCHAR},
+			</if>
+			<if test="habLite != null">
+				hab_lite = #{habLite,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				country = #{country,jdbcType=VARCHAR},
+			</if>
+			<if test="project != null">
+				project = #{project,jdbcType=INTEGER},
+			</if>
+			<if test="own != null">
+				own = #{own,jdbcType=VARCHAR},
+			</if>
+			<if test="pool != null">
+				pool = #{pool,jdbcType=SMALLINT},
+			</if>
+			<if test="id != null">
+				id = #{id,jdbcType=INTEGER},
+			</if>
+			<if test="geom != null">
+				geom = #{geom,jdbcType=OTHER},
+			</if>
+			<if test="device != null">
+				device = #{device,jdbcType=VARCHAR},
+			</if>
+			<if test="biome != null">
+				biome = #{biome,jdbcType=VARCHAR},
+			</if>
+			<if test="feature != null">
+				feature = #{feature,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where study = #{study,jdbcType=VARCHAR}
+		and label = #{label,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

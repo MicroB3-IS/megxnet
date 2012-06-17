@@ -6,10 +6,9 @@ public class PubMapAuthor implements Author {
 
 	private String firstName;
 	private String lastName;
-	private String initials;
+	private String initials = "";
 	private Gender sex;
-	private String institute;
-	private String sexCode = "9";
+	private String institute = "";
 
 	@Override
 	public String getFirstName() {

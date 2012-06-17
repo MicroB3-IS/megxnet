@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 
 public class DBPubMapService extends BaseMegdbService implements PubMapService {
@@ -41,65 +42,31 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
 
+		// first insert Journal
 		try {
-			mapper.insertJournalSelective(article.getJournal());
-		} catch (PersistenceException pe) {
-
-			if (pe.getCause() instanceof SQLException) {
-				SQLException sqle = (SQLException) pe.getCause();
-
-				// if unique violation TODO make better
-				if ("23505".equals(sqle.getSQLState())) {
-					log.warn("Journal already exists. Silently continue without update."
-							+ sqle.getErrorCode() + sqle.getSQLState());
-					sqlSession.rollback();
-				} else {
-					// other error just rethrow and also continue
-					throw new PersistenceException(pe);
-				}
+			mapper.insertJournalSelectiveIgnoreDups(article.getJournal());
+			Author author = null;
+			for (int i = 0; i < article.getNumAuthors(); i++) {
+				author = article.getAuthor(i);
+				System.out.println(author);
+				mapper.insertAuthorSelectiveIgnoreDups(author);
+				
 			}
-		} 
-		
-		try {
-			System.out.println(article.getAuthor(0));
-			mapper.insertAuthorSelective(article.getAuthor(0));
-		} catch (BuilderException e) {
-			System.out.println(e);
-			sqlSession.rollback();
-		} catch (PersistenceException pe) {
-
-			if (pe.getCause() instanceof SQLException) {
-				SQLException sqle = (SQLException) pe.getCause();
-
-				System.out.println(sqle.getErrorCode() + sqle.getSQLState() + sqle);
-				// if unique violation TODO make better
-				if ("23505".equals(sqle.getSQLState())) {
-					log.warn("Author already exists. Silently continue without update."
-							+ sqle.getErrorCode() + sqle.getSQLState());
-					sqlSession.rollback();
-				} else {
-					// other error just re-throw and also continue
-					throw new PersistenceException(pe);
-				}
+			int r = mapper.insertArticleSelective(article);
+			System.out.println("row=" + r);
+			for (int i = 0; i < article.getNumAuthors(); i++) {
+				author = article.getAuthor(i);
+				mapper.insertAuthorList(article,author, i);
 			}
 			
-		}	
-
-		try {
-			mapper.insertArticleSelective(article);
-
 			sqlSession.commit();
 		} catch (PersistenceException pe) {
-			System.out.println(pe);
-			sqlSession.rollback();
-		}
-		finally {
+			throw new PersistenceException(pe);
+		} finally {
 			sqlSession.close();
 		}
 		return 0;
 	}
-
-
 
 	@Override
 	public int insertJournal(Journal journal) {
@@ -112,18 +79,17 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 		SqlSession sqlSession = super.sessionFactory.openSession(false);
 
 		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
-
+		int rows = 0;
 		try {
-			mapper.deleteArticle(article);
+			rows = mapper.deleteArticle(article);
 			sqlSession.commit();
 		} finally {
 			sqlSession.close();
 		}
-		
-		return 0;
+
+		return rows;
 	}
 
-	
 	@Override
 	public int insertAuthor(Author author) {
 		SqlSession sqlSession = super.sessionFactory.openSession(false);
@@ -131,12 +97,27 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
 
 		try {
-			mapper.insertAuthorSelective(author);
+			mapper.insertAuthorSelectiveIgnoreDups(author);
 			sqlSession.commit();
+		} catch (PersistenceException pe) {
+			if (pe.getCause() instanceof SQLException) {
+				SQLException sqle = (SQLException) pe.getCause();
+
+				// if unique violation TODO make better
+				if ("23505".equals(sqle.getSQLState())) {
+					log.warn("Author already exists. Silently continue without update."
+							+ sqle.getSQLState());
+					sqlSession.rollback();
+				} else {
+					// other error just re-throw and also continue
+					throw new PersistenceException(pe);
+				}
+			}
+
 		} finally {
 			sqlSession.close();
 		}
-		
+
 		return 0;
 	}
 }
