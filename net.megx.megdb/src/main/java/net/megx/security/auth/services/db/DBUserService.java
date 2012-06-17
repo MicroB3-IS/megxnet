@@ -204,4 +204,20 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		return null;//mapper.getRolesForNames(DEFAULT_ROLES);
 	}
 
+<<<<<<< HEAD
+=======
+
+	@Override
+	public List<User> getUsers() throws Exception {
+		return doInSession(new DBTask<UserMapper, List<User>>() {
+
+			@Override
+			public List<User> execute(UserMapper mapper) throws Exception {
+				return mapper.getUsers();
+			}
+			
+		}, UserMapper.class);
+	}
+
+>>>>>>> mb3-home
 }

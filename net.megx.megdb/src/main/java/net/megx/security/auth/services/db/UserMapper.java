@@ -51,4 +51,5 @@ public interface UserMapper {
 	public List<Role> getRolesForNames(@Param("names")List<String> names) throws Exception;
 	public void removeRole(String role) throws Exception;
 	public Role getRole(String role) throws Exception;
+	public List<User> getUsers() throws Exception; //FIXME: pagination
 }
