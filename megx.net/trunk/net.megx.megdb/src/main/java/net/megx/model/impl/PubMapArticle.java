@@ -21,12 +21,12 @@ public class PubMapArticle implements Article {
 	private String issue = "";
 	private Journal journal;
 	private String lastPage = "";
-	private String linkout ="";
-/*
- * Actually the URL to the pdf
- */
+	private String linkout = "";
+	/*
+	 * Actually the URL to the pdf
+	 */
 	private String pdf;
-	
+
 	private String pmid;
 	private String publicationMonth = "";
 
@@ -38,10 +38,12 @@ public class PubMapArticle implements Article {
 	 */
 	private String title;
 
-	
 	private Date updated;
 	private String volume = "";
-	
+	private List<Sample> samples;
+	private String createdBy;
+	private String updatedBy;
+
 	@Override
 	public void addAuthor(Author author) {
 		if (this.authors == null) {
@@ -81,8 +83,7 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public String getCreatedBy() {
-		// TODO Auto-generated method stub
-		return null;
+		return createdBy;
 	}
 
 	@Override
@@ -92,7 +93,9 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public Author getFirstAuthor() {
-		// TODO Auto-generated method stub
+		if (authors != null) {
+			return (Author) authors.get(0);
+		}
 		return null;
 	}
 
@@ -146,6 +149,13 @@ public class PubMapArticle implements Article {
 	public int getNumAuthors() {
 		if (authors != null) {
 			return authors.size();
+		}
+		return 0;
+	}
+
+	public int getNumSamples() {
+		if (samples != null) {
+			return samples.size();
 		}
 		return 0;
 	}
@@ -207,8 +217,7 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public String getUpdatedBy() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.updatedBy;
 	}
 
 	@Override
@@ -229,7 +238,7 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public void setCreatedBy(String createdBy) {
-		// TODO Auto-generated method stub
+		this.createdBy = createdBy;
 	}
 
 	@Override
@@ -323,8 +332,7 @@ public class PubMapArticle implements Article {
 
 	@Override
 	public void setUpdatedBy(String updatedBy) {
-		// TODO Auto-generated method stub
-
+		this.updatedBy = updatedBy;
 	}
 
 	@Override
@@ -333,9 +341,13 @@ public class PubMapArticle implements Article {
 	}
 
 	@Override
-	public void addSample(Sample sam) {
-		// TODO Auto-generated method stub
-		
+	public void addSample(Sample sample) {
+		if (samples != null) {
+			samples.add(sample);
+		} else {
+			samples = new ArrayList<Sample>();
+		}
+
 	}
 
 	@Override
