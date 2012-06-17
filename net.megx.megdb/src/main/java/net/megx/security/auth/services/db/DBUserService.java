@@ -204,8 +204,6 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		return null;//mapper.getRolesForNames(DEFAULT_ROLES);
 	}
 
-<<<<<<< HEAD
-=======
 
 	@Override
 	public List<User> getUsers() throws Exception {
@@ -219,5 +217,4 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		}, UserMapper.class);
 	}
 
->>>>>>> mb3-home
 }
