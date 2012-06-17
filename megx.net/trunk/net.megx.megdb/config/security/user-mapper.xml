@@ -166,4 +166,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		</foreach>
 		
 	</select>
+	
+	
+	<select id="getUsers" resultMap="user_map">
+	    select * from auth.users
+	</select>
 </mapper>

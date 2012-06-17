@@ -18,6 +18,8 @@ www={type:'sys.public'}
 	pubmap={type:'category', template:'pubmap/start.html'}
 		articles={type:'category', template:'pubmap/articles.html'}
 	apps={type:'html', template: 'apps-manager/home.html'}
+	security={type:'unknown'}
+		admin={type:'html', template:'security-filter/admin/admin.html'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}

@@ -10,6 +10,7 @@ public class PubMapAuthor implements Author {
 	private Gender sex;
 	private String institute = "";
 
+
 	@Override
 	public String getFirstName() {
 		return this.firstName;

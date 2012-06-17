@@ -1,0 +1,42 @@
+.data-panel-wrapper{
+	padding: 15px;
+}
+
+.data-panel-header{
+	font-size: 14px;
+	font-weight: bold;
+}
+.data-panel-content{
+	padding: 2px;
+}
+.data-panel-footer{
+	border-top: solid 1px #999;
+	text-align: right;
+}
+.panel-field-wrapper{
+	margin: 4px;
+}
+
+.panel-field-label{
+	float: left;
+	width: 200px;
+	font: bold 12px sans-serif;
+	color: #999;
+}
+
+.panel-input-array-element{
+	background: #C4EEFF;
+	font: 10px sans-serif;
+	padding: 2px;
+	border: solid 1px #004F6E;
+	margin: 4px;
+}
+
+.panel-subsection{
+	border-top: solid 1px #AAA;
+	padding: 10px;
+}
+
+.panel-subsection-title{
+	font: bold 12px sans-serif;
+}
