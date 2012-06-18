@@ -35,12 +35,13 @@
 	   var self = this;
 	   
 		this._request = function(url, method, data, success, error){
-		   console.log('REST: ', method, ' ', url, data);
+		   var _url = self.baseUrl + (url?("/" + url):"");
+		   console.log('REST: ', method, ' ', _url, data);
 			$.ajax({
-				url: self.baseUrl + (url?("/" + url):""),
+				url: _url,
 				type: method,
-				data: params,
-				dataType: dataType || 'json',
+				data: data || {},
+				dataType: 'json',
 				success: function(data, status,xhr){
 				   console.log('REST-DONE: ', method, ' ', url, data);
 					if(success){
@@ -48,7 +49,7 @@
 					}
 				},
 				error: function(xhr, txtStatus, err){
-				   console.log('REST-ERR: ', method, ' ', url, data, ' :: ', txtStatus, err);
+				   console.log('REST-ERR: ', method, ' ', url, data, ' :: ', txtStatus, err, err.getStack());
 					error = error || (function(s,e){
 						alert('Error. Code: '+ s + '\n'+(typeof(e) == 'string' ? e : e.message));
 					});
@@ -694,13 +695,12 @@
 	   var m = [
 	      '<div>',
 	         '<div>',
-	            'Users',
+	            'All Users',
 	            '<div style="float: right;">',
-	               '<div class="ui-state-default ui-corner-all security-action-add-user"><span class="ui-icon ui-icon-plusthick"></span></div>',
+	               '<div class="ui-corner-all admin-general-action security-action-add-user"><span style="padding: 5px;">Add User</span></div>',
 	            '</div>',
 	            '<div class="security-notification-container"></div>',
 	            '<div class="security-users-panel-container"></div>',
-	            '<div class="security-users-list-container"></div>',
 	         '</div>',
 	      '</div>'
 	   ].join('');
@@ -723,7 +723,7 @@
 	$.extend(UserManager.prototype, {
 	   showUsers: function(){
 	      var self = this;
-	      var pel = $('.security-users-list-container', this.el);
+	      var pel = $('.security-users-panel-container', this.el);
 	      this.n.wait('Loading users');
 	      this.userService.get('',undefined, function(users){
 	         self.n.done();
@@ -966,21 +966,9 @@
 	   }
 	});
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	$(document).ready(function(){
-	   um = new UserManager({
-	      placeholder: '.user-manager-placeholder'
-	   });
-	   
-	   um.addUser();
-	});
-	
+	window.admin = {
+	   UserManager:UserManager,
+   	RESTClient: RESTClient
+	};
 	
 })(jQuery);

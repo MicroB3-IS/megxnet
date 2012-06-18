@@ -19,6 +19,20 @@ public class UsersManager {
 	private UserService userService;
 	
 	
+	
+	public UsersManager(UserService userService) {
+		super();
+		this.userService = userService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
 	@GET
 	public List<User> getAllUsers() throws Exception{
 		return userService.getUsers();

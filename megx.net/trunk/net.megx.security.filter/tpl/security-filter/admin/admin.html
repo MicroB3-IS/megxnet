@@ -3,15 +3,27 @@
 
 <script type="text/javascript" src="$ctx.siteUrl/security/security-admin.js"></script>
 
-<style>
+<script type="text/javascript">
+$(document).ready(function(){
+   um = new admin.UserManager({
+      placeholder: '.user-manager-placeholder',
+      userService: new admin.RESTClient('$ctx.siteUrl/services/filter/users')
+   });
+   debugger
+   um.showUsers();
+});
+</script>
 
-</style>
-<div>
-	
-	<div>
-	
+<div style="margin: 5px;">
+	<div class="admin-left-container">
+		<div class="admin-action-container admin-action-state-default">
+			Users
+		</div>
+		<div class="admin-action-container admin-action-state-default">
+			Web Resources
+		</div>
 	</div>
-	<div>
+	<div class="admin-content">
 		<div class="user-manager-placeholder"></div>
 	</div>
 </div>
