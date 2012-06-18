@@ -3,15 +3,12 @@
 	<a href="..">Return to Pubmap Home</a>
 </div>
 <div id="content">
-	<ul>
+	<ul class="authors">
 		#foreach($article in  $ext.pubmap.allArticles)
-			<li style="padding: 5px;">
-			<div style="margin-top: 10px">
-				<a href="">$article.title</a>
-			</div>
-			<div>
-				TODO: arthical important properties, eg. publicationYear: $article.publicationYear
-			</div>
+			<li><p><a href="">$article.title</a></p>
+				<p>TODO: arthical important properties, eg. publicationYear: $article.publicationYear</p>
+				<p>$article.publicationAuthor</p>				
+				<p>$article.publicationYear</p>
 			</li>
 		#end
 	</ul>
