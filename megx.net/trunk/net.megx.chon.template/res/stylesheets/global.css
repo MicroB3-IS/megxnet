@@ -30,7 +30,7 @@ h4 a, h5 a, h6 a, h4 a:hover, h5 a:hover, h6 a:hover {color: #00A0FF; text-decor
 .marginNone {marigin:0!important;}
 /* Text elements
 -------------------------------------------------------------- */
-p           		{ margin: .4em!important; line-height:150%; font-size:1em; text-align: justify;}
+p           			{ margin: .4em 0em!important; line-height:150%; font-size:1em; text-align: justify;}
 p img.left  		{ float: left; margin: .5em 1.5em .5em 0em; padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
 p img.right 		{ float: right; margin: .5em 0em .5em 1.5em;padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
 img 				{ border: 0; }
