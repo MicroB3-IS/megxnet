@@ -22,6 +22,10 @@ public class Activator extends JCRAppConfgEnabledActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
+		Class<?> pgDriver = Class.forName("org.postgresql.Driver");
+		if(pgDriver == null) {
+			throw new Exception("org.postgresql.Driver not found!!!");
+		}
 		// super.start will read json config
 		super.start(context);
 		JSONObject cfg = getConfig();
