@@ -12,7 +12,7 @@
 			{
 				name: 'oauth_v1_security',
 				class: 'net.megx.security.filter.impl.OAuth_1_Security',
-				urlPattern: '/services/(res|pubmap).*',
+				urlPattern: '(/oauth/(request_token|access_token)|/services/(res|pubmap)).*',
 				order: 0
 			}
 		],
