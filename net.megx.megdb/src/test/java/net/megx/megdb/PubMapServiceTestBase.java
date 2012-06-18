@@ -3,6 +3,7 @@ package net.megx.megdb;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.megdb.pubmap.impl.DBPubMapService;
 import net.megx.model.Article;
+import net.megx.model.ModelMockFactory;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,7 +29,7 @@ public class PubMapServiceTestBase extends MyBatisTestBase {
 
 	@Before
 	public void setUpObject() throws Exception {
-		//article = ModelMockFactory.createArticleFromJSON();
+		article = ModelMockFactory.createArticle();
 	}
 
 }

@@ -1,5 +1,6 @@
 package net.megx.pubmap.rest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.ws.rs.Produces;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
 import net.megx.pubmap.rest.json.ArticleDTO;
+import net.megx.pubmap.test.ArticleFromJSONTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,6 +76,18 @@ public class PubMapRest {
 			s = new JSONObject(s).toString(4);
 		}
 		return "<pre>" + s + "</pre>";
+	}
+	
+	// For debug in browser
+	// TODO: remove this method!
+	@GET
+	@Path("insertArticle")
+	@Produces("text/html")
+	public String insertArticle() throws ServiceNotFoundException,
+			JSONException, IOException {
+		Article a = ArticleFromJSONTest.createArticleFromJSON();
+		getDBService().insertArticle(a);
+		return "OK";
 	}
 
 	private String errorJSON(Exception e) {

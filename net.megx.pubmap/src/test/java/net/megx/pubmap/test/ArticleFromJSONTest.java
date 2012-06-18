@@ -29,6 +29,13 @@ public class ArticleFromJSONTest {
 		
 	}
 	
+	public static Article createArticleFromJSON() throws IOException {
+		String jsonStr = readResource("/net/megx/pubmap/test/article.json");
+		ArticleDTO dto = gson.fromJson(jsonStr, ArticleDTO.class);
+		
+		Article article = dto.toArticle();
+		return article;
+	}
 	
 	@Test
 	public void articleFromJSON() throws Exception {
@@ -42,9 +49,10 @@ public class ArticleFromJSONTest {
 		
 	}
 	
-	private String readResource(String cpRes) throws IOException {
+	private static String readResource(String cpRes) throws IOException {
 		InputStream is = ArticleFromJSONTest.class.getResourceAsStream(cpRes);
 		String s = FileUtils.readInputStreamToString(is);
+		
 		return s;
 	}
 }
