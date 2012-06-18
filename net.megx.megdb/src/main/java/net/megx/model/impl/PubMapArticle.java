@@ -21,7 +21,7 @@ public class PubMapArticle implements Article {
 	private String issue = "";
 	private Journal journal;
 	private String lastPage = "";
-	private String linkout = "";
+	private String linkout;
 	/*
 	 * Actually the URL to the pdf
 	 */
@@ -32,7 +32,7 @@ public class PubMapArticle implements Article {
 
 	private String publicationYear = "";
 	private Boolean published;
-	private String pubStatus = "";
+	private String pubStatus;
 	/*
 	 * has to be set
 	 */
@@ -357,5 +357,31 @@ public class PubMapArticle implements Article {
 			return null;
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PubMapArticle [abstractHTML=").append(abstractHTML)
+				.append(", abstractText=").append(abstractText)
+				.append(", authors=").append(authors).append(", created=")
+				.append(created).append(", doi=").append(doi)
+				.append(", firstPage=").append(firstPage)
+				.append(", fullTextHTML=").append(fullTextHTML)
+				.append(", issue=").append(issue).append(", journal=")
+				.append(journal).append(", lastPage=").append(lastPage)
+				.append(", linkout=").append(linkout).append(", pdf=")
+				.append(pdf).append(", pmid=").append(pmid)
+				.append(", publicationMonth=").append(publicationMonth)
+				.append(", publicationYear=").append(publicationYear)
+				.append(", published=").append(published)
+				.append(", pubStatus=").append(pubStatus).append(", title=")
+				.append(title).append(", updated=").append(updated)
+				.append(", volume=").append(volume).append(", samples=")
+				.append(samples).append(", createdBy=").append(createdBy)
+				.append(", updatedBy=").append(updatedBy).append("]");
+		return builder.toString();
+	}
+	
+	
 
 }

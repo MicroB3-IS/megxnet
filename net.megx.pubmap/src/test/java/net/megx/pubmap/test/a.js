@@ -1,4 +1,4 @@
-a = {
+ {
 	"authors" : [ {
 		"forename" : "Ilaria",
 		"initials" : "I",

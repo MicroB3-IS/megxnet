@@ -28,6 +28,7 @@
 		<result column="journal" jdbcType="VARCHAR" property="journal" />
 	</resultMap>
 
+
 	<resultMap id="journalMap" type="net.megx.model.Journal">
 		<id column="title" jdbcType="VARCHAR" property="title" />
 		<result column="publisher" jdbcType="VARCHAR" property="publisher" />
@@ -64,11 +65,91 @@
 		utime, updated_by
 	</sql>
 
+	<resultMap id="articleDetailsMap" type="net.megx.model.impl.PubMapArticle">
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="pubstatus" jdbcType="VARCHAR" property="pubStatus" />
+		<result column="linkout" jdbcType="VARCHAR" property="linkout" />
+		<result column="volume" jdbcType="VARCHAR" property="volume" />
+		<result column="issue" jdbcType="VARCHAR" property="issue" />
+		<result column="yr" jdbcType="VARCHAR" property="publicationYear" />
+		<result column="mon" jdbcType="VARCHAR" property="publicationMonth" />
+		<result column="firstpage" jdbcType="VARCHAR" property="firstPage" />
+		<result column="lastpage" jdbcType="VARCHAR" property="lastPage" />
+		<result column="abstract" jdbcType="VARCHAR" property="abstractText" />
+		<result column="published" jdbcType="BIT" property="published" />
+		<result column="pdf_url" jdbcType="VARCHAR" property="pdf" />
+		<result column="abstract_html_url" jdbcType="VARCHAR" property="abstractHTML" />
+		<result column="fulltext_url" jdbcType="VARCHAR" property="fullTextHTML" />
+		<result column="ctime" jdbcType="TIMESTAMP" property="created" />
+		<result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+		<result column="utime" jdbcType="TIMESTAMP" property="updated" />
+		<result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+		<association property="journal" javaType="net.megx.model.impl.PubMapJournal">
+			<id property="title" column="journal_title" />
+			<result property="isoAbbr" column="journal_iso_abbr" />
+		</association>
+		<collection property="authors" ofType="net.megx.model.impl.PubMapAuthor">
+			<id column="author_first_name" jdbcType="VARCHAR" property="firstName" />
+			<id column="author_last_name" jdbcType="VARCHAR" property="lastName" />
+			<id column="author_initials" jdbcType="VARCHAR" property="initials" />
+			<id column="author_sex" jdbcType="CHAR" javaType="String" property="sexCode" />
+		</collection>
+	</resultMap>
+
+	<select id="selectArticleDetailsById" resultMap="articleDetailsMap">
+		<![CDATA[
+      select
+		art.id,
+		art.id_code,
+     	art.title,
+		art.pubstatus,
+		art.linkout,
+		art.journal,
+		art.issue,
+		art.volume,
+		art.yr,
+		art.mon,
+		art.firstpage,
+		art.lastpage,
+		art.abstract,
+		art.published,
+		art.pdf_url,
+		art.abstract_html_url,
+		art.fulltext_url,
+		art.ctime,
+		art.created_by,
+		art.utime,
+		art.updated_by,
+		
+		j.title as journal_title, 
+		j.publisher, 
+		j.iso_abbr as journal_iso_abbr,
+		j.med_abbr, j.homepage, j.pissn, j.eissn, 
+        j.country, j.pubstart, j.lang, j.nlmid, j.created, j.created_by, j.updated, 
+        j.updated_by,
+        al.first_name as author_first_name, 
+        al.initials as author_initials,
+        al.last_name as author_last_name, 
+        al.sex as author_sex,
+        al.pos, al.corres
+     from
+		core.articles art inner join core.journals j on j.title = art.journal 
+		                  inner join core.authorlists al ON art.id = al.article_id 
+		                                                AND art.id_code = al.article_id_code
+		
+	 where id = #{id} and id_code = #{idCode}
+	 order by id,al.pos 	 
+		]]>
+	</select>
+
+
+
 	<sql id="Author_Column_List">
 		first_name, last_name, initials, sex, institute
 	</sql>
 
-	<select id="selectArticle" parameterType="Article" resultMap="articleMap">
+	<select id="selectArticleById" parameterType="Article"
+		resultMap="articleMap">
 		select
 		<include refid="Article_Column_List" />
 		from core.articles
@@ -84,6 +165,8 @@
 			</otherwise>
 		</choose>
 	</select>
+
+
 
 	<select id="selectAuthor" parameterType="Author" resultMap="authorMap">
 		select
@@ -167,42 +250,48 @@
 	<insert id="insertArticleSelective" parameterType="Article">
 		insert into core.articles
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-
 			id,
 			id_code,
 			<if test="title != null">
 				title,
 			</if>
+
 			<if test="pubStatus != null">
 				pubstatus,
 			</if>
 			<if test="linkout != null">
 				linkout,
 			</if>
-			<if test="journal.title != null">
-				journal,
-			</if>
+			journal,
+
 			<if test="issue != null">
 				issue,
 			</if>
+
 			<if test="volume != null">
 				volume,
 			</if>
+
 			<if test="publicationYear != null">
 				yr,
 			</if>
+
 			<if test="publicationMonth != null">
 				mon,
 			</if>
+
 			<if test="firstPage != null">
 				firstpage,
 			</if>
+
 			<if test="lastPage != null">
 				lastpage,
 			</if>
+
 			<if test="abstractText != null">
 				abstract,
 			</if>
+
 			<if test="published != null">
 				published,
 			</if>
@@ -239,39 +328,55 @@
 					'pmid',
 				</otherwise>
 			</choose>
+
 			<if test="title != null">
 				#{title,jdbcType=VARCHAR},
 			</if>
+
 			<if test="pubStatus != null">
 				#{pubStatus,jdbcType=VARCHAR},
 			</if>
 			<if test="linkout != null">
 				#{linkout,jdbcType=VARCHAR},
 			</if>
-			<if test="journal != null">
-				#{journal.title,jdbcType=VARCHAR},
-			</if>
+
+			<choose>
+				<when test="journal.title == null">
+					#{journal.isoAbbr,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					#{journal.title,jdbcType=VARCHAR},
+				</otherwise>
+			</choose>
+
 			<if test="issue != null">
 				#{issue,jdbcType=VARCHAR},
 			</if>
+
 			<if test="volume != null">
 				#{volume,jdbcType=VARCHAR},
 			</if>
+
 			<if test="publicationYear != null">
 				#{publicationYear,jdbcType=VARCHAR},
 			</if>
+
 			<if test="publicationMonth != null">
 				#{publicationMonth,jdbcType=VARCHAR},
 			</if>
+
 			<if test="firstPage != null">
 				#{firstPage,jdbcType=VARCHAR},
 			</if>
+
 			<if test="lastPage != null">
 				#{lastPage,jdbcType=VARCHAR},
 			</if>
+
 			<if test="abstractText != null">
 				#{abstractText,jdbcType=VARCHAR},
 			</if>
+
 			<if test="published != null">
 				#{published,jdbcType=BIT},
 			</if>
@@ -296,7 +401,6 @@
 			<if test="updatedBy != null">
 				#{updatedBy,jdbcType=VARCHAR},
 			</if>
-
 		</trim>
 	</insert>
 
@@ -373,21 +477,15 @@
 				#{nlmid,jdbcType=VARCHAR},
 			</if>
 		</trim>
-		Where (NOT EXISTS(select 1 FROM core.journals where title =
-		'#{title,jdbcType=VARCHAR}')
 	</insert>
-	<insert id="insertJournalSelectiveIgnoreDups" parameterType="net.megx.model.Journal">
-		<!-- trying to ignore entry of journal which already exists -->
-		INSERT INTO core.journals 
+
+
+	<sql id="dynamic-journal-cols">
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="title != null">
-				title,
-			</if>
+			iso_abbr,
+			title,
 			<if test="publisher != null">
 				publisher,
-			</if>
-			<if test="isoAbbr != null">
-				iso_abbr,
 			</if>
 			<if test="medAbbr != null">
 				med_abbr,
@@ -414,19 +512,29 @@
 				nlmid,
 			</if>
 		</trim>
-		
-		
+	</sql>
+
+	<insert id="insertJournalSelectiveIgnoreDups" parameterType="net.megx.model.Journal">
+		<!-- trying to ignore entry of journal which already exists, it requires 
+			iso_abbr (ISO abbreviation to exist -->
+		INSERT INTO core.journals
+		<include refid="dynamic-journal-cols" />
+
 		(SELECT * FROM ( VALUES
 		<trim prefix=" (" suffix=")" suffixOverrides=",">
-			<if test="title != null">
-				#{title,jdbcType=VARCHAR},
-			</if>
+			#{isoAbbr,jdbcType=VARCHAR},
+			<choose>
+				<when test="title != null">
+					#{title,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					#{isoAbbr,jdbcType=VARCHAR},
+				</otherwise>
+			</choose>
 			<if test="publisher != null">
 				#{publisher,jdbcType=VARCHAR},
 			</if>
-			<if test="isoAbbr != null">
-				#{isoAbbr,jdbcType=VARCHAR},
-			</if>
+
 			<if test="medAbbr != null">
 				#{medAbbr,jdbcType=VARCHAR},
 			</if>
@@ -453,45 +561,12 @@
 			</if>
 		</trim>
 		) as tmp
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="title != null">
-				title,
-			</if>
-			<if test="publisher != null">
-				publisher,
-			</if>
-			<if test="isoAbbr != null">
-				iso_abbr,
-			</if>
-			<if test="medAbbr != null">
-				med_abbr,
-			</if>
-			<if test="homepage != null">
-				homepage,
-			</if>
-			<if test="pissn != null">
-				pissn,
-			</if>
-			<if test="eissn != null">
-				eissn,
-			</if>
-			<if test="country != null">
-				country,
-			</if>
-			<if test="pubstart != null">
-				pubstart,
-			</if>
-			<if test="lang != null">
-				lang,
-			</if>
-			<if test="nlmid != null">
-				nlmid,
-			</if>
-		</trim>
+		<include refid="dynamic-journal-cols" />
+
 		WHERE NOT EXISTS (
 		SELECT 1 FROM core.journals m where
-		m.title =
-		tmp.title)
+		m.iso_abbr =
+		tmp.iso_abbr)
 		)
 	</insert>
 
@@ -537,8 +612,12 @@
 		first_name, last_name, initials, sex,institute
 	</sql>
 	<insert id="insertAuthorSelectiveIgnoreDups" parameterType="Author">
-		insert into core.authors (<include refid="iAuthorListCols"/>)
-		SELECT <include refid="iAuthorListCols"/> FROM ( VALUES
+		insert into core.authors (
+		<include refid="iAuthorListCols" />
+		)
+		SELECT
+		<include refid="iAuthorListCols" />
+		FROM ( VALUES
 		<trim prefix=" (" suffix=")" suffixOverrides=",">
 			#{firstName,jdbcType=VARCHAR},
 			#{lastName,jdbcType=VARCHAR},

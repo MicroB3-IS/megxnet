@@ -295,4 +295,20 @@ public class PubMapJournal implements Journal {
 
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PubMapJournal [title=").append(title)
+				.append(", publisher=").append(publisher).append(", isoAbbr=")
+				.append(isoAbbr).append(", medAbbr=").append(medAbbr)
+				.append(", homepage=").append(homepage).append(", pissn=")
+				.append(pissn).append(", eissn=").append(eissn)
+				.append(", country=").append(country).append(", created=")
+				.append(created).append(", updated=").append(updated)
+				.append("]");
+		return builder.toString();
+	}
+	
+	
+
 }
