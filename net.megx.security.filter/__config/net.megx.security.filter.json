@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
 	path: '$resources/net.megx.security.filter',
-=======
-	path: '/home/pavle/projects/iw/mb3/microb3/git-clone/megx.net/net.megx.security.filter',
->>>>>>> mb3-home
 	filter:{
 		enabled: true,
 		entrypoints:[
