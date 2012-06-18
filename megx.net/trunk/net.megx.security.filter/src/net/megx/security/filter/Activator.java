@@ -59,7 +59,7 @@ public class Activator extends ResTplConfiguredActivator {
 				UsersManager um = new UsersManager(userService);
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
-				getBundleContext().registerService(UsersManager.class.getName(), rm, null);
+				getBundleContext().registerService(UsersManager.class.getName(), um, null);
 				
 			}
 		}, 

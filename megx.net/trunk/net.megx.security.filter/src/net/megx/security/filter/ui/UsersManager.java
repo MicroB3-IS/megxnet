@@ -9,6 +9,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
+import com.google.gson.Gson;
+
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
@@ -17,7 +19,7 @@ import net.megx.security.auth.services.UserService;
 public class UsersManager {
 	
 	private UserService userService;
-	
+	private Gson gson = new Gson();
 	
 	
 	public UsersManager(UserService userService) {
@@ -34,8 +36,8 @@ public class UsersManager {
 	}
 
 	@GET
-	public List<User> getAllUsers() throws Exception{
-		return userService.getUsers();
+	public String getAllUsers() throws Exception{
+		return gson.toJson(userService.getUsers());
 	}
 	
 	@POST
