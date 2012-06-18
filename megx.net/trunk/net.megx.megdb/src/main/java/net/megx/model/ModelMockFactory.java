@@ -48,6 +48,7 @@ public class ModelMockFactory extends ModelFactory {
 		return art;
 	}
 /*
+JSON creation of article should be tested in net.megx.pubmap
 	public static Article createArticleFromJSON() {
 		Gson gson = new Gson();
 		InputStream is = Test.class
