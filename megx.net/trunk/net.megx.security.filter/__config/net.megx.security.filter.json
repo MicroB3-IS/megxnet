@@ -6,13 +6,13 @@
 			{
 				name: 'standardLogin',
 				class: 'net.megx.security.filter.impl.WebLoginSecurity',
-				urlPattern: '/(apps|services/|protected/|oauth/authorize|admin|j_security_check).*',
+				urlPattern: '/(apps|services/|protected/|admin|j_security_check).*',
 				order: 1
 			},
 			{
 				name: 'oauth_v1_security',
 				class: 'net.megx.security.filter.impl.OAuth_1_Security',
-				urlPattern: '(/oauth/(request_token|access_token)|/services/(res|pubmap)).*',
+				urlPattern: '(/oauth/(request_token|access_token|authorize)|/services/(res|pubmap)).*',
 				order: 0
 			}
 		],
