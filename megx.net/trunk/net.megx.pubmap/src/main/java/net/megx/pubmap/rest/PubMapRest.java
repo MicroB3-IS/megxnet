@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.ServiceNotFoundException;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
 import net.megx.pubmap.rest.json.ArticleDTO;
-import net.megx.pubmap.test.ArticleFromJSONTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +49,7 @@ public class PubMapRest {
 
 	@GET
 	@Path("getAllArticles")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllArticles() throws ServiceNotFoundException {
 		log.debug("Called pubmap/getAllArticles");
 		try {
@@ -62,6 +64,8 @@ public class PubMapRest {
 			return errorJSON(e);
 		}
 	}
+	
+	
 	
 	//For debug in browser, pretty print the json ...
 	//TODO: remove this method!
@@ -78,14 +82,13 @@ public class PubMapRest {
 		return "<pre>" + s + "</pre>";
 	}
 	
-	// For debug in browser
-	// TODO: remove this method!
-	@GET
+	@POST
 	@Path("insertArticle")
 	@Produces("text/html")
-	public String insertArticle() throws ServiceNotFoundException,
+	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException,
 			JSONException, IOException {
-		Article a = ArticleFromJSONTest.createArticleFromJSON();
+		ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
+		Article a = dto.toArticle();
 		getDBService().insertArticle(a);
 		return "OK";
 	}
