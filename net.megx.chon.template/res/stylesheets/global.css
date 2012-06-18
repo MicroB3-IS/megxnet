@@ -70,21 +70,16 @@ pre,code,tt 		{ font: 1em 'andale mono', 'lucida console', monospace; }
 /*---------------------------------------------------------*/
 /*** Lists 
 -----------------------------------------------------------*/
-li ul,li ol		{ margin: 0!important; padding: .3em 0 .3em .3em; }
-ul, ol		{ margin: 0 0 2em 0; padding-left: 2em; }
+li ul,li ol			{ margin: 0!important; padding: .3em 0 .3em .3em; }
+ul, ol				{ margin: 0 0 2em 0; padding-left: 2em; }
 ul          		{ list-style-type: disk; list-style-position: inside;}
 ol          		{ list-style-type: decimal; list-style-position: inside;}
-li			{ padding: .0em .0em!important; }
+li					{ padding: .0em .0em!important; }
 dl          		{ margin: 0 0 1.5em 0; }
 dl dt       		{ font-weight: bold; }
 dd          		{ margin-left: 0em; display: inline-block;}
 /*** End of Lists
 -----------------------------------------------------------*/
-
-
-
-
-
 
 /* Forms
 ---------------------------------------------------------------------
@@ -112,22 +107,22 @@ textarea 			{padding:3px 5px 4px 5px; margin-bottom:10px!important;}
 #button				{padding:2px 5px 3px 5px; margin-bottom:10px!important;}
 
 /* tables design */
-table							{border-collapse: collapse;}
-tr, td								{padding: 1px 0px!important;}
-thead tr th						{font-weight: bold;}
+table									{border-collapse: collapse;}
+tr, td									{padding: 1px 0px!important;}
+thead tr th								{font-weight: bold;}
 
-tbody tr td						{font-weight: normal;}
+tbody tr td								{font-weight: normal;}
 tbody tr td ul, tbody tr td ol			{font-weight: normal; margin:0px; padding: 0px;}
-tbody tr td ul li, tbody tr td ol li		{font-weight: normal; margin:10px 0px 10px 0px; padding: 0px; text-indent: 0px;}
-tbody tr.even td					{background-color: #fff;}
-tbody tr.odd td					{background-color: #f8f8f8;}
+tbody tr td ul li, tbody tr td ol li	{font-weight: normal; margin:10px 0px 10px 0px; padding: 0px; text-indent: 0px;}
+tbody tr.even td						{background-color: #fff;}
+tbody tr.odd td							{background-color: #f8f8f8;}
 
-tbody tr:nth-child(even) 			{background: #fdfdfd;}
-tbody tr:nth-child(odd) 			{background: #ffffff; }
+tbody tr:nth-child(even) 				{background: #fdfdfd;}
+tbody tr:nth-child(odd) 				{background: #ffffff; }
 
-tr, th, td 						{text-align: left; vertical-align:top;}
-caption							{background: #eee;}
-tfoot tr td							{font-weight: bold; color: #999;}
+tr, th, td 								{text-align: left; vertical-align:top;}
+caption									{background: #eee;}
+tfoot tr td								{font-weight: bold; color: #999;}
 
 
 /* Misc Classes
