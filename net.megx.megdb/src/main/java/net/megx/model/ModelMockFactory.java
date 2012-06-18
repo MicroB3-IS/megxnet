@@ -3,19 +3,14 @@
  */
 package net.megx.model;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
 
 import net.megx.model.impl.Gender;
 import net.megx.model.impl.PubMapArticle;
 import net.megx.model.impl.PubMapAuthor;
 import net.megx.model.impl.PubMapJournal;
 import net.megx.model.impl.PubMapSample;
-import net.megx.pubmap.rest.json.ArticleDTO;
-import net.megx.pubmap.test.Test;
 
 /**
  * @author rkottman 
@@ -52,7 +47,7 @@ public class ModelMockFactory extends ModelFactory {
 
 		return art;
 	}
-
+/*
 	public static Article createArticleFromJSON() {
 		Gson gson = new Gson();
 		InputStream is = Test.class
@@ -72,6 +67,7 @@ public class ModelMockFactory extends ModelFactory {
 		// we have the article, print it
 		return a;
 	}
+ */
 
 	public static List<Article> createArticleList() {
 		List<Article> articles = new ArrayList<Article>();
@@ -79,5 +75,4 @@ public class ModelMockFactory extends ModelFactory {
 		return articles;
 
 	}
-
 }
