@@ -20,6 +20,17 @@ public class ResourcesManager {
 	
 	private Log log = LogFactory.getLog(getClass());
 	
+	
+	
+	
+	public ResourcesManager(WebResourcesService resourcesService) {
+		super();
+		this.resourcesService = resourcesService;
+	}
+
+
+
+
 	@GET
 	List<WebResource> getAll(){
 		try {

@@ -1,3 +1,4 @@
+/* data panel styles*/
 .data-panel-wrapper{
 	padding: 15px;
 }
@@ -39,4 +40,42 @@
 
 .panel-subsection-title{
 	font: bold 12px sans-serif;
+}
+/*
+ // end data panel styles
+*/
+
+.admin-left-container{
+	float: left;
+	width: 200px;
+}
+.admin-content{
+	padding-left: 200px;
+}
+
+.admin-action-container{
+	-moz-border-top-left-radius: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	margin-left: 5px;
+	padding: 5px;
+	cursor: pointer;
+}
+.admin-action-state-default{
+	border: solid 1px #999;
+	border-right: none;
+	background: none;
+}
+
+.admin-action-state-selected{
+	border: solid 1px #999;
+	border-right: none;
+	background: #C4EEFF;
+}
+
+.admin-general-action{
+	border: solid 1px #999;
+	background: #C4EEFF;
+	cursor: pointer;
 }
