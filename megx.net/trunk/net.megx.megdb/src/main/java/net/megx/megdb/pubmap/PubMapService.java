@@ -11,6 +11,7 @@ public interface PubMapService {
 	// 1. return iterator instead of list 
 	// 2. add arguments start and limit
 	public List<Article> getAllArticles() throws Exception;
+	public Article selectArticleDetailsById(String id, String idCode);
 	public int insertArticle(Article article);
 //	public int insertArticleOnly(Article article);
 	public int insertJournal(Journal journal);

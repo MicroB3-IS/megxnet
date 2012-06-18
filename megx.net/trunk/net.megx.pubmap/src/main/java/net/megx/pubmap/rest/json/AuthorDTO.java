@@ -8,6 +8,7 @@ public class AuthorDTO {
 	private String initials;
 	private String surename;
 	private int position;
+	
 	public String getForename() {
 		return forename;
 	}
@@ -45,7 +46,6 @@ public class AuthorDTO {
 		author.setFirstName( this.forename );
 		author.setInitials( this.initials );
 		author.setLastName( this.surename );
-		//??this.position = pos;
 		return author;
 	}
 }

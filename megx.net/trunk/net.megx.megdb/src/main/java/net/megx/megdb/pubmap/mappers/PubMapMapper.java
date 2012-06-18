@@ -41,5 +41,7 @@ public interface PubMapMapper {
 
 	public int insertAuthorList(@Param("article") Article article,
 			@Param("author") Author author, @Param("position") int position);
+	
+	public Article selectArticleDetailsById(@Param("id") String id, @Param("idCode") String idCode );
 
 }

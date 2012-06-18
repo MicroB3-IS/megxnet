@@ -42,7 +42,7 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
 		SamplesMapper samMapper = sqlSession.getMapper(SamplesMapper.class);
-		
+
 		// first insert Journal
 		try {
 			mapper.insertJournalSelectiveIgnoreDups(article.getJournal());
@@ -53,11 +53,10 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 				mapper.insertAuthorSelectiveIgnoreDups(author);
 
 			}
-			int r = mapper.insertArticleSelective(article);
-			System.out.println("row=" + r);
+			mapper.insertArticleSelective(article);
 			for (int i = 0; i < article.getNumAuthors(); i++) {
 				author = article.getAuthor(i);
-				mapper.insertAuthorList(article, author, i);
+				mapper.insertAuthorList(article, author, i + 1);
 			}
 
 			Sample sample = null;
@@ -126,5 +125,20 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 		}
 
 		return 0;
+	}
+
+	@Override
+	public Article selectArticleDetailsById(String id, String idCode) {
+		SqlSession sqlSession = super.sessionFactory.openSession(false);
+
+		PubMapMapper mapper = sqlSession.getMapper(PubMapMapper.class);
+		Article article;
+		try {
+			article = mapper.selectArticleDetailsById(id, idCode);
+			sqlSession.commit();
+		} finally {
+			sqlSession.close();
+		}
+		return article;
 	}
 }

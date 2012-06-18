@@ -7,7 +7,7 @@ public class PubMapAuthor implements Author {
 	private String firstName;
 	private String lastName;
 	private String initials = "";
-	private Gender sex;
+	private Gender sex = Gender.UNKNOWN;
 	private String institute = "";
 
 
