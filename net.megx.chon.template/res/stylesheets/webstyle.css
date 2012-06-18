@@ -88,6 +88,9 @@ ul.uldotli li {
 }
 ul.uldotli li a{color: #333;}
 
+ul.reflistlx {
+	clear:both;
+}
 ul.reflistlx li {
 	list-style: none;
 	margin: .5em .5em;
