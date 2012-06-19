@@ -49,7 +49,7 @@
 					}
 				},
 				error: function(xhr, txtStatus, err){
-				   console.log('REST-ERR: ', method, ' ', url, data, ' :: ', txtStatus, err, err.getStack());
+				   console.log('REST-ERR: ', method, ' ', url, data, ' :: ', txtStatus, err);
 					error = error || (function(s,e){
 						alert('Error. Code: '+ s + '\n'+(typeof(e) == 'string' ? e : e.message));
 					});
@@ -161,7 +161,8 @@
 	            title: title || 'Alert',
 	            buttons: {
 	               'Ok': function(){
-	                  onOk();
+	                  if(onOk)
+   	                  onOk();
 	                  $(body).dialog('close');
 	               }
 	            }
@@ -373,7 +374,13 @@
 	      return vls;
 	   },
 	   setValue: function(val){
-	      this.addValue(val, false);
+	      if($.isArray(val)){
+   	      for(var  i = 0; i < val.length; i++){
+   	         this.addValue(val[i], false);
+   	      }
+	      }else{
+   	      this.addValue(val, false);
+   	   }
 	   },
 	   addValue: function(val, notify){
 	      notify = notify === undefined ? true : notify;
@@ -437,15 +444,33 @@
 	   }
 	});
 	
-	
-	
+	var BooleanDataField = function(config){
+	   BooleanDataField.superclass.constructor.call(this, config);
+	};
+	extend(BooleanDataField, DataField);
+	extend(BooleanDataField, {
+	   init: function(wel){
+	      BooleanDataField.superclass.init.call(this, wel);
+	      if(this.value)
+	         this.el.checked = "checked";
+	   },
+	   getValue: function(){
+	      return this.el.checked;
+	   },
+	   setValue: function(v){
+	      if(v)
+	         this.el.checked = "checked";
+	      else
+	         $(this.el).removeAttr("checked");
+	   }
+	});
 	
 	
 	
 	var __DATA_FIELD_TYPES = {
 	   'text': DataField,
-	   'radio': DataField,
-	   'checkbox': DataField,
+	   'radio': BooleanDataField,
+	   'checkbox': BooleanDataField,
 	   'submit': DataField,
 	   'button': DataField,
 	   'password': DataField,
@@ -544,18 +569,18 @@
                ].join(''));
             }else if(d.type=='array-values'){
                m.push('<span class="panel-input-field">');
-               if(d.value){
-                  for(var j = 0; j < d.value.length; j++){
+               if(d.values){
+                  for(var j = 0; j < d.values.length; j++){
                      m.push([
                         '<span class="panel-input-array-element ui-corner-all">',
                            '<span class="panel-input-array-value">',
-                           d.value[j],
+                           d.values[j],
                            '</span>',
                            '<span class="panel-input-array-value-remove ui-icon ui-icon-close"></span>',
                         '</span>'
                      ].join(''));
                   }
-                  if(!d.value.length)
+                  if(!d.values.length)
                      m.push('none');
                }else{
                   m.push('none');
@@ -670,7 +695,8 @@
 	   };
 	   
 	   this.close = function(){
-	      $(this.el).remove();
+	      this.hide();
+	      $(self.el).remove()
 	   };
 	   
 	   each(dataFieldsDefs, function(id, def){
@@ -712,9 +738,7 @@
 	      selector: $('.security-notification-container', this.el)[0]
 	   });
 	   var self = this;
-	   $('.security-action-add-user', this.el).click(function(){
-	      self.addUser();
-	   });
+	   
 	   
 	   this.placeholder = config.placeholder;
 	   //$(config.placeholder).append(this.el);
@@ -726,44 +750,58 @@
 	
 	$.extend(UserManager.prototype, {
 	   show: function(){
+	      var self = this;
 	      $(this.placeholder).html('').append(this.el);
+	      $('.security-action-add-user', this.el).click(function(){
+	         self.addUser();
+	      });
 	   },
 	   showUsers: function(){
 	      var self = this;
 	      var pel = $('.security-users-panel-container', this.el);
 	      this.n.wait('Loading users');
-	      this.userService.get('',undefined, function(users){
-	         self.n.done();
-	         self.users = {};
-	         pel.html('');
-	         for(var i = 0; i < users.length; i++){
-	            var um = [
-	               '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
-	                  '<span class="user-label user-action-edit">',
-	                     users[i].firstName, ' ', users[i].lastName,
-	                  '</span>',
-	                  '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
-	               '</div>'
-	            ].join('');
-	            var el = $(um)[0];
-	            $(pel).append(el);
+	      
+	      this.userService.get("roles", undefined, function(roles){
+	         self.roles = roles;
+	         self.userService.get('',undefined, function(users){
+	            self.n.done();
+	            self.users = {};
+	            pel.html('');
+	            for(var i = 0; i < users.length; i++){
+	               var um = [
+	                  '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
+	                     '<span class="user-label user-action-edit">',
+	                        users[i].firstName, ' ', users[i].lastName,
+	                     '</span>',
+	                     '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
+	                  '</div>'
+	               ].join('');
+	               var el = $(um)[0];
+	               $(pel).append(el);
+	               
+	               (function(user){
+	                  $('.user-action-remove', el).click(function(){
+	                     self.removeUser(user);
+	                  });
+	                  $('.user-action-edit', el).click(function(){
+	                     self.editUser(user);
+	                  });
+	               })(users[i]);
+	               self.users[users[i].login] = users[i];
+	            }
 	            
-	            (function(user){
-	               $('.user-action-remove', el).click(function(){
-	                  self.removeUser(user);
-	               });
-	               $('.user-action-edit', el).click(function(){
-	                  self.editUser(user);
-	               });
-	            })(users[i]);
-	            self.users[users[i].login] = users[i];
-	         }
-	         
-	         
-	      },function(xhr, status, error){
+	            
+	         },function(xhr, status, error){
+	            self.n.done();
+	            self.n.error('Failed to retrieve users list: ', error);
+	         });
+	      }, function(xhr, status, error){
 	         self.n.done();
-	         self.n.error('Failed to retrieve users list: ', error);
+	         self.n.error('Failed to retrieve roles: ', error);
 	      });
+	      
+	      
+	      
 	   },
 	   getUserEditPanel: function(user, saveCallback, cancelCallback){
 	      var self = this;
@@ -787,7 +825,7 @@
 	            },
 	            {
 	               type: 'text',
-	               name: 'fisrtName',
+	               name: 'firstName',
 	               label: 'First Name: ',
 	               title: 'First Name'
 	            },
@@ -802,6 +840,12 @@
 	               name: 'initials',
 	               label: 'Initials: ',
 	               title: 'Initials'
+	            },
+	            {
+	               type: 'text',
+	               name: 'email',
+	               label: 'e-mail: ',
+	               title: 'e-mail'
 	            },
 	            {
 	               type: 'text',
@@ -822,7 +866,7 @@
 	            },
 	            {
 	               type: 'checkbox',
-	               name: 'disable',
+	               name: 'disabled',
 	               label: 'Disabled',
 	               title: 'User is disabled'
 	            },
@@ -853,7 +897,7 @@
 	                           f.removeValue(value);
 	                        }
 	                     },
-	                     options:this.getUIRoles()
+	                     options:this.getUIRoles(roles)
 	                  },
 	                  {
 	                     type: 'button',
@@ -908,7 +952,7 @@
 	      this.n.confirm('Confirm', "Are you sure you want to remove user '" + 
 	         user.firstName + " " + user.lastName + "'?",
 	            function(){
-	               this.userService.del(user.login, undefined, function(){
+	               self.userService.del(user.login, undefined, function(){
 	                  self.n.message('Info: ', "User " + user.firstName + " " + user.lastName + "' has been removed");
 	                  self.showUsers();
 	               }, function(x, status, error){
@@ -922,23 +966,24 @@
 	      this.getUserEditPanel(user, function(panel){
 	         var u = panel.getData();
 	         if(u){
-	            var roles = [];
+	            //var roles = [];
+	            u.roles = (u.roles || []).join(',');
 	            u.roles = u.roles || [];
-	            
 	            if(u.password != u.re_password){
 	               self.n.alert('','Password does not match! Please re-enter passwords.');
 	               return;
 	            }
 
-	            for(var i = 0; i < u.roles.length; i++){
-	               roles.push({
-	                  label: u.roles[i]
-	               });
-	            }
-	            u.roles = roles;
+	            //for(var i = 0; i < u.roles.length; i++){
+	           //    roles.push({
+	             //     label: u.roles[i]
+	            //   });
+	            //}
+	            //u.roles = roles;
    	         self.userService.put('',u, function(){
    	            self.n.message('Info:', 'User updated.');
    	            panel.close();
+   	            self.showUsers();
    	         },function(){
    	            self.n.error("Error: ", "Failed to update user.");
    	         });
@@ -951,26 +996,28 @@
 	   },
 	   addUser: function(){
 	      var self = this;
+	      $('.security-users-panel-container', this.el).html('');
 	      this.getUserEditPanel({}, function(panel){
 	         var u = panel.getData();
 	         if(u){
-	            var roles = [];
+	            //var roles = [];
+	            u.roles = (u.roles || []).join(',');
 	            u.roles = u.roles || [];
-	            
 	            if(u.password != u.re_password){
 	               self.n.alert('','Password does not match! Please re-enter passwords.');
 	               return;
 	            }
 
-	            for(var i = 0; i < u.roles.length; i++){
-	               roles.push({
-	                  label: u.roles[i]
-	               });
-	            }
-	            u.roles = roles;
+	            //for(var i = 0; i < u.roles.length; i++){
+	             //  roles.push({
+	             //     label: u.roles[i]
+	             //  });
+	            //}
+	            //u.roles = roles;
    	         self.userService.post('',u, function(){
    	            self.n.message('Info:', 'User added.');
    	            panel.close();
+   	            self.showUsers();
    	         },function(){
    	            self.n.error("Error: ", "Failed to add user.");
    	         });
@@ -981,14 +1028,21 @@
 	         self.showUsers();
 	      });
 	   },
-	   getUIRoles: function(){
+	   getUIRoles: function(skip){
 	      var r = [];
+	      var s = {};
+	      skip = skip ||[];
+	      for(var i = 0; i < skip.length; i++)
+	         s[skip[i]]=skip[i];
 	      for(var i = 0; i < this.roles.length; i++){
+	         if(s[this.roles[i].label])
+	            continue;
 	         r.push({
 	            label: this.roles[i].label,
 	            value: this.roles[i].label
 	         });
 	      }
+	      return r;
 	   }
 	});
 	
