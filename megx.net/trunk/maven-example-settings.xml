@@ -2,6 +2,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	<mirrors>
+		<!-- mirror | Specifies a repository mirror site to use instead of a given 
+			repository. The repository that | this mirror serves has an ID that matches 
+			the mirrorOf element of this mirror. IDs are used | for inheritance and direct 
+			lookup purposes, and must be unique across the set of mirrors. | -->
+		<mirror>
+			<id>local-indigo</id>
+			<mirrorOf>indigo</mirrorOf>
+			<name>Local Mirror of Eclipse Indigo p2 repository.</name>
+			<url>file:///E:/dev/eclipse-repo-mirror</url>
+			<layout>p2</layout>
+			<!-- this is the trick to let tycho take the mirror: see e.g. http://www.iulidragos.org/?p=207 -->
+			<mirrorOfLayouts>p2</mirrorOfLayouts>
+		</mirror>
+	</mirrors>
+
 
 	<profiles>
 		<profile>
