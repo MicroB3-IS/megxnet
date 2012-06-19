@@ -26,7 +26,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="description" column="description"/>
 		<result property="joinedOn" column="join_date"/>
 		<result property="password" column="pass"/>
-		<result property="disabled" column="diabled"/>
+		<result property="disabled" column="disabled"/>
+		<result property="email" column="email"/>
+		<result property="lastlogin" column="lastlogin"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -34,6 +36,21 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="label" column="label"/>
 		<result property="description" column="description"/>
 	</resultMap>
+	
+	
+	<sql id="user_columns_list">
+		logname, 
+		first_name, 
+		initials, 
+		last_name, 
+		description, 
+		join_date, 
+        pass, 
+        disabled,
+        email,
+        lastlogin
+	</sql>
+	
 	
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
@@ -44,14 +61,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<select id="getUserByUserId" resultMap="user_map" parameterType="string">
 		select 
-			logname, 
-			first_name, 
-			initials, 
-			last_name, 
-			description, 
-			join_date, 
-            pass, 
-            diabled
+			<include refid="user_columns_list"/>
   			
   			from auth.users
   			
@@ -62,14 +72,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<select id="getUserByConsumerKey" resultMap="user_map" parameterType="string">
 		select 
-			logname, 
-			first_name, 
-			initials, 
-			last_name, 
-			description, 
-			join_date, 
-            pass, 
-            diabled
+			<include refid="user_columns_list"/>
   			
   			from auth.users as u 
   				inner join auth.consumers as c on c.logname=u.logname
@@ -78,38 +81,18 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<select id="getUserForUsernameAndPassword" resultMap="user_map" parameterType="map">
 		select 
-			logname, 
-			first_name, 
-			initials, 
-			last_name, 
-			description, 
-			join_date, 
-            pass, 
-            diabled
+			<include refid="user_columns_list"/>
             	
             	from auth.users where logname=#{username} and 
 			(pass=#{password} OR pass IS NULL)
 	</select>
-	<!-- 
-	<select id="getUserByUniqueIdentifier" resultMap="user_map" parameterType="string">
-		select 
-			logname, 
-			first_name, 
-			initials, 
-			last_name, 
-			description, 
-			join_date, 
-            pass, 
-            diabled
-             from auth.users where uniqueidentifier=#{id}
-	</select>
-	 -->
-	 
+	
+		 
 	<insert id="addUser" parameterType="User">
 		insert int auth.users
-			(logname,first_name,initials,last_name,	description, join_date, pass, diabled)
+			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin)
 			values
-			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled})
+			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin})
 	</insert>
 	
 	<update id="updateUser" parameterType="User">
@@ -121,7 +104,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 				description=#{description},
 				join_date=#{joinedOn},
 	            pass=#{password},
-	            diabled=#{disabled}
+	            disabled=#{disabled},
+	            email=#{email},
+	            lastlogin=#{lastlogin}
 			
 			where logname=#{login}
 	</update>
@@ -169,6 +154,10 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	
 	<select id="getUsers" resultMap="user_map">
-	    select * from auth.users
+	    select 
+	    
+	    <include refid="user_columns_list"/>
+	    
+	     from auth.users
 	</select>
 </mapper>

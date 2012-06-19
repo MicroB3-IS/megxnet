@@ -12,6 +12,8 @@ public class User{
 	private Date joinedOn;
 	private String password;
 	private boolean disabled;
+	private String email;
+	private Date lastlogin;
 	
 	private List<Role> roles;
 	
@@ -92,13 +94,25 @@ public class User{
 			return false;
 		return true;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Date getLastlogin() {
+		return lastlogin;
+	}
+	public void setLastlogin(Date lastlogin) {
+		this.lastlogin = lastlogin;
+	}
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", initials=" + initials
 				+ ", description=" + description + ", joinedOn=" + joinedOn
-				+ ", disabled=" + disabled + ", roles=" + roles + "]";
+				+ ", password=*****, disabled=" + disabled
+				+ ", email=" + email + ", lastlogin=" + lastlogin + ", roles="
+				+ roles + "]";
 	}
-	
-	
 }

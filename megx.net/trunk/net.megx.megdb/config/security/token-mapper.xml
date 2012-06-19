@@ -36,7 +36,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="description" column="description"/>
 		<result property="joinedOn" column="join_date"/>
 		<result property="password" column="pass"/>
-		<result property="disabled" column="diabled"/>
+		<result property="disabled" column="disabled"/>
+		<result property="email" column="email"/>
+		<result property="lastlogin" column="lastlogin"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -45,6 +47,28 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
         <result column="description" property="description"/>
     </resultMap>
 	
+	<sql id="access_tokens_list">
+		token,
+		secret,
+		verifier,
+		callback_url,
+		consumer_key,
+		token_created,
+		user_log
+	</sql>
+	
+	<sql id="user_columns_list">
+		logname, 
+		first_name, 
+		initials, 
+		last_name, 
+		description, 
+		join_date, 
+        pass, 
+        disabled,
+        email,
+        lastlogin
+	</sql>
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
 		select r.label, r.description from auth.roles r 
@@ -53,19 +77,23 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	<select id="getUser" parameterType="string" resultMap="user_map">
-		select logname, first_name, initials, last_name, description, join_date, 
-       		pass, diabled
+		select 
+			<include refid="user_columns_list"/>
   			from auth.users
   			
   			where logname=#{user_log}
 	</select>
 	
 	<select id="getToken" resultMap="token_map" parameterType="string">
-		select * from auth.access_tokens where token=#{value}
+		select 
+			<include refid="access_tokens_list"/>
+		 	from auth.access_tokens where token=#{value}
 	</select>
 	
 	<select id="getTokensForUser" resultMap="token_map" parameterType="string">
-		select * from auth.access_tokens where user_log=#{value}
+		select 
+			<include refid="access_tokens_list"/>
+		 	from auth.access_tokens where user_log=#{value}
 	</select>	
 	
 	<insert id="saveToken" parameterType="Token">

@@ -33,16 +33,38 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="callbackUrl" column="callback_url"/>
 	</resultMap>
 	
+	
+	<sql id="consumer_columns_list">
+		key,
+		secret,
+		oob,
+		name,
+		description,
+		trusted,
+		expiration,
+		roles,
+		resource,
+		logname,
+		callback_url
+	</sql>
+	
+	
 	<select id="getConsumerForKey" resultMap="consumer_map" parameterType="string">
-		select * from auth.consumers where key=#{key}
+		select 
+			<include refid="consumer_columns_list"/>
+		 	from auth.consumers where key=#{key}
 	</select>
 	
 	<select id="getConsumerForName" resultMap="consumer_map" parameterType="string">
-		select * from auth.consumers where name=#{name}
+		select 
+			<include refid="consumer_columns_list"/>
+			from auth.consumers where name=#{name}
 	</select>
 	
 	<select id="getConsumerForKeyAndName" resultMap="consumer_map" parameterType="map">
-		select * from auth.consumers where key=#{key} and name=#{name}
+		select 
+			<include refid="consumer_columns_list"/>
+		 	from auth.consumers where key=#{key} and name=#{name}
 	</select>
 	
 	<insert id="addConsumer" parameterType="Consumer" useGeneratedKeys="true">
@@ -69,7 +91,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</delete>
 	
 	<select id="getConsumersForUserId" parameterType="string" resultMap="consumer_map">
-		select * from auth.consumers where logname=#{value}
+		select 
+			<include refid="consumer_columns_list"/> 
+			from auth.consumers where logname=#{value}
 	</select>
 	
 	<delete id="removeTokensForConsumer" parameterType="string">
