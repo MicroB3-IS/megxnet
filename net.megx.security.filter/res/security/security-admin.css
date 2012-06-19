@@ -79,3 +79,7 @@
 	background: #C4EEFF;
 	cursor: pointer;
 }
+
+.user-action-remove{
+   display: inline-block;
+}

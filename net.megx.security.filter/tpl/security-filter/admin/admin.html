@@ -6,24 +6,91 @@
 <script type="text/javascript">
 $(document).ready(function(){
    um = new admin.UserManager({
-      placeholder: '.user-manager-placeholder',
+      placeholder: '.content-placeholder',
       userService: new admin.RESTClient('$ctx.siteUrl/services/filter/users')
    });
-   debugger
    um.showUsers();
+   
+   var AdminManager = {
+      userManager: um,
+      resourcesManager: {},
+      manageUsers: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-users').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('');
+         this.userManager.show();
+         this.userManager.showUsers();
+      },
+      manageResources: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-resources').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('Resources manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
+      },
+      init: function(){
+         $('.admin-action-users').click(function(){
+            AdminManager.manageUsers();
+         });
+         $('.admin-action-resources').click(function(){
+            AdminManager.manageResources();
+         });
+         AdminManager.manageUsers();
+      }
+   };
+   AdminManager.init();
 });
 </script>
 
+<style>
+   .user-entry{
+      border: solid 1px #AAA;
+      padding: 10px;
+      margin: 5px;
+   }
+   
+   .user-label{
+      color: #999;
+      font-weight: bold;
+      font-size: 12px;
+   } 
+   .user-action-edit{
+      text-decoration: underline;
+      cursor: pointer;
+   }
+   
+   .user-action-remove{
+      float: right;
+   }
+   .security-users-header{
+      height: 30px;
+      width: 100%;
+      font: bold 14px sans-serif;
+   }
+   .security-users-panel-container{
+      border-top: solid 1px #AAA;
+      margin-top: 10px;
+      padding-top: 10px;
+   }
+   .security-users-panel{
+      border: solid 1px #AAA;
+      padding: 10px;
+   }
+   
+   .security-action-add-user{
+      font-size: 12px;
+   }
+</style>
+
+
 <div style="margin: 5px;">
 	<div class="admin-left-container">
-		<div class="admin-action-container admin-action-state-default">
+		<div class="admin-action-container admin-action-state-default admin-action-users">
 			Users
 		</div>
-		<div class="admin-action-container admin-action-state-default">
+		<div class="admin-action-container admin-action-state-default admin-action-resources">
 			Web Resources
 		</div>
 	</div>
 	<div class="admin-content">
-		<div class="user-manager-placeholder"></div>
+		<div class="content-placeholder"></div>
 	</div>
 </div>

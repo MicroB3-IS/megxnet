@@ -21,7 +21,6 @@ public class WebContextUtils {
 			SecurityContext context = (SecurityContext) session
 					.getAttribute(SECURITY_CONTEXT_SESSION_ATTR);
 			log.debug("Looking for context in session [" + session.getId() + "] -> " + context);
-			System.out.println(" >>> SESSION ID: " + session.getId());
 			return context;
 		}
 		return null;
@@ -30,7 +29,6 @@ public class WebContextUtils {
 	public static SecurityContext replaceSecurityContext(
 			SecurityContext securityContext, HttpServletRequest request,
 			boolean createSession) {
-		System.out.println("---");
 		SecurityContext old = getSecurityContext(request);
 		if (old != null) {
 			old.clearAuthentication();
@@ -41,12 +39,10 @@ public class WebContextUtils {
 			session = request.getSession(createSession);
 		}
 		if (session != null) {
-			System.out.println(" >>> SESSION ID: " + session.getId());
 			log.debug("Storing SecurityContext " + securityContext + " in session [" + session.getId() + "]");
 			session.setAttribute(SECURITY_CONTEXT_SESSION_ATTR, securityContext);
 		}else{
 			log.debug("The context was not replaced. Session was not created. Requested to create new session: " + createSession);
-			System.out.println(" >>> no session");
 		}
 		return securityContext;
 	}
@@ -55,7 +51,6 @@ public class WebContextUtils {
 		HttpSession session = request.getSession();
 		if (session != null) {
 			log.debug("Clearing SecurityContext in session: " + session.getId());
-			System.out.println(" >>> SESSION ID: " + session.getId());
 			SecurityContext context = getSecurityContext(request);
 			if(context != null){
 				if(context.getAuthentication() != null){
@@ -68,7 +63,6 @@ public class WebContextUtils {
 
 	public static SecurityContext newSecurityContext(HttpServletRequest request) {
 		log.debug("Requesting new securityContext...");
-		System.out.println("NEW SECURITY CONTEXT");
 		clearSecurityContext(request);
 		SecurityContext context = new ChonEnabledSecurityContext(request.getSession());
 		replaceSecurityContext(context, request, false);

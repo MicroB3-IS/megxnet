@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry exported="true" kind="lib" path="lib/oauth-20100601.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oauth-provider-20100601.jar"/>
-	<classpathentry exported="true" kind="lib" path="config/"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-3.3.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/cglib-2.2.2.jar"/>
