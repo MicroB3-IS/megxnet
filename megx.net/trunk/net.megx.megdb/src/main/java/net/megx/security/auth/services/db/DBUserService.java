@@ -17,8 +17,6 @@
 
 package net.megx.security.auth.services.db;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.megx.megdb.BaseMegdbService;
@@ -26,14 +24,14 @@ import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public class DBUserService extends BaseMegdbService implements UserService{
 	
+	private Log log = LogFactory.getLog(getClass());
 	
-	private static List<String> DEFAULT_ROLES = new ArrayList<String>(1);
-	static {
-		DEFAULT_ROLES.add("ROLE_USER");
-	}
 	
 	
 
@@ -110,32 +108,25 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 	
 	public User updateUser(final User userInfo) throws Exception {
-		// FIXME: cleanup the damn mess
-		User old = getUserByUserId(userInfo.getLogin());
-		List<Role> oldRoles = old.getRoles();
-		List<Role> newRoles = userInfo.getRoles();
+		final User old = getUserByUserId(userInfo.getLogin());
+		final List<Role> oldRoles = old.getRoles();
+		final List<Role> newRoles = userInfo.getRoles();
 		
-		final List<Role> granted = new LinkedList<Role>();
-		List<Role> revoked = null;
-		
-		for(Role role: newRoles){
-			if(!oldRoles.remove(role)){
-				granted.add(role);
-			}
-		}
-		revoked = oldRoles;
-		final List<Role> revokedRoles = revoked;
 		return doInTransaction(new DBTask<UserMapper, User>() {
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
-				mapper.updateUser(userInfo);
-				for(Role gr: granted){
+				for(Role rr: oldRoles){
+					System.out.println("+++");
+					log.debug("Revoking: " + rr);
+					mapper.revokeRole(old.getLogin(), rr.getLabel());
+				}
+				for(Role gr: newRoles){
+					log.debug("Granting: " + gr);
 					mapper.grantRole(userInfo.getLogin(), gr.getLabel());
 				}
-				for(Role rr: revokedRoles){
-					mapper.revokeRole(userInfo.getLogin(), rr.getLabel());
-				}
+				log.debug("Updating: " + userInfo);
+				mapper.updateUser(userInfo);
 				return userInfo;
 			}
 			

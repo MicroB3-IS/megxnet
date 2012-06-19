@@ -32,6 +32,19 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
+	<resultMap type="User" id="user_map_no_pass">
+		<result property="login" column="logname"/>
+		<result property="firstName" column="first_name"/>
+		<result property="initials" column="initials"/>
+		<result property="lastName" column="last_name"/>
+		<result property="description" column="description"/>
+		<result property="joinedOn" column="join_date"/>
+		<result property="disabled" column="disabled"/>
+		<result property="email" column="email"/>
+		<result property="lastlogin" column="lastlogin"/>
+		<association property="roles" select="getRolesForUser" column="logname"/>
+	</resultMap>
+	
 	<resultMap type="Role" id="role_map">
 		<result property="label" column="label"/>
 		<result property="description" column="description"/>
@@ -89,7 +102,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 		 
 	<insert id="addUser" parameterType="User">
-		insert int auth.users
+		insert into auth.users
 			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin)
 			values
 			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin})
@@ -97,16 +110,16 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	
 	<update id="updateUser" parameterType="User">
 		update auth.users
-			set logname=#{login}, 
-				first_name=#{firstName}, 
+			set first_name=#{firstName}, 
 				initials=#{initials},
 				last_name=#{lastName},
 				description=#{description},
 				join_date=#{joinedOn},
-	            pass=#{password},
+				<if test="password != null">
+	            	pass=#{password},
+	            </if>
 	            disabled=#{disabled},
-	            email=#{email},
-	            lastlogin=#{lastlogin}
+	            email=#{email}
 			
 			where logname=#{login}
 	</update>
@@ -153,7 +166,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	
-	<select id="getUsers" resultMap="user_map">
+	<select id="getUsers" resultMap="user_map_no_pass">
 	    select 
 	    
 	    <include refid="user_columns_list"/>
