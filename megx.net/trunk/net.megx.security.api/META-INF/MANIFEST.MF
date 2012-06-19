@@ -37,7 +37,6 @@ Bundle-ClassPath: .,
  lib/log4j-1.2.16.jar,
  lib/mybatis-3.2.0-SNAPSHOT.jar,
  lib/commons-codec-1.6.jar,
- config/,
  lib/oauth-20100601.jar,
  lib/oauth-provider-20100601.jar
 Export-Package: net.megx.security.auth,

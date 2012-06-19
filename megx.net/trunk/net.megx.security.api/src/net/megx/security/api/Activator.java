@@ -108,26 +108,6 @@ public class Activator extends JCRAppConfgEnabledActivator {
 				ConsumerService.class.getName(),
 				TokenService.class.getName(),
 				WebResourcesService.class.getName());
-		
-		
-		/*
-		try{
-			System.out.println(String.format("Config: %s", getConfig().toString(3)));
-			System.out.println("Config resource path="+getString(getConfig(),    "myBatisConfigFile"));
-			URL url = context.getBundle().getResource(getString(getConfig(), "myBatisConfigFile"));
-			System.out.println("Config resource as:" + url);
-			Reader reader = new InputStreamReader(url.openStream());
-			 
-			System.out.println("Read config resource > " + reader);
-			SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsReader("config/my-batis-config.xml"), getDatabaseProperties());
-			System.out.println("Build sql session factory > " + factory);
-			
-			
-			
-		}catch (Exception e) {
-			e.printStackTrace(System.out);
-		}
-		*/
 	}
 	
 	

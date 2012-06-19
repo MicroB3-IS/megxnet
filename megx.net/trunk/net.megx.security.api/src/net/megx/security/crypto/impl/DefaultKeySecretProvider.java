@@ -42,18 +42,6 @@ public class DefaultKeySecretProvider implements KeySecretProvider{
 		return keySecret;
 	}
 	
-	public static void main(String[] args) throws Exception{
-//		KeySecretProvider provider = new DefaultKeySecretProvider();
-//		KeySecret keySecret = provider.createKeySecretPair();
-//		System.out.println("Key byte-lenght: " + keySecret.getKey().getBytes().length);
-//		System.out.println("Secret byte-lenght: " + keySecret.getSecret().getBytes().length);
-//		for(int i = 0; i < 1000; i++){
-//		String rnd = provider.getRandomSequence(i+1);
-//		System.out.println("["+rnd+"]");
-//		System.out.println("l="+rnd.length());
-//		}
-	}
-	
 	private String base64encode(byte [] bytes){
 		Base64 base64 = new Base64(128, new byte[]{}, true);
 		

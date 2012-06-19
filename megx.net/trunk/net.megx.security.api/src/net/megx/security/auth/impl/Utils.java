@@ -32,18 +32,4 @@ public class Utils {
 		}
 		return null;
 	}
-	
-	public static void main(String[] args) {
-		SecurityContext [] contexts = new SecurityContext[3];
-		System.out.println(contexts.getClass().getComponentType());
-		int [] a = new int [4];
-		System.out.println(a.getClass().getComponentType());
-		Object [] o = new Object [5];
-		System.out.println(o.getClass().getComponentType());
-		
-		List<SecurityContext> lc = new LinkedList<SecurityContext>();
-		System.out.println(getBaseType(lc));
-		
-		System.out.println(isIterable(contexts));
-	}
 }

@@ -694,10 +694,12 @@
 	var UserManager = function(config){
 	   var m = [
 	      '<div>',
-	         '<div>',
-	            'All Users',
-	            '<div style="float: right;">',
-	               '<div class="ui-corner-all admin-general-action security-action-add-user"><span style="padding: 5px;">Add User</span></div>',
+	         '<div class="security-users-panel">',
+	            '<div class="security-users-header">',
+	               'Manage Users',
+	               '<div style="float: right;">',
+	                  '<div class="ui-corner-all admin-general-action security-action-add-user" style="padding: 5px;">Add User<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span></div>',
+	               '</div>',
 	            '</div>',
 	            '<div class="security-notification-container"></div>',
 	            '<div class="security-users-panel-container"></div>',
@@ -709,18 +711,23 @@
 	   this.n = new NotificationManager({
 	      selector: $('.security-notification-container', this.el)[0]
 	   });
+	   var self = this;
+	   $('.security-action-add-user', this.el).click(function(){
+	      self.addUser();
+	   });
 	   
-	   
-	   
-	   
-	   $(config.placeholder).append(this.el);
-	   
+	   this.placeholder = config.placeholder;
+	   //$(config.placeholder).append(this.el);
+	   this.show();
 	   this.roles = config.roles || [];
 	   this.userService = config.userService;
 	   
 	};
 	
 	$.extend(UserManager.prototype, {
+	   show: function(){
+	      $(this.placeholder).html('').append(this.el);
+	   },
 	   showUsers: function(){
 	      var self = this;
 	      var pel = $('.security-users-panel-container', this.el);
@@ -731,7 +738,7 @@
 	         pel.html('');
 	         for(var i = 0; i < users.length; i++){
 	            var um = [
-	               '<div class="user-entry" title="',users[i].login,'">',
+	               '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
 	                  '<span class="user-label user-action-edit">',
 	                     users[i].firstName, ' ', users[i].lastName,
 	                  '</span>',
@@ -758,8 +765,16 @@
 	         self.n.error('Failed to retrieve users list: ', error);
 	      });
 	   },
-	   getUserEditPanel: function(user, saveCallback){
+	   getUserEditPanel: function(user, saveCallback, cancelCallback){
 	      var self = this;
+	      
+	      var roles = [];
+	      if(user.roles){
+	         for(var i = 0; i < user.roles.length; i++){
+	            roles.push(user.roles[i].label);
+	         }
+	      }
+	      user.roles = roles;
 	      var uep = new DataPanel({
 	         selector: $('.security-users-panel-container', this.el)[0],
 	         title: 'Add User',
@@ -861,7 +876,7 @@
 	            'save': {
 	               text: 'Save',
 	               handler: function(panel){
-	                  saveCallback.call(this, ap);
+	                  saveCallback.call(this, uep);
 	               },
 	               order: 1
 	            },
@@ -871,6 +886,9 @@
 	                  self.n.confirm('Info', "Are you sure you don't want to save the changes? All canges will be lost.",
 	                  function(){
 	                     uep.close();
+	                     if(cancelCallback){
+	                        cancelCallback.call(this, uep);
+	                     }
 	                  });
 	               },
 	               order: 0
@@ -892,6 +910,7 @@
 	            function(){
 	               this.userService.del(user.login, undefined, function(){
 	                  self.n.message('Info: ', "User " + user.firstName + " " + user.lastName + "' has been removed");
+	                  self.showUsers();
 	               }, function(x, status, error){
 	                  self.n.error("Error: ", "Failed to remove user.");
 	               });
@@ -899,6 +918,7 @@
 	   },
 	   editUser: function(user){
 	      var self = this;
+	      $('.security-users-panel-container', this.el).html('');
 	      this.getUserEditPanel(user, function(panel){
 	         var u = panel.getData();
 	         if(u){
@@ -924,6 +944,9 @@
    	         });
 	         }
 
+	      },
+	      function(){
+	         self.showUsers();
 	      });
 	   },
 	   addUser: function(){
@@ -953,6 +976,9 @@
    	         });
 	         }
 
+	      },
+	      function(){
+	         self.showUsers();
 	      });
 	   },
 	   getUIRoles: function(){

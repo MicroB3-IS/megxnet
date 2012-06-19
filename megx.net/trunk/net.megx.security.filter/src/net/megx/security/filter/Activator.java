@@ -24,7 +24,6 @@ public class Activator extends ResTplConfiguredActivator {
 	public void start(BundleContext context) throws Exception {
 		try{
 			super.start(context);
-			System.out.println(super.toString());
 			JSONObject cfg = getConfig();
 			
 			Filter filter = new  SecurityFilter(context, cfg);
