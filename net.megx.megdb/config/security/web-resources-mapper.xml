@@ -7,7 +7,7 @@
     <resultMap type="WebResource" id="web_resource_map">
         <result column="url_path" property="urlPattern"/>
         <result column="http_method" property="httpMethod"/>
-        <association property="roles" select="selectRolesForWebResource" column="url_path,http_method"/>
+        <association property="roles" select="selectRolesForWebResource" column="{url_path=url_path,http_method=http_method}"/>
     </resultMap>
     
     <resultMap type="Role" id="role_map">
@@ -57,4 +57,8 @@
         	where url_path=#{urlPattern} and http_method=#{httpMethod}
     </delete>
     
+    <delete id="deleteByUrlPattern" parameterType="string">
+    	delete from auth.web_resource_permissions
+    		where url_path=#{urlPattern}
+    </delete>
 </mapper>

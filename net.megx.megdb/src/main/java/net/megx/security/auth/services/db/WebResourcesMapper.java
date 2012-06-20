@@ -15,4 +15,5 @@ public interface WebResourcesMapper {
 	public List<WebResource> getAll(
 			@Param("from")int from, 
 			@Param("count") int count) throws Exception;
+	public void deleteByUrlPattern(String pattern) throws Exception;
 }
