@@ -1046,8 +1046,283 @@
 	   }
 	});
 	
+	
+	
+	var ResourcesManager = function(config){
+	   this.resourcesService = config.resourcesService;
+	   this.userService = config.userService;
+	   
+	   var m = [
+	      '<div>',
+	         '<div>',
+	         '</div>',
+	         '<div></div>',
+	         '<div class="resources-panel-content"></div>',
+	      '</div>'
+	   ].join('');
+	   this.el = $(m)[0];
+	   this.n = new NotificationManager({
+	      selector: $('.security-notification-container', this.el)[0]
+	   });
+	   
+	};
+	ResourcesManager.HTTP_METHODS = {
+	   'get': 'GET',
+	   'put': 'PUT',
+	   'post': 'POST',
+	   'delete': 'DELETE',
+	   'all': 'Any'
+	};
+	ResourcesManager.GET_HTTP_METHODS = function(){
+	   var ms = [];
+	   each(ResourcesMaager.HTTP_METHODS, function(k,v){
+	      ms.push({
+	         value: k,
+	         label: v
+	      });
+	   });
+	   return ms;
+	};
+	
+	extend(ResourcesManager, {
+	   show: function(){
+	      $('.content-placeholder').html('').append(this.el);
+	      // add handlers here...
+	   },
+	   ready: function(callback){
+	      var self = this;
+	      this.userService.get('roles', undefined, function(roles){
+	         self.roles = roles;
+	         callback.call(self);
+	      }, function(){
+	         self.n.error('Error: ', 'Failed to retrieve the list of roles.');
+	      });
+	   },
+	   showResources: function(){
+	      var self = this;
+         this.ready(function(){
+            this.resourcesService.get('',undefined, function(resources){
+               resources = self.fromServer(resources);
+               var m = ['<div class="">'];
+               for(var  i = 0; i < resources.length; i++){
+                  var rc = resources[i];
+                  var rm = [
+                     '<div>',
+                        '<span>',
+                           rc.urlPattern,
+                        '</span>',
+                        '<span class="rc-action-remove ui-icon ui-icon-closethick" style="float: right;"></span>',
+                        '<div>',
+                           "tooo",
+                        '</div>',
+                     '</div>'
+                  ].join('');
+                  m.push(rm);
+               }
+               m.push('</div>');
+               
+               $('.resources-panel-content', self.el).html(m.join(''));
+               
+               
+               
+               
+            },function(){
+               self.n.error('Error: ', 'Failed to retrieve the web resources list');
+            });
+         });
+	   },
+	   addResources: function(){},
+	   removeResource: function(){},
+	   getResourcePanel: function(resource, onOk, onCancel){
+	      var self = this;
+	      var rp = new DataPanel({
+	         selector: $('.resources-panel-content', this.el)[0],
+	         title: 'Manage Web Resources Access',
+	         content: [
+	            {
+	               type: 'text',
+	               name: 'urlPattern',
+	               label: 'URL Pattern: ',
+	               title: 'URL Pattern',
+	               value: resource.urlPattern || '',
+	            },
+	            {
+	               type: 'section',
+	               title: 'HTTP Methods allowed',
+	               content: [
+	                  {
+	                     type: 'array-values',
+	                     name: 'httpMethods',
+	                     label: 'Allowed Methods: ',
+	                     value: (function(r){
+	                           var values = [];
+	                           each(r.httpMethods || {}, function(k){ values.push(k);});   
+	                           return values;
+	                        })(resource),
+	                     events: {
+	                        'value-remove': function(e, f, value){
+	                           rp.getDataField('httpMethod').addValue(value, ResourcesManager.HTTP_METHODS[value]);
+	                        }
+	                     }
+	                  },
+	                  {
+	                     type: 'select',
+	                     name: 'httpMethod',
+	                     label: 'HTTP Method: ',
+	                     title: 'HTTP Verb',
+                        options: this._getHttpMethodsForResource(resource),
+                        events: {
+	                        'change': function(e, f){
+	                           var value = f.getValue();
+	                           rp.getDataField('httpMethods').addValue(value);
+	                           f.removeValue(value);
+	                        }
+	                     },
+	                  },
+	                  {
+	                     type: 'button',
+	                     value: 'Add',
+	                     name: 'add_http_method',
+	                     events: {
+	                        'click': function(e,f){
+	                           var value = rp.getDataField('httpMethod').getValue();
+	                           rp.getDataField('httpMethods').addValue(value);
+	                           rp.getDataField('httpMethod').removeValue(value);
+	                        }
+	                     }
+	                  }
+	               ]
+	            },
+	            {
+	               type: 'section',
+	               title: 'Allowed Roles',
+	               content: [
+	                  {
+	                     type: 'array-values',
+	                     name: 'roles',
+	                     label: 'Allowed For Roles',
+	                     title: 'Allowed roles to access this resource',
+	                     value: this.getRolesForResource(resource),
+	                     events: {
+	                        'value-remove': function(e, f, value){
+	                           
+	                        }
+	                     }
+	                  },
+	                  {
+	                     type: 'select',
+	                     name: 'allRoles',
+	                     label: 'Available Roles: ',
+	                     value: this.availableRolesForResource(resource),
+	                     events:{
+	                        'change': function(){
+	                           
+	                        }
+	                     }
+	                  },
+	                  {
+	                     type: 'button',
+	                     value: 'Add',
+	                     name: 'add_roles',
+	                     events:{
+	                        'click': function(){
+	                           
+	                        }
+	                     }
+	                  }
+	               ]
+	            }
+	         ],
+	         buttons: {
+	            'ok': {
+	               text: 'Save',
+	               handler: function(e, panel){
+	                  
+	               }
+	            },
+	            'cancel': {
+	               text: 'Cancel',
+	               handler: function(e, panel){
+	                  
+	               }
+	            }
+	         }
+	      });
+	      rp.show();
+	      return rp;
+	   },
+	   _getHttpMethodsForResource: function(res){
+	      res = res || {};
+	      var htms = res.httpMethods || {};
+	      var methods = [];
+	      each(ResourcesManager.HTTP_METHODS, function(k,v){
+	         if(!htms[k])
+	            methods.push({
+	               value: k,
+	               label: v
+	            });
+	      }, this);
+	      return methods;
+	   },
+	   fromServer: function(resources){
+	      var rs = [];
+	      var rsc = {};
+	      
+	      for(var i = 0; i < resources.length; i++){
+	         var r = rsc[resources[i].urlPattern];
+	         if(!r){
+               r = rsc[resources[i].urlPattern] = resources[i]; 
+               r.httpMethods = {};
+               rs.push(r);
+	         }
+            var hm = r.httpMethod.toLowerCase();
+            r.httpMethods[hm] = ResourcesManager.HTTP_METHODS[hm];
+	      }
+	      return rs;
+	   },
+	   fromUI: function(resource){
+	      var rs = {
+	         urlPattern: resource.urlPattern
+	      };
+	      rs.httpMethod = [];
+	      each(resource.httpMethods || {}, function(k,v){
+	         rs.httpMethod.push(v);
+	      }); 
+	      rs.httpMethod.join(',');
+	      return rs;
+	   },
+	   getRolesForResource: function(r){
+	      r = r || {};
+	      var rs = [];
+	      r.roles = r.roles || [];
+	      for(var i = 0; i < r.roles.length; i++){
+	         roles.push(r.roles[i].value);
+	      }
+	      return rs;
+	   },
+	   availableRolesForResource: function(r){
+	      r = r || {};
+	      r.roles = r.roles | [];
+	      var c = {};
+	      for(var i = 0; i < r.roles.length; i++){
+	         c[r.roles[i].value] = c[r.roles[i].label];
+	      }
+	      var rs = [];
+	      each(this.roles || {}, function(k,v){
+	         if(!c[k]){
+	            rs.push({
+	               label: v,
+	               value: k
+	            });
+	         }
+	      });
+	      return rs;
+	   }
+	});
+	
 	window.admin = {
 	   UserManager:UserManager,
+	   ResourcesManager: ResourcesManager,
    	RESTClient: RESTClient
 	};
 	
