@@ -11,6 +11,7 @@ import net.megx.model.Article;
 import net.megx.model.Author;
 import net.megx.model.Journal;
 import net.megx.model.ModelFactory;
+import net.megx.model.Sample;
 
 public class ArticleDTO {
 	private List<AuthorDTO> authors;
@@ -19,7 +20,7 @@ public class ArticleDTO {
 	private String year;
 	private JournalArticleDTO journalArticle;
 	private Map<String, String> identifiers;
-	// TODO: Samples
+	private List<SampleDTO> samples;
 	private String abstractUrl;
 	private String institute;
 
@@ -71,6 +72,14 @@ public class ArticleDTO {
 		this.identifiers = identifiers;
 	}
 
+	public List<SampleDTO> getSamples() {
+		return samples;
+	}
+
+	public void setSamples(List<SampleDTO> samples) {
+		this.samples = samples;
+	}
+
 	public String getAbstractUrl() {
 		return abstractUrl;
 	}
@@ -87,73 +96,85 @@ public class ArticleDTO {
 		this.institute = institute;
 	}
 
-	public static ArticleDTO fromArticle(Article a) {
+	public static ArticleDTO fromDAO(Article a) {
 		ArticleDTO rv = new ArticleDTO();
-		
+
 		rv.title = a.getTitle();
-		
+
 		rv.authors = new ArrayList<AuthorDTO>();
 		int authorsCnt = a.getNumAuthors();
-		if(authorsCnt <= 0) {
-			throw new RuntimeException("Invalid article. Authors count is " + authorsCnt);
+		if (authorsCnt <= 0) {
+			throw new RuntimeException("Invalid article. Authors count is "
+					+ authorsCnt);
 		}
-		
+
 		for (int i = 0; i < authorsCnt; i++) {
 			rv.authors.add(AuthorDTO.fromDAO(a.getAuthor(i), i));
 		}
-		
+
 		Author author = a.getFirstAuthor();
-		
-		
+
 		rv.website = a.getFullTextHTML();
 		rv.year = a.getPublicationYear();
 		rv.journalArticle = JournalArticleDTO.fromDAO(a);
 		rv.identifiers = new HashMap<String, String>();
 		rv.identifiers.put("doi", a.getDOI());
 		rv.identifiers.put("pmid", a.getPMID());
+
+		int samplesCnt = a.getNumSamples();
+		if (samplesCnt > 0) {
+			rv.samples = new ArrayList<SampleDTO>();
+			for (int i = 0; i < samplesCnt; i++) {
+				Sample sample = a.getSample(i);
+				rv.samples.add(SampleDTO.fromDAO(sample));
+			}
+		}
+
 		rv.abstractUrl = a.getAbstractHTML();
 		rv.institute = author.getInstitute();
-		
+
 		return rv;
 	}
-	
-	public Article toArticle() {
+
+	public Article toDAO() {
 		Article a = ModelFactory.createArticle();
-		a.setTitle( this.getTitle() );
-		
-		//sort by author position
+		a.setTitle(this.getTitle());
+
+		// sort by author position
 		Collections.sort(authors, new Comparator<AuthorDTO>() {
 			@Override
 			public int compare(AuthorDTO a1, AuthorDTO a2) {
 				return a1.getPosition() - a2.getPosition();
 			}
 		});
-		
-		for(AuthorDTO authorDTO : this.authors) {
-			Author author = authorDTO.toAuthor();
+
+		for (AuthorDTO authorDTO : this.authors) {
+			Author author = authorDTO.toDAO();
 			a.addAuthor(author);
 		}
-		
-		a.setFullTextHTML( this.website );
-		a.setPublicationYear( this.year );
-		
-		
-		//rv.journalArticle = JournalArticleDTO.fromDAO(a);
-		Journal journal = this.journalArticle.toJournal(a);
+
+		a.setFullTextHTML(this.website);
+		a.setPublicationYear(this.year);
+
+		Journal journal = this.journalArticle.toDAO(a);
 		a.addJournal(journal);
-		
-		if(this.identifiers != null) {
-			if(this.identifiers.containsKey("doi")) {
-				a.setDOI( this.identifiers.get("doi") );
+
+		if (this.identifiers != null) {
+			if (this.identifiers.containsKey("doi")) {
+				a.setDOI(this.identifiers.get("doi"));
 			}
-			if(this.identifiers.containsKey("pmid")) {
-				a.setPMID( this.identifiers.get("pmid") );
+			if (this.identifiers.containsKey("pmid")) {
+				a.setPMID(this.identifiers.get("pmid"));
 			}
 		}
-				
-		a.setAbstractHTML( this.abstractUrl );
-		a.getFirstAuthor().setInstitute( this.institute );
-		
+		if (this.samples != null) {
+			for (SampleDTO sampleDTO : this.samples) {
+				a.addSample(sampleDTO.toDAO());
+			}
+		}
+		a.setAbstractHTML(this.abstractUrl);
+		a.getFirstAuthor().setInstitute(this.institute);
+
 		return a;
 	}
 }

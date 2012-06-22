@@ -98,7 +98,7 @@ public class JournalArticleDTO {
 	}
 	
 	// since not 1-1 mappings, we need artice and we modify it ...
-	public Journal toJournal(Article a) {
+	public Journal toDAO(Article a) {
 		a.setIssue( this.issue );
 		Journal journal = ModelFactory.createJournal();
 		journal.setIsoAbbr( this.isoab );

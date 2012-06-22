@@ -33,7 +33,7 @@ public class ArticleFromJSONTest {
 		String jsonStr = readResource("/net/megx/pubmap/test/article.json");
 		ArticleDTO dto = gson.fromJson(jsonStr, ArticleDTO.class);
 		
-		Article article = dto.toArticle();
+		Article article = dto.toDAO();
 		return article;
 	}
 	
@@ -42,7 +42,7 @@ public class ArticleFromJSONTest {
 		String jsonStr = readResource("/net/megx/pubmap/test/article.json");
 		ArticleDTO dto = gson.fromJson(jsonStr, ArticleDTO.class);
 		
-		Article article = dto.toArticle();
+		Article article = dto.toDAO();
 		assertNotNull(article);
 		//website mapped to fullTextHTML
 		assertEquals(dto.getWebsite(), article.getFullTextHTML());
