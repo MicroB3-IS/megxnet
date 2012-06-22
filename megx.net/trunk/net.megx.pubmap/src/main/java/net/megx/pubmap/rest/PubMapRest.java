@@ -56,7 +56,7 @@ public class PubMapRest {
 			List<Article> articles = getDBService().getAllArticles();
 			List<ArticleDTO> articleDTOs = new ArrayList<ArticleDTO>();
 			for(Article a : articles) {
-				articleDTOs.add(ArticleDTO.fromArticle(a));
+				articleDTOs.add(ArticleDTO.fromDAO(a));
 			}
 			return gson.toJson(articleDTOs);
 		} catch (Exception e) {
@@ -88,7 +88,7 @@ public class PubMapRest {
 	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException,
 			JSONException, IOException {
 		ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
-		Article a = dto.toArticle();
+		Article a = dto.toDAO();
 		getDBService().insertArticle(a);
 		return "OK";
 	}

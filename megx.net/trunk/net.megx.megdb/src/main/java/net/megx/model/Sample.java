@@ -21,9 +21,9 @@ public interface Sample extends SimpleAudit {
 
 	public void setDateTaken(Date dateTaken);
 
-	public String getDateRes();
+	public DateResolution getDateRes();
 
-	public void setDateRes(String dateRes);
+	public void setDateRes(DateResolution dateRes);
 
 	public String getMaterial();
 
@@ -72,5 +72,14 @@ public interface Sample extends SimpleAudit {
 	public void setLongitude(BigDecimal longitude);
 
 	public BigDecimal getLongitude();
-
+	
+	public String getRegion();
+	
+	public void setRegion(String region);
+	
+	public void setDepth(BigDecimal depth, String unit);
+	
+	public BigDecimal getDepth();
+	
+	public String getDepthUnit();
 }

@@ -41,7 +41,7 @@ public class AuthorDTO {
 		rv.position = pos;
 		return rv;
 	}
-	public Author toAuthor() {
+	public Author toDAO() {
 		Author author = ModelFactory.createAuthor();
 		author.setFirstName( this.forename );
 		author.setInitials( this.initials );

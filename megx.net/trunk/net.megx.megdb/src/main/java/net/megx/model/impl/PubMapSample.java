@@ -3,6 +3,7 @@ package net.megx.model.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import net.megx.model.DateResolution;
 import net.megx.model.Sample;
 
 public class PubMapSample implements Sample {
@@ -15,7 +16,7 @@ public class PubMapSample implements Sample {
 
 	private Date dateTaken;
 
-	private String dateRes;
+	private DateResolution dateRes;
 
 	private String material;
 
@@ -135,7 +136,7 @@ public class PubMapSample implements Sample {
 	 * @see net.megx.model.Sample#getDateRes()
 	 */
 	@Override
-	public String getDateRes() {
+	public DateResolution getDateRes() {
 		return dateRes;
 	}
 
@@ -145,7 +146,7 @@ public class PubMapSample implements Sample {
 	 * @see net.megx.model.Sample#setDateRes(java.lang.String)
 	 */
 	@Override
-	public void setDateRes(String dateRes) {
+	public void setDateRes(DateResolution dateRes) {
 		this.dateRes = dateRes;
 	}
 
@@ -405,6 +406,36 @@ public class PubMapSample implements Sample {
 	@Override
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	@Override
+	public String getRegion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setRegion(String region) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDepth(BigDecimal depth, String unit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public BigDecimal getDepth() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDepthUnit() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
