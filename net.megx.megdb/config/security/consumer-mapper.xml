@@ -42,8 +42,6 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		description,
 		trusted,
 		expiration,
-		roles,
-		resource,
 		logname,
 		callback_url
 	</sql>

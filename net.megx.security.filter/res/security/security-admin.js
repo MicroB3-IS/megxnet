@@ -282,7 +282,19 @@
 	   setValue: function(value){
 	      var oldValue = this.getValue();
 	      if(this.type =='select' || this.type=='dropdown'){
-	         
+	         if($.isArray(value)){
+	            for(var i = 0; i < value.length; i++){
+	               var label = value[i].label === undefined ? value[i] : value[i].label;
+	               var v = value[i].value === undefined ? value[i] : value[i].value;
+	               this.addValue(value, label);
+	            }
+	         }else if(typeof(value) == 'string'){
+	            this.addValue(value);
+	         }else{
+	            each(value, function(k,v){
+	               this.addvalue(k,v);
+	            },this);
+	         }
 	      }else{
 	         $(this.el).val(value);
 	      }
@@ -428,6 +440,11 @@
 	
 	extend(SelectDataField, DataField);
 	extend(SelectDataField, {
+	   init: function(wel){
+	      SelectDataField.superclass.init.call(this, wel);
+	      if(this.value !== undefined)
+	         this.setValue(this.value);
+	   },
 	   addValue: function(value, label){
 	      $(this.el).append([
 	         '<option id="',_getId('option'),'" ',
@@ -508,7 +525,8 @@
                name: d.name,
                type: d.type,
                validator: d.validator,
-               events: d.events
+               events: d.events,
+               value: d.value
             };
             
             
@@ -639,7 +657,11 @@
 	   
 	   for(var  i = 0; i < buttons.length; i++){
 	      $('.data-panel-footer',this.el).append(buttons[i].markup);
-	      $('#'+buttons[i].id, this.el).click(buttons[i].handler);
+	      (function(button){
+	         $('#'+button.id, self.el).click(function(e){
+	            button.handler.call(self, e, self);
+	         });
+	      })(buttons[i]);
 	   }
 	   
 	   DataPanel.superclass.constructor.call(this, {el:this.el}); // must call superclass constructor here...
@@ -1053,10 +1075,15 @@
 	   this.userService = config.userService;
 	   
 	   var m = [
-	      '<div>',
-	         '<div>',
+	      '<div class="resources-panel-wrapper">',
+	         '<div class="resources-panel-actions">',
+	            'Manage protected resources',
+	            '<div class="ui-corner-all admin-general-action resources-action-add" style="float: right;">',
+	               'Add Protected URL',
+	               '<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span>',
+	             '</div>',
 	         '</div>',
-	         '<div></div>',
+	         '<div class="security-notification-container"></div>',
 	         '<div class="resources-panel-content"></div>',
 	      '</div>'
 	   ].join('');
@@ -1088,6 +1115,10 @@
 	   show: function(){
 	      $('.content-placeholder').html('').append(this.el);
 	      // add handlers here...
+	      var self = this;
+	      $('.resources-action-add', this.el).click(function(){
+            self.addResource();
+	      });
 	   },
 	   ready: function(callback){
 	      var self = this;
@@ -1100,28 +1131,57 @@
 	   },
 	   showResources: function(){
 	      var self = this;
+	      
+	      var getArr = function(arr, key){
+	         var m = [];
+	         each(arr, function(k,v){
+	            var val = key ? v[key] : v;
+	            m.push('<span class="array-value-inline ui-corner-all">' + (val  || '') + '</span>');
+	         });
+	         if(!m.length){
+	            m.push('<span class="array-value-inline ui-corner-all">none</span>');
+	         }
+	         return m.join('');
+	      };
+	      
          this.ready(function(){
             this.resourcesService.get('',undefined, function(resources){
                resources = self.fromServer(resources);
-               var m = ['<div class="">'];
+               var m = '<div class="resources-panel"></div>';
+               var rpel = $(m)[0];
                for(var  i = 0; i < resources.length; i++){
                   var rc = resources[i];
                   var rm = [
-                     '<div>',
-                        '<span>',
+                     '<div class="resource-entry ui-corner-all">',
+                        '<span class="resource-pattern resource-action-edit">',
                            rc.urlPattern,
                         '</span>',
                         '<span class="rc-action-remove ui-icon ui-icon-closethick" style="float: right;"></span>',
-                        '<div>',
-                           "tooo",
+                        '<div class="resource-entry-details">',
+                              '<div>',
+                                 '<label class="panel-field-label">Allowed HTTP Methods:</label>',
+                                 getArr(resources[i].httpMethods),
+                              '</div>',
+                              '<div>',
+                                 '<label class="panel-field-label">Allowed Roles:</label>',
+                                 getArr(resources[i].roles, 'label'),
+                              '</div>',
                         '</div>',
                      '</div>'
                   ].join('');
-                  m.push(rm);
+                  var rmel = $(rm)[0];
+                  $(rpel).append(rmel);
+                  (function(resource){
+                     $('.resource-action-edit', rmel).click(function(){
+                        self.editResource(resource);
+                     });
+                     $('.rc-action-remove', rmel).click(function(){
+                        self.removeResource(resource);
+                     });
+                  })(resources[i]);
+                  
                }
-               m.push('</div>');
-               
-               $('.resources-panel-content', self.el).html(m.join(''));
+               $('.resources-panel-content', self.el).html('').append(rpel);
                
                
                
@@ -1131,8 +1191,17 @@
             });
          });
 	   },
-	   addResources: function(){},
+	   addResource: function(){
+	      this.ready(function(){
+	         this.clearMainPanel();
+	         var ap = this.getResourcePanel({}, function(){}, function(){});
+	      });
+	   },
 	   removeResource: function(){},
+	   editResource: function(){},
+	   clearMainPanel: function(){
+	      $('.resources-panel-content', this.el).html('');
+	   },
 	   getResourcePanel: function(resource, onOk, onCancel){
 	      var self = this;
 	      var rp = new DataPanel({
@@ -1145,6 +1214,12 @@
 	               label: 'URL Pattern: ',
 	               title: 'URL Pattern',
 	               value: resource.urlPattern || '',
+	               validator: function(val){
+	                  if($.trim(val) == ""){
+	                     return false;
+	                  }
+	                  return true;
+	               }
 	            },
 	            {
 	               type: 'section',
@@ -1205,7 +1280,11 @@
 	                     value: this.getRolesForResource(resource),
 	                     events: {
 	                        'value-remove': function(e, f, value){
-	                           
+	                           for(var  i = 0; i < self.roles.length; i++){
+	                              if(self.roles[i].label == value){
+	                                 rp.getDataField('allRoles').addValue(value, self.roles[i].description);
+	                              }
+	                           }
 	                        }
 	                     }
 	                  },
@@ -1213,10 +1292,14 @@
 	                     type: 'select',
 	                     name: 'allRoles',
 	                     label: 'Available Roles: ',
-	                     value: this.availableRolesForResource(resource),
+	                     options: this.availableRolesForResource(resource),
 	                     events:{
-	                        'change': function(){
-	                           
+	                        'change': function(e, f){
+	                           if(rp){
+   	                           var value = f.getValue();
+   	                           rp.getDataField('roles').addValue(value);
+	                              f.removeValue(value);
+	                           }
 	                        }
 	                     }
 	                  },
@@ -1227,6 +1310,9 @@
 	                     events:{
 	                        'click': function(){
 	                           
+	                           var value = rp.getDataField('allRoles').getValue();
+	                           rp.getDataField('roles').addValue(value);
+	                           rp.getDataField('allRoles').removeValue(value);
 	                        }
 	                     }
 	                  }
@@ -1237,7 +1323,18 @@
 	            'ok': {
 	               text: 'Save',
 	               handler: function(e, panel){
-	                  
+	                  if(panel.validate()){
+	                     console.log("valid");
+	                  }else{
+	                     console.log("invalid");
+	                  }
+	                  var rc = panel.getData();
+	                  console.log("RESOURCE: ", rc);
+	                  if(resource.urlPattern){
+	                     
+	                  }else{
+	                     
+	                  }  
 	               }
 	            },
 	            'cancel': {
@@ -1308,14 +1405,14 @@
 	         c[r.roles[i].value] = c[r.roles[i].label];
 	      }
 	      var rs = [];
-	      each(this.roles || {}, function(k,v){
-	         if(!c[k]){
+	      for(var  i = 0; i < this.roles.length; i++){
+	         if(!c[this.roles[i].label]){
 	            rs.push({
-	               label: v,
-	               value: k
+	               value: this.roles[i].label,
+	               label: this.roles[i].description
 	            });
 	         }
-	      });
+	      }
 	      return rs;
 	   }
 	});

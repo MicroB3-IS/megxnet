@@ -86,3 +86,32 @@
 .rc-action-remove{
    display: inline-block;
 }
+.resource-entry{
+	padding: 10px;
+	border: solid 1px #999;
+	margin: 3px;
+}
+.resources-panel-wrapper{
+	border: solid 1px #999;
+	padding: 15px;
+}
+.resources-panel-content{
+	margin-top: 10px;
+	border-top: solid 1px #AAA;
+	padding-top: 15px;
+}
+.array-value-inline{
+	padding: 2px;
+	margin: 2px;
+	background: #4FC1FF;
+	color: #fff;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.resource-pattern{
+	/*color: #999;*/
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
+}
