@@ -149,24 +149,27 @@ public class SampleDTO {
 				idx = i;
 			}
 		}
+		
 		Date date = sample.getDateTaken();
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		rv.samyear = String.valueOf( c.get(Calendar.YEAR) );
-		if(idx > 0) {
-			rv.sammonth = String.format("%02d", c.get(Calendar.MONTH) + 1);
-		}
-		if(idx > 1) {
-			rv.samday = String.format("%02d", c.get(Calendar.DATE));
-		}
-		if(idx > 2) {
-			rv.samhour = String.format("%02d", c.get(Calendar.HOUR_OF_DAY));
-		}
-		if(idx > 3) {
-			rv.sammin = String.format("%02d", c.get(Calendar.MINUTE));
-		}
-		if(idx > 4) {
-			rv.samsec = String.format("%02d", c.get(Calendar.SECOND));
+		if (date != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			rv.samyear = String.valueOf(c.get(Calendar.YEAR));
+			if (idx > 0) {
+				rv.sammonth = String.format("%02d", c.get(Calendar.MONTH) + 1);
+			}
+			if (idx > 1) {
+				rv.samday = String.format("%02d", c.get(Calendar.DATE));
+			}
+			if (idx > 2) {
+				rv.samhour = String.format("%02d", c.get(Calendar.HOUR_OF_DAY));
+			}
+			if (idx > 3) {
+				rv.sammin = String.format("%02d", c.get(Calendar.MINUTE));
+			}
+			if (idx > 4) {
+				rv.samsec = String.format("%02d", c.get(Calendar.SECOND));
+			}
 		}
 		
 		if(sample.getDepth() != null) {
