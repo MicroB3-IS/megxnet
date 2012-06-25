@@ -1,7 +1,12 @@
 package net.megx.pubmap.rest.json;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import net.megx.model.DateResolution;
 import net.megx.model.ModelFactory;
 import net.megx.model.Sample;
 
@@ -109,10 +114,17 @@ public class SampleDTO {
 		
 		
 		sample.setMaterial(this.material);
+		try {
+			DateRes dtr = calcDateRes(this);
+			sample.setDateRes(dtr.getResolution());
+			sample.setDateTaken(dtr.getDate());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//sample.setDepth
 		//sample.setDepthunit
-		// sample.setYear, month day min sec ...
 		return sample;
 	}
 	
@@ -128,6 +140,96 @@ public class SampleDTO {
 		if(lon != null) {
 			rv.longitude = lon.toPlainString();
 		}
+		
+		DateResolution res = sample.getDateRes();
+		int idx = 0;
+		for(int i=0; i<dr_arr.length; i++) {
+			if(dr_arr[i].equals(res)) {
+				idx = i;
+			}
+		}
+		Date date = sample.getDateTaken();
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		rv.samyear = String.valueOf( c.get(Calendar.YEAR) );
+		if(idx > 0) {
+			rv.sammonth = String.format("%02d", c.get(Calendar.MONTH) + 1);
+		}
+		if(idx > 1) {
+			rv.samday = String.format("%02d", c.get(Calendar.DATE));
+		}
+		if(idx > 2) {
+			rv.samhour = String.format("%02d", c.get(Calendar.HOUR_OF_DAY));
+		}
+		if(idx > 3) {
+			rv.sammin = String.format("%02d", c.get(Calendar.MINUTE));
+		}
+		if(idx > 4) {
+			rv.samsec = String.format("%02d", c.get(Calendar.SECOND));
+		}
 		return rv;
 	}	
+	
+	// date resolution conversions 
+	public static class DateRes {
+		private DateResolution resolution;
+		private Date date;
+		
+		public DateRes(DateResolution resolution, Date date) {
+			this.resolution = resolution;
+			this.date = date;
+		}
+		public DateResolution getResolution() {
+			return resolution;
+		}
+		public Date getDate() {
+			return date;
+		}
+	}
+	
+	private static final DateResolution [] dr_arr = new DateResolution[] {
+			DateResolution.YEAR,
+			DateResolution.MONTH,
+			DateResolution.DAY,
+			DateResolution.HOUR,
+			DateResolution.MINUTE,
+			DateResolution.SECOND
+	};
+	
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	
+	public static DateRes calcDateRes(SampleDTO dto) throws ParseException {
+		String[] arr = new String [] {
+				dto.getSamyear(), 
+				dto.getSammonth(),
+				dto.getSamday(),
+				dto.getSamhour(),
+				dto.getSammin(),
+				dto.getSamsec()
+		};
+		
+		DateResolution res = null;		
+		for(int i=0; i<arr.length; i++) {
+			if(arr[i] == null || arr[i].trim().length()==0) {
+				break;
+			} else {
+				res = dr_arr[i];
+			}
+		}
+		
+		String s = String.format("%04d/%02d/%02d %02d:%02d:%02d",
+				parseInt(dto.getSamyear(), 2012), parseInt(dto.getSammonth(), 1),
+				parseInt(dto.getSamday(), 1), parseInt(dto.getSamhour(), 0),
+				parseInt(dto.getSammin(), 0), parseInt(dto.getSamsec(), 0));
+		Date date = DATE_FORMAT.parse(s);
+		return new DateRes(res, date);
+	}
+	
+	private static Integer parseInt(String str, Integer def) {
+		try {
+			return Integer.parseInt(str, 10);
+		} catch (NumberFormatException e) {
+		}
+		return def;
+	}
 }
