@@ -60,7 +60,7 @@ public class PubMapRest {
 			}
 			return gson.toJson(articleDTOs);
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Error in getAllArticles", e);
 			return errorJSON(e);
 		}
 	}
