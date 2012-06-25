@@ -123,8 +123,9 @@ public class SampleDTO {
 			e.printStackTrace();
 		}
 		
-		//sample.setDepth
-		//sample.setDepthunit
+		BigDecimal depthDecimal = new BigDecimal(this.depth);
+		sample.setDepth(depthDecimal, this.depthunit);
+		
 		return sample;
 	}
 	
@@ -167,6 +168,12 @@ public class SampleDTO {
 		if(idx > 4) {
 			rv.samsec = String.format("%02d", c.get(Calendar.SECOND));
 		}
+		
+		if(sample.getDepth() != null) {
+			rv.depth = sample.getDepth().toPlainString();
+			rv.depthunit = sample.getDepthUnit();
+		}
+		
 		return rv;
 	}	
 	
