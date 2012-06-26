@@ -95,10 +95,9 @@
 			<id column="author_sex" jdbcType="CHAR" javaType="String" property="sexCode" />
 		</collection>
 	</resultMap>
-
-	<select id="selectArticleDetailsById" resultMap="articleDetailsMap">
-		<![CDATA[
-      select
+	
+	<sql id="articlesQuery">
+	select
 		art.id,
 		art.id_code,
      	art.title,
@@ -136,14 +135,20 @@
 		core.articles art inner join core.journals j on j.title = art.journal 
 		                  inner join core.authorlists al ON art.id = al.article_id 
 		                                                AND art.id_code = al.article_id_code
-		
-	 where id = #{id} and id_code = #{idCode}
-	 order by id,al.pos 	 
-		]]>
+	</sql>
+	
+	<select id="getAllArticles" resultMap="articleDetailsMap">
+		<include refid="articlesQuery"/>	
+	 	order by id,al.pos
 	</select>
-
-
-
+	
+	
+	<select id="selectArticleDetailsById" resultMap="articleDetailsMap">
+		<include refid="articlesQuery"/>
+	 	where id = #{id} and id_code = #{idCode}
+	 	order by id,al.pos 	 
+	</select>
+	
 	<sql id="Author_Column_List">
 		first_name, last_name, initials, sex, institute
 	</sql>

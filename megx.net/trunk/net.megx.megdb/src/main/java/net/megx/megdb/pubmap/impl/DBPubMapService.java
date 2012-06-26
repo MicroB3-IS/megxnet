@@ -10,7 +10,6 @@ import net.megx.megdb.pubmap.mappers.SamplesMapper;
 import net.megx.model.Article;
 import net.megx.model.Author;
 import net.megx.model.Journal;
-import net.megx.model.ModelMockFactory;
 import net.megx.model.Sample;
 
 import org.apache.commons.logging.Log;
@@ -23,16 +22,14 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 	@Override
 	public List<Article> getAllArticles() throws Exception {
-		/*
-		 * TODO have to cut the better way to do it return doInSession(new
-		 * BaseMegdbService.DBTask<PubMapMapper,List<Article>>() {
-		 * 
-		 * @Override public List<Article> execute(PubMapMapper mapper) throws
-		 * Exception { return mapper.getAllArticles(); } }, PubMapMapper.class);
-		 */
-
-		return ModelMockFactory.createArticleList();
-
+		return doInSession(
+				new BaseMegdbService.DBTask<PubMapMapper, List<Article>>() {
+					@Override
+					public List<Article> execute(PubMapMapper mapper)
+							throws Exception {
+						return mapper.getAllArticles();
+					}
+				}, PubMapMapper.class);
 	}
 
 	@Override
