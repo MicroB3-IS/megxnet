@@ -48,7 +48,7 @@ public class PubMapRest {
 
 
 	@GET
-	@Path("getAllArticles")
+	@Path("articles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllArticles() throws ServiceNotFoundException {
 		log.debug("Called pubmap/getAllArticles");
@@ -69,6 +69,7 @@ public class PubMapRest {
 	
 	//For debug in browser, pretty print the json ...
 	//TODO: remove this method!
+	/*
 	@GET
 	@Path("getAllArticlesHtml")
 	@Produces("text/html")
@@ -81,9 +82,10 @@ public class PubMapRest {
 		}
 		return "<pre>" + s + "</pre>";
 	}
+	*/
 	
 	@POST
-	@Path("insertArticle")
+	@Path("article/add")
 	@Produces("text/html")
 	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException,
 			JSONException, IOException {
