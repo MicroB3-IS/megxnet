@@ -59,7 +59,7 @@ public class PubMapRest {
 	@GET
 	@Path("articles")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllArticles() throws ServiceNotFoundException {
+	public String getAllArticles() throws Exception {
 		log.debug("Called pubmap/getAllArticles");
 		try {
 			List<Article> articles = getDBService().getAllArticles();
@@ -70,7 +70,7 @@ public class PubMapRest {
 			return toJSONString(articleDTOs);
 		} catch (Exception e) {
 			log.error("Error in getAllArticles", e);
-			return errorJSON(e);
+			return handleException(e);
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class PubMapRest {
 	@GET
 	@Path("article/{id_code}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getArticleById(@PathParam("id_code") String idCode, @QueryParam("id") String id) throws ServiceNotFoundException {
+	public String getArticleById(@PathParam("id_code") String idCode, @QueryParam("id") String id) throws Exception {
 		log.debug("Called pubmap/getArticleById");
 		try {
 			Article a = getDBService().selectArticleDetailsById(id, idCode);
@@ -88,14 +88,14 @@ public class PubMapRest {
 			return toJSONString(ArticleDTO.fromDAO(a));
 		} catch (Exception e) {
 			log.error("Error in getAllArticles", e);
-			return errorJSON(e);
+			return handleException(e);
 		}
 	}
 	
 	@POST
 	@Path("article/add")
 	@Produces("text/html")
-	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException {
+	public String insertArticle(@FormParam("article") String articleJSONString) throws Exception {
 		try {
 			ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
 			Article a = dto.toDAO();
@@ -106,11 +106,14 @@ public class PubMapRest {
 			return toJSONString(resp);
 		} catch (Exception e) {
 			log.error("Error in insertArticle", e);
-			return errorJSON(e);
+			return handleException(e);
 		}
 	}
 	
-	private String errorJSON(Exception e) {
+	private String handleException(Exception e) throws Exception {
+		// for now just rethrow it
+		if(true) throw e;
+		
 		JSONObject err = new JSONObject();
 		try {
 			err.put("status", "ERROR");
