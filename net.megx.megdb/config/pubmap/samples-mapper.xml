@@ -8,7 +8,7 @@
 		<result column="max_uncertain" jdbcType="NUMERIC" property="maxUncertain" />
 		<result column="date_taken" jdbcType="TIMESTAMP" property="dateTaken" />
 		<result column="date_res" jdbcType="OTHER" javaType="String"
-			property="dateRes" />
+			property="dateRes" typeHandler="net.megx.model.impl.DateResolutionTypeHandler"/>
 		<result column="material" jdbcType="VARCHAR" property="material" />
 		<result column="habitat" jdbcType="VARCHAR" property="habitat" />
 		<result column="hab_lite" jdbcType="VARCHAR" property="habLite" />
@@ -101,7 +101,7 @@
 				#{dateTaken,jdbcType=TIMESTAMP},
 			</if>
 			<if test="dateRes != null">
-				#{dateRes,jdbcType=OTHER},
+				#{dateRes,jdbcType=OTHER,typeHandler=net.megx.model.impl.DateResolutionTypeHandler}::core.date_resolution,
 			</if>
 			<if test="material != null">
 				#{material,jdbcType=VARCHAR},
