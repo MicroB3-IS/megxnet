@@ -6,9 +6,12 @@
 	<ul class="authors">
 		#foreach($article in  $ext.pubmap.allArticles)
 			<li><p><a href="">$article.title</a></p>
-				<p>TODO: arthical important properties, eg. publicationYear: $article.publicationYear</p>
-				<p>$article.publicationAuthor</p>				
-				<p>$article.publicationYear</p>
+			
+				<div style="padding: 5px;">$article.abstractText</div>
+				
+				<p>
+					Author: $article.firstAuthor.firstName $article.firstAuthor.lastName, Publication Year: $article.publicationYear 
+				</p>
 			</li>
 		#end
 	</ul>

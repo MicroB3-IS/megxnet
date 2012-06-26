@@ -9,7 +9,9 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import net.megx.megdb.pubmap.PubMapService;
@@ -29,13 +31,21 @@ import com.google.gson.Gson;
 @Path("/pubmap")
 public class PubMapRest {
 	private static final Log log = LogFactory.getLog(PubMapRest.class);
-	
+
 	private BundleContext bundleContext;
 	
-	private Gson gson = new Gson();	
+	private Gson gson = new Gson();
 
-	public PubMapRest(BundleContext bundleContext) {
+	public static final String CFG_KEY_JSON_PRETTY_PRINT = "json_pretty_print";
+	public static final String CFG_KEY_JSON_PRETTY_PRINT_INDENT = "json_pretty_print_indent";
+	
+	private boolean JSON_PRETTY_PRINT = false;
+	private int JSON_PRETTY_PRINT_INDENT = 3;
+
+	public PubMapRest(BundleContext bundleContext, JSONObject cfg) {
 		this.bundleContext = bundleContext;
+		JSON_PRETTY_PRINT = cfg.optBoolean(CFG_KEY_JSON_PRETTY_PRINT, JSON_PRETTY_PRINT);
+		JSON_PRETTY_PRINT_INDENT = cfg.optInt(CFG_KEY_JSON_PRETTY_PRINT_INDENT, JSON_PRETTY_PRINT_INDENT);
 	}
 	
 	private PubMapService getDBService() throws ServiceNotFoundException {
@@ -58,7 +68,7 @@ public class PubMapRest {
 			for(Article a : articles) {
 				articleDTOs.add(ArticleDTO.fromDAO(a));
 			}
-			return gson.toJson(articleDTOs);
+			return toJSONString(articleDTOs);
 		} catch (Exception e) {
 			log.error("Error in getAllArticles", e);
 			return errorJSON(e);
@@ -66,23 +76,22 @@ public class PubMapRest {
 	}
 	
 	
-	
-	//For debug in browser, pretty print the json ...
-	//TODO: remove this method!
-	/*
 	@GET
-	@Path("getAllArticlesHtml")
-	@Produces("text/html")
-	public String getAllArticlesHtml() throws ServiceNotFoundException, JSONException {
-		String s = getAllArticles();
-		if(s.trim().startsWith("[")) {
-			s = new JSONArray(s).toString(4); 
-		} else {
-			s = new JSONObject(s).toString(4);
+	@Path("article/{id_code}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getArticleById(@PathParam("id_code") String idCode, @QueryParam("id") String id) throws ServiceNotFoundException {
+		log.debug("Called pubmap/getArticleById");
+		try {
+			Article a = getDBService().selectArticleDetailsById(id, idCode);
+			if(a == null) {
+				throw new Exception("Article with id_code: " + idCode  + " and id: " + id + " not found in database.");
+			}
+			return toJSONString(ArticleDTO.fromDAO(a));
+		} catch (Exception e) {
+			log.error("Error in getAllArticles", e);
+			return errorJSON(e);
 		}
-		return "<pre>" + s + "</pre>";
 	}
-	*/
 	
 	@POST
 	@Path("article/add")
@@ -94,7 +103,7 @@ public class PubMapRest {
 		getDBService().insertArticle(a);
 		return "OK";
 	}
-
+	
 	private String errorJSON(Exception e) {
 		JSONObject err = new JSONObject();
 		try {
@@ -105,10 +114,57 @@ public class PubMapRest {
 				stackTrace.put(ste.toString());
 			}
 			err.put("stackTrace", stackTrace);
-			return err.toString();
+			return toJSONString(err);
 		} catch (JSONException e1) {
 			log.error(e);
 		}
 		return null;
+	}
+	
+	private String _toStrJSON(Object json) {
+		try {
+			if (json instanceof JSONArray) {
+				JSONArray arr = (JSONArray) json;
+				return arr.toString(JSON_PRETTY_PRINT_INDENT);
+			}
+			if (json instanceof JSONObject) {
+				JSONObject obj = (JSONObject) json;
+				return obj.toString(JSON_PRETTY_PRINT_INDENT);
+			}
+		} catch (JSONException e) {
+			// ignore, should never happen
+			// e.printStackTrace();
+		}
+		if(json == null) {
+			return null;
+		}
+		return json.toString();
+	}
+	
+	private String toJSONString(Object dto) {
+		if(dto instanceof JSONObject || dto instanceof JSONArray) {
+			//object already json
+			if(JSON_PRETTY_PRINT) {
+				return _toStrJSON(dto);
+			} else {
+				return dto.toString();
+			}
+		} else {
+			//not json, candidate for gson
+			String str = gson.toJson(dto);
+			if(JSON_PRETTY_PRINT) {
+				try {
+					if(str.startsWith("[")) {
+						return _toStrJSON(new JSONArray(str));
+					} else {
+						return _toStrJSON(new JSONObject(str));
+					}
+				} catch (JSONException e) {
+					// ignore, should never happen
+					// e.printStackTrace();
+				}
+			}
+			return str;
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class Activator extends ResTplConfiguredActivator {
 	}
 
 	private void registerRestServices(BundleContext bundleContext) {
-		bundleContext.registerService(PubMapRest.class.getName(), new PubMapRest(bundleContext), null);
+		bundleContext.registerService(PubMapRest.class.getName(), new PubMapRest(bundleContext, getConfig()), null);
 	}
 
 	@Override
