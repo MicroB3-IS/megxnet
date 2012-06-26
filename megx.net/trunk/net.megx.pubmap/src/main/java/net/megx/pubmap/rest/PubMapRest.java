@@ -1,6 +1,5 @@
 package net.megx.pubmap.rest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,12 +95,19 @@ public class PubMapRest {
 	@POST
 	@Path("article/add")
 	@Produces("text/html")
-	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException,
-			JSONException, IOException {
-		ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
-		Article a = dto.toDAO();
-		getDBService().insertArticle(a);
-		return "OK";
+	public String insertArticle(@FormParam("article") String articleJSONString) throws ServiceNotFoundException {
+		try {
+			ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
+			Article a = dto.toDAO();
+			int code = getDBService().insertArticle(a);
+			JSONObject resp = new JSONObject();
+			resp.put("code", code);
+			resp.put("status", "OK");
+			return toJSONString(resp);
+		} catch (Exception e) {
+			log.error("Error in insertArticle", e);
+			return errorJSON(e);
+		}
 	}
 	
 	private String errorJSON(Exception e) {
