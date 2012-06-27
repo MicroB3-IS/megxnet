@@ -33,7 +33,7 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 	}
 
 	@Override
-	public int insertArticle(Article article) {
+	public int insertArticle(Article article) throws SQLException {
 		// do several things not auto-commit!
 		SqlSession sqlSession = super.sessionFactory.openSession(false);
 
@@ -50,6 +50,7 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 				mapper.insertAuthorSelectiveIgnoreDups(author);
 
 			}
+			log.debug(article);
 			mapper.insertArticleSelective(article);
 			for (int i = 0; i < article.getNumAuthors(); i++) {
 				author = article.getAuthor(i);
@@ -64,7 +65,7 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 			sqlSession.commit();
 		} catch (PersistenceException pe) {
-			throw new PersistenceException(pe);
+			throw new SQLException(pe.getCause());
 		} finally {
 			sqlSession.close();
 		}

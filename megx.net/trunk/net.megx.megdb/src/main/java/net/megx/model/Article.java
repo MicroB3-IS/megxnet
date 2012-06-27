@@ -39,7 +39,7 @@ public interface Article extends SimpleAudit {
 
 	public String getPdf();
 
-	public String getPMID();
+	public String getPmid();
 
 	/**
 	 * @return the publicationMonth
@@ -76,7 +76,7 @@ public interface Article extends SimpleAudit {
 
 	public void setPdf(String pdf);
 
-	public void setPMID(String pmid);
+	public void setPmid(String pmid);
 
 	/**
 	 * @param publicationMonth

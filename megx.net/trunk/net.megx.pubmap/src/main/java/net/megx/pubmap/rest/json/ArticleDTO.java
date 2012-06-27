@@ -119,7 +119,7 @@ public class ArticleDTO {
 		rv.journalArticle = JournalArticleDTO.fromDAO(a);
 		rv.identifiers = new HashMap<String, String>();
 		rv.identifiers.put("doi", a.getDOI());
-		rv.identifiers.put("pmid", a.getPMID());
+		rv.identifiers.put("pmid", a.getPmid());
 
 		int samplesCnt = a.getNumSamples();
 		if (samplesCnt > 0) {
@@ -164,7 +164,7 @@ public class ArticleDTO {
 				a.setDOI(this.identifiers.get("doi"));
 			}
 			if (this.identifiers.containsKey("pmid")) {
-				a.setPMID(this.identifiers.get("pmid"));
+				a.setPmid(this.identifiers.get("pmid"));
 			}
 		}
 		if (this.samples != null) {
