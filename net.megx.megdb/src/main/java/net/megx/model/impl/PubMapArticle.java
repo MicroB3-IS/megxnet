@@ -166,7 +166,7 @@ public class PubMapArticle implements Article {
 	}
 
 	@Override
-	public String getPMID() {
+	public String getPmid() {
 		return this.pmid;
 	}
 
@@ -281,7 +281,7 @@ public class PubMapArticle implements Article {
 	}
 
 	@Override
-	public void setPMID(String pmid) {
+	public void setPmid(String pmid) {
 		this.pmid = pmid;
 	}
 
@@ -344,7 +344,7 @@ public class PubMapArticle implements Article {
 	public void addSample(Sample sample) {
 		if (samples == null) {
 			samples = new ArrayList<Sample>();
-		} 
+		}
 		samples.add(sample);
 
 	}
@@ -362,26 +362,24 @@ public class PubMapArticle implements Article {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PubMapArticle [abstractHTML=").append(abstractHTML)
-				.append(", abstractText=").append(abstractText)
-				.append(", authors=").append(authors).append(", created=")
-				.append(created).append(", doi=").append(doi)
-				.append(", firstPage=").append(firstPage)
+				.append(", pmid=").append(pmid).append(", abstractText=")
+				.append(abstractText).append(", authors=").append(authors)
+				.append(", created=").append(created).append(", doi=")
+				.append(doi).append(", firstPage=").append(firstPage)
 				.append(", fullTextHTML=").append(fullTextHTML)
 				.append(", issue=").append(issue).append(", journal=")
 				.append(journal).append(", lastPage=").append(lastPage)
 				.append(", linkout=").append(linkout).append(", pdf=")
-				.append(pdf).append(", pmid=").append(pmid)
-				.append(", publicationMonth=").append(publicationMonth)
-				.append(", publicationYear=").append(publicationYear)
-				.append(", published=").append(published)
-				.append(", pubStatus=").append(pubStatus).append(", title=")
-				.append(title).append(", updated=").append(updated)
-				.append(", volume=").append(volume).append(", samples=")
-				.append(samples).append(", createdBy=").append(createdBy)
-				.append(", updatedBy=").append(updatedBy).append("]");
+				.append(pdf).append(", publicationMonth=")
+				.append(publicationMonth).append(", publicationYear=")
+				.append(publicationYear).append(", published=")
+				.append(published).append(", pubStatus=").append(pubStatus)
+				.append(", title=").append(title).append(", updated=")
+				.append(updated).append(", volume=").append(volume)
+				.append(", samples=").append(samples).append(", createdBy=")
+				.append(createdBy).append(", updatedBy=").append(updatedBy)
+				.append("]");
 		return builder.toString();
 	}
-	
-	
 
 }
