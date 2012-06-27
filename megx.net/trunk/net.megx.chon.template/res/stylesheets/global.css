@@ -204,3 +204,14 @@ form button.blue:hover, form button.blue:focus {
 	color: #ffffff!important;
 	}
 /* End Form Design */
+
+
+
+
+::-webkit-input-placeholder {
+   color: #999;
+}
+
+:-moz-placeholder {  
+   color: #999;
+}
