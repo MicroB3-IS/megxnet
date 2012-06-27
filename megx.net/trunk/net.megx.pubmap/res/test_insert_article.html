@@ -1,4 +1,49 @@
-<form method="post" action="/megx.net/services/pubmap/article/add">
+<script type="text/javascript">
+<!--
+function ajaxSend() {
+	try {
+		var url = document.forms.mainForm.action;
+		var jsonStr = document.forms.mainForm.article.value;
+		
+		xhr = new XMLHttpRequest();
+		
+		xhr.open("POST", url, true);
+
+		xhr.onerror = function() {
+			alert('error');
+		};
+
+		xhr.onload = function(evt) {
+			console.log("RECEIVERESPONSE");
+			console.log("ReadyState: " + xhr.readyState);
+			console.log("Status: " + xhr.status);
+
+			if (xhr.readyState === 4) {
+
+				if (xhr.status === 200) {
+					var serverresponse = xhr.responseText;
+					console.log("The response was set successfully."
+							+ serverresponse);
+
+				} else {
+					var serverresponse = xhr.responseText;
+					console.log("Something went wrong: " + serverresponse);
+				}
+			}
+		};
+		console.log("XHR SEND");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.send( jsonStr );
+
+	} catch (e) {
+		alert("Can't connect to server:\n" + e.toString());
+	}
+}
+
+//-->
+</script>
+
+<form name="mainForm" method="post" action="/megx.net/services/pubmap/article/add">
 	<textarea rows="40" cols="120" name="article"> {
 	"authors" : [ {
 		"forename" : "Ilaria",
@@ -83,6 +128,7 @@
 	"institute" : "Max Planck Institute for Marine Microbiology, Celsiusstr. 1, D-28359 Bremen, Germany."
 }</textarea>
 <div>
-	<input type="submit" />
+	<input type="submit" value="Form POST" />
+	<input type="button" value="Send As Ajax" onclick="ajaxSend(); return false;"/>
 </div>
 </form>
