@@ -30,7 +30,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 @Path("/pubmap")
@@ -108,6 +107,10 @@ public class PubMapRest {
 	public String insertArticleFromForm(
 			@FormParam("article") String articleJSONString) throws Exception {
 		try {
+			
+			//TEMP FIX FOR: https://colab.mpi-bremen.de/its/browse/MEGX-160
+			articleJSONString = articleJSONString.replaceAll("Identifiers", "identifiers");
+			
 			ArticleDTO dto = gson.fromJson(articleJSONString, ArticleDTO.class);
 			Article a = dto.toDAO();
 			int code = getDBService().insertArticle(a);
@@ -129,6 +132,8 @@ public class PubMapRest {
 
 		
 		try {
+			//TEMP FIX FOR: https://colab.mpi-bremen.de/its/browse/MEGX-160 
+			jsonBody = jsonBody.replaceAll("Identifiers", "identifiers");
 			
 			ArticleDTO dto = gson.fromJson(jsonBody, ArticleDTO.class);
 			Article a = dto.toDAO();
