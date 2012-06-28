@@ -50,6 +50,9 @@ public class PubMapTemplateObject {
 	 * @return
 	 */
 	public List<Article> getAllArticles() {
+		/**
+		 * TODO here we could read JSON from ALL file in a directory or the repsository
+		 */
 		try {
 			return pubMapService.getAllArticles();
 		} catch (Exception e) {

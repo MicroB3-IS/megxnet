@@ -1,5 +1,7 @@
 package net.megx.model;
 
+import java.util.List;
+
 
 public interface Article extends SimpleAudit {
 
@@ -53,6 +55,8 @@ public interface Article extends SimpleAudit {
 	public String getPubStatus();
 
 	public Sample getSample(int i);
+	
+	public List<Sample> getAllSamples();
 
 	public String getTitle();
 

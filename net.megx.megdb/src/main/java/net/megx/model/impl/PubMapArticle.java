@@ -329,7 +329,7 @@ public class PubMapArticle implements Article {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-
+ 
 	@Override
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
@@ -356,6 +356,11 @@ public class PubMapArticle implements Article {
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public List<Sample> getAllSamples() {
+		return this.samples;
 	}
 
 	@Override

@@ -134,7 +134,9 @@ public class PubMapRest {
 		try {
 			//TEMP FIX FOR: https://colab.mpi-bremen.de/its/browse/MEGX-160 
 			jsonBody = jsonBody.replaceAll("Identifiers", "identifiers");
-			
+			/**
+			 * TODO here we could write the json to a file in a directory of jsons or the JCR repsository
+			 */
 			ArticleDTO dto = gson.fromJson(jsonBody, ArticleDTO.class);
 			Article a = dto.toDAO();
 			getDBService().insertArticle(a);
