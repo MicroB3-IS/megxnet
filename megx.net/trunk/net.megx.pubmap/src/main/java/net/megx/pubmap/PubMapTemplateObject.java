@@ -1,9 +1,11 @@
 package net.megx.pubmap;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
+import net.megx.pubmap.mock.PubMapMockService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,11 +56,19 @@ public class PubMapTemplateObject {
 		 * TODO here we could read JSON from ALL file in a directory or the repsository
 		 */
 		try {
+			return PubMapMockService.getAllArticles();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*
+		try {
 			return pubMapService.getAllArticles();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		return null;
 	}
 	

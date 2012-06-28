@@ -1,6 +1,6 @@
 package net.megx.pubmap.rest;
 
-import java.sql.SQLException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.Article;
+import net.megx.pubmap.mock.PubMapMockService;
 import net.megx.pubmap.rest.json.ArticleDTO;
 
 import org.apache.commons.logging.Log;
@@ -30,7 +31,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 @Path("/pubmap")
 public class PubMapRest {
@@ -39,7 +39,8 @@ public class PubMapRest {
 	private BundleContext bundleContext;
 
 	private Gson gson = new Gson();
-
+	
+	
 	public static final String CFG_KEY_JSON_PRETTY_PRINT = "json_pretty_print";
 	public static final String CFG_KEY_JSON_PRETTY_PRINT_INDENT = "json_pretty_print_indent";
 
@@ -131,15 +132,28 @@ public class PubMapRest {
 	public Response insertArticleFromJson(String jsonBody) {
 
 		
-		try {
+		//try {
 			//TEMP FIX FOR: https://colab.mpi-bremen.de/its/browse/MEGX-160 
 			jsonBody = jsonBody.replaceAll("Identifiers", "identifiers");
 			/**
 			 * TODO here we could write the json to a file in a directory of jsons or the JCR repsository
 			 */
+			
+			
+			
+			
 			ArticleDTO dto = gson.fromJson(jsonBody, ArticleDTO.class);
 			Article a = dto.toDAO();
+			try {
+				PubMapMockService.saveTofile(a.getDOI(), jsonBody);
+			} catch (IOException e) {
+				log.error("Error in insertArticle", e);
+				throw new WebApplicationException(Response.serverError()
+						.entity(prettyPrintJSONExceptionMessage(e)).build());
+			}
+			/*	
 			getDBService().insertArticle(a);
+			
 		} catch (ServiceNotFoundException e) {
 			log.error("Error in insertArticle", e);
 			throw new WebApplicationException(Response.serverError()
@@ -156,7 +170,7 @@ public class PubMapRest {
 			log.error("Error in insertArticle=" + jsonBody, e);
 			throw new WebApplicationException(Response.serverError()
 					.entity(prettyPrintJSONExceptionMessage(e)).build());
-		}
+		}*/
 		return Response.ok().build();
 	}
 
