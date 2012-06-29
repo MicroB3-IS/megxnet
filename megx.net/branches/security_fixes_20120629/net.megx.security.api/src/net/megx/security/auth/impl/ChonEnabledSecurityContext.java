@@ -50,4 +50,10 @@ public class ChonEnabledSecurityContext extends SecurityContextContainer{
 			session.removeAttribute(ContentModel.KEY);
 		}
 	}
+	
+	@Override
+	public void clearAuthentication() {
+		super.clearAuthentication();
+		clearChonContext();
+	}
 }

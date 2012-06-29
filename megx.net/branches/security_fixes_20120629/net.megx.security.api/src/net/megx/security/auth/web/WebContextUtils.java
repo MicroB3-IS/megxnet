@@ -57,7 +57,7 @@ public class WebContextUtils {
 					context.clearAuthentication();
 				}
 			}
-			session.setAttribute(SECURITY_CONTEXT_SESSION_ATTR, null);
+			session.removeAttribute(SECURITY_CONTEXT_SESSION_ATTR);
 		}
 	}
 

@@ -10,6 +10,19 @@
 }
 </style>
 <form action="$ctx.siteUrl/j_security_check" method="post">
+	#set ($securityContext = $req.servletRequset.session.getAttribute("net.megx.security.SECURITY_CONTEXT") )
+	
+	#if($securityContext)
+		#set ($exc = $securityContext.pullLastException())
+		#if($exc)
+			#if ($exc.class.simpleName == 'InvalidCredentialsException')
+				Invalid Credentials: $exc.message
+			#elseif($exc.class.simpleName == 'ServletException')
+				An error has occurred: $exc.message
+			#end
+		#end
+	#end
+	
 	<div class="login-form-panel ui-corner-all">
 		<div>
 			<div class="login-label">Username:</div>

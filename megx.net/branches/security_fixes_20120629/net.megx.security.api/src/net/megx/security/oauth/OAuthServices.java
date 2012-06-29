@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.megx.security.auth.Authentication;
 import net.oauth.OAuthException;
 import net.oauth.OAuthProblemException;
+import net.megx.security.auth.SecurityException;
 
 public interface OAuthServices {
 	public void processRequestTokenRequest(HttpServletRequest request,
@@ -22,5 +23,5 @@ public interface OAuthServices {
 	
 	public void validateRequest(HttpServletRequest request) throws OAuthException, OAuthProblemException;
 	
-	public Authentication getAuthentication(HttpServletRequest fromRequest);
+	public Authentication getAuthentication(HttpServletRequest fromRequest) throws IOException, ServletException, SecurityException;
 }
