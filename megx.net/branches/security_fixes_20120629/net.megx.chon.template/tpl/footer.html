@@ -1,0 +1,40 @@
+<!--<div id="footer_area"> 
+	#foreach($m in $ext.menu.footer.childs)
+		#if($velocityCount > 1 ) <span class='strich'>|</span> #end <a href="$m.fullLink">$m.title</a> #end
+  
+		#set($lastModified=$ext.utils.formatDate($this.jcrLastModified, 'dd.MM.yyyy'))
+  
+		#if($lastModified)
+		
+		<div id="update">last update $lastModified</div>
+	#end 
+  
+  </div>
+  
+  --><div class="clear"></div>
+<footer>
+<section class="copy">
+  <ul>
+    <li>&copy 2012  megx.net</li>
+    <li><a href="#" title="">privacy policy</a></li>
+    <li><a href="#" title="">terms of use</a></li>
+  </ul>
+</section>
+<section class="footNav">
+#foreach($m in $ext.menu.footer.childs)
+	<ul>
+		<li><a href="$m.fullLink">$m.title</a></li>
+	</ul>
+	#end
+
+	#set($lastModified=$ext.utils.formatDate($this.jcrLastModified, 'dd.MM.yyyy'))
+	#if($lastModified)
+	<div class="clear"></div>
+	<div class="FR">last update $lastModified</div>
+#end
+</section>
+</footer>
+    <script>
+	    $('footer > section > ul > li').css('float','left');
+    </script>
+</div>
