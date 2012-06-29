@@ -1,5 +1,7 @@
 package net.megx.security.auth.web.impl;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,23 +21,35 @@ public class WebLoginAuthenticationManager extends BaseAuthenticationManager{
 	}
 
 	@Override
-	protected void doCheckAuthentication(Authentication authentication,
+	public void checkAuthentication(Authentication authentication,
 			Object object) throws AccessDeniedException,
 			InsufficientAuthenticationException {
 		if(authentication == null){
 			throw new InsufficientAuthenticationException("Not authenticated!");
 		}
-		WebResource resource = (WebResource)object;
+		if(!(object instanceof List)){
+			return;
+		}
+		List<WebResource> webResources = (List<WebResource>)object;
 		boolean authOk = false;
-		for(Role role: authentication.getRoles()){
-			if(resource.getRoles().contains(role)){
-				authOk = true;
-				break;
+		for(WebResource resource: webResources){
+			for(Role role: authentication.getRoles()){
+				if(resource.getRoles().contains(role)){
+					authOk = true;
+					break;
+				}
 			}
+			if(authOk)
+				break;
 		}
 		if(!authOk)
 			throw new AccessDeniedException("The requesting auth does not have the required roles to access this resource!");
 		log.debug("Successful authentication: " + authentication);
 	}
+
+	@Override
+	protected void doCheckAuthentication(Authentication authentication,
+			Object object) throws AccessDeniedException,
+			InsufficientAuthenticationException {	}
 
 }

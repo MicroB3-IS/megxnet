@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.web.WebUtils;
-import net.megx.security.filter.SecurityException;
 import net.megx.security.filter.StopFilterException;
+import net.megx.security.auth.SecurityException;
 import net.megx.security.oauth.OAuthServices;
 import net.megx.utils.OSGIUtils;
 import net.oauth.OAuthException;

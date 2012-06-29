@@ -6,16 +6,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebLoginHandler;
-import net.megx.security.filter.SecurityException;
+import net.megx.security.auth.SecurityException;
 import net.megx.security.filter.StopFilterException;
 import net.megx.utils.OSGIUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class WebLoginSecurity extends BaseSecurityEntrypoint{
 
