@@ -124,13 +124,38 @@ ul.reflistlx li a:hover {
 
 
 ul.authors {
-	list-style:none;
-	
+	list-style: none;
 }
-ul.authors li {margin: .5em 0em;}
-ul.authors li a {color:#0000ff; text-decoration: none;}
-ul.authors li a:hover{color:#333;text-decoration: none;}
-ul.authors li p {color:#333;}
+ul.authors li {
+	margin: .5em 0em;
+}
+ul.authors li a {
+	color: #0000ff;
+	text-decoration: none;
+}
+ul.authors li a:hover {
+	color: #333;
+	text-decoration: none;
+}
+ul.authors li p {
+	color: #333;
+}
+
+ul.authors li.authorsTitle {
+	font-weight: bold;
+}
+ul.authors li.authorsDate {
+	color: #999;
+	}
+ul.authors li.authorsNames {
+	font-style: italic;
+	}
+ul.authors li.authorsJournal {
+	font-style: undeline;	
+}
+
+
+
 
 
 .footNav {
