@@ -20,8 +20,8 @@
         	from auth.web_resource_permissions
 					where #{url} LIKE replace(url_path,'*','%') 
 							and 
-						(http_method=#{method} 
-							OR http_method='ALL') 
+						(upper(http_method)=upper(#{method}) 
+							OR upper(http_method)='ALL') 
 							
 							order by path_len DESC
     </select>

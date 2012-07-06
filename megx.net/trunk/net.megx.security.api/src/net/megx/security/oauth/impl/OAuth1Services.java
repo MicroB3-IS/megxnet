@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.web.WebAuthenticationHandler;
 import net.megx.security.auth.web.WebContextUtils;
@@ -212,7 +213,7 @@ public class OAuth1Services extends BaseOAuthServices{
 	}
 
 	@Override
-	public Authentication getAuthentication(HttpServletRequest fromRequest) {
+	public Authentication getAuthentication(HttpServletRequest fromRequest) throws IOException, ServletException, SecurityException{
 		return oAuthHandler.createAuthentication(fromRequest);
 	}
 

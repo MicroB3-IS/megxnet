@@ -1,4 +1,4 @@
-package net.megx.security.filter;
+package net.megx.security.auth;
 
 public class SecurityException extends Exception{
 

@@ -7,13 +7,13 @@
 $(document).ready(function(){
    var um = new admin.UserManager({
       placeholder: '.content-placeholder',
-      userService: new admin.RESTClient('$ctx.siteUrl/services/filter/users')
+      userService: new admin.RESTClient('$ctx.siteUrl/ws/filter/users')
    });
    um.showUsers();
    
    rm = new admin.ResourcesManager({
-      resourcesService: new admin.RESTClient('$ctx.siteUrl/services/filter/resources'),
-      userService: new admin.RESTClient('$ctx.siteUrl/services/filter/users')
+      resourcesService: new admin.RESTClient('$ctx.siteUrl/ws/filter/resources'),
+      userService: new admin.RESTClient('$ctx.siteUrl/ws/filter/users')
    });
    
    

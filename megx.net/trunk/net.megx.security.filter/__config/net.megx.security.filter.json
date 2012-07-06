@@ -6,14 +6,29 @@
 			{
 				name: 'standardLogin',
 				class: 'net.megx.security.filter.impl.WebLoginSecurity',
-				urlPattern: '/(apps|services/|protected/|admin|j_security_check).*',
+				urlPattern: [
+					'/j_security_check.*',
+					'.*admin/logout.do'
+				],
 				order: 1
 			},
 			{
 				name: 'oauth_v1_security',
 				class: 'net.megx.security.filter.impl.OAuth_1_Security',
-				urlPattern: '(/oauth/(request_token|access_token|authorize)|/(services|ws)/(res|pubmap)).*',
+				urlPattern: [
+					'/oauth/request_token',
+					'/oauth/access_token',
+					'/oauth/authorize',
+					'/ws/pubmap.*'
+				],
 				order: 0
+			},
+			{
+				name: 'annonymus',
+				class: 'net.megx.security.filter.impl.AnonnimusAuthenticationEndpoint',
+				urlPattern: '/.*',
+				order: 2,
+				enabled: false
 			}
 		],
 		managers:[

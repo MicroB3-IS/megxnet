@@ -6,4 +6,9 @@ public interface SecurityContext {
 	public void setAuthentication(Authentication authentication);
 	public void storeLastRequestedURL(String url);
 	public String getLastRequestedURL();
+	
+	public Exception getLastException();
+	public void storeLastException(Exception exception);
+	public Exception pullLastException();
+	
 }
