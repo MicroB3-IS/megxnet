@@ -22,6 +22,7 @@ import net.megx.security.auth.model.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
+import net.megx.security.auth.SecurityException;
 import net.megx.security.filter.http.HttpRequestWrapper;
 import net.megx.security.filter.http.TemplatePageNodeFactory;
 import net.megx.security.filter.http.TemplatePageRenderer;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
+
 public class SecurityFilter implements Filter{
 
 	private Log log = LogFactory.getLog(getClass());
@@ -49,7 +51,7 @@ public class SecurityFilter implements Filter{
 	List<EntryPointWrapper> entryPoints = new ArrayList<SecurityFilter.EntryPointWrapper>();
 	private boolean enabled;
 	
-	private String ignorePattern = ".*\\.(js|png|jpg|jpeg|gif|tiff)";
+	private String ignorePattern = ".*\\.(js|png|jpg|jpeg|gif|tiff|css)";
 	
 	public SecurityFilter(BundleContext context, JSONObject bundleConfig) {
 		super();
@@ -86,12 +88,12 @@ public class SecurityFilter implements Filter{
 				chain.doFilter(request, response);
 				return;
 			}
-			boolean hasMatched = false;
+			//boolean hasMatched = false;
 			for(EntryPointWrapper entryPoint: entryPoints){
 					log.debug(String.format("Matching enty-point %s",entryPoint.name));
 					if(entryPoint.matches(requestPath)){
 						log.debug("\t -> match");
-						hasMatched = true;
+			//			hasMatched = true;
 						try {
 							entryPoint.entrypoint.doFilter(httpRequest, httpResponse);
 						} catch (StopFilterException e) {
@@ -102,14 +104,14 @@ public class SecurityFilter implements Filter{
 						}
 					}
 			}
-			if(hasMatched){
-				try {
-					checkAuthenticationResult(httpRequest, httpResponse);
-				} catch (SecurityException e) {
-					handleException(e, httpRequest, httpResponse);
-					return;
-				}
+			//if(hasMatched){
+			try {
+				checkAuthenticationResult(httpRequest, httpResponse);
+			} catch (SecurityException e) {
+				handleException(e, httpRequest, httpResponse);
+				return;
 			}
+			//}
 			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
 			if(context != null){
 				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
@@ -137,6 +139,10 @@ public class SecurityFilter implements Filter{
 		}else if(e instanceof ServletException){
 			throw (ServletException)e;
 		}else if(e instanceof SecurityException){
+			SecurityContext context = WebContextUtils.getSecurityContext(request);
+			if(context != null){
+				context.storeLastException(e);
+			}
 			if(!response.isCommitted())
 				response.sendError(((SecurityException)e).getResponseCode(),e.getMessage());
 		}else if(e instanceof AccessDeniedException){
@@ -160,6 +166,18 @@ public class SecurityFilter implements Filter{
 	
 	protected void checkAuthenticationResult(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, SecurityException{
+		List<WebResource> resources = null;
+		try {
+			// step 1 - get all rules that match the request path
+			resources = resourcesService.match(WebUtils.getRequestPath(request, true), request.getMethod());
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+		if(resources == null || resources.size() == 0){
+			// if no rules match this path - pass the filter...
+			log.debug("No rulez match this resource. Filter pass...");
+			return;
+		}
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){
 			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
@@ -167,19 +185,9 @@ public class SecurityFilter implements Filter{
 		if(context.getAuthentication() == null){
 			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
 		}
-		
-		List<WebResource> resources = null;
-		try {
-			resources = resourcesService.match(WebUtils.getRequestPath(request, true), request.getMethod());
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-		if(resources == null){
-			return;
-		}
-		for(WebResource resource: resources){
-			authenticationManager.checkAuthentication(context.getAuthentication(), resource);
-		}
+		//for(WebResource resource: resources){
+		authenticationManager.checkAuthentication(context.getAuthentication(), resources);
+		//}
 		log.debug("Authentication successful: " + context.getAuthentication());
 	}
 
@@ -238,16 +246,42 @@ public class SecurityFilter implements Filter{
 	@SuppressWarnings("unchecked")
 	protected void buildEntryPoint(JSONObject config) throws JSONException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		String name = config.getString("name");
-		String urlPattern = config.getString("urlPattern");
+		Object urlPattern = config.get("urlPattern");
 		String clazz = config.getString("class");
 		int order = config.optInt("order");
 		
+		boolean enabled = config.optBoolean("enabled", true);
+		
+		
 		log.debug(String.format("Building entrypoint (name='%s',urlPattern='%s',class='%s',order='%d')",name, urlPattern,clazz, order));
 		log.debug("Full configuration for entrypoint: " + config);
+		
+		if(!enabled){
+			log.debug("The entry point has been disabled.");
+			return;
+		}
+		
 		Class<? extends SecurityFilterEntrypoint> epClass = (Class<? extends SecurityFilterEntrypoint>)getClassLoader().loadClass(clazz);
 		SecurityFilterEntrypoint entrypoint = epClass.newInstance();
 		entrypoint.initialize(context, config);
-		entryPoints.add(new EntryPointWrapper(entrypoint, urlPattern, name, order));
+		
+		String [] urlPatterns = null;
+		
+		if(urlPattern instanceof String){
+			urlPatterns = new String []{(String)urlPattern};
+		}else if(urlPattern instanceof JSONArray){
+			JSONArray ja = (JSONArray)urlPattern;
+			urlPatterns = new String [ja.length()];
+			for(int i = 0; i < ja.length(); i++){
+				String pattern = ja.getString(i);
+				urlPatterns[i] = pattern;
+			}
+		}else{
+			urlPatterns = new String []{};
+		}
+		
+		
+		entryPoints.add(new EntryPointWrapper(entrypoint, urlPatterns, name, order));
 		log.debug("Entry-point successfuly built.");
 	}
 	
@@ -270,22 +304,27 @@ public class SecurityFilter implements Filter{
 	
 	protected class EntryPointWrapper implements Comparable<EntryPointWrapper>{
 		public SecurityFilterEntrypoint entrypoint;
-		private String urlPattern;
+		private String [] urlPatterns;
 		public String name;
 		public int order;
 		public EntryPointWrapper(SecurityFilterEntrypoint entrypoint,
-				String urlPattern,
+				String [] urlPatterns,
 				String name,
 				int order) {
 			super();
 			this.entrypoint = entrypoint;
-			this.urlPattern = urlPattern;
+			this.urlPatterns = urlPatterns;
 			this.name       = name;
 			this.order = order;
 		}
 
 		public boolean matches(String path){
-			return path.matches(urlPattern);
+			for(String urlPattern: urlPatterns){
+				if(path.matches(urlPattern)){
+					return true;
+				}
+			}
+			return false;
 		}
 
 		@Override

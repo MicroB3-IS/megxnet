@@ -7,6 +7,7 @@ public class SecurityContextContainer implements SecurityContext{
 	
 	private Authentication authentication;
 	private String lastRequest;
+	private Exception lastException;
 	
 	public SecurityContextContainer() {
 		
@@ -37,6 +38,23 @@ public class SecurityContextContainer implements SecurityContext{
 	@Override
 	public String getLastRequestedURL() {
 		return lastRequest;
+	}
+
+	@Override
+	public Exception getLastException() {
+		return lastException;
+	}
+
+	@Override
+	public void storeLastException(Exception exception) {
+		this.lastException = exception;
+	}
+
+	@Override
+	public Exception pullLastException() {
+		Exception e = getLastException();
+		storeLastException(null);
+		return e;
 	}
 
 }

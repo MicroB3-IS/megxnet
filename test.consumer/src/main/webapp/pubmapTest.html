@@ -77,7 +77,7 @@
 				  jsOauth provides a couple of convinient methods to do HTTP calls, suc as: GET, POST...
 				  The signing of the request is handled by the jsOauth library itslef.
 				*/
-				service.get(PUBMAP_BASE + '/getAllArticles',function(resp){
+				service.get(PUBMAP_BASE + '/articles',function(resp){
 					articles = JSON.parse(resp.text);
 					var markup = '<h2>List of articles</h2>';
 					for(var  i = 0; i < articles.length; i++){

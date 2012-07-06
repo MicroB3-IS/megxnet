@@ -1,6 +1,8 @@
 package net.megx.security.auth;
 
-public class AccessDeniedException extends RuntimeException{
+import javax.servlet.http.HttpServletResponse;
+
+public class AccessDeniedException extends SecurityException{
 
 	/**
 	 * 
@@ -8,13 +10,11 @@ public class AccessDeniedException extends RuntimeException{
 	private static final long serialVersionUID = 3325862260729426520L;
 
 	public AccessDeniedException(String message, Throwable cause) {
-		super(message, cause);
-		// TODO Auto-generated constructor stub
+		super(message, cause, HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	public AccessDeniedException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
+		super(message, HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	
