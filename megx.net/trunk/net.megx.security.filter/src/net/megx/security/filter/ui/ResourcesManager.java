@@ -46,8 +46,8 @@ public class ResourcesManager {
 	@PUT
 	public void updateResource(
 			@FormParam("urlPattern") String urlPattern,
-			@FormParam("urlPattern") String httpMethods,
-			@FormParam("urlPattern") String roles
+			@FormParam("httpMethods") String httpMethods,
+			@FormParam("roles") String roles
 			) throws Exception{
 		String [] methods = httpMethods.split(",");
 		String [] rolesArr = roles.split(",");
@@ -57,8 +57,8 @@ public class ResourcesManager {
 	@POST
 	public void addResource(
 			@FormParam("urlPattern") String urlPattern,
-			@FormParam("urlPattern") String httpMethods,
-			@FormParam("urlPattern") String roles
+			@FormParam("httpMethods") String httpMethods,
+			@FormParam("roles") String roles
 			) throws Exception{
 		List<Role> rolesList = new LinkedList<Role>();
 		String [] rolesArr = roles.split(",");
@@ -76,6 +76,7 @@ public class ResourcesManager {
 			resource.setHttpMethod(method);
 			resource.setUrlPattern(urlPattern);
 			resource.setRoles(rolesList);
+			resources.add(resource);
 		}
 		resourcesService.addWebResourceMappings(resources);
 	}

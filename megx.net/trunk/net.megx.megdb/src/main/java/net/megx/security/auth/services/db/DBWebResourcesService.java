@@ -1,6 +1,5 @@
 package net.megx.security.auth.services.db;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.megx.megdb.BaseMegdbService;
@@ -89,18 +88,11 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 			@Override
 			public Object execute(WebResourcesMapper mapper) throws Exception {
 				mapper.deleteByUrlPattern(urlPattern);
-				List<Role> rolesList = new ArrayList<Role>();
-				for(String role: roles){
-					Role r = new Role();
-					r.setLabel(role);
-					rolesList.add(r);
-				}
+				
 				for(String method: methods){
-					WebResource resource = new WebResource();
-					resource.setHttpMethod(method);
-					resource.setUrlPattern(urlPattern);
-					resource.setRoles(rolesList);
-					mapper.insertWebResource(resource);
+					for(String role: roles){
+						mapper.insertSingleWebResource(urlPattern, method, role);
+					}
 				}
 				return null;
 			}
@@ -116,7 +108,11 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 				@Override
 				public Object execute(WebResourcesMapper mapper) throws Exception {
 					for(WebResource resource: resources){
-						mapper.insertWebResource(resource);
+						
+						for(Role role: resource.getRoles()){
+							mapper.insertSingleWebResource(resource.getUrlPattern(), resource.getHttpMethod(), role.getLabel());
+						}
+						//mapper.insertWebResource(resource);
 					}
 					return null;
 				}

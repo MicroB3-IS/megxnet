@@ -16,4 +16,9 @@ public interface WebResourcesMapper {
 			@Param("from")int from, 
 			@Param("count") int count) throws Exception;
 	public void deleteByUrlPattern(String pattern) throws Exception;
+	public void insertSingleWebResource(
+			@Param("urlPattern") String urlPattern,
+			@Param("httpMethod") String httpMethod,
+			@Param("role") String role
+			) throws Exception;
 }

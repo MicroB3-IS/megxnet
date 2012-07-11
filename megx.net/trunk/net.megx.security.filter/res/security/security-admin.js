@@ -53,7 +53,7 @@
 					error = error || (function(s,e){
 						alert('Error. Code: '+ s + '\n'+(typeof(e) == 'string' ? e : e.message));
 					});
-					error.call(self, txtStatus, error);
+					error.call(self, txtStatus, err);
 				}
 			});
 		};
@@ -376,6 +376,21 @@
 	      this.values = {};
 	      ArrayValuesDataField.superclass.init.call(this, wel);
 	      this.on('change', this.onValuesChange, this);
+	      if(this.value){
+	         if($.isArray(this.value)){
+	            each(this.value, function(i, val){
+	               this.addValue(val);
+	            },this);
+	         }else if(typeof(this.value) == 'string' ||
+	            typeof(this.value) == 'number'){
+	            this.addValue(val);
+	         }else{
+	            each(this.value, function(k,v){
+	               this.addValue(v);
+	            },this);
+	         }
+	      }
+	      
 	   },
 	   getValue: function(){
 	      var vls = [];
@@ -1102,7 +1117,7 @@
 	};
 	ResourcesManager.GET_HTTP_METHODS = function(){
 	   var ms = [];
-	   each(ResourcesMaager.HTTP_METHODS, function(k,v){
+	   each(ResourcesManager.HTTP_METHODS, function(k,v){
 	      ms.push({
 	         value: k,
 	         label: v
@@ -1145,6 +1160,7 @@
 	      };
 	      
          this.ready(function(){
+            var self = this;
             this.resourcesService.get('',undefined, function(resources){
                resources = self.fromServer(resources);
                var m = '<div class="resources-panel"></div>';
@@ -1164,7 +1180,7 @@
                               '</div>',
                               '<div>',
                                  '<label class="panel-field-label">Allowed Roles:</label>',
-                                 getArr(resources[i].roles, 'label'),
+                                 getArr(resources[i].roles),
                               '</div>',
                         '</div>',
                      '</div>'
@@ -1192,13 +1208,69 @@
          });
 	   },
 	   addResource: function(){
+	      var self = this;
 	      this.ready(function(){
 	         this.clearMainPanel();
-	         var ap = this.getResourcePanel({}, function(){}, function(){});
+	         var ap = this.getResourcePanel({}, function(panel, resource){
+	            var rc = {
+                  urlPattern: resource.urlPattern,
+                  httpMethods: (resource.httpMethods || []).join(','),
+                  roles: (resource.roles || []).join(',')
+               };
+	            self.resourcesService.post('', rc, function(){
+                  
+	               panel.close();
+	               self.n.message('Info: ', 'Resource added successfuly');
+	               self.showResources();
+	            }, function(status, err){
+	               console.log('ERROR: ', status,' : ',err);
+	               self.n.error('Error: ', 'Failed to add protected URL - ' + err);
+	            });
+	            return false;
+	         }, function(panel){
+	            self.showResources();
+	            return true;
+	         });
 	      });
 	   },
-	   removeResource: function(){},
-	   editResource: function(){},
+	   removeResource: function(rc){
+	      var self = this;
+	      this.n.confirm('Warning', 'Are you sure you want to remove the protected url: ' + 
+	            '"<span style="font-weight: bold">' + rc.urlPattern + '</span>"?',
+	               function(){
+	                  self.resourcesService.del('', {urlPattern: rc.urlPattern}, function(){
+	                     self.n.message("Info: ", 'Protected URL mapping was successfuly removed.');
+	                     self.showResources();
+	                  },function(status, err){
+	                     self.n.error("Error: ", "Failed to remove the protected URL - " + err);
+	                  });
+	               });
+	   },
+	   editResource: function(res){
+	      var self = this;
+	      this.ready(function(roles){
+	         this.clearMainPanel();
+	         var ap = this.getResourcePanel(res, function(panel, resource){
+	            var rc = {
+                  urlPattern: resource.urlPattern,
+                  httpMethods: (resource.httpMethods || []).join(','),
+                  roles: (resource.roles || []).join(',')
+               };
+	            self.resourcesService.put('', rc, function(){
+	               panel.close();
+	               self.n.message('Info: ', 'Resource updated successfuly');
+	               self.showResources();
+	            }, function(status, err){
+	               console.log('ERROR: ', status,' : ',err);
+	               self.n.error('Error: ', 'Failed to add protected URL - ' + err);
+	            });
+	            return false;
+	         }, function(panel){
+	            self.showResources();
+	            return true;
+	         });
+	      });
+	   },
 	   clearMainPanel: function(){
 	      $('.resources-panel-content', this.el).html('');
 	   },
@@ -1277,7 +1349,11 @@
 	                     name: 'roles',
 	                     label: 'Allowed For Roles',
 	                     title: 'Allowed roles to access this resource',
-	                     value: this.getRolesForResource(resource),
+	                     value: (function(o){
+	                        var r = [];
+	                        each(o, function(k){r.push(k);});
+	                        return r;
+	                     })(resource.roles),//this.getRolesForResource(resource),
 	                     events: {
 	                        'value-remove': function(e, f, value){
 	                           for(var  i = 0; i < self.roles.length; i++){
@@ -1325,22 +1401,29 @@
 	               handler: function(e, panel){
 	                  if(panel.validate()){
 	                     console.log("valid");
+	                     var rc = panel.getData();
+	                     console.log("RESOURCE: ", rc);
+	                     if(onOk){
+	                        if(onOk.call(this, panel, rc)){
+	                           panel.close();
+	                        }
+	                     }
 	                  }else{
 	                     console.log("invalid");
 	                  }
-	                  var rc = panel.getData();
-	                  console.log("RESOURCE: ", rc);
-	                  if(resource.urlPattern){
-	                     
-	                  }else{
-	                     
-	                  }  
+	                    
 	               }
 	            },
 	            'cancel': {
 	               text: 'Cancel',
 	               handler: function(e, panel){
-	                  
+	                  self.n.confirm('Info', "Are you sure you don't want to save the changes? All canges will be lost.",
+                     function(){
+                        panel.close();
+                        if(onCancel){
+                           onCancel.call(this, panel);
+                        }
+                     });
 	               }
 	            }
 	         }
@@ -1364,16 +1447,21 @@
 	   fromServer: function(resources){
 	      var rs = [];
 	      var rsc = {};
-	      
+	      //debugger
 	      for(var i = 0; i < resources.length; i++){
 	         var r = rsc[resources[i].urlPattern];
 	         if(!r){
-               r = rsc[resources[i].urlPattern] = resources[i]; 
+               r = rsc[resources[i].urlPattern] = {};//resources[i]; 
+               r.urlPattern = resources[i].urlPattern;
                r.httpMethods = {};
+               r.roles = {};
                rs.push(r);
 	         }
-            var hm = r.httpMethod.toLowerCase();
+            var hm = resources[i].httpMethod.toLowerCase();
             r.httpMethods[hm] = ResourcesManager.HTTP_METHODS[hm];
+            for(var j = 0; j < resources[i].roles.length; j++){
+               r.roles[resources[i].roles[j].label] = resources[i].roles[j].description;
+            }
 	      }
 	      return rs;
 	   },
@@ -1393,20 +1481,17 @@
 	      var rs = [];
 	      r.roles = r.roles || [];
 	      for(var i = 0; i < r.roles.length; i++){
-	         roles.push(r.roles[i].value);
+	         roles.push(r.roles[i].label);
 	      }
 	      return rs;
 	   },
 	   availableRolesForResource: function(r){
 	      r = r || {};
-	      r.roles = r.roles | [];
-	      var c = {};
-	      for(var i = 0; i < r.roles.length; i++){
-	         c[r.roles[i].value] = c[r.roles[i].label];
-	      }
+	      r.roles = r.roles || {};
+	      
 	      var rs = [];
 	      for(var  i = 0; i < this.roles.length; i++){
-	         if(!c[this.roles[i].label]){
+	         if(!r.roles[this.roles[i].label]){
 	            rs.push({
 	               value: this.roles[i].label,
 	               label: this.roles[i].description
