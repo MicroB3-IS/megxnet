@@ -47,9 +47,15 @@
     <insert id="insertWebResource" parameterType="WebResource">
         insert into auth.web_resource_permissions(url_path, http_method, role)
         	values
-        	<foreach collection="roles" item="role" open="(" close=")" separator=",">
+        	<foreach collection="roles" item="role" open="(" close=")" separator="),(">
         	    #{urlPattern},#{httpMethod},#{role}
         	</foreach>
+    </insert>
+    
+    <insert id="insertSingleWebResource" parameterType="map">
+    	insert into auth.web_resource_permissions(url_path, http_method, role)
+        	values
+        (#{urlPattern},#{httpMethod},#{role})
     </insert>
     
     <delete id="deleteWebResource" parameterType="WebResource">
