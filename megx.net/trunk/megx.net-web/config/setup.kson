@@ -15,6 +15,8 @@ www={type:'sys.public'}
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
 		authorize={type:'megx.module.oauth.authorize'}
 	login={type:'html', template:'security-filter/login.html'}
+	register={type:'html', template:'security-filter/register.html'}
+		doRegistration={type: 'megx.module.login.registration'}
 	pubmap={type:'category', template:'pubmap/start.html'}
 		articles={type:'category', template:'pubmap/articles.html'}
 	apps={type:'html', template: 'apps-manager/home.html'}
@@ -85,6 +87,7 @@ etc={type:'sys.etc'}
 		megx.module.wms={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WMS_Module'}
 		megx.module.woa={bubbleToParnet: true, type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WOA_Module'}
 		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
+		megx.module.login.registration={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.RegisterPageNode'}
 		
 var={type:'sys.var'}
 	log={type:'folder'}
