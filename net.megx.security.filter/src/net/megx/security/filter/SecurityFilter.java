@@ -27,6 +27,7 @@ import net.megx.security.filter.http.HttpRequestWrapper;
 import net.megx.security.filter.http.TemplatePageNodeFactory;
 import net.megx.security.filter.http.TemplatePageRenderer;
 import net.megx.security.filter.http.impl.AuthorizePageNode;
+import net.megx.security.filter.http.impl.RegisterPageNode;
 import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
@@ -293,6 +294,7 @@ public class SecurityFilter implements Filter{
 			@Override
 			protected void initialize() {
 				register(AuthorizePageNode.class);
+				register(RegisterPageNode.class);
 			}
 		}, null);
 		
