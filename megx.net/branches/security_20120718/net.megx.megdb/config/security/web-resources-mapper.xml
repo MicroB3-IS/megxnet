@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.security.auth.services.db.WebResourcesMapper">
+    <resultMap type="WebResource" id="web_resource_map">
+        <result column="url_path" property="urlPattern"/>
+        <result column="http_method" property="httpMethod"/>
+        <association property="roles" select="selectRolesForWebResource" column="{url_path=url_path,http_method=http_method}"/>
+    </resultMap>
+    
+    <resultMap type="Role" id="role_map">
+        <result column="label" property="label"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    
+    <select id="matchWebResources" parameterType="map" resultMap="web_resource_map">
+        select distinct url_path, http_method, char_length(url_path) as path_len 
+        	from auth.web_resource_permissions
+					where #{url} LIKE replace(url_path,'*','%') 
+							and 
+						(upper(http_method)=upper(#{method}) 
+							OR upper(http_method)='ALL') 
+							
+							order by path_len DESC
+    </select>
+    
+    <select id="getAll" parameterType="map" resultMap="web_resource_map">
+        select url_path, http_method, url_path
+        	from auth.web_resource_permissions
+        	limit #{count}
+        	offset #{from}
+    </select>
+    
+    
+    <select id="selectRolesForWebResource" parameterType="map" resultMap="role_map">
+        select auth.roles.label, auth.roles.description 
+        	from auth.roles
+  				left join auth.web_resource_permissions on auth.roles.label = auth.web_resource_permissions.role
+    				where 
+    				auth.web_resource_permissions.url_path=#{url_path} 
+    					and 
+    				auth.web_resource_permissions.http_method=#{http_method}
+    </select>
+    
+    <insert id="insertWebResource" parameterType="WebResource">
+        insert into auth.web_resource_permissions(url_path, http_method, role)
+        	values
+        	<foreach collection="roles" item="role" open="(" close=")" separator="),(">
+        	    #{urlPattern},#{httpMethod},#{role}
+        	</foreach>
+    </insert>
+    
+    <insert id="insertSingleWebResource" parameterType="map">
+    	insert into auth.web_resource_permissions(url_path, http_method, role)
+        	values
+        (#{urlPattern},#{httpMethod},#{role})
+    </insert>
+    
+    <delete id="deleteWebResource" parameterType="WebResource">
+        delete from auth.web_resource_permissions
+        	where url_path=#{urlPattern} and http_method=#{httpMethod}
+    </delete>
+    
+    <delete id="deleteByUrlPattern" parameterType="string">
+    	delete from auth.web_resource_permissions
+    		where url_path=#{urlPattern}
+    </delete>
+</mapper>

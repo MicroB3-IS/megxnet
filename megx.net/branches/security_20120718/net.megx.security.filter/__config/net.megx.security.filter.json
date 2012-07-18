@@ -1,0 +1,40 @@
+{
+	path: '$resources/net.megx.security.filter',
+	filter:{
+		enabled: true,
+		entrypoints:[
+			{
+				name: 'standardLogin',
+				class: 'net.megx.security.filter.impl.WebLoginSecurity',
+				urlPattern: [
+					'/j_security_check.*',
+					'.*admin/logout.do'
+				],
+				order: 1
+			},
+			{
+				name: 'oauth_v1_security',
+				class: 'net.megx.security.filter.impl.OAuth_1_Security',
+				urlPattern: [
+					'/oauth/request_token',
+					'/oauth/access_token',
+					'/oauth/authorize',
+					'/ws/pubmap.*'
+				],
+				order: 0
+			},
+			{
+				name: 'annonymus',
+				class: 'net.megx.security.filter.impl.AnonnimusAuthenticationEndpoint',
+				urlPattern: '/.*',
+				order: 2,
+				enabled: false
+			}
+		],
+		managers:[
+			{
+				name: 'default'
+			}
+		]
+	}
+}

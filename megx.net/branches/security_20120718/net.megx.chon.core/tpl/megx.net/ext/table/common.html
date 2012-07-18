@@ -1,0 +1,85 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<style>
+.dataTables_processing {
+    width:20em;
+/*  border: thin solid #ddd;*/
+    text-align: center;
+    color: #959595;
+    text-decoration:blink;
+    background-color:white;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/* Selecting the number of entries to be shown*/
+.dataTables_length {
+    float: left;
+}
+
+/*General Filter Box -- 'Search All Columns'*/
+.dataTables_filter {
+    float: right;
+    text-align: right;
+    clear:right;
+}
+
+/* number of showed and total entries*/
+.dataTables_info {
+    float: left;
+    clear:right;
+}
+
+/* Paginate Buttons -- Next & Previous*/
+.dataTables_paginate {
+    float: right;
+    text-align: right;
+}
+
+.sorting_asc {
+    background: url(/js/table/sort_asc.png) no-repeat center right;
+    cursor:pointer;
+}
+
+.sorting_desc {
+    background: url(/js/table/sort_desc.png) no-repeat center right;
+    cursor:pointer;
+}
+
+.sorting {
+    background: url(/js/table/sort_both.png) no-repeat center right;
+    cursor:pointer;
+}
+
+/*IMPORTANT*/
+tfoot input {
+    width: 90%;
+    color: #444;
+    background-color:white;
+    border:0px;
+}
+
+tfoot input.search_init {
+    color: #999;
+    background-color:white;
+}
+
+
+span.paginate_button, span.paginate_active {
+    border: 1px solid #aaa;
+    -moz-border-radius: 5px;
+    padding:0.1em;
+    padding-left:0.2em;
+    padding-right:0.2em;
+    margin:0.1em;
+    margin-left:0.3em;
+    margin-right:0.3em;
+    cursor:pointer;
+    color:inherit;
+    background-color:#e1e1e1;
+}
+
+span.paginate_active {
+color:inherit;
+background-color:rgb(179,215,239);
+}
+</style>
