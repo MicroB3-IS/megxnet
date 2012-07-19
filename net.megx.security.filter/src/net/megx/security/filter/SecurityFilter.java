@@ -3,8 +3,10 @@ package net.megx.security.filter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -52,12 +54,15 @@ public class SecurityFilter implements Filter{
 	List<EntryPointWrapper> entryPoints = new ArrayList<SecurityFilter.EntryPointWrapper>();
 	private boolean enabled;
 	
+	private Map<String, Object> contextParameters;
+	
 	private String ignorePattern = ".*\\.(js|png|jpg|jpeg|gif|tiff|css)";
 	
-	public SecurityFilter(BundleContext context, JSONObject bundleConfig) {
+	public SecurityFilter(BundleContext context, JSONObject bundleConfig, Map<String,Object> contextParameters) {
 		super();
 		this.context = context;
 		this.bundleConfig = bundleConfig;
+		this.contextParameters = contextParameters;
 	}
 
 	@Override
@@ -70,7 +75,7 @@ public class SecurityFilter implements Filter{
 		if(request instanceof HttpServletRequest && response instanceof HttpServletResponse){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
-			
+			WebContextUtils.storeExtraParameters(httpRequest, new HashMap<String, Object>(contextParameters));
 			String requestPath = WebUtils.getRequestPath(httpRequest, false); 
 			
 			if(requestPath.matches(ignorePattern)){

@@ -1,5 +1,6 @@
 package net.megx.security.filter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -15,18 +16,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
+import org.chon.cms.model.ContentModel;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
 public class Activator extends ResTplConfiguredActivator {
 	private static final Log log = LogFactory.getLog(Activator.class);
+	
+	private ContentModel contentModel;
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		try{
 			super.start(context);
 			JSONObject cfg = getConfig();
-			
-			Filter filter = new  SecurityFilter(context, cfg);
+			Map<String, Object> contextParams = new HashMap<String, Object>();
+			contextParams.put("JCRApplicationInstance", getJCRApp());
+			Filter filter = new  SecurityFilter(context, cfg, contextParams);
 			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
 			
 			log.debug(cfg.optString("exampleProperty", "default value"));
@@ -46,7 +52,8 @@ public class Activator extends ResTplConfiguredActivator {
 	}
 
 	@Override
-	protected void registerExtensions(JCRApplication arg0) { 
+	protected void registerExtensions(JCRApplication app) {
+		contentModel = app.createContentModelInstance(getName());
 		OSGIUtils.requestServices(getBundleContext(), new OSGIUtils.OnServicesAvailable(){
 			
 			@Override
@@ -55,7 +62,7 @@ public class Activator extends ResTplConfiguredActivator {
 				WebResourcesService wrService = (WebResourcesService)services.get(WebResourcesService.class.getName());
 				
 				ResourcesManager rm = new ResourcesManager(wrService);
-				UsersManager um = new UsersManager(userService);
+				UsersManager um = new UsersManager(userService, contentModel);
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
