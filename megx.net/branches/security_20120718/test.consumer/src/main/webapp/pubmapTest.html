@@ -9,7 +9,7 @@
 			}
 			
 			var OAUTH_BASE = 'http://localhost:8080/megx.net-web/oauth'; // the base URL under which the oAuth endpoints can be found
-			var PUBMAP_BASE = 'http://localhost:8080/megx.net/ws/pubmap'; // the base URL for PubMap REST web services
+			var PUBMAP_BASE = 'http://localhost:8080/megx.net-web/ws/pubmap'; // the base URL for PubMap REST web services
 			
 			/*
 			 * First, we need to initialize the oAuth service that will access the protected 
@@ -77,6 +77,7 @@
 				  jsOauth provides a couple of convinient methods to do HTTP calls, suc as: GET, POST...
 				  The signing of the request is handled by the jsOauth library itslef.
 				*/
+				/*
 				service.get(PUBMAP_BASE + '/articles',function(resp){
 					articles = JSON.parse(resp.text);
 					var markup = '<h2>List of articles</h2>';
@@ -98,6 +99,23 @@
 					}
 					document.getElementById('articles').innerHTML = markup;
 				});
+				  */
+				  service.request({
+					  method: 'PUT',
+					  url: PUBMAP_BASE+"/article/add",
+					  success: function(a,b,c,d){
+						  console.log('SUCCESS: ',a,b,c,d);
+					  },
+					  failure: function(a,b,c,d){
+						  console.log('ERROR: ',a,b,c,d);
+					  },
+					  data: {
+						  test: 'fail'
+					  },
+					  headers:{
+						  'Content-Type': 'multipart/form-data'
+					  }
+				  });
 			},true);
 		}
 		</script>

@@ -3,6 +3,8 @@ package net.megx.megdb;
 import java.io.IOException;
 import java.util.Properties;
 
+import net.megx.utils.PasswordHash;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.io.Resources;
@@ -33,6 +35,9 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		try {
 			factory = buildSQLSessionFactory(cfg);
 			buildDBServices(cfg.getJSONArray("dbServices"), factory);
+			
+			setupPasswordHash(cfg);
+			
 			log.info("Megdb Services layer bundle startup success.");
 		} catch (Exception e) {
 			log.error("Megdb Services failed to startup successfuly: ", e);
@@ -129,5 +134,21 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	protected Class<?> loadClass(String className)
 			throws ClassNotFoundException {
 		return Activator.class.getClassLoader().loadClass(className);
+	}
+	
+	protected void setupPasswordHash(JSONObject config){
+		JSONObject passwordHashing = config.optJSONObject("passwordHashing");
+		if(passwordHashing != null){
+			int saltBytes = config.optInt("saltBytes", PasswordHash.SALT_BYTES);
+			int hashBytes = config.optInt("hashBytes", PasswordHash.HASH_BYTES);
+			int iterations = config.optInt("PBKDF2iterations", PasswordHash.PBKDF2_ITERATIONS);
+			PasswordHash.SALT_BYTES = saltBytes;
+			PasswordHash.HASH_BYTES = hashBytes;
+			PasswordHash.PBKDF2_ITERATIONS = iterations;
+			if(log.isDebugEnabled())
+				log.debug(String.format("Password Hashing Options: saltBytes=%d, hashBytes=%d, iterations=%d", saltBytes, hashBytes, iterations));
+		}else{
+			log.debug("Password Hashing Options are set to default.");
+		}
 	}
 }

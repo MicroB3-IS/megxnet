@@ -23,6 +23,7 @@ import net.megx.megdb.BaseMegdbService;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
+import net.megx.utils.PasswordHash;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,7 +64,13 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
-				return mapper.getUserForUsernameAndPassword(username, password);
+				User user = mapper.getUserByUserId(username);
+				if(user != null){
+					if(PasswordHash.validatePassword(password, user.getPassword())){
+						return user;
+					}
+				}
+				return null;
 			}
 			
 		}, UserMapper.class);
@@ -89,6 +96,8 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
+				String hashedPassword = PasswordHash.createHash(info.getPassword());
+				info.setPassword(hashedPassword);
 				mapper.addUser(info);
 				List<Role> roles = info.getRoles();
 				if(roles != null){
@@ -111,7 +120,10 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		final User old = getUserByUserId(userInfo.getLogin());
 		final List<Role> oldRoles = old.getRoles();
 		final List<Role> newRoles = userInfo.getRoles();
-		
+		if(userInfo.getPassword() != null){
+			String hashedPassword = PasswordHash.createHash(userInfo.getPassword());
+			userInfo.setPassword(hashedPassword);
+		}
 		return doInTransaction(new DBTask<UserMapper, User>() {
 
 			@Override

@@ -154,6 +154,10 @@ public class SecurityFilter implements Filter{
 	}
 	
 	private void storeRequestURL(HttpServletRequest request){
+		if(!"get".equals(request.getMethod().toLowerCase())){
+			log.debug("Last Request will not be stored. Method: " + request.getMethod());
+			return;
+		}
 		log.debug("Saving last request: " + request);
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){

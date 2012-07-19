@@ -7,6 +7,11 @@
 		development.password:'pg-admin-iw',
 		development.driver: 'org.postgresql.Driver'
 	},
+	passwordHashing:{
+		saltBytes: 24,
+		hashBytes: 24,
+		PBKDF2iterations: 1000
+	},
 	dbServices:[
 		{
 			name: 'net.megx.megdb.pubmap.PubMapService',
