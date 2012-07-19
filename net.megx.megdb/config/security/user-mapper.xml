@@ -97,7 +97,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			<include refid="user_columns_list"/>
             	
             	from auth.users where logname=#{username} and 
-			(pass=md5(#{password}) OR pass IS NULL)
+			(pass=#{password} OR pass IS NULL)
 	</select>
 	
 		 
@@ -105,7 +105,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		insert into auth.users
 			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin)
 			values
-			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},md5(#{password}),#{disabled}, #{email}, #{lastlogin})
+			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin})
 	</insert>
 	
 	<update id="updateUser" parameterType="User">
@@ -116,7 +116,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 				description=#{description},
 				join_date=#{joinedOn},
 				<if test="password != null">
-	            	pass=mad5(#{password}),
+	            	pass=#{password},
 	            </if>
 	            disabled=#{disabled},
 	            email=#{email}
