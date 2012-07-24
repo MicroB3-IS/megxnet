@@ -1,10 +1,13 @@
 package net.megx.security.auth.web;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.chon.web.RegUtils;
 import org.osgi.framework.BundleContext;
@@ -55,4 +58,27 @@ public class WebUtils {
 		System.out.println("Registered filter: "+filter);
 	}
 	
+	
+	public static void replaceSession(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		Map<String, Object> sessionParams = new HashMap<String, Object>();
+		@SuppressWarnings("unchecked")
+		Enumeration<String> names = session.getAttributeNames();
+		if(names != null){
+			while(names.hasMoreElements()){
+				String name = names.nextElement();
+				sessionParams.put(name, session.getAttribute(name));
+			}
+		}
+		session.invalidate();
+		session = request.getSession();
+		for(Map.Entry<String, Object> e: sessionParams.entrySet()){
+			session.setAttribute(e.getKey(), e.getValue());
+		}
+	}
+	
+	
+	public static String getFullContextURL(HttpServletRequest request){
+		return request.getRequestURL().toString(); // FIXME: Is there a better way to do this?
+	}
 }

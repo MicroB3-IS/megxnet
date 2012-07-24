@@ -29,6 +29,21 @@
 				urlPattern: '/.*',
 				order: 2,
 				enabled: false
+			},
+			{
+				name: 'externalLogin',
+				class: 'net.megx.security.filter.impl.ExternalLoginSecurityEntrypoint',
+				urlPattern: [
+					'/external/.*'
+				],
+				order: 0,
+				enabled: true,
+				providers:{
+					twitter: {
+						'app.key': 'kBvJsxD6Ns3FTDzTiBsmOQ',
+						'app.secret': 'f1v0u5K4mLiEfjqrzaCIbH0AU4M5J8RjRHbV0LOtxvQ'
+					}
+				}
 			}
 		],
 		managers:[
