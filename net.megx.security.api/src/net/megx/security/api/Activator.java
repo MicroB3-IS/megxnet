@@ -1,15 +1,16 @@
 package net.megx.security.api;
 
 import java.util.Map;
-import java.util.Properties;
 
 import net.megx.security.auth.AuthenticationManager;
+import net.megx.security.auth.impl.ExternalLoginHandlerImpl;
 import net.megx.security.auth.impl.OAuth1AuthenticationHandlerImpl;
 import net.megx.security.auth.impl.WebAuthenticationHandlerImpl;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.TokenService;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
+import net.megx.security.auth.web.ExternalLoginHandler;
 import net.megx.security.auth.web.OAuth1Handler;
 import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.auth.web.impl.WebLoginAuthenticationManager;
@@ -27,8 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRAppConfgEnabledActivator;
 import org.chon.web.RegUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
 public class Activator extends JCRAppConfgEnabledActivator {
@@ -91,7 +90,10 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					
 					oAuthServices.setoAuthHandler(authenticationHandlerImpl);
 					
+					ExternalLoginHandlerImpl externalLoginHandler = new ExternalLoginHandlerImpl(null);
+					externalLoginHandler.setUserService(userService);
 					
+					RegUtils.reg(context, ExternalLoginHandler.class.getName(), externalLoginHandler, null);
 					
 					// register services
 					RegUtils.reg(context, Cache.class.getName(), cache, null);
@@ -108,39 +110,5 @@ public class Activator extends JCRAppConfgEnabledActivator {
 				ConsumerService.class.getName(),
 				TokenService.class.getName(),
 				WebResourcesService.class.getName());
-	}
-	
-	
-	
-	
-	private Properties getDatabaseProperties(){
-		Properties properties = new Properties();
-		
-		JSONObject config = getConfig();
-		JSONObject dbConfig = get(config, "dbConfig");
-		
-		String [] keys = JSONObject.getNames(dbConfig);
-		if(keys != null){
-			for(String key: keys){
-				properties.put(key, getString(dbConfig, key));
-			}
-		}
-		return properties;
-	}
-	
-	private JSONObject get(JSONObject obj, String key){
-		try {
-			return obj.getJSONObject(key);
-		} catch (JSONException e) {
-			return new JSONObject();
-		}
-	}
-	
-	private String getString(JSONObject obj, String key){
-		try {
-			return obj.getString(key);
-		} catch (JSONException e) {
-			return "";
-		}
 	}
 }
