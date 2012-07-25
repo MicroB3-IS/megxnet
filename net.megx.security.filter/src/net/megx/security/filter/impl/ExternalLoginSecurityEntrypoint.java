@@ -2,6 +2,7 @@ package net.megx.security.filter.impl;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +24,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.openid4java.association.AssociationException;
+import org.openid4java.consumer.ConsumerException;
+import org.openid4java.consumer.ConsumerManager;
+import org.openid4java.consumer.VerificationResult;
+import org.openid4java.discovery.Discovery;
+import org.openid4java.discovery.DiscoveryException;
+import org.openid4java.discovery.DiscoveryInformation;
+import org.openid4java.discovery.Identifier;
+import org.openid4java.message.AuthRequest;
+import org.openid4java.message.AuthSuccess;
+import org.openid4java.message.MessageException;
+import org.openid4java.message.ParameterList;
+import org.openid4java.message.ax.AxMessage;
+import org.openid4java.message.ax.FetchRequest;
+import org.openid4java.message.ax.FetchResponse;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
 import org.scribe.model.OAuthRequest;
@@ -68,19 +84,20 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		if(authentication != null){
 			saveAuthentication(authentication, request);
 			log.debug("Authentication saved to security context.");
-			SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
-			if(securityContext != null){
-				String lastRequestUrl = securityContext.getLastRequestedURL();
-				log.debug("\t-> Last stored URL: " + lastRequestUrl);
-				if(lastRequestUrl == null){
-					lastRequestUrl = WebUtils.getFullContextURL(request);
-				}else{
-					lastRequestUrl = request.getContextPath() + lastRequestUrl;
-				}
-				log.debug(" ### ===> Redirect -> " + lastRequestUrl);
-				response.sendRedirect(lastRequestUrl);
-				throw new StopFilterException();
+			
+		}
+		SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
+		if(securityContext != null){
+			String lastRequestUrl = securityContext.getLastRequestedURL();
+			log.debug("\t-> Last stored URL: " + lastRequestUrl);
+			if(lastRequestUrl == null){
+				lastRequestUrl = WebUtils.getFullContextURL(request);
+			}else{
+				lastRequestUrl = request.getContextPath() + lastRequestUrl;
 			}
+			log.debug(" ### ===> Redirect -> " + lastRequestUrl);
+			response.sendRedirect(lastRequestUrl);
+			throw new StopFilterException();
 		}
 		log.debug("Callback processing done.");
 	}
@@ -101,6 +118,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		
 		
 		registerProvider("twitter.com", new TwitterLoginProvder());
+		registerProvider("google.com", new GoogleLoginProvider());
 		
 		OSGIUtils.requestService( ExternalLoginHandler.class.getName(), context, new OSGIUtils.OnServiceAvailable<ExternalLoginHandler>() {
 			@Override
@@ -143,10 +161,12 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		public void initialize(Map<String, String> config, String provider);
 
 		public void processExternalLogin(HttpServletRequest request,
-				HttpServletResponse response) throws IOException, StopFilterException;
+				HttpServletResponse response) throws IOException, ServletException,
+				SecurityException, StopFilterException;
 
 		public void processLoginCallback(HttpServletRequest request,
-				HttpServletResponse response);
+				HttpServletResponse response) throws IOException, ServletException,
+				SecurityException, StopFilterException;
 	}
 
 	public static abstract class BaseLoginProvider implements
@@ -259,6 +279,120 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			}
 		}
 
+	}
+	
+	private static class GoogleLoginProvider extends BaseLoginProvider{
+		
+		private ConsumerManager consumerManager;
+		
+		private static final String CFG_USER_SUPPLIED_STRING = "openId.userSuppliedString";
+		
+		private static final String ATTR_DISCOVERED = GoogleLoginProvider.class.getName() + ".ATTR_DISCOVERED";
+		
+		@Override
+		public void initialize(Map<String, String> config, String provider) {
+			super.initialize(config, provider);
+			consumerManager = new ConsumerManager();
+		}
+		
+		@Override
+		public void processExternalLogin(HttpServletRequest request,
+				HttpServletResponse response) throws IOException,
+				StopFilterException, ServletException {
+			try {
+				@SuppressWarnings("unchecked")
+				List<Discovery> discoveries = consumerManager.discover(config.get(CFG_USER_SUPPLIED_STRING));
+				DiscoveryInformation information = consumerManager.associate(discoveries);
+				putInSession(request, ATTR_DISCOVERED, information);
+				
+				AuthRequest authRequest = consumerManager.authenticate(information, getCallbackUrl(request));
+				FetchRequest fetchRequest = FetchRequest.createFetchRequest();
+				fetchRequest.addAttribute("email",
+	                    "http://schema.openid.net/contact/email",
+	                    true); 
+				fetchRequest.addAttribute("firstName", "http://axschema.org/namePerson/first", true);
+				fetchRequest.addAttribute("lastName", "http://axschema.org/namePerson/last", true);
+				authRequest.addExtension(fetchRequest);
+				response.sendRedirect(authRequest.getDestinationUrl(true));
+				throw new StopFilterException();
+			} catch (DiscoveryException e) {
+				throw new ServletException(e);
+			} catch (MessageException e) {
+				throw new ServletException(e);
+			} catch (ConsumerException e) {
+				throw new ServletException(e);
+			}
+		}
+
+		@Override
+		public void processLoginCallback(HttpServletRequest request,
+				HttpServletResponse response) throws IOException, ServletException,
+				SecurityException, StopFilterException {
+			ParameterList openidResp = new ParameterList(request.getParameterMap());
+			DiscoveryInformation information = getFromSession(request, ATTR_DISCOVERED);
+			
+			// extract the receiving URL from the HTTP request
+		    StringBuffer receivingURL = request.getRequestURL();
+		    String queryString = request.getQueryString();
+		    if (queryString != null && queryString.length() > 0)
+		        receivingURL.append("?").append(request.getQueryString());
+
+		    // verify the response
+		    VerificationResult verification;
+			try {
+				verification = consumerManager.verify(receivingURL.toString(), openidResp, information);
+			} catch (MessageException e) {
+				throw new ServletException(e);
+			} catch (DiscoveryException e) {
+				throw new ServletException(e);
+			} catch (AssociationException e) {
+				throw new ServletException(e);
+			}
+
+		    // examine the verification result and extract the verified identifier
+		    Identifier verified = verification.getVerifiedId();
+
+		    if (verified != null){
+		    	AuthSuccess authSuccess =
+                        (AuthSuccess) verification.getAuthResponse();
+
+                if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX))
+                {
+                    FetchResponse fetchResp = null;;
+					try {
+						fetchResp = (FetchResponse) authSuccess
+						        .getExtension(AxMessage.OPENID_NS_AX);
+					} catch (MessageException e) {
+						throw new ServletException(e);
+					}
+
+                    @SuppressWarnings("unchecked")
+					List<String> emails = fetchResp.getAttributeValues("email");
+                    String email = emails.get(0);
+                    request.setAttribute("email", email);
+                    
+                    String firstName = email;
+                    List<String> firstNames = fetchResp.getAttributeValues("firstName");
+                    if(firstNames != null && firstNames.size() > 0){
+                    	firstName = firstNames.get(0);
+                    }
+                    
+                    request.setAttribute("firstName", firstName);
+                    
+                    String lastName = null;
+                    List<String> lastNames = fetchResp.getAttributeValues("lastName");
+                    if(firstNames != null && firstNames.size() > 0){
+                    	lastName = lastNames.get(0);
+                    }
+                    
+                    request.setAttribute("lastName", lastName);
+                }
+		    }else{
+		        // OpenID authentication failed
+		    	throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+		    }
+		}
+		
 	}
 
 }

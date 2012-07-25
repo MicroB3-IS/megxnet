@@ -43,6 +43,9 @@
 						'app.key': 'kBvJsxD6Ns3FTDzTiBsmOQ',
 						'app.secret': 'f1v0u5K4mLiEfjqrzaCIbH0AU4M5J8RjRHbV0LOtxvQ',
 						'api.userInfoURL': 'https://api.twitter.com/1/account/verify_credentials.json'
+					},
+					'google.com':{
+						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
 					}
 				}
 			}
