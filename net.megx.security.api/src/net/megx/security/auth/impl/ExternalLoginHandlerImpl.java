@@ -23,20 +23,13 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 	private UserService userService;
 	
 	
-	
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
 
-
-
-
 	public ExternalLoginHandlerImpl(SecurityContext securityContext) {
 		super(securityContext);
 	}
-
-	
-	
 	
 	@Override
 	public Authentication createAuthentication(HttpServletRequest request)
@@ -46,6 +39,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		String firstName = (String)request.getAttribute("firstName");
 		String lastName = (String)request.getAttribute("lastName");
 		String email = (String)request.getAttribute("email");
+		Authentication authentication = null;
 		if(provider == null)
 			throw new ServletException("External provider was not specified!");
 		if(logname == null){
@@ -55,20 +49,25 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			}
 			logname = email;
 		}else{
-			logname = provider + "_" + logname;
+			logname = getLogname(logname, provider);
 		}
 		User user = null;
 		try {
-			user = userService.getUser(logname);
+			log.debug("Looking for user: " + logname);
+			user = userService.getUserByUserId(logname);
 			if(user == null){
+				log.debug("This user was not registered. Registering now...");
 				user = getNewUser(logname, email, firstName, lastName, provider);
 				userService.addUser(user);
+				log.debug("Successfully added: " + user);
 			}
 		} catch (Exception e) {
+			log.error("Failed to create authentication: ",e);
 			throw new ServletException(e);
 		}
-		
-		return new AuthenticationImpl(user);
+		authentication = new AuthenticationImpl(user); 
+		log.debug("Successfully created Authentication: " + authentication);
+		return authentication;
 	}
 	
 	private User getNewUser(String logname, String email, String firstName, String lastName, String provider){
@@ -92,6 +91,10 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		user.setRoles(roles);
 		
 		return user;
+	}
+	
+	protected String getLogname(String userId, String provider){
+		return String.format("%s.%s", provider, userId);
 	}
 	
 }
