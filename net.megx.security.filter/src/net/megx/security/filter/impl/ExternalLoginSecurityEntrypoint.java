@@ -376,7 +376,9 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
                     if(firstNames != null && firstNames.size() > 0){
                     	firstName = firstNames.get(0);
                     }
-                    
+                    if("".equals(firstName.trim())){
+                    	firstName = email;
+                    }
                     request.setAttribute("firstName", firstName);
                     
                     String lastName = null;
