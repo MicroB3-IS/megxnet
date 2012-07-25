@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
+import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.web.ExternalLoginHandler;
+import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.StopFilterException;
 import net.megx.utils.OSGIUtils;
@@ -43,6 +45,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			SecurityException, StopFilterException {
 		String requestPath = WebUtils.getRequestPath(request, false);
 		String provider = request.getParameter("provider");
+		log.debug(String.format("Processing external login for provider [%s] and request path [%s]",provider, requestPath));
 		if (requestPath.matches(callbackEntrypoint)) {
 			processCallback(provider, request, response);
 		} else {
@@ -54,26 +57,50 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
 		request.setAttribute("provider", provider);
+		log.debug("Processing callback...");
 		ExternalLoginProvider loginProvider = getProvider(provider);
+		log.debug("Using login provider: " + loginProvider);
 		loginProvider.processLoginCallback(request, response);
+		log.debug("Processed with the provider. Passing down to the login handler...");
 		Authentication authentication = externalLoginHandler
 				.createAuthentication(request);
-		saveAuthentication(authentication, request);
+		log.debug("Authentication created: " + authentication);
+		if(authentication != null){
+			saveAuthentication(authentication, request);
+			log.debug("Authentication saved to security context.");
+			SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
+			if(securityContext != null){
+				String lastRequestUrl = securityContext.getLastRequestedURL();
+				log.debug("\t-> Last stored URL: " + lastRequestUrl);
+				if(lastRequestUrl == null){
+					lastRequestUrl = WebUtils.getFullContextURL(request);
+				}else{
+					lastRequestUrl = request.getContextPath() + lastRequestUrl;
+				}
+				log.debug(" ### ===> Redirect -> " + lastRequestUrl);
+				response.sendRedirect(lastRequestUrl);
+				throw new StopFilterException();
+			}
+		}
+		log.debug("Callback processing done.");
 	}
 
 	protected void processExternalLogin(String provider,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SecurityException,
 			StopFilterException {
+		log.debug("Handling external login.");
 		ExternalLoginProvider loginProvider = getProvider(provider);
+		log.debug("Using externa login provider: " + loginProvider);
 		loginProvider.processExternalLogin(request, response);
+		log.debug("External login processed.");
 	}
 
 	@Override
 	protected void doInitialize() {
 		
 		
-		registerProvider("twitter", new TwitterLoginProvder());
+		registerProvider("twitter.com", new TwitterLoginProvder());
 		
 		OSGIUtils.requestService( ExternalLoginHandler.class.getName(), context, new OSGIUtils.OnServiceAvailable<ExternalLoginHandler>() {
 			@Override
@@ -157,6 +184,10 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			String baseUrl = WebUtils.getFullContextURL(request);
 			return baseUrl + "/callback?provider="+provider;
 		}
+		
+		protected void redirectToHome(HttpServletResponse response) throws IOException{
+			response.sendRedirect("/");
+		}
 	}
 
 	private static class TwitterLoginProvder extends BaseLoginProvider {
@@ -167,6 +198,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				.getName() + ".ATTR_OAUTH_REQ_TOKEN";
 		
 		private static Pattern FULL_NAME_PATTERN = Pattern.compile("\\b*(\\w+)(.*)");
+		
+		private static String CFG_USER_INFO_URL = "api.userInfoURL";
 		
 		@Override
 		public void processExternalLogin(HttpServletRequest request,
@@ -195,7 +228,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				Token requestToken = getFromSession(request, ATTR_OAUTH_REQ_TOKEN);
 				if(requestToken != null){
 					Token accessToken = oAuthService.getAccessToken(requestToken, new Verifier(request.getParameter("oauth_verifier")));
-					OAuthRequest oaRequest = new OAuthRequest(Verb.GET, "https://api.twitter.com/1/account/verify_credentials.json");
+					OAuthRequest oaRequest = new OAuthRequest(Verb.GET, config.get(CFG_USER_INFO_URL));
 					oAuthService.signRequest(accessToken, oaRequest);
 					Response resp = oaRequest.send();
 					String resultJson = resp.getBody();
@@ -226,18 +259,6 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			}
 		}
 
-	}
-	
-	public static void main(String[] args) {
-		String line = "  Some";
-		Pattern pattern = Pattern.compile("\\b*(\\w+)(.*)");
-		Matcher matcher = pattern.matcher(line);
-		
-		while(matcher.find()){
-			System.out.println("GRP(1): "+matcher.group(1));
-			System.out.println("GRP(2): "+matcher.group(2));
-		}
-		
 	}
 
 }

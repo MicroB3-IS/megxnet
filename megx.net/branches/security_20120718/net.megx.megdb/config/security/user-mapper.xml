@@ -29,6 +29,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="disabled" column="disabled"/>
 		<result property="email" column="email"/>
 		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -42,6 +44,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="disabled" column="disabled"/>
 		<result property="email" column="email"/>
 		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -61,7 +65,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
         pass, 
         disabled,
         email,
-        lastlogin
+        lastlogin,
+        external,
+        provider
 	</sql>
 	
 	
@@ -97,7 +103,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			<include refid="user_columns_list"/>
             	
             	from auth.users where logname=#{username} and 
-			(pass=#{password} OR pass IS NULL)
+			(pass=#{password} OR pass IS NULL) and
+			external == false
 	</select>
 	
 		 

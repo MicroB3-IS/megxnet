@@ -26,6 +26,7 @@ public interface UserService {
 	public User getUserByUserId(String userId) throws Exception;
 	public User getUserByConsumerKey(String consumerKey) throws Exception;
 	public User getUser(String username, String password) throws Exception;
+	@Deprecated
 	public User getUser(String uniqueIdentifier) throws Exception;
 	public List<User> getUsers() throws Exception;
 	public User addUser(User info) throws Exception;
