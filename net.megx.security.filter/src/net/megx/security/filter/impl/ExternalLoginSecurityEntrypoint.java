@@ -1,9 +1,11 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,11 +19,18 @@ import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.web.ExternalLoginHandler;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
+import net.megx.security.crypto.KeySecretProvider;
 import net.megx.security.filter.StopFilterException;
 import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openid4java.association.AssociationException;
@@ -48,12 +57,19 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import com.google.gson.Gson;
+
 public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	private String callbackEntrypoint = "/external/login/callback";
 	private ExternalLoginHandler externalLoginHandler;
 
 	private Map<String, ExternalLoginProvider> providers = new HashMap<String, ExternalLoginSecurityEntrypoint.ExternalLoginProvider>();
+
+	private KeySecretProvider keySecretProvider;
+	
+	
+	
 
 	@Override
 	public void doFilter(HttpServletRequest request,
@@ -119,13 +135,17 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		
 		registerProvider("twitter.com", new TwitterLoginProvder());
 		registerProvider("google.com", new GoogleLoginProvider());
+		registerProvider("facebook.com", new FacebookLoginProvider());
 		
-		OSGIUtils.requestService( ExternalLoginHandler.class.getName(), context, new OSGIUtils.OnServiceAvailable<ExternalLoginHandler>() {
+		
+		OSGIUtils.requestServices(context, new OSGIUtils.OnServicesAvailable() {
+			
 			@Override
-			public void serviceAvailable(String name, ExternalLoginHandler service) {
-				ExternalLoginSecurityEntrypoint.this.externalLoginHandler = service;
+			public void servicesAvailable(Map<String, Object> services) {
+				ExternalLoginSecurityEntrypoint.this.externalLoginHandler = (ExternalLoginHandler) services.get(ExternalLoginHandler.class.getName());
+				ExternalLoginSecurityEntrypoint.this.keySecretProvider = (KeySecretProvider) services.get(KeySecretProvider.class.getName());
 			}
-		});
+		}, ExternalLoginHandler.class.getName(), KeySecretProvider.class.getName());
 	}
 
 	protected void registerProvider(String providerName,
@@ -397,4 +417,95 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		
 	}
 
+	
+	private class FacebookLoginProvider extends BaseLoginProvider{
+		
+		private static final String CFG_LOGIN_DIALOG_URL = "dialog.url";
+		private static final String CFG_ACCESS_TOKEN_URL = "access.token.url";
+		private static final String ATTR_STATE = "FacebookLoginProvider.STATE";
+		private static final String CFG_USER_INFO_URL = "user.info.url";
+		
+		@Override
+		public void processExternalLogin(HttpServletRequest request,
+				HttpServletResponse response) throws IOException,
+				ServletException, SecurityException, StopFilterException {
+			if(keySecretProvider == null){
+				throw new SecurityException("KeySecretProvider service is not yet available!", HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			}
+			String state = keySecretProvider.getRandomSequence(24);
+			String callbackUrl = getCallbackUrl(request);
+			String appId = config.get(CFG_APP_KEY);
+			String url = config.get(CFG_LOGIN_DIALOG_URL);
+			url += "?client_id=" + appId + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") + 
+					"&state="+state;
+			log.debug(" ### Redirecting to Facebook login dialog: " + url);
+			
+			putInSession(request, ATTR_STATE, state);
+			
+			response.sendRedirect(url);
+			throw new StopFilterException();
+		}
+
+		@Override
+		public void processLoginCallback(HttpServletRequest request,
+				HttpServletResponse response) throws IOException,
+				ServletException, SecurityException, StopFilterException {
+			String state = getFromSession(request, ATTR_STATE);
+			if(state == null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			String retrievedState = request.getParameter("state");
+			if(retrievedState == null || !state.equals(retrievedState)){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+			String error = request.getParameter("error");
+			if(error != null){
+				throw new SecurityException(request.getParameter("error_reason"), HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+			String accessTokenUrl = config.get(CFG_ACCESS_TOKEN_URL);
+			String facebookCode = request.getParameter("code");
+			
+			accessTokenUrl += "?code="+facebookCode + 
+					"&client_id=" + config.get(CFG_APP_KEY) + 
+					"&client_secret="+config.get(CFG_APP_SECRET) +
+					"&redirect_uri=" + URLEncoder.encode(getCallbackUrl(request), "UTF-8");
+			log.debug("Generated AccessTokenURL: " + accessTokenUrl);
+			HttpClient client = new DefaultHttpClient();
+			HttpGet get = new HttpGet(accessTokenUrl);
+			HttpResponse httpResponse = client.execute(get);
+			List<NameValuePair> vals =  URLEncodedUtils.parse(httpResponse.getEntity());
+			String accessToken = null;
+			for(NameValuePair pair: vals){
+				if("access_token".equals(pair.getName())){
+					accessToken = pair.getValue();
+					break;
+				}
+			}
+			if(accessToken == null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+			String userInfoUrl = config.get(CFG_USER_INFO_URL);
+			userInfoUrl += "?access_token="+accessToken;
+			log.debug("Generated user info url: " + userInfoUrl);
+			get = new HttpGet(userInfoUrl);
+			httpResponse = client.execute(get);
+			
+			String content = new Scanner(httpResponse.getEntity().getContent(), "UTF-8").useDelimiter("\\Z").next();
+			log.debug("Got response content: " + content);
+			try {
+				JSONObject user = new JSONObject(content);
+				request.setAttribute("logname", user.optString("id"));
+				request.setAttribute("firstName", user.optString("first_name"));
+				request.setAttribute("LastName", user.optString("last_name"));
+				request.setAttribute("email", user.optString("email"));
+			} catch (JSONException e) {
+				log.debug(e);
+				throw new SecurityException(e);
+			}
+		}
+		
+	}
 }

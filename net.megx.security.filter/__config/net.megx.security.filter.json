@@ -46,6 +46,13 @@
 					},
 					'google.com':{
 						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
+					},
+					'facebook.com': {
+						'app.key': '<non-existing-key>',
+						'app.secret': '<non-exiting-secret>',
+						'dialog.url': 'http://www.facebook.com/dialog/oauth',
+						'access.token.url': 'https://graph.facebook.com/oauth/access_token',
+						'user.info.url': 'https://graph.facebook.com/me'
 					}
 				}
 			}
