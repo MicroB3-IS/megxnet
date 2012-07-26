@@ -57,8 +57,6 @@ import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-import com.google.gson.Gson;
-
 public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	private String callbackEntrypoint = "/external/login/callback";
