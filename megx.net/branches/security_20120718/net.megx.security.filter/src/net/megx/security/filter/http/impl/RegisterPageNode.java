@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.servlet.http.HttpServletRequest;
 
 import org.chon.cms.core.model.renderers.VTplNodeRenderer;
 import org.chon.cms.model.ContentModel;
@@ -26,7 +27,14 @@ public class RegisterPageNode extends TemplatePageNode{
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
+		HttpServletRequest request = req.getServletRequset();
+		
+		
 		params.put("email", req.getServletRequset().getParameter("email"));
+		
+		String challenge = request.getParameter("challenge");
+		
+		
 		
 		VTplNodeRenderer.render("base.html", "security-filter/confirm-registration.html", this, req, resp, serverInfo, params);
 	}

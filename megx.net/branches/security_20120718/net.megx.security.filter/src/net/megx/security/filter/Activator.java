@@ -8,6 +8,8 @@ import javax.servlet.Filter;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebUtils;
+import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.filter.ui.RegistrationManager;
 import net.megx.security.filter.ui.ResourcesManager;
 import net.megx.security.filter.ui.UsersManager;
 import net.megx.utils.OSGIUtils;
@@ -34,8 +36,6 @@ public class Activator extends ResTplConfiguredActivator {
 			contextParams.put("JCRApplicationInstance", getJCRApp());
 			Filter filter = new  SecurityFilter(context, cfg, contextParams);
 			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
-			
-			log.debug(cfg.optString("exampleProperty", "default value"));
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
@@ -60,17 +60,30 @@ public class Activator extends ResTplConfiguredActivator {
 			public void servicesAvailable(Map<String, Object> services) {
 				UserService userService = (UserService)services.get(UserService.class.getName());
 				WebResourcesService wrService = (WebResourcesService)services.get(WebResourcesService.class.getName());
+				KeySecretProvider secretProvider = (KeySecretProvider)services.get(KeySecretProvider.class.getName());
 				
 				ResourcesManager rm = new ResourcesManager(wrService);
 				UsersManager um = new UsersManager(userService, contentModel);
+				JSONObject captchaConfig = getRegistrationConfig().optJSONObject("reCaptcha");
+				if(captchaConfig == null) captchaConfig = new JSONObject();
+				RegistrationManager regm = new RegistrationManager(userService, secretProvider, captchaConfig);
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
+				getBundleContext().registerService(RegistrationManager.class.getName(), regm, null);
 				
 			}
 		}, 
-		WebResourcesService.class.getName(), UserService.class.getName());
+		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
 		
 		
+	}
+	
+	private JSONObject getRegistrationConfig(){
+		JSONObject retVal = getConfig().optJSONObject("filter");
+		if(retVal == null) retVal = new JSONObject();
+		retVal = retVal.optJSONObject("registration");
+		if(retVal == null) retVal = new JSONObject();
+		return retVal;
 	}
 }

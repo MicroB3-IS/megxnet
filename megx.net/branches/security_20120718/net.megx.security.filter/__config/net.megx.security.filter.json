@@ -57,6 +57,13 @@
 				}
 			}
 		],
+		registration:{
+			reCaptcha: {
+				publicKey: '6Lc_I9QSAAAAAHYatrV6XC0BUamQKY77ZWhUzLNH',
+				privateKey: '6Lc_I9QSAAAAAKHTGfJEXHFu6b7IYQIQuTuNns6z',
+				verifyUrl: 'http://www.google.com/recaptcha/api/verify'
+			}
+		},
 		managers:[
 			{
 				name: 'default'
