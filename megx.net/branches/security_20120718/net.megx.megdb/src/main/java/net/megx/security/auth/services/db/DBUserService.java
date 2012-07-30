@@ -18,10 +18,12 @@
 package net.megx.security.auth.services.db;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.megx.megdb.BaseMegdbService;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
+import net.megx.security.auth.model.UserVerification;
 import net.megx.security.auth.services.UserService;
 import net.megx.utils.PasswordHash;
 
@@ -215,6 +217,67 @@ public class DBUserService extends BaseMegdbService implements UserService{
 			@Override
 			public List<User> execute(UserMapper mapper) throws Exception {
 				return mapper.getUsers();
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public UserVerification addPendingUser(final User user) throws Exception {
+		
+		return doInTransaction(new DBTask<UserMapper, UserVerification>() {
+
+			@Override
+			public UserVerification execute(UserMapper mapper) throws Exception {
+				UserVerification verification = new UserVerification();
+				verification.setLogname(user.getLogin());
+				verification.setVerificationType(UserVerification.TYPE_ACCOUNT_ENABLE);
+				verification.setVerificationValue(UUID.randomUUID().toString());
+				
+				mapper.createVerification(verification);
+				
+				user.setDisabled(true);
+				
+				mapper.addUser(user);
+				
+				return verification;
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public void commitPending(final User user, final String userVerification, final long ttl)
+			throws Exception {
+		doInTransaction(new DBTask<UserMapper,Object>() {
+
+			@Override
+			public Object execute(UserMapper mapper) throws Exception {
+				UserVerification verification = mapper.getVerification(userVerification, ttl);
+				if(verification == null){
+					throw new Exception("Invalid verification value.");
+				}
+				if(!user.getLogin().equals(verification.getLogname())){
+					throw new Exception("Verification issued for different user.");
+				}
+				mapper.updateUser(user);
+				return null;
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public UserVerification getVerification(final String verificationValue, final long ttl)
+			throws Exception {
+		return doInSession(new DBTask<UserMapper, UserVerification>(){
+
+			@Override
+			public UserVerification execute(UserMapper mapper) throws Exception {
+				return mapper.getVerification(verificationValue, ttl);
 			}
 			
 		}, UserMapper.class);

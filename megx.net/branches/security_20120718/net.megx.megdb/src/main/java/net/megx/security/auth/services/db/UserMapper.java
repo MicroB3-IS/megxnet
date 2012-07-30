@@ -21,6 +21,7 @@ import java.util.List;
 
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
+import net.megx.security.auth.model.UserVerification;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -52,4 +53,13 @@ public interface UserMapper {
 	public void removeRole(String role) throws Exception;
 	public Role getRole(String role) throws Exception;
 	public List<User> getUsers() throws Exception; //FIXME: pagination
+	
+	
+	public void createVerification(UserVerification verification) throws Exception;
+	public UserVerification getVerification(
+			@Param("verificationValue")String value, 
+			@Param("ttl") long ttl) throws Exception;
+	
+	public void deleteVerification(String verification) throws Exception;
+	public void cleanupVerifications(long ttl) throws Exception;
 }
