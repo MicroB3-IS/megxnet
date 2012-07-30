@@ -17,6 +17,7 @@ www={type:'sys.public'}
 	login={type:'html', template:'security-filter/login.html'}
 	register={type:'html', template:'security-filter/register.html'}
 		doRegistration={type: 'megx.module.login.registration'}
+		activate={type:'html', template:'security-filter/activate.html'}
 	pubmap={type:'category', template:'pubmap/start.html'}
 		articles={type:'category', template:'pubmap/articles.html'}
 	apps={type:'html', template: 'apps-manager/home.html'}

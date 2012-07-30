@@ -9,6 +9,7 @@ import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.filter.http.impl.RegistrationExtension;
 import net.megx.security.filter.ui.RegistrationManager;
 import net.megx.security.filter.ui.ResourcesManager;
 import net.megx.security.filter.ui.UsersManager;
@@ -52,7 +53,7 @@ public class Activator extends ResTplConfiguredActivator {
 	}
 
 	@Override
-	protected void registerExtensions(JCRApplication app) {
+	protected void registerExtensions(final JCRApplication app) {
 		contentModel = app.createContentModelInstance(getName());
 		OSGIUtils.requestServices(getBundleContext(), new OSGIUtils.OnServicesAvailable(){
 			
@@ -66,12 +67,16 @@ public class Activator extends ResTplConfiguredActivator {
 				UsersManager um = new UsersManager(userService, contentModel);
 				JSONObject captchaConfig = getRegistrationConfig().optJSONObject("reCaptcha");
 				if(captchaConfig == null) captchaConfig = new JSONObject();
-				RegistrationManager regm = new RegistrationManager(userService, secretProvider, captchaConfig);
+				RegistrationManager regm = new RegistrationManager(userService, secretProvider, 
+						captchaConfig, app.getTemplate());
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
 				getBundleContext().registerService(RegistrationManager.class.getName(), regm, null);
 				
+				RegistrationExtension registrationExtension = new RegistrationExtension(userService, 
+						getRegistrationConfig().optLong("verificationTTL", 24*60*60*1000));
+				app.regExtension("registration", registrationExtension);
 			}
 		}, 
 		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());

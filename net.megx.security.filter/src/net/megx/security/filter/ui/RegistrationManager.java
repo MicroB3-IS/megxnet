@@ -5,8 +5,18 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -17,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
+import net.megx.security.auth.model.UserVerification;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.crypto.KeySecretProvider;
 
@@ -29,7 +40,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpParams;
+import org.chon.core.velocity.VTemplate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,20 +48,23 @@ import org.json.JSONObject;
 public class RegistrationManager {
 
 	private UserService userService;
+	@SuppressWarnings("unused")
 	private KeySecretProvider secretProvider;
-	private JSONObject captchaConfig;
+	private JSONObject config;
 
 	private Log log = LogFactory.getLog(getClass());
 
-	
+	private VTemplate vTemplate;
 	
 	
 	public RegistrationManager(UserService userService,
-			KeySecretProvider secretProvider, JSONObject captchaConfig) {
+			KeySecretProvider secretProvider, JSONObject config,
+			VTemplate vTemplate) {
 		super();
 		this.userService = userService;
 		this.secretProvider = secretProvider;
-		this.captchaConfig = captchaConfig;
+		this.config = config;
+		this.vTemplate = vTemplate;
 	}
 
 	public void setUserService(UserService userService) {
@@ -61,8 +75,8 @@ public class RegistrationManager {
 		this.secretProvider = secretProvider;
 	}
 
-	public void setCaptchaConfig(JSONObject captchaConfig) {
-		this.captchaConfig = captchaConfig;
+	public void setConfig(JSONObject config) {
+		this.config = config;
 	}
 
 	@POST
@@ -76,9 +90,9 @@ public class RegistrationManager {
 			@FormParam("email") String email,
 			@FormParam("initials") String initials,
 			@FormParam("pass") String password) throws JSONException {
-
+		
 		String remoteIP = request.getRemoteAddr();
-		String privateKey = captchaConfig.optString("privateKey");
+		String privateKey = getCaptchaConfig().optString("privateKey");
 
 		JSONObject result = new JSONObject();
 
@@ -120,7 +134,13 @@ public class RegistrationManager {
 		user.setRoles(roles);
 
 		try {
-			userService.addUser(user);
+			boolean activationDisabled = config.optBoolean("disableActivation", false);
+			if(activationDisabled){
+				userService.addUser(user);
+			}else{
+				UserVerification verification = userService.addPendingUser(user);
+				sendActivationMail(request, verification, user);
+			}
 			result.put("error", false);
 			result.put("message", "success");
 		} catch (Exception e) {
@@ -136,7 +156,7 @@ public class RegistrationManager {
 	private boolean verify(String challenge, String response, String remoteIP,
 			String privateKey) {
 		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(captchaConfig.optString("verifyUrl"));
+		HttpPost post = new HttpPost(getCaptchaConfig().optString("verifyUrl"));
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>(4);
 		params.add(new BasicNameValuePair("privatekey", privateKey));
@@ -168,7 +188,56 @@ public class RegistrationManager {
 		} catch (Exception e) {
 			log.error("Failed to contact verifier: ", e);
 		}
-
+		
 		return false;
+	}
+	
+	protected void sendActivationMail(HttpServletRequest request, UserVerification verification, User user) throws Exception{
+		//Pro
+		final JSONObject mailConfig = config.optJSONObject("mail");
+		if(mailConfig == null){
+			throw new Exception("Mail not configured.");
+		}
+		JSONObject options = mailConfig.optJSONObject("options");
+		if(options == null){
+			throw new Exception("Mail options not configured.");
+		}
+		String [] names = JSONObject.getNames(options);
+		Properties properties = new Properties();
+		for(String key: names){
+			properties.put(key, options.optString(key));
+		}
+		Session session = Session.getInstance(properties, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(mailConfig.optString("user"), mailConfig.optString("password"));
+			}
+		});
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(mailConfig.optString("address")));
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+		
+		JSONObject activationEMail = mailConfig.optJSONObject("activationMail");
+		if(activationEMail == null){
+			throw new Exception("Activation mail is not configured.");
+		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("verificationCode", verification.getVerificationValue());
+		params.put("username", user.getLogin());
+		params.put("firstName", user.getFirstName());
+		params.put("lastName", user.getLastName());
+		
+		String subject = vTemplate.formatStr(activationEMail.optString("subject"), params, "::activation-mail:subject");
+		String body = vTemplate.format(activationEMail.optString("template"), params, params);
+		message.setSubject(subject);
+		message.setText(body);
+		Transport.send(message);
+	}
+	
+	private JSONObject getCaptchaConfig(){
+		JSONObject captchaConfig = config.optJSONObject("reCaptcha");
+		if(captchaConfig == null)
+			captchaConfig = new JSONObject();
+		return captchaConfig;
 	}
 }
