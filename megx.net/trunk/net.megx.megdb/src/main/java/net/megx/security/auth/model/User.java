@@ -14,6 +14,8 @@ public class User{
 	private boolean disabled;
 	private String email;
 	private Date lastlogin;
+	private boolean external;
+	private String provider;
 	
 	private List<Role> roles;
 	
@@ -106,13 +108,27 @@ public class User{
 	public void setLastlogin(Date lastlogin) {
 		this.lastlogin = lastlogin;
 	}
+	public boolean isExternal() {
+		return external;
+	}
+	public void setExternal(boolean external) {
+		this.external = external;
+	}
+	public String getProvider() {
+		return provider;
+	}
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", initials=" + initials
 				+ ", description=" + description + ", joinedOn=" + joinedOn
 				+ ", password=*****, disabled=" + disabled
-				+ ", email=" + email + ", lastlogin=" + lastlogin + ", roles="
-				+ roles + "]";
+				+ ", email=" + email + ", lastlogin=" + lastlogin
+				+ ", external=" + external + ", provider=" + provider
+				+ ", roles=" + roles + "]";
 	}
+	
 }

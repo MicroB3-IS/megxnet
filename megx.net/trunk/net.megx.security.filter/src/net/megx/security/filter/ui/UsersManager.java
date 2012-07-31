@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -16,18 +18,25 @@ import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 
+import org.chon.cms.model.ContentModel;
+
 import com.google.gson.Gson;
 
 @Path("/filter/users")
 public class UsersManager {
 	
+	public static String CHON_ADMIN_ROLE = "cmsAdmin";
+	
+	private ContentModel contentModel;
+	
 	private UserService userService;
 	private Gson gson = new Gson();
 	
 	
-	public UsersManager(UserService userService) {
+	public UsersManager(UserService userService, ContentModel contentModel) {
 		super();
 		this.userService = userService;
+		this.contentModel = contentModel;
 	}
 
 	public UserService getUserService() {
@@ -75,6 +84,7 @@ public class UsersManager {
 		}
 		user.setRoles(lroles);
 		userService.addUser(user);
+		createUserHomeDirectory(user);
 	}
 	
 	@PUT
@@ -114,9 +124,8 @@ public class UsersManager {
 			lroles.add(r);
 		}
 		user.setRoles(lroles);
-		
-		
 		userService.updateUser(user);
+		createUserHomeDirectory(user);
 	}
 	
 	@DELETE
@@ -129,6 +138,37 @@ public class UsersManager {
 	@GET
 	public String getAllRoles() throws Exception{
 		return gson.toJson(userService.getAvailableRoles());
+	}
+	
+	
+	public void createUserHomeDirectory(User user) throws RepositoryException{
+		String username = user.getLogin();
+		if(user.getRoles() == null)
+			return;
+		boolean createHomeDir = false;
+		for(Role role: user.getRoles()){
+			if(CHON_ADMIN_ROLE.equals(role.getLabel())){
+				createHomeDir = true;
+				break;
+			}
+		}
+		if(!createHomeDir)
+			return;
+		
+		Node homeDir = contentModel.getContentNode("/home").getNode();
+		if (!homeDir.hasNode(username)) {
+			Node userHomeDir = homeDir.addNode(username);
+			userHomeDir.setProperty("type", "user");
+			userHomeDir.getSession().save();
+		}
+		Node passwd = contentModel.getContentNode("/etc/passwd").getNode();
+		if(!passwd.hasNode(username)){
+			Node userPasswdEntry = passwd.addNode(username);
+			userPasswdEntry.setProperty("type", "usr.info");
+			userPasswdEntry.setProperty("password", "*****");
+			userPasswdEntry.setProperty("role", 10);
+			userPasswdEntry.getSession().save();
+		}
 	}
 	
 }

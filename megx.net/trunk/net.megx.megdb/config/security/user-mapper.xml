@@ -29,6 +29,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="disabled" column="disabled"/>
 		<result property="email" column="email"/>
 		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -42,6 +44,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="disabled" column="disabled"/>
 		<result property="email" column="email"/>
 		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -50,6 +54,12 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="description" column="description"/>
 	</resultMap>
 	
+	<resultMap type="UserVerification" id="user_verification_map">
+		<result column="logname" property="logname"/>
+		<result column="verification_type" property="verificationType"/>
+		<result column="verification_value" property="verificationValue"/>
+		<result column="created" property="created"/>
+	</resultMap>
 	
 	<sql id="user_columns_list">
 		logname, 
@@ -61,9 +71,18 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
         pass, 
         disabled,
         email,
-        lastlogin
+        lastlogin,
+        external,
+        provider
 	</sql>
 	
+	
+	<sql id="user_verification_columns_list">
+		logname,
+		verification_type,
+		verification_value,
+		created
+	</sql>
 	
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
@@ -97,15 +116,36 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			<include refid="user_columns_list"/>
             	
             	from auth.users where logname=#{username} and 
-			(pass=md5(#{password}) OR pass IS NULL)
+			(pass=#{password} OR pass IS NULL) and
+			external == false and
+			disabled == false
 	</select>
 	
-		 
+	<select id="getVerification" parameterType="map" resultMap="user_verification_map">
+		select 
+			<include refid="user_verification_columns_list"/>
+				from auth.user_verification
+					where verification_value=#{verificationValue} and
+						now() &lt; (created + interval '${ttl} ms')
+	</select>
+	
+
 	<insert id="addUser" parameterType="User">
 		insert into auth.users
 			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin)
 			values
-			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},md5(#{password}),#{disabled}, #{email}, #{lastlogin})
+			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin})
+	</insert>
+	
+	<insert id="createVerification" parameterType="UserVerification">
+		insert into auth.user_verification(
+			logname,
+			verification_type,
+			verification_value,
+			created
+		)
+		values
+			(#{logname},  #{verificationType},#{verificationValue}, now())
 	</insert>
 	
 	<update id="updateUser" parameterType="User">
@@ -116,7 +156,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 				description=#{description},
 				join_date=#{joinedOn},
 				<if test="password != null">
-	            	pass=mad5(#{password}),
+	            	pass=#{password},
 	            </if>
 	            disabled=#{disabled},
 	            email=#{email}
@@ -132,6 +172,16 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		DELETE FROM auth.has_roles 
 			WHERE role=#{role} AND
 					user_login=#{login}
+	</delete>
+	
+	<delete id="deleteVerification" parameterType="string">
+		delete from auth.user_verification
+			where verification_value=#{value}
+	</delete>
+	
+	<delete id="cleanupVerifications" parameterType="long">
+		delete from auth.user_verification
+			where now() &lt; (created + interval '${ttl} ms')
 	</delete>
 	
 	<insert id="grantRole"  parameterType="map">

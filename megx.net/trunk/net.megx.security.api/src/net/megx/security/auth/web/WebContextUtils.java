@@ -1,5 +1,7 @@
 package net.megx.security.auth.web;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 public class WebContextUtils {
 
 	public static final String SECURITY_CONTEXT_SESSION_ATTR = "net.megx.security.SECURITY_CONTEXT";
-	
+	public static final String SECURITY_REQUEST_PARAMS_HOLDER = "net.megx.security.X_REQUEST_PARAMS";
 	private static Log log = LogFactory.getLog(WebContextUtils.class);
 	
 	public static SecurityContext getSecurityContext(HttpServletRequest request) {
@@ -69,5 +71,13 @@ public class WebContextUtils {
 		return context;
 	}
 	
+	public static void storeExtraParameters(HttpServletRequest request,Map<String, Object> params){
+		request.setAttribute(SECURITY_REQUEST_PARAMS_HOLDER, params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> getExtraParameters(HttpServletRequest request){
+		return (Map<String, Object>)request.getAttribute(SECURITY_REQUEST_PARAMS_HOLDER);
+	}
 
 }

@@ -18,11 +18,14 @@
 package net.megx.security.auth.services.db;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.megx.megdb.BaseMegdbService;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
+import net.megx.security.auth.model.UserVerification;
 import net.megx.security.auth.services.UserService;
+import net.megx.utils.PasswordHash;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,7 +66,13 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
-				return mapper.getUserForUsernameAndPassword(username, password);
+				User user = mapper.getUserByUserId(username);
+				if(user != null && !user.isDisabled()){
+					if(PasswordHash.validatePassword(password, user.getPassword())){
+						return user;
+					}
+				}
+				return null;
 			}
 			
 		}, UserMapper.class);
@@ -89,6 +98,8 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
+				String hashedPassword = PasswordHash.createHash(info.getPassword());
+				info.setPassword(hashedPassword);
 				mapper.addUser(info);
 				List<Role> roles = info.getRoles();
 				if(roles != null){
@@ -111,7 +122,10 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		final User old = getUserByUserId(userInfo.getLogin());
 		final List<Role> oldRoles = old.getRoles();
 		final List<Role> newRoles = userInfo.getRoles();
-		
+		if(userInfo.getPassword() != null){
+			String hashedPassword = PasswordHash.createHash(userInfo.getPassword());
+			userInfo.setPassword(hashedPassword);
+		}
 		return doInTransaction(new DBTask<UserMapper, User>() {
 
 			@Override
@@ -203,6 +217,67 @@ public class DBUserService extends BaseMegdbService implements UserService{
 			@Override
 			public List<User> execute(UserMapper mapper) throws Exception {
 				return mapper.getUsers();
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public UserVerification addPendingUser(final User user) throws Exception {
+		
+		return doInTransaction(new DBTask<UserMapper, UserVerification>() {
+
+			@Override
+			public UserVerification execute(UserMapper mapper) throws Exception {
+				UserVerification verification = new UserVerification();
+				verification.setLogname(user.getLogin());
+				verification.setVerificationType(UserVerification.TYPE_ACCOUNT_ENABLE);
+				verification.setVerificationValue(UUID.randomUUID().toString());
+				
+				user.setDisabled(true);
+				user.setPassword(PasswordHash.createHash(user.getPassword()));
+				mapper.addUser(user);
+				mapper.createVerification(verification);
+				
+				return verification;
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public void commitPending(final User user, final String userVerification, final long ttl)
+			throws Exception {
+		doInTransaction(new DBTask<UserMapper,Object>() {
+
+			@Override
+			public Object execute(UserMapper mapper) throws Exception {
+				UserVerification verification = mapper.getVerification(userVerification, ttl);
+				if(verification == null){
+					throw new Exception("Invalid verification value.");
+				}
+				if(!user.getLogin().equals(verification.getLogname())){
+					throw new Exception("Verification issued for different user.");
+				}
+				mapper.updateUser(user);
+				mapper.deleteVerification(userVerification);
+				return null;
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public UserVerification getVerification(final String verificationValue, final long ttl)
+			throws Exception {
+		return doInSession(new DBTask<UserMapper, UserVerification>(){
+
+			@Override
+			public UserVerification execute(UserMapper mapper) throws Exception {
+				return mapper.getVerification(verificationValue, ttl);
 			}
 			
 		}, UserMapper.class);

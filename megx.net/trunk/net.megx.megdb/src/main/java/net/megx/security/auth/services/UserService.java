@@ -21,18 +21,26 @@ import java.util.List;
 
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
+import net.megx.security.auth.model.UserVerification;
 
 public interface UserService {
 	public User getUserByUserId(String userId) throws Exception;
 	public User getUserByConsumerKey(String consumerKey) throws Exception;
 	public User getUser(String username, String password) throws Exception;
+	@Deprecated
 	public User getUser(String uniqueIdentifier) throws Exception;
 	public List<User> getUsers() throws Exception;
 	public User addUser(User info) throws Exception;
+	public UserVerification addPendingUser(User user) throws Exception;
+	public void commitPending(User user, String userVerification, long ttl) throws Exception;
+	public UserVerification getVerification(String verificationValue, long ttl) throws Exception;
 	public User updateUser(User userInfo) throws Exception;
 	public User removeUser(String userid) throws Exception;
 	public Role    createRole(Role role)throws Exception;
 	public List<Role> getAvailableRoles() throws Exception;
 	public List<Role> getDefaultRoles() throws Exception;
 	public Role removeRole(String role) throws Exception;
+	
+	
+	
 }
