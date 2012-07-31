@@ -128,8 +128,6 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 					where verification_value=#{verificationValue} and
 						now() &lt; (created + interval '${ttl} ms')
 	</select>
-
-	
 	
 
 	<insert id="addUser" parameterType="User">
@@ -147,7 +145,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			created
 		)
 		values
-			(#{logname}, #{verificationValue}, #{verificationType}, now())
+			(#{logname},  #{verificationType},#{verificationValue}, now())
 	</insert>
 	
 	<update id="updateUser" parameterType="User">
