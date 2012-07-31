@@ -135,13 +135,11 @@ public class RegistrationManager {
 		user.setRoles(roles);
 
 		try {
-			boolean debugSkipValidationEmail = config.optBoolean("dbgSkipActivation", false);
-			if(debugSkipValidationEmail){
-				userService.addUser(user);
-			}else{
-				UserVerification verification = userService.addPendingUser(user);
-				sendActivationMail(request, verification, user);
-			}
+			
+			UserVerification verification = userService.addPendingUser(user);
+			
+			sendActivationMail(request, verification, user);
+			
 			result.put("error", false);
 			result.put("message", "success");
 		} catch (Exception e) {
@@ -198,7 +196,6 @@ public class RegistrationManager {
 	}
 	
 	protected void sendActivationMail(HttpServletRequest request, UserVerification verification, User user) throws Exception{
-		//Pro
 		final JSONObject mailConfig = config.optJSONObject("mail");
 		if(mailConfig == null){
 			throw new Exception("Mail not configured.");
@@ -207,11 +204,29 @@ public class RegistrationManager {
 		if(options == null){
 			throw new Exception("Mail options not configured.");
 		}
+		
 		String [] names = JSONObject.getNames(options);
 		Properties properties = new Properties();
 		for(String key: names){
 			properties.put(key, options.optString(key));
 		}
+		
+		JSONObject activationEMail = mailConfig.optJSONObject("activationMail");
+		if(activationEMail == null){
+			throw new Exception("Activation mail is not configured.");
+		}
+		
+		boolean debugSkipValidationEmail = mailConfig.optBoolean("dbgSkipActivation", false);
+		if(debugSkipValidationEmail){
+			if(mailConfig.optBoolean("dgbActivateAccount", false)){
+				userService.commitPending(user, verification.getVerificationValue(), config.optLong("verificationTTL", 86400000));
+				log.debug(" :: DEBUG > Account activated.");
+			}else{
+				log.debug(" :: DEBUG > Activation URL: " + getActivationURL(request, verification, activationEMail));
+			}
+			return;
+		}
+		
 		Session session = Session.getInstance(properties, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -222,10 +237,7 @@ public class RegistrationManager {
 		message.setFrom(new InternetAddress(mailConfig.optString("address")));
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
 		
-		JSONObject activationEMail = mailConfig.optJSONObject("activationMail");
-		if(activationEMail == null){
-			throw new Exception("Activation mail is not configured.");
-		}
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("verificationCode", verification.getVerificationValue());
 		params.put("username", user.getLogin());

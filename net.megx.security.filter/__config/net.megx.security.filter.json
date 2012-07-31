@@ -1,5 +1,5 @@
 {
-	path: '/home/pavle/projects/iw/mb3/microb3/svn-workspace/megx.net/net.megx.security.filter',
+	path: '$resources/net.megx.security.filter',
 	filter:{
 		enabled: true,
 		entrypoints:[
@@ -74,7 +74,8 @@
 					'mail.smtp.host': 'smtp.gmail.com',
 					'mail.smtp.port': '587'
 				},
-				dbgSkipActivation: true,
+				dbgSkipActivation: false,
+				dgbActivateAccount: false,
 				activationMail: {
 					subject: 'Account Activation on Megx.net',
 					template: 'security-filter/activation-mail.vm',
