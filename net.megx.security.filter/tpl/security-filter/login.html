@@ -89,18 +89,17 @@
 	</div>
 	<div class="alternative-login-wrapper">
 		You can also:
-		<form action="$ctx.siteUrl/alt_login">
-			<input type="hidden" name="provider">
-		</form>
-		
 		<div class="alt-login-action">
 			<img alt="Login with Google" src="$ctx.siteUrl/security/images/login-google.png">
+			<input type="hidden" name="provider" value="google.com">
 		</div>
 		<div class="alt-login-action">
 			<img alt="Login with Facebook" src="$ctx.siteUrl/security/images/login-facebook.gif">
+			<input type="hidden" name="provider" value="facebook.com">
 		</div>
 		<div class="alt-login-action">
 			<img alt="Login with Twitter" src="$ctx.siteUrl/security/images/login-twitter.png">
+			<input type="hidden" name="provider" value="twitter.com">
 		</div>
 		<div class="alt-login-action">
 			<img alt="Login with OpenId" src="$ctx.siteUrl/security/images/login-openid.gif">
@@ -113,3 +112,11 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.alt-login-action').click(function(){
+			var provider = $('input[type=hidden]',this).val();
+			window.location='$ctx.siteUrl/external/login?provider='+provider;
+		});
+	});
+</script>

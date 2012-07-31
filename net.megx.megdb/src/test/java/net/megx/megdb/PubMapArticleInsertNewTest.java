@@ -13,7 +13,7 @@ public class PubMapArticleInsertNewTest extends PubMapServiceTestBase {
 	
 	@Test
 	public void insertArticle() {
-		pms.insertArticle(article);
+		//pms.insertArticle(article);
 
 	}
 

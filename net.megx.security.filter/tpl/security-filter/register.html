@@ -26,6 +26,8 @@
 		background: #FDD;
 	}
 </style>
+<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#btn-cancel').click(function(){
@@ -48,6 +50,18 @@
 					$('.notifications').html('');
 				}
 		};
+		
+		var loadReCaptcha = function(){
+			// re-captcha widget
+			Recaptcha.create("6Lc_I9QSAAAAAHYatrV6XC0BUamQKY77ZWhUzLNH",
+				"recaptcha_widget_wrapper",
+				{
+					theme: "red",
+					callback: Recaptcha.focus_response_field
+				}
+			);
+		};
+		
 		
 		$('#btn-register').click(function(){
 			N.clear();
@@ -83,11 +97,52 @@
 				return;
 			}
 			
-			$('#register-form').submit();
+			
+			
+			
+			$.ajax({
+				url:'$ctx.siteUrl/ws/register',
+				type: 'POST',
+				data: {
+					logname: $('input[name=logname]').val(),
+					firstName: $('input[name=firstName]').val(),
+					lastName: $('input[name=lastName]').val(),
+					initials: $('input[name=initials]').val(),
+					email: $('input[name=email]').val(),
+					challenge: Recaptcha.get_challenge(),
+					response: Recaptcha.get_response(),
+					pass: pass
+				},
+				success: function(data){
+					if(data.error){
+						if(data.reason == 'verification-params-error'){
+							N.notify('There was a problem when verifying the captcha. Please try again.');
+							loadReCaptcha();
+						}else if(data.reason == 'incomplete-parameters'){
+							N.notify('Some of the required values for registration are missing. Please fill the form correctly and try again.');
+						}else if (data.reason == 'verification-failed'){
+							N.notify('Incorrect captcha. Please enter the words correctly.');
+							loadReCaptcha();
+						}else{
+							N.notify(data.message);
+						}
+					}else{
+						$('#register-form').submit();
+					}
+				},
+				error: function(){
+					N.notify('We are sorry, but your registration could not be processed at this moment. Please try again later or contact the administrator.');
+				}
+			});
+			//Recaptcha.destroy();
 		});
+		
+		loadReCaptcha();
+		
 		
 	});
 </script>
+
 <div class="registration-wrapper">
 	Please fill up the following form to register your account on Megx.net.
 	<div class="notifications">
@@ -124,6 +179,11 @@
 			<label class="registraton-field-label">Initials:</label>
 			<input type="text" name="initials">
 		</div>
+		
+		<div id="recaptcha_widget_wrapper">
+		
+		</div>
+		
 		
 		<div>
 			<input type="button" value="Register" class="register-action" id="btn-register">

@@ -39,6 +39,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="disabled" column="disabled"/>
 		<result property="email" column="email"/>
 		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -67,7 +69,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
         pass, 
         disabled,
         email,
-        lastlogin
+        lastlogin,
+        external,
+        provider
 	</sql>
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
