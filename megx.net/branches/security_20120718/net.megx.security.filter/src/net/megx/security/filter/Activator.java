@@ -65,10 +65,8 @@ public class Activator extends ResTplConfiguredActivator {
 				
 				ResourcesManager rm = new ResourcesManager(wrService);
 				UsersManager um = new UsersManager(userService, contentModel);
-				JSONObject captchaConfig = getRegistrationConfig().optJSONObject("reCaptcha");
-				if(captchaConfig == null) captchaConfig = new JSONObject();
 				RegistrationManager regm = new RegistrationManager(userService, secretProvider, 
-						captchaConfig, app.getTemplate());
+						getRegistrationConfig(), app.getTemplate());
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
@@ -89,6 +87,7 @@ public class Activator extends ResTplConfiguredActivator {
 		if(retVal == null) retVal = new JSONObject();
 		retVal = retVal.optJSONObject("registration");
 		if(retVal == null) retVal = new JSONObject();
+		log.debug("Registration config: " + retVal);
 		return retVal;
 	}
 }

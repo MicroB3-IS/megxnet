@@ -29,6 +29,7 @@ import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
 import net.megx.security.auth.services.UserService;
+import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
 
 import org.apache.commons.logging.Log;
@@ -134,8 +135,8 @@ public class RegistrationManager {
 		user.setRoles(roles);
 
 		try {
-			boolean activationDisabled = config.optBoolean("disableActivation", false);
-			if(activationDisabled){
+			boolean debugSkipValidationEmail = config.optBoolean("dbgSkipActivation", false);
+			if(debugSkipValidationEmail){
 				userService.addUser(user);
 			}else{
 				UserVerification verification = userService.addPendingUser(user);
@@ -155,6 +156,9 @@ public class RegistrationManager {
 
 	private boolean verify(String challenge, String response, String remoteIP,
 			String privateKey) {
+		if(getCaptchaConfig().optBoolean("dgbSkipCaptchaValidation",false)){
+			return true;
+		}
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(getCaptchaConfig().optString("verifyUrl"));
 
@@ -163,6 +167,7 @@ public class RegistrationManager {
 		params.add(new BasicNameValuePair("remoteip", remoteIP));
 		params.add(new BasicNameValuePair("challenge", challenge));
 		params.add(new BasicNameValuePair("response", response));
+		
 		
 		
 		try {
@@ -226,6 +231,7 @@ public class RegistrationManager {
 		params.put("username", user.getLogin());
 		params.put("firstName", user.getFirstName());
 		params.put("lastName", user.getLastName());
+		params.put("activationURL", getActivationURL(request, verification, activationEMail));
 		
 		String subject = vTemplate.formatStr(activationEMail.optString("subject"), params, "::activation-mail:subject");
 		String body = vTemplate.format(activationEMail.optString("template"), params, params);
@@ -240,4 +246,12 @@ public class RegistrationManager {
 			captchaConfig = new JSONObject();
 		return captchaConfig;
 	}
+	
+	protected String getActivationURL(HttpServletRequest request, UserVerification verification, JSONObject activationEmailConfig){
+		String activationURL = WebUtils.getAppURL(request);
+		String endpoint = activationEmailConfig.optString("activationEndpoint","register/activate");
+		
+		return activationURL+endpoint+"?verification=" + verification.getVerificationValue();
+	}
+	
 }

@@ -29,7 +29,9 @@
 			alias="Permission" />
 		<typeAlias type="net.megx.security.auth.model.WebResource"
 			alias="WebResource" />
-
+		<typeAlias type="net.megx.security.auth.model.UserVerification" 
+		    alias="UserVerification"/>
+		
 		<typeAlias type="net.megx.model.Article" alias="Article" />
 		<typeAlias type="net.megx.model.Journal" alias="Journal" />
 		<typeAlias type="net.megx.model.Author" alias="Author" />

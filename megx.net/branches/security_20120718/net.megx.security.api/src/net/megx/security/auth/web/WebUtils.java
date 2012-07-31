@@ -81,4 +81,11 @@ public class WebUtils {
 	public static String getFullContextURL(HttpServletRequest request){
 		return request.getRequestURL().toString(); // FIXME: Is there a better way to do this?
 	}
+	
+	public static String getAppURL(HttpServletRequest request){
+		String requestPath = getRequestPath(request, false);
+		String fullRequestUrl = getFullContextURL(request);
+		return fullRequestUrl.substring(0, fullRequestUrl.length() - requestPath.length()) + "/";
+	}
+	
 }

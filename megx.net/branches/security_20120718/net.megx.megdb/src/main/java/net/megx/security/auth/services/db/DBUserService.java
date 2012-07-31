@@ -67,7 +67,7 @@ public class DBUserService extends BaseMegdbService implements UserService{
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
 				User user = mapper.getUserByUserId(username);
-				if(user != null){
+				if(user != null && !user.isDisabled()){
 					if(PasswordHash.validatePassword(password, user.getPassword())){
 						return user;
 					}
@@ -235,11 +235,10 @@ public class DBUserService extends BaseMegdbService implements UserService{
 				verification.setVerificationType(UserVerification.TYPE_ACCOUNT_ENABLE);
 				verification.setVerificationValue(UUID.randomUUID().toString());
 				
-				mapper.createVerification(verification);
-				
 				user.setDisabled(true);
-				
+				user.setPassword(PasswordHash.createHash(user.getPassword()));
 				mapper.addUser(user);
+				mapper.createVerification(verification);
 				
 				return verification;
 			}
@@ -263,6 +262,7 @@ public class DBUserService extends BaseMegdbService implements UserService{
 					throw new Exception("Verification issued for different user.");
 				}
 				mapper.updateUser(user);
+				mapper.deleteVerification(userVerification);
 				return null;
 			}
 			
