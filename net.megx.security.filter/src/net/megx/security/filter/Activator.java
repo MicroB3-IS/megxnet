@@ -87,7 +87,6 @@ public class Activator extends ResTplConfiguredActivator {
 		if(retVal == null) retVal = new JSONObject();
 		retVal = retVal.optJSONObject("registration");
 		if(retVal == null) retVal = new JSONObject();
-		log.debug("Registration config: " + retVal);
 		return retVal;
 	}
 }

@@ -17,6 +17,8 @@
 
 package net.megx.security.auth.services.db;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -131,15 +133,17 @@ public class DBUserService extends BaseMegdbService implements UserService{
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
 				for(Role rr: oldRoles){
-					System.out.println("+++");
-					log.debug("Revoking: " + rr);
+					if(log.isDebugEnabled())
+						log.debug("Revoking: " + rr);
 					mapper.revokeRole(old.getLogin(), rr.getLabel());
 				}
 				for(Role gr: newRoles){
-					log.debug("Granting: " + gr);
+					if(log.isDebugEnabled())
+						log.debug("Granting: " + gr);
 					mapper.grantRole(userInfo.getLogin(), gr.getLabel());
 				}
-				log.debug("Updating: " + userInfo);
+				if(log.isDebugEnabled())
+					log.debug("Updating: " + userInfo);
 				mapper.updateUser(userInfo);
 				return userInfo;
 			}
@@ -283,4 +287,56 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		}, UserMapper.class);
 	}
 
+	/*
+	@Override
+	public void test() {
+		try{
+			doInTransaction(new DBTask<UserMapper, Object>() {
+	
+				@Override
+				public Object execute(UserMapper mapper) throws Exception {
+					log.debug("Started tranaction...");
+					
+					
+					Role role = new Role();
+					role.setLabel("test");
+					role.setDescription("Test description");
+					
+					
+					User user = new User();
+					user.setLogin("test-user");
+					user.setFirstName("Test");
+					user.setLastName("User");
+					
+					user.setEmail("na@na.na");
+					
+					
+					
+					user.setPassword("");
+					user.setJoinedOn(new Date());
+					
+					
+					
+					List<Role> roles = new ArrayList<Role>(1);
+					roles.add(role);
+					user.setRoles(roles);
+					
+					
+					mapper.createRole(role);
+					
+					mapper.addUser(user);
+					
+					
+					
+					log.debug("Transaction end...");
+					//return null;
+					throw  new Exception("Rollback");
+				}
+				
+			}, UserMapper.class);
+		}catch (Exception e) {
+			log.error("An error has occured: ", e);
+		}
+	}
+	*/
 }

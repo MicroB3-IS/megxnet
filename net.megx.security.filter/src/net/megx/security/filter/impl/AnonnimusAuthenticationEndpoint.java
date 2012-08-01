@@ -32,7 +32,8 @@ public class AnonnimusAuthenticationEndpoint extends BaseSecurityEntrypoint{
 		if(authentication == null){
 			authentication = getAnnonimusAuthentication();
 			context.setAuthentication(authentication);
-			log.debug("Created annonymus authentication: " + authentication);
+			if(log.isDebugEnabled())
+				log.debug("Created annonymus authentication: " + authentication);
 		}
 	}
 

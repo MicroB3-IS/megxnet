@@ -41,10 +41,12 @@ public class WebContextUtils {
 			session = request.getSession(createSession);
 		}
 		if (session != null) {
-			log.debug("Storing SecurityContext " + securityContext + " in session [" + session.getId() + "]");
+			if(log.isDebugEnabled())
+				log.debug("Storing SecurityContext " + securityContext + " in session [" + session.getId() + "]");
 			session.setAttribute(SECURITY_CONTEXT_SESSION_ATTR, securityContext);
 		}else{
-			log.debug("The context was not replaced. Session was not created. Requested to create new session: " + createSession);
+			if(log.isDebugEnabled())
+				log.debug("The context was not replaced. Session was not created. Requested to create new session: " + createSession);
 		}
 		return securityContext;
 	}
@@ -52,7 +54,8 @@ public class WebContextUtils {
 	public static void clearSecurityContext(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if (session != null) {
-			log.debug("Clearing SecurityContext in session: " + session.getId());
+			if(log.isDebugEnabled())
+				log.debug("Clearing SecurityContext in session: " + session.getId());
 			SecurityContext context = getSecurityContext(request);
 			if(context != null){
 				if(context.getAuthentication() != null){

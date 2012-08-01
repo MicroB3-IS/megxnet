@@ -31,14 +31,18 @@ public class DefaultKeySecretProvider implements KeySecretProvider{
 		KeyGenerator keyGen = KeyGenerator.getInstance(ALG_HMAC_SHA1);
 		SecretKey secretKey = keyGen.generateKey();
 		
-		log.debug("Generating key-secret pair...");
+		if(log.isDebugEnabled())
+			log.debug("Generating key-secret pair...");
 		String secret = base64encode(secretKey.getEncoded());
 		
 		
 		byte [] rnd = UUID.randomUUID().toString().getBytes();
 		String key = base64encode(rnd);
 		KeySecret keySecret = new KeySecret(key, secret);
-		log.debug("Generated key-secret: " + keySecret);
+		
+		if(log.isDebugEnabled())
+			log.debug("Generated key-secret: " + keySecret);
+		
 		return keySecret;
 	}
 	

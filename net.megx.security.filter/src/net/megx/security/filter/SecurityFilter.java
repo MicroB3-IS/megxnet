@@ -79,12 +79,14 @@ public class SecurityFilter implements Filter{
 			String requestPath = WebUtils.getRequestPath(httpRequest, false); 
 			
 			if(requestPath.matches(ignorePattern)){
-				log.debug("Ignored path: " + requestPath);
+				if(log.isDebugEnabled())
+					log.debug("Ignored path: " + requestPath);
 				chain.doFilter(request, response);
 				return;
 			}
 			if(httpRequest.getSession() != null){
-				log.debug("Session at filter start: " + httpRequest.getSession().getId());
+				if(log.isDebugEnabled())
+					log.debug("Session at filter start: " + httpRequest.getSession().getId());
 			}else{
 				log.debug("No session at filter start");
 			}
@@ -96,7 +98,9 @@ public class SecurityFilter implements Filter{
 			}
 			//boolean hasMatched = false;
 			for(EntryPointWrapper entryPoint: entryPoints){
-					log.debug(String.format("Matching enty-point %s",entryPoint.name));
+					if(log.isDebugEnabled())
+						log.debug(String.format("Matching enty-point %s",entryPoint.name));
+					
 					if(entryPoint.matches(requestPath)){
 						log.debug("\t -> match");
 			//			hasMatched = true;
@@ -124,7 +128,8 @@ public class SecurityFilter implements Filter{
 			}
 			log.debug("Security filter - pass chain.");
 			if(httpRequest.getSession() != null){
-				log.debug("Session at filter end: " + httpRequest.getSession().getId());
+				if(log.isDebugEnabled())
+					log.debug("Session at filter end: " + httpRequest.getSession().getId());
 			}else{
 				log.debug("No session at filter end");
 			}
@@ -160,17 +165,20 @@ public class SecurityFilter implements Filter{
 	
 	private void storeRequestURL(HttpServletRequest request){
 		if(!"get".equals(request.getMethod().toLowerCase())){
-			log.debug("Last Request will not be stored. Method: " + request.getMethod());
+			if(log.isDebugEnabled())
+				log.debug("Last Request will not be stored. Method: " + request.getMethod());
 			return;
 		}
-		log.debug("Saving last request: " + request);
+		if(log.isDebugEnabled())
+			log.debug("Saving last request: " + request);
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){
 			context = WebContextUtils.newSecurityContext(request);
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
 		String requestURL = WebUtils.getRequestPath(request, true);
-		log.debug("   -> Last Request URL: " + requestURL);
+		if(log.isDebugEnabled())
+			log.debug("   -> Last Request URL: " + requestURL);
 		context.storeLastRequestedURL(requestURL);
 	}
 	
@@ -198,7 +206,8 @@ public class SecurityFilter implements Filter{
 		//for(WebResource resource: resources){
 		authenticationManager.checkAuthentication(context.getAuthentication(), resources);
 		//}
-		log.debug("Authentication successful: " + context.getAuthentication());
+		if(log.isDebugEnabled())
+			log.debug("Authentication successful: " + context.getAuthentication());
 	}
 
 	@Override
@@ -229,7 +238,8 @@ public class SecurityFilter implements Filter{
 				@Override
 				public void serviceAvailable(String serviceName,AuthenticationManager service) {
 					SecurityFilter.this.authenticationManager = service;
-					log.debug("Obtained authentication manager instance: " + service.toString());
+					if(log.isDebugEnabled())
+						log.debug("Obtained authentication manager instance: " + service.toString());
 				}
 				
 			});
@@ -240,7 +250,8 @@ public class SecurityFilter implements Filter{
 						@Override
 						public void serviceAvailable(String serviceName, WebResourcesService service) {
 							SecurityFilter.this.resourcesService = service;
-							log.debug("Obtained WebResourcesService instance:  " + service);
+							if(log.isDebugEnabled())
+								log.debug("Obtained WebResourcesService instance:  " + service);
 						}
 					});
 			
@@ -262,9 +273,10 @@ public class SecurityFilter implements Filter{
 		
 		boolean enabled = config.optBoolean("enabled", true);
 		
-		
-		log.debug(String.format("Building entrypoint (name='%s',urlPattern='%s',class='%s',order='%d')",name, urlPattern,clazz, order));
-		log.debug("Full configuration for entrypoint: " + config);
+		if(log.isDebugEnabled()){
+			log.debug(String.format("Building entrypoint (name='%s',urlPattern='%s',class='%s',order='%d')",name, urlPattern,clazz, order));
+			log.debug("Full configuration for entrypoint: " + config);
+		}
 		
 		if(!enabled){
 			log.debug("The entry point has been disabled.");

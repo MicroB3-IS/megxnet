@@ -58,7 +58,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			
 			@Override
 			public void servicesAvailable(Map<String, Object> services) {
-				log.debug("Services available. Initializeng...");
+				log.debug("Services available. Initializing...");
 				try{
 					UserService userService = (UserService)services.get(UserService.class.getName());
 					ConsumerService consumerService = (ConsumerService)services.get(ConsumerService.class.getName());
@@ -68,7 +68,8 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					AuthenticationManager authenticationManager = new WebLoginAuthenticationManager();
 					RegUtils.reg(context, AuthenticationManager.class.getName(), 
 							authenticationManager, null);
-					log.debug("Registered AuthenticationManager of class: "+ authenticationManager.getClass().getName());
+					if(log.isDebugEnabled())
+						log.debug("Registered AuthenticationManager of class: "+ authenticationManager.getClass().getName());
 					
 					WebAuthenticationHandlerImpl webLoginHandler = new WebAuthenticationHandlerImpl(null);
 					webLoginHandler.setUserService(userService);
