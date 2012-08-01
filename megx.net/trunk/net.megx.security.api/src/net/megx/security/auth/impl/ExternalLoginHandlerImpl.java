@@ -53,7 +53,8 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		}
 		User user = null;
 		try {
-			log.debug("Looking for user: " + logname);
+			if(log.isDebugEnabled())
+				log.debug("Looking for user: " + logname);
 			user = userService.getUserByUserId(logname);
 			if(user == null){
 				log.debug("This user was not registered. Registering now...");
@@ -65,8 +66,9 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			log.error("Failed to create authentication: ",e);
 			throw new ServletException(e);
 		}
-		authentication = new AuthenticationImpl(user); 
-		log.debug("Successfully created Authentication: " + authentication);
+		authentication = new AuthenticationImpl(user);
+		if(log.isDebugEnabled())
+			log.debug("Successfully created Authentication: " + authentication);
 		return authentication;
 	}
 	

@@ -23,7 +23,6 @@ public abstract class TemplatePageNodeFactory implements IContentNodeFactory{
 	
 	@Override
 	public boolean canCreate(String className) {
-		log.debug("Can create: " + className + " -> " + definitions.containsKey(className));
 		return definitions.containsKey(className);
 	}
 

@@ -44,7 +44,8 @@ public class WebLoginAuthenticationManager extends BaseAuthenticationManager{
 		}
 		if(!authOk)
 			throw new AccessDeniedException("The requesting auth does not have the required roles to access this resource!");
-		log.debug("Successful authentication: " + authentication);
+		if(log.isDebugEnabled())
+			log.debug("Successful authentication: " + authentication);
 	}
 
 	@Override

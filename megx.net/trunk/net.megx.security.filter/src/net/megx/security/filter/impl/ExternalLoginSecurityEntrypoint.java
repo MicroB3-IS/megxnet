@@ -75,7 +75,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			SecurityException, StopFilterException {
 		String requestPath = WebUtils.getRequestPath(request, false);
 		String provider = request.getParameter("provider");
-		log.debug(String.format("Processing external login for provider [%s] and request path [%s]",provider, requestPath));
+		if(log.isDebugEnabled())
+			log.debug(String.format("Processing external login for provider [%s] and request path [%s]",provider, requestPath));
 		if (requestPath.matches(callbackEntrypoint)) {
 			processCallback(provider, request, response);
 		} else {
@@ -89,12 +90,14 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		request.setAttribute("provider", provider);
 		log.debug("Processing callback...");
 		ExternalLoginProvider loginProvider = getProvider(provider);
-		log.debug("Using login provider: " + loginProvider);
+		if(log.isDebugEnabled())
+			log.debug("Using login provider: " + loginProvider);
 		loginProvider.processLoginCallback(request, response);
 		log.debug("Processed with the provider. Passing down to the login handler...");
 		Authentication authentication = externalLoginHandler
 				.createAuthentication(request);
-		log.debug("Authentication created: " + authentication);
+		if(log.isDebugEnabled())
+			log.debug("Authentication created: " + authentication);
 		if(authentication != null){
 			saveAuthentication(authentication, request);
 			log.debug("Authentication saved to security context.");
@@ -103,13 +106,15 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
 		if(securityContext != null){
 			String lastRequestUrl = securityContext.getLastRequestedURL();
-			log.debug("\t-> Last stored URL: " + lastRequestUrl);
+			if(log.isDebugEnabled())
+				log.debug("\t-> Last stored URL: " + lastRequestUrl);
 			if(lastRequestUrl == null){
 				lastRequestUrl = WebUtils.getFullContextURL(request);
 			}else{
 				lastRequestUrl = request.getContextPath() + lastRequestUrl;
 			}
-			log.debug(" ### ===> Redirect -> " + lastRequestUrl);
+			if(log.isDebugEnabled())
+				log.debug(" ### ===> Redirect -> " + lastRequestUrl);
 			response.sendRedirect(lastRequestUrl);
 			throw new StopFilterException();
 		}
@@ -122,7 +127,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			StopFilterException {
 		log.debug("Handling external login.");
 		ExternalLoginProvider loginProvider = getProvider(provider);
-		log.debug("Using externa login provider: " + loginProvider);
+		if(log.isDebugEnabled())
+			log.debug("Using externa login provider: " + loginProvider);
 		loginProvider.processExternalLogin(request, response);
 		log.debug("External login processed.");
 	}
@@ -270,7 +276,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					oAuthService.signRequest(accessToken, oaRequest);
 					Response resp = oaRequest.send();
 					String resultJson = resp.getBody();
-					log.debug("Received user: " + resultJson);
+					if(log.isDebugEnabled())
+						log.debug("Received user: " + resultJson);
 					try {
 						JSONObject result = new JSONObject(resultJson);
 						request.setAttribute("logname", ""+result.optInt("id"));
@@ -436,7 +443,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			String url = config.get(CFG_LOGIN_DIALOG_URL);
 			url += "?client_id=" + appId + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") + 
 					"&state="+state;
-			log.debug(" ### Redirecting to Facebook login dialog: " + url);
+			if(log.isDebugEnabled())
+				log.debug(" ### Redirecting to Facebook login dialog: " + url);
 			
 			putInSession(request, ATTR_STATE, state);
 			
@@ -469,7 +477,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					"&client_id=" + config.get(CFG_APP_KEY) + 
 					"&client_secret="+config.get(CFG_APP_SECRET) +
 					"&redirect_uri=" + URLEncoder.encode(getCallbackUrl(request), "UTF-8");
-			log.debug("Generated AccessTokenURL: " + accessTokenUrl);
+			if(log.isDebugEnabled())
+				log.debug("Generated AccessTokenURL: " + accessTokenUrl);
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(accessTokenUrl);
 			HttpResponse httpResponse = client.execute(get);
@@ -487,12 +496,17 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			
 			String userInfoUrl = config.get(CFG_USER_INFO_URL);
 			userInfoUrl += "?access_token="+accessToken;
-			log.debug("Generated user info url: " + userInfoUrl);
+			if(log.isDebugEnabled())
+				log.debug("Generated user info url: " + userInfoUrl);
+			
 			get = new HttpGet(userInfoUrl);
 			httpResponse = client.execute(get);
 			
 			String content = new Scanner(httpResponse.getEntity().getContent(), "UTF-8").useDelimiter("\\Z").next();
-			log.debug("Got response content: " + content);
+			
+			if(log.isDebugEnabled())
+				log.debug("Got response content: " + content);
+			
 			try {
 				JSONObject user = new JSONObject(content);
 				request.setAttribute("logname", user.optString("id"));

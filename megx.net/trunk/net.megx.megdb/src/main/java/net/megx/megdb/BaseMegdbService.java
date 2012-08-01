@@ -1,5 +1,7 @@
 package net.megx.megdb;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -93,7 +95,12 @@ public class BaseMegdbService {
 		}
 	}
 	
+	
+	protected Log log = LogFactory.getLog(getClass());
+	
+	
 	protected SqlSessionFactory sessionFactory;
+	
 	
 	public void setSqlSessionFactory(SqlSessionFactory factory){
 		sessionFactory = factory;
@@ -101,31 +108,47 @@ public class BaseMegdbService {
 	
 	
 	protected <M,R> R  doInTransaction(Task<M, R> task, Class<M> mapperClass) throws Exception{
+		log.debug("Executing Task in transaction...");
 		SqlSession session = sessionFactory.openSession();
+		log.debug("Session is opened.");
 		task.setSession(session);
 		M mapper = session.getMapper(mapperClass);
+		log.debug("Mapper instance created...");
 		try {
+			log.debug("Executing task...");
 			R result = task.execute(mapper);
+			log.debug("Task executed. Committing transaction...");
 			session.commit();
+			log.debug("Transaction committed.");
 			return result;
 		} catch (Exception e) {
-			session.rollback();
+			log.debug("An error occured. The transaction will be rolled back. Exception: ", e);
+			session.rollback(true);
+			log.debug("Transaction has been rolled back.");
 			throw e;
 		} finally{
 			session.close();
+			log.debug("Session closed.");
 		}
 	}
 	protected <M,R> R  doInSession(Task<M, R> task, Class<M> mapperClass) throws Exception{
+		log.debug("Executing Task in session...");
 		SqlSession session = sessionFactory.openSession();
+		log.debug("Session is opened.");
 		task.setSession(session);
 		M mapper = session.getMapper(mapperClass);
+		log.debug("Mapper instance created...");
 		try {
+			log.debug("Executing task...");
 			R result = task.execute(mapper);
+			log.debug("Task executed.");
 			return result;
 		} catch (Exception e) {
+			log.debug("An error occured: ", e);
 			throw e;
 		} finally{
 			session.close();
+			log.debug("Session closed.");
 		}
 	}
 }
