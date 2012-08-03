@@ -27,6 +27,7 @@ import net.megx.chon.core.ui.RRNAExtension;
 import net.megx.chon.core.ui.SamplesExtension;
 import net.megx.chon.core.ui.SitesExtension;
 import net.megx.chon.core.ui.TagCloudExtenstion;
+import net.megx.chon.core.ui.VersioningExtension;
 import net.megx.chon.core.ui.WOA5Extension;
 import net.megx.chon.core.ui.WOD5Extension;
 
@@ -76,5 +77,6 @@ public class Activator extends ResTplConfiguredActivator {
 		app.regExtension("wod5", new WOD5Extension(this.getBundleContext()));
 		
 		app.regExtension("test_svc", new TestServicesExtension(this.getBundleContext()));
+		app.regExtension("version", new VersioningExtension(this.getBundleContext()));
 	}
 }
