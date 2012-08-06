@@ -51,6 +51,17 @@
                 <property name="poolPingEnabled" value="true" /> 
 			</dataSource>
 		</environment>
+		<environment id="testing">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${test.driver}" />
+				<property name="url" value="${test.url}" />
+				<property name="username" value="${test.username}" />
+				<property name="password" value="${test.password}" />
+				<property name="poolPingQuery" value="/* ping */ SELECT 1" />
+                <property name="poolPingEnabled" value="true" /> 
+			</dataSource>
+		</environment>
 	</environments>
 
 
