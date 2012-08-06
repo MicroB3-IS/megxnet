@@ -96,7 +96,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 	}
 	
 	protected String getLogname(String userId, String provider){
-		return String.format("%s.%s", provider, userId);
+		return String.format("%s.%s", userId, provider);
 	}
 	
 }

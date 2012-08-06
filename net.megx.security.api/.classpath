@@ -2,6 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry exported="true" kind="lib" path="lib/cglib-nodep-2.2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/easymock-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/objenesis-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oauth-20100601.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oauth-provider-20100601.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.6.jar"/>
@@ -12,5 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/mybatis-3.2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

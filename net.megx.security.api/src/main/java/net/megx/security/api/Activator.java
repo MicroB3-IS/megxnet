@@ -63,7 +63,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					UserService userService = (UserService)services.get(UserService.class.getName());
 					ConsumerService consumerService = (ConsumerService)services.get(ConsumerService.class.getName());
 					TokenService tokenService = (TokenService)services.get(TokenService.class.getName());
-					WebResourcesService webResourcesService = (WebResourcesService)services.get(WebResourcesService.class.getName());
+					//WebResourcesService webResourcesService = (WebResourcesService)services.get(WebResourcesService.class.getName());
 					
 					AuthenticationManager authenticationManager = new WebLoginAuthenticationManager();
 					RegUtils.reg(context, AuthenticationManager.class.getName(), 
