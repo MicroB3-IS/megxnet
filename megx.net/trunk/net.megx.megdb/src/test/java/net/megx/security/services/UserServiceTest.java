@@ -187,7 +187,7 @@ public class UserServiceTest extends DBServiceTest{
 	
 	@Test
 	public void testGetAvailableRoles() throws Exception{
-		List<Role> availableRoles = userService.getAvailableRoles();
+		List<Role> availableRoles = userService.getAvailableRoles(0,0,true).getResults();
 		Assert.assertTrue("USER role is not available.", availableRoles.contains(ROLE_USER));
 		Assert.assertTrue("ADMIN role is not available.", availableRoles.contains(ROLE_ADMIN));
 		Assert.assertTrue("CMS_ADMIN role is not available.", availableRoles.contains(ROLE_CMS_ADMIN));
@@ -244,7 +244,7 @@ public class UserServiceTest extends DBServiceTest{
 		role.setLabel("chonAdmin");
 		userService.createRole(role);
 		
-		List<Role> availableRoles = userService.getAvailableRoles();
+		List<Role> availableRoles = userService.getAvailableRoles(0,0,true).getResults();
 		Assert.assertTrue("Role is not present in the list of available roles", availableRoles.contains(role));
 		
 		userService.removeRole(role.getLabel());
@@ -257,11 +257,11 @@ public class UserServiceTest extends DBServiceTest{
 		role.setLabel("chonAdmin");
 		userService.createRole(role);
 		
-		List<Role> availableRoles = userService.getAvailableRoles();
+		List<Role> availableRoles = userService.getAvailableRoles(0,0,true).getResults();
 		Assert.assertTrue("Role is not present in the list of available roles", availableRoles.contains(role));
 		
 		userService.removeRole(role.getLabel());
-		Assert.assertTrue("Role is present in the list of available roles after removal", userService.getAvailableRoles().contains(role) == false);
+		Assert.assertTrue("Role is present in the list of available roles after removal", userService.getAvailableRoles(0,0,true).getResults().contains(role) == false);
 	}
 	
 	@After
