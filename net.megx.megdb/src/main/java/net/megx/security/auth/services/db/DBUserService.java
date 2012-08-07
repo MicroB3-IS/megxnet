@@ -17,12 +17,12 @@
 
 package net.megx.security.auth.services.db;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.PaginatedResult;
+import net.megx.security.auth.model.Permission;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -286,6 +286,110 @@ public class DBUserService extends BaseMegdbService implements UserService{
 			
 		}, UserMapper.class);
 	}
+
+
+	@Override
+	public Role updateRole(final String oldLabel, final Role role) throws Exception {
+		return doInTransaction(new DBTask<UserMapper, Role>() {
+
+			@Override
+			public Role execute(UserMapper mapper) throws Exception {
+				mapper.updateRole(oldLabel, role);
+				Role r = mapper.getRole(role.getLabel());
+					
+				List<Permission> permissions = r.getPermissions();
+				if(permissions != null){
+					for(Permission p: permissions){
+						mapper.grantPermission(role.getLabel(), p.getLabel());
+					}
+				}
+				
+				permissions = role.getPermissions();
+				if(permissions != null){
+					for(Permission p: permissions){
+						mapper.grantPermission(role.getLabel(), p.getLabel());
+					}
+				}
+				return role;
+			}
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public List<Permission> getAvailablePermissions() throws Exception {
+		return doInSession(new DBTask<UserMapper, List<Permission>>() {
+			@Override
+			public List<Permission> execute(UserMapper mapper) throws Exception {
+				return mapper.getAllPermissions();
+			}
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public void removePermission(final String permission) throws Exception {
+		doInSession(new DBTask<UserMapper, Object>() {
+			@Override
+			public Object execute(UserMapper mapper) throws Exception {
+				mapper.removePermission(permission);
+				return null;
+			}
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public List<User> getUsersWithRole(final String role) throws Exception {
+		return doInSession(new DBTask<UserMapper, List<User>>() {
+			@Override
+			public List<User> execute(UserMapper mapper) throws Exception {
+				return mapper.getUsersWithRole(role);
+			}
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public List<User> filterUsers(final String username, final int maxResults)
+			throws Exception {
+		return doInSession(new DBTask<UserMapper, List<User>>() {
+			@Override
+			public List<User> execute(UserMapper mapper) throws Exception {
+				String filter = "%" + username + "%";
+				return mapper.filterUsers(filter, maxResults);
+			}
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public PaginatedResult<Role> getAvailableRoles(final int start, final int limit,
+			final boolean all) throws Exception {
+		return doInSession(new DBTask<UserMapper, PaginatedResult<Role>>() {
+
+			@Override
+			public PaginatedResult<Role> execute(UserMapper mapper)
+					throws Exception {
+				List<Role> roles = null;
+				if(all){
+					roles = mapper.getAllRoles();
+				}else{
+					roles = mapper.getAllRolesPaginated(start, limit);
+				}
+				if(roles == null)
+					return PaginatedResult.empty();
+				
+				int totalCount = mapper.getRolesCount();
+				
+				return PaginatedResult.fromListWithPageSize(roles, start, limit, totalCount);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	
 
 	/*
 	@Override

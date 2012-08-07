@@ -115,3 +115,34 @@
 	text-decoration: underline;
 	cursor: pointer;
 }
+
+.pagintor-wrapper{
+	width: 100%;
+	padding: 3px;
+	font-size: 10px;
+}
+
+.paginator-pages{
+	
+}
+.paginator-info{
+	float: right;
+	
+}
+
+.paginator-page-selectable{
+	margin-left: 2px;
+	margin-right: 2px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #999;
+}
+.paginator-page-unselectable{
+	margin-left: 2px;
+    margin-right: 2px;
+}
+
+.paginator-page-numbers{
+	display: inline-block;
+	width: 160px;
+}

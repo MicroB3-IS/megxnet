@@ -19,6 +19,7 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
+import net.megx.security.auth.model.Permission;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -48,12 +49,25 @@ public interface UserMapper {
 	public void revokeRole(@Param("login")String login, @Param("role")String role) throws Exception;
 	public void grantRole(@Param("login")String login, @Param("role")String role) throws Exception;
 	public int createRole(Role role) throws Exception;
+	
 	public List<Role> getAllRoles() throws Exception;
+	
+	public List<Role> getAllRolesPaginated(
+			@Param("offset") int offset, 
+			@Param("limit")  int limit) throws Exception;
+	
+	public int getRolesCount() throws Exception;
+	
 	public List<Role> getRolesForNames(@Param("names")List<String> names) throws Exception;
+	
+	
 	public void removeRole(String role) throws Exception;
 	public Role getRole(String role) throws Exception;
 	public List<User> getUsers() throws Exception; //FIXME: pagination
-	
+	public List<User> getUsersWithRole(String role) throws Exception;
+	public List<User> filterUsers(
+			@Param("username")String username, 
+			@Param("maxResults") int maxResults) throws Exception;
 	
 	public void createVerification(UserVerification verification) throws Exception;
 	public UserVerification getVerification(
@@ -62,4 +76,19 @@ public interface UserMapper {
 	
 	public void deleteVerification(String verification) throws Exception;
 	public void cleanupVerifications(long ttl) throws Exception;
+	
+	
+	public void updateRole(
+			@Param("oldLabel") String oldLabel,
+			@Param("role") Role role) throws Exception;
+	public void grantPermission(
+			@Param("role") String role, 
+			@Param("permission") String permission) throws Exception;
+	public void revokePermission(
+			@Param("role") String role, 
+			@Param("permission") String permission) throws Exception;
+	
+	public void removePermission(String permission) throws Exception;
+	
+	public List<Permission> getAllPermissions() throws Exception;
 }

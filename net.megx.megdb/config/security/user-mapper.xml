@@ -54,6 +54,17 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="description" column="description"/>
 	</resultMap>
 	
+	<resultMap type="Role" id="role_full_map">
+		<result property="label" column="label"/>
+		<result property="description" column="description"/>
+		<association property="permissions" select="getPermissionsForRole" column="label"/>
+	</resultMap>
+	
+	<resultMap type="Permission" id="permission_map">
+		<result property="label" column="label"/>
+		<result property="description" column="description"/>
+	</resultMap>
+	
 	<resultMap type="UserVerification" id="user_verification_map">
 		<result column="logname" property="logname"/>
 		<result column="verification_type" property="verificationType"/>
@@ -91,6 +102,14 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 				where h.user_login=#{logname}
 	</select>
 	
+	<select id="getPermissionsForRole" resultMap="permission_map" parameterType="string">
+		select p.label, p.description from 
+			auth.permissions p left join 
+				auth.has_permissions h on
+					h.permission = p.label
+					where h.role=#{label}
+	</select>
+	
 	<select id="getUserByUserId" resultMap="user_map" parameterType="string">
 		select 
 			<include refid="user_columns_list"/>
@@ -121,6 +140,23 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			disabled == false
 	</select>
 	
+	<select id="getUsersWithRole" parameterType="string" resultMap="user_map_no_pass">
+		select 
+			<include refid="user_columns_list"/>
+			from auth.users u
+				left join auth.has_role h on
+					u.logname = h.user_login
+				where 
+					h.role=#{role}
+	</select>
+	
+	<select id="filterUsers" parameterType="map" resultMap="user_map_no_pass">
+		select * from 
+			auth.users 
+				where logname like #{username}
+				limit #{maxResults}
+	</select>
+	
 	<select id="getVerification" parameterType="map" resultMap="user_verification_map">
 		select 
 			<include refid="user_verification_columns_list"/>
@@ -129,6 +165,17 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 						now() &lt; (created + interval '${ttl} ms')
 	</select>
 	
+	
+	<select id="getRolesCount" resultType="int">
+		select count(*) as value 
+			from auth.roles
+	</select>
+	
+	<select id="getAllRolesPaginated" parameterType="map" resultMap="role_map">
+		select label, description from auth.roles
+			offset #{offset}
+			limit #{limit}
+	</select>
 
 	<insert id="addUser" parameterType="User">
 		insert into auth.users
@@ -162,6 +209,15 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	            email=#{email}
 			
 			where logname=#{login}
+	</update>
+	
+	<update id="updateRole" parameterType="map">
+		update auth.permissions
+			set 
+				label=#{role.label},
+				description=#{role.description}
+				
+				where label=#{oldLabel}
 	</update>
 	
 	<delete id="removeUser" parameterType="string">
@@ -222,5 +278,29 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	    <include refid="user_columns_list"/>
 	    
 	     from auth.users
+	</select>
+	
+	<insert id="grantPermission" parameterType="map">
+		insert into auth.has_permissions 
+			(role, permission)
+			values
+			(#{role}, #{permission})
+	</insert>
+	
+	<delete id="revokePermission" parameterType="map">
+		delete from auth.has_permissions
+			where 
+				role=#{role} and
+				permissions=#{permission}
+	</delete>
+	
+	<delete id="removePermission" parameterType="string">
+		delete from auth.permissions
+			where label=#{label}
+	</delete>
+	
+	<select id="getAllPermissions" resultMap="permission_map">
+		select label, description
+			from auth.permissions
 	</select>
 </mapper>
