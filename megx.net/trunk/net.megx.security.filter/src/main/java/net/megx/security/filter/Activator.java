@@ -12,6 +12,7 @@ import net.megx.security.crypto.KeySecretProvider;
 import net.megx.security.filter.http.impl.RegistrationExtension;
 import net.megx.security.filter.ui.RegistrationManager;
 import net.megx.security.filter.ui.ResourcesManager;
+import net.megx.security.filter.ui.RolesManager;
 import net.megx.security.filter.ui.UsersManager;
 import net.megx.utils.OSGIUtils;
 
@@ -67,10 +68,12 @@ public class Activator extends ResTplConfiguredActivator {
 				UsersManager um = new UsersManager(userService, contentModel);
 				RegistrationManager regm = new RegistrationManager(userService, secretProvider, 
 						getRegistrationConfig(), app.getTemplate());
+				RolesManager rolesManager = new RolesManager(userService);
 				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
 				getBundleContext().registerService(RegistrationManager.class.getName(), regm, null);
+				getBundleContext().registerService(RolesManager.class.getName(), rolesManager, null);
 				
 				RegistrationExtension registrationExtension = new RegistrationExtension(userService, 
 						getRegistrationConfig().optLong("verificationTTL", 24*60*60*1000));

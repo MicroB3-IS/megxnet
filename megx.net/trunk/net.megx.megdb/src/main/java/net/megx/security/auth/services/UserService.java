@@ -19,6 +19,8 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
+import net.megx.security.auth.model.PaginatedResult;
+import net.megx.security.auth.model.Permission;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -30,6 +32,9 @@ public interface UserService {
 	@Deprecated
 	public User getUser(String uniqueIdentifier) throws Exception;
 	public List<User> getUsers() throws Exception;
+	public List<User> getUsersWithRole(String role) throws Exception;
+	public List<User> filterUsers(String username, int maxResults) throws Exception;
+	
 	public User addUser(User info) throws Exception;
 	public UserVerification addPendingUser(User user) throws Exception;
 	public void commitPending(User user, String userVerification, long ttl) throws Exception;
@@ -37,10 +42,14 @@ public interface UserService {
 	public User updateUser(User userInfo) throws Exception;
 	public User removeUser(String userid) throws Exception;
 	public Role    createRole(Role role)throws Exception;
-	public List<Role> getAvailableRoles() throws Exception;
+	public PaginatedResult<Role> getAvailableRoles(int start, int limit, boolean all) throws Exception;
+	@Deprecated
 	public List<Role> getDefaultRoles() throws Exception;
 	public Role removeRole(String role) throws Exception;
 	
-	//public void test();
+	public Role updateRole(String oldLabel, Role role) throws Exception;
 	
+	//public void test();
+	public List<Permission> getAvailablePermissions() throws Exception;
+	public void removePermission(String permission) throws Exception;
 }

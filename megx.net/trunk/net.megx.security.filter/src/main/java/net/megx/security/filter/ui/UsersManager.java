@@ -23,9 +23,10 @@ import org.chon.cms.model.ContentModel;
 import com.google.gson.Gson;
 
 @Path("/filter/users")
-public class UsersManager {
+public class UsersManager extends BaseRestService{
 	
 	public static String CHON_ADMIN_ROLE = "cmsAdmin";
+	public static int MAX_QUERY_RESULTS = 10;
 	
 	private ContentModel contentModel;
 	
@@ -137,9 +138,19 @@ public class UsersManager {
 	@Path("roles")
 	@GET
 	public String getAllRoles() throws Exception{
-		return gson.toJson(userService.getAvailableRoles());
+		return gson.toJson(userService.getAvailableRoles(0,0,true).getResults());
 	}
 	
+	
+	@GET
+	@Path("q/{query}")
+	public String filterUsers(@PathParam("query") String query){
+		try {
+			return toJSON(userService.filterUsers(query, MAX_QUERY_RESULTS));
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+	}
 	
 	public void createUserHomeDirectory(User user) throws RepositoryException{
 		String username = user.getLogin();
