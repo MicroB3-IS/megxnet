@@ -199,11 +199,11 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	
 	<delete id="removeRole" parameterType="int">
-		delete from auth.roles where role=#{role}
+		delete from auth.roles where label=#{role}
 	</delete>
 	
 	<select id="getRole" resultMap="role_map" parameterType="string">
-		select r.label, r.description from auth.roles as r where role=#{value}
+		select r.label, r.description from auth.roles as r where r.label=#{value}
 	</select>
 	
 	
