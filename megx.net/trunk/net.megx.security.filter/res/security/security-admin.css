@@ -146,3 +146,85 @@
 	display: inline-block;
 	width: 160px;
 }
+
+
+
+.roles-panel-wrapper{
+    border: solid 1px #999;
+    padding: 15px;
+}
+.roles-panel-content{
+    margin-top: 10px;
+    border-top: solid 1px #AAA;
+    padding-top: 15px;
+}
+.role-entry{
+	margin: 5px;
+	margin-bottom: 10px;
+}
+
+.role-entry-title{
+	font-weight: bold;
+	font-size: 12px;
+	float: left;
+	width: 300px;
+}
+
+.role-entry-description{
+	font-size: 10px;
+	font-weight: normal;
+	color: #999;
+	padding-left: 15px;
+}
+
+.role-action{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.filter-select-result-label{
+	color: #999;
+	font-weight: bold;
+}
+
+.filter-select-result-description{
+	font-size: 10px;
+}
+
+.filter-select-result-actions{
+	font-size: 10px;
+	text-decoration: underline;
+	cursor: pointer;
+	float: right;
+	margin-left: 3px;
+	margin-right: 3px; 
+}
+
+.filter-select-result-content{
+	width: 300px;
+}
+
+.filter-select-hint{
+	float: left;
+    width: 500px;
+    padding: 5px;
+    border: solid 1px #AAA;
+    background: #fff;
+}
+.filter-select-result{
+	border-bottom: solid 1px #AAA;
+	
+	padding: 5px;
+}
+
+.result-entry-action{
+	display: inline-block;
+}
+
+.filter-select-action{
+	font-size: 10px;
+	float: right;
+	cursor: pointer;
+	text-decoration: underline;
+	color: #999;
+}

@@ -501,6 +501,8 @@
 	
 	var __DATA_FIELD_TYPES = {
 	   'text': DataField,
+	   'textarea': DataField,
+	   'textbox': DataField,
 	   'radio': BooleanDataField,
 	   'checkbox': BooleanDataField,
 	   'submit': DataField,
@@ -619,6 +621,21 @@
                   m.push('none');
                }
                m.push('</span>');
+            }else if(d.type == 'textarea' ||
+            		 d.type == 'textbox'){
+            	m.push([
+            	    '<textarea ',
+                    'class="panel-input-field panel-textarea', d.extraClass || '', '" ',
+                    'title="', d.title || '', '" ',
+                    'name="', d.name || '', '" ',
+                    '>', (d.value || ''), '</textarea>'
+            	].join(''));
+            }else if(d.type == 'raw' || d.type == 'markup'){
+            	m.push([
+            	   '<div class="panel-input-field-raw">',
+            	   	  d.markup || '',
+            	   '</div>'
+                ].join(''));
             }
             m.push('<span class="panel-field-notification"></span>');
             m.push('</div>');
