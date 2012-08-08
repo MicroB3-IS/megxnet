@@ -183,6 +183,12 @@ public class TokenServiceTest extends DBServiceTest{
 		tokenService.saveToken("TokenValue", defaultToken);
 	}
 	
+	@Test
+	public void testGetTokensForUser() throws Exception{
+		List<Token> retrievedTokens = tokenService.getTokensForUser(USERNAME);
+		Assert.assertTrue("The token is not present in the list", retrievedTokens.contains(defaultToken));
+	}
+	
 	@After
 	public void tearDown() throws Exception{
 		try{
