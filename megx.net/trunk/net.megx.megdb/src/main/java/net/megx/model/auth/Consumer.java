@@ -15,7 +15,10 @@ public class Consumer {
 	
 	private boolean trusted;
 	
+	@Deprecated
 	private String resource;
+	
+	@Deprecated
 	private String roles;
 	
 	private String logname;
@@ -103,15 +106,23 @@ public class Consumer {
 	public void setTrusted(boolean trusted) {
 		this.trusted = trusted;
 	}
+	
+	@Deprecated
 	public String getResource() {
 		return resource;
 	}
+	
+	@Deprecated
 	public void setResource(String resource) {
 		this.resource = resource;
 	}
+	
+	@Deprecated
 	public String getRoles() {
 		return roles;
 	}
+	
+	@Deprecated
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
