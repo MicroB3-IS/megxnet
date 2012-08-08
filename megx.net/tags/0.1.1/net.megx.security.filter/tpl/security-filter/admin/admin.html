@@ -1,0 +1,141 @@
+<link rel="stylesheet" href="$ctx.siteUrl/jquery/css/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/security/security-admin.css" />
+
+<script type="text/javascript" src="$ctx.siteUrl/security/admin/components.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/admin/user-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/admin/resources-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/admin/roles-admin.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   var um = new admin.UserManager({
+      placeholder: '.content-placeholder',
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
+   });
+   um.showUsers();
+   
+   var rm = new admin.ResourcesManager({
+      resourcesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/resources'),
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
+   });
+   
+   var rolesManager = new admin.RolesManager({
+	   placeholder: '.content-placeholder',
+	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles')
+   });
+   
+   var AdminManager = {
+      userManager: um,
+      resourcesManager: rm,
+      rolesManager: rolesManager,
+      manageUsers: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-users').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('');
+         this.userManager.show();
+         this.userManager.showUsers();
+      },
+      manageResources: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-resources').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('Resources manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
+         this.resourcesManager.show();
+         this.resourcesManager.showResources();
+      },
+      manageRoles: function(){
+    	  $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+          $('.admin-action-roles').addClass('admin-action-state-selected');
+          $('.content-placeholder').html('Groups manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
+          this.rolesManager.show();
+      },
+      init: function(){
+         $('.admin-action-users').click(function(){
+            AdminManager.manageUsers();
+         });
+         $('.admin-action-resources').click(function(){
+            AdminManager.manageResources();
+         });
+         $('.admin-action-roles').click(function(){
+             AdminManager.manageRoles();
+          });
+         AdminManager.manageUsers();
+      }
+   };
+   AdminManager.init();
+});
+</script>
+
+<style>
+   .user-entry{
+      border: solid 1px #AAA;
+      padding: 10px;
+      margin: 5px;
+   }
+   
+   .user-label{
+      color: #999;
+      font-weight: bold;
+      font-size: 12px;
+   } 
+   .user-action-edit{
+      text-decoration: underline;
+      cursor: pointer;
+   }
+   
+   .user-action-remove{
+      float: right;
+   }
+   .security-users-header{
+      height: 30px;
+      width: 100%;
+      font: bold 14px sans-serif;
+   }
+   .security-users-panel-container{
+      border-top: solid 1px #AAA;
+      margin-top: 10px;
+      padding-top: 10px;
+   }
+   .security-users-panel{
+      border: solid 1px #AAA;
+      padding: 10px;
+   }
+   
+   .security-action-add-user{
+      font-size: 12px;
+   }
+   .resources-action-add{
+      padding: 5px;
+   }
+   .resources-panel-actions{
+      height: 35px;
+   }
+   .resource-entry-details label{
+      font-size: 10px;
+     
+   }
+   .resource-entry-details{
+      border-top: solid 1px #AAA;
+      margin-top: 5px;
+      margin-left: 20px;
+      padding: 7px;
+   }
+</style>
+
+
+<div style="margin: 5px;">
+	<div class="admin-left-container">
+		<div class="admin-action-container admin-action-state-default admin-action-users">
+			Users
+		</div>
+		<div class="admin-action-container admin-action-state-default admin-action-roles">
+            Groups
+        </div>
+		<div class="admin-action-container admin-action-state-default admin-action-resources">
+			Web Resources
+		</div>
+		
+	</div>
+	<div class="admin-content">
+		<div class="content-placeholder"></div>
+	</div>
+</div>
