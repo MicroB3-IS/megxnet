@@ -101,17 +101,50 @@ public class WebResourcesServiceTest extends DBServiceTest{
 		WebResource secondWebResource = createWebResource(SECOND_HTTP_METHOD, SECOND_URL_PATTERN, SECOND_ROLES);
 		WebResource thirdWebResource  = createWebResource(THIRD_HTTP_METHOD, THIRD_URL_PATTERN, THIRD_ROLES);
 		List<WebResource> webResToBeAdded = new ArrayList<WebResource>(1);
-		//webResToBeAdded.add(defaultWebResource);
 		webResToBeAdded.add(secondWebResource);
 		webResToBeAdded.add(thirdWebResource);
 		
 		webResourcesService.addWebResourceMappings(webResToBeAdded);
-		List<WebResource> retrievedResources = webResourcesService.getAll(0, 3);
+		List<WebResource> retrievedResources = webResourcesService.getAll(0, 100);
 		Assert.assertTrue("Resources are not added", retrievedResources.containsAll(webResToBeAdded));
 		
 		webResourcesService.removeWebResource(secondWebResource);
 		webResourcesService.removeWebResource(thirdWebResource);
 		
+	}
+	
+	@Test
+	public void testUpdateWebResource() throws Exception{
+		List<WebResource> retrievedResources = webResourcesService.match(URL_PATTERN, HTTP_METHOD);
+		Assert.assertTrue("No resources matched the URL pattern", retrievedResources.size() > 0);
+		retrievedResources.get(0).setHttpMethod(SECOND_HTTP_METHOD);
+		retrievedResources.get(0).setUrlPattern(SECOND_URL_PATTERN);
+		retrievedResources.get(0).setRoles(SECOND_ROLES);
+		
+		webResourcesService.updateWebResource(retrievedResources.get(0));
+		
+		List<WebResource> updatedResources = webResourcesService.match(SECOND_URL_PATTERN, SECOND_HTTP_METHOD);
+		Assert.assertTrue("No resources matched the second URL pattern", updatedResources.size() > 0);
+		webResourcesService.removeWebResourceByPattern(SECOND_URL_PATTERN);
+	}
+	
+	@Test
+	public void testUpdateWebResourceByPattern() throws Exception{
+		List<String> httpMethods = new ArrayList<String>();
+		List<String> roles = new ArrayList<String>();
+		for(Role role : SECOND_ROLES){
+			roles.add(role.getLabel());
+		}
+		httpMethods.add(SECOND_HTTP_METHOD);
+		webResourcesService.updateWebResource(URL_PATTERN, httpMethods, roles);
+		List<WebResource> updatedResources = webResourcesService.match(URL_PATTERN, SECOND_HTTP_METHOD);
+		Assert.assertTrue("No resources matched the second URL pattern", updatedResources.size() > 0);
+	}
+	
+	@Test
+	public void testGetAll() throws Exception{
+		List<WebResource> retrievedResources = webResourcesService.getAll(0, 1000);
+		Assert.assertTrue("Default web resource is not returned", retrievedResources.contains(defaultWebResource));
 	}
 	
 	@After
