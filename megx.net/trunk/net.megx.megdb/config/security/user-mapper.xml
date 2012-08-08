@@ -171,7 +171,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 			from auth.roles
 	</select>
 	
-	<select id="getAllRolesPaginated" parameterType="map" resultMap="role_map">
+	<select id="getAllRolesPaginated" parameterType="map" resultMap="role_full_map">
 		select label, description from auth.roles
 			offset #{offset}
 			limit #{limit}
