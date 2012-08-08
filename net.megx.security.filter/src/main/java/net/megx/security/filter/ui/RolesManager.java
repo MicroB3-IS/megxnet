@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Permission;
 import net.megx.security.auth.model.Role;
+import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 
 @Path("/filter/roles")
@@ -156,5 +157,22 @@ public class RolesManager extends BaseRestService{
 		} catch (Exception e) {
 			return toJSON(handleException(e));
 		}
+	}
+	
+	@POST
+	@Path("addUser")
+	public String addRoleToUser(@FormParam("username") String username, @FormParam("role") String role) {
+		try{
+			User user = userService.getUserByUserId(username);
+			Role r = new Role();
+			r.setLabel(role);
+			if(!user.getRoles().contains(r)){
+				user.getRoles().add(r);
+				userService.updateUser(user);
+			}
+		}catch(Exception e){
+			return toJSON(handleException(e));
+		}
+		return toJSON(new Result<Object>());
 	}
 }
