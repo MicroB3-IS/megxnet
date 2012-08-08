@@ -101,12 +101,12 @@ public class WebResourcesServiceTest extends DBServiceTest{
 		WebResource secondWebResource = createWebResource(SECOND_HTTP_METHOD, SECOND_URL_PATTERN, SECOND_ROLES);
 		WebResource thirdWebResource  = createWebResource(THIRD_HTTP_METHOD, THIRD_URL_PATTERN, THIRD_ROLES);
 		List<WebResource> webResToBeAdded = new ArrayList<WebResource>(1);
-		webResToBeAdded.add(defaultWebResource);
+		//webResToBeAdded.add(defaultWebResource);
 		webResToBeAdded.add(secondWebResource);
 		webResToBeAdded.add(thirdWebResource);
 		
 		webResourcesService.addWebResourceMappings(webResToBeAdded);
-		List<WebResource> retrievedResources = webResourcesService.getAll(1, 3);
+		List<WebResource> retrievedResources = webResourcesService.getAll(0, 3);
 		Assert.assertTrue("Resources are not added", retrievedResources.containsAll(webResToBeAdded));
 		
 		webResourcesService.removeWebResource(secondWebResource);
