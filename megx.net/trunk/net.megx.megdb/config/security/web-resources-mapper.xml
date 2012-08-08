@@ -48,7 +48,7 @@
         insert into auth.web_resource_permissions(url_path, http_method, role)
         	values
         	<foreach collection="roles" item="role" open="(" close=")" separator="),(">
-        	    #{urlPattern},#{httpMethod},#{role}
+        	    #{urlPattern},#{httpMethod},#{role.label}
         	</foreach>
     </insert>
     
