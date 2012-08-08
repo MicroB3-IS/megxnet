@@ -110,7 +110,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</delete>
 	
 	<delete id="removeTokensBeforeTimestamp" parameterType="long">
-		delete from auth.access_tokens where token_created &lt; #{timestamp}
+		delete from auth.access_tokens where extract(epoch from token_created)* 1000 &lt; #{timestamp}
 	</delete>
 	
 </mapper>
