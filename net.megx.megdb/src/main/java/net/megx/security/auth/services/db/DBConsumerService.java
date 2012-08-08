@@ -33,7 +33,8 @@ public class DBConsumerService extends BaseMegdbService implements ConsumerServi
 
 			@Override
 			public Consumer execute(ConsumerMapper mapper) throws Exception {
-				return mapper.getConsumerForKey(key);
+				//return mapper.getConsumerForKey(key);
+				return mapper.getConsumerForName(key);
 			}
 			
 		}, ConsumerMapper.class);
