@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="$ctx.siteUrl/jquery/css/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="$ctx.siteUrl/security/security-admin.css" />
 
-<script type="text/javascript" src="$ctx.siteUrl/security/admin/components.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/security/admin/user-admin.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/security/admin/resources-admin.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/security/admin/roles-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/components.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/user-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/resources-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/roles-admin.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -21,7 +21,8 @@ $(document).ready(function(){
    
    var rolesManager = new admin.RolesManager({
 	   placeholder: '.content-placeholder',
-	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles')
+	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles'),
+	   usersService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
    });
    
    var AdminManager = {
