@@ -8,9 +8,29 @@
 <body>
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
 <tr><td><b>Test Suite</b></td></tr>
-<tr><td><a href="menu_check.html">menu_check</a></td></tr>
 <tr><td><a href="footer.html">footer</a></td></tr>
+<tr><td><a href="menu_browse.html">menu_browse</a></td></tr>
+<tr><td><a href="menu_check.html">menu_check</a></td></tr>
+<tr><td><a href="menu_contact.html">menu_contact</a></td></tr>
+<tr><td><a href="menu_edutainment.html">menu_edutainment</a></td></tr>
+<tr><td><a href="menu_home.html">menu_home</a></td></tr>
+<tr><td><a href="menu_portal.html">menu_portal</a></td></tr>
+<tr><td><a href="menu_tools.html">menu_tools</a></td></tr>
 <tr><td><a href="tutorial_page.html">tutorial_page</a></td></tr>
+<tr><td><a href="website_about.html">website_about</a></td></tr>
+<tr><td><a href="website_contact.html">website_contact</a></td></tr>
+<tr><td><a href="website_content.html">website_content</a></td></tr>
+<tr><td><a href="website_edutainment.html">website_edutainment</a></td></tr>
+<tr><td><a href="website_faq.html">website_faq</a></td></tr>
+<tr><td><a href="website_geographicblast.html">website_geographicblast</a></td></tr>
+<tr><td><a href="website_GIStools.html">website_GIStools</a></td></tr>
+<tr><td><a href="website_home.html">website_home</a></td></tr>
+<tr><td><a href="website_mapserver.html">website_mapserver</a></td></tr>
+<tr><td><a href="website_news.html">website_news</a></td></tr>
+<tr><td><a href="website_overview.html">website_overview</a></td></tr>
+<tr><td><a href="website_related.html">website_related</a></td></tr>
+<tr><td><a href="website_team.html">website_team</a></td></tr>
+<tr><td><a href="website_tutorial.html">website_tutorial</a></td></tr>
 </tbody></table>
 </body>
 </html>
