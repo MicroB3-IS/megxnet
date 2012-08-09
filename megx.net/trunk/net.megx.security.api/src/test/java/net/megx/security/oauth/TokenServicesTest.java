@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 import net.megx.model.auth.Consumer;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.model.User;
-import net.megx.security.auth.services.db.DBConsumerService;
-import net.megx.security.auth.services.db.DBUserService;
+import net.megx.security.auth.services.ConsumerService;
+import net.megx.security.auth.services.UserService;
 import net.megx.security.oauth.impl.OAuthTokenServices;
+import static org.easymock.EasyMock.*;
 
 public class TokenServicesTest {
 	
 	private TokenServices tokenService;
+	private UserService userService;
+	private ConsumerService consumerService;
 	
 	private Token defaultToken;
 	private User defaultUser;
@@ -118,18 +124,23 @@ public class TokenServicesTest {
 	@Before
 	public void setup() throws Exception{
 		tokenService = new OAuthTokenServices();
-		userService = buildService(DBUserService.class);
-		consumerService = buildService(DBConsumerService.class);
-		
-		defaultUser = createUser();
-		userService.addUser(defaultUser);
-		
-		defaultConsumer = createConsumer();
-		consumerService.addConsumer(defaultConsumer);
-		
-		defaultToken = createToken(defaultUser, defaultConsumer.getKey());
-		//tokenService.saveToken("TokenValue", defaultToken);
-		tokenService.
+		userService = EasyMock.createMock(UserService.class);
+		consumerService = EasyMock.createMock(ConsumerService.class);
 	}
 	
+	@Test
+	public void testAuthorizeRequestToken() throws Exception{
+		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
+		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		
+		replay(userService);
+		replay(consumerService);
+		
+		User user = userService.getUserByUserId(USERNAME);
+		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
+		
+		Token requestToken = tokenService.generateRequestToken(consumer.getKey());
+		Token authorizedToken = tokenService.authorizeRequestToken(requestToken.getToken(), user.getLogin());
+		Assert.assertNotNull("Token is null", authorizedToken);
+	}	
 }
