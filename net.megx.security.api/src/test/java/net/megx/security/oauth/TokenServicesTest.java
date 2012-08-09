@@ -1,5 +1,7 @@
 package net.megx.security.oauth;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,9 @@ import net.megx.security.auth.model.Token;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.UserService;
+import net.megx.security.crypto.KeySecret;
+import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.crypto.impl.DefaultKeySecretProvider;
 import net.megx.security.oauth.impl.OAuthTokenServices;
 import static org.easymock.EasyMock.*;
 
@@ -27,6 +32,7 @@ public class TokenServicesTest {
 	private Token defaultToken;
 	private User defaultUser;
 	private Consumer defaultConsumer;
+	private KeySecretProvider keySecretProvider;
 	
 	public static String TOKEN = "TOKEN";
 	public static String SECRET = "NIaWgKMJOkAYm6vdFpgGHpPOfF4mXFmvqL-pb698hsiD3y-bZ5FyGGMD7z0pqFk0w7Ol2qD7n-GdJ-HeW3Srqa";
@@ -121,20 +127,28 @@ public class TokenServicesTest {
 		return consumer;
 	}
 	
+	private KeySecret createKeySecretPair() throws GeneralSecurityException, IOException{
+		DefaultKeySecretProvider defKeySecretProvider = new DefaultKeySecretProvider();
+		return defKeySecretProvider.createKeySecretPair();
+	}
+	
 	@Before
 	public void setup() throws Exception{
 		tokenService = new OAuthTokenServices();
 		userService = EasyMock.createMock(UserService.class);
 		consumerService = EasyMock.createMock(ConsumerService.class);
+		keySecretProvider = EasyMock.createMock(KeySecretProvider.class);
 	}
 	
 	@Test
 	public void testAuthorizeRequestToken() throws Exception{
 		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
 		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
 		
 		replay(userService);
 		replay(consumerService);
+		replay(keySecretProvider);
 		
 		User user = userService.getUserByUserId(USERNAME);
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
