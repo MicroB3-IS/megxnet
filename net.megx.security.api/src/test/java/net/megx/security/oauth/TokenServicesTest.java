@@ -248,4 +248,24 @@ public class TokenServicesTest {
 		Assert.assertTrue("Should be access token", retrievedAccessToken.isAccessToken());
 	}
 	
+	@Test
+	public void testGetRequestToken() throws Exception{
+		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		
+		replay(consumerService);
+		//replay(keySecretProvider);
+		
+		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
+		
+		Token generatedRequestToken = tokenService.generateRequestToken(consumer.getKey());
+		Assert.assertNotNull("Token is null", generatedRequestToken);
+		
+		expect(cache.getObject(generatedRequestToken.getToken())).andReturn(generatedRequestToken);
+		replay(cache);
+		
+		Token retrievedRequestToken = tokenService.getRequestToken(generatedRequestToken.getToken());
+		Assert.assertEquals("Generated and retrieved access token are not equal", generatedRequestToken, retrievedRequestToken);
+	}
+	
 }
