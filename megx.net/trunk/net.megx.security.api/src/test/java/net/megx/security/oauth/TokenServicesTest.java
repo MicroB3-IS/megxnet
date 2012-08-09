@@ -124,7 +124,7 @@ public class TokenServicesTest {
 		tokenService = new OAuthTokenServices();
 		userService = EasyMock.createMock(UserService.class);
 		consumerService = EasyMock.createMock(ConsumerService.class);
-		keySecretProvider = EasyMock.createMock(KeySecretProvider.class);
+		keySecretProvider = new DefaultKeySecretProvider();
 		tokenServiceMockup = EasyMock.createMock(TokenService.class);
 		cache = EasyMock.createMock(Cache.class);
 		((OAuthTokenServices)tokenService).setKeySecretProvider(keySecretProvider);
@@ -136,11 +136,11 @@ public class TokenServicesTest {
 	public void testAuthorizeRequestToken() throws Exception{
 		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
 		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
 		
 		replay(userService);
 		replay(consumerService);
-		replay(keySecretProvider);
+		//replay(keySecretProvider);
 		
 		User user = userService.getUserByUserId(USERNAME);
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
@@ -156,10 +156,10 @@ public class TokenServicesTest {
 	@Test
 	public void testGenerateRequestToken() throws Exception{
 		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
 		
 		replay(consumerService);
-		replay(keySecretProvider);
+		//replay(keySecretProvider);
 		
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
 		
@@ -171,12 +171,12 @@ public class TokenServicesTest {
 	public void testGenerateAccessToken() throws Exception{
 		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
 		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
 		
 		replay(userService);
 		replay(consumerService);
-		replay(keySecretProvider);
+		//replay(keySecretProvider);
 		
 		User user = userService.getUserByUserId(USERNAME);
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
@@ -197,12 +197,16 @@ public class TokenServicesTest {
 	public void testGetAccessToken() throws Exception{
 		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
 		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
-		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		//expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		
+		//expect(tokenServiceMockup.saveToken(value, token))
+		
+		
 		
 		replay(userService);
 		replay(consumerService);
-		replay(keySecretProvider);
+		//replay(keySecretProvider);
 		
 		User user = userService.getUserByUserId(USERNAME);
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
@@ -217,11 +221,31 @@ public class TokenServicesTest {
 		
 		//expect(tokenService.saveToken(token.getToken(), token));
 		
+		KeySecretProvider mockedKeysecretProvider = EasyMock.createMock(KeySecretProvider.class);
+		KeySecret keySecret = new KeySecret("test-key", "test-secret");
+		expect(mockedKeysecretProvider.createKeySecretPair()).andReturn(keySecret);
+		
+		Token mockToken = new Token();
+		mockToken.setAccessToken(true);
+		mockToken.setConsumerKey(consumer.getKey());
+		mockToken.setTimestamp(new Date());
+		mockToken.setToken(keySecret.getKey());
+		mockToken.setSecret(keySecret.getSecret());
+		mockToken.setUser(user);
+		
+		expect(tokenServiceMockup.saveToken(mockToken.getToken(), mockToken)).andReturn(mockToken);
+		expect(tokenServiceMockup.getToken(mockToken.getToken())).andReturn(mockToken);
+		replay(mockedKeysecretProvider);
+		replay(tokenServiceMockup);
+		
+		((OAuthTokenServices)tokenService).setKeySecretProvider(mockedKeysecretProvider);
+		
 		Token generatedAccessToken = tokenService.generateAccessToken(consumer.getKey(), authorizedRequestToken.getToken());
 		Assert.assertNotNull("The generated access token is null", generatedAccessToken);
 		
 		Token retrievedAccessToken = tokenService.getAccessToken(generatedAccessToken.getToken());
 		Assert.assertEquals("Tokens are not identical", generatedAccessToken, retrievedAccessToken);
+		Assert.assertTrue("Should be access token", retrievedAccessToken.isAccessToken());
 	}
 	
 }
