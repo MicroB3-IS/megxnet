@@ -21,6 +21,7 @@ import net.megx.security.crypto.KeySecret;
 import net.megx.security.crypto.KeySecretProvider;
 import net.megx.security.crypto.impl.DefaultKeySecretProvider;
 import net.megx.security.oauth.impl.OAuthTokenServices;
+import net.megx.security.utils.Cache;
 import static org.easymock.EasyMock.*;
 
 public class TokenServicesTest {
@@ -33,6 +34,7 @@ public class TokenServicesTest {
 	private User defaultUser;
 	private Consumer defaultConsumer;
 	private KeySecretProvider keySecretProvider;
+	private Cache cache;
 	
 	public static String TOKEN = "TOKEN";
 	public static String SECRET = "NIaWgKMJOkAYm6vdFpgGHpPOfF4mXFmvqL-pb698hsiD3y-bZ5FyGGMD7z0pqFk0w7Ol2qD7n-GdJ-HeW3Srqa";
@@ -132,12 +134,30 @@ public class TokenServicesTest {
 		return defKeySecretProvider.createKeySecretPair();
 	}
 	
+	private String getTokenKey(KeySecret key){
+		return key.getKey();
+	}
+	
+	private Token getToken(String consumerKey, KeySecret keySecret){
+		Token token = new Token();
+		token.setAccessToken(false);
+		token.setAuthorized(false);
+		token.setConsumerKey(consumerKey);
+		token.setTimestamp(new Date());
+		token.setToken(keySecret.getKey());
+		token.setSecret(keySecret.getSecret());
+		return token;
+	}
+	
 	@Before
 	public void setup() throws Exception{
 		tokenService = new OAuthTokenServices();
 		userService = EasyMock.createMock(UserService.class);
 		consumerService = EasyMock.createMock(ConsumerService.class);
 		keySecretProvider = EasyMock.createMock(KeySecretProvider.class);
+		cache = EasyMock.createMock(Cache.class);
+		((OAuthTokenServices)tokenService).setKeySecretProvider(keySecretProvider);
+		((OAuthTokenServices)tokenService).setCache(cache);
 	}
 	
 	@Test
@@ -154,6 +174,9 @@ public class TokenServicesTest {
 		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
 		
 		Token requestToken = tokenService.generateRequestToken(consumer.getKey());
+		expect(cache.getObject(requestToken.getToken())).andReturn(requestToken);
+		replay(cache);
+		
 		Token authorizedToken = tokenService.authorizeRequestToken(requestToken.getToken(), user.getLogin());
 		Assert.assertNotNull("Token is null", authorizedToken);
 	}	
