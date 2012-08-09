@@ -16,6 +16,7 @@ import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.ConsumerService;
+import net.megx.security.auth.services.TokenService;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.crypto.KeySecret;
 import net.megx.security.crypto.KeySecretProvider;
@@ -30,11 +31,9 @@ public class TokenServicesTest {
 	private UserService userService;
 	private ConsumerService consumerService;
 	
-	private Token defaultToken;
-	private User defaultUser;
-	private Consumer defaultConsumer;
 	private KeySecretProvider keySecretProvider;
 	private Cache cache;
+	private TokenService tokenServiceMockup;
 	
 	public static String TOKEN = "TOKEN";
 	public static String SECRET = "NIaWgKMJOkAYm6vdFpgGHpPOfF4mXFmvqL-pb698hsiD3y-bZ5FyGGMD7z0pqFk0w7Ol2qD7n-GdJ-HeW3Srqa";
@@ -100,21 +99,7 @@ public class TokenServicesTest {
 		user.setRoles(roles);
 		return user;
 	}
-	
-	private Token createToken(User user, String consumerKey){
-		Token token = new Token();
-		token.setAccessToken(ACCESS_TOKEN);
-		token.setAuthorized(AUTHORIZED);
-		token.setCallbackUrl(CALLBACK_URL);
-		token.setConsumerKey(consumerKey);
-		token.setUser(user);
-		token.setSecret(SECRET);
-		token.setTimestamp(TIME_STAMP);
-		token.setVerifier(VERIFIER);
-		token.setToken(TOKEN);
-		return token;
-	}
-	
+		
 	private Consumer createConsumer(){
 		Consumer consumer = new Consumer();
 		consumer.setCallbackUrl(CONSUMER_CALLBACK_URL);
@@ -134,30 +119,17 @@ public class TokenServicesTest {
 		return defKeySecretProvider.createKeySecretPair();
 	}
 	
-	private String getTokenKey(KeySecret key){
-		return key.getKey();
-	}
-	
-	private Token getToken(String consumerKey, KeySecret keySecret){
-		Token token = new Token();
-		token.setAccessToken(false);
-		token.setAuthorized(false);
-		token.setConsumerKey(consumerKey);
-		token.setTimestamp(new Date());
-		token.setToken(keySecret.getKey());
-		token.setSecret(keySecret.getSecret());
-		return token;
-	}
-	
 	@Before
 	public void setup() throws Exception{
 		tokenService = new OAuthTokenServices();
 		userService = EasyMock.createMock(UserService.class);
 		consumerService = EasyMock.createMock(ConsumerService.class);
 		keySecretProvider = EasyMock.createMock(KeySecretProvider.class);
+		tokenServiceMockup = EasyMock.createMock(TokenService.class);
 		cache = EasyMock.createMock(Cache.class);
 		((OAuthTokenServices)tokenService).setKeySecretProvider(keySecretProvider);
 		((OAuthTokenServices)tokenService).setCache(cache);
+		((OAuthTokenServices)tokenService).setTokenService(tokenServiceMockup);
 	}
 	
 	@Test
@@ -179,5 +151,77 @@ public class TokenServicesTest {
 		
 		Token authorizedToken = tokenService.authorizeRequestToken(requestToken.getToken(), user.getLogin());
 		Assert.assertNotNull("Token is null", authorizedToken);
-	}	
+	}
+	
+	@Test
+	public void testGenerateRequestToken() throws Exception{
+		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		
+		replay(consumerService);
+		replay(keySecretProvider);
+		
+		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
+		
+		Token requestToken = tokenService.generateRequestToken(consumer.getKey());
+		Assert.assertNotNull("Token is null", requestToken);
+	}
+	
+	@Test
+	public void testGenerateAccessToken() throws Exception{
+		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
+		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		
+		replay(userService);
+		replay(consumerService);
+		replay(keySecretProvider);
+		
+		User user = userService.getUserByUserId(USERNAME);
+		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
+		
+		Token requestToken = tokenService.generateRequestToken(consumer.getKey());
+		expect(cache.getObject(requestToken.getToken())).andReturn(requestToken);
+		expect(cache.getObject(requestToken.getToken())).andReturn(requestToken);
+		expect(cache.removeObject(requestToken.getToken())).andReturn(requestToken);
+		replay(cache);
+		
+		Token authorizedRequestToken = tokenService.authorizeRequestToken(requestToken.getToken(), user.getLogin());
+		
+		Token accessToken = tokenService.generateAccessToken(consumer.getKey(), authorizedRequestToken.getToken());
+		Assert.assertNotNull("Token is null", accessToken);
+	}
+	
+	@Test
+	public void testGetAccessToken() throws Exception{
+		expect(userService.getUserByUserId(USERNAME)).andReturn(createUser());
+		expect(consumerService.getConsumer(CONSUMER_NAME)).andReturn(createConsumer());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		expect(keySecretProvider.createKeySecretPair()).andReturn(createKeySecretPair());
+		
+		replay(userService);
+		replay(consumerService);
+		replay(keySecretProvider);
+		
+		User user = userService.getUserByUserId(USERNAME);
+		Consumer consumer = consumerService.getConsumer(CONSUMER_NAME);
+		
+		Token requestToken = tokenService.generateRequestToken(consumer.getKey());
+		expect(cache.getObject(requestToken.getToken())).andReturn(requestToken);
+		expect(cache.getObject(requestToken.getToken())).andReturn(requestToken);
+		expect(cache.removeObject(requestToken.getToken())).andReturn(requestToken);
+		replay(cache);
+		
+		Token authorizedRequestToken = tokenService.authorizeRequestToken(requestToken.getToken(), user.getLogin());
+		
+		//expect(tokenService.saveToken(token.getToken(), token));
+		
+		Token generatedAccessToken = tokenService.generateAccessToken(consumer.getKey(), authorizedRequestToken.getToken());
+		Assert.assertNotNull("The generated access token is null", generatedAccessToken);
+		
+		Token retrievedAccessToken = tokenService.getAccessToken(generatedAccessToken.getToken());
+		Assert.assertEquals("Tokens are not identical", generatedAccessToken, retrievedAccessToken);
+	}
+	
 }
