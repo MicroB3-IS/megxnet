@@ -239,15 +239,21 @@
 			var m = [
 			     '<div class="">',
 			     	'<div class="users-filter-placeholder"></div>',
+			     	'<div>',
+			     		'<div>List of users in this group</div>',
+			     		'<div class="users-list"></div>',
+			     	'</div>',
 			     '</div>'
 			];
 			
 			var umel = $(m.join(''))[0];
+			var listSelect;
 			//debugger
 			$('.user-role-management-panel .panel-subsection-content', rp.el).html('').append(umel);
 			
 			var select = new FilterSelect({
 				el: $('.users-filter-placeholder', umel)[0],
+				label: 'Search for user to add: ',
 				filter: function(query, success, error){
 					
 					self.usersService.get('q/'+query, undefined, function(users){
@@ -266,7 +272,8 @@
 									    			role: role.label
 									    		}, function(){
 									    			// update the users list
-									    			
+									    			if(listSelect)
+									    				listSelect.refresh();
 									    			
 									    		}, function(){
 									    			// failed to add user...
@@ -285,6 +292,52 @@
 					});
 				}
 			});
+			
+			
+			var listSelect = new LongListSelect({
+				el: $('.users-list', umel)[0],
+				filter: function(query, page, pageSize, success, error){
+					query = query || '';
+					query = $.trim(query) || '*';
+					self.usersService.get('q/'+(role.label || '') +'/'+query +'/' + ((page-1)*pageSize) +':'+pageSize, undefined,
+							function(result){
+								if(result.error){
+									error(result.message);
+									return;
+								}
+								var results = [];
+								
+								each(result.results , function(i, r){
+									results.push({
+										title: $.trim((r.firstName + ' ' + r.lastName)) || r.login || r.email,
+										description: r.description || '&nbsp;',
+										actions:[{
+											text: 'Remove',
+											extraClass: 'action-remove-user-from-role',
+											handler: function(action){
+												var _roles = [];
+												each(r.roles || [], function(i, _role){
+													if(_role.label != role.label){
+														_roles.push(_role.label);
+													}
+												});
+												r.roles = _roles.join(',');
+												self.usersService.put('', r, function(){
+													listSelect.refresh();
+												},function(){
+													// TODO: handle error
+												});
+											}
+										}]
+									});
+								});
+								result.results = results;
+								success(result);
+							},
+							function(){});
+				}
+			});
+			
 			
 			
 			return rp;
@@ -345,7 +398,10 @@
 		},
 		_bind: function(){
 			var self = this;
-			$(this.inputEl).keyup(function(){
+			$(this.inputEl).keyup(function(e){
+				if(e.which == 27){
+					return;
+				}
 				var value = $.trim($(self.inputEl).val() || '');
 				if(value.length > self.triggerLength){
 					self.filter(value, function(results){
@@ -433,6 +489,148 @@
 			this.setValue("");
 		}
 	});
+	
+	
+	
+	var LongListSelect = function(config){
+		extend(this, config);
+		LongListSelect.superclass.constructor.call(this, config);
+		this.init();
+	};
+	extend(LongListSelect, components.ui.EventBase);
+	extend(LongListSelect, {
+		init: function(){
+			var m = [
+			    '<div class="long-select-wrapper">',
+			    	'<div class="long-select-header">',
+			    		'<div class="long-select-filter-wrapper">',
+			    			'<label class="long-select-filter-label">Filter: </label>',
+			    			'<input type="text" class="long-select-filter-input"/>',
+			    		'</div>',
+			    		'<div class="long-select-pager-placeholder">',
+			    		'</div>',
+			    	'</div>',
+			    	'<div class="long-select-content">',
+			    	'</div>',
+			    	'<div class="long-select-footer">',
+			    	'</div>',
+			    '</div>'
+			].join('');
+			var el = $(m)[0];
+			this.contentEl = $('.long-select-content', el)[0];
+			this.filterInputEl = $('.long-select-filter-input', el)[0];
+			this.pager = new components.ui.Pager({
+				el: $('.long-select-pager-placeholder', el)[0]
+			});
+			
+			var self = this;
+			this.pager.on('goto-page', function(e, pager, page){
+				self._loadData(page*1);
+			});
+			$(this.el).html('').append(el);
+			
+			
+			$('.long-select-filter-input', el).keyup(function(e){
+				self.filter($(this).val(), 1, 10, function(result){
+					self.pager.reload(1, 10, result.totalCount);
+					self.pager.update(1);
+					self._showResults(result.results);
+				}, function(message){
+					// TODO: handle exception
+				})
+			});
+			
+		},
+		filter: function(query, page, pageSize, success, error){
+			
+		},
+		refresh: function(page){
+			this._loadData(page || 1);
+		},
+		_loadData: function(page){
+			//this.pager.reload(page, 10, result.totalCount);
+			//this.pager.update(page);
+			var self = this;
+			this.filter(undefined, page, 10, function(result){
+				self.pager.reload(page, 10, result.totalCount);
+				self.pager.update(page);
+				self._showResults(result.results);
+			}, function(message){
+				// TODO: handle exception
+			});
+		},
+		_showResults: function(results){
+			$(this.contentEl).html('');
+			for(var  i = 0; i < results.length; i++){
+				var entryEl = this._createSingleEntry(results[i]);
+				$(this.contentEl).append(entryEl);
+			}
+		},
+		/*
+		 * action = {
+		 * 		title: 'string',
+		 * 		description: 'string',
+		 * 		actions:[
+		 * 			{
+		 *				text: 'string',
+		 *				extraClass: 'string',
+		 *				handler: function(action){
+		 *				} 
+		 * 			}
+		 * 		]
+		 * }
+		 * 
+		 */
+		_createSingleEntry: function(entry){
+			var handlers = [];
+			var self = this;
+			var m = [
+			     '<div class="long-select-entry">',
+		     		'<div class="long-select-entry-actions"> &nbsp;',
+		     			(function(actions){
+		     				var fullMarkup = [];
+		     				
+		     				each(actions, function(i, action){
+		     					var cls = '__action-' + i;
+		     					var am = '<div class="long-select-entry-action ' + 
+		     								(action.extraClass || '') + ' ' + cls +'" >' +
+		     								(action.text || '') +
+		     							  '</div>';
+		     					fullMarkup.push(am);
+		     					if(action.handler){
+		     						handlers.push({
+		     							selector: '.'+cls,
+		     							handler: action.handler,
+		     							action: action
+		     						});
+		     					}
+		     				});
+		     				
+		     				return fullMarkup.join('');
+		     			})(entry.actions || []),
+		     		'</div>',
+		     		'<div class="long-select-entry-content">',
+				     	'<div class="long-select-entry-title">',
+				     		entry.title || '',
+				     	'</div>',
+				     	'<div class="long-select-entry-description">',
+			     			entry.description || '',
+			     		'</div>',
+		     		'</div>',
+			     '</div>'
+			].join('');
+			var el = $(m)[0];
+			each(handlers, function(i, h){
+				$(h.selector, el).click(function(){
+					h.handler.call(self, h.action);
+				});
+			});
+			return el;
+		}
+	});
+	
+	
+	
 	
 	window.admin = window.admin || {};
 	window.admin.RolesManager = RolesManager;

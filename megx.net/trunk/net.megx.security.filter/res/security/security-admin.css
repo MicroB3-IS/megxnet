@@ -228,3 +228,36 @@
 	text-decoration: underline;
 	color: #999;
 }
+.long-select-filter-wrapper{
+	float: left;
+	margin-right: 15px;
+	padding-right: 10px;
+	border-right: solid 1px #999;
+}
+
+.long-select-entry{
+	padding: 15px;
+	border-bottom: solid 1px #AAA;
+	margin-right: 30px;
+}
+
+.long-select-content{
+	width: 500px;
+	
+}
+
+.long-select-entry-content{
+	display: inline-block;
+}
+
+.long-select-entry-actions{
+	float: right;
+	
+}
+
+.long-select-entry-action{
+	font-size: 10px;
+	text-decoration: underline;;
+	cursor: pointer;
+	
+}

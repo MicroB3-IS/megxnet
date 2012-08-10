@@ -33,6 +33,10 @@ public interface UserService {
 	public User getUser(String uniqueIdentifier) throws Exception;
 	public List<User> getUsers() throws Exception;
 	public List<User> getUsersWithRole(String role) throws Exception;
+	public PaginatedResult<User> filterUsers(String username, String role, 
+			int start, int maxResults) throws Exception;
+	
+	
 	public List<User> filterUsers(String username, int maxResults) throws Exception;
 	
 	public User addUser(User info) throws Exception;

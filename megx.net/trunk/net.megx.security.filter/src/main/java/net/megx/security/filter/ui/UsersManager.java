@@ -152,6 +152,24 @@ public class UsersManager extends BaseRestService{
 		}
 	}
 	
+	@GET
+	@Path("q/{group}/{username}/{offset}:{limit}")
+	public String searchForUsersInRole(
+			@PathParam("group") String group,
+			@PathParam("username") String username,
+			@PathParam("offset") int offset,
+			@PathParam("limit") int limit
+			){
+		try {
+			if("*".equals(username)){
+				username = "";
+			}
+			return  toJSON(userService.filterUsers(username, group, offset, limit));
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+	}
+	
 	public void createUserHomeDirectory(User user) throws RepositoryException{
 		String username = user.getLogin();
 		if(user.getRoles() == null)

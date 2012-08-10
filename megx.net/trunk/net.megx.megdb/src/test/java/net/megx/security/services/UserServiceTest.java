@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -261,6 +262,14 @@ public class UserServiceTest extends DBServiceTest{
 		
 		userService.removeRole(role.getLabel());
 		Assert.assertTrue("Role is present in the list of available roles after removal", userService.getAvailableRoles(0,0,true).getResults().contains(role) == false);
+	}
+	
+	@Test
+	public void testFilterUsers() throws Exception{
+		PaginatedResult<User> result = userService.filterUsers("e", ROLE_USER.getLabel(), 0, 100);
+		Assert.assertNotNull("Paginated Result must NOT be null: ", result);
+		Assert.assertNotNull("Expected the results to NOT be null.", result.getResults());
+		Assert.assertTrue("Expected at least one result.", result.getResults().size() > 0);
 	}
 	
 	@After

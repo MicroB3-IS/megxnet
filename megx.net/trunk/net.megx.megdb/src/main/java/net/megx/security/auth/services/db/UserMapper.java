@@ -91,4 +91,14 @@ public interface UserMapper {
 	public void removePermission(String permission) throws Exception;
 	
 	public List<Permission> getAllPermissions() throws Exception;
+	
+	// users pagination
+	public List<User> filterUsersWithRole(
+			@Param("conditions") List<FilterCondition> conditions,
+			@Param("role") String role,
+			@Param("start") int start,
+			@Param("limit") int limit) throws Exception;
+	public int countFilteredResultsWithRole(
+			@Param("conditions") List<FilterCondition> conditions,
+			@Param("role") String role) throws Exception;
 }
