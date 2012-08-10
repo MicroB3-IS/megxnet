@@ -389,6 +389,32 @@ public class DBUserService extends BaseMegdbService implements UserService{
 	}
 
 
+	//private static List<String> VALID_USER_COLUMNS = 
+	//			Arrays.asList(new String [] {"logname","first_name","last_name","email", "description"});
+	
+	@Override
+	public PaginatedResult<User> filterUsers(String username, final String role,
+			final int start,final int maxResults) throws Exception {
+		
+		final List<FilterCondition> conditions = 
+				FilterCondition.likeBuilder().
+				add("logname", username).
+				//add("and", "first_name", "pavle").
+				build();
+		return doInTransaction(new DBTask<UserMapper, PaginatedResult<User>>() {
+
+			@Override
+			public PaginatedResult<User> execute(UserMapper mapper)
+					throws Exception {
+				List<User> users = mapper.filterUsersWithRole(conditions, role, start, maxResults);
+				int totalCount = mapper.countFilteredResultsWithRole(conditions, role);
+				return PaginatedResult.fromListWithPageSize(users, start, maxResults, totalCount);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
 	
 
 	/*
