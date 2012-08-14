@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,19 +18,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.megx.security.auth.AccessDeniedException;
 import net.megx.security.auth.AuthenticationManager;
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.model.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
-import net.megx.security.auth.SecurityException;
 import net.megx.security.filter.http.HttpRequestWrapper;
 import net.megx.security.filter.http.TemplatePageNodeFactory;
 import net.megx.security.filter.http.TemplatePageRenderer;
 import net.megx.security.filter.http.impl.AuthorizePageNode;
 import net.megx.security.filter.http.impl.RegisterPageNode;
+import net.megx.security.filter.impl.DefaultExceptionHandler;
 import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
@@ -52,6 +53,7 @@ public class SecurityFilter implements Filter{
 	private AuthenticationManager authenticationManager;
 	private WebResourcesService resourcesService;
 	List<EntryPointWrapper> entryPoints = new ArrayList<SecurityFilter.EntryPointWrapper>();
+	private List<ExceptionHandlerWrapper> exceptionHandlers = new LinkedList<ExceptionHandlerWrapper>();
 	private boolean enabled;
 	
 	private Map<String, Object> contextParameters;
@@ -143,44 +145,14 @@ public class SecurityFilter implements Filter{
 	
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-		log.debug("Exception: ",e);
-		storeRequestURL(request);
-		if(e instanceof IOException ){
-			throw (IOException)e;
-		}else if(e instanceof ServletException){
-			throw (ServletException)e;
-		}else if(e instanceof SecurityException){
-			SecurityContext context = WebContextUtils.getSecurityContext(request);
-			if(context != null){
-				context.storeLastException(e);
+		for(ExceptionHandlerWrapper w: exceptionHandlers){
+			if(!w.handler.handleException(e, request, response)){
+				break;
 			}
-			if(!response.isCommitted())
-				response.sendError(((SecurityException)e).getResponseCode(),e.getMessage());
-		}else if(e instanceof AccessDeniedException){
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-		}else{
-			throw new ServletException(e);
 		}
 	}
 	
-	private void storeRequestURL(HttpServletRequest request){
-		if(!"get".equals(request.getMethod().toLowerCase())){
-			if(log.isDebugEnabled())
-				log.debug("Last Request will not be stored. Method: " + request.getMethod());
-			return;
-		}
-		if(log.isDebugEnabled())
-			log.debug("Saving last request: " + request);
-		SecurityContext context = WebContextUtils.getSecurityContext(request);
-		if(context == null){
-			context = WebContextUtils.newSecurityContext(request);
-			WebContextUtils.replaceSecurityContext(context, request, true);
-		}
-		String requestURL = WebUtils.getRequestPath(request, true);
-		if(log.isDebugEnabled())
-			log.debug("   -> Last Request URL: " + requestURL);
-		context.storeLastRequestedURL(requestURL);
-	}
+	
 	
 	protected void checkAuthenticationResult(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, SecurityException{
@@ -256,6 +228,7 @@ public class SecurityFilter implements Filter{
 					});
 			
 			initializeEndpoints();
+			buildExceptionHandlers(filterConfig);
 		} catch (Exception e) {
 			log.error(e);
 			throw new ServletException(e);
@@ -263,6 +236,48 @@ public class SecurityFilter implements Filter{
 		log.debug("Secuirty filter successfully initialized.");
 	}
 
+	
+	private void buildExceptionHandlers(JSONObject config) throws Exception{
+		JSONArray handlersCfg = config.optJSONArray("exceptionHandlers");
+		ExceptionHandlerWrapper defaultHandler = new ExceptionHandlerWrapper(new DefaultExceptionHandler(), -1);
+		if(handlersCfg == null){
+			log.debug("Using only the default exception handler");
+			exceptionHandlers.add(defaultHandler);
+			return;
+		}
+		
+		for(int i = 0; i < handlersCfg.length(); i++){
+			JSONObject cfg = handlersCfg.optJSONObject(i);
+			if(cfg != null){
+				String className = cfg.optString("class");
+				int order = cfg.optInt("order", 0);
+				
+				log.debug("Building exception handler of type: " + className);
+				try {
+					Class<?> ehClass = getClassLoader().loadClass(className);
+					
+					Object instance = ehClass.newInstance();
+					
+					if(instance instanceof ExceptionHandler){
+						((ExceptionHandler)instance).init(cfg);
+						exceptionHandlers.add(new ExceptionHandlerWrapper((ExceptionHandler)instance, order));
+						log.debug("Build exception handler of instance: " + instance + " with order=" + order);
+					}else{
+						log.warn(String.format("Object (%s) is not instance of ExceptionHandler. Discarding instance.", instance.toString()));
+					}
+					
+				} catch (ClassNotFoundException e) {
+					log.error("The class for the exception handler implementation was not found.", e);
+					throw e;
+				}
+			}
+		}
+		Collections.sort(exceptionHandlers);
+		// add the default handler as last...
+		exceptionHandlers.add(defaultHandler);
+		log.debug("Exception handlers initialized.");
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	protected void buildEntryPoint(JSONObject config) throws JSONException, ClassNotFoundException, InstantiationException, IllegalAccessException{
@@ -354,6 +369,27 @@ public class SecurityFilter implements Filter{
 		public int compareTo(EntryPointWrapper o) {
 			return order - o.order;
 		}
+	}
+	
+	protected class ExceptionHandlerWrapper implements Comparable<ExceptionHandlerWrapper>{
+		public ExceptionHandler handler;
+		public int order;
+
+		public ExceptionHandlerWrapper() {	}
+		
+		
+		public ExceptionHandlerWrapper(ExceptionHandler handler, int order) {
+			super();
+			this.handler = handler;
+			this.order = order;
+		}
+
+
+		@Override
+		public int compareTo(ExceptionHandlerWrapper o) {
+			return order - o.order;
+		}
+		
 	}
 	
 	protected ClassLoader getClassLoader(){

@@ -88,6 +88,13 @@
 			{
 				name: 'default'
 			}
+		],
+		exceptionHandlers:[
+		  {
+		      'class': 'net.megx.security.filter.impl.RestServicesExceptionHandler',
+		      'order': 5,
+		      'patterns': ['/ws/.*']
+		  }
 		]
 	}
 }

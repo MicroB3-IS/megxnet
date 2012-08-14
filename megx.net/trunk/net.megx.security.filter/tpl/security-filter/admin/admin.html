@@ -8,21 +8,32 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+   var ERROR_HND = function(status, e, xhr, errorCallback){
+	   if(xhr.status == 401 || xhr.status == 403){
+		   document.location.reload(true);
+	   }else{
+		   if(errorCallback){
+			   errorCallback.call(this, status, e, xhr);
+		   }
+	   }
+   }
+   
    var um = new admin.UserManager({
       placeholder: '.content-placeholder',
-      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
    });
    um.showUsers();
    
    var rm = new admin.ResourcesManager({
-      resourcesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/resources'),
-      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
+      resourcesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/resources', ERROR_HND),
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
    });
    
    var rolesManager = new admin.RolesManager({
 	   placeholder: '.content-placeholder',
-	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles'),
-	   usersService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users')
+	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles', ERROR_HND),
+	   usersService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
    });
    
    var AdminManager = {
