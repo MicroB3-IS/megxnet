@@ -206,8 +206,10 @@
 	               value: resource.urlPattern || '',
 	               validator: function(val){
 	                  if($.trim(val) == ""){
+	                	 this.notifyEl.innerHTML = "<b><font color='red'>Please enter non empty URL pattern</font></b>";
 	                     return false;
 	                  }
+	                  this.notifyEl.innerHTML = "";
 	                  return true;
 	               }
 	            },
