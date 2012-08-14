@@ -25,6 +25,8 @@
 		   this.n = new components.ui.NotificationManager({
 		      selector: $('.security-notification-container', this.el)[0]
 		   });
+		   this.contentEl = $('.roles-panel-content', this.el)[0];
+		   
 	};
 	
 	extend(RolesManager, {
@@ -93,18 +95,80 @@
 				loadPage(page);
 			});
 			
-			$('.roles-panel-content', this.el).html('').append(el);
+			$(this.contentEl).html('').append(el);
 			$(this.placeholder).html('').append(this.el);
+			
+			var self =  this;
+			$('.roles-action-add', this.el).click(function(){
+			   self.addRole();
+			});
+			
 			loadPage(1);
 		},
 		show: function(){
 			this.ready(this._show);
 		},
-		addRole: function(){},
-		editRole: function(role){
+		addRole: function(){
 			this.ready(function(){
 				this._clearContentPanel();
-				this.createRolePanel(role);
+				var self = this;
+				this.createRolePanel({}, true,
+						function(panel, role, isNew){
+							var r = panel.getData();
+							var data = {
+									label: r.newLabel,
+									description: r.description,
+									permissions: r.permissions.join(',')
+							};
+							data.users = [];
+							for(var i = 0; i < role.usersInRole.length; i++){
+								data.users.push(role.usersInRole[i].login);
+							}
+							data.users = data.users.join(',');
+							self.rolesService.post('', data, function(){
+								// successfully added
+								self.n.message("Info: ", "Group " + data.label + " was successfully added.")
+								self.show();
+							}, function(){
+								// failed to add
+								self.n.error("Error: ", "Failed to add group: " + data.label);
+							});
+						},
+						function(panel, role, isNew){
+							self.n.confirm("Confirm Cancel", "Are you sure you want to cancel the adding of the new group?", 
+									function(){
+								self.show();
+							});
+						}
+				);
+			});
+		},
+		editRole: function(role){
+			var self = this;
+			this.ready(function(){
+				this._clearContentPanel();
+				this.createRolePanel(role, false, function(panel, role, isNew){
+					var r = panel.getData();
+					var data = {
+							oldLabel: r.oldLabel,
+							newLabel: r.newLabel,
+							descrption: r.description,
+							permissions: (r.permissions || []).join(',')
+					};
+					self.rolesService.put('', data, function(){
+						// successfully updated
+						self.n.message("Info: ", "Group " + data.label + " was successfully updated.")
+						self.show();
+					},function(){
+						// failed to update
+						self.n.error("Error: ", "Failed to update group: " + data.label);
+					});
+				}, function(panel, role, isNew){
+					self.n.confirm("Confirm Cancel", "Are you sure you want to cancel the update of group '"+role.label+"'?", 
+							function(){
+						self.show();
+					});
+				});
 			});
 		},
 		_toUIPermissions: function(role){
@@ -137,8 +201,10 @@
 			$('.roles-panel-content', this.el).html('');
 		},
 		removeRole: function(role){},
-		createRolePanel: function(role){
+		createRolePanel: function(role, isNew, okCallback, cancelCallback){
 			var self = this;
+			okCallback = okCallback || $.noop;
+			cancelCallback = cancelCallback || $.noop;
 			var rp = new components.ui.DataPanel({
 				selector: $('.roles-panel-content', this.el)[0],
 		        title: 'Manage Group',
@@ -222,13 +288,13 @@
 		        	'ok':{
 		        		text: 'Save',
 		        		handler: function(e, panel) {
-		        			
+		        			okCallback.call(panel, panel, role, isNew);
 		        		}
 		        	},
 		        	'cancel': {
 		        		text: 'Cancel',
 		        		handler: function(e, panel){
-		        			
+		        			cancelCallback.call(panel, panel, role, isNew);
 		        		}
 		        	}
 		        }
@@ -267,17 +333,34 @@
 									    	extraClass: 'user-add',
 									    	text: 'Add',
 									    	handler: function(action){
-									    		self.rolesService.post('addUser', {
-									    			username: user.login,
-									    			role: role.label
-									    		}, function(){
-									    			// update the users list
-									    			if(listSelect)
-									    				listSelect.refresh();
-									    			
-									    		}, function(){
-									    			// failed to add user...
-									    		});
+									    		if(isNew){
+									    			role.usersInRole = role.usersInRole || [];
+									    			var alreadyInRole = false;
+									    			for(var i = 0; i < role.usersInRole.length; i++){
+									    				if(user.login == role.usersInRole[i].login){
+									    					alreadyInRole = true;
+									    					break;
+									    				}
+									    			}
+									    			if(!alreadyInRole){
+									    				role.usersInRole.push(user);
+									    			// 	update the users list
+									    				if(listSelect)
+									    					listSelect.refresh();
+									    			}
+									    		}else{
+										    		self.rolesService.post('addUser', {
+										    			username: user.login,
+										    			role: role.label
+										    		}, function(){
+										    			// update the users list
+										    			if(listSelect)
+										    				listSelect.refresh();
+										    			
+										    		}, function(){
+										    			// failed to add user...
+										    		});
+									    		}
 									    		select.done();
 									    	}
 									    }
@@ -296,7 +379,59 @@
 			
 			var listSelect = new LongListSelect({
 				el: $('.users-list', umel)[0],
-				filter: function(query, page, pageSize, success, error){
+				
+			});
+			
+			
+			if(isNew){
+				// new group
+				role.usersInRole = role.usersInRole ||[];
+				listSelect.filter = function(query, page, pageSize, success, error){
+					var results = [];
+					query = query || '';
+					each(role.usersInRole, function(i, u){
+						if(query == '' || u.login.toLowerCase().indexOf(query.toLowerCase()) >= 0){
+							results.push({
+								title: $.trim(u.firstName + ' ' + u.lastName) || u.login || u.email,
+								description: u.description || '&nbsp;',
+								actions: [{
+									text: 'Remove',
+									extraClass: 'action-remove-user-from-role',
+									handler: function(action){
+										//debugger
+										for(var i = 0; i < role.usersInRole.length; i++){
+											if(u.login == role.usersInRole[i].login){
+												role.usersInRole.splice(i, 1);
+												listSelect.refresh(page);
+												break;
+											}
+											
+										}
+									}
+								}]
+							});
+						}
+					});
+					
+					var i = (page-1)*pageSize;
+					i = i >= 0 ? i : 0;
+					var totalCount = results.length;
+					if(i < results.length){
+						results = results.slice(i, pageSize);
+					}else{
+						results = [];
+					}
+					
+					success( {
+						totalCount: totalCount,
+						results: results,
+						page: page,
+						pageSize: pageSize
+					} );
+				};
+			}else{
+				// for existing group
+				listSelect.filter = function(query, page, pageSize, success, error){
 					query = query || '';
 					query = $.trim(query) || '*';
 					self.usersService.get('q/'+(role.label || '') +'/'+query +'/' + ((page-1)*pageSize) +':'+pageSize, undefined,
@@ -335,10 +470,11 @@
 								success(result);
 							},
 							function(){});
-				}
-			});
+				};
+			}
 			
 			
+			listSelect.refresh();
 			
 			return rp;
 		}
@@ -503,7 +639,7 @@
 			var m = [
 			    '<div class="long-select-wrapper">',
 			    	'<div class="long-select-header">',
-			    		'<div class="long-select-filter-wrapper">',
+			    		'<div class="long			-select-filter-wrapper">',
 			    			'<label class="long-select-filter-label">Filter: </label>',
 			    			'<input type="text" class="long-select-filter-input"/>',
 			    		'</div>',
