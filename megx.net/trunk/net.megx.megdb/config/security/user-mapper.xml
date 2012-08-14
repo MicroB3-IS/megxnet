@@ -212,7 +212,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</update>
 	
 	<update id="updateRole" parameterType="map">
-		update auth.permissions
+		update auth.roles
 			set 
 				label=#{role.label},
 				description=#{role.description}

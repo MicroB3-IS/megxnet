@@ -152,13 +152,17 @@
 					var data = {
 							oldLabel: r.oldLabel,
 							newLabel: r.newLabel,
-							descrption: r.description,
+							description: r.description,
 							permissions: (r.permissions || []).join(',')
 					};
 					self.rolesService.put('', data, function(){
 						// successfully updated
-						self.n.message("Info: ", "Group " + data.label + " was successfully updated.")
-						self.show();
+						if(!data.error){
+							self.n.message("Info: ", "Group " + data.label + " was successfully updated.")
+							self.show();
+						}else{
+							self.n.error("Error: ", "Failed to update group: " + data.message);
+						}
 					},function(){
 						// failed to update
 						self.n.error("Error: ", "Failed to update group: " + data.label);
