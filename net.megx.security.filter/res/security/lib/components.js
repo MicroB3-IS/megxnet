@@ -30,7 +30,7 @@
    };
 	   
 	
-	var RESTClient = function(baseUrl){
+	var RESTClient = function(baseUrl, errorHnd){
 	   this.baseUrl = baseUrl;
 	   var self = this;
 	   
@@ -42,7 +42,7 @@
 				type: method,
 				data: data || {},
 				dataType: 'json',
-				success: function(data, status,xhr){
+				success: function(data, status, xhr){
 				   console.log('REST-DONE: ', method, ' ', url, data);
 					if(success){
 						success.call(self, data);
@@ -50,12 +50,19 @@
 				},
 				error: function(xhr, txtStatus, err){
 				   console.log('REST-ERR: ', method, ' ', url, data, ' :: ', txtStatus, err);
-					error = error || (function(s,e){
-						alert('Error. Code: '+ s + '\n'+(typeof(e) == 'string' ? e : e.message));
-					});
-					error.call(self, txtStatus, err);
+					self.error(txtStatus, err, xhr, error);
 				}
 			});
+		};
+		
+		
+		this.error = function(status, e, xhr, errCallback){
+			if(errorHnd)
+				errorHnd.call(self, status, e, xhr, errCallback);
+			else{
+				errCallback = errCallback || function(){alert("Error: " + status + " - " + e);}
+				errCallback.call(this, status, e, xhr);
+			}
 		};
 		
 		this.get = function(url, data, success, error){

@@ -109,7 +109,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			if(log.isDebugEnabled())
 				log.debug("\t-> Last stored URL: " + lastRequestUrl);
 			if(lastRequestUrl == null){
-				lastRequestUrl = WebUtils.getFullContextURL(request);
+				lastRequestUrl = WebUtils.getAppURL(request);
 			}else{
 				lastRequestUrl = request.getContextPath() + lastRequestUrl;
 			}

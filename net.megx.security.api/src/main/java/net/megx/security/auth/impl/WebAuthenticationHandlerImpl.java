@@ -57,6 +57,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 		}
 		if(getRequestPath(request).matches(logoutEndpointUrl)){
 			WebContextUtils.clearSecurityContext(request);
+			request.getSession().invalidate();
 			return null;
 		}
 		return authentication;
