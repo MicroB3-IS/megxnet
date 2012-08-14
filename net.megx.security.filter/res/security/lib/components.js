@@ -503,6 +503,7 @@
 	   'text': DataField,
 	   'textarea': DataField,
 	   'textbox': DataField,
+	   'hidden': DataField,
 	   'radio': BooleanDataField,
 	   'checkbox': BooleanDataField,
 	   'submit': DataField,
@@ -556,7 +557,8 @@
                   d.type=='checkbox' ||
                   d.type=="submit" ||
                   d.type=="button" || 
-                  d.type=="password"){
+                  d.type=="password" ||
+                  d.type == 'hidden'){
                m.push([
                   '<input ',
                   'type="',d.type,'" ',

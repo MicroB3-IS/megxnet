@@ -294,13 +294,14 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public Role execute(UserMapper mapper) throws Exception {
+				Role r = mapper.getRole(oldLabel);
 				mapper.updateRole(oldLabel, role);
-				Role r = mapper.getRole(role.getLabel());
+				
 					
 				List<Permission> permissions = r.getPermissions();
 				if(permissions != null){
 					for(Permission p: permissions){
-						mapper.grantPermission(role.getLabel(), p.getLabel());
+						mapper.revokePermission(r.getLabel(), p.getLabel());
 					}
 				}
 				

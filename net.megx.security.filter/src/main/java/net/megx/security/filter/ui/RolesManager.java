@@ -97,8 +97,13 @@ public class RolesManager extends BaseRestService{
 	public String addRole(
 			@FormParam("label") String label,
 			@FormParam("description") String description,
-			@FormParam("permissions") String permissionsStr
+			@FormParam("permissions") String permissionsStr,
+			@FormParam("users") String users
 			){
+		String [] usersToRole = null;
+		if(users != null){
+			usersToRole = users.split(",");
+		}
 		Role role = new Role();
 		role.setDescription(description);
 		role.setLabel(label);
@@ -120,6 +125,17 @@ public class RolesManager extends BaseRestService{
 		
 		try {
 			role = userService.createRole(role);
+			if(usersToRole != null){
+				for(String username: usersToRole){
+					User user = userService.getUserByUserId(username);
+					if(user != null){
+						if(user.getRoles() != null && !user.getRoles().contains(role)){
+							user.getRoles().add(role);
+							userService.updateUser(user);
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			return toJSON(handleException(e));
 		}
