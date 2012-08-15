@@ -18,11 +18,19 @@
 	margin: 4px;
 }
 
+.panel-field-notification{
+	margin-left: 15px;
+	color: #900;
+}
+
 .panel-field-label{
 	float: left;
 	width: 200px;
 	font: bold 12px sans-serif;
 	color: #999;
+}
+.panel-field-state-notify{
+	background-color: #FDD;
 }
 
 .panel-input-array-element{

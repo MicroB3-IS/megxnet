@@ -322,9 +322,11 @@
 	   
 	   notify: function(message, clear){
 	      if(clear){
-	         $(this.notifEl).html('');
+	         $(this.notifyEl).html('');
+	         $(this.el).removeClass('panel-field-state-notify');
 	      }else{
-	         $(this.notifEl).html(message);
+	         $(this.notifyEl).html(message);
+	         $(this.el).addClass('panel-field-state-notify');
 	      }
 	   },
 	   
@@ -332,14 +334,14 @@
 	      if(this.validator){
 	         if(typeof(this.validator) == 'function'){
 	            if(!this.validator(this.getValue())){
-	               this.notify('Invalid value');
+	               this.notify(this.validatorMessage || 'Invalid value');
 	               return false;
 	            }
 	         }else if(typeof(this.validator) == 'string'){
 	            try{
 	               var reg = new RegExp(this.validtor);
 	               if(!reg.test(this.getValue())){
-	                  this.notify('Invalid value');
+	                  this.notify(this.validatorMessage || 'Invalid value');
 	                  return false;
 	               }
 	            }catch(e){
@@ -550,6 +552,7 @@
                name: d.name,
                type: d.type,
                validator: d.validator,
+               validatorMessage: d.validatorMessage,
                events: d.events,
                value: d.value
             };

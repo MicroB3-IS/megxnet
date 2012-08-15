@@ -59,14 +59,14 @@
 		],
 		registration:{
 			reCaptcha: {
-				publicKey: '6Lc_I9QSAAAAAHYatrV6XC0BUamQKY77ZWhUzLNH',
-				privateKey: '6Lc_I9QSAAAAAKHTGfJEXHFu6b7IYQIQuTuNns6z',
+				publicKey: '6LfARNUSAAAAAG5g9ad_DArzhQqt84x-5CtNOo3U',
+				privateKey: '6LfARNUSAAAAACCeZGoQLBjNQIgdO6joTCkZ__x_',
 				verifyUrl: 'http://www.google.com/recaptcha/api/verify',
 				dgbSkipCaptchaValidation: false
 			},
 			mail:{
-				user: '<smtp user>',
-				password: '<smtp pass>',
+				user: 'megxdevinfo@gmail.com',
+				password: '2mfk89^43g$5l',
 				address: 'registration@megx.net',
 				options: {
 					'mail.smtp.auth' : 'true',

@@ -158,6 +158,11 @@ public class RegistrationManager {
 		if(getCaptchaConfig().optBoolean("dgbSkipCaptchaValidation",false)){
 			return true;
 		}
+		if(log.isDebugEnabled()){
+			log.debug("Verifying captcha -> Chanllenge: [" + challenge + "], response=[" + response + "], remoteIP=[" + remoteIP + "], privateKey=[" + privateKey + "]");
+		}
+		
+		
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(getCaptchaConfig().optString("verifyUrl"));
 
