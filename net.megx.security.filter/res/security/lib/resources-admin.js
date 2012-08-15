@@ -261,6 +261,11 @@
 	                        })(resource),
 	                     events: {
 	                        'value-remove': function(e, f, value){
+	                           if(value == 'all'){
+	                        	   each(ResourcesManager.HTTP_METHODS, function(v,l){
+	                        		   rp.getDataField('httpMethod').addValue(v, l);
+	                        	   });
+	                           }
 	                           rp.getDataField('httpMethod').addValue(value, ResourcesManager.HTTP_METHODS[value]);
 	                        }
 	                     },
@@ -281,6 +286,12 @@
                         events: {
 	                        'change': function(e, f){
 	                           var value = f.getValue();
+	                           if(value == 'all'){
+	                        	   rp.getDataField('httpMethods').values = {};
+	                        	   each(ResourcesManager.HTTP_METHODS, function(v,l){
+	                        		   f.removeValue(v);
+	                        	   });
+	                           }
 	                           rp.getDataField('httpMethods').addValue(value);
 	                           f.removeValue(value);
 	                        }
@@ -293,6 +304,14 @@
 	                     events: {
 	                        'click': function(e,f){
 	                           var value = rp.getDataField('httpMethod').getValue();
+	                           
+	                           if(value == 'all'){
+	                        	   each(ResourcesManager.HTTP_METHODS, function(v,l){	                        		   
+	                        		   rp.getDataField('httpMethod').removeValue(v);
+	                        	   });
+	                        	   rp.getDataField('httpMethods').values = {};
+	                           }
+	                           
 	                           rp.getDataField('httpMethods').addValue(value);
 	                           rp.getDataField('httpMethod').removeValue(value);
 	                        }
