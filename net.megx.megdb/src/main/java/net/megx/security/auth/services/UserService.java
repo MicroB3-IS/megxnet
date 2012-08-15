@@ -29,8 +29,7 @@ public interface UserService {
 	public User getUserByUserId(String userId) throws Exception;
 	public User getUserByConsumerKey(String consumerKey) throws Exception;
 	public User getUser(String username, String password) throws Exception;
-	@Deprecated
-	public User getUser(String uniqueIdentifier) throws Exception;
+	public PaginatedResult<User> getUsersByEmail(String email, int start, int pageSize) throws Exception;
 	public List<User> getUsers() throws Exception;
 	public List<User> getUsersWithRole(String role) throws Exception;
 	public PaginatedResult<User> filterUsers(String username, String role, 

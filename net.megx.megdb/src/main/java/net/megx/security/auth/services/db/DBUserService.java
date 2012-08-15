@@ -132,15 +132,19 @@ public class DBUserService extends BaseMegdbService implements UserService{
 
 			@Override
 			public User execute(UserMapper mapper) throws Exception {
-				for(Role rr: oldRoles){
-					if(log.isDebugEnabled())
-						log.debug("Revoking: " + rr);
-					mapper.revokeRole(old.getLogin(), rr.getLabel());
+				if(oldRoles != null){
+					for(Role rr: oldRoles){
+						if(log.isDebugEnabled())
+							log.debug("Revoking: " + rr);
+						mapper.revokeRole(old.getLogin(), rr.getLabel());
+					}
 				}
-				for(Role gr: newRoles){
-					if(log.isDebugEnabled())
-						log.debug("Granting: " + gr);
-					mapper.grantRole(userInfo.getLogin(), gr.getLabel());
+				if(newRoles != null){
+					for(Role gr: newRoles){
+						if(log.isDebugEnabled())
+							log.debug("Granting: " + gr);
+						mapper.grantRole(userInfo.getLogin(), gr.getLabel());
+					}
 				}
 				if(log.isDebugEnabled())
 					log.debug("Updating: " + userInfo);
@@ -410,6 +414,23 @@ public class DBUserService extends BaseMegdbService implements UserService{
 				List<User> users = mapper.filterUsersWithRole(conditions, role, start, maxResults);
 				int totalCount = mapper.countFilteredResultsWithRole(conditions, role);
 				return PaginatedResult.fromListWithPageSize(users, start, maxResults, totalCount);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public PaginatedResult<User> getUsersByEmail(String email, final int start, final int pageSize) throws Exception {
+		final List<FilterCondition> cond = FilterCondition.builder().add("email", email).build();
+		
+		return doInSession(new DBTask<UserMapper, PaginatedResult<User>>() {
+
+			@Override
+			public PaginatedResult<User> execute(UserMapper mapper) throws Exception {
+				List<User>users =  mapper.filterUsersWithRole(cond, null, start, pageSize);
+				int total = mapper.countFilteredResultsWithRole(cond, null);
+				return PaginatedResult.fromListWithPageSize(users, start, pageSize, total);
 			}
 			
 		}, UserMapper.class);

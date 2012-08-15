@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
@@ -54,7 +55,7 @@ public class UsersManager extends BaseRestService{
 	}
 	
 	@POST
-	public void addUser(
+	public String addUser(
 			@FormParam("login") String login,
 			@FormParam("firstName") String firstName,
 			@FormParam("lastName") String lastName,
@@ -64,7 +65,7 @@ public class UsersManager extends BaseRestService{
 			@FormParam("roles") String roles,
 			@FormParam("password") String password,
 			@FormParam("email") String email
-			) throws Exception{
+			){
 		User user = new User();
 		user.setLogin(login);
 		user.setPassword(password);
@@ -84,12 +85,28 @@ public class UsersManager extends BaseRestService{
 			lroles.add(r);
 		}
 		user.setRoles(lroles);
-		userService.addUser(user);
-		createUserHomeDirectory(user);
+		try{
+			PaginatedResult<User>  result = userService.getUsersByEmail(email, 0, 2);
+			if(result.getTotalCount() > 0){
+				return toJSON(new Result<Object>(true, "A user with this email already exist", "duplicate-email"));
+			}
+			User existing = userService.getUserByUserId(login);
+			if(existing != null){
+				return toJSON(new Result<Object>(true, "A user with this username already exist", "duplicate-username"));
+			}
+			userService.addUser(user);
+			createUserHomeDirectory(user);
+		}catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+		Result<String> result = new Result<String>();
+		
+		
+		return toJSON(result);
 	}
 	
 	@PUT
-	public void updateUser(
+	public String updateUser(
 			@FormParam("login") String login,
 			@FormParam("firstName") String firstName,
 			@FormParam("lastName") String lastName,
@@ -99,7 +116,7 @@ public class UsersManager extends BaseRestService{
 			@FormParam("roles") String roles,
 			@FormParam("password") String password,
 			@FormParam("email") String email
-			) throws Exception{
+			){
 		
 		
 		User user = new User();
@@ -125,8 +142,13 @@ public class UsersManager extends BaseRestService{
 			lroles.add(r);
 		}
 		user.setRoles(lroles);
-		userService.updateUser(user);
-		createUserHomeDirectory(user);
+		try{
+			userService.updateUser(user);
+			createUserHomeDirectory(user);
+		}catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+		return toJSON(new Result<Object>());
 	}
 	
 	@DELETE

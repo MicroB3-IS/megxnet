@@ -136,7 +136,7 @@ public class WebResourcesServiceTest extends DBServiceTest{
 			roles.add(role.getLabel());
 		}
 		httpMethods.add(SECOND_HTTP_METHOD);
-		webResourcesService.updateWebResource(URL_PATTERN, httpMethods, roles);
+		webResourcesService.updateWebResource(URL_PATTERN, URL_PATTERN, httpMethods, roles);
 		List<WebResource> updatedResources = webResourcesService.match(URL_PATTERN, SECOND_HTTP_METHOD);
 		Assert.assertTrue("No resources matched the URL pattern", updatedResources.size() > 0);
 	}

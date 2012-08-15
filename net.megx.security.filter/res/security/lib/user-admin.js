@@ -111,11 +111,11 @@
 		               validator: function(value){
 		            	   value = $.trim(value || '');
 		            	   if(value.length < 3 || value.length > 20){
-		            		   //this.validatorMessage = 'The length of the username must be between 3 and 20 characters long.';
+		            		   this.validatorMessage = 'The length of the username must be between 3 and 20 characters long.';
 		            		   return false;
 		            	   }
 		            	   if(!/^[a-zA-Z0-9_\\.\\-]+$/.test(value)){
-		            		   //this.validatorMessage = "Please enter valid username. The username can be any combination of letters, numbers, underscore dot or a dash.";
+		            		   this.validatorMessage = "Please enter valid username. The username can be any combination of letters, numbers, underscore dot or a dash.";
 		            		   return false;
 		            	   }
 		            	   return true;
@@ -143,7 +143,19 @@
 		               type: 'text',
 		               name: 'email',
 		               label: 'e-mail: ',
-		               title: 'e-mail'
+		               title: 'e-mail',
+		               validator: function(val){
+		            	   val = $.trim(val || '');
+		            	   if(val == ''){
+		            		   this.validatorMessage = 'Please enter your email.';
+		            		   return false;
+		            	   }
+		            	   if( !(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)) ){
+		            		   this.validatorMessage = 'Please enter valid email.';
+		            		   return false;
+		            	   }
+		            	   return true;
+		               }
 		            },
 		            {
 		               type: 'text',
@@ -155,7 +167,15 @@
 		               type: 'password',
 		               name: 'password',
 		               label: 'Password: ',
-		               title: 'Password'
+		               title: 'Password',
+		               validator: function(value){
+		            	   value = $.trim(value || '');
+		            	   if(value.length < 3 || value.length > 20){
+		            		   this.validatorMessage = 'The length of the password must be between 3 and 20 characters long.';
+		            		   return false;
+		            	   }
+		            	   return true;
+		               }
 		            },
 		            {
 		               type: 'password',
@@ -181,6 +201,13 @@
 		                        'value-remove': function(e,f,val){
 		                           uep.getDataField('select_roles').addValue(val);
 		                        }
+		                     },
+		                     validator: function(val){
+		                    	 if(!val || !val.length){
+		                    		 this.validatorMessage = 'The user must have at least one role.';
+		                    		 return false;
+		                    	 }
+		                    	 return true;
 		                     }
 		                  },
 		                  {
@@ -274,6 +301,10 @@
 		               return;
 		            }
 	   	         self.userService.put('',u, function(){
+	   	        	if(data.error){
+	   	        		self.n.error("Error: ", data.message);
+	   	        		return;
+	   	        	}
 	   	            self.n.message('Info:', 'User updated.');
 	   	            panel.close();
 	   	            self.showUsers();
@@ -296,24 +327,20 @@
 		    		 return;
 		    	 }
 		         if(u){
-		            //var roles = [];
 		            u.roles = (u.roles || []).join(',');
 		            u.roles = u.roles || [];
 		            if(u.password != u.re_password){
 		               self.n.alert('','Password does not match! Please re-enter passwords.');
 		               return;
 		            }
-
-		            //for(var i = 0; i < u.roles.length; i++){
-		             //  roles.push({
-		             //     label: u.roles[i]
-		             //  });
-		            //}
-		            //u.roles = roles;
-	   	         self.userService.post('',u, function(){
-	   	            self.n.message('Info:', 'User added.');
-	   	            panel.close();
-	   	            self.showUsers();
+	   	         self.userService.post('',u, function(data){
+	   	        	 if(data.error){
+	   	        		 self.n.error("Error: ", data.message);
+	   	        		 return;
+	   	        	 }
+	   	        	 self.n.message('Info:', 'User added.');
+	   	        	 panel.close();
+	   	        	 self.showUsers();
 	   	         },function(){
 	   	            self.n.error("Error: ", "Failed to add user.");
 	   	         });
