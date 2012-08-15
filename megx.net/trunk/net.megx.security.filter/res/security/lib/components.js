@@ -410,15 +410,18 @@
 	      return vls;
 	   },
 	   setValue: function(val){
-	      if($.isArray(val)){
-   	      for(var  i = 0; i < val.length; i++){
-   	         this.addValue(val[i], false);
-   	      }
-	      }else{
-   	      this.addValue(val, false);
-   	   }
+		   if($.isArray(val)){
+			   for(var  i = 0; i < val.length; i++){
+				   this.addValue(val[i], false);
+			   }
+		   }else{
+			   this.addValue(val, false);
+		   }
 	   },
 	   addValue: function(val, notify){
+		  if(val === undefined  || val === null){
+			  return;
+		  }
 	      notify = notify === undefined ? true : notify;
 	      if(this.values[val] === undefined){
 	         this.values[val] = val;
@@ -470,11 +473,23 @@
 	         this.setValue(this.value);
 	   },
 	   addValue: function(value, label){
-	      $(this.el).append([
-	         '<option id="',_getId('option'),'" ',
-	         'value="', value, '" ',
-	         '>', label || value,
-	         '</option>'].join(''));
+		  if(value === undefined  || value === null)
+			  return;
+		  var contains = false;
+		  $('option', this.el).each(function(){
+			  var v = $(this).attr('value');
+			  if(v == value){
+				  contains = true;
+				  return false;
+			  }
+		  });
+		  if(!contains){
+		      $(this.el).append([
+		         '<option id="',_getId('option'),'" ',
+		         'value="', value, '" ',
+		         '>', label || value,
+		         '</option>'].join(''));
+		  }
 	   },
 	   removeValue: function(val){
 	      $('option', this.el).each(function(){
