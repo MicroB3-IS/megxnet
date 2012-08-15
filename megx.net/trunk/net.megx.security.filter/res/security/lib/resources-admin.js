@@ -205,11 +205,14 @@
 	               title: 'URL Pattern',
 	               value: resource.urlPattern || '',
 	               validator: function(val){
-	                  if($.trim(val) == ""){
-	                	 this.notifyEl.innerHTML = "<b><font color='red'>Please enter non empty URL pattern</font></b>";
-	                     return false;
+	                  if($.trim(val || '') == ""){
+	                	  this.validatorMessage = "Please enter non empty URL pattern. ";
+	                	  return false;
 	                  }
-	                  this.notifyEl.innerHTML = "";
+	                  if(/\*{2,}/.test(val)){
+	                	  this.validatorMessage = "Please enter a valid URL pattern. The URL pattern may contain wildcards (*) but not more than one wildcard in sequence.";
+	                	  return false;
+	                  }
 	                  return true;
 	               }
 	            },
@@ -230,6 +233,13 @@
 	                        'value-remove': function(e, f, value){
 	                           rp.getDataField('httpMethod').addValue(value, ResourcesManager.HTTP_METHODS[value]);
 	                        }
+	                     },
+	                     validator: function(val){
+	                    	 if(!val || !val.length){
+	                    		 this.validatorMessage = "Please select at least one HTTP method.";
+	                    		 return false;
+	                    	 }
+	                    	 return true;
 	                     }
 	                  },
 	                  {
@@ -274,6 +284,13 @@
 	                        each(o, function(k){r.push(k);});
 	                        return r;
 	                     })(resource.roles),//this.getRolesForResource(resource),
+	                     validator: function(val){
+	                    	 if(!val || !val.length){
+	                    		 this.validatorMessage = "Please enter at least one role that has the access privileges to this resource.";
+	                    		 return false;
+	                    	 }
+	                    	 return true;
+	                     },
 	                     events: {
 	                        'value-remove': function(e, f, value){
 	                           for(var  i = 0; i < self.roles.length; i++){
@@ -367,7 +384,6 @@
 	   fromServer: function(resources){
 	      var rs = [];
 	      var rsc = {};
-	      //debugger
 	      for(var i = 0; i < resources.length; i++){
 	         var r = rsc[resources[i].urlPattern];
 	         if(!r){

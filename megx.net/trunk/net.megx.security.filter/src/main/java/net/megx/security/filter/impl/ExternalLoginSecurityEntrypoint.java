@@ -357,8 +357,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			DiscoveryInformation information = getFromSession(request, ATTR_DISCOVERED);
 			
 			// extract the receiving URL from the HTTP request
+			String queryString = request.getQueryString();
 		    StringBuffer receivingURL = request.getRequestURL();
-		    String queryString = request.getQueryString();
 		    if (queryString != null && queryString.length() > 0)
 		        receivingURL.append("?").append(request.getQueryString());
 
