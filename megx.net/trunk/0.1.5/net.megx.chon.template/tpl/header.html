@@ -1,0 +1,13 @@
+<figure class="logo"><a href="$ctx.siteUrl"><img src="$ctx.siteUrl/images/logo.png"></a></figure>
+<article class="header-right"> 
+	#if($req.user) 
+		<sub><span><a href="$ctx.siteUrl/admin/explorer.main.do">Admin Area</a></span> | <span><a href="$ctx.siteUrl/admin/logout.do">logout</a><span></sub>
+		<h6 class="FR"> Welcome $req.user.name, role: $req.user.role</h6>
+	<div class="clear"></div>
+		<sub><span>Last Login: 11/16/2010 at 10:53 PM</span></sub> 
+	#else
+		<h6 class="FR"><a href="$ctx.siteUrl/login">log in</a> </h6>
+	#end 
+</article>
+#parse("pages/fragments/nav_bar.html")
+<div class="headerBorder"></div>
