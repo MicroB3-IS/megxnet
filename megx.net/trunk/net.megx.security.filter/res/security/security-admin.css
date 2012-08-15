@@ -22,12 +22,15 @@
 	margin-left: 15px;
 	color: #900;
 }
-
+.panel-info{
+	font-size: 12px;
+	color: #999;
+}
 .panel-field-label{
 	float: left;
 	width: 200px;
 	font: bold 12px sans-serif;
-	color: #999;
+	color: #666;
 }
 .panel-field-state-notify{
 	background-color: #FDD;
