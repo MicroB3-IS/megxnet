@@ -131,7 +131,7 @@
 	         this.clearMainPanel();
 	         var ap = this.getResourcePanel({}, function(panel, resource){
 	            var rc = {
-                  urlPattern: resource.urlPattern,
+	              urlPattern: resource.urlPattern,
                   httpMethods: (resource.httpMethods || []).join(','),
                   roles: (resource.roles || []).join(',')
                };
@@ -170,6 +170,7 @@
 	         this.clearMainPanel();
 	         var ap = this.getResourcePanel(res, function(panel, resource){
 	            var rc = {
+	              originalUrlPattern: res.urlPattern,
                   urlPattern: resource.urlPattern,
                   httpMethods: (resource.httpMethods || []).join(','),
                   roles: (resource.roles || []).join(',')

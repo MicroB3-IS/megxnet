@@ -45,13 +45,14 @@ public class ResourcesManager {
 	
 	@PUT
 	public void updateResource(
+			@FormParam("originalUrlPattern") String originalUrlPattern,
 			@FormParam("urlPattern") String urlPattern,
 			@FormParam("httpMethods") String httpMethods,
 			@FormParam("roles") String roles
 			) throws Exception{
 		String [] methods = httpMethods.split(",");
 		String [] rolesArr = roles.split(",");
-		resourcesService.updateWebResource(urlPattern, Arrays.asList(methods), Arrays.asList(rolesArr));
+		resourcesService.updateWebResource(originalUrlPattern, urlPattern, Arrays.asList(methods), Arrays.asList(rolesArr));
 	}
 	
 	@POST

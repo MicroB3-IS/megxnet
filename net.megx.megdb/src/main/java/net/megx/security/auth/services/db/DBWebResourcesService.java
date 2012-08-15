@@ -81,13 +81,13 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 	}
 
 	@Override
-	public void updateWebResource(final String urlPattern, final List<String> methods,
+	public void updateWebResource(final String originalUrlPattern, final String urlPattern, final List<String> methods,
 			final List<String> roles) throws Exception {
 		doInTransaction(new DBTask<WebResourcesMapper, Object>() {
 
 			@Override
 			public Object execute(WebResourcesMapper mapper) throws Exception {
-				mapper.deleteByUrlPattern(urlPattern);
+				mapper.deleteByUrlPattern(originalUrlPattern);
 				
 				for(String method: methods){
 					for(String role: roles){

@@ -11,7 +11,7 @@ public interface WebResourcesService {
 	public void addWebResourceMapping(WebResource resource) throws Exception;
 	public void addWebResourceMappings(List<WebResource> resources) throws Exception;
 	public void updateWebResource(WebResource resource) throws Exception;
-	public void updateWebResource(String urlPattern, List<String> methods, List<String> roles) throws Exception;
+	public void updateWebResource(String originalUrlPattern, String urlPattern, List<String> methods, List<String> roles) throws Exception;
 	public void removeWebResource(WebResource resource) throws Exception;
 	public void removeWebResourceByPattern(String urlPattern) throws Exception;
 	
