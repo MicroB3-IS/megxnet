@@ -32,7 +32,7 @@ public class Activator extends ResTplConfiguredActivator {
 		String serveltRoot = System.getProperty("dav.root", ALIAS);
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("alias", serveltRoot);
-		props.put("init.resource-path-prefix", ALIAS);
+		props.put("init.resource-path-prefix", serveltRoot);
 		props.put("init.missing-auth-mapping", "");
 		props.put("init.resource-config", "__config/config.xml");
 		SimpleWebdavServletImpl servlet = new SimpleWebdavServletImpl(repository);
