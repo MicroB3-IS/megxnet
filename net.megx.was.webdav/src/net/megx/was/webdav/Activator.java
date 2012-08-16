@@ -24,8 +24,6 @@ public class Activator extends ResTplConfiguredActivator {
 	@Override
 	protected void registerExtensions(JCRApplication app) {
 		System.out.println("*APP************** Activator.onAppAdded()");
-		Jocko j = new Jocko();
-		j.metoda();
 		
 		ContentModel cm = app.createContentModelInstance(getName());
 		Repository repository = cm.getSession().getRepository();
