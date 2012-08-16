@@ -90,6 +90,18 @@
 						$("input[name='"+sel+"']").addClass('invalid');
 						valid=false;
 					}
+					else if(sel == 'logname'){
+						if(!/^[a-zA-Z0-9_\\.\\-]+$/.test(val)){
+							N.notify("Please enter valid username. The username can be any combination of letters, numbers, underscore dot or a dash.");
+							$("input[name='"+sel+"']").addClass('invalid');
+							valid=false;
+						}
+						else if(val.length < 3 || val.length > 20){
+							N.notify("The length of the username must be between 3 and 20 characters long.");
+							$("input[name='"+sel+"']").addClass('invalid');
+							valid=false;
+						}
+					}
 				}
 			}
 			
