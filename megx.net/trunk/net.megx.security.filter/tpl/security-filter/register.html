@@ -102,6 +102,20 @@
 							valid=false;
 						}
 					}
+					else if(sel == 'email'){
+						if(!(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val))){
+							N.notify("Please enter valid email.");
+							$("input[name='"+sel+"']").addClass('invalid');
+							valid=false;
+						}
+					}
+					else if(sel == 'pass'){
+						if(val.length < 3 || val.length > 20){
+							N.notify("The length of the password must be between 3 and 20 characters long.");
+							$("input[name='"+sel+"']").addClass('invalid');
+							valid=false;
+						}
+					}
 				}
 			}
 			
