@@ -26,6 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -110,6 +111,30 @@ public class RegistrationManager {
 			result.put("error", true);
 			result.put("reason", "incomplete-parameters");
 			result.put("message", "Required values are missing.");
+			return result.toString();
+		}
+		
+		try{
+			PaginatedResult<User>  usersByEmail = userService.getUsersByEmail(email, 0, 2);
+			if(usersByEmail.getTotalCount() > 0){
+				result.put("error", true);
+				result.put("reason", "duplicate-email");
+				result.put("message", "A user with this email already exist.");
+				return result.toString();
+			}
+			
+			User existing = userService.getUserByUserId(logname);
+			if(existing != null){
+				result.put("error", true);
+				result.put("reason", "duplicate-username");
+				result.put("message", "A user with this username already exist.");
+				return result.toString();
+			}
+		}
+		catch (Exception e) {
+			result.put("error", true);
+			result.put("reason", "query-exception");
+			result.put("message", "An error occured during checking the submitted user data. Please try again.");
 			return result.toString();
 		}
 
