@@ -8,6 +8,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import org.apache.jackrabbit.server.CredentialsProvider;
 import org.apache.jackrabbit.webdav.simple.SimpleWebdavServlet;
 
 public class SimpleWebdavServletImpl extends SimpleWebdavServlet {
@@ -21,7 +22,6 @@ public class SimpleWebdavServletImpl extends SimpleWebdavServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		System.out.println("SimpleWebdavServletImpl.init()");
 		try {
 			String resCfg = config.getInitParameter(SimpleWebdavServlet.INIT_PARAM_RESOURCE_CONFIG);
 			URL re = getServletContext().getResource(resCfg);
@@ -51,5 +51,10 @@ public class SimpleWebdavServletImpl extends SimpleWebdavServlet {
      */
     public Repository getRepository() {
         return repository;
+    }
+    
+    @Override
+    protected CredentialsProvider getCredentialsProvider() {
+    	return new DavCredentialsProvider(getInitParameter(INIT_PARAM_MISSING_AUTH_MAPPING));
     }
 }
