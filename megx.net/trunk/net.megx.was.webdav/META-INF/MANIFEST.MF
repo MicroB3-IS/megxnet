@@ -39,7 +39,9 @@ Bundle-ClassPath: .,
  lib/slf4j-api-1.6.4.jar,
  lib/tika-core-1.0.jar,
  lib/jackrabbit-jcr-commons-2.4.2.jar,
- lib/jackrabbit-spi-commons-2.4.2.jar
+ lib/jackrabbit-spi-commons-2.4.2.jar,
+ lib/log4j-1.2.16.jar,
+ lib/slf4j-log4j12-1.6.4.jar
 Export-Package: net.megx.was.webdav;
   uses:="javax.jcr,
    org.chon.cms.core,
