@@ -48,8 +48,8 @@
 						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
 					},
 					'facebook.com': {
-						'app.key': '<non-existing-key>',
-						'app.secret': '<non-exiting-secret>',
+						'app.key': '134984939977307',
+						'app.secret': 'c52b35eda99cedd0726bcca3b88de63c',
 						'dialog.url': 'http://www.facebook.com/dialog/oauth',
 						'access.token.url': 'https://graph.facebook.com/oauth/access_token',
 						'user.info.url': 'https://graph.facebook.com/me'

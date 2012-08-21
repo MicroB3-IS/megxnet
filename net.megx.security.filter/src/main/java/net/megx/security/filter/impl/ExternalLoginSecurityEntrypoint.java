@@ -1,6 +1,8 @@
 package net.megx.security.filter.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -225,8 +227,13 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			request.getSession().removeAttribute(attributeName);
 		}
 		protected String getCallbackUrl(HttpServletRequest request){
+			//String baseUrl = WebUtils.getFullContextURL(request);
+			//return baseUrl + "/callback?provider="+provider;
+			return getCallbackUrl(request, false);
+		}
+		protected String getCallbackUrl(HttpServletRequest request, boolean fromCallback){
 			String baseUrl = WebUtils.getFullContextURL(request);
-			return baseUrl + "/callback?provider="+provider;
+			return baseUrl + (fromCallback ? "" : "/callback" ) + "?provider="+provider;
 		}
 		
 		protected void redirectToHome(HttpServletResponse response) throws IOException{
@@ -442,7 +449,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			String appId = config.get(CFG_APP_KEY);
 			String url = config.get(CFG_LOGIN_DIALOG_URL);
 			url += "?client_id=" + appId + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") + 
-					"&state="+state;
+					"&state="+state +
+					"&scope=email";
 			if(log.isDebugEnabled())
 				log.debug(" ### Redirecting to Facebook login dialog: " + url);
 			
@@ -476,20 +484,31 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			accessTokenUrl += "?code="+facebookCode + 
 					"&client_id=" + config.get(CFG_APP_KEY) + 
 					"&client_secret="+config.get(CFG_APP_SECRET) +
-					"&redirect_uri=" + URLEncoder.encode(getCallbackUrl(request), "UTF-8");
+					"&redirect_uri=" + URLEncoder.encode(getCallbackUrl(request, true), "UTF-8");
 			if(log.isDebugEnabled())
 				log.debug("Generated AccessTokenURL: " + accessTokenUrl);
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(accessTokenUrl);
 			HttpResponse httpResponse = client.execute(get);
-			List<NameValuePair> vals =  URLEncodedUtils.parse(httpResponse.getEntity());
+			
+			BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+			String line = reader.readLine();
 			String accessToken = null;
-			for(NameValuePair pair: vals){
-				if("access_token".equals(pair.getName())){
-					accessToken = pair.getValue();
-					break;
+			log.debug("Access Token Line: " + line);
+			if(line != null){
+				String [] splt = line.split("=");
+				if(splt != null && splt.length > 1){
+					accessToken = splt[1];
 				}
 			}
+			//List<NameValuePair> vals =  URLEncodedUtils.parse(httpResponse.getEntity());
+			
+			//for(NameValuePair pair: vals){
+			//	if("access_token".equals(pair.getName())){
+			//		accessToken = pair.getValue();
+			//		break;
+			///	}
+			//}
 			if(accessToken == null){
 				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 			}
