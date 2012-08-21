@@ -45,6 +45,9 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 						if(user == null){
 							throw new InvalidCredentialsException("Invalid username or password.");
 						}
+						if(user.isExternal()){
+							throw new InvalidCredentialsException("Login with external account.");
+						}
 						authentication = new AuthenticationImpl(user);
 						checkRedirectUrl(request, context);
 					}catch (SecurityException e) {

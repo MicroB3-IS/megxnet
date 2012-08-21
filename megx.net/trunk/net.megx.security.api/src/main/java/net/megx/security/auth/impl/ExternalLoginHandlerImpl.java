@@ -80,10 +80,9 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		if(email == null)
 			email = "na@na.na"; // FIXME: this is a bit odd, but not all open id providers return an email...
 		user.setEmail(email);
-		
+		user.setPassword("default");
 		user.setExternal(true);
 		user.setProvider(provider);
-		user.setPassword("");
 		user.setJoinedOn(new Date());
 		Role role = new Role();
 		role.setLabel("user");
