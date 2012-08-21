@@ -117,7 +117,7 @@
 							var r = panel.getData();
 							var data = {
 									label: r.newLabel,
-									description: r.description,
+									description: $.trim(r.description) || null,
 									permissions: r.permissions.join(',')
 							};
 							data.users = [];
