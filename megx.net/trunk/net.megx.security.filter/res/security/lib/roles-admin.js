@@ -114,6 +114,9 @@
 				var self = this;
 				this.createRolePanel({}, true,
 						function(panel, role, isNew){
+							if(!panel.validate()){
+								return; // invalid data
+							}
 							var r = panel.getData();
 							var data = {
 									label: r.newLabel,
@@ -217,7 +220,14 @@
 		            	type: 'text',
 		            	value: role.label || '',
 		            	name: 'newLabel',
-		            	label: 'Name: '
+		            	label: 'Name: ',
+		            	validator: function(value){
+		            		if($.trim(value || '') == ''){
+		            			this.validatorMessage = "The name must not be empty.";
+		            			return false;
+		            		}
+		            		return true;
+		            	}
 		            },
 		            {
 		            	type: 'hidden',
