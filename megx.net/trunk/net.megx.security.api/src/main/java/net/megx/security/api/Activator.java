@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.megx.security.auth.AuthenticationManager;
 import net.megx.security.auth.impl.ExternalLoginHandlerImpl;
+import net.megx.security.auth.impl.GeneralAuthenticationHandlerImpl;
 import net.megx.security.auth.impl.OAuth1AuthenticationHandlerImpl;
 import net.megx.security.auth.impl.WebAuthenticationHandlerImpl;
 import net.megx.security.auth.services.ConsumerService;
@@ -11,6 +12,7 @@ import net.megx.security.auth.services.TokenService;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.ExternalLoginHandler;
+import net.megx.security.auth.web.GeneralAuthenticationHandler;
 import net.megx.security.auth.web.OAuth1Handler;
 import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.auth.web.impl.WebLoginAuthenticationManager;
@@ -95,6 +97,9 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					externalLoginHandler.setUserService(userService);
 					
 					RegUtils.reg(context, ExternalLoginHandler.class.getName(), externalLoginHandler, null);
+					
+					GeneralAuthenticationHandlerImpl genAuthImpl = new GeneralAuthenticationHandlerImpl(null, userService);
+					RegUtils.reg(context, GeneralAuthenticationHandler.class.getName(), genAuthImpl, null);
 					
 					// register services
 					RegUtils.reg(context, Cache.class.getName(), cache, null);
