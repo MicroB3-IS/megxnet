@@ -55,6 +55,15 @@
 						'user.info.url': 'https://graph.facebook.com/me'
 					}
 				}
+			},
+			{
+			     name: 'webDav',
+			     class: 'net.megx.security.filter.impl.WebDavSecurityEntrypoint',
+			     order: 1,
+			     contextPath: '/dav',
+			     urlPattern: [
+			         '/dav/.*'
+			     ]
 			}
 		],
 		registration:{
@@ -94,7 +103,18 @@
 		      'class': 'net.megx.security.filter.impl.RestServicesExceptionHandler',
 		      'order': 5,
 		      'patterns': ['/ws/.*']
+		  },
+		  {
+		      'class': 'net.megx.security.filter.impl.WebDavExceptionHandler',
+		      'order': 1,
+		      'patterns': ['/dav/.*']
 		  }
-		]
+		],
+		defaultHandler:{
+		   description: 'The default Exception Handler configuration',
+		   redirects: {
+		      401: '/login'
+		   }
+		}
 	}
 }

@@ -1,5 +1,7 @@
 package net.megx.security.auth.web;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -86,6 +88,14 @@ public class WebUtils {
 		String requestPath = getRequestPath(request, false);
 		String fullRequestUrl = getFullContextURL(request);
 		return fullRequestUrl.substring(0, fullRequestUrl.length() - requestPath.length()) + "/";
+	}
+	
+	public static String normalize(String path){
+		try {
+			return new URI(path).normalize().getPath();
+		} catch (URISyntaxException e) {
+			return null;
+		}
 	}
 	
 }

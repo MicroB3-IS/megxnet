@@ -170,10 +170,10 @@ public class SecurityFilter implements Filter{
 		}
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		if(context == null){
-			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
+			throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		if(context.getAuthentication() == null){
-			throw new SecurityException(HttpServletResponse.SC_FORBIDDEN);
+			throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 		}
 		//for(WebResource resource: resources){
 		authenticationManager.checkAuthentication(context.getAuthentication(), resources);
@@ -239,7 +239,9 @@ public class SecurityFilter implements Filter{
 	
 	private void buildExceptionHandlers(JSONObject config) throws Exception{
 		JSONArray handlersCfg = config.optJSONArray("exceptionHandlers");
-		ExceptionHandlerWrapper defaultHandler = new ExceptionHandlerWrapper(new DefaultExceptionHandler(), -1);
+		DefaultExceptionHandler defaultExceptionHandler = new DefaultExceptionHandler();
+		defaultExceptionHandler.init(config.optJSONObject("defaultHandler"));
+		ExceptionHandlerWrapper defaultHandler = new ExceptionHandlerWrapper(defaultExceptionHandler, -1);
 		if(handlersCfg == null){
 			log.debug("Using only the default exception handler");
 			exceptionHandlers.add(defaultHandler);
