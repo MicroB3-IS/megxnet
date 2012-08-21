@@ -89,7 +89,7 @@
 		      
 		      
 		   },
-		   getUserEditPanel: function(user, saveCallback, cancelCallback){
+		   getUserEditPanel: function(user, saveCallback, cancelCallback, isEdit){
 		      var self = this;
 		      
 		      var roles = [];
@@ -110,11 +110,11 @@
 		               title: 'Username',
 		               validator: function(value){
 		            	   value = $.trim(value || '');
-		            	   if(value.length < 3 || value.length > 20){
+		            	   if(!isEdit && (value.length < 3 || value.length > 20) ){
 		            		   this.validatorMessage = 'The length of the username must be between 3 and 20 characters long.';
 		            		   return false;
 		            	   }
-		            	   if(!/^[a-zA-Z0-9_\\.\\-]+$/.test(value)){
+		            	   if(!isEdit && !/^[a-zA-Z0-9_\\.\\-]+$/.test(value)){
 		            		   this.validatorMessage = "Please enter valid username. The username can be any combination of letters, numbers, underscore dot or a dash.";
 		            		   return false;
 		            	   }
@@ -170,6 +170,9 @@
 		               title: 'Password',
 		               validator: function(value){
 		            	   value = $.trim(value || '');
+		            	   if(isEdit && value == ''){
+		            		   return true;
+		            	   }
 		            	   if(value.length < 3 || value.length > 20){
 		            		   this.validatorMessage = 'The length of the password must be between 3 and 20 characters long.';
 		            		   return false;
@@ -293,6 +296,8 @@
 		    		 return;
 		    	 }
 		         var u = panel.getData();
+		         u.password = $.trim(u.password);
+		         u.re_password = $.trim(u.re_password);
 		         if(u){
 		            u.roles = (u.roles || []).join(',');
 		            u.roles = u.roles || [];
@@ -300,7 +305,7 @@
 		               self.n.alert('','Password does not match! Please re-enter passwords.');
 		               return;
 		            }
-	   	         self.userService.put('',u, function(){
+	   	         self.userService.put('',u, function(data){
 	   	        	if(data.error){
 	   	        		self.n.error("Error: ", data.message);
 	   	        		return;
@@ -316,7 +321,7 @@
 		      },
 		      function(){
 		         self.showUsers();
-		      });
+		      }, true);
 		   },
 		   addUser: function(){
 		      var self = this;
