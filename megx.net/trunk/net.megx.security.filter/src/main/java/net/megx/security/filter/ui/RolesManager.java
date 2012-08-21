@@ -147,7 +147,7 @@ public class RolesManager extends BaseRestService{
 	@Path("{label}")
 	public String deleteRole(@PathParam("label") String label){
 		try {
-			userService.removePermission(label);
+			userService.removeRole(label);
 		} catch (Exception e) {
 			return toJSON(handleException(e));
 		}
@@ -180,6 +180,7 @@ public class RolesManager extends BaseRestService{
 	public String addRoleToUser(@FormParam("username") String username, @FormParam("role") String role) {
 		try{
 			User user = userService.getUserByUserId(username);
+			user.setPassword(null);
 			Role r = new Role();
 			r.setLabel(role);
 			if(!user.getRoles().contains(r)){

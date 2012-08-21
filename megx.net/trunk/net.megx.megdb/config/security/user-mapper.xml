@@ -258,7 +258,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		delete from auth.roles where label=#{role}
 	</delete>
 	
-	<select id="getRole" resultMap="role_map" parameterType="string">
+	<select id="getRole" resultMap="role_full_map" parameterType="string">
 		select r.label, r.description from auth.roles as r where r.label=#{value}
 	</select>
 	
@@ -291,7 +291,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		delete from auth.has_permissions
 			where 
 				role=#{role} and
-				permissions=#{permission}
+				permission=#{permission}
 	</delete>
 	
 	<delete id="removePermission" parameterType="string">

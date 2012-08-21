@@ -158,13 +158,13 @@
 							description: r.description,
 							permissions: (r.permissions || []).join(',')
 					};
-					self.rolesService.put('', data, function(){
+					self.rolesService.put('', data, function(result){
 						// successfully updated
-						if(!data.error){
-							self.n.message("Info: ", "Group " + data.label + " was successfully updated.")
+						if(!result.error){
+							self.n.message("Info: ", "Group " + result.label + " was successfully updated.")
 							self.show();
 						}else{
-							self.n.error("Error: ", "Failed to update group: " + data.message);
+							self.n.error("Error: ", "Failed to update group: " + result.message);
 						}
 					},function(){
 						// failed to update
@@ -290,6 +290,31 @@
 		            	    	}
 		            	    }
 		            	]
+		            },
+		            {
+		            	type: isNew ? 'ignore': 'section',
+		            	title: 'Delete this group',
+		            	content:[{
+		            		type: 'button',
+		            		value: 'Delete ' + role.label,
+		            		name: 'delete-group',
+		            		events:{
+			            		click: function(){
+			            			self.n.confirm('Confirm','Are you sure you want to remove this group?', function(){
+			            				self.rolesService.del(role.label, undefined, function(data){
+			            					if(data.error){
+			            						self.n.error('Error: ', data.message);
+			            					}else{
+			            						rp.close();
+			            						self.show();
+			            					}
+			            				},function(err){
+			            					self.n.error('Error: ', 'Failed to remove group: ' + role.label);
+			            				});
+			            			});
+			            		}
+		            		}
+		            	}]
 		            },
 		            {
 		            	type: 'section',

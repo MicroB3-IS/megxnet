@@ -305,7 +305,7 @@ public class DBUserService extends BaseMegdbService implements UserService{
 				List<Permission> permissions = r.getPermissions();
 				if(permissions != null){
 					for(Permission p: permissions){
-						mapper.revokePermission(r.getLabel(), p.getLabel());
+						mapper.revokePermission(role.getLabel(), p.getLabel());
 					}
 				}
 				
