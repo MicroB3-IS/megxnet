@@ -2,6 +2,7 @@
 	path: '$resources/net.megx.security.filter',
 	filter:{
 		enabled: true,
+		ignorePattern: '',
 		entrypoints:[
 			{
 				name: 'standardLogin',
