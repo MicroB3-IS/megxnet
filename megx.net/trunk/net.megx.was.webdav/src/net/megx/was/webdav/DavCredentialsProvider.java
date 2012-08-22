@@ -2,6 +2,7 @@ package net.megx.was.webdav;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.jcr.Credentials;
 import javax.jcr.GuestCredentials;
@@ -27,6 +28,10 @@ public class DavCredentialsProvider implements CredentialsProvider {
 	@Override
 	public Credentials getCredentials(HttpServletRequest request)
 			throws LoginException, ServletException {
+		Principal principal = request.getUserPrincipal();
+		if(principal != null){
+			return new SimpleCredentials(principal.getName(), "".toCharArray());
+		}
 		 try {
 	            String authHeader = request.getHeader(DavConstants.HEADER_AUTHORIZATION);
 	            if (authHeader != null) {
