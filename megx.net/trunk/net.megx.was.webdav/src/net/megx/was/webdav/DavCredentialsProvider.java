@@ -7,6 +7,9 @@ import java.security.Principal;
 import javax.jcr.Credentials;
 import javax.jcr.GuestCredentials;
 import javax.jcr.LoginException;
+import javax.jcr.Repository;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +23,11 @@ public class DavCredentialsProvider implements CredentialsProvider {
     public static final String GUEST_DEFAULT_HEADER_VALUE = "guestcredentials";
 
     private final String defaultHeaderValue;
+	private Repository repository;
     
-	public DavCredentialsProvider(String defaultHeaderValue) {
+	public DavCredentialsProvider(Repository repository, String defaultHeaderValue) {
 		this.defaultHeaderValue = defaultHeaderValue;
+		this.repository = repository;
 	}
 
 	@Override
@@ -30,7 +35,13 @@ public class DavCredentialsProvider implements CredentialsProvider {
 			throws LoginException, ServletException {
 		Principal principal = request.getUserPrincipal();
 		if(principal != null){
-			return new SimpleCredentials(principal.getName(), "".toCharArray());
+			boolean wsok = ensureWorkspaceExists(principal.getName());
+			if (wsok) {
+				return new SimpleCredentials(principal.getName(), "".toCharArray());
+			} else {
+				//or throw exception, workspace can't be created...
+				return null;
+			}
 		}
 		 try {
 	            String authHeader = request.getHeader(DavConstants.HEADER_AUTHORIZATION);
@@ -69,6 +80,39 @@ public class DavCredentialsProvider implements CredentialsProvider {
 	        } catch (IOException e) {
 	            throw new ServletException("Unable to decode authorization: " + e.toString());
 	        }
+	}
+	
+	/**
+	 * Creates workspace if not exists ... return true, if created or exists
+	 * returns false if an error occurred
+	 * 
+	 * @param name
+	 * @return 
+	 */
+	private boolean ensureWorkspaceExists(String name) {
+		Session sess = null;
+		try {
+			sess = repository.login();
+			sess.getWorkspace().createWorkspace(name);
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (RepositoryException e) {
+			// ugly check, we are getting something like workspace 'wsname' already exists.
+			if(e.getMessage().indexOf("already exists") > 0) {
+				//ignore exteption
+			} else {
+				//TODO: handle exception
+				e.printStackTrace();
+				return false;
+			}
+		} finally {
+			if(sess != null) {
+				sess.logout();
+			}
+		}
+		return true;
 	}
 
 }
