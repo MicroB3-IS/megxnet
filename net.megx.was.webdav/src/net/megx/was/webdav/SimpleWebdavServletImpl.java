@@ -55,6 +55,6 @@ public class SimpleWebdavServletImpl extends SimpleWebdavServlet {
     
     @Override
     protected CredentialsProvider getCredentialsProvider() {
-    	return new DavCredentialsProvider(getInitParameter(INIT_PARAM_MISSING_AUTH_MAPPING));
+    	return new DavCredentialsProvider(repository, getInitParameter(INIT_PARAM_MISSING_AUTH_MAPPING));
     }
 }
