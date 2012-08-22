@@ -2,7 +2,7 @@
 	path: '$resources/net.megx.security.filter',
 	filter:{
 		enabled: true,
-		ignorePattern: '',
+		ignorePattern: '/(security|stylesheets)/.*\\.(js|png|jpg|jpeg|gif|tiff|css)',
 		entrypoints:[
 			{
 				name: 'standardLogin',
