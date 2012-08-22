@@ -207,7 +207,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	            </if>
 	            lastlogin=#{lastlogin},
 	            disabled=#{disabled},
-	            email=#{email}
+	            email=#{email},
+	            external=#{external}
 			
 			where logname=#{login}
 	</update>
