@@ -126,6 +126,9 @@ public class SecurityFilter implements Filter{
 			//}
 			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
 			if(context != null){
+				if(log.isDebugEnabled()){
+					log.debug("Current Authentication: " + context.getAuthentication());
+				}
 				httpRequest = new HttpRequestWrapper(httpRequest, context.getAuthentication());
 			}
 			log.debug("Security filter - pass chain.");

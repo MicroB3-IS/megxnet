@@ -97,6 +97,7 @@ public class WebDavSecurityEntrypoint extends BaseSecurityEntrypoint{
 						if(context == null){
 							context = WebContextUtils.newSecurityContext(request);
 						}
+						context.clearAuthentication();
 						context.setAuthentication(authentication);
 					}
 				}else{
