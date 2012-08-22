@@ -62,10 +62,13 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
 			}else{
+				Date lastLogin = user.getLastlogin();
 				user.setLastlogin(new Date());
 				user.setPassword(null);
 				userService.updateUser(user);
-				request.getSession().setAttribute("userLastLogin", user.getLastlogin());
+				if(lastLogin == null)
+					lastLogin = user.getLastlogin();
+				request.getSession().setAttribute("userLastLogin", lastLogin);
 			}
 		} catch (Exception e) {
 			log.error("Failed to create authentication: ",e);

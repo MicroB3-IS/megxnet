@@ -205,6 +205,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 				<if test="password != null">
 	            	pass=#{password},
 	            </if>
+	            lastlogin=#{lastlogin},
 	            disabled=#{disabled},
 	            email=#{email}
 			

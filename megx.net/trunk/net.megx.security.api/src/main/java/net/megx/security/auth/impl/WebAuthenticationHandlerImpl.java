@@ -50,11 +50,15 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 						if(user.isExternal()){
 							throw new InvalidCredentialsException("Login with external account.");
 						}
+						Date lastLogin = user.getLastlogin();
 						user.setPassword(null);
 						user.setLastlogin(new Date());
+						if(lastLogin == null){
+							lastLogin = user.getLastlogin();
+						}
 						userService.updateUser(user);
 						authentication = new AuthenticationImpl(user);
-						request.getSession().setAttribute("userLastLogin", user.getLastlogin());
+						request.getSession().setAttribute("userLastLogin", lastLogin);
 						checkRedirectUrl(request, context);
 					}catch (SecurityException e) {
 						throw e;
