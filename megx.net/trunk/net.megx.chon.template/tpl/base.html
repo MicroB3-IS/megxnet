@@ -32,15 +32,22 @@
 	      };
 	</script>
 	
-	#foreach($script in $ctx.get('head:scripts'))
-	<script src="$ctx.siteUrl/$script" type="text/javascript"></script>
-	#end
+	
 	<!-- include jQuery -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 	<!-- include jQuery Slider Script -->
 	<script src="js/jquery.iw.slider.js" type="text/javascript"></script>
-
+	<script type="text/javascript">
+	   jQuery.noConflict();
+	</script>
+    #foreach($script in $ctx.get('head:scripts'))
+    <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
+    #end
+    
+    <script type="text/javascript">
+        $ = jQuery;
+    </script>
 </head> 
 <body>
 	<div id="wrapper">
