@@ -64,6 +64,10 @@ public class DefaultExceptionHandler extends BaseExceptionHandler{
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
 		String requestURL = WebUtils.getRequestPath(request, true);
+		if(context.getLastRequestedURL() != null){
+			// check to see if we already have denied access to some URL
+			requestURL = context.getLastRequestedURL();
+		}
 		if(log.isDebugEnabled())
 			log.debug("   -> Last Request URL: " + requestURL);
 		context.storeLastRequestedURL(requestURL);

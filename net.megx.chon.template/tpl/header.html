@@ -4,7 +4,7 @@
 		<sub><span><a href="$ctx.siteUrl/admin/explorer.main.do">Admin Area</a></span> | <span><a href="$ctx.siteUrl/admin/logout.do">logout</a><span></sub>
 		<h6 class="FR"> Welcome $req.user.name, role: $req.user.role</h6>
 	<div class="clear"></div>
-		<sub><span>Last Login: 11/16/2010 at 10:53 PM</span></sub> 
+		<sub><span>Last Login: $req.servletRequset.session.getAttribute("userLastLogin")</span></sub> 
 	#else
 		<h6 class="FR"><a href="$ctx.siteUrl/login">log in</a> </h6>
 	#end 

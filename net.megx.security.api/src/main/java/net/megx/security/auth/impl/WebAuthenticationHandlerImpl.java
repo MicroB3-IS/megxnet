@@ -1,5 +1,7 @@
 package net.megx.security.auth.impl;
 
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,7 +50,11 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 						if(user.isExternal()){
 							throw new InvalidCredentialsException("Login with external account.");
 						}
+						user.setPassword(null);
+						user.setLastlogin(new Date());
+						userService.updateUser(user);
 						authentication = new AuthenticationImpl(user);
+						request.getSession().setAttribute("userLastLogin", user.getLastlogin());
 						checkRedirectUrl(request, context);
 					}catch (SecurityException e) {
 						throw e;
@@ -61,6 +67,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 		if(getRequestPath(request).matches(logoutEndpointUrl)){
 			WebContextUtils.clearSecurityContext(request);
 			request.getSession().invalidate();
+			WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
 			return null;
 		}
 		return authentication;

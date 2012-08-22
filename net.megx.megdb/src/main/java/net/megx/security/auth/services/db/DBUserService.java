@@ -247,7 +247,12 @@ public class DBUserService extends BaseMegdbService implements UserService{
 				user.setPassword(PasswordHash.createHash(user.getPassword()));
 				mapper.addUser(user);
 				mapper.createVerification(verification);
-				
+				List<Role> roles = user.getRoles();
+				if(roles != null){
+					for(Role role: roles){
+						mapper.grantRole(user.getLogin(), role.getLabel());
+					}
+				}
 				return verification;
 			}
 			

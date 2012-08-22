@@ -61,6 +61,11 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				user = getNewUser(logname, email, firstName, lastName, provider);
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
+			}else{
+				user.setLastlogin(new Date());
+				user.setPassword(null);
+				userService.updateUser(user);
+				request.getSession().setAttribute("userLastLogin", user.getLastlogin());
 			}
 		} catch (Exception e) {
 			log.error("Failed to create authentication: ",e);
@@ -84,6 +89,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		user.setExternal(true);
 		user.setProvider(provider);
 		user.setJoinedOn(new Date());
+		user.setLastlogin(new Date());
 		Role role = new Role();
 		role.setLabel("user");
 		
