@@ -57,7 +57,7 @@
 		               var um = [
 		                  '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
 		                     '<span class="user-label user-action-edit">',
-		                        $.trim(users[i].firstName + ' ' + users[i].lastName) || users[i].email,
+		                        $.trim((users[i].firstName||'') + ' ' + (users[i].lastName||'')) || users[i].email,
 		                     '</span>',
 		                     '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
 		                  '</div>'

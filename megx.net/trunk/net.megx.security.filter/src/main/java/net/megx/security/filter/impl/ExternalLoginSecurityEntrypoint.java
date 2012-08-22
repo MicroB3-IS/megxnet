@@ -528,7 +528,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				JSONObject user = new JSONObject(content);
 				request.setAttribute("logname", user.optString("id"));
 				request.setAttribute("firstName", user.optString("first_name"));
-				request.setAttribute("LastName", user.optString("last_name"));
+				request.setAttribute("lastName", user.optString("last_name"));
 				request.setAttribute("email", user.optString("email"));
 			} catch (JSONException e) {
 				log.debug(e);

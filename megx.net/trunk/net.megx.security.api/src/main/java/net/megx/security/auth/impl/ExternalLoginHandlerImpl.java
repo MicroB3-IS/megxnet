@@ -65,6 +65,8 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				Date lastLogin = user.getLastlogin();
 				user.setLastlogin(new Date());
 				user.setPassword(null);
+				user.setFirstName(firstName);
+				user.setLastName(lastName);
 				userService.updateUser(user);
 				if(lastLogin == null)
 					lastLogin = user.getLastlogin();
