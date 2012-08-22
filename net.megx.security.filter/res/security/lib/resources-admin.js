@@ -479,7 +479,7 @@
 	         if(!r.roles[this.roles[i].label]){
 	            rs.push({
 	               value: this.roles[i].label,
-	               label: $.trim(this.roles[i].description) || this.roles[i].label
+	               label: this.roles[i].label
 	            });
 	         }
 	      }
