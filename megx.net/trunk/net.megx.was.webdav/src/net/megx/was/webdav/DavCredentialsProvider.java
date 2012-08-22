@@ -13,6 +13,7 @@ import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +22,8 @@ import org.apache.jackrabbit.util.Base64;
 import org.apache.jackrabbit.webdav.DavConstants;
 
 public class DavCredentialsProvider implements CredentialsProvider {
+	public static final String KEY = DavCredentialsProvider.class.getName();
+	
 	private static Log log = LogFactory.getLog(DavCredentialsProvider.class);
 	
 	public static final String EMPTY_DEFAULT_HEADER_VALUE = "";
@@ -40,15 +43,24 @@ public class DavCredentialsProvider implements CredentialsProvider {
 			throws LoginException, ServletException {
 		Principal principal = request.getUserPrincipal();
 		if (principal != null) {
-			SimpleCredentials credentials = new SimpleCredentials(
-					principal.getName(), "".toCharArray());
-			boolean wsok = ensureWorkspaceExists(principal.getName(),
-					credentials);
-			if (wsok) {
+			//check session first
+			SimpleCredentials credentials = getSessionCredentials(principal, request.getSession());
+			if(credentials != null) {
 				return credentials;
 			} else {
-				// or throw exception, workspace can't be created...
-				return null;
+				//if not exists, create one
+				credentials = new SimpleCredentials(principal.getName(), "".toCharArray());
+				//make sure worspace exists
+				boolean wsok = ensureWorkspaceExists(principal.getName(), credentials);
+				
+				if (wsok) {
+					//everything ok, put credentials in session for reuse
+					setSessionCredentials(credentials, request.getSession());
+					return credentials;
+				} else {
+					// or throw exception, workspace can't be created...
+					return null;
+				}
 			}
 		}
 		
@@ -98,6 +110,26 @@ public class DavCredentialsProvider implements CredentialsProvider {
 			throw new ServletException("Unable to decode authorization: "
 					+ e.toString());
 		}
+	}
+
+	private void setSessionCredentials(SimpleCredentials credentials,
+			HttpSession session) {
+		session.setAttribute(KEY, credentials);
+	}
+
+	private SimpleCredentials getSessionCredentials(Principal principal,
+			HttpSession session) {
+		SimpleCredentials credentials = (SimpleCredentials) session.getAttribute(KEY);
+		if(credentials != null) {
+			//maybe unneccessary check for user?
+			if(principal.getName().equals(credentials.getUserID())) {
+				return credentials;
+			} else {
+				session.removeAttribute(KEY);
+				return null;
+			}
+		}
+		return null;
 	}
 
 	/**
