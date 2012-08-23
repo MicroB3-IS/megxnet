@@ -108,6 +108,7 @@
 		               name: 'login',
 		               label: 'Username: ',
 		               title: 'Username',
+		               readonly: isEdit,
 		               validator: function(value){
 		            	   value = $.trim(value || '');
 		            	   if(!isEdit && (value.length < 3 || value.length > 20) ){
