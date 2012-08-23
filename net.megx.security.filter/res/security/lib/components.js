@@ -593,6 +593,7 @@
                   'title="', d.title || '', '" ',
                   'name="', d.name || '', '" ',
                   (d.checked != undefined ? (d.checked ? 'checked="checked"':'') : ''),
+                  (d.readonly != undefined ? (d.readonly ? 'readonly="readonly"':'') : ''),
                   '/>'
                ].join(''));
             }else if(d.type=='select' || d.type=='dropdown'){
