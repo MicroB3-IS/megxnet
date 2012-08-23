@@ -37,8 +37,8 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
 		Authentication authentication = context.getAuthentication();
-		if(authentication == null){
-			if(getRequestPath(request).equals(loginEndpointUrl)){ // try default login...
+		if(getRequestPath(request).equals(loginEndpointUrl)){ // try default login...
+			if(authentication == null){
 				String username = request.getParameter(usernameField);
 				String password = request.getParameter(passwordField);
 				if(username != null && password != null){
@@ -66,7 +66,9 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 						throw new ServletException(e);
 					}
 				}
-			} 
+			}else{
+				WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
+			}
 		}
 		if(getRequestPath(request).matches(logoutEndpointUrl)){
 			WebContextUtils.clearSecurityContext(request);

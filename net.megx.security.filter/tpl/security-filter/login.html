@@ -66,8 +66,14 @@
 		#end
 	#end
 	
-	
+	#if($req.user)
+        You're already logged in. Please wait while being redirected to the home page...
+        <script type="text/javascript">
+			  window.location = '$ctx.siteUrl/';
+		</script>
+    #else
 	<div class="megx-login-wrapper">
+	
 		<form action="$ctx.siteUrl/j_security_check" method="post">
 			
 			
@@ -111,6 +117,7 @@
 			<a href="$ctx.siteUrl/register">Create an account on Megx</a>
 		</div>
 	</div>
+	#end
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
