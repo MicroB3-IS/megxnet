@@ -151,6 +151,9 @@
 			this.ready(function(){
 				this._clearContentPanel();
 				this.createRolePanel(role, false, function(panel, role, isNew){
+					if(!panel.validate()){
+						return; // invalid data
+					}
 					var r = panel.getData();
 					var data = {
 							oldLabel: r.oldLabel,
@@ -222,8 +225,13 @@
 		            	name: 'newLabel',
 		            	label: 'Name: ',
 		            	validator: function(value){
-		            		if($.trim(value || '') == ''){
+		            		value = $.trim(value || '');
+		            		if(value == ''){
 		            			this.validatorMessage = "The name must not be empty.";
+		            			return false;
+		            		}
+		            		else if(value.length < 3 || value.length > 20){
+		            			this.validatorMessage = "The length of the group name must be between 3 and 20 characters long.";
 		            			return false;
 		            		}
 		            		return true;
@@ -238,7 +246,15 @@
 		            	type: 'textbox',
 		            	value: role.description || '&nbsp;',
 		            	name: 'description',
-		            	label: 'Description: '
+		            	label: 'Description: ',
+		            	validator: function(value){
+		            		value = $.trim(value || '');
+		            		if(value.length < 3 || value.length > 40){
+		            			this.validatorMessage = "The length of the group description must be between 10 and 40 characters long.";
+		            			return false;
+		            		}
+		            		return true;
+		            	}
 		            },
 		            {
 		            	type: 'section',
