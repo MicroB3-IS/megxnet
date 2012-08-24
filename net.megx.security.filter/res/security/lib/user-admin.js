@@ -126,19 +126,55 @@
 		               type: 'text',
 		               name: 'firstName',
 		               label: 'First Name: ',
-		               title: 'First Name'
+		               title: 'First Name',
+		               validator: function(value){
+		            	   value = $.trim(value || '');
+		            	   if(value.length < 3 || value.length > 20){
+		            		   this.validatorMessage = 'The length of the first name must be between 3 and 20 characters long.';
+		            		   return false;
+		            	   }
+		            	   if(!/^[a-zA-Z]+$/.test(value)){
+		            		   this.validatorMessage = "Please enter valid first name. The first name can be any combination of letters.";
+		            		   return false;
+		            	   }
+		            	   return true;
+		               }
 		            },
 		            {
 		               type: 'text',
 		               name: 'lastName',
 		               label: 'Last Name: ',
-		               title: 'Last Name'
+		               title: 'Last Name',
+		               validator: function(value){
+		            	   value = $.trim(value || '');
+		            	   if(value.length < 3 || value.length > 30){
+		            		   this.validatorMessage = 'The length of the last name must be between 3 and 30 characters long.';
+		            		   return false;
+		            	   }
+		            	   if(!/^[a-zA-Z]+$/.test(value)){
+		            		   this.validatorMessage = "Please enter valid last name. The last name can be any combination of letters.";
+		            		   return false;
+		            	   }
+		            	   return true;
+		               }
 		            },
 		            {
 		               type: 'text',
 		               name: 'initials',
 		               label: 'Initials: ',
-		               title: 'Initials'
+		               title: 'Initials',
+		               validator: function(value){
+		            	   value = $.trim(value || '');
+		            	   if(value.length < 2 || value.length > 5){
+		            		   this.validatorMessage = 'The length of the initials string must be between 2 and 5 characters long.';
+		            		   return false;
+		            	   }
+		            	   if(!/^[a-zA-Z]+$/.test(value)){
+		            		   this.validatorMessage = "Please enter valid initials string. The initials can be any combination of letters.";
+		            		   return false;
+		            	   }
+		            	   return true;
+		               }
 		            },
 		            {
 		               type: 'text',
