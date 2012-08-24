@@ -244,12 +244,12 @@
 		            },
 		            {
 		            	type: 'textbox',
-		            	value: role.description || '&nbsp;',
+		            	value: role.description != 'null' ? role.description  : '&nbsp;',
 		            	name: 'description',
 		            	label: 'Description: ',
 		            	validator: function(value){
 		            		value = $.trim(value || '');
-		            		if(value.length < 3 || value.length > 40){
+		            		if(value.length > 30){
 		            			this.validatorMessage = "The length of the group description must be between 10 and 40 characters long.";
 		            			return false;
 		            		}
