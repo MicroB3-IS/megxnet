@@ -132,8 +132,12 @@
 								data.users.push(role.usersInRole[i].login);
 							}
 							data.users = data.users.join(',');
-							self.rolesService.post('', data, function(){
+							self.rolesService.post('', data, function(r){
 								// successfully added
+								if(r && r.error){
+									self.n.error("Error: ", "Failed to add role - " + r.message);
+									return;
+								}
 								self.n.message("Info: ", "Group " + data.label + " was successfully added.")
 								self.show();
 							}, function(){
