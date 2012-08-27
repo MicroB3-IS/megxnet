@@ -69,7 +69,7 @@
 	         var m = [];
 	         each(arr, function(k,v){
 	            var val = key ? v[key] : v;
-	            m.push('<span class="array-value-inline ui-corner-all">' + (val  || '') + '</span>');
+	            m.push('<span class="array-value-inline ui-corner-all">' + (val  || k || '') + '</span>');
 	         });
 	         if(!m.length){
 	            m.push('<span class="array-value-inline ui-corner-all">none</span>');
@@ -460,7 +460,8 @@
             var hm = resources[i].httpMethod.toLowerCase();
             r.httpMethods[hm] = ResourcesManager.HTTP_METHODS[hm];
             for(var j = 0; j < resources[i].roles.length; j++){
-               r.roles[resources[i].roles[j].label] = resources[i].roles[j].description;
+               r.roles[resources[i].roles[j].label] = resources[i].roles[j].description ||
+               											resources[i].roles[j].label;
             }
 	      }
 	      return rs;
