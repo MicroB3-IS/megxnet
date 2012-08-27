@@ -130,6 +130,11 @@ public class RolesManager extends BaseRestService{
 		role.setPermissions(permissions);
 		
 		try {
+			PaginatedResult<Role> all = userService.getAvailableRoles(0, 0, true);
+			if(all != null && all.getResults() != null &&
+					all.getResults().contains(role)){
+				return toJSON(new Result<Object>(true, "A group with that name already exists.","same-name"));
+			}
 			role = userService.createRole(role);
 			if(usersToRole != null){
 				for(String username: usersToRole){
