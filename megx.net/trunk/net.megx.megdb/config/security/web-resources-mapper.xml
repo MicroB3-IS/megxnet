@@ -33,6 +33,10 @@
         	offset #{from}
     </select>
     
+    <select id="countResources" resultType="int">
+        select count(*) as value from (select distinct url_path from auth.web_resource_permissions) as distinct_res
+    </select>
+    
     <select id="getByPattern" parameterType="string" resultMap="web_resource_map">
         select url_path, http_method
             from auth.web_resource_permissions

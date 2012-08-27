@@ -23,7 +23,7 @@ $(document).ready(function(){
       placeholder: '.content-placeholder',
       userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
    });
-   um.showUsers();
+   
    
    var rm = new admin.ResourcesManager({
       resourcesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/resources', ERROR_HND),
@@ -45,14 +45,12 @@ $(document).ready(function(){
          $('.admin-action-users').addClass('admin-action-state-selected');
          $('.content-placeholder').html('');
          this.userManager.show();
-         this.userManager.showUsers();
       },
       manageResources: function(){
          $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
          $('.admin-action-resources').addClass('admin-action-state-selected');
          $('.content-placeholder').html('Resources manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
          this.resourcesManager.show();
-         this.resourcesManager.showResources();
       },
       manageRoles: function(){
     	  $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');

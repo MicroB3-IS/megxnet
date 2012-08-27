@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.WebResource;
@@ -46,6 +47,17 @@ public class ResourcesManager extends BaseRestService{
 			return toJSON(handleException(e));
 		}
 	}
+	
+	@GET
+	@Path("{start}:{page}")
+	public String getAllPaginated(@PathParam("start") int start, @PathParam("page") int page){
+		try {
+			return toJSON(resourcesService.getAll(start, page));
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+	}
+	
 	
 	@PUT
 	public String updateResource(

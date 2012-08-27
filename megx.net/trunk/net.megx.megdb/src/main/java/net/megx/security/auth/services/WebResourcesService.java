@@ -2,6 +2,7 @@ package net.megx.security.auth.services;
 
 import java.util.List;
 
+import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.WebResource;
 
 public interface WebResourcesService {
@@ -15,7 +16,7 @@ public interface WebResourcesService {
 	public void removeWebResource(WebResource resource) throws Exception;
 	public void removeWebResourceByPattern(String urlPattern) throws Exception;
 	
-	public List<WebResource> getAll(int from, int count) throws Exception;
+	public PaginatedResult<WebResource> getAll(int from, int count) throws Exception;
 	public List<WebResource> getWebResources(String pattern) throws Exception;
 	
 }

@@ -4,60 +4,102 @@
 	
 	
 	var UserManager = function(config){
-		   var m = [
-		      '<div>',
-		         '<div class="security-users-panel">',
-		            '<div class="security-users-header">',
-		               'Manage Users',
-		               '<div style="float: right;">',
-		                  '<div class="ui-corner-all admin-general-action security-action-add-user" style="padding: 5px;">Add User<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span></div>',
-		               '</div>',
-		            '</div>',
-		            '<div class="security-notification-container"></div>',
-		            '<div class="security-users-panel-container"></div>',
-		         '</div>',
-		      '</div>'
-		   ].join('');
 		   
-		   this.el = $(m)[0];
-		   this.n = new components.ui.NotificationManager({
-		      selector: $('.security-notification-container', this.el)[0]
-		   });
+		   
 		   var self = this;
 		   
 		   
 		   this.placeholder = config.placeholder;
 		   //$(config.placeholder).append(this.el);
-		   this.show();
+		   
 		   this.roles = config.roles || [];
 		   this.userService = config.userService;
-		   
+		   //this.show();
 		};
 		
 		$.extend(UserManager.prototype, {
+		   init: function(){
+				var m = [
+					'<div>',
+						'<div class="security-users-panel">',
+							'<div class="security-users-header">',
+								'Manage Users',
+								'<div style="float: right;">',
+									'<div class="ui-corner-all admin-general-action security-action-add-user" style="padding: 5px;">Add User<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span></div>',
+								'</div>',
+							'</div>',
+							'<div class="security-notification-container"></div>',
+							'<div class="security-users-panel-container"></div>',
+							'<div class="pager-placeholder"></div>',
+						'</div>',
+					'</div>'
+				].join('');
+				   
+				var self = this;
+				
+				
+				this.el = $(m)[0];
+				
+				this.n = new components.ui.NotificationManager({
+			      selector: $('.security-notification-container', this.el)[0]
+			    });
+				
+				this.pager = new components.ui.Pager({
+					el: $('.pager-placeholder', this.el)[0]
+				});
+				
+				this.pager.on('goto-page', function(e, pager, page){
+					page = parseInt(page+"");
+					self._loadUsers(page);
+				});
+		   },
 		   show: function(){
 		      var self = this;
+		      this.init();
 		      $(this.placeholder).html('').append(this.el);
 		      $('.security-action-add-user', this.el).click(function(){
 		         self.addUser();
 		      });
+		      this.showUsers();
 		   },
 		   showUsers: function(){
 		      var self = this;
-		      var pel = $('.security-users-panel-container', this.el);
 		      this.n.wait('Loading users');
 		      
 		      this.userService.get("roles", undefined, function(roles){
 		         self.roles = roles;
-		         self.userService.get('',undefined, function(users){
+		         self._loadUsers(1);
+		      }, function(xhr, status, error){
+		         self.n.done();
+		         self.n.error('Failed to retrieve roles: ', error);
+		      });
+		   },
+		   _loadUsers: function(page){
+			   var self = this;
+			   self.userService.get(20*(page-1)+':20',undefined, function(data){
+				   if(data && data.error){
+					   self.n.error("Error: ", "Failed to retrieve users - " + data.message);
+					   return;
+				   }
+				   self.pager.reload(page, 20, data.totalCount);
+				   self.pager.update(page);
+				   var users = data.results;
 		            self.n.done();
 		            self.users = {};
-		            pel.html('');
+		            var pel = $('.security-users-panel-container', self.el).html('');
+		            //pel.html('');
 		            for(var i = 0; i < users.length; i++){
+		               var displayName = $.trim((users[i].firstName||'') + ' ' + (users[i].lastName||''));
+		               if(displayName == ''){
+		            	   displayName = users[i].login;
+		               }
 		               var um = [
 		                  '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
 		                     '<span class="user-label user-action-edit">',
-		                        $.trim((users[i].firstName||'') + ' ' + (users[i].lastName||'')) || users[i].email,
+		                        displayName,
+		                     '</span>',
+		                     '<span class="entry-description">',
+		                     	 '(',users[i].email, ')',
 		                     '</span>',
 		                     '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
 		                  '</div>'
@@ -81,13 +123,6 @@
 		            self.n.done();
 		            self.n.error('Failed to retrieve users list: ', error);
 		         });
-		      }, function(xhr, status, error){
-		         self.n.done();
-		         self.n.error('Failed to retrieve roles: ', error);
-		      });
-		      
-		      
-		      
 		   },
 		   getUserEditPanel: function(user, saveCallback, cancelCallback, isEdit){
 		      var self = this;
@@ -319,7 +354,7 @@
 		            function(){
 		               self.userService.del(user.login, undefined, function(){
 		                  self.n.message('Info: ', "User " + user.firstName + " " + user.lastName + "' has been removed");
-		                  self.showUsers();
+		                  self.show();
 		               }, function(x, status, error){
 		                  self.n.error("Error: ", "Failed to remove user.");
 		               });
@@ -328,6 +363,7 @@
 		   editUser: function(user){
 		      var self = this;
 		      $('.security-users-panel-container', this.el).html('');
+		      $('.pager-placeholder', this.el).hide();
 		      this.getUserEditPanel(user, function(panel){
 		    	 if(!panel.validate()){
 		    		 return;
@@ -349,7 +385,7 @@
 	   	        	}
 	   	            self.n.message('Info:', 'User updated.');
 	   	            panel.close();
-	   	            self.showUsers();
+	   	            self.show();
 	   	         },function(){
 	   	            self.n.error("Error: ", "Failed to update user.");
 	   	         });
@@ -357,12 +393,13 @@
 
 		      },
 		      function(){
-		         self.showUsers();
+		         self.show();
 		      }, true);
 		   },
 		   addUser: function(){
 		      var self = this;
 		      $('.security-users-panel-container', this.el).html('');
+		      $('.pager-placeholder', this.el).hide();
 		      this.getUserEditPanel({}, function(panel){
 		         var u = panel.getData();
 		         if(!panel.validate()){
@@ -382,7 +419,7 @@
 	   	        	 }
 	   	        	 self.n.message('Info:', 'User added.');
 	   	        	 panel.close();
-	   	        	 self.showUsers();
+	   	        	 self.show();
 	   	         },function(){
 	   	            self.n.error("Error: ", "Failed to add user.");
 	   	         });
@@ -390,7 +427,7 @@
 
 		      },
 		      function(){
-		         self.showUsers();
+		         self.show();
 		      });
 		   },
 		   getUIRoles: function(skip){

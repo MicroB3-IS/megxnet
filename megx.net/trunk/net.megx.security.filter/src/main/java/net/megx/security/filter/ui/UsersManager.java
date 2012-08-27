@@ -54,6 +54,17 @@ public class UsersManager extends BaseRestService{
 		return gson.toJson(userService.getUsers());
 	}
 	
+	@GET
+	@Path("{start}:{pageSize}")
+	public String getUsersPaginated(@PathParam("start") int start,
+			@PathParam("pageSize") int pageSize){
+		try {
+			return toJSON(userService.getUsers(start, pageSize));
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+	}
+	
 	@POST
 	public String addUser(
 			@FormParam("login") String login,

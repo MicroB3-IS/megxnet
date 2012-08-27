@@ -7,23 +7,7 @@
 	   this.resourcesService = config.resourcesService;
 	   this.userService = config.userService;
 	   
-	   var m = [
-	      '<div class="resources-panel-wrapper">',
-	         '<div class="resources-panel-actions">',
-	            'Manage protected resources',
-	            '<div class="ui-corner-all admin-general-action resources-action-add" style="float: right;">',
-	               'Add Protected URL',
-	               '<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span>',
-	             '</div>',
-	         '</div>',
-	         '<div class="security-notification-container"></div>',
-	         '<div class="resources-panel-content"></div>',
-	      '</div>'
-	   ].join('');
-	   this.el = $(m)[0];
-	   this.n = new components.ui.NotificationManager({
-	      selector: $('.security-notification-container', this.el)[0]
-	   });
+	   
 	   
 	};
 	ResourcesManager.HTTP_METHODS = {
@@ -45,13 +29,46 @@
 	};
 	
 	extend(ResourcesManager, {
+	   init: function(){
+		   var m = [
+		  	      '<div class="resources-panel-wrapper">',
+		  	         '<div class="resources-panel-actions">',
+		  	            'Manage protected resources',
+		  	            '<div class="ui-corner-all admin-general-action resources-action-add" style="float: right;">',
+		  	               'Add Protected URL',
+		  	               '<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span>',
+		  	             '</div>',
+		  	         '</div>',
+		  	         '<div class="security-notification-container"></div>',
+		  	         '<div class="resources-panel-content"></div>',
+		  	       '<div class="pager-placeholder"></div>',
+		  	      '</div>'
+		  	   ].join('');
+		  	   this.el = $(m)[0];
+		  	   var self = this;
+		  	   this.n = new components.ui.NotificationManager({
+		  	      selector: $('.security-notification-container', this.el)[0]
+		  	   });
+		  	   
+		  	   this.pager =  new components.ui.Pager({
+					el: $('.pager-placeholder', this.el)[0]
+				});
+				
+				this.pager.on('goto-page', function(e, pager, page){
+					page = parseInt(page+"");
+					self.showResources(page);
+				});
+		  	   
+	   },
 	   show: function(){
+		  this.init();
 	      $('.content-placeholder').html('').append(this.el);
 	      // add handlers here...
 	      var self = this;
 	      $('.resources-action-add', this.el).click(function(){
             self.addResource();
 	      });
+	      this.showResources(1);
 	   },
 	   ready: function(callback){
 	      var self = this;
@@ -62,7 +79,8 @@
 	         self.n.error('Error: ', 'Failed to retrieve the list of roles.');
 	      });
 	   },
-	   showResources: function(){
+	   showResources: function(page){
+		   page = page || 1;
 	      var self = this;
 	      
 	      var getArr = function(arr, key){
@@ -79,12 +97,12 @@
 	      
          this.ready(function(){
             var self = this;
-            this.resourcesService.get('',undefined, function(resources){
-               if(resources.error){
+            this.resourcesService.get((page-1)*10+':10',undefined, function(data){
+               if(data.error){
             	   self.n.error("Error","Faled to retrieve list of resources.");
             	   return;
                }
-               resources = self.fromServer(resources);
+               resources = self.fromServer(data.results);
                var m = '<div class="resources-panel"></div>';
                var rpel = $(m)[0];
                for(var  i = 0; i < resources.length; i++){
@@ -122,7 +140,8 @@
                $('.resources-panel-content', self.el).html('').append(rpel);
                
                
-               
+               self.pager.reload(page,10, data.totalCount);
+               self.pager.update(page);
                
             },function(){
                self.n.error('Error: ', 'Failed to retrieve the web resources list');
@@ -146,14 +165,14 @@
 	               }
 	               panel.close();
 	               self.n.message('Info: ', 'Resource added successfuly');
-	               self.showResources();
+	               self.show();
 	            }, function(status, err){
 	               console.log('ERROR: ', status,' : ',err);
 	               self.n.error('Error: ', 'Failed to add protected URL - ' + err);
 	            });
 	            return false;
 	         }, function(panel){
-	            self.showResources();
+	            self.show();
 	            return true;
 	         });
 	      });
@@ -169,7 +188,7 @@
 	                		 return;
 	                	 }
 	                     self.n.message("Info: ", 'Protected URL mapping was successfuly removed.');
-	                     self.showResources();
+	                     self.show();
 	                  },function(status, err){
 	                     self.n.error("Error: ", "Failed to remove the protected URL - " + err);
 	                  });
@@ -193,20 +212,21 @@
                	    }
 	               panel.close();
 	               self.n.message('Info: ', 'Resource updated successfuly');
-	               self.showResources();
+	               self.show();
 	            }, function(status, err){
 	               console.log('ERROR: ', status,' : ',err);
 	               self.n.error('Error: ', 'Failed to add protected URL - ' + err);
 	            });
 	            return false;
 	         }, function(panel){
-	            self.showResources();
+	            self.show();
 	            return true;
 	         });
 	      });
 	   },
-	   clearMainPanel: function(){
+	   clearMainPanel: function(){		   
 	      $('.resources-panel-content', this.el).html('');
+	      $('.pager-placeholder', this.el).hide();
 	   },
 	   getResourcePanel: function(resource, onOk, onCancel){
 	      var self = this;

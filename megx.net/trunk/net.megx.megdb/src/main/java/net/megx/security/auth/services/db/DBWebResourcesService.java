@@ -3,6 +3,7 @@ package net.megx.security.auth.services.db;
 import java.util.List;
 
 import net.megx.megdb.BaseMegdbService;
+import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.WebResource;
 import net.megx.security.auth.services.WebResourcesService;
@@ -55,13 +56,15 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 	}
 
 	@Override
-	public List<WebResource> getAll(final int from, final int count) throws Exception {
-		return doInSession(new DBTask<WebResourcesMapper, List<WebResource>>() {
+	public PaginatedResult<WebResource> getAll(final int from, final int count) throws Exception {
+		return doInSession(new DBTask<WebResourcesMapper, PaginatedResult<WebResource>>() {
 
 			@Override
-			public List<WebResource> execute(WebResourcesMapper mapper)
+			public PaginatedResult<WebResource> execute(WebResourcesMapper mapper)
 					throws Exception {
-				return mapper.getAll(from, count);
+				int totalCount = mapper.countResources();
+				List<WebResource> results = mapper.getAll(from, count);
+				return PaginatedResult.fromListWithPageSize(results, from, count, totalCount);
 			}
 			
 		}, WebResourcesMapper.class);

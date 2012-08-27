@@ -442,6 +442,23 @@ public class DBUserService extends BaseMegdbService implements UserService{
 	}
 
 
+	@Override
+	public PaginatedResult<User> getUsers(final int start, final int pageSize)
+			throws Exception {
+		return doInSession(new DBTask<UserMapper, PaginatedResult<User>>(){
+
+			@Override
+			public PaginatedResult<User> execute(UserMapper mapper)
+					throws Exception {
+				int total = mapper.countUsers();
+				List<User> users = mapper.getUsersPaginated(start, pageSize);
+				return PaginatedResult.fromListWithPageSize(users, start, pageSize, total);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
 	
 
 	/*

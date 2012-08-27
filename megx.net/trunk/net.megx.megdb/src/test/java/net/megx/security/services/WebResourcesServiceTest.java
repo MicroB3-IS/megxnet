@@ -105,7 +105,7 @@ public class WebResourcesServiceTest extends DBServiceTest{
 		webResToBeAdded.add(thirdWebResource);
 		
 		webResourcesService.addWebResourceMappings(webResToBeAdded);
-		List<WebResource> retrievedResources = webResourcesService.getAll(0, 100);
+		List<WebResource> retrievedResources = webResourcesService.getAll(0, 100).getResults();
 		Assert.assertTrue("Resources are not added", retrievedResources.containsAll(webResToBeAdded));
 		
 		webResourcesService.removeWebResource(secondWebResource);
@@ -143,7 +143,7 @@ public class WebResourcesServiceTest extends DBServiceTest{
 	
 	@Test
 	public void testGetAll() throws Exception{
-		List<WebResource> retrievedResources = webResourcesService.getAll(0, 1000);
+		List<WebResource> retrievedResources = webResourcesService.getAll(0, 1000).getResults();
 		Assert.assertTrue("Default web resource is not returned", retrievedResources.contains(defaultWebResource));
 	}
 	
