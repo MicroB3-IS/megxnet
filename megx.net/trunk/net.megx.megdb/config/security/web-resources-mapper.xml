@@ -33,6 +33,11 @@
         	offset #{from}
     </select>
     
+    <select id="getByPattern" parameterType="string" resultMap="web_resource_map">
+        select url_path, http_method
+            from auth.web_resource_permissions
+            where url_path=#{pattern}
+    </select>
     
     <select id="selectRolesForWebResource" parameterType="map" resultMap="role_map">
         select auth.roles.label, auth.roles.description 

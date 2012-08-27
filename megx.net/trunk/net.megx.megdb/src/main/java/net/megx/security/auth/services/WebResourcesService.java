@@ -16,5 +16,6 @@ public interface WebResourcesService {
 	public void removeWebResourceByPattern(String urlPattern) throws Exception;
 	
 	public List<WebResource> getAll(int from, int count) throws Exception;
+	public List<WebResource> getWebResources(String pattern) throws Exception;
 	
 }

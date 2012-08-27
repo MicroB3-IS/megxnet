@@ -120,4 +120,17 @@ public class DBWebResourcesService extends BaseMegdbService implements WebResour
 			}, WebResourcesMapper.class);
 	}
 
+	@Override
+	public List<WebResource> getWebResources(final String pattern) throws Exception {
+		return doInSession(new BaseMegdbService.DBTask<WebResourcesMapper, List<WebResource>>() {
+
+			@Override
+			public List<WebResource> execute(WebResourcesMapper mapper)
+					throws Exception {
+				return mapper.getByPattern(pattern);
+			}
+			
+		}, WebResourcesMapper.class);
+	}
+
 }
