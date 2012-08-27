@@ -8,24 +8,7 @@
 		this.rolesService = config.rolesService;
 		this.usersService = config.usersService;
 		this.placeholder = config.placeholder || document.body;
-		var m = [
-		         '<div class="roles-panel-wrapper">',
-		         	'<div class="roles-panel-actions">',
-		         		'Manage groups',
-		         		'<div class="ui-corner-all admin-general-action roles-action-add" style="float: right;">',
-		         			'Add Group',
-		         			'<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span>',
-		         		'</div>',
-		         		'</div>',
-		         	'<div class="security-notification-container"></div>',
-		         	'<div class="roles-panel-content"></div>',
-		         '</div>'
-		   ].join('');
-		   this.el = $(m)[0];
-		   this.n = new components.ui.NotificationManager({
-		      selector: $('.security-notification-container', this.el)[0]
-		   });
-		   this.contentEl = $('.roles-panel-content', this.el)[0];
+		
 		   
 	};
 	
@@ -39,8 +22,29 @@
 				// error retrieving permissions...
 			});
 		},
+		_init: function(){
+			var m = [
+			         '<div class="roles-panel-wrapper">',
+			         	'<div class="roles-panel-actions">',
+			         		'Manage groups',
+			         		'<div class="ui-corner-all admin-general-action roles-action-add" style="float: right;">',
+			         			'Add Group',
+			         			'<span class="ui-icon ui-icon-plusthick" style="display: inline-block;"></span>',
+			         		'</div>',
+			         		'</div>',
+			         	'<div class="security-notification-container"></div>',
+			         	'<div class="roles-panel-content"></div>',
+			         '</div>'
+			   ].join('');
+			   this.el = $(m)[0];
+			   this.n = new components.ui.NotificationManager({
+			      selector: $('.security-notification-container', this.el)[0]
+			   });
+			   this.contentEl = $('.roles-panel-content', this.el)[0];
+		},
 		_show: function(){
 			var self = this;
+			this._init();
 			var m = [
 			   '<div>',
 			   		'<div class="panel-content"></div>',
@@ -48,7 +52,7 @@
 			   		'</div>',
 			   '</div>'
 			];
-			var el = $(m.join(''));
+			var el = $(m.join(''))[0];
 			
 			var pager = new components.ui.Pager({
 				el: $('.panel-footer',el)[0]
@@ -94,8 +98,8 @@
 			pager.on('goto-page', function(e, pager, page){
 				loadPage(page);
 			});
-			
-			$(this.contentEl).html('').append(el);
+			this.contentEl.innerHTML = '';
+			$(this.contentEl).append(el);
 			$(this.placeholder).html('').append(this.el);
 			
 			var self =  this;
@@ -120,7 +124,7 @@
 							var r = panel.getData();
 							var data = {
 									label: r.newLabel,
-									description: $.trim(r.description) || null,
+									description: $.trim(r.description) || '',
 									permissions: r.permissions.join(',')
 							};
 							data.users = [];
