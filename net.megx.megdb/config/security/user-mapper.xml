@@ -95,6 +95,18 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		created
 	</sql>
 	
+	<select id="getUsersPaginated" parameterType="map" resultMap="user_map_no_pass">
+	   select 
+	       <include refid="user_columns_list"/>
+	       from auth.users
+	       order by auth.users.logname
+	       offset #{offset}
+	       limit #{limit}
+	</select>
+	
+	<select id="countUsers" resultType="int">
+	   select count(*) as value from auth.users
+	</select>
 	
 	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
 		select r.label, r.description from auth.roles r

@@ -64,6 +64,11 @@ public interface UserMapper {
 	public void removeRole(String role) throws Exception;
 	public Role getRole(String role) throws Exception;
 	public List<User> getUsers() throws Exception; //FIXME: pagination
+	
+	public List<User> getUsersPaginated(@Param("offset") int offset,
+											@Param("limit") int limit) throws Exception;
+	public int countUsers() throws Exception;
+	
 	public List<User> getUsersWithRole(String role) throws Exception;
 	public List<User> filterUsers(
 			@Param("username")String username, 
