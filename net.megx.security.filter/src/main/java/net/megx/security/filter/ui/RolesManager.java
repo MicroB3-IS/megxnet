@@ -136,6 +136,7 @@ public class RolesManager extends BaseRestService{
 					User user = userService.getUserByUserId(username);
 					if(user != null){
 						if(user.getRoles() != null && !user.getRoles().contains(role)){
+							user.setPassword(null);
 							user.getRoles().add(role);
 							userService.updateUser(user);
 						}

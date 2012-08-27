@@ -80,6 +80,10 @@
          this.ready(function(){
             var self = this;
             this.resourcesService.get('',undefined, function(resources){
+               if(resources.error){
+            	   self.n.error("Error","Faled to retrieve list of resources.");
+            	   return;
+               }
                resources = self.fromServer(resources);
                var m = '<div class="resources-panel"></div>';
                var rpel = $(m)[0];
@@ -135,8 +139,11 @@
                   httpMethods: (resource.httpMethods || []).join(','),
                   roles: (resource.roles || []).join(',')
                };
-	            self.resourcesService.post('', rc, function(){
-                  
+	            self.resourcesService.post('', rc, function(data){
+	               if(data){
+	              	   self.n.error("Error",data.message);
+	              	   return;
+	               }
 	               panel.close();
 	               self.n.message('Info: ', 'Resource added successfuly');
 	               self.showResources();
@@ -156,7 +163,11 @@
 	      this.n.confirm('Warning', 'Are you sure you want to remove the protected url: ' + 
 	            '"<span style="font-weight: bold">' + rc.urlPattern + '</span>"?',
 	               function(){
-	                  self.resourcesService.del('', {urlPattern: rc.urlPattern}, function(){
+	                  self.resourcesService.del('', {urlPattern: rc.urlPattern}, function(r){
+	                	 if(r && r.error){
+	                		 self.n.error("Error","Failed to remove URL pattern - " + r.message);
+	                		 return;
+	                	 }
 	                     self.n.message("Info: ", 'Protected URL mapping was successfuly removed.');
 	                     self.showResources();
 	                  },function(status, err){
@@ -175,7 +186,11 @@
                   httpMethods: (resource.httpMethods || []).join(','),
                   roles: (resource.roles || []).join(',')
                };
-	            self.resourcesService.put('', rc, function(){
+	            self.resourcesService.put('', rc, function(r){
+	            	if(r && r.error){
+               		  self.n.error("Error","Failed to update Web Resource - " + r.message);
+               		  return;
+               	    }
 	               panel.close();
 	               self.n.message('Info: ', 'Resource updated successfuly');
 	               self.showResources();
