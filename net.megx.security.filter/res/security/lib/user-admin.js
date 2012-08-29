@@ -164,6 +164,8 @@
 		               title: 'First Name',
 		               validator: function(value){
 		            	   value = $.trim(value || '');
+		            	   if(value == '')
+		            		   return true;
 		            	   if(value.length < 3 || value.length > 20){
 		            		   this.validatorMessage = 'The length of the first name must be between 3 and 20 characters long.';
 		            		   return false;
@@ -182,6 +184,8 @@
 		               title: 'Last Name',
 		               validator: function(value){
 		            	   value = $.trim(value || '');
+		            	   if(value == '')
+		            		   return true;
 		            	   if(value.length < 3 || value.length > 30){
 		            		   this.validatorMessage = 'The length of the last name must be between 3 and 30 characters long.';
 		            		   return false;
@@ -200,6 +204,8 @@
 		               title: 'Initials',
 		               validator: function(value){
 		            	   value = $.trim(value || '');
+		            	   if(value == '')
+		            		   return true;
 		            	   if(value.length < 2 || value.length > 5){
 		            		   this.validatorMessage = 'The length of the initials string must be between 2 and 5 characters long.';
 		            		   return false;

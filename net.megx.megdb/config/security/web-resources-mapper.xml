@@ -27,10 +27,10 @@
     </select>
     
     <select id="getAll" parameterType="map" resultMap="web_resource_map">
-        select url_path, http_method, url_path
-        	from auth.web_resource_permissions
-        	limit #{count}
-        	offset #{from}
+        select url_path, http_method, role from auth.web_resource_permissions where url_path in 
+            (select distinct (url_path) from auth.web_resource_permissions order by 
+                url_path 
+                    offset #{from} limit #{count})
     </select>
     
     <select id="countResources" resultType="int">

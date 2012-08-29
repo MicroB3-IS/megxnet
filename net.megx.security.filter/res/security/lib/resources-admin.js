@@ -159,7 +159,7 @@
                   roles: (resource.roles || []).join(',')
                };
 	            self.resourcesService.post('', rc, function(data){
-	               if(data){
+	               if(data && data.error){
 	              	   self.n.error("Error",data.message);
 	              	   return;
 	               }
