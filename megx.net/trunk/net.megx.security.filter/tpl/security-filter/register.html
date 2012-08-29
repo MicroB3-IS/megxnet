@@ -122,38 +122,44 @@
 				}
 			}
 			
-			if(firstName.length < 3 || firstName.length > 20){
-     		   	N.notify("The length of the first name must be between 3 and 20 characters long.");
-     		   	$("input[name='firstName']").addClass('invalid');
-     		   	return false;
-     	   	}
-			else if(!/^[a-zA-Z]+$/.test(firstName)){
-   		  		N.notify("Please enter valid first name. The first name can be any combination of letters.");
-   		  		$("input[name='firstName']").addClass('invalid');
-    		  	return false;
-     	   	}
+			if(firstName != ''){
+				if(firstName.length < 3 || firstName.length > 20){
+	     		   	N.notify("The length of the first name must be between 3 and 20 characters long.");
+	     		   	$("input[name='firstName']").addClass('invalid');
+	     		   	return false;
+	     	   	}
+				else if(!/^[a-zA-Z]+$/.test(firstName)){
+	   		  		N.notify("Please enter valid first name. The first name can be any combination of letters.");
+	   		  		$("input[name='firstName']").addClass('invalid');
+	    		  	return false;
+	     	   	}
+			}
 			
-			if(lastName.length < 3 || lastName.length > 30){
-     		   	N.notify("The length of the last name must be between 3 and 30 characters long.");
-     		   	$("input[name='lastName']").addClass('invalid');
-     		   	return false;
-     	   	}
-			else if(!/^[a-zA-Z]+$/.test(lastName)){
-   		  		N.notify("Please enter valid last name. The last name can be any combination of letters.");
-   		  		$("input[name='lastName']").addClass('invalid');
-    		  	return false;
-     	   	}
+			if(lastName != ''){
+				if(lastName.length < 3 || lastName.length > 30){
+	     		   	N.notify("The length of the last name must be between 3 and 30 characters long.");
+	     		   	$("input[name='lastName']").addClass('invalid');
+	     		   	return false;
+	     	   	}
+				else if(!/^[a-zA-Z]+$/.test(lastName)){
+	   		  		N.notify("Please enter valid last name. The last name can be any combination of letters.");
+	   		  		$("input[name='lastName']").addClass('invalid');
+	    		  	return false;
+	     	   	}
+			}
 			
-			if(initials.length < 2 || initials.length > 5){
-     		   	N.notify("The length of the initials string must be between 2 and 5 characters long.");
-     		   	$("input[name='initials']").addClass('invalid');
-     		   	return false;
-     	   	}
-			else if(!/^[a-zA-Z]+$/.test(initials)){
-   		  		N.notify("Please enter valid initials string. The initials can be any combination of letters.");
-   		  		$("input[name='initials']").addClass('invalid');
-    		  	return false;
-     	   	}
+			if(initials != ''){
+				if(initials.length < 2 || initials.length > 5){
+	     		   	N.notify("The length of the initials string must be between 2 and 5 characters long.");
+	     		   	$("input[name='initials']").addClass('invalid');
+	     		   	return false;
+	     	   	}
+				else if(!/^[a-zA-Z]+$/.test(initials)){
+	   		  		N.notify("Please enter valid initials string. The initials can be any combination of letters.");
+	   		  		$("input[name='initials']").addClass('invalid');
+	    		  	return false;
+	     	   	}
+			}
 			
 			if(!valid){
 				return;
