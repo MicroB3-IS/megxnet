@@ -85,7 +85,7 @@ public class RolesManager extends BaseRestService{
 		role.setPermissions(permissions);
 		
 		try {
-			if(oldLabel.compareToIgnoreCase(newLabel) != 0){
+			if(!oldLabel.equals(newLabel)){
 				PaginatedResult<Role> allRoles = userService.getAvailableRoles(0, 0, true);
 				if(allRoles.getResults().contains(role)){
 					throw new Exception("A group with the same name already exists. Please enter unique group name.");
