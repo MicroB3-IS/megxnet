@@ -456,6 +456,9 @@
 	      res = res || {};
 	      var htms = res.httpMethods || {};
 	      var methods = [];
+	      if(htms['all']){
+	    	  return methods;
+	      }
 	      each(ResourcesManager.HTTP_METHODS, function(k,v){
 	         if(!htms[k])
 	            methods.push({
