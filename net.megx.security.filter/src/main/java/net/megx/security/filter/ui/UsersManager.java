@@ -154,6 +154,16 @@ public class UsersManager extends BaseRestService{
 		}
 		user.setRoles(lroles);
 		try{
+			
+			PaginatedResult<User>  result = userService.getUsersByEmail(email, 0, 1);
+			if(result.getTotalCount() > 0){
+				User existing = result.getResults().get(0);
+				if(!existing.getLogin().equals(login)){
+					return toJSON(new Result<Object>(true, "A user with this email already exist", "duplicate-email"));
+				}
+			}
+			
+			
 			userService.updateUser(user);
 			createUserHomeDirectory(user);
 		}catch (Exception e) {
