@@ -160,7 +160,7 @@
                };
 	            self.resourcesService.post('', rc, function(data){
 	               if(data && data.error){
-	              	   self.n.error("Error",data.message);
+	              	   self.n.error("Error: ",data.message);
 	              	   return;
 	               }
 	               panel.close();
@@ -184,7 +184,7 @@
 	               function(){
 	                  self.resourcesService.del('', {urlPattern: rc.urlPattern}, function(r){
 	                	 if(r && r.error){
-	                		 self.n.error("Error","Failed to remove URL pattern - " + r.message);
+	                		 self.n.error("Error: ","Failed to remove URL pattern - " + r.message);
 	                		 return;
 	                	 }
 	                     self.n.message("Info: ", 'Protected URL mapping was successfuly removed.');
@@ -207,7 +207,7 @@
                };
 	            self.resourcesService.put('', rc, function(r){
 	            	if(r && r.error){
-               		  self.n.error("Error","Failed to update Web Resource - " + r.message);
+               		  self.n.error("Error: ","Failed to update Web Resource - " + r.message);
                		  return;
                	    }
 	               panel.close();
