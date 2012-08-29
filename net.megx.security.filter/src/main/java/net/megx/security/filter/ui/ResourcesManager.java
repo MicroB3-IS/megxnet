@@ -69,6 +69,10 @@ public class ResourcesManager extends BaseRestService{
 		try{
 			String [] methods = httpMethods.split(",");
 			String [] rolesArr = roles.split(",");
+			List<WebResource> existing = resourcesService.getWebResources(urlPattern);
+			if(existing != null && existing.size() > 0){
+				throw new Exception("Web resource with the same URL pattern already exist."); 
+			}
 			resourcesService.updateWebResource(originalUrlPattern, urlPattern, Arrays.asList(methods), Arrays.asList(rolesArr));
 			return toJSON(new Result<String>("OK"));
 		}catch(Exception e){
