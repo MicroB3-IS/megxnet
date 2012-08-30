@@ -702,7 +702,7 @@
 			var m = [
 			    '<div class="long-select-wrapper">',
 			    	'<div class="long-select-header">',
-			    		'<div class="long			-select-filter-wrapper">',
+			    		'<div class="long-select-filter-wrapper">',
 			    			'<label class="long-select-filter-label">Filter: </label>',
 			    			'<input type="text" class="long-select-filter-input"/>',
 			    		'</div>',

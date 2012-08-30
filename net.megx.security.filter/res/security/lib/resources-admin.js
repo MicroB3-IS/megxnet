@@ -114,15 +114,16 @@
                         '</span>',
                         '<span class="rc-action-remove ui-icon ui-icon-closethick" style="float: right;"></span>',
                         '<div class="resource-entry-details">',
-                              '<div>',
+                              '<div class="panel-field-left">',
                                  '<label class="panel-field-label">Allowed HTTP Methods:</label>',
                                  getArr(resources[i].httpMethods),
                               '</div>',
-                              '<div>',
+                              '<div class="panel-field-right">',
                                  '<label class="panel-field-label">Allowed Roles:</label>',
                                  getArr(resources[i].roles),
                               '</div>',
                         '</div>',
+						'<div class="clear"></div>',
                      '</div>'
                   ].join('');
                   var rmel = $(rm)[0];

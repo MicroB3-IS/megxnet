@@ -589,7 +589,7 @@
                   'type="',d.type,'" ',
                   //'id="', id ,'" ',
                   'value="', d.value || '', '" ',
-                  'class="panel-input-field ', d.extraClass || '', '" ',
+                  'class="panel-input-field field-type-',d.type,' ', d.extraClass || '', '" ',
                   'title="', d.title || '', '" ',
                   'name="', d.name || '', '" ',
                   (d.checked != undefined ? (d.checked ? 'checked="checked"':'') : ''),
