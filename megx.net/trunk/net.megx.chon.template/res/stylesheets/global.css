@@ -1,11 +1,11 @@
+/*
+body, input, form, select, textarea, button, submit, label          { 
+                    color: #666; 
+                    font-size: 12px;
+                    font-family: Calibri, "Trebuchet MS", Tahoma;
+                    }
 
-body, input, form, select, textarea, button, submit, label			{ 
-	font-size: 12px;
-	font-family: 'Ubuntu', sans-serif;
-	color: #333;
-	}
-
-
+*/
 header, footer, article, section, nav, menu, hgroup {  
    display: block;  
 } 
@@ -193,11 +193,11 @@ form button {
 }
 form button.blue {
 	background-color: #4ea5cd;
-	background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd)!important;
-	background-image: -moz-linear-gradient(top, #56a9cf, #4ea5cd)!important;
-	background-image: -ms-linear-gradient(top, #56a9cf, #4ea5cd)!important;
-	background-image: -o-linear-gradient(top, #56a9cf, #4ea5cd)!important;
-	background-image: linear-gradient(top, #56a9cf, #4ea5cd)!important;
+    background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd);
+    background-image: -moz-linear-gradient(top, #56a9cf, #4ea5cd);
+    background-image: -ms-linear-gradient(top, #56a9cf, #4ea5cd);
+    background-image: -o-linear-gradient(top, #56a9cf, #4ea5cd);
+    background-image: linear-gradient(top, #56a9cf, #4ea5cd);
 	color: #b1e1f8!important;
 }
 form button.blue:hover, form button.blue:focus {
