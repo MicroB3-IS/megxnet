@@ -6,6 +6,11 @@ html, body {
 	min-width: 800px;
 	background-color: #f8f8f8;
 }
+body {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: .8em;
+    color: #333;
+}
 #wrapper {
 	border-top: 2px solid #0e4e96;
 	margin: 0em auto;
