@@ -58,6 +58,10 @@
 		<module>net.megx.security.filter</module>
 		<!-- build megx.net apps manager -->
 		<module>net.megx.apps-manager</module>
+		
+		<!-- WebDAV module -->
+		<module>net.megx.was.webdav</module>
+		
 		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
 		<!-- what bundles will be included in the final build -->
 		<module>net.megx.product</module>
