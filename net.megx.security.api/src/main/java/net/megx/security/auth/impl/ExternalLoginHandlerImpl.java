@@ -56,13 +56,15 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			if(log.isDebugEnabled())
 				log.debug("Looking for user: " + logname);
 			user = userService.getUserByUserId(logname);
+			Date lastLogin = null;
 			if(user == null){
 				log.debug("This user was not registered. Registering now...");
 				user = getNewUser(logname, email, firstName, lastName, provider);
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
+				lastLogin = user.getLastlogin();
 			}else{
-				Date lastLogin = user.getLastlogin();
+				lastLogin = user.getLastlogin();
 				user.setLastlogin(new Date());
 				user.setPassword(null);
 				user.setFirstName(firstName);
@@ -71,8 +73,8 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				userService.updateUser(user);
 				if(lastLogin == null)
 					lastLogin = user.getLastlogin();
-				request.getSession().setAttribute("userLastLogin", lastLogin);
 			}
+			request.getSession().setAttribute("userLastLogin", lastLogin);
 		} catch (Exception e) {
 			log.error("Failed to create authentication: ",e);
 			throw new ServletException(e);
