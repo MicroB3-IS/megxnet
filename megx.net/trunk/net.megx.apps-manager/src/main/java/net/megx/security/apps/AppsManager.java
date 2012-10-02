@@ -1,12 +1,15 @@
 package net.megx.security.apps;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DELETE;
@@ -30,7 +33,6 @@ import net.megx.security.crypto.KeySecretProvider;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
@@ -61,12 +63,11 @@ public class AppsManager {
 	public String getConsumers(@Context HttpServletRequest request){
 		String user = request.getUserPrincipal().getName();
 		try {
-			return gson.toJson(consumerService.getConsumersForUser(user));
+			return toJSON(consumerService.getConsumersForUser(user));
 		} catch (Exception e) {
 			log.error("Error while fetching applications:",e);
-			e.printStackTrace();
+			return toJSON(handleException(e));
 		}
-		return null;
 	}
 	
 	
@@ -98,12 +99,11 @@ public class AppsManager {
 			u.setLogin(user);
 			token.setUser(u);
 			tokenService.saveToken(token.getToken(), token);
-			return gson.toJson(token);
+			return toJSON(token);
 		}catch (Exception e) {
 			log.error("Failed to generate access token: ", e);
-			e.printStackTrace();
+			return toJSON(handleException(e));
 		}
-		return null;
  	}
 	
 	@PUT
@@ -119,24 +119,33 @@ public class AppsManager {
 			@FormParam("oob") Boolean oob){
 		try{
 			Consumer consumer = consumerService.getConsumerForKey(appKey);
-			
+			if(consumer == null){
+				throw new Exception("No consumer with the specified key.");
+			}
+			if(!consumer.getLogname().equals(request.getUserPrincipal().getName())){
+				throw new Exception("Action forbidden.");
+			}
 			if(name != null)
 				consumer.setName(name);
 			if(description != null)
 				consumer.setDescription(description);
-			if(callback != null)
-				consumer.setCallbackUrl(callback);
+			if(callback != null){
+				if(validURL(callback)){
+					consumer.setCallbackUrl(callback);
+				}else{
+					throw new Exception("Invalid callback URL.");
+				}
+			}
 			if(oob != null)
 				consumer.setOob(oob);
 			
 			consumerService.updateConsumer(consumer);
-			return  gson.toJson(consumer);
+			return  toJSON(consumer);
 			
 		}catch (Exception e) {
 			log.error("Unable to update consumer",e);
-			e.printStackTrace();
+			return toJSON(handleException(e));
 		}
-		return null;
 	}
 	
 	@POST
@@ -147,7 +156,11 @@ public class AppsManager {
 			@FormParam("oob") Boolean oob, 
 			@Context HttpServletRequest request){
 		try{
-			Consumer consumer = new Consumer();
+			Consumer consumer = consumerService.getConsumer(name);
+			if(consumer != null){
+				throw new Exception("The consumer name is not available.");
+			}
+			consumer = new Consumer();
 			KeySecret keySecret = keySecretProvider.createKeySecretPair();
 			consumer.setKey(keySecret.getKey());
 			consumer.setSecret(keySecret.getSecret());
@@ -159,7 +172,13 @@ public class AppsManager {
 			consumer.setName(name);
 			consumer.setDescription(description);
 			consumer.setOob(oob);
-			consumer.setCallbackUrl(callback);
+			if(callback != null){
+				if(validURL(callback)){
+					consumer.setCallbackUrl(callback);
+				}else{
+					throw new Exception("Invalid callback URL.");
+				}
+			}
 			
 			
 			Calendar calendar = Calendar.getInstance();
@@ -170,12 +189,13 @@ public class AppsManager {
 				consumer.setOob(true); // out of band anyway
 			}
 			
-			return gson.toJson(consumerService.addConsumer(consumer));
+			
+			
+			return toJSON(consumerService.addConsumer(consumer));
 		}catch (Exception e) {
 			log.error("Unable to add consumer",e);
-			e.printStackTrace();
+			return toJSON(handleException(e));
 		}
-		return null;
 	}
 	
 	@Path("{key}")
@@ -183,16 +203,77 @@ public class AppsManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String removeConsumer(@PathParam("key") String appKey,
 			@Context HttpServletRequest request){
-		Consumer consumer = new Consumer();
-		consumer.setKey(appKey);
 		try{
+			Consumer consumer = consumerService.getConsumerForKey(appKey);
+			if(consumer == null){
+				throw new Exception("No consumer with the specified key.");
+			}
+			if(!consumer.getLogname().equals(request.getUserPrincipal().getName())){
+				throw new Exception("Action forbidden.");
+			}
 			consumerService.removeConsumer(consumer);
-			return gson.toJson(consumer);
+			return toJSON(consumer);
 		}catch (Exception e) {
 			log.error("Failed to remove Consumer: ",e);
-			e.printStackTrace();
+			return toJSON(handleException(e));
 		}
-		return null;
 	}
 	
+	
+	public String toJSON(Object object){
+		return gson.toJson(object);
+	}
+	
+	public <T> T fromJSON(String jsonSrc, Class<T> type){
+		return gson.fromJson(jsonSrc, type);
+	}
+	
+	public Map<String, Object> handleException(Exception e){
+		Map<String, Object> result = new HashMap<String, Object>();
+		log.error("An error occured while processing: ", e);
+		result.put("error",true);
+		result.put("message",e.getMessage());
+		result.put("data",transformException(e));
+		return result;
+	}
+	
+	protected Map<String, Object> transformException(Exception e){
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		_mapException(result, e, new HashSet<Throwable>());
+		
+		return result;
+	}
+	
+	private void _mapException(Map<String, Object> map, Throwable e, Set<Throwable> mapped){
+		if(mapped.contains(e)){
+			return;
+		}
+		map.put("message", e.getMessage());
+		StackTraceElement [] ses = e.getStackTrace();
+		if(ses != null && ses.length > 0){
+			String [] stackTrace = new String [ses.length];
+			for(int i = 0; i < ses.length; i++){
+				StackTraceElement el = ses[i];
+				String line = String.format("%s#%s (%s, line %d)",el.getClassName(), el.getMethodName(), el.getFileName(), el.getLineNumber());
+				stackTrace[i] = line;
+			}
+			map.put("stackTrace", stackTrace);
+		}
+		mapped.add(e);
+		if(e.getCause() != null){
+			Map<String, Object> cause = new HashMap<String, Object>();
+			_mapException(cause, e.getCause(), mapped);
+			map.put("cause", cause);
+		}
+	}
+	
+	private boolean validURL(String url){
+		try {
+			URL t = new URL(url);
+		} catch (MalformedURLException e) {
+			return false;
+		}
+		return true;
+	}
 }

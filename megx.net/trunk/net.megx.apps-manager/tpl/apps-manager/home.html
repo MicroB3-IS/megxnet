@@ -56,8 +56,7 @@
 }
 
 .apps-label{
-	width: 200px;
-	float: left;
+	display: block;
 	font-size: 12px;
 	font-weight: bold;
 }
@@ -74,7 +73,8 @@
 
 .apps-secure-info{
 	color: #666;
-	padding: 2px;
+	padding: 10px;
+	display: block;
 }
 
 .apps-side-action{
@@ -164,15 +164,22 @@ $(document).ready(function(){
 		}
 		
 		if(currentApp.edit){
-			debugger
-			manager.updateApp(app, function(){
-				notify('info','','Application ' + app.name + ' has been updated.');
-				getAllApps();
+			manager.updateApp(app, function(result){
+				if(result && result.error){
+					notify('error','','Failed to update application ' + app.name + '. ' + result.message);
+				}else{
+					notify('info','','Application ' + app.name + ' has been updated.');
+	                getAllApps();	
+				}
 			}, function(){
 				notify('error','','Failed to update application ' + app.name + '.');
 			});
 		}else{
-			manager.addApp(app, function(){
+			manager.addApp(app, function(result){
+				if(result && result.error){
+                    notify('error','','Failed to add application ' + app.name + '. ' + result.message);
+                    return;
+                }
 				notify('info','','Application ' + app.name + ' has been added.');
 				getAllApps();
 			}, function(){
@@ -222,8 +229,8 @@ $(document).ready(function(){
 				   			     '<div class="apps-subsection ui-corner-all">',
 				   			  		'<div><label class="apps-label">Access Token: </label><input type="button" class="apps-action-access-token" value="Generate"/></div>',
 				   			  		'<div class="apps-access-token-panel">',
-				   			  			'<div><label class="apps-label">Token: </label><span class="apps-token apps-secure-info">token</span></div>',
-			   			    			'<div><label class="apps-label">Secret: </label><textarea class="apps-token-secret apps-secure-info" readonly="readonly" style="width: 100%; height: 100px; border: none;"></textarea></div>',
+				   			  			'<div><label class="apps-label">Token: </label><span class="apps-token apps-secure-info"></span></div>',
+			   			    			'<div><label class="apps-label">Secret: </label><div class="apps-token-secret apps-secure-info" readonly="readonly" style="width: 100%; height: 100px; border: none;"></div></div>',
 				   			  		'</div>',
 				   			     '</div>',
 				   			     '<div style="text-align: right;">',
@@ -255,6 +262,10 @@ $(document).ready(function(){
 				
 					$('.apps-action-access-token',el).click(function(){
 						manager.generateAccessToken(app.key, function(token){
+							if(token.error){
+								notify('error','','Failed to generate access token. ' +  token.message);
+								return;
+							}
 							$(".apps-token",el).html(token.token);
 							$(".apps-token-secret",el).html(token.secret);
 							$(".apps-access-token-panel",el).show();
@@ -280,7 +291,11 @@ $(document).ready(function(){
 							'title': 'Delete an App',
 							buttons:{
 								'Yes': function(){
-									manager.removeApp(app.key, function(){
+									manager.removeApp(app.key, function(result){
+										if(result.error){
+											notify('error','','Failed to update application ' + app.name + '. ' + result.message);
+											return;
+										}
 										$(del).dialog('close');
 										getAllApps();
 										notify('info','','Application ' + app.name + ' has been deleted.');
@@ -363,7 +378,7 @@ $(document).ready(function(){
 				</div>
 				<div>
 					<label class="apps-label">Description: </label>
-					<input type="text" id="app-description">
+					<textarea  id="app-description"></textarea>
 				</div>
 				<div>
 					<label class="apps-label">Desktop Client (Out Of Band): </label>
