@@ -1,0 +1,24 @@
+<figure class="logo"><a href="$ctx.siteUrl"><img src="$ctx.siteUrl/images/logo.png"></a></figure>
+<article class="header-right"> 
+	#if($req.user) 
+		<sub>
+		  #if($req.servletRequset.isUserInRole("cmsAdmin"))
+		  <span><a href="$ctx.siteUrl/admin/explorer.main.do">Admin Area</a></span> |
+		  #end
+		   
+		  #if($req.servletRequset.isUserInRole("admin"))
+		  <span><a href="$ctx.siteUrl/security/admin">Security Admin</a></span> |
+		  #end
+		  <span><a href="$ctx.siteUrl/admin/logout.do">logout</a></span>
+		</sub>
+		<h6 class="FR"> Welcome $req.user.name</h6><!-- , role: $req.user.role -->
+	<div class="clear"></div>
+		<sub><span>Last Login: $req.servletRequset.session.getAttribute("userLastLogin")</span></sub> 
+	#else
+	   #if($this.path != "login")
+		  <h6 class="FR"><a href="$ctx.siteUrl/login">log in</a> </h6>
+	   #end
+	#end 
+</article>
+#parse("pages/fragments/nav_bar.html")
+<div class="headerBorder"></div>
