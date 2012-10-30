@@ -107,7 +107,7 @@ public class BaseMegdbService {
 	}
 	
 	
-	protected <M,R> R  doInTransaction(Task<M, R> task, Class<M> mapperClass) throws Exception{
+	protected <M,R> R  doInTransaction(Task<M, R> task, Class<? extends M> mapperClass) throws Exception{
 		log.debug("Executing Task in transaction...");
 		SqlSession session = sessionFactory.openSession();
 		log.debug("Session is opened.");
@@ -131,7 +131,7 @@ public class BaseMegdbService {
 			log.debug("Session closed.");
 		}
 	}
-	protected <M,R> R  doInSession(Task<M, R> task, Class<M> mapperClass) throws Exception{
+	protected <M,R> R  doInSession(Task<M, R> task, Class<? extends M> mapperClass) throws Exception{
 		log.debug("Executing Task in session...");
 		SqlSession session = sessionFactory.openSession();
 		log.debug("Session is opened.");
