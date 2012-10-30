@@ -36,3 +36,13 @@ Require-Bundle: org.chon.cms.content;bundle-version="1.0.0",
  org.chon.web;bundle-version="1.0.2"
 Bundle-ClassPath: lib/opencsv-2.3.jar,
  .
+Export-Package: net.megx.ws.core,
+ net.megx.ws.core.ext,
+ net.megx.ws.core.providers,
+ net.megx.ws.core.providers.csv,
+ net.megx.ws.core.providers.csv.annotations,
+ net.megx.ws.core.providers.exceptions,
+ net.megx.ws.core.providers.html,
+ net.megx.ws.core.providers.html.annotations,
+ net.megx.ws.core.providers.txt,
+ net.megx.ws.core.utils
