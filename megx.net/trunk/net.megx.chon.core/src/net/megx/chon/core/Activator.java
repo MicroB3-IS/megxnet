@@ -15,9 +15,11 @@
  */
 package net.megx.chon.core;
 
-import java.util.Hashtable;
+import javax.jcr.Node;
 
-import net.megx.chon.core.factory.MegxModuleContentNodeFactory;
+import net.megx.chon.core.model.impl.LoginModule;
+import net.megx.chon.core.model.impl.WMS_Module;
+import net.megx.chon.core.model.impl.WOA_Module;
 import net.megx.chon.core.renderers.ModuleNodeRenderer;
 import net.megx.chon.core.rest.TestRest;
 import net.megx.chon.core.ui.GenomesExtension;
@@ -31,10 +33,11 @@ import net.megx.chon.core.ui.VersioningExtension;
 import net.megx.chon.core.ui.WOA5Extension;
 import net.megx.chon.core.ui.WOD5Extension;
 
+import org.chon.cms.content.utils.ChonTypeUtils;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
-import org.chon.cms.model.content.IContentNodeFactory;
-import org.chon.cms.model.content.INodeRenderer;
+import org.chon.cms.model.ContentModel;
+import org.chon.cms.model.content.IContentNode;
 
 public class Activator extends ResTplConfiguredActivator {
 
@@ -55,14 +58,27 @@ public class Activator extends ResTplConfiguredActivator {
 		
 		
 		// register factory
-		getBundleContext().registerService(IContentNodeFactory.class.getName(),
-				new MegxModuleContentNodeFactory(), null);
+		//getBundleContext().registerService(IContentNodeFactory.class.getName(),
+		//		new MegxModuleContentNodeFactory(), null);
 
+		try {
+			ContentModel contentModel = app.createContentModelInstance(getName());
+			
+			registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
+			registerModuleType(contentModel, "megx.module.woa", WOA_Module.class);
+			registerModuleType(contentModel, "megx.module.login", LoginModule.class);
+			
+			//register common renderer for all above
+			ChonTypeUtils.registerNodeRenderer(getBundleContext(), ModuleNodeRenderer.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// register ModuleNodeRenderer
-		Hashtable<String, String> props = new Hashtable<String, String>();
-		props.put("renderer", ModuleNodeRenderer.class.getName());
-		getBundleContext().registerService(INodeRenderer.class.getName(),
-				new ModuleNodeRenderer(), props);
+		//Hashtable<String, String> props = new Hashtable<String, String>();
+		//props.put("renderer", ModuleNodeRenderer.class.getName());
+		//getBundleContext().registerService(INodeRenderer.class.getName(),
+		//		new ModuleNodeRenderer(), props);
 
 		app.regExtension("tagCloud", new TagCloudExtenstion(this.getBundleContext()));
 		app.regExtension("genomes", new GenomesExtension(this.getBundleContext()));
@@ -78,5 +94,24 @@ public class Activator extends ResTplConfiguredActivator {
 		
 		app.regExtension("test_svc", new TestServicesExtension(this.getBundleContext()));
 		app.regExtension("version", new VersioningExtension(this.getBundleContext()));
+	}
+
+	private void registerModuleType(ContentModel contentModel, String typeName, Class<? extends IContentNode> clz) {
+		try {
+			//remove previous /etc/types/typeName node
+			removeType(contentModel, typeName);
+			// Create New /etc/types/typeName node (with updated refactoring if any)
+			ChonTypeUtils.registerType(contentModel, typeName, clz, ModuleNodeRenderer.class, null, null);
+			// finally, register content node type in OSGi registry
+			ChonTypeUtils.registerContnetNodeClass(getBundleContext(), clz);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void removeType(ContentModel contentModel, String typeName) throws Exception {
+		Node node = ChonTypeUtils.getType(contentModel, typeName, false);
+		if(node != null) node.remove();
 	}
 }
