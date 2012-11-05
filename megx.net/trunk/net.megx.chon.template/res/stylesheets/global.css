@@ -156,6 +156,13 @@ form input {
 	width: 30em;
 	line-height: 13px;
 }
+form checkbox {
+	float: right;
+	padding: 0em;
+	margin: 0em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+}
 form textarea {
 	display: block;
 	padding: .5em .5em;

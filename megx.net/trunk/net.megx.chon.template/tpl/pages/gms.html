@@ -232,38 +232,17 @@ var gms_host_url = "$ctx.siteUrl";
  <div class="SideMenuNav">
   <form>
     <ul class="menuSide">
-      <li class="item1"><a href="#">Sampling Sites<span>4</span></a>
+      <li><a href="#">Select Layer<input type="checkbox" name="01"></a></li>
+      <li><a href="#">Physicoch. &amp; Biolog. Layers<span>3</span></a>
         <ul>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="01" id="01">
-              <label for="01">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="02" id="02">
-              <label for="02">Select Period</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="03" id="03">
-              <label for="03">Select Distance</label>
-            </dd>
-          </li>
-        </ul>
-      </li>
-      <li class="item2"><a href="#">Physicoch. &amp; Biolog. Layers<span>3</span></a>
-        <ul>
-          <li class="subitem1">
+          <li>
             <dd>
               <select name="layerS" id="select">
                 <option>Select Layer</option>
               </select>
             </dd>
           </li>
-          <li class="subitem2">
+          <li>
           <li>
             <dd>
               <select name="layerS" id="select">
@@ -271,7 +250,7 @@ var gms_host_url = "$ctx.siteUrl";
               </select>
             </dd>
           </li>
-          <li class="subitem3">
+          <li>
             <dd>
               <select name="layerS" id="select">
                 <option>Select Distance</option>
@@ -281,67 +260,47 @@ var gms_host_url = "$ctx.siteUrl";
           </li>
         </ul>
       </li>
-      <li class="item3"><a href="#">Base Layers<span>9</span></a>
-        <ul>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="1" id="1">
-              <label for="1">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="2" id="2">
-              <label for="2">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="3" id="3">
-              <label for="3">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="4" id="4">
-              <label for="4">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="5" id="5">
-              <label for="5">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="6" id="6">
-              <label for="6">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="7" id="7">
-              <label for="7">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="8" id="8">
-              <label for="8">Select Layer</label>
-            </dd>
-          </li>
-          <li class="subitem2">
-            <dd>
-              <input type="checkbox" name="9" id="9">
-              <label for="9">Select Layer</label>
-            </dd>
-          </li>
-        </ul>
-      </li>
+      <li><a href="#">Base Layers</a></li><!--span>9</span-->
     </ul>
   </form>
 </div>
+
+ <script>
+	    $(window).load(function() {
+    	    $('#slider').iwSlider();
+	    });
+		$('article').addClass('padRight1dot5');
+		$('article').last().removeClass('padRight1dot5');		
+			
+			
+			$('button').click(function(){
+     		$('div.SideMenuNav').toggle();     	
+		});
+	<!--initiate side-menu-->
+	$(function() {
+	
+		var menu_ul = $('.menuSide > li > ul'),
+	    	menu_a  = $('.menuSide > li > a');
+
+		menu_ul.hide();
+		
+		menu_a.click(function(e) {
+			e.preventDefault();
+			if(!$(this).hasClass('active')) {
+				menu_a.removeClass('active');
+				menu_ul.filter(':visible').slideUp('normal');
+				$(this).addClass('active').next().stop(true,true).slideDown('normal');
+			} else {
+				$(this).removeClass('active');
+				$(this).next().stop(true,true).slideUp('normal');
+			}
+		});
+	});
+
+
+	    $('footer > section > ul > li').css('float','left');
+    </script>
+
 <div class="gms_center"> 
  
 	<div id="tip" class="InnerBox" style="text-align:center;">Click on a sampling site (dot) to retrieve environmental data!</div> 
