@@ -20,7 +20,7 @@ var gms_host_url = "$ctx.siteUrl";
   <noscript><h1 style="color:red;">To get the full functionality please activate javascript in your browser!</h1></noscript><form name="test" action="" onreset="resetMap()"> 
 <div class="gms_outerbox"> 
  
-<div class="gms_left"> 
+<!--div class="gms_left"> 
 	<form action="" name="samplingsite_form" onreset="reset()" style="margin:0px;"> 
 <table class="InnerBox" width="100%"> 
 	<tr class="Title"> 
@@ -28,25 +28,21 @@ var gms_host_url = "$ctx.siteUrl";
 		<td>Sampling Sites</td> 
 	</tr> 
 	<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="genomes_cb" value="genome"
 			checked="checked" onclick="setSamplingSiteFilter(this.value, this.checked)" /></td> 
 		<td>Prokaryote Genomes</td> 
 	</tr> 
 	<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="metagenomes_cb" value="metagenome"
 			checked="checked" onclick="setSamplingSiteFilter(this.value, this.checked)"/></td> 
 		<td>Metagenomes</td> 
 	</tr> 
 	<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="phages_cb" value="phage"
 			checked="checked" onclick="setSamplingSiteFilter(this.value, this.checked)"/></td> 
 		<td>Phage Genomes</td> 
 	</tr> 
 	<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="rrnas_cb" value="rRNA"
 			 onclick="setSamplingSiteFilter(this.value, this.checked)"/></td> 
 		<td>rRNA Sequences</td> 
@@ -164,14 +160,12 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="satellite_mod_cb" value="satellite_mod" checked="checked" onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Default</td> 
 		<td>&nbsp;</td>
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="bathymetry_cb" value="bathymetry"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Bathymetry</td> 
 		<td><a href="tools/metadata.php?id=1" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -179,7 +173,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="boundaries_cb" value="boundaries"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Boundaries</td> 
 		<td><a href="tools/metadata.php?id=4" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -187,7 +180,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="limitsoceans_cb" value="limitsoceans"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Limits of Oceans &amp; Seas 1953</td> 
 		<td><a href="tools/metadata.php?id=5" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -195,7 +187,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="coordinates_cb" value="coordinates"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Coordinates</td> 
 		<td><a href="tools/metadata.php?id=0" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -203,7 +194,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="lakes_cb" value="lakes"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Lakes</td> 
 		<td><a href="tools/metadata.php?id=7" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -211,7 +201,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="satellite_cb" value="satellite"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Satellite</td> 
 		<td><a href="tools/metadata.php?id=6" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -219,7 +208,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="undersea_arc_cb" value="undersea_arc"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Undersea Features</td> 
 		<td><a href="tools/metadata.php?id=2" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -227,7 +215,6 @@ var gms_host_url = "$ctx.siteUrl";
 
 	</tr> 
 		<tr class="Text"> 
-		<!-- in id cb is short for checkbox --> 
 		<td><input type="checkbox" id="undersea_point_cb" value="undersea_point"  onclick="setVisible(this.value,this.checked)"/></td> 
 		<td>Undersea Point Features</td> 
 		<td><a href="tools/metadata.php?id=3" ><img src="$ctx.siteUrl/gms-res/images/icon_text.gif" alt="Metadata test" title="Metadata about the origin of the layer data" border="0" /></a> 
@@ -241,17 +228,127 @@ var gms_host_url = "$ctx.siteUrl";
 		type="reset" name="reset"
 		title="Click button to reset page to initial status"
 		style="padding: 4px; margin-right: 5px; cursor: pointer; vertical-align: middle"/></div> 
-</div> 
- 
+</div--> 
+ <div class="SideMenuNav">
+  <form>
+    <ul class="menuSide">
+      <li class="item1"><a href="#">Sampling Sites<span>4</span></a>
+        <ul>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="01" id="01">
+              <label for="01">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="02" id="02">
+              <label for="02">Select Period</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="03" id="03">
+              <label for="03">Select Distance</label>
+            </dd>
+          </li>
+        </ul>
+      </li>
+      <li class="item2"><a href="#">Physicoch. &amp; Biolog. Layers<span>3</span></a>
+        <ul>
+          <li class="subitem1">
+            <dd>
+              <select name="layerS" id="select">
+                <option>Select Layer</option>
+              </select>
+            </dd>
+          </li>
+          <li class="subitem2">
+          <li>
+            <dd>
+              <select name="layerS" id="select">
+                <option>Select Period</option>
+              </select>
+            </dd>
+          </li>
+          <li class="subitem3">
+            <dd>
+              <select name="layerS" id="select">
+                <option>Select Distance</option>
+              </select>
+              <input type="submit" name="button" id="button" value="Map It">
+            </dd>
+          </li>
+        </ul>
+      </li>
+      <li class="item3"><a href="#">Base Layers<span>9</span></a>
+        <ul>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="1" id="1">
+              <label for="1">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="2" id="2">
+              <label for="2">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="3" id="3">
+              <label for="3">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="4" id="4">
+              <label for="4">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="5" id="5">
+              <label for="5">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="6" id="6">
+              <label for="6">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="7" id="7">
+              <label for="7">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="8" id="8">
+              <label for="8">Select Layer</label>
+            </dd>
+          </li>
+          <li class="subitem2">
+            <dd>
+              <input type="checkbox" name="9" id="9">
+              <label for="9">Select Layer</label>
+            </dd>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </form>
+</div>
 <div class="gms_center"> 
  
 	<div id="tip" class="InnerBox" style="text-align:center;">Click on a sampling site (dot) to retrieve environmental data!</div> 
- 
-	<div id="gms_center_gmsbox" class="InnerBox"> 
+ 	<div id="gms_center_gmsbox" class="InnerBox"> 
 		<div id="gmsmap" class="olMap" style="width: 100%; height: 100%;"></div> 
 	</div> 
- 
-		<div class="InnerBox" id="legendBox"> 
+ 		<div class="InnerBox" id="legendBox"> 
 		<p class="Title"><img src="$ctx.siteUrl/gms-res/images/icon_eye.gif"> Legend</p> 
 		<div id="samplingSiteLegendImg" style="float:left; margin:4px;"></div> 
 		<div id="legendImg" style="float:left;margin:4px;"></div> 
