@@ -135,7 +135,7 @@ public class FileAccess extends BaseAccessMechanism{
 		}
 	}
 	
-	private URI doResolve(URI  input) throws ResourceAccessException{
+	protected URI doResolve(URI  input) throws ResourceAccessException{
 		String host = input.getHost();
 		String path = input.getPath();
 		String resolvedHost = config.get(host);

@@ -9,13 +9,10 @@ public class BaseStoredResource implements StoredResource{
 
 	private AccessMechanism mechanism;
 	private URI resourceURI;
-	private URI accessURI;
 	
-	protected BaseStoredResource(AccessMechanism mechanism, URI resourceURI,
-			URI accessURI) {
+	protected BaseStoredResource(AccessMechanism mechanism, URI resourceURI) {
 		this.mechanism = mechanism;
 		this.resourceURI = resourceURI;
-		this.accessURI = accessURI;
 	}
 	
 	@Override
@@ -40,7 +37,7 @@ public class BaseStoredResource implements StoredResource{
 
 	@Override
 	public URI getAccessURI() {
-		return accessURI;
+		return mechanism.resolve(getURI());
 	}
 
 	protected class StoredResourceMeta implements ResourceMeta{
