@@ -30,8 +30,8 @@ public class AbstractStorageSession implements StorageSession{
 		addAccessMechanism(DEFAULT_MECHANISM, accessMechanism);
 	}
 	
-	protected StoredResource buildResource(AccessMechanism accessMechanism, URI resourceURI, URI resolvedURI){
-		return new BaseStoredResource(accessMechanism, resourceURI, resolvedURI);
+	protected StoredResource buildResource(AccessMechanism accessMechanism, URI resourceURI){
+		return new BaseStoredResource(accessMechanism, resourceURI);
 	}
 	
 	
@@ -39,8 +39,7 @@ public class AbstractStorageSession implements StorageSession{
 	public StoredResource lookup(URI uri) throws ResourceAccessException,
 			StorageSecuirtyException {
 		AccessMechanism accessMechanism = getAccessMechanism(uri.getScheme());
-		URI translated = accessMechanism.resolve(uri);
-		return buildResource(accessMechanism, uri, translated);
+		return buildResource(accessMechanism, uri);
 	}
 
 	@Override
@@ -50,8 +49,8 @@ public class AbstractStorageSession implements StorageSession{
 		if(accessMechanism.resourceExist(uri)){
 			throw new ResourceAccessException("File already exists.");
 		}
-		URI translated = accessMechanism.create(uri);
-		return buildResource(accessMechanism, uri, translated);
+		accessMechanism.create(uri);
+		return buildResource(accessMechanism, uri);
 	}
 
 	@Override
@@ -67,8 +66,8 @@ public class AbstractStorageSession implements StorageSession{
 		String schemeTo = toURI.getScheme();
 		if(schemeFrom.equals(schemeTo)){
 			AccessMechanism accessMechanism = getAccessMechanism(schemeFrom);
-			URI reloactedAccessURI = accessMechanism.move(resource.getURI(), toURI);
-			return buildResource(accessMechanism, toURI, reloactedAccessURI);
+			accessMechanism.move(resource.getURI(), toURI);
+			return buildResource(accessMechanism, toURI);
 		}else{
 			throw new StorageException();// FIXME: Not implemented moving between different storage systems
 		}
@@ -81,8 +80,8 @@ public class AbstractStorageSession implements StorageSession{
 		String schemeTo = toURI.getScheme();
 		if(schemeFrom.equals(schemeTo)){
 			AccessMechanism accessMechanism = getAccessMechanism(schemeFrom);
-			URI reloactedAccessURI = accessMechanism.copy(resource.getURI(), toURI);
-			return buildResource(accessMechanism, toURI, reloactedAccessURI);
+			accessMechanism.copy(resource.getURI(), toURI);
+			return buildResource(accessMechanism, toURI);
 		}else{
 			throw new StorageException();// FIXME: Not implemented moving between different storage systems
 		}
