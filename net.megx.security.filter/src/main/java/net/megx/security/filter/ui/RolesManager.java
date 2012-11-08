@@ -16,6 +16,8 @@ import net.megx.security.auth.model.Permission;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
+import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.Result;
 
 @Path("/filter/roles")
 public class RolesManager extends BaseRestService{
@@ -125,7 +127,6 @@ public class RolesManager extends BaseRestService{
 					permissions.add(permission);
 				}
 			}
-			
 		}
 		role.setPermissions(permissions);
 		

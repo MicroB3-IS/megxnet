@@ -18,6 +18,8 @@ import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
+import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.Result;
 
 import org.chon.cms.model.ContentModel;
 

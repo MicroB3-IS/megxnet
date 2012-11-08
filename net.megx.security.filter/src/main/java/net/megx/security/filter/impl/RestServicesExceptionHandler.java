@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.web.WebUtils;
-import net.megx.security.filter.ui.Result;
+import net.megx.ws.core.Result;
 
 import org.json.JSONArray;
 
