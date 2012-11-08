@@ -1,6 +1,10 @@
 package net.megx.storage;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class StorageContext implements Context{
 
@@ -23,5 +27,16 @@ public class StorageContext implements Context{
 	public Object getProperty(String name) {
 		return properties.get(name);
 	}
-
+	
+	
+	public static Context fromJSONConfiguration(JSONObject config) throws JSONException{
+		String userPincipal = config.getString("userPrincipal");
+		Map<String, Object> contextProps = new HashMap<String, Object>();
+		JSONObject properties = config.getJSONObject("properties");
+		for(String name: JSONObject.getNames(properties)){
+			contextProps.put(name, properties.get(name));
+		}
+		return new StorageContext(userPincipal, contextProps);
+	}
+	
 }
