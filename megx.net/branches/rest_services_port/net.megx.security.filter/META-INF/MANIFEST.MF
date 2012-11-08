@@ -29,6 +29,7 @@ Import-Package: com.google.gson,
  net.megx.security.oauth,
  net.megx.security.utils,
  net.megx.utils,
+ net.megx.ws.core,
  net.oauth,
  org.apache.commons.logging;version="1.1.1",
  org.osgi.framework;version="1.3.0"
