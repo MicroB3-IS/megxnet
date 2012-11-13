@@ -61,49 +61,6 @@ public class SixFrameTranslation extends BaseGenomeService{
 	public SixFrameTranslation(WorkspaceAccess access) {
 		super(access);
 	}
-
-	
-	public int translate(byte [] chunk, byte [] chunkOut){
-		int l = chunk.length/3;
-		int c = 0;
-		char curr = 0;
-		for(int i = 0; i < l; i++){
-			boolean unableToTranslate = false;
-			int translated = 0 ;
-			for(int j = 0, p=16; j < 3; j++,p/=4){
-				curr = (char)chunk[i*3+j];
-				switch(curr){
-				case 'a':
-				case 'A':
-					break;
-				case 'c':
-				case 'C':
-					translated+=p;
-					break;
-				case 't':
-				case 'T':
-					translated+=p*2;
-					break;
-				case 'g':
-				case 'G':
-					translated+=p*3;
-					break;
-				default:
-					unableToTranslate = true;
-					break;
-				}
-			}
-			if(unableToTranslate)
-				translated = AMINO_ACIDS.length-1;
-			chunkOut[i] = (byte)AMINO_ACIDS[translated];
-			c++;
-		}
-		if(l*3 < chunk.length){
-			chunkOut[c] = (byte)AMINO_ACIDS[AMINO_ACIDS.length-1];
-			c++;
-		}
-		return c;
-	}
 	
 	/**
 	 * 
@@ -112,7 +69,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 	 * @return
 	 * @author Mile Stefanovski
 	 */
-	public int translate2(byte [] chunk, byte [] chunkOut){
+	public int translate(byte [] chunk, byte [] chunkOut){
 		int bl = chunk.length/3;
 		bl*=3;
 		int j = 0;
@@ -144,7 +101,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 		
 		long start = System.currentTimeMillis();
 		for(int i = 0; i < ITERATIONS; i++){
-			sft.translate2(input, output);
+			sft.translate(input, output);
 		}
 		long end = System.currentTimeMillis();
 		
