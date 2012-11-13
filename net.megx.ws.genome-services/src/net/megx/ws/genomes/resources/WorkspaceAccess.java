@@ -3,16 +3,13 @@ package net.megx.ws.genomes.resources;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.jcr.LoginException;
-import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
-import net.megx.storage.ResourceAccessException;
-import net.megx.storage.StorageSecuirtyException;
+import net.megx.storage.StorageException;
 import net.megx.storage.StorageSession;
 import net.megx.storage.StoredResource;
 
@@ -24,8 +21,6 @@ public class WorkspaceAccess {
 
 	private ContentModel contentModel;
 	private StorageSession storageSession;
-
-	
 	
 	
 	public WorkspaceAccess(ContentModel contentModel,
@@ -36,8 +31,7 @@ public class WorkspaceAccess {
 	}
 
 	public String getProperty(String username, String relativePath,
-			String propName) throws LoginException, NoSuchWorkspaceException,
-			RepositoryException {
+			String propName) throws RepositoryException {
 		Session session = getUserSession(username);
 		String propValue = null;
 		try {
@@ -51,8 +45,7 @@ public class WorkspaceAccess {
 	}
 
 	public void setProperty(String username, String relativePath,
-			String propName, String value) throws LoginException,
-			NoSuchWorkspaceException, RepositoryException {
+			String propName, String value) throws RepositoryException {
 		Session session = getUserSession(username);
 		try {
 			Node requestedNode = getRelativeNode(session, relativePath);
@@ -63,20 +56,33 @@ public class WorkspaceAccess {
 	}
 
 	public StoredResource getResource(String username, String relativePath)
-			throws LoginException, NoSuchWorkspaceException,
-			RepositoryException, URISyntaxException, ResourceAccessException,
-			StorageSecuirtyException {
+			throws 	RepositoryException, URISyntaxException, StorageException {
+		return storageSession.lookup(lookupResourceURI(username, relativePath));
+	}
+	
+	
+	public StoredResource createNewResource(String username, String relativePath)
+		throws RepositoryException, URISyntaxException, StorageException{
+		return storageSession.create(createURI(username, relativePath));
+	}
+	
+	
+	protected URI createURI(String username, String relativePath) throws StorageException, URISyntaxException{
+		return storageSession.createURI(null, username, relativePath);
+	}
+	
+	
+	private URI lookupResourceURI(String username, String relativePath) throws RepositoryException, URISyntaxException{
 		Session session = getUserSession(username);
 		Node node = getRelativeNode(session, relativePath);
 		Property uriProp = node.getProperty(STORED_RESOURCEURI_PROP);
 		String resourceURI = uriProp.getString();
 		session.logout();
 		URI uri = new URI(resourceURI);
-		return storageSession.lookup(uri);
+		return uri;
 	}
 
-	private Session getUserSession(String username) throws LoginException,
-			NoSuchWorkspaceException, RepositoryException {
+	private Session getUserSession(String username) throws RepositoryException {
 		return contentModel.getSession().getRepository().login(username);
 	}
 
