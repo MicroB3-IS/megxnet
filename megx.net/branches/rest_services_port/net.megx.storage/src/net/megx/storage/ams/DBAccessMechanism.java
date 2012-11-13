@@ -129,4 +129,10 @@ public class DBAccessMechanism extends BaseAccessMechanism{
 		
 	}
 
+	@Override
+	public URI createURI(String... parts) throws URISyntaxException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

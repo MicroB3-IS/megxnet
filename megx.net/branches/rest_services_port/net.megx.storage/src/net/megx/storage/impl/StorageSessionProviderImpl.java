@@ -18,7 +18,7 @@ public class StorageSessionProviderImpl implements StorageSessionProvider{
 		Map<String, String> hostConfig = new HashMap<String, String>();
 		
 		// put this in config - just for illustration here
-		hostConfig.put("storage-root", "/home/pavle/storage");
+		hostConfig.put("storageRoot", "/home/pavle/storage");
 		
 		AccessMechanism am = new FileAccess(context, hostConfig);
 		

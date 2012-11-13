@@ -1,6 +1,7 @@
 package net.megx.storage;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class AbstractStorageSession implements StorageSession{
 			ac = accessMechanisms.get(DEFAULT_MECHANISM);
 		}
 		if(ac == null){
-			throw new ResourceAccessException(); // TODO: Invalid Protocol Exception - no mechanism available for the requested scheme
+			throw new ResourceAccessException("Invalid Protocol - No mechanism available for the requested scheme."); // TODO: Invalid Protocol Exception - no mechanism available for the requested scheme
 		}
 		return ac;
 	}
@@ -97,6 +98,14 @@ public class AbstractStorageSession implements StorageSession{
 	public boolean exists(URI uri) throws ResourceAccessException,
 			StorageSecuirtyException {
 		return getAccessMechanism(uri.getScheme()).resourceExist(uri);
+	}
+
+
+	@Override
+	public URI createURI(String preferedProvider, String... parts) throws StorageException, URISyntaxException{
+		preferedProvider = preferedProvider != null ? preferedProvider : DEFAULT_MECHANISM;
+		AccessMechanism m = getAccessMechanism(preferedProvider);
+		return m.createURI(parts);
 	}
 
 }

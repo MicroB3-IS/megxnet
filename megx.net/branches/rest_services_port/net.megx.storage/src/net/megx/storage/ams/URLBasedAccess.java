@@ -164,5 +164,11 @@ public class URLBasedAccess extends BaseAccessMechanism{
 		os.write("Test".getBytes("UTF-8"));
 		os.close();
 	}
+
+	@Override
+	public URI createURI(String... parts) throws URISyntaxException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
