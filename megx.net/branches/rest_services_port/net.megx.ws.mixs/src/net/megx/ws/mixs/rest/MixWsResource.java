@@ -51,7 +51,7 @@ import net.megx.ws.mixs.dto.CSVFormattedIndMetadataItem;
 import net.megx.ws.mixs.service.MixsWsService;
 
 
-@Path("/gsc/*")
+@Path("/gsc")
 //@Component
 //@Scope("singleton")
 public class MixWsResource implements MixWsResourceConstants {
