@@ -1,6 +1,7 @@
 package net.megx.storage;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public interface StorageSession {
 	public StoredResource lookup(URI uri) throws ResourceAccessException , StorageSecuirtyException;
@@ -11,6 +12,7 @@ public interface StorageSession {
 	public StoredResource copy(StoredResource resource, URI toURI) throws StorageException;
 	
 	public boolean exists(URI uri) throws ResourceAccessException , StorageSecuirtyException;
+	public URI  createURI(String preferedProvider, String...parts) throws StorageException,URISyntaxException;
 	
 	public void close() throws StorageException;
 	

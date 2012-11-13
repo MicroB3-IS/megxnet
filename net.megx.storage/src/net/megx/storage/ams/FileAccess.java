@@ -71,7 +71,7 @@ public class FileAccess extends BaseAccessMechanism{
 				File parentDir = file.getParentFile();
 				if(!parentDir.exists()){
 					if(!parentDir.mkdirs()){
-						throw new ResourceAccessException("Unable to create parent directories.");
+						throw new ResourceAccessException("Unable to create parent directories. URI: " + uri);
 					}
 				}
 				if(file.createNewFile()){
@@ -137,13 +137,20 @@ public class FileAccess extends BaseAccessMechanism{
 	
 	protected URI doResolve(URI  input) throws ResourceAccessException{
 		String host = input.getHost();
-		String path = input.getPath();
-		String resolvedHost = config.get(host);
-		if(resolvedHost == null){
-			throw new ResourceAccessException("Unknown host.");
+		
+		if(host != null){
+			host = config.get(host);
+			if(host == null){
+				throw new ResourceAccessException("Cannot resolve host for absolute URI.");
+			}
+		}else{
+			host = config.get("storageRoot");
 		}
+		
+		
+		
 		try {
-			return new URI("file",resolvedHost,path, null);
+			return new URI("file",host, input.getPath(), null);
 		} catch (URISyntaxException e) {
 			throw new ResourceAccessException(e);
 		}
@@ -172,6 +179,18 @@ public class FileAccess extends BaseAccessMechanism{
 	public void saveAttribute(URI resource, String attrName, Object attrValue)
 			throws StorageSecuirtyException, ResourceAccessException {
 		throw new ResourceAccessException("Operation not available.");
+	}
+
+	@Override
+	public URI createURI(String... parts) throws URISyntaxException {
+		StringBuffer path = new StringBuffer();
+		for(String p: parts){
+			if(!p.startsWith("/")){
+				path.append("/");
+			}
+			path.append(p);
+		}
+		return new URI("file",config.get("storageHost"), path.toString(), null);
 	}
 
 }

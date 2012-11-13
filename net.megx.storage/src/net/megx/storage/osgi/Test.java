@@ -26,7 +26,7 @@ public class Test {
 		Context context = new StorageContext("test-user", new HashMap<String, Object>());
 		
 		StorageSession session = provider.openSession(context);
-		URI fu = new URI("file://storage-root/myWorkspace/someSubDir/theFile.txt");
+		URI fu = new URI("file:///myWorkspace/someSubDir/theFile.txt");
 		StoredResource rc = null;
 		if(!session.exists(fu)){
 			System.out.println("The file does not exist. Creating new one.");
@@ -42,12 +42,12 @@ public class Test {
 		testReadData(fu, session);
 		
 		System.out.println("\n\n****** MOVE TEST *****");
-		URI moveToURI = new URI("file://storage-root/myWorkspace/someSubDir/theFileMoved.txt");
+		URI moveToURI = new URI("file:///myWorkspace/someSubDir/theFileMoved.txt");
 		StoredResource moved = session.relocate(rc, moveToURI);
 		testReadData(moveToURI, session);
 		
 		System.out.println("\n\n****** COPY TEST *****");
-		URI copyToURI = new URI("file://storage-root/myWorkspace/someSubDir/copyOfThefile.txt");
+		URI copyToURI = new URI("file:///myWorkspace/someSubDir/copyOfThefile.txt");
 		StoredResource copy = session.copy(moved, copyToURI);
 		testReadData(copyToURI, session);
 		
