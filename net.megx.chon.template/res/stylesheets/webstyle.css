@@ -70,6 +70,7 @@ figure.logo {
 .Box h3 {
 	color: #fff;
 	float: right;
+	padding: 0em 1em 0em 3em;
 }
 .Box p {
 	float: right;
@@ -156,6 +157,49 @@ ul.authors li.authorsNames {
 ul.authors li.authorsJournal {
 	font-style: undeline;	
 }
+ul.teamMembers {
+	clear:both;
+	border-bottom: 1px dashed #e7e7e7;
+}
+ul.teamMembers{
+	margin-top: -10px;
+}
+ul.teamMembers li {
+	list-style: none;
+	margin: .5em .5em;
+	padding: .2em .275em!important;
+	float: left;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #f1f1f1;
+	
+}
+ul.teamMembers li:hover, ul.teamMembers li:hover p, ul.teamMembers li:hover a {
+	background-color: #47505b;
+	color: #fff;
+	
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+	
+}
+ul.teamMembers li a {
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */	
+}
+ul.teamMembers li a:hover {
+	color: #fff;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+.lineTopSeparator {
+	border-top: 1px dashed #e7e7e7;
+}
+.lineBottomSeparator {
+	border-bottom: 1px dashed #e7e7e7;
+}
 .footNav {
 	float: right;
 	padding: 0;
@@ -205,3 +249,9 @@ a.viewButton:hover {
 .faqTable td {vertical-align: top; }
 .faqTable tbody tr td a:hover {text-decoration:none!important;}
 .faqTable tbody tr td {padding:10px!important;}
+.contactTable td { background-color: #fff;}
+
+.contentTable tr td {
+	padding: 7px!important;
+
+}
