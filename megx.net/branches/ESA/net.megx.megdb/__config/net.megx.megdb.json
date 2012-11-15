@@ -1,0 +1,37 @@
+{
+	path: '$resources/net.megx.megdb',
+	myBatisConfigFile: 'config/my-batis-config.xml',
+	dbConfig:{
+		development.url: 'jdbc:postgresql://localhost/authdb',
+		development.username: 'postgres',
+		development.password:'pg-admin-iw',
+		development.driver: 'org.postgresql.Driver'
+	},
+	passwordHashing:{
+		saltBytes: 24,
+		hashBytes: 24,
+		PBKDF2iterations: 1000
+	},
+	dbServices:[
+		{
+			name: 'net.megx.megdb.pubmap.PubMapService',
+			class: 'net.megx.megdb.pubmap.impl.DBPubMapService'
+		},
+		{
+			name: 'net.megx.security.auth.services.ConsumerService',
+			class: 'net.megx.security.auth.services.db.DBConsumerService'
+		},
+		{
+			name: 'net.megx.security.auth.services.TokenService',
+			class: 'net.megx.security.auth.services.db.DBTokenService'
+		},
+		{
+			name: 'net.megx.security.auth.services.UserService',
+			class: 'net.megx.security.auth.services.db.DBUserService'
+		},
+		{
+			name: 'net.megx.security.auth.services.WebResourcesService',
+			class: 'net.megx.security.auth.services.db.DBWebResourcesService'
+		}
+	]
+}
