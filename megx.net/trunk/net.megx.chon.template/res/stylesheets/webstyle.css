@@ -89,15 +89,19 @@ ul.uldotli li a{color: #333;}
 
 ul.reflistlx {
 	clear:both;
+	border-bottom: 1px dashed #e7e7e7;
+}
+ul.reflistlx li.authors{
+	margin-top: -10px;
 }
 ul.reflistlx li {
 	list-style: none;
-	margin: .5em .5em;
-	padding: .2em .5em!important;
+	margin: .5em .0em;
+	padding: .2em .275em!important;
 	float: left;
 	display: block;
-	border: 1px dashed #e7e7e7;
-	background-color: #f1f1f1;
+	/*border: 1px dashed #e7e7e7;
+	background-color: #f1f1f1;*/
 }
 ul.reflistlx li:hover, ul.reflistlx li:hover p, ul.reflistlx li:hover a {
 	background-color: #47505b;
@@ -152,11 +156,6 @@ ul.authors li.authorsNames {
 ul.authors li.authorsJournal {
 	font-style: undeline;	
 }
-
-
-
-
-
 .footNav {
 	float: right;
 	padding: 0;
@@ -198,3 +197,11 @@ a.viewButton:hover {
 	margin-left: 0!important;
 	margin-right: 0!important;
 }
+.videoScreen {
+	border: 1px solid #e7e7e7; 
+	text-align: center;
+}
+.faqTable {}
+.faqTable td {vertical-align: top; }
+.faqTable tbody tr td a:hover {text-decoration:none!important;}
+.faqTable tbody tr td {padding:10px!important;}
