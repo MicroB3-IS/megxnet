@@ -227,11 +227,12 @@ p1.about {
 .accent {
     font-style: italic;
 }
-a.link {
+.link a {
     text-decoration:none;
     font-weight: bold;
     color:rgb(88,153,211);
     background-color:inherit;
+	text-align: left;
 }
 a.team {
     font-weight: bold;

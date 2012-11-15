@@ -34,7 +34,7 @@ p           			{ margin: .4em 0em!important; line-height:150%; font-size:1em; te
 p img.left  		{ float: left; margin: .5em 1.5em .5em 0em; padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
 p img.right 		{ float: right; margin: .5em 0em .5em 1.5em;padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
 img 				{ border: 0; }
-a 					{ color:#0000ff; text-decoration: none; font-size:1em;
+a 					{ color:#0000ff; text-decoration: none; font-size:1em; cursor: pointer;
 
 					/* FADE IN TRANSITION */
 					-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
@@ -162,6 +162,15 @@ form checkbox {
 	margin: 0em;
 	border: .1em solid #e7e7e7;
 	color: #999;
+}
+form.tutorials  input[type=radio] {
+	float: left;
+	padding: 0em;
+	margin: 0em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 24px;
+	height: 24px;
 }
 form textarea {
 	display: block;
