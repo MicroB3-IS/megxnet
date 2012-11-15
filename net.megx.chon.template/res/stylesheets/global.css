@@ -172,6 +172,16 @@ form.tutorials  input[type=radio] {
 	width: 24px;
 	height: 24px;
 }
+form.blastRadioButton  input[type=radio] {
+	float: left;
+	padding: 0em;
+	margin: 0em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 24px;
+	height: 24px;
+}
+
 form textarea {
 	display: block;
 	padding: .5em .5em;
@@ -233,4 +243,8 @@ hr {
 	border-top: none;
 	background-color: transparent;
 	
+}
+textarea.seq {
+	width: 600px;
+	height: 175px;
 }
