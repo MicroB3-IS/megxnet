@@ -34,31 +34,105 @@
 		<association property="photos" column="id" select="getPhotosForSample"/>
 	</resultMap>
 	
+	<resultMap  type="ESAConfig" id="esa_configuration_map">
+	    <result column="name" property=""/>
+	    <result column="value" property=""/>
+	</resultMap>
+	
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
-		<!-- TODO -->
+		<result column="uuid" property=""/>
+		<result column="data" property=""/>
+		<result column="path" property=""/>
+		<result column="mime_type" property=""/>
 	</resultMap>
 	
 	<sql id="esa_sample_columns_all">
-		id,
-		taken,
-		<!-- TODO: finish this list -->
+		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
+	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, lat, lon
 	</sql>
 	
+	<sql id="esa_sample_images_columns_all">
+	    uuid,
+	    sid,
+	    data,
+	    path,
+	    mime_type
+	</sql>
 	
-	<!-- 
-	TODO: 
-		- select: getPhotosForSample
-		- select: getSample (by id)
-		- insert: addSample (sample)
-		- insert: addPhoto (photo, sampleId)
-		- update: updatePhoto(photo)
-		- delete: removeSample (by sample id)
-		- select: getConfiguration (by category)
-		- insert: storeConfiguration (category, config)
-		- select: getConfigValue (category, name)
-		- insert: storeConfigValue (category, name, value)
-		- delete: clearConfigValue(category, name)
-		- delete: clearConfig(category)
-	 -->
+	<select id="getSample" resultMap="esa_sample_map">
+	    SELECT * 
+	    FROM esa.samples 
+	    WHERE esa.samples.id=#{id}
+	</select>
 	
+	<select id="getConfiguration" resultMap="esa_configuration_map">
+	    SELECT name,value 
+	    FROM esa.gen_config WHERE category=#{category}
+	</select>
+	
+	<select id="getConfigValue" resultType="String">
+	    SELECT value
+	    FROM esa.gen_config
+	    WHERE config=#{config} and name=#{name}
+	</select>
+	
+	<select id="getPhotosForSample" resultMap="esa_sample_photo">
+	    SELECT esa.sample_images.uuid, esa.sample_images.data, esa.sample_images.path, esa.sample_images.mime_type
+	    FROM esa.sample_images LEFT JOIN esa.samples ON esa.sample_images.sid=esa.samples.id
+	    WHERE esa.samples.id=#{id}
+	</select>
+	
+	<insert id="addSample" parameterType="ESASample">
+	    INSERT INTO esa.samples(<include refid="esa_sample_columns_all"/>)
+	    VALUES
+	    (#{taken}, #{modified}, #{collector_id}, #{label}, #{raw_data}, #{barcode}, #{project_id}, #{user_name}, #{ship_name}, 
+	    #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, #{permit}, #{sampling_depth}, #{water_depth}, 
+	    #{sample_size}, #{weather_condition}, #{air_temperature}, #{water_temperature}, #{conductivity}, #{wind_speed}, 
+	    #{salinity}, #{lat}, #{lon})
+	</insert>
+	
+	<delete id="removeSample" parameterType="int">
+	    DELETE FROM esa.samples
+	    WHERE esa.samples.id=#{id}
+	</delete>
+	
+	<delete id="clearConfigValue" parameterType="map">
+	    DELETE FROM esa.gen_config
+	    WHERE esa.gen_config.category=#{category} AND esa.gen_config.name=#{name}
+	</delete>
+	
+	<delete id="clearConfig" parameterType="String">
+	    DELETE FROM esa.gen_config
+	    WHERE esa.gen_config.category=#{category}
+	</delete>
+	
+	<insert id="storeConfiguration" parameterType="map">
+	    INSERT INTO esa.gen_config(category, name, value)
+	    VALUES
+	    <foreach collection="config" item="c" separator=",">
+	    	 (#{category}, ${c.name}, ${c.value})
+	    </foreach>
+	</insert>
+	
+	<insert id="storeConfigValue" parameterType="map"> 
+	   	INSERT INTO esa.gen_config(category, name, value)
+	    VALUES (#{category}, #{name}, #{value})
+	</insert>
+	
+	<insert id="addPhoto" parameterType="map">
+	    INSERT INTO esa.sample_images (<include refid="esa_sample_images_columns_all"/>)
+	    VALUES (#{photo.uuid}, #{sampleId}, #{photo.data}, #{photo.path}, #{photo.mime_type})
+	</insert>
+	
+	<update id="updatePhoto" parameterType="map">
+	    UPDATE esa.sample_images
+	    SET sid=#{photo.sid},
+	    	data=#{photo.data},
+	    	path=#{photo.path},
+	    	mime_type=#{photo.mime_type}
+    	WHERE
+    		uuid=#{photo.uuid}
+	</update>
+
 </mapper>
