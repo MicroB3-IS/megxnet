@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.esa.mappers.ESAMapper">
+	<resultMap type="ESASample" id="esa_sample_map">
+		<result column="id" property=""/>
+		<result column="taken" property=""/>
+		<result column="modified" property=""/>
+		<result column="collector_id" property=""/>
+		<result column="label" property=""/>
+		<result column="raw_data" property=""/>
+		<result column="barcode" property=""/>
+		<result column="project_id" property=""/>
+		<result column="user_name" property=""/>
+		<result column="ship_name" property=""/>
+		<result column="nationality" property=""/>
+		<result column="elevation" property=""/>
+		<result column="biome" property=""/>
+		<result column="feature" property=""/>
+		<result column="collection" property=""/>
+		<result column="permit" property=""/>
+		<result column="sampling_depth" property=""/>
+		<result column="water_depth" property=""/>
+		<result column="sample_size" property=""/>
+		<result column="weather_condition" property=""/>
+		<result column="air_temperature" property=""/>
+		<result column="water_temperature" property=""/>
+		<result column="conductivity" property=""/>
+		<result column="wind_speed" property=""/>
+		<result column="salinity" property=""/>
+		<result column="lat" property=""/>
+		<result column="lon" property=""/>
+		<association property="photos" column="id" select="getPhotosForSample"/>
+	</resultMap>
+	
+	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
+		<!-- TODO -->
+	</resultMap>
+	
+	<sql id="esa_sample_columns_all">
+		id,
+		taken,
+		<!-- TODO: finish this list -->
+	</sql>
+	
+	
+	<!-- 
+	TODO: 
+		- select: getPhotosForSample
+		- select: getSample (by id)
+		- insert: addSample (sample)
+		- insert: addPhoto (photo, sampleId)
+		- update: updatePhoto(photo)
+		- delete: removeSample (by sample id)
+		- select: getConfiguration (by category)
+		- insert: storeConfiguration (category, config)
+		- select: getConfigValue (category, name)
+		- insert: storeConfigValue (category, name, value)
+		- delete: clearConfigValue(category, name)
+		- delete: clearConfig(category)
+	 -->
+	
+</mapper>

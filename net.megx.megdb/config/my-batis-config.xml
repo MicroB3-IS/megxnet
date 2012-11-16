@@ -36,6 +36,10 @@
 		<typeAlias type="net.megx.model.Journal" alias="Journal" />
 		<typeAlias type="net.megx.model.Author" alias="Author" />
 		<typeAlias type="net.megx.model.Sample" alias="Sample" />
+		
+		<typeAlias type="net.megx.model.esa.Sample" alias="ESASample"/>
+		<typeAlias type="net.megx.model.esa.SamplePhoto" alias="ESASamplePhoto"/>
+		
 	</typeAliases>
 
 
