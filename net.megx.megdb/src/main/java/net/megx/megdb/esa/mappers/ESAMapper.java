@@ -2,11 +2,12 @@ package net.megx.megdb.esa.mappers;
 
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
+import java.util.Set;
 
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
+
+import org.apache.ibatis.annotations.Param;
 
 public interface ESAMapper {
 	public Sample getSample(String id);
@@ -38,7 +39,7 @@ public interface ESAMapper {
 	public List<Map<String, String>> getConfiguration(String category);
 	public void storeConfiguration(
 			@Param("category") String category, 
-			@Param("config")   Map<String, String> config);
+			@Param("config")   Set<Map.Entry<String, String>> config);
 	
 	public String getConfigValue(
 			@Param("category") String category, 
