@@ -1,4 +1,15 @@
 {
 	path: '$resources/net.megx.storage',
-	exampleProperty: 'Example Value'
+	exampleProperty: 'Example Value',
+	sessionProvider:{
+		class: 'net.megx.storage.impl.StorageSessionProviderImpl'
+	},
+	accessMechanisms:{
+		"file-access": {
+			class: 'net.megx.storage.ams.FileAccess',
+			scheme: 'file',
+			storageRoot: '/media/file-storage'
+		}
+	},
+	defaultAccessMechanism: 'file-access'
 }
