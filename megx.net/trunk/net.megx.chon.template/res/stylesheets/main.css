@@ -1,4 +1,4 @@
-/* STRUCTURE */
+/* STRUCTURE 
 #header_area {
     margin:auto;
     width: 60em;
@@ -109,7 +109,6 @@
     width:7em;
     max-width:7em;
 }
-/* ***** NAVIGATION BAR********************** */
 div#navbar {
     margin-left:auto;
     margin-right:auto;
@@ -188,9 +187,7 @@ ul#navigation li ul li.menugroup {
     margin:5px;
 }
 
-/* End */
-/* *********************************************************** */
-/* GENERAL FEATURES */
+
 img {
     border:none;
 }
@@ -287,7 +284,6 @@ tfoot th {
     background-color:rgb(179,215,239);
 }
 
-/* ** FEED SECTION ** */
 #feed-header {
     color: black;
     background-color:#DEE7EC;
@@ -321,7 +317,6 @@ div.item {
     background-color:#DEE7EC;
     font-size:1.15em;
     font-weight:bold;
-/* line-height:1.1; */
     margin:0px;
     padding:5px 5px 8px 8px;
 }
@@ -365,7 +360,7 @@ div.item-author {
     text-align:center;
 }
 div.error {
-	/* margin-left: 1.5em; */
+
 	color: red;
 	font-size:x-small;
 }
@@ -393,4 +388,4 @@ background-color: #D3D3D3;
     text-decoration:underline;
     color:rgb(30,93,173);
     cursor:pointer;
-}
+}*/
