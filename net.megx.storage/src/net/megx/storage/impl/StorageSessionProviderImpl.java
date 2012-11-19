@@ -7,25 +7,31 @@ import net.megx.storage.AccessMechanism;
 import net.megx.storage.Context;
 import net.megx.storage.StorageException;
 import net.megx.storage.StorageSession;
-import net.megx.storage.StorageSessionProvider;
-import net.megx.storage.ams.FileAccess;
 
-public class StorageSessionProviderImpl implements StorageSessionProvider{
+public class StorageSessionProviderImpl extends BaseSessionProvider{
 
 	@Override
 	public StorageSession openSession(Context context) throws StorageException {
 		StorageService service = new StorageService();
-		Map<String, String> hostConfig = new HashMap<String, String>();
 		
-		// put this in config - just for illustration here
-		hostConfig.put("storageRoot", "/home/pavle/storage");
+		Map<String, AccessMechanism> mechanisms = new HashMap<String, AccessMechanism>();
 		
-		AccessMechanism am = new FileAccess(context, hostConfig);
-		
-		service.setDefaultAccessMechanism(am);
-		service.addAccessMechanism("file", am);
-		
+		for(Map.Entry<String, AccessMechanismDef> e: accessMechanisms.entrySet()){
+			try {
+				AccessMechanism am =  e.getValue().getNewInstance(context);
+				service.addAccessMechanism(e.getValue().scheme,am);
+				mechanisms.put(e.getKey(), am);
+			} catch (Exception e1) {
+				throw new StorageException(e1);
+			}
+		}
+		service.setDefaultAccessMechanism(mechanisms.get(defaultAccessMechanism));
 		return service;
+	}
+
+	@Override
+	public void initialize() throws Exception {
+		buildAccessMechanismsDefinitions();
 	}
 
 }
