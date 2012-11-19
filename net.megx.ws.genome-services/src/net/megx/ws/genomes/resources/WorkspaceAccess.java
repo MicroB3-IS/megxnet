@@ -88,6 +88,6 @@ public class WorkspaceAccess {
 
 	private Node getRelativeNode(Session session, String relativePath)
 			throws PathNotFoundException, RepositoryException {
-		return session.getNode(relativePath);
+		return session.getNode("/"+relativePath);
 	}
 }
