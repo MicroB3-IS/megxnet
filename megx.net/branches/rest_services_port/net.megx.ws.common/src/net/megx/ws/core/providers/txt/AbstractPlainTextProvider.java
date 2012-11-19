@@ -34,6 +34,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
@@ -50,7 +51,7 @@ public abstract class AbstractPlainTextProvider implements MessageBodyWriter<Obj
 	
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType) {
-		return true;
+		return !StreamingOutput.class.isAssignableFrom(type);
 	}
 
 	@SuppressWarnings("unchecked")

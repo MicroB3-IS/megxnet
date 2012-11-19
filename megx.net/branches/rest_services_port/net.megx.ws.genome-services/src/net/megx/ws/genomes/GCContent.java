@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Map;
 
+import javax.jcr.RepositoryException;
+
+import net.megx.storage.StorageException;
 import net.megx.storage.StoredResource;
 import net.megx.ws.genomes.resources.WorkspaceAccess;
 
@@ -73,14 +76,14 @@ public class GCContent extends BaseGenomeService {
 	}
 
 	
-	public void calculateGCContent(String username, String inputFile, OutputStream outStream, boolean writeHeaders) throws Exception{
+	public void calculateGCContent(String username, String inputFile, OutputStream outStream, boolean writeHeaders) throws RepositoryException, StorageException, Exception{
 		StoredResource inputResource = getAccess().getResource(username, inputFile);
 		InputStream inputStream = inputResource.read();
 		calculateGCContent(inputStream, outStream, writeHeaders);
 		inputStream.close();
 	}
 	
-	public void calculateGCContent(String username, String inputFile, String outFile, boolean writeHeaders) throws Exception{
+	public void calculateGCContent(String username, String inputFile, String outFile, boolean writeHeaders) throws RepositoryException, StorageException, Exception{
 		StoredResource outResource = getAccess().createNewResource(username, outFile);
 		OutputStream os = outResource.write();
 		calculateGCContent(username, inputFile, os, writeHeaders);
