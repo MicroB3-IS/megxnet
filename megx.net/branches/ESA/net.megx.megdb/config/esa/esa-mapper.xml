@@ -4,39 +4,35 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.megx.megdb.esa.mappers.ESAMapper">
 	<resultMap type="ESASample" id="esa_sample_map">
-		<result column="id" property=""/>
-		<result column="taken" property=""/>
-		<result column="modified" property=""/>
-		<result column="collector_id" property=""/>
-		<result column="label" property=""/>
-		<result column="raw_data" property=""/>
-		<result column="barcode" property=""/>
-		<result column="project_id" property=""/>
-		<result column="user_name" property=""/>
-		<result column="ship_name" property=""/>
-		<result column="nationality" property=""/>
-		<result column="elevation" property=""/>
-		<result column="biome" property=""/>
-		<result column="feature" property=""/>
-		<result column="collection" property=""/>
-		<result column="permit" property=""/>
-		<result column="sampling_depth" property=""/>
-		<result column="water_depth" property=""/>
-		<result column="sample_size" property=""/>
-		<result column="weather_condition" property=""/>
-		<result column="air_temperature" property=""/>
-		<result column="water_temperature" property=""/>
-		<result column="conductivity" property=""/>
-		<result column="wind_speed" property=""/>
-		<result column="salinity" property=""/>
-		<result column="lat" property=""/>
-		<result column="lon" property=""/>
+		<result column="id" property="id"/>
+		<result column="taken" property="taken"/>
+		<result column="modified" property="modified"/>
+		<result column="collectorid" property="collectorId"/>
+		<result column="label" property="label"/>
+		<result column="raw_data" property="rawData"/>
+		<result column="barcode" property="barcode"/>
+		<result column="project_id" property="projectId"/>
+		<result column="user_name" property="userName"/>
+		<result column="ship_name" property="shipName"/>
+		<result column="nationality" property="nationality"/>
+		<result column="elevation" property="elevation"/>
+		<result column="biome" property="biome"/>
+		<result column="feature" property="feature"/>
+		<result column="collection" property="collection"/>
+		<result column="permit" property="permit"/>
+		<result column="sampling_depth" property="samplingDepth"/>
+		<result column="water_depth" property="waterDepth"/>
+		<result column="sample_size" property="sampleSize"/>
+		<result column="weather_condition" property="weatherCondition"/>
+		<result column="air_temperature" property="airTemperature"/>
+		<result column="water_temperature" property="waterTemerature"/>
+		<result column="conductivity" property="conductivity"/>
+		<result column="wind_speed" property="windSpeed"/>
+		<result column="salinity" property="salinity"/>
+		<result column="comment" property="comment"/>
+		<result column="lat" property="lat"/>
+		<result column="lon" property="lon"/>
 		<association property="photos" column="id" select="getPhotosForSample"/>
-	</resultMap>
-	
-	<resultMap  type="ESAConfig" id="esa_configuration_map">
-	    <result column="name" property=""/>
-	    <result column="value" property=""/>
 	</resultMap>
 	
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
@@ -47,9 +43,15 @@
 	</resultMap>
 	
 	<sql id="esa_sample_columns_all">
-		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
+		id,taken, modified, collectorid, label, raw_data, barcode, projectid, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
-	    air_temperature, water_temperature, conductivity, wind_speed, salinity, lat, lon
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom
+	</sql>
+	
+	<sql id="esa_sample_columns_no_geom">
+	    id,taken, modified, collectorid, label, raw_data, barcode, projectid, user_name, ship_name, 
+	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment
 	</sql>
 	
 	<sql id="esa_sample_images_columns_all">
@@ -61,12 +63,12 @@
 	</sql>
 	
 	<select id="getSample" resultMap="esa_sample_map">
-	    SELECT * 
+	    SELECT <include refid="esa_sample_columns_all"/> 
 	    FROM esa.samples 
 	    WHERE esa.samples.id=#{id}
 	</select>
 	
-	<select id="getConfiguration" resultMap="esa_configuration_map">
+	<select id="getConfiguration" resultType="map" parameterType="String">
 	    SELECT name,value 
 	    FROM esa.gen_config WHERE category=#{category}
 	</select>
@@ -83,13 +85,19 @@
 	    WHERE esa.samples.id=#{id}
 	</select>
 	
+	<select id="getSamples" parameterType="String" resultMap="esa_sample_map">
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    FROM esa.samples
+	    WHERE collectorid=#{collectorId}
+	</select>
+	
 	<insert id="addSample" parameterType="ESASample">
 	    INSERT INTO esa.samples(<include refid="esa_sample_columns_all"/>)
 	    VALUES
-	    (#{taken}, #{modified}, #{collector_id}, #{label}, #{raw_data}, #{barcode}, #{project_id}, #{user_name}, #{ship_name}, 
-	    #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, #{permit}, #{sampling_depth}, #{water_depth}, 
-	    #{sample_size}, #{weather_condition}, #{air_temperature}, #{water_temperature}, #{conductivity}, #{wind_speed}, 
-	    #{salinity}, #{lat}, #{lon})
+	    (#{id}, #{taken}, #{modified}, #{collectorId}, #{label}, #{rawData}, #{barcode}, #{projectId}, #{userName}, #{shipName}, 
+	    #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, #{permit}, #{samplingDepth}, #{waterDepth}, 
+	    #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, #{conductivity}, #{windSpeed}, 
+	    #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326))
 	</insert>
 	
 	<delete id="removeSample" parameterType="int">
@@ -109,9 +117,9 @@
 	
 	<insert id="storeConfiguration" parameterType="map">
 	    INSERT INTO esa.gen_config(category, name, value)
-	    VALUES
-	    <foreach collection="config" item="c" separator=",">
-	    	 (#{category}, ${c.name}, ${c.value})
+	    VALUES 
+	    <foreach item="itm" index="index" collection="config" separator=",">
+	    	 (#{category}, #{itm.key}, #{itm.value})
 	    </foreach>
 	</insert>
 	
