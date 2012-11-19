@@ -21,7 +21,7 @@ public class Sample {
 	private double elevation;
 	private String biome;
 	private String feature;
-	private String collecton;
+	private String collection;
 	private String permit;
 	private double samplingDepth;
 	private double waterDepth;
@@ -128,11 +128,11 @@ public class Sample {
 	public void setFeature(String feature) {
 		this.feature = feature;
 	}
-	public String getCollecton() {
-		return collecton;
+	public String getCollection() {
+		return collection;
 	}
-	public void setCollecton(String collecton) {
-		this.collecton = collecton;
+	public void setCollection(String collecton) {
+		this.collection = collecton;
 	}
 	public String getPermit() {
 		return permit;
@@ -211,5 +211,28 @@ public class Sample {
 	}
 	public void setLon(double lon) {
 		this.lon = lon;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sample other = (Sample) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }
