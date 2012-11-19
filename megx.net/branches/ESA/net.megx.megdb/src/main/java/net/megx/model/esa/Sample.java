@@ -9,7 +9,7 @@ public class Sample {
 	private Date modified;
 	private String collectorId;
 	private String label;
-	private String rawData;
+	private transient String rawData;
 	
 	
 	private String barcode;
