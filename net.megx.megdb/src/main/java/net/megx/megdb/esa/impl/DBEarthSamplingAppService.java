@@ -117,17 +117,28 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	}
 	
 	@Override
-	public List<String> storePhotos(final List<SamplePhoto> photos, final String sampleId) throws Exception {
+	public List<String> storePhotos(final List<SamplePhoto> photos) throws Exception {
 		
 		return doInTransaction(new DBTask<ESAMapper, List<String>>(){
 			@Override
 			public List<String> execute(ESAMapper mapper) throws Exception{
 				List<String> savedPhotosIds = new ArrayList<String>();
 				for (SamplePhoto samplePhoto : photos) {
-					mapper.addPhoto(samplePhoto, sampleId);
+					mapper.updatePhoto(samplePhoto);
 					savedPhotosIds.add(samplePhoto.getUuid());
 				}
 				return savedPhotosIds;
+			}
+		}, ESAMapper.class);
+	}
+	
+	@Override
+	public List<SamplePhoto> getSamplePhotos(final String sampleId) throws Exception {
+		
+		return doInTransaction(new DBTask<ESAMapper, List<SamplePhoto>>(){
+			@Override
+			public List<SamplePhoto> execute(ESAMapper mapper) throws Exception{
+				return mapper.getPhotosForSample(sampleId);
 			}
 		}, ESAMapper.class);
 	}
