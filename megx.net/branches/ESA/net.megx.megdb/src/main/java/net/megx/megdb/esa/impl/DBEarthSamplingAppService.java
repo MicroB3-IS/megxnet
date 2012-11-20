@@ -117,6 +117,18 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	}
 	
 	@Override
+	public void clearConfigValue(final String category, final String name) throws Exception {
+		
+		doInTransaction(new DBTask<ESAMapper, Object>(){
+			@Override
+			public Object execute(ESAMapper mapper) throws Exception{
+				mapper.clearConfigValue(category, name);
+				return null;
+			}
+		}, ESAMapper.class);
+	}
+	
+	@Override
 	public List<String> storePhotos(final List<SamplePhoto> photos) throws Exception {
 		
 		return doInTransaction(new DBTask<ESAMapper, List<String>>(){
