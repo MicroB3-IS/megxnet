@@ -141,6 +141,19 @@ private EarthSamplingAppService earthAppService;
 	}
 	
 	@Test
+	public void getSample() throws Exception{
+		List<Sample> samplesToStore = new ArrayList<Sample>();
+		samplesToStore.add(defaultSample);
+		samplesToStore.add(secondSample);
+		samplesToStore.add(thirdSample);
+		earthAppService.storeSamples(samplesToStore);
+		
+		Assert.assertNotNull(earthAppService.getSample(defaultSample.getId()));
+		Assert.assertNotNull(earthAppService.getSample(secondSample.getId()));
+		Assert.assertNotNull(earthAppService.getSample(thirdSample.getId()));
+	}
+	
+	@Test
 	public void storeSingleSample() throws Exception{
 		List<Sample> samplesToStore = new ArrayList<Sample>();
 		samplesToStore.add(defaultSample);
@@ -168,6 +181,20 @@ private EarthSamplingAppService earthAppService;
 		Assert.assertTrue(retrievedConfiguration.containsValue(FIRST_VALUE));
 		Assert.assertTrue(retrievedConfiguration.containsValue(SECOND_VALUE));
 		Assert.assertTrue(retrievedConfiguration.containsValue(THIRD_VALUE));
+	}
+	
+	@Test
+	public void clearConfig() throws Exception{
+		Map<String, String> configurationsToSave = new HashMap<String, String>();
+		configurationsToSave.put(FIRST_NAME, FIRST_VALUE);
+		configurationsToSave.put(SECOND_NAME, SECOND_VALUE);
+		configurationsToSave.put(THIRD_NAME, THIRD_VALUE);
+		
+		earthAppService.storeConfiguration(FIRST_CATEGORY, configurationsToSave);
+		Assert.assertNotNull(earthAppService.getConfiguration(FIRST_CATEGORY));
+		
+		earthAppService.clearConfig(FIRST_CATEGORY);
+		Assert.assertTrue(earthAppService.getConfiguration(FIRST_CATEGORY).isEmpty());
 	}
 	
 	@Test
@@ -224,6 +251,25 @@ private EarthSamplingAppService earthAppService;
 		Assert.assertTrue(updatedPhotos.get(1).getPath().equals(PATH));
 		Assert.assertTrue(Arrays.equals(updatedPhotos.get(2).getData(), THIRD_ID.getBytes()));
 		Assert.assertTrue(updatedPhotos.get(2).getPath().equals(PATH));
+	}
+	
+	@Test 
+	public void clearConfigValue() throws Exception{
+		earthAppService.store(SECOND_CATEGORY, FIRST_NAME, THIRD_VALUE);
+		earthAppService.store(THIRD_CATEGORY, SECOND_NAME, FIRST_VALUE);
+		earthAppService.store(SECOND_CATEGORY, THIRD_NAME, SECOND_VALUE);
+		
+		Assert.assertTrue(earthAppService.read(SECOND_CATEGORY, FIRST_NAME).equals(THIRD_VALUE));
+		Assert.assertTrue(earthAppService.read(THIRD_CATEGORY, SECOND_NAME).equals(FIRST_VALUE));
+		Assert.assertTrue(earthAppService.read(SECOND_CATEGORY, THIRD_NAME).equals(SECOND_VALUE));
+		
+		earthAppService.clearConfigValue(SECOND_CATEGORY, FIRST_NAME);
+		earthAppService.clearConfigValue(THIRD_CATEGORY, SECOND_NAME);
+		earthAppService.clearConfigValue(SECOND_CATEGORY, THIRD_NAME);
+		
+		Assert.assertTrue(earthAppService.read(SECOND_CATEGORY, FIRST_NAME) == null);
+		Assert.assertTrue(earthAppService.read(THIRD_CATEGORY, SECOND_NAME) == null);
+		Assert.assertTrue(earthAppService.read(SECOND_CATEGORY, THIRD_NAME) == null);
 	}
 	
 	@After
