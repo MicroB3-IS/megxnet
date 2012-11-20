@@ -60,8 +60,14 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	@GET
 	@Path("samples/{creator}")
 	public String getSamplesForCollector(@PathParam("creator") String creator){
-		List<Sample> samples = service.getSamples(creator);
-		return toJSON(new Result<List<Sample>>(samples));
+		List<Sample> samples;
+		try {
+			samples = service.getSamples(creator);
+			return toJSON(new Result<List<Sample>>(samples));
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+		
 	}
 	
 	@Path("samples")
