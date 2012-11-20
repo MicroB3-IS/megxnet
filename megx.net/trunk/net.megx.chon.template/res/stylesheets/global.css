@@ -28,6 +28,8 @@ h3 					{ background-image: url(../images/titleDot.png); background-repeat: no-r
 h4 a, h5 a, h6 a, h4 a:hover, h5 a:hover, h6 a:hover {color: #00A0FF; text-decoration:none;}
 
 .marginNone {marigin:0!important;}
+.small {font-size: 0.75em;}
+.greenColor { color: #093; }
 /* Text elements
 -------------------------------------------------------------- */
 p           			{ margin: .4em 0em!important; line-height:150%; font-size:1em; text-align: justify;}
@@ -156,6 +158,14 @@ form input {
 	width: 30em;
 	line-height: 13px;
 }
+form select {
+	display: block;
+	padding: .5em .5em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 31.20em;
+	line-height: 13px;
+}
 form checkbox {
 	float: right;
 	padding: 0em;
@@ -242,6 +252,7 @@ hr {
 	border-bottom: 1px dashed #e7e7e7;
 	border-top: none;
 	background-color: transparent;
+	clear: both;
 	
 }
 textarea.seq {
