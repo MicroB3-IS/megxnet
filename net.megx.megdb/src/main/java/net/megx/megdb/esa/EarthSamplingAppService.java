@@ -2,7 +2,6 @@ package net.megx.megdb.esa;
 
 import java.util.List;
 import java.util.Map;
-
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
 
@@ -17,6 +16,7 @@ public interface EarthSamplingAppService {
 	public Map<String, String> getConfiguration(String category) throws Exception;
 	public void storeConfiguration(String category, Map<String, String> config) throws Exception;
 	public void clearConfig(String category) throws Exception;
+	public void clearConfigValue(String category, String name) throws Exception;
 	
 	public String read(String category, String name) throws Exception;
 	public void store(String category, String name, String value) throws Exception;
