@@ -33,6 +33,7 @@ public interface ESAMapper {
 	 */
 	public void updatePhoto(SamplePhoto photo);
 	
+	public List<SamplePhoto> getPhotosForSample(String sampleId);
 	
 	public void removeSample(String id);
 	
