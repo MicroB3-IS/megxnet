@@ -1,14 +1,17 @@
 package net.megx.megdb.esa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.megx.megdb.esa.impl.DBEarthSamplingAppService;
-import net.megx.megdb.pubmap.mappers.SamplesMapper;
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SamplePhoto;
+import net.megx.security.services.DBServiceTest;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -63,6 +66,12 @@ private EarthSamplingAppService earthAppService;
 	public static String SECOND_VALUE = "SECOND TEST VALUE";
 	public static String THIRD_VALUE = "THIRD VALUE";
 	
+	public static String FIRST_UUID = "FIRST TEST UUID";
+	public static String SECOND_UUID = "SECOND TEST UUID";
+	public static String THIRD_UUID = "THIRD TEST UUID";
+	public static String PATH = "TEST PATH";
+	public static String MIME_TYPE = "TEST MIME TYPE";
+	
 	private Sample createNewSample(String id){
 		Sample sample = new Sample();
 		sample.setId(id);
@@ -93,10 +102,18 @@ private EarthSamplingAppService earthAppService;
 		sample.setWaterTemerature(WATER_TEMPERATURE);
 		sample.setWeatherCondition(WEATHER_CONDITION);	
 		sample.setWindSpeed(WIND_SPEED);
-		
+		SamplePhoto[] samplePhotos = {createNewPhoto(), createNewPhoto(), createNewPhoto()};
+		sample.setPhotos(samplePhotos);
 		return sample;
 	}
 
+	private SamplePhoto createNewPhoto(){
+		SamplePhoto photoToReturn = new SamplePhoto();
+		photoToReturn.setUuid(UUID.randomUUID().toString());
+		photoToReturn.setMimeType(MIME_TYPE);
+		
+		return photoToReturn;
+	}
 	
 	private Sample defaultSample, secondSample, thirdSample;
 	
@@ -104,7 +121,6 @@ private EarthSamplingAppService earthAppService;
 	public void setup() throws Exception{
 		earthAppService = buildService(DBEarthSamplingAppService.class);
 		
-		// add the default sample
 		defaultSample = createNewSample(FIRST_ID);
 		secondSample = createNewSample(SECOND_ID);
 		thirdSample = createNewSample(THIRD_ID);
@@ -171,6 +187,43 @@ private EarthSamplingAppService earthAppService;
 		Map<String, String> thirdConfiguration = earthAppService.getConfiguration(FIRST_CATEGORY);
 		Assert.assertTrue(thirdConfiguration.containsKey(THIRD_NAME));
 		Assert.assertTrue(thirdConfiguration.containsValue(SECOND_VALUE));
+	}
+	
+	@Test
+	public void storePhotos() throws Exception{
+		List<Sample> samplesToStore = new ArrayList<Sample>();
+		samplesToStore.add(defaultSample);
+		earthAppService.storeSamples(samplesToStore);
+		
+		List<SamplePhoto> savedPhotos = earthAppService.getSamplePhotos(defaultSample.getId());
+		Assert.assertTrue(savedPhotos.size() == 3);
+		Assert.assertTrue(savedPhotos.get(0).getData() == null);
+		Assert.assertTrue(savedPhotos.get(0).getPath() == null);
+		Assert.assertTrue(savedPhotos.get(1).getData() == null);
+		Assert.assertTrue(savedPhotos.get(1).getPath() == null);
+		Assert.assertTrue(savedPhotos.get(2).getData() == null);
+		Assert.assertTrue(savedPhotos.get(2).getPath() == null);
+		
+		savedPhotos.get(0).setData(FIRST_ID.getBytes());
+		savedPhotos.get(0).setPath(PATH);
+		
+		savedPhotos.get(1).setData(SECOND_ID.getBytes());
+		savedPhotos.get(1).setPath(PATH);
+		
+		savedPhotos.get(2).setData(THIRD_ID.getBytes());
+		savedPhotos.get(2).setPath(PATH);
+		
+		List<String> updatedPhotosIds = earthAppService.storePhotos(savedPhotos);
+		Assert.assertTrue(updatedPhotosIds.size() > 0 && updatedPhotosIds.size() == 3);
+		
+		List<SamplePhoto> updatedPhotos = earthAppService.getSamplePhotos(defaultSample.getId());
+		Assert.assertTrue(updatedPhotos.size() == 3);
+		Assert.assertTrue(Arrays.equals(updatedPhotos.get(0).getData(), FIRST_ID.getBytes()));
+		Assert.assertTrue(updatedPhotos.get(0).getPath().equals(PATH));
+		Assert.assertTrue(Arrays.equals(updatedPhotos.get(1).getData(), SECOND_ID.getBytes()));
+		Assert.assertTrue(updatedPhotos.get(1).getPath().equals(PATH));
+		Assert.assertTrue(Arrays.equals(updatedPhotos.get(2).getData(), THIRD_ID.getBytes()));
+		Assert.assertTrue(updatedPhotos.get(2).getPath().equals(PATH));
 	}
 	
 	@After
