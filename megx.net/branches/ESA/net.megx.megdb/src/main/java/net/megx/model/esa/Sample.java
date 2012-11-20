@@ -1,5 +1,6 @@
 package net.megx.model.esa;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class Sample {
@@ -35,7 +36,14 @@ public class Sample {
 	private String comment;
 	private double lat;
 	private double lon;
+	private double accuracy;
 	
+	public double getAccuracy() {
+		return accuracy;
+	}
+	public void setAccuracy(double accuracy) {
+		this.accuracy = accuracy;
+	}
 	private SamplePhoto [] photos;
 	
 	public SamplePhoto[] getPhotos() {
@@ -235,4 +243,25 @@ public class Sample {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "Sample [id=" + id + ", taken=" + taken + ", modified="
+				+ modified + ", collectorId=" + collectorId + ", label="
+				+ label + ", barcode=" + barcode
+				+ ", projectId=" + projectId + ", userName=" + userName
+				+ ", shipName=" + shipName + ", nationality=" + nationality
+				+ ", elevation=" + elevation + ", biome=" + biome
+				+ ", feature=" + feature + ", collection=" + collection
+				+ ", permit=" + permit + ", samplingDepth=" + samplingDepth
+				+ ", waterDepth=" + waterDepth + ", sampleSize=" + sampleSize
+				+ ", weatherCondition=" + weatherCondition
+				+ ", airTemperature=" + airTemperature + ", waterTemerature="
+				+ waterTemerature + ", conductivity=" + conductivity
+				+ ", windSpeed=" + windSpeed + ", salinity=" + salinity
+				+ ", comment=" + comment + ", lat=" + lat + ", lon=" + lon
+				+ ", accuracy=" + accuracy + ", photos="
+				+ Arrays.toString(photos) + "]";
+	}
+	
+	
 }
