@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+Copyright 2011 Max Planck Institute for Marine Microbiology 
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.security.auth.services.db.ConsumerMapper">
+	<resultMap type="Consumer" id="consumer_map">
+		<id column="id" property="id"/>
+		<result property="key" column="key"/>
+		<result property="secret" column="secret"/>
+		<result property="oob" column="oob"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="trusted" column="trusted"/>
+		<result property="expirationDate" column="expiration"/>
+		<result property="roles" column="roles"/>
+		<result property="resource" column="resource"/>
+		<result property="logname" column="logname"/>
+		<result property="callbackUrl" column="callback_url"/>
+	</resultMap>
+	
+	
+	<sql id="consumer_columns_list">
+		key,
+		secret,
+		oob,
+		name,
+		description,
+		trusted,
+		expiration,
+		logname,
+		callback_url
+	</sql>
+	
+	
+	<select id="getConsumerForKey" resultMap="consumer_map" parameterType="string">
+		select 
+			<include refid="consumer_columns_list"/>
+		 	from auth.consumers where key=#{key}
+	</select>
+	
+	<select id="getConsumerForName" resultMap="consumer_map" parameterType="string">
+		select 
+			<include refid="consumer_columns_list"/>
+			from auth.consumers where name=#{name}
+	</select>
+	
+	<select id="getConsumerForKeyAndName" resultMap="consumer_map" parameterType="map">
+		select 
+			<include refid="consumer_columns_list"/>
+		 	from auth.consumers where key=#{key} and name=#{name}
+	</select>
+	
+	<insert id="addConsumer" parameterType="Consumer" useGeneratedKeys="true">
+		insert into auth.consumers (key, secret, oob, name, description, trusted, expiration,  logname, callback_url)
+					values (#{key},#{secret},#{oob}, #{name}, #{description},#{trusted}, #{expirationDate}, #{logname}, #{callbackUrl})
+	</insert>
+	
+	<update id="updateConsumer" parameterType="Consumer">
+		UPDATE auth.consumers
+		SET
+			secret = #{secret},
+			name = #{name},
+			description = #{description},
+			oob = #{oob},
+			trusted = #{trusted},
+			expiration = #{expirationDate},
+			callback_url=#{callbackUrl}
+		WHERE key=#{key}
+		
+	</update>
+	
+	<delete id="removeConsumer" parameterType="Consumer">
+		delete from auth.consumers where key=#{key}
+	</delete>
+	
+	<select id="getConsumersForUserId" parameterType="string" resultMap="consumer_map">
+		select 
+			<include refid="consumer_columns_list"/> 
+			from auth.consumers where logname=#{value}
+	</select>
+	
+	<delete id="removeTokensForConsumer" parameterType="string">
+		delete from auth.access_tokens where consumer_key=#{consumerkey}
+	</delete>
+	
+</mapper>
