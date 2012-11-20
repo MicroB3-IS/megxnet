@@ -28,6 +28,12 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 				for (Sample sample : samples) {
 					mapper.addSample(sample);
 					savedSamplesList.add(sample.getId());
+					SamplePhoto [] photos = sample.getPhotos();
+					if(photos !=null){
+						for(SamplePhoto photo: photos){
+							mapper.addPhoto(photo, sample.getId());
+						}
+					}
 				}
 				return savedSamplesList;
 			}
