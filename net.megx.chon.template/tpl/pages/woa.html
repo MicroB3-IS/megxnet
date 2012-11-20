@@ -1,43 +1,26 @@
-<div id="content_area">
-
-<table class="OuterBox" style="width: 100%;">
-	<tr>
-		<td class="Title"
-			style="text-align: center; width: 20em; float: left;"
-		>.:: WOA05 data interpolation ::.</td>
-	</tr>
-	<tr>
-		<td style="vertical-align: top;" width=30%>
-
+<section>
+<h3>.:: WOA05 data interpolation ::.</h3>
 		<form id="woa_extractor" name="woa_extractor" method="get" action=".">
 
-		<table class="InnerBox" style="float: left;">
+		<table width="100%">
 			<tr>
-				<td class="Text">Latitude:</td>
-				<td class="Text"><input type="text" name="latitude" id="latitude"
-					title="Give the geographic latitude in decimal degrees"
-					value="$!req.get('latitude')" size="10" maxlength="9"
-				> 90.0/-90.0</td>
+				<th width="20%">Latitude:</th>
+				<td width="30%"><input type="text" name="latitude" id="latitude" title="Give the geographic latitude in decimal degrees"	value="$!req.get('latitude')" size="10" maxlength="9"></td>
+				<td width="50%" class="small greenColor"> &nbsp; value can be 90.0/-90.0</td>
 			</tr>
 			<tr>
-				<td class="Text">Longitude:</td>
-				<td class="Text"><input type="text" name="longitude" id="longitude"
-					title="Give the geographic longitude in decimal degrees"
-					value="$!req.get('longitude')" size="10" maxlength="10"
-				> 180.0/-180.0</td>
+				<th>Longitude:</th>
+				<td><input type="text" name="longitude" id="longitude" title="Give the geographic longitude in decimal degrees" value="$!req.get('longitude')" size="10" maxlength="10"></td>
+				<td class="small greenColor"> &nbsp; 180.0/-180.0</td>
 			</tr>
 			<tr>
-				<td class=Text>Depth:</td>
-				<td class=Text><input type="text" name="depth" id="depth"
-					title="Give the depth in the water colum for which the environmental parameter should be interpolated"
-					value="$!req.get('depth')" size="10" maxlength="6"
-				> 0.0/5500.0</td>
+				<th>Depth:</th>
+				<td><input type="text" name="depth" id="depth" title="Give the depth in the water colum for which the environmental parameter should be interpolated" value="$!req.get('depth')" size="10" maxlength="6"></td>
+				<td class="small greenColor"> &nbsp; 0.0/5500.0</td>
 			</tr>
 			<tr>
-				<td class=Text>Variable:</td>
-				<td><select name="parameter" id="parameter" class="Text"
-					title="Select the environmental parameters which should be interpolated"
-				>
+				<th>Variable:</th>
+				<td colspan="2"><select name="parameter" id="parameter" title="Select the environmental parameters which should be interpolated">
 					<option value="all" selected="selected">All</option>
 					<option value="temperature" id="temperature">Temperature</option>
 					<option value="nitrate">Nitrate</option>
@@ -49,11 +32,10 @@
 					<option value="oxygen_utilization">Oxygen Utilization</option>
 				</select></td>
 			</tr>
+
 			<tr>
-				<td class=Text>Period:</td>
-				<td><select name="season" class="Text"
-					title="Select the time period for which the environmental parameter should be interpolated"
-				>
+				<th>Period:</th>
+				<td colspan="2"><select name="season" class="Text" title="Select the time period for which the environmental parameter should be interpolated">
 					<option value="0" selected="selected">Annual</option>
 					<optgroup label="Month">
 						<option value="1">January</option>
@@ -78,16 +60,15 @@
 				</select></td>
 			</tr>
 			<tr>
-				<td>&nbsp;</td>
-				<td><input type="submit" name="submit" id="submit" value="Calculate"
-					style="cursor: pointer;"
-				></td>
+				<td colspan="3"></td>
+				<hr />
+			</tr>
+			<tr>
+				<td colspan="3"><button type="submit" name="submit" id="submit" value="Calculate">Calculate</button></td>
 			</tr>
 		</table>
 		</form>
-
-		</td>
-
+od ovde prodolzi !!!
 		## only if some get parameters are present and no validation error occured e.g. message is empty
 		#if (!($message && $message != ""))
 
@@ -127,6 +108,6 @@
 		#else
 		<td width="70%">$!message</td>
 		#end
-	</tr>
-</table>
+
 </div>
+</section>
