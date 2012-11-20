@@ -11,7 +11,8 @@ public interface EarthSamplingAppService {
 	public Sample getSample(String id) throws Exception;
 	
 	public List<String> storeSamples(List<Sample> samples) throws Exception;
-	public List<String> storePhotos(List<SamplePhoto> photos, String sampleId) throws Exception;
+	public List<String> storePhotos(List<SamplePhoto> photos) throws Exception;
+	public List<SamplePhoto> getSamplePhotos(String sampleId) throws Exception;
 	
 	public Map<String, String> getConfiguration(String category) throws Exception;
 	public void storeConfiguration(String category, Map<String, String> config) throws Exception;
