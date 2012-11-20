@@ -73,10 +73,10 @@
 	    FROM esa.gen_config WHERE category=#{category}
 	</select>
 	
-	<select id="getConfigValue" resultType="String">
+	<select id="getConfigValue" parameterType="map" resultType="String">
 	    SELECT value
 	    FROM esa.gen_config
-	    WHERE config=#{config} and name=#{name}
+	    WHERE category=#{category} and name=#{name}
 	</select>
 	
 	<select id="getPhotosForSample" resultMap="esa_sample_photo" parameterType="String">
