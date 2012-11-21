@@ -32,6 +32,7 @@
 		<result column="comment" property="comment"/>
 		<result column="lat" property="lat"/>
 		<result column="lon" property="lon"/>
+		<result column="accuracy" property="accuracy"/>
 		<association property="photos" column="id" select="getPhotosForSample"/>
 	</resultMap>
 	
@@ -45,13 +46,13 @@
 	<sql id="esa_sample_columns_all">
 		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
-	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom, accuracy
 	</sql>
 	
 	<sql id="esa_sample_columns_no_geom">
 	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
-	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
 	</sql>
 	
 	<sql id="esa_sample_images_columns_all">
@@ -97,7 +98,7 @@
 	    (#{id}, #{taken}, #{modified}, #{collectorId}, #{label}, #{rawData}, #{barcode}, #{projectId}, #{userName}, #{shipName}, 
 	    #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, #{permit}, #{samplingDepth}, #{waterDepth}, 
 	    #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, #{conductivity}, #{windSpeed}, 
-	    #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326))
+	    #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326), #{accuracy})
 	</insert>
 	
 	<delete id="removeSample" parameterType="int">

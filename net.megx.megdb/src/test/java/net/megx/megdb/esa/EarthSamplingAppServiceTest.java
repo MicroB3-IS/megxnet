@@ -22,55 +22,56 @@ public class EarthSamplingAppServiceTest extends DBServiceTest{
 
 private EarthSamplingAppService earthAppService;
 	
-	public static String FIRST_ID = "1";
-	public static String SECOND_ID = "2";
-	public static String THIRD_ID = "3";
+	private static String FIRST_ID = "1";
+	private static String SECOND_ID = "2";
+	private static String THIRD_ID = "3";
 	
-	public static Date TAKEN = new Date();
-	public static Date MODIFIED = new Date();
-	public static String COLLECTOR_ID = "TEST COLLECTOR ID";
-	public static String LABEL = "TEST LABEL";
-	public static String RAW_DATA = "JSON REP OF SAMPLE";
-	public static String BARCODE = "TEST BARCODE";
-	public static String PROJECT_ID = "TEST PROJECT ID";
-	public static String USERNAME = "TEST USERNAME";
-	public static String SHIPNAME = "TEST SHIP NAME";
-	public static String NATIONALITY = "TEST NATIONALITY";
-	public static double ELEVATION = 123.456;
-	public static String BIOME = "TEST BIOME";
-	public static String FEATURE = "TEST FEATURE";
-	public static String COLLECTION = "TEST COLLECTION";
-	public static String PERMIT = "TEST PERMIT";
-	public static double SAMPLING_DEPTH = 111.222;
-	public static double WATER_DEPTH = 6.2;
-	public static int SAMPLE_SIZE = 4;
-	public static String WEATHER_CONDITION = "TEST WEATHER CONDITION";
-	public static double AIR_TEMPERATURE = 14.98;
-	public static double WATER_TEMPERATURE = 89.3;
-	public static String CONDUCTIVITY = "TEST CONDUCTIVITY";
-	public static double WIND_SPEED = 5.6;
-	public static double SALINITY = 0.29;
-	public static String COMMENT = "TEST COMMENT";
-	public static double LAT = 41.01;
-	public static double LON = 21.20;
+	private static Date TAKEN = new Date();
+	private static Date MODIFIED = new Date();
+	private static String COLLECTOR_ID = "TEST COLLECTOR ID";
+	private static String LABEL = "TEST LABEL";
+	private static String RAW_DATA = "JSON REP OF SAMPLE";
+	private static String BARCODE = "TEST BARCODE";
+	private static String PROJECT_ID = "TEST PROJECT ID";
+	private static String USERNAME = "TEST USERNAME";
+	private static String SHIPNAME = "TEST SHIP NAME";
+	private static String NATIONALITY = "TEST NATIONALITY";
+	private static double ELEVATION = 123.456;
+	private static String BIOME = "TEST BIOME";
+	private static String FEATURE = "TEST FEATURE";
+	private static String COLLECTION = "TEST COLLECTION";
+	private static String PERMIT = "TEST PERMIT";
+	private static double SAMPLING_DEPTH = 111.222;
+	private static double WATER_DEPTH = 6.2;
+	private static int SAMPLE_SIZE = 4;
+	private static String WEATHER_CONDITION = "TEST WEATHER CONDITION";
+	private static double AIR_TEMPERATURE = 14.98;
+	private static double WATER_TEMPERATURE = 89.3;
+	private static String CONDUCTIVITY = "TEST CONDUCTIVITY";
+	private static double WIND_SPEED = 5.6;
+	private static double SALINITY = 0.29;
+	private static String COMMENT = "TEST COMMENT";
+	private static double LAT = 41.01;
+	private static double LON = 21.20;
+	private static double ACCURACY = 5.9;
 	
-	public static String FIRST_CATEGORY = "TEST CATEGORY";
-	public static String SECOND_CATEGORY = "SECOND TEST CATEGORY";
-	public static String THIRD_CATEGORY = "THIRD TEST CATEGORY";
+	private static String FIRST_CATEGORY = "TEST CATEGORY";
+	private static String SECOND_CATEGORY = "SECOND TEST CATEGORY";
+	private static String THIRD_CATEGORY = "THIRD TEST CATEGORY";
 	
-	public static String FIRST_NAME = "FIRST TEST NAME";
-	public static String SECOND_NAME = "SECOND TEST NAME";
-	public static String THIRD_NAME = "THIRD NAME";
+	private static String FIRST_NAME = "FIRST TEST NAME";
+	private static String SECOND_NAME = "SECOND TEST NAME";
+	private static String THIRD_NAME = "THIRD NAME";
 	
-	public static String FIRST_VALUE = "TEST VALUE";
-	public static String SECOND_VALUE = "SECOND TEST VALUE";
-	public static String THIRD_VALUE = "THIRD VALUE";
+	private static String FIRST_VALUE = "TEST VALUE";
+	private static String SECOND_VALUE = "SECOND TEST VALUE";
+	private static String THIRD_VALUE = "THIRD VALUE";
 	
-	public static String FIRST_UUID = "FIRST TEST UUID";
-	public static String SECOND_UUID = "SECOND TEST UUID";
-	public static String THIRD_UUID = "THIRD TEST UUID";
-	public static String PATH = "TEST PATH";
-	public static String MIME_TYPE = "TEST MIME TYPE";
+	private static String FIRST_UUID = "FIRST TEST UUID";
+	private static String SECOND_UUID = "SECOND TEST UUID";
+	private static String THIRD_UUID = "THIRD TEST UUID";
+	private static String PATH = "TEST PATH";
+	private static String MIME_TYPE = "TEST MIME TYPE";
 	
 	private Sample createNewSample(String id){
 		Sample sample = new Sample();
@@ -102,6 +103,7 @@ private EarthSamplingAppService earthAppService;
 		sample.setWaterTemerature(WATER_TEMPERATURE);
 		sample.setWeatherCondition(WEATHER_CONDITION);	
 		sample.setWindSpeed(WIND_SPEED);
+		sample.setAccuracy(ACCURACY);
 		SamplePhoto[] samplePhotos = {createNewPhoto(), createNewPhoto(), createNewPhoto()};
 		sample.setPhotos(samplePhotos);
 		return sample;
