@@ -166,6 +166,14 @@ form select {
 	width: 31.20em;
 	line-height: 13px;
 }
+div.sideMenu select {
+	display: block;
+	padding: .5em .5em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 21.20em!important;
+	line-height: 13px;
+}
 form checkbox {
 	float: right;
 	padding: 0em;
@@ -173,7 +181,7 @@ form checkbox {
 	border: .1em solid #e7e7e7;
 	color: #999;
 }
-form.tutorials  input[type=radio] {
+form.tutorials input[type=radio] {
 	float: left;
 	padding: 0em;
 	margin: 0em;
@@ -182,7 +190,7 @@ form.tutorials  input[type=radio] {
 	width: 24px;
 	height: 24px;
 }
-form.blastRadioButton  input[type=radio] {
+form.blastRadioButton input[type=radio] {
 	float: left;
 	padding: 0em;
 	margin: 0em;
