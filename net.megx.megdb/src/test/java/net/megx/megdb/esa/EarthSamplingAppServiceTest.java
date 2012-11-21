@@ -139,7 +139,6 @@ private EarthSamplingAppService earthAppService;
 		List<Sample> retrievedSamples = earthAppService.getSamples(COLLECTOR_ID);
 		Assert.assertNotNull(retrievedSamples);
 		Assert.assertTrue(retrievedSamples.size() > 0 && retrievedSamples.size() == 3);
-		
 	}
 	
 	@Test
@@ -153,6 +152,10 @@ private EarthSamplingAppService earthAppService;
 		Assert.assertNotNull(earthAppService.getSample(defaultSample.getId()));
 		Assert.assertNotNull(earthAppService.getSample(secondSample.getId()));
 		Assert.assertNotNull(earthAppService.getSample(thirdSample.getId()));
+		
+		compareSamplesProperties(defaultSample, earthAppService.getSample(defaultSample.getId()));
+		compareSamplesProperties(secondSample, earthAppService.getSample(secondSample.getId()));
+		compareSamplesProperties(thirdSample, earthAppService.getSample(thirdSample.getId()));
 	}
 	
 	@Test
@@ -165,6 +168,8 @@ private EarthSamplingAppService earthAppService;
 		Assert.assertNotNull(retrievedSamples);
 		Assert.assertTrue(retrievedSamples.size() > 0 && retrievedSamples.size() == 1);
 		Assert.assertEquals(defaultSample, retrievedSamples.get(0));
+		
+		compareSamplesProperties(defaultSample, retrievedSamples.get(0));
 	}
 	
 	@Test
@@ -288,6 +293,37 @@ private EarthSamplingAppService earthAppService;
 		{
 			
 		}
+	}
+	
+	private void compareSamplesProperties(Sample storedSample, Sample retrievedSample){
+		Assert.assertTrue(retrievedSample.getBarcode().equals(storedSample.getBarcode()));
+		Assert.assertTrue(retrievedSample.getBiome().equals(storedSample.getBiome()));
+		Assert.assertTrue(retrievedSample.getCollection().equals(storedSample.getCollection()));
+		Assert.assertTrue(retrievedSample.getCollectorId().equals(storedSample.getCollectorId()));
+		Assert.assertTrue(retrievedSample.getComment().equals(storedSample.getComment()));
+		Assert.assertTrue(retrievedSample.getConductivity().equals(storedSample.getConductivity()));
+		Assert.assertTrue(retrievedSample.getFeature().equals(storedSample.getFeature()));
+		Assert.assertTrue(retrievedSample.getLabel().equals(storedSample.getLabel()));
+		Assert.assertTrue(retrievedSample.getNationality().equals(storedSample.getNationality()));
+		Assert.assertTrue(retrievedSample.getPermit().equals(storedSample.getPermit()));
+		Assert.assertTrue(retrievedSample.getProjectId().equals(storedSample.getProjectId()));
+		Assert.assertTrue(retrievedSample.getRawData().equals(storedSample.getRawData()));
+		Assert.assertTrue(retrievedSample.getShipName().equals(storedSample.getShipName()));
+		Assert.assertTrue(retrievedSample.getUserName().equals(storedSample.getUserName()));
+		Assert.assertTrue(retrievedSample.getWeatherCondition().equals(storedSample.getWeatherCondition()));
+		Assert.assertTrue(retrievedSample.getAccuracy() == storedSample.getAccuracy());
+		Assert.assertTrue(retrievedSample.getAirTemperature() == storedSample.getAirTemperature());
+		Assert.assertTrue(retrievedSample.getElevation() == storedSample.getElevation());
+		Assert.assertTrue(retrievedSample.getLat() == storedSample.getLat());
+		Assert.assertTrue(retrievedSample.getLon() == storedSample.getLon());
+		Assert.assertTrue(retrievedSample.getSalinity() == storedSample.getSalinity());
+		Assert.assertTrue(retrievedSample.getSampleSize() == storedSample.getSampleSize());
+		Assert.assertTrue(retrievedSample.getSamplingDepth() == storedSample.getSamplingDepth());
+		Assert.assertTrue(retrievedSample.getWaterDepth() == storedSample.getWaterDepth());
+		Assert.assertTrue(retrievedSample.getWaterTemerature() == storedSample.getWaterTemerature());
+		Assert.assertTrue(retrievedSample.getWindSpeed() == storedSample.getWindSpeed());
+		Assert.assertTrue(retrievedSample.getModified().compareTo(storedSample.getModified()) == 0);
+		Assert.assertTrue(retrievedSample.getTaken().compareTo(storedSample.getTaken()) == 0);
 	}
 	
 }

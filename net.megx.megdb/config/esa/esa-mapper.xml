@@ -64,7 +64,7 @@
 	</sql>
 	
 	<select id="getSample" resultMap="esa_sample_map">
-	    SELECT <include refid="esa_sample_columns_all"/> 
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
 	    FROM esa.samples 
 	    WHERE esa.samples.id=#{id}
 	</select>
