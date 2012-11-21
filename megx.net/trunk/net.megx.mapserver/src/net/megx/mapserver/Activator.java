@@ -10,16 +10,35 @@ import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
 
-	private static final String ALIAS = "/mapserver";
+	// local root url listener
+	private static final String PROP_MAPSERVER_ROOT = "mapserver.root"; 
+	
+	// remote mapserver basic url
+	private static final String PROP_MAPSERVER_PROXY = "mapserver.proxy"; // remove
+	
+	// remote mapserver path
+	private static final String PROP_MAPSERVER_PROXY_PATH = "mapserver.proxy.path";
+	
+	
+	private static final String DEFAULT_MAPSERVER_ROOT = "/wms";
+	
+	private static final String DEFAULT_MAPSERVER_PROXY = "http://www.megx.net";
+	
+	private static final String DEFAULT_MAPSERVER_PROXY_PATH = "/wms/gms";
+	
+	
 	private ServiceRegistration servletContainerRegRef;
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		//registering ProxyServlet under mapserver.root, default /mapserver 
-		String serveltRoot = System.getProperty("mapserver.root", ALIAS);
+		//registering ProxyServlet under mapserver.root, default /wms
+		String serveltRoot = System.getProperty(PROP_MAPSERVER_ROOT, DEFAULT_MAPSERVER_ROOT);
 		Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("alias", serveltRoot);
-		ProxyServlet proxyServlet = new ProxyServlet();
+		
+		String mapserverProxy = System.getProperty(PROP_MAPSERVER_PROXY, DEFAULT_MAPSERVER_PROXY);
+		String mapserverProxyPath = System.getProperty(PROP_MAPSERVER_PROXY_PATH, DEFAULT_MAPSERVER_PROXY_PATH);
+		ProxyServlet proxyServlet = new ProxyServlet(mapserverProxy, mapserverProxyPath);
 		servletContainerRegRef = bundleContext.registerService(Servlet.class.getName(), proxyServlet, props);
 	}
 
