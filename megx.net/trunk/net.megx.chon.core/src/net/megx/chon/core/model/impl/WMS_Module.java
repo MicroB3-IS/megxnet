@@ -37,6 +37,7 @@ import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.chon.web.api.ServerInfo;
 
+@Deprecated
 public class WMS_Module extends ModuleContentNode {
 
 	public WMS_Module(ContentModel model, Node node, IContentNode typeDesc) {
