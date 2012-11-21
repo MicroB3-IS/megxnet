@@ -43,7 +43,7 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	@Override
 	public Map<String, String> getConfiguration(final String category) throws Exception{
 		
-		return doInTransaction(new DBTask<ESAMapper, Map<String, String>>(){
+		return doInSession(new DBTask<ESAMapper, Map<String, String>>(){
 			@Override
 			public Map<String, String> execute(ESAMapper mapper) throws Exception{
 				Map<String, String> savedConfigs = new HashMap<String, String>();
@@ -58,7 +58,7 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	@Override
 	public Sample getSample(final String id) throws Exception{
 		
-		return doInTransaction(new DBTask<ESAMapper, Sample>(){
+		return doInSession(new DBTask<ESAMapper, Sample>(){
 			@Override
 			public Sample execute(ESAMapper mapper) throws Exception{
 				return mapper.getSample(id);
@@ -69,7 +69,7 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	@Override
 	public List<Sample> getSamples(final String creator) throws Exception {
 		
-		return doInTransaction(new DBTask<ESAMapper, List<Sample>>(){
+		return doInSession(new DBTask<ESAMapper, List<Sample>>(){
 			@Override
 			public List<Sample> execute(ESAMapper mapper) throws Exception{
 				List<Sample> samplesToReturn = new ArrayList<Sample>();
@@ -84,7 +84,7 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	@Override
 	public String read(final String category, final String name) throws Exception {
 		
-		return doInTransaction(new DBTask<ESAMapper, String>(){
+		return doInSession(new DBTask<ESAMapper, String>(){
 			@Override
 			public String execute(ESAMapper mapper) throws Exception{
 				return mapper.getConfigValue(category, name);
@@ -147,7 +147,7 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	@Override
 	public List<SamplePhoto> getSamplePhotos(final String sampleId) throws Exception {
 		
-		return doInTransaction(new DBTask<ESAMapper, List<SamplePhoto>>(){
+		return doInSession(new DBTask<ESAMapper, List<SamplePhoto>>(){
 			@Override
 			public List<SamplePhoto> execute(ESAMapper mapper) throws Exception{
 				return mapper.getPhotosForSample(sampleId);
