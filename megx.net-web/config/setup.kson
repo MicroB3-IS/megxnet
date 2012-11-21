@@ -2,8 +2,8 @@ www={type:'sys.public'}
 	gms={type: 'html', template: 'pages/gms.html', title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type='html', template: 'pages/geographic-blast.html'}
 		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
-			woa.html={type: 'megx.module.woa', ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
-			wod.html={type: 'megx.module.wod', ".:: megx.net - GIS tools -- WOD05 Interpolator ::."}
+			woa.html={type: 'megx.module.woa', title: ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
+			wod.html={type: 'megx.module.wod', title: ".:: megx.net - GIS tools -- WOD05 Interpolator ::."}
 	feed={type: 'category'}
 		megxnet-news.xml={type:'rss'}
 	genomes={type:'html'}
