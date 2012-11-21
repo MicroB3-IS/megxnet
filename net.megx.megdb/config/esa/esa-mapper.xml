@@ -7,7 +7,7 @@
 		<result column="id" property="id"/>
 		<result column="taken" property="taken"/>
 		<result column="modified" property="modified"/>
-		<result column="collectorid" property="collectorId"/>
+		<result column="collector_id" property="collectorId"/>
 		<result column="label" property="label"/>
 		<result column="raw_data" property="rawData"/>
 		<result column="barcode" property="barcode"/>
@@ -43,13 +43,13 @@
 	</resultMap>
 	
 	<sql id="esa_sample_columns_all">
-		id,taken, modified, collectorid, label, raw_data, barcode, projectid, user_name, ship_name, 
+		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
 	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom
 	</sql>
 	
 	<sql id="esa_sample_columns_no_geom">
-	    id,taken, modified, collectorid, label, raw_data, barcode, projectid, user_name, ship_name, 
+	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
 	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment
 	</sql>
@@ -88,7 +88,7 @@
 	<select id="getSamples" parameterType="String" resultMap="esa_sample_map">
 	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
 	    FROM esa.samples
-	    WHERE collectorid=#{collectorId}
+	    WHERE collector_id=#{collectorId}
 	</select>
 	
 	<insert id="addSample" parameterType="ESASample">
