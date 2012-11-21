@@ -72,9 +72,11 @@
 	<mappers>
 		<mapper resource="pubmap/pubmap-mapper.xml" />
 		<mapper resource="pubmap/samples-mapper.xml" />
-
-		<!-- security API DB services mappers -->
+		
+		<!-- Earth sampling app mapper -->
 		<mapper resource="esa/esa-mapper.xml" />
+		
+		<!-- security API DB services mappers -->
 		<mapper resource="security/consumer-mapper.xml" />
 		<mapper resource="security/token-mapper.xml" />
 		<mapper resource="security/user-mapper.xml" />
