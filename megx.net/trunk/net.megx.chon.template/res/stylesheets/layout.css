@@ -33,6 +33,7 @@ header {
 	margin: -1em 0em 0em 0em;
 }
 section {padding: 1.75em;}
+article {width: 49%;}
 article.Box {float: left;}
 aside {float: left;}
 .news {
