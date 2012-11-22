@@ -136,8 +136,11 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 			public List<String> execute(ESAMapper mapper) throws Exception{
 				List<String> savedPhotosIds = new ArrayList<String>();
 				for (SamplePhoto samplePhoto : photos) {
-					mapper.updatePhoto(samplePhoto);
-					savedPhotosIds.add(samplePhoto.getUuid());
+					int rows = mapper.updatePhoto(samplePhoto);
+					
+					if(rows>0){
+						savedPhotosIds.add(samplePhoto.getUuid());
+					}
 				}
 				return savedPhotosIds;
 			}

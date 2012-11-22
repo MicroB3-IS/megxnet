@@ -124,6 +124,9 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	@Path("photos")
 	@POST
 	public String storePhotos(@FormParam("photos")String photosJson){
+		if(photosJson == null){
+			return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
+		}
 		try{
 			SamplePhoto [] photos = gson.fromJson(photosJson, SamplePhoto [].class);
 			List<String> uuids = service.storePhotos(Arrays.asList(photos));
