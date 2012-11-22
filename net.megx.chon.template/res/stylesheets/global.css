@@ -110,7 +110,7 @@ textarea 			{padding:3px 5px 4px 5px; margin-bottom:10px!important;}
 
 /* tables design */
 table									{border-collapse: collapse;}
-tr, td									{padding: 1px 0px!important;}
+tr, td									{padding: 1px 0px;}
 thead tr th								{font-weight: bold;}
 
 tbody tr td								{font-weight: normal;}

@@ -9,7 +9,6 @@
 @import url('layout.css');
 @import url('nav.css');
 
-
 figure.logo {
 	margin: 0;
 	padding: 30px 0px 0px 30px;	
@@ -254,4 +253,54 @@ a.viewButton:hover {
 .contentTable tr td {
 	padding: 7px!important;
 
+}
+
+#chicken {
+	background-color: #f7f7f7;
+	
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	color: #333;
+}
+.popup-text {
+	padding: 15px;
+}
+.popup-text table {
+	padding: 15px!important;
+	margin: 15px!important;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	border: 1px solid #ccc!important;
+	color: #333;
+}
+.popup-text table > tbody > tr > td {
+	padding: 7px!important;
+	margin: 5px!important;
+}
+div#samplingSiteLegendImg table > tbody > tr > td{
+	padding: 7px!important;
+	margin: 5px!important;
+	-webkit-border-radius: 7px!important;
+	-moz-border-radius: 7px!important;
+	border-radius: 7px!important;
+	border: 1px solid #ccc!important;
+	color: #333!important;
+}
+div#samplingSiteLegendImg table > tbody > tr > td > img {
+	margin: 0px 15px 0px 0px;
+}
+
+table.woaTable {
+	width: 100%;
+}
+table.woaTable input {
+	width: 15em!important;
+}
+table.woaTable select {
+	width: 16.1em!important;
+}
+table.woaTableData {
+	width: 50%;
 }
