@@ -68,6 +68,9 @@
 		<!-- does not need to be build always: TODO configure the setup.proporteis 
 			according to build -->
 		<module>megx.net-web</module>
+		
+		<!-- Earth Sampling App -->
+		<module>net.megx.esa</module>
 	</modules>
 
 	<dependencyManagement>
