@@ -69,57 +69,56 @@
   </form>
 </article>
 <article class="FR">
-## only if some get parameters are present and no validation error occured e.g. message is empty
-		#if (!($message && $message != ""))
-        <table class="woaTableData">
-#if($list)
-<table class="InnerBox">
-  <tr>
-    <th> <h6>Latitude: $req.get('latitude') / Longitude: $req.get('longitude') / Depth: $req.get('depth') m / Time period:  $req.get('season') </h6>
-      <hr>
-      <table width="100%">
-        <thead>
-          <tr>
-            <th>Parameter</th>
-            <th>Value</th>
-            <th>Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-        
-        #foreach($v in $list)
-        <tr>
-          <td>$v.parameter</td>
-          <td>$v.value</td>
-          <td>$v.unit</td>
-        </tr>
-        #end
-        <tr>
-          <td colspan="3"><a href="$downLink"> Download results as Excel compatible comma separated file (csv). </a></td>
-        </tr>
-          </tbody>
-        
-      </table>
+	## only if some get parameters are present and no validation error occured e.g. message is empty
+	#if (!($message && $message != ""))
+    <table class="woaTableData">
+		#if($list)
+            <table class="InnerBox">
+              <tr>
+                <th> <h6>Latitude: $req.get('latitude') / Longitude: $req.get('longitude') / Depth: $req.get('depth') m / Time period:  $req.get('season') </h6>
+                  <hr>
+                  <table width="100%">
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Unit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                    #foreach($v in $list)
+                    <tr>
+                      <td>$v.parameter</td>
+                      <td>$v.value</td>
+                      <td>$v.unit</td>
+                    </tr>
+                    #end
+                    <tr>
+                      <td colspan="3"><a href="$downLink"> Download results as Excel compatible comma separated file (csv). </a></td>
+                    </tr>
+                      </tbody>
+                  </table>
       <hr>
       <p><strong style="color: red">Warnings:</strong>
       
       <ol>
-        <li>The following values are water physico-chemical parameters -
-          not applicable to sediment samples.</li>
+        <li>The following values are water physico-chemical parameters - not applicable to sediment samples.</li>
         <li>Some coastal samples might have currently no available data.</li>
         <!--					<li>Values for chlorophyll are only measured at the <strong>ocean--> 
         <!--					surface</strong> and extracted from SeaWiFS data.</li>-->
       </ol>
       </p>
+
+#end
     </th>
   </tr>
 </table>
-#end
-</td>
 #else
-
-  <td width="70%">$!message</td>
+  
+  <article>$!message</article>
   #end
+  <div class="clear"></div>
 </article>
 <div class="clear"></div>
 </section>

@@ -23,15 +23,15 @@ figure.logo {
 	float: right;
 	width: 300px;
 }
-.header-right a { color: #fff; text-decoration: none; }
-.header-right a:hover { color: #fff; text-decoration: underline; }
-.header-right a:visited { color: #fff; text-decoration: none; }
+.header-right a { color: #666; text-decoration: none; }
+.header-right a:hover { color: #333; text-decoration: underline; }
+.header-right a:visited { color: #333; text-decoration: none; }
 .header-right sub {
 	font-size: 12px;
 	text-align: right;
 	float: right;
 	margin: .7em 1em!important;
-	color: #fff;
+	color: #333;
 }
 .headerInterior{
 	border-bottom: 1px solid #999;
