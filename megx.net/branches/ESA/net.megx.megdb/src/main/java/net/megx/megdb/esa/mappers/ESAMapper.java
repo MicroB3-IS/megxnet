@@ -31,7 +31,7 @@ public interface ESAMapper {
 	 * Generally used when the photo data is received
 	 * @param photo
 	 */
-	public void updatePhoto(SamplePhoto photo);
+	public int updatePhoto(SamplePhoto photo);
 	
 	public List<SamplePhoto> getPhotosForSample(String sampleId);
 	
