@@ -137,7 +137,7 @@ var gms_host_url = "$ctx.siteUrl";
           </select>
         </label>
       </li>
-      <button class="blue FR" value="Map It" name="load_woa" title="Click button to show a selected layer at given season and depth or year"	onclick="refreshThematicLayers();">Map It</button>
+      <button class="blue FR" value="Map It" name="load_woa" title="Click button to show a selected layer at given season and depth or year" onclick="refreshThematicLayers(); return false;">Map It</button>
     </ul>
   </li>
 </ul>
@@ -199,9 +199,8 @@ var gms_host_url = "$ctx.siteUrl";
 </form>
 </div>
 <script>
-	    $(window).load(function() {
-    	    $('#slider').iwSlider();
-	    });
+
+
 		$('article').addClass('padRight1dot5');
 		$('article').last().removeClass('padRight1dot5');		
 			
