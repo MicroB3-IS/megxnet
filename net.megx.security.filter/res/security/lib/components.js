@@ -828,7 +828,7 @@
 				page = this.pageCount;
 			
 			var m = ['<div class="pagintor-wrapper">'];
-				m.push('<div class="paginator-pages">')
+				m.push('<hr><div class="paginator-pages">')
 					m.push('<span class="paginator-page-selectable" page="1">First</span>');
 					m.push('<span class="paginator-page-selectable" page="'+(page-1 > 0 ? page-1: page)+'">&lt;</span>');
 			var halfRange = Math.floor(this.range/2);
@@ -856,7 +856,7 @@
 					m.push('<span class="paginator-page-selectable" page="'+(this.pageCount > 0 ? this.pageCount : 1)+'">Last</span>');
 				m.push('</div>')
 				m.push([
-				    '<div class="paginator-info">',
+				    '<hr><div class="paginator-info">',
 				    	'Page ', page, ' of ', this.pageCount,
 				    '</div>'
 				].join(''));
