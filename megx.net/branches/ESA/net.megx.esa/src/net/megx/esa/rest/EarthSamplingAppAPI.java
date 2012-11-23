@@ -1,28 +1,26 @@
 package net.megx.esa.rest;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import net.megx.esa.rest.util.SampleDeserializer;
+import net.megx.megdb.esa.EarthSamplingAppService;
+import net.megx.model.esa.Sample;
+import net.megx.model.esa.SamplePhoto;
+
 import org.apache.commons.codec.binary.Base64;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,10 +29,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import net.megx.megdb.esa.EarthSamplingAppService;
-import net.megx.model.esa.Sample;
-import net.megx.model.esa.SamplePhoto;
 
 @Path("esa")
 public class EarthSamplingAppAPI extends BaseRestService{
@@ -64,21 +58,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 				return sp;
 			}
 			
-		})
-		/*.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-			
-			
-			
-			
-			@Override
-			public Date deserialize(JsonElement el, Type type,
-					JsonDeserializationContext ctx) throws JsonParseException {
-				
-				return null;
-			}
-		})*/
-		
-		
+		}).registerTypeAdapter(Sample.class, new SampleDeserializer())
 		.create();
 	}
 	
@@ -98,21 +78,11 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	@Path("samples")
 	@POST
 	public String storeSamples(@FormParam("samples")String samplesJson){
-		
-		if(samplesJson == null){
-			return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
-		}
-		Sample [] samples = gson.fromJson(samplesJson, Sample [].class);
 		try{
-			JSONArray jo = new JSONArray(samplesJson);
-			Map<String, String> rawData = new HashMap<String, String>();
-			for(int i = 0; i < jo.length(); i++){
-				rawData.put(jo.optJSONObject(i).optString("id"), jo.optJSONObject(i).toString());
+			if(samplesJson == null){
+				return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
 			}
-			for(Sample sample: samples){
-				sample.setRawData(rawData.get(sample.getId()));
-			}
-			
+			Sample [] samples = gson.fromJson(samplesJson, Sample [].class);
 			List<String> stored = service.storeSamples(Arrays.asList(samples));
 			Result<List<String>> result = new Result<List<String>>(stored);
 			return toJSON(result);
