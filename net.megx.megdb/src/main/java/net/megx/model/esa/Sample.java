@@ -19,29 +19,29 @@ public class Sample {
 	private String shipName;
 	private String nationality;
 	
-	private double elevation;
+	private Double elevation;
 	private String biome;
 	private String feature;
 	private String collection;
 	private String permit;
-	private double samplingDepth;
-	private double waterDepth;
-	private int sampleSize;
+	private Double samplingDepth;
+	private Double waterDepth;
+	private Integer sampleSize;
 	private String weatherCondition;
-	private double airTemperature;
-	private double waterTemerature;
+	private Double airTemperature;
+	private Double waterTemerature;
 	private String conductivity;
-	private double windSpeed;
-	private double salinity;
+	private Double windSpeed;
+	private Double salinity;
 	private String comment;
-	private double lat;
-	private double lon;
-	private double accuracy;
+	private Double lat;
+	private Double lon;
+	private Double accuracy;
 	
-	public double getAccuracy() {
+	public Double getAccuracy() {
 		return accuracy;
 	}
-	public void setAccuracy(double accuracy) {
+	public void setAccuracy(Double accuracy) {
 		this.accuracy = accuracy;
 	}
 	private SamplePhoto [] photos;
@@ -118,10 +118,10 @@ public class Sample {
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
-	public double getElevation() {
+	public Double getElevation() {
 		return elevation;
 	}
-	public void setElevation(double elevation) {
+	public void setElevation(Double elevation) {
 		this.elevation = elevation;
 	}
 	public String getBiome() {
@@ -148,22 +148,22 @@ public class Sample {
 	public void setPermit(String permit) {
 		this.permit = permit;
 	}
-	public double getSamplingDepth() {
+	public Double getSamplingDepth() {
 		return samplingDepth;
 	}
-	public void setSamplingDepth(double samplingDepth) {
+	public void setSamplingDepth(Double samplingDepth) {
 		this.samplingDepth = samplingDepth;
 	}
-	public double getWaterDepth() {
+	public Double getWaterDepth() {
 		return waterDepth;
 	}
-	public void setWaterDepth(double waterDepth) {
+	public void setWaterDepth(Double waterDepth) {
 		this.waterDepth = waterDepth;
 	}
-	public int getSampleSize() {
+	public Integer getSampleSize() {
 		return sampleSize;
 	}
-	public void setSampleSize(int sampleSize) {
+	public void setSampleSize(Integer sampleSize) {
 		this.sampleSize = sampleSize;
 	}
 	public String getWeatherCondition() {
@@ -172,16 +172,16 @@ public class Sample {
 	public void setWeatherCondition(String weatherCondition) {
 		this.weatherCondition = weatherCondition;
 	}
-	public double getAirTemperature() {
+	public Double getAirTemperature() {
 		return airTemperature;
 	}
-	public void setAirTemperature(double airTemperature) {
+	public void setAirTemperature(Double airTemperature) {
 		this.airTemperature = airTemperature;
 	}
-	public double getWaterTemerature() {
+	public Double getWaterTemerature() {
 		return waterTemerature;
 	}
-	public void setWaterTemerature(double waterTemerature) {
+	public void setWaterTemerature(Double waterTemerature) {
 		this.waterTemerature = waterTemerature;
 	}
 	public String getConductivity() {
@@ -190,16 +190,16 @@ public class Sample {
 	public void setConductivity(String conductivity) {
 		this.conductivity = conductivity;
 	}
-	public double getWindSpeed() {
+	public Double getWindSpeed() {
 		return windSpeed;
 	}
-	public void setWindSpeed(double windSpeed) {
+	public void setWindSpeed(Double windSpeed) {
 		this.windSpeed = windSpeed;
 	}
-	public double getSalinity() {
+	public Double getSalinity() {
 		return salinity;
 	}
-	public void setSalinity(double salinity) {
+	public void setSalinity(Double salinity) {
 		this.salinity = salinity;
 	}
 	public String getComment() {
@@ -208,21 +208,21 @@ public class Sample {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public double getLat() {
+	public Double getLat() {
 		return lat;
 	}
-	public void setLat(double lat) {
+	public void setLat(Double lat) {
 		this.lat = lat;
 	}
-	public double getLon() {
+	public Double getLon() {
 		return lon;
 	}
-	public void setLon(double lon) {
+	public void setLon(Double lon) {
 		this.lon = lon;
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final Integer prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
