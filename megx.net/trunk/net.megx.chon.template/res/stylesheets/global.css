@@ -80,34 +80,129 @@ li					{ padding: .0em .0em!important; }
 dl          		{ margin: 0 0 1.5em 0; }
 dl dt       		{ font-weight: bold; }
 dd          		{ margin-left: 0em; display: inline-block;}
-/*** End of Lists
------------------------------------------------------------*/
+/*** End of Lists ***/
+/*** styles of listing ***/
 
-/* Forms
----------------------------------------------------------------------
+ul.uldotli li {
+	list-style-image:url(../images/dot.png);
+	list-style-position: outside;
+	margin: .5em 0em;
+}
+ul.uldotli li a{color: #333;}
 
-#form_login 		{margin: 0px auto; text-align: left; padding: 20px; width: 250px;}
-#form_login label 	{color:#fff; display:block; margin-bottom: 3px!important;}
-
-
-#form_login .registerPassword {
+ul.reflistlx {
+	clear:both;
+	border-bottom: 1px dashed #e7e7e7;
+}
+ul.reflistlx li.authors{
+	margin-top: -10px;
+}
+ul.reflistlx li {
+	list-style: none;
+	margin: .5em .0em;
+	padding: .2em .275em!important;
 	float: left;
 	display: block;
-	color: #ca1961;
-	background-image: url(../images/arrow_pink.png);
-	background-repeat: no-repeat;
-	background-position: 5px -2px;
-	padding: 0px 15px 0px 15px;
+	/*border: 1px dashed #e7e7e7;
+	background-color: #f1f1f1;*/
 }
-#form_login .registerPassword a 					{color: #3a3a3a;text-decoration: none;}
-#form_login .registerPassword a:hover 				{color: #ff70aa;text-decoration: none;}
-#form_login .registerPassword a:visited, a:active 	{color: #3a3a3a;text-decoration: none;}
+ul.reflistlx li:hover, ul.reflistlx li:hover p, ul.reflistlx li:hover a {
+	background-color: #47505b;
+	color: #fff;
+	
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+	
+}
+ul.reflistlx li a {
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */	
+}
+ul.reflistlx li a:hover {
+	color: #fff;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
 
-input:focus			{padding:2px 5px 3px 5px; margin-bottom:10px!important;margin-top:1px!important;}
-input 				{padding:2px 5px 3px 5px; margin-bottom:10px!important;margin-top:1px!important;}
-textarea 			{padding:3px 5px 4px 5px; margin-bottom:10px!important;}
-#button				{padding:2px 5px 3px 5px; margin-bottom:10px!important;}
 
+
+ul.authors {
+	list-style: none;
+}
+ul.authors li {
+	margin: .5em 0em;
+}
+ul.authors li a {
+	color: #0000ff;
+	text-decoration: none;
+}
+ul.authors li a:hover {
+	color: #333;
+	text-decoration: none;
+}
+ul.authors li p {
+	color: #333;
+}
+ul.authors li.authorsTitle {
+	font-weight: bold;
+}
+ul.authors li.authorsDate {
+	color: #999;
+	}
+ul.authors li.authorsNames {
+	font-style: italic;
+	}
+ul.authors li.authorsJournal {
+	font-style: undeline;	
+}
+ul.teamMembers {
+	clear:both;
+	border-bottom: 1px dashed #e7e7e7;
+}
+ul.teamMembers{
+	margin-top: -10px;
+}
+ul.teamMembers li {
+	list-style: none;
+	margin: .5em .5em;
+	padding: .2em .275em!important;
+	float: left;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #f1f1f1;
+	
+}
+ul.teamMembers li:hover, ul.teamMembers li:hover p, ul.teamMembers li:hover a {
+	background-color: #47505b;
+	color: #fff;
+	
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+	
+}
+ul.teamMembers li a {
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */	
+}
+ul.teamMembers li a:hover {
+	color: #fff;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+/*** end of style listing ***/
+
+
+
+
+
+
+-----------------------------------------------------------*/
 /* tables design */
 table									{border-collapse: collapse;}
 tr, td									{padding: 1px 0px;}
