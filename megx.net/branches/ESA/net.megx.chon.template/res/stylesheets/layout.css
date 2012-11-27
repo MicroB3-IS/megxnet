@@ -4,7 +4,7 @@ html, body {
 	padding: 0em;
 	font-size: 1em;
 	min-width: 800px;
-	background-color: #f8f8f8;
+	background-color: #000;
 }
 body {
     font-family: 'Ubuntu', sans-serif;
@@ -33,6 +33,7 @@ header {
 	margin: -1em 0em 0em 0em;
 }
 section {padding: 1.75em;}
+article {width: 49%;}
 article.Box {float: left;}
 aside {float: left;}
 .news {
@@ -60,3 +61,5 @@ footer > section > ul > li {
 	margin: 0em .5em!important;
 	padding: 0;
 }
+/* PADDINGS & MARGINS*/
+.pad10 {margin: 10px;}

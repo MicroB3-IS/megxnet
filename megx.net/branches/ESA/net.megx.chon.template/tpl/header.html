@@ -11,9 +11,9 @@
 		  #end
 		  <span><a href="$ctx.siteUrl/admin/logout.do">logout</a></span>
 		</sub>
-		<h6 class="FR"> Welcome $req.user.name</h6><!-- , role: $req.user.role -->
+		<h6 class="FR"> Welcome $req.user.name</h6>
 	<div class="clear"></div>
-		<sub><span>Last Login: $req.servletRequset.session.getAttribute("userLastLogin")</span></sub> 
+		<sub>Last Login: <span>$req.servletRequset.session.getAttribute("userLastLogin")</span></sub> 
 	#else
 	   #if($this.path != "login")
 		  <h6 class="FR"><a href="$ctx.siteUrl/login">log in</a> </h6>
