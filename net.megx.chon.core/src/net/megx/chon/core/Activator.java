@@ -16,10 +16,11 @@
 package net.megx.chon.core;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import net.megx.chon.core.model.impl.LoginModule;
-import net.megx.chon.core.model.impl.WMS_Module;
 import net.megx.chon.core.model.impl.WOA_Module;
+import net.megx.chon.core.model.impl.WOD_Module;
 import net.megx.chon.core.renderers.ModuleNodeRenderer;
 import net.megx.chon.core.rest.TestRest;
 import net.megx.chon.core.ui.GenomesExtension;
@@ -64,8 +65,16 @@ public class Activator extends ResTplConfiguredActivator {
 		try {
 			ContentModel contentModel = app.createContentModelInstance(getName());
 			
-			registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
+			//moved to mapserver bundle
+			// ---
+			removeType(contentModel, "megx.module.wms");
+			removeNodeIfExists(contentModel, "/www/wms");
+			// ---
+			
+			
+			//registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
 			registerModuleType(contentModel, "megx.module.woa", WOA_Module.class);
+			registerModuleType(contentModel, "megx.module.wod", WOD_Module.class);
 			registerModuleType(contentModel, "megx.module.login", LoginModule.class);
 			
 			//register common renderer for all above
@@ -94,6 +103,14 @@ public class Activator extends ResTplConfiguredActivator {
 		
 		app.regExtension("test_svc", new TestServicesExtension(this.getBundleContext()));
 		app.regExtension("version", new VersioningExtension(this.getBundleContext()));
+	}
+
+	private void removeNodeIfExists(ContentModel contentModel, String path) throws RepositoryException {
+		IContentNode node = contentModel.getContentNode(path);
+		if(node != null) {
+			node.getNode().remove();
+			contentModel.getSession().save();
+		}
 	}
 
 	private void registerModuleType(ContentModel contentModel, String typeName, Class<? extends IContentNode> clz) {

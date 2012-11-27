@@ -1,9 +1,9 @@
 www={type:'sys.public'}
-	gms={type: 'html', template: 'pages/gms.html'}
+	gms={type: 'html', template: 'pages/gms.html', title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type='html', template: 'pages/geographic-blast.html'}
 		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
-			woa.html={type: 'megx.module.woa'}
-	wms={type: 'megx.module.wms'}
+			woa.html={type: 'megx.module.woa', title: ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
+			wod.html={type: 'megx.module.wod', title: ".:: megx.net - GIS tools -- WOD05 Interpolator ::."}
 	feed={type: 'category'}
 		megxnet-news.xml={type:'rss'}
 	genomes={type:'html'}
@@ -84,9 +84,7 @@ etc={type:'sys.etc'}
 		menu.item.external={type:'typeDesc'}
 		
 		unknown={type:'typeDesc'}
-		megx.module.login={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.LoginModule'}
-		megx.module.wms={type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WMS_Module'}
-		megx.module.woa={bubbleToParnet: true, type:'typeDesc', renderer: 'org.chon.megx.net.renderers.ModuleNodeRenderer', contentNode: 'org.chon.megx.net.model.impl.WOA_Module'}
+		
 		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
 		megx.module.login.registration={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.RegisterPageNode'}
 		
