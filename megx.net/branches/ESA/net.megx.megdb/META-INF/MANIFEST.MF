@@ -44,4 +44,10 @@ Export-Package: com.google.gson,
  net.megx.model.esa,
  net.megx.security.auth.model,
  net.megx.security.auth.services;uses:="net.megx.model.auth,net.megx.security.auth.model",
- net.megx.utils;uses:="org.osgi.framework"
+ net.megx.utils;uses:="org.osgi.framework",
+ org.apache.commons.codec,
+ org.apache.commons.codec.binary,
+ org.apache.commons.codec.digest,
+ org.apache.commons.codec.language,
+ org.apache.commons.codec.language.bm,
+ org.apache.commons.codec.net
