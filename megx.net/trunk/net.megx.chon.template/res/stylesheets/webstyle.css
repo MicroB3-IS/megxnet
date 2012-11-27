@@ -1,14 +1,18 @@
 @charset "utf-8";
 /* Author: Petar Gligorovski - Zverx // Graphic & Web Designer // http://zverx.com */
 /* Company: InterWorks // www.interworks.com.mk */
-
-/* Import Google Font */
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
-/* Import css files */
-@import url('global.css');
-@import url('layout.css');
-@import url('nav.css');
-
+/*===================================================================================================================================================== */
+/*=========================================================================================================================================== IMPORTING */
+/*===================================================================================================================================================== */
+/*================================================================================================================================== IMPORT GOOGLE FONT */
+	@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
+/*===================================================================================================================================================== */
+/*============================================================================================================================ IMPORT SUPPORT CSS FILES */
+	@import url('global.css');
+	@import url('layout.css');
+	@import url('nav.css');
+/*===================================================================================================================================================== */
+/*======================================================================================================================================= IDs & CLASSES */
 figure.logo {
 	margin: 0;
 	padding: 30px 0px 0px 30px;	
@@ -26,8 +30,7 @@ figure.logo {
 .header-right a { color: #666; text-decoration: none; }
 .header-right a:hover { color: #333; text-decoration: underline; }
 .header-right a:visited { color: #333; text-decoration: none; }
-.header-right sub {
-	font-size: 12px;
+.header-right sub { font-size: 12px;
 	text-align: right;
 	float: right;
 	margin: .7em 1em!important;
