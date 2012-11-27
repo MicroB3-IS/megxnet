@@ -1,0 +1,163 @@
+/*===================*/
+/*=== Slider Style ===*/
+/*===================*/
+body {
+	font:17px/1.6 Calibri, Tahoma, sans-serif;
+	color:#333;
+}
+.theme-default #slider {
+	margin: 0px auto 0 auto;
+	width: 960px; /* Make sure your images are the same size */
+	height:310px; /* Make sure your images are the same size */
+}
+.theme-pascal.slider-wrapper, .theme-orman.slider-wrapper {
+	margin-top:0px;
+}
+/*====================*/
+/*=== Other Styles ===*/
+/*====================*/
+.clear {
+	clear:both;
+}
+/************************************************************************************************SLIDER************************************************************************************************/
+.iwSlider {
+	position:relative;
+}
+.iwSlider img {
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+/* If an image is wrapped in a link */
+.iwSlider a.iw-imageLink {
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	border:0;
+	padding:0;
+	margin:0;
+	z-index:6;
+	display:none;
+}
+/* The slices and boxes in the Slider */
+.iw-slice {
+	display:block;
+	position:absolute;
+	z-index:5;
+	height:100%;
+}
+.iw-box {
+	display:block;
+	position:absolute;
+	z-index:5;
+}
+/* Caption styles */
+.iw-caption {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	background:#0e4e96;
+	color:#fff;
+	opacity:0.8; /* Overridden by captionOpacity setting */
+	width:100%;
+	z-index:8;
+}
+.iw-caption p {
+	padding:10px;
+	margin:0;
+	font: 1.3em;
+	font-weight: normal;
+	}
+.iw-caption a {
+	display:inline !important;
+}
+.iw-html-caption {
+	display:none;
+}
+/* Direction nav styles (e.g. Next & Prev) */
+.iw-directionNav a {
+	position:absolute;
+	top:45%;
+	z-index:9;
+	cursor:pointer;
+}
+.iw-prevNav {
+	left:0px;
+}
+.iw-nextNav {
+	right:0px;
+}
+/* Control nav styles (e.g. 1,2,3...) */
+.iw-controlNav a {
+	position:relative;
+	z-index:9;
+	cursor:pointer;
+}
+.iw-controlNav a.active {
+	font-weight:bold;
+}
+/***************************************THEME********************************************************/
+.theme-default .iwSlider {
+	position:relative;
+	background:#fff url(../images/loading.gif) no-repeat 50% 50%;
+	margin-bottom:50px;
+	-webkit-box-shadow: 0px 1px 5px 0px #4a4a4a;
+	-moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
+	box-shadow: 0px 1px 5px 0px #4a4a4a;
+}
+.theme-default .iwSlider img {
+	position:absolute;
+	top:0px;
+	left:0px;
+	display:none;
+}
+.theme-default .iwSlider a {
+	border:0;
+	display:block;
+}
+.theme-default .iw-controlNav {
+	position:absolute;
+	left:50%;
+	bottom: 5px;
+	margin-left:-40px; /* Tweak this to center bullets */
+}
+.theme-default .iw-controlNav a {
+	display:block;
+	width:22px;
+	height:22px;
+	background:url(../images/bullets.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+	margin-right:3px;
+	float:left;
+}
+.theme-default .iw-controlNav a.active {
+	background-position:0 -22px;
+}
+.theme-default .iw-directionNav a {
+	display:block;
+	width:30px;
+	height:30px;
+	background:url(../images/arrows.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+}
+.theme-default a.iw-nextNav {
+	background-position:-30px 0;
+	right:15px;
+}
+.theme-default a.iw-prevNav {
+	left:15px;
+}
+.theme-default .iw-caption {
+	font-family: Helvetica, Arial, sans-serif;
+}
+.theme-default .iw-caption a {
+	color:#fff;
+	border-bottom:1px dotted #fff;
+}
+.theme-default .iw-caption a:hover {
+	color:#fff;
+}
