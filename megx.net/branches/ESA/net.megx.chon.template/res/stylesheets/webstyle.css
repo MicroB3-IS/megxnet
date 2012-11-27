@@ -33,6 +33,7 @@ figure.logo {
 	margin: .7em 1em!important;
 	color: #333;
 }
+.header-right h6 {margin: 10px!important;}
 .headerInterior{
 	border-bottom: 1px solid #999;
 	background: url("../images/titleBack.png") repeat;
