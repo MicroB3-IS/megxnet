@@ -7,6 +7,8 @@
  *
  * http://docs.jquery.com/UI/Slider#theming
  */
+/*===================================================================================================================================================== */
+/*============================================================================================================================= DEFINES SLIDER SETTINGS */
 .ui-slider { position: relative; text-align: left; }
 .ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; display: block; border: 0; background-position: 0 0; }
@@ -22,3 +24,4 @@
 .ui-slider-vertical .ui-slider-range { left: 0; width: 100%; }
 .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
 .ui-slider-vertical .ui-slider-range-max { top: 0; }/*
+/*===================================================================================================================================================== */
