@@ -1,4 +1,8 @@
-/* Layout */
+/*===================================================================================================================================================== */
+/*===================================================================================================================================== LAYOUT SETTINGS */
+header, footer, article, section, nav, menu, hgroup {  
+   display: block;  
+} 
 html, body {
 	margin: 0em;
 	padding: 0em;
@@ -61,5 +65,3 @@ footer > section > ul > li {
 	margin: 0em .5em!important;
 	padding: 0;
 }
-/* PADDINGS & MARGINS*/
-.pad10 {margin: 10px;}
