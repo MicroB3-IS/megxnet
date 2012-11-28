@@ -1,18 +1,23 @@
 package net.megx.esa.rest;
 
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import net.megx.esa.rest.util.SampleDeserializer;
@@ -21,6 +26,10 @@ import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -91,7 +100,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}
 	}
 	
-	@Path("photos")
+	/*@Path("photos")
 	@POST
 	public String storePhotos(@FormParam("photos")String photosJson){
 		if(photosJson == null){
@@ -104,6 +113,51 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			return toJSON(result);
 		}catch (Exception e) {
 			return toJSON(handleException(e));
+		}
+	}*/
+	
+	@Path("photos")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@POST
+	public void storePhotos(@Context HttpServletRequest request){
+		
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+		if(isMultipart){
+			FileItemFactory factory = new DiskFileItemFactory();
+
+			// Create a new file upload handler
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			
+			// Parse the request
+			try{
+				List items = upload.parseRequest(request);
+				SamplePhoto photoToSave = new SamplePhoto();
+				
+				Iterator iter = items.iterator();
+				
+				while (iter.hasNext()) {
+				    FileItem item = (FileItem) iter.next();
+
+				    if (!item.isFormField()) {
+				    	byte[] imageData = item.get();
+				    	photoToSave.setData(imageData);
+				    	photoToSave.setMimeType(item.getContentType());
+				    }
+				    else{
+				    	if(item.getFieldName().equalsIgnoreCase("uuid")){
+				    		photoToSave.setUuid(new String(item.get()));
+				    	}
+				    	else if(item.getFieldName().equalsIgnoreCase("path")){
+				    		photoToSave.setPath(new String(item.get()));
+				    	}
+				    }
+				}
+				
+			    List<String> uuids = service.storePhotos(Arrays.asList(photoToSave));
+			}
+			catch(Exception e){
+				
+			}
 		}
 	}
 	
