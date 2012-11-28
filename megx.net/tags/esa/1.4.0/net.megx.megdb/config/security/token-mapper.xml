@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+Copyright 2011 Max Planck Institute for Marine Microbiology 
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.security.auth.services.db.TokenMapper">
+	<resultMap type="Token" id="token_map">
+		<result column="token" property="token"/>
+		<result column="secret" property="secret"/>
+		<result column="verifier" property="verifier"/>
+		<result column="callback_url" property="callbackUrl"/>
+		<result column="consumer_key" property="consumerKey"/>
+		<result column="token_created" property="timestamp"/>
+		<association property="user" select="getUser" column="user_log"/>
+	</resultMap>
+	
+	<resultMap type="User" id="user_map">
+		<result property="login" column="logname"/>
+		<result property="firstName" column="first_name"/>
+		<result property="initials" column="initials"/>
+		<result property="lastName" column="last_name"/>
+		<result property="description" column="description"/>
+		<result property="joinedOn" column="join_date"/>
+		<result property="password" column="pass"/>
+		<result property="disabled" column="disabled"/>
+		<result property="email" column="email"/>
+		<result property="lastlogin" column="lastlogin"/>
+		<result property="external" column="external"/>
+		<result property="provider" column="provider"/>
+		<association property="roles" select="getRolesForUser" column="logname"/>
+	</resultMap>
+	
+	<resultMap type="Role" id="role_map">
+        <result column="label" property="label"/>
+        <result column="description" property="description"/>
+    </resultMap>
+	
+	<sql id="access_tokens_list">
+		token,
+		secret,
+		verifier,
+		callback_url,
+		consumer_key,
+		token_created,
+		user_log
+	</sql>
+	
+	<sql id="user_columns_list">
+		logname, 
+		first_name, 
+		initials, 
+		last_name, 
+		description, 
+		join_date, 
+        pass, 
+        disabled,
+        email,
+        lastlogin,
+        external,
+        provider
+	</sql>
+	
+	<select id="getRolesForUser" resultMap="role_map" parameterType="string">
+		select r.label, r.description from auth.roles r 
+			left join auth.has_roles h on r.label = h.role 
+				where h.user_login=#{logname}
+	</select>
+	
+	<select id="getUser" parameterType="string" resultMap="user_map">
+		select 
+			<include refid="user_columns_list"/>
+  			from auth.users
+  			
+  			where logname=#{user_log}
+	</select>
+	
+	<select id="getToken" resultMap="token_map" parameterType="string">
+		select 
+			<include refid="access_tokens_list"/>
+		 	from auth.access_tokens where token=#{value}
+	</select>
+	
+	<select id="getTokensForUser" resultMap="token_map" parameterType="string">
+		select 
+			<include refid="access_tokens_list"/>
+		 	from auth.access_tokens where user_log=#{value}
+	</select>	
+	
+	<insert id="saveToken" parameterType="Token">
+		insert into auth.access_tokens (token, secret, verifier, callback_url, consumer_key, token_created, user_log)
+						values(#{token}, #{secret}, #{verifier}, #{callbackUrl}, #{consumerKey},#{timestamp},#{user.login})
+	</insert>
+	
+	<delete id="removeToken" parameterType="string">
+		delete from auth.access_tokens where token=#{value}
+	</delete>
+	
+	<delete id="removeTokensBeforeTimestamp" parameterType="long">
+		delete from auth.access_tokens where extract(epoch from token_created)* 1000 &lt; #{timestamp}
+	</delete>
+	
+</mapper>

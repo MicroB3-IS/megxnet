@@ -1,0 +1,3 @@
+#foreach($t in $tagCloudList)
+	<a href="$t.link" style="color:rgb(39,93,173); margin:0.2em; font-size: $t.percent" title="$t.title">$t.name ($t.num)</a>
+#end
