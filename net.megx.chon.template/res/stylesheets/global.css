@@ -1,6 +1,9 @@
-h1,h2,h3,h4,h5,h6, {font-family: 'Ubuntu', sans-serif;}
+/*===================================================================================================================================================== */
+/*===================================================================================================================== DEFINES FONT OF THE APPLICATION */
 p, li, a, blockquote, input, textarea, checkbox, radio, button {font-family: 'Ubuntu', sans-serif; font-weight: normal!important;}
-/*======================================================================================================================================= HEADINGS */
+/*===================================================================================================================================================== */
+/*============================================================================================================================================ HEADINGS */
+h1,h2,h3,h4,h5,h6, {font-family: 'Ubuntu', sans-serif;}
 h1 				{ font-weight: normal; padding: .7em 0em; color: #0e4e96; }	
 h3 				{ font-weight: normal; padding: 0.2em 0em 0em 3em; margin: .7em 0em; color: #0e4e96; }	
 h2,h4,h5,h6		{ font-weight: normal; margin: .7em 0em; color: #00A0FF; }
@@ -57,14 +60,15 @@ dl          		{ margin: 0 0 1.5em 0; }
 dl dt       		{ font-weight: bold; }
 dd          		{ margin-left: 0em; display: inline-block;}
 /*===================================================================================================================================================== */
-/*======================================================================================================================================= LISTS STYLING */
+/*============================================================================================================================= LISTS STYLING WITH DOTS */
 ul.uldotli li {
 	list-style-image:url(../images/dot.png);
 	list-style-position: outside;
 	margin: .5em 0em;
 }
 ul.uldotli li a{color: #333;}
-
+/*===================================================================================================================================================== */
+/*====================================================================================================== LISTS STYLING FOR REFERENCES ON THE ABOUT PAGE */
 ul.reflistlx {
 	clear:both;
 	border-bottom: 1px dashed #e7e7e7;
@@ -101,6 +105,9 @@ ul.reflistlx li a:hover {
 	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
+/*===================================================================================================================================================== */
+/*==================================================================================================== LISTS STYLING FOR REFERENCES ON THE AUTHORS PAGE */
+
 ul.authors {
 	list-style: none;
 }
@@ -130,6 +137,9 @@ ul.authors li.authorsNames {
 ul.authors li.authorsJournal {
 	font-style: undeline;	
 }
+/*===================================================================================================================================================== */
+/*=============================================================================================== LISTS STYLING FOR REFERENCES ON THE TEAM MEMBERS PAGE */
+
 ul.teamMembers {
 	clear:both;
 	border-bottom: 1px dashed #e7e7e7;
@@ -145,7 +155,6 @@ ul.teamMembers li {
 	display: block;
 	border: 1px dashed #e7e7e7;
 	background-color: #f1f1f1;
-	
 }
 ul.teamMembers li:hover, ul.teamMembers li:hover p, ul.teamMembers li:hover a {
 	background-color: #47505b;
@@ -296,8 +305,7 @@ form button.blue {
 form button.blue:hover, form button.blue:focus {
 	color: #ffffff!important;
 	}
-/* End Form Design */
-
+/*===================================================================================================================================================== */
 ::-webkit-input-placeholder {
    color: #999;
 }
@@ -310,15 +318,15 @@ hr {
 	border-top: none;
 	background-color: transparent;
 	clear: both;
-	
 }
-textarea.seq {
-	width: 600px;
-	height: 175px;
-}
+
 /*===================================================================================================================================================== */
 /*================================================================================================================================ CUSTOM IDs & CLASSES */
 #feedback 		{ margin: 0px auto; width: 500px; }
 .small 			{ font-size: 0.75em; }
 .greenColor 	{ color: #093; }
+textarea.seq {
+	width: 600px;
+	height: 175px;
+}
 /*===================================================================================================================================================== */
