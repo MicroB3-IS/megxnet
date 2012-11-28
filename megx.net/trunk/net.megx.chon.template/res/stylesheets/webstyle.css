@@ -15,7 +15,7 @@
 /*======================================================================================================================================= IDs & CLASSES */
 figure.logo {
 	margin: 0;
-	padding: 30px 0px 0px 30px;	
+	padding: 30px 0px 0px 30px;
 	width: 278px;
 	height: 108px;
 	float: left;
@@ -27,17 +27,29 @@ figure.logo {
 	float: right;
 	width: 300px;
 }
-.header-right a { color: #666; text-decoration: none; }
-.header-right a:hover { color: #333; text-decoration: underline; }
-.header-right a:visited { color: #333; text-decoration: none; }
-.header-right sub { font-size: 12px;
+.header-right a {
+	color: #666;
+	text-decoration: none;
+}
+.header-right a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+.header-right a:visited {
+	color: #333;
+	text-decoration: none;
+}
+.header-right sub {
+	font-size: 12px;
 	text-align: right;
 	float: right;
 	margin: .7em 1em!important;
 	color: #333;
 }
-.header-right h6 {margin: 10px!important;}
-.headerInterior{
+.header-right h6 {
+	margin: 10px!important;
+}
+.headerInterior {
 	border-bottom: 1px solid #999;
 	background: url("../images/titleBack.png") repeat;
 	height: 75px;
@@ -79,10 +91,10 @@ figure.logo {
 	float: right;
 	text-align: center;
 	color: #fff;
-	padding: 0em 1em 0em ;	
+	padding: 0em 1em 0em;
 }
 .padRight1dot5 {
-	margin-right: 2em;	
+	margin-right: 2em;
 }
 .lineTopSeparator {
 	border-top: 1px dashed #e7e7e7;
@@ -108,7 +120,8 @@ figure.logo {
 .viewButton {
 	text-align: center;
 	float: right;
-	margin: 0em .5em .4em 0em;;
+	margin: 0em .5em .4em 0em;
+	;
 }
 a.viewButton {
 	padding: .3em .7em;
@@ -124,7 +137,6 @@ a.viewButton:hover {
 	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
-
 .ui-helper-reset {
 	margin-top: 0!important;
 	margin-bottom: 0em!important;
@@ -132,23 +144,28 @@ a.viewButton:hover {
 	margin-right: 0!important;
 }
 .videoScreen {
-	border: 1px solid #e7e7e7; 
+	border: 1px solid #e7e7e7;
 	text-align: center;
 }
-.faqTable {}
-.faqTable td {vertical-align: top; }
-.faqTable tbody tr td a:hover {text-decoration:none!important;}
-.faqTable tbody tr td {padding:10px!important;}
-.contactTable td { background-color: #fff;}
-
+.faqTable {
+}
+.faqTable td {
+	vertical-align: top;
+}
+.faqTable tbody tr td a:hover {
+	text-decoration: none!important;
+}
+.faqTable tbody tr td {
+	padding: 10px!important;
+}
+.contactTable td {
+	background-color: #fff;
+}
 .contentTable tr td {
 	padding: 7px!important;
-
 }
-
 #chicken {
 	background-color: #f7f7f7;
-	
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
@@ -170,7 +187,7 @@ a.viewButton:hover {
 	padding: 7px!important;
 	margin: 5px!important;
 }
-div#samplingSiteLegendImg table > tbody > tr > td{
+div#samplingSiteLegendImg table > tbody > tr > td {
 	padding: 7px!important;
 	margin: 5px!important;
 	-webkit-border-radius: 7px!important;
@@ -182,7 +199,6 @@ div#samplingSiteLegendImg table > tbody > tr > td{
 div#samplingSiteLegendImg table > tbody > tr > td > img {
 	margin: 0px 15px 0px 0px;
 }
-
 table.woaTable {
 	width: 100%;
 }
