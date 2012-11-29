@@ -1,6 +1,5 @@
 package net.megx.esa.rest;
 
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -156,7 +155,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			    List<String> uuids = service.storePhotos(Arrays.asList(photoToSave));
 			}
 			catch(Exception e){
-				
+				log.error(e.getStackTrace());
 			}
 		}
 	}
