@@ -37,6 +37,15 @@
 		<typeAlias type="net.megx.model.Author" alias="Author" />
 		<typeAlias type="net.megx.model.Sample" alias="Sample" />
 		
+		<!-- 
+		  Mixs
+		 -->
+		<typeAlias type="net.megx.model.ws.mixs.ChecklistItemDetails" alias="ChecklistItemDetails"/>
+        <typeAlias type="net.megx.model.ws.mixs.IndependentMetadataItem" alias="IndependentMetadataItem"/>
+        <typeAlias type="net.megx.model.ws.mixs.ExistingChecklists" alias="ExistingChecklists"/>
+        <typeAlias type="net.megx.model.ws.mixs.EnvPackage" alias="EnvPackage"/> 
+		
+		
 		<typeAlias type="net.megx.model.esa.Sample" alias="ESASample"/>
 		<typeAlias type="net.megx.model.esa.SamplePhoto" alias="ESASamplePhoto"/>
 		
@@ -81,5 +90,8 @@
 		<mapper resource="security/token-mapper.xml" />
 		<mapper resource="security/user-mapper.xml" />
 		<mapper resource="security/web-resources-mapper.xml" />
+				
+		<!-- Mixs -->
+		<mapper  resource="mixs/MixsWsMapper_2_1.xml"/>
 	</mappers>
 </configuration>
