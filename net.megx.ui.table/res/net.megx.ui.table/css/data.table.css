@@ -249,10 +249,11 @@ table.display tr.even.gradeU {
 	background-color: #eee;
 }
 
-table.display tbody {
+table.display tbody, table.display tfoot {
 	border-left: solid #ddd 1px;
 	border-right: solid #ddd 1px;
 }
+
 
 table.megx_dataTable tr.highlighted td {
 	background-color: #ddd;
