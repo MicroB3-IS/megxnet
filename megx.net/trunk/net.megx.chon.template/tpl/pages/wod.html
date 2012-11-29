@@ -1,7 +1,87 @@
+<section>
+<h3>.:: WOA05 data interpolation ::.</h3>
+<article class="FL">
+  <form id="woa_extractor" name="woa_extractor" method="get" action=".">
+    <table class="woaTable">
+      <tr>
+        <th width="10%">Latitude:</th>
+        <td width="15%"><input type="text" name="latitude" id="latitude" title="Give the geographic latitude in decimal degrees"	value="$!req.get('latitude')" size="10" maxlength="9"></td>
+        <td width="25%" class="small greenColor">&nbsp; value can be 90.0/-90.0</td>
+      </tr>
+      <tr>
+        <th>Longitude:</th>
+        <td><input type="text" name="longitude" id="longitude" title="Give the geographic longitude in decimal degrees" value="$!req.get('longitude')" size="10" maxlength="10"></td>
+        <td class="small greenColor">&nbsp; 180.0/-180.0</td>
+      </tr>
+      <tr>
+        <th>Depth:</th>
+        <td><input type="text" name="depth" id="depth" title="Give the depth in the water colum for which the environmental parameter should be interpolated" value="$!req.get('depth')" size="10" maxlength="6"></td>
+        <td class="small greenColor">&nbsp; 0.0/5500.0</td>
+      </tr>
+      <tr>
+        <th>Depth:</th>
+        <td><input type="text" name="buffer" id="buffer" title="Give the depth in the water colum for which the environmental parameter should be interpolated" value="$!req.get('buffer')" size="10" maxlength="6"></td>
+        <td class="small greenColor">&nbsp; 0.0/5500.0</td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+        <hr />
+      </tr>
+      <tr>
+        <td colspan="3"><button type="submit" name="submit" id="submit" value="Calculate">Calculate</button></td>
+      </tr>
+    </table>
+  </form>
+</article>
+<article class="FR">
+	## only if some get parameters are present and no validation error occured e.g. message is empty
+	#if (!($message && $message != ""))
+    <table class="woaTableData">
+		#if($list)
+            <table class="InnerBox">
+              <tr>
+                <th> <h6>Latitude: $req.get('latitude') / Longitude: $req.get('longitude') / Depth: $req.get('depth') m / Buffer:  $req.get('buffer') </h6>
+                  <hr>
+                  <table width="100%">
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Unit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                    #foreach($v in $list)
+                    <tr>
+                      <td>$v.buffer</td>
+                    </tr>
+                    #end
+                    <tr>
+                      <td colspan="3"><a href="$downLink"> Download results as Excel compatible comma separated file (csv). </a></td>
+                    </tr>
+                      </tbody>
+                  </table>
+      <hr>
+      <p><strong style="color: red">Warnings:</strong>
+      
+      <ol>
+        <li>The following values are water physico-chemical parameters - not applicable to sediment samples.</li>
+        <li>Some coastal samples might have currently no available data.</li>
+        <!--					<li>Values for chlorophyll are only measured at the <strong>ocean--> 
+        <!--					surface</strong> and extracted from SeaWiFS data.</li>-->
+      </ol>
+      </p>
 
-
-<div id="content_area"><!-- <div id="accessories" ><a href="."><img src="/portal/img/printer.png" title="Printer Friendly"/></a>  </div> -->
-NOT IMPLEMENTED: TODO... see php code....
-
-
-</div>
+#end
+    </th>
+  </tr>
+</table>
+#else
+  
+  <article>$!message</article>
+  #end
+  <div class="clear"></div>
+</article>
+<div class="clear"></div>
+</section>
