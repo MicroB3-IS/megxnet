@@ -1,4 +1,4 @@
-package net.megx.security.filter.ui;
+package net.megx.ws.core;
 
 import java.util.HashMap;
 import java.util.HashSet;

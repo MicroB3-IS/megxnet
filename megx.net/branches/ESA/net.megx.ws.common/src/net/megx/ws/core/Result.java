@@ -1,4 +1,4 @@
-package net.megx.security.filter.ui;
+package net.megx.ws.core;
 
 public class Result<T> {
 	private boolean error;
