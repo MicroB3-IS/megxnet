@@ -1,0 +1,111 @@
+#parse("net.megx.ui.table/demo/demo.css.html")
+<div style="padding: 8px">
+	<div style="padding: 16px">
+	<div style="width: 400px; float: left;">
+		<h1> UI Table Demo </h1>
+		<h5> Server Side Processing </h5>
+		<div class="description">
+		Example data is pulled from the server
+		page by page. Client request is made for each
+		page and for each filtering and sorting on data.
+		  
+		<div>
+			JSON data structure from and to server,
+			can be found in java code in:
+			<div>
+			net.megx.ui.table.json.TableDataRequest
+			</div>
+			<div>
+			net.megx.ui.table.json.TableDataResponsee&lt;T&gt;
+			</div>
+		</div> 
+		</div>
+	</div>
+	<div style="width: 400px; float: right;">
+		<div>Code:</div>
+			<div class="code_ct">
+<pre class="code">
+#include("net.megx.ui.table/demo/server/demo2.script.html")
+</pre>
+			</div>
+	</div>
+	<div style="clear: both;"></div>
+	</div>
+<div>
+#parse("net.megx.ui.table/demo/demo-header.html")
+	<div style="padding: 8px">
+#parse("net.megx.ui.table/demo/server/demo2.script.html")
+	</div>
+</div>
+
+
+	<div style="padding: 20px;">
+	
+	<div>
+		Rest service definition:
+		<div>See: net.megx.ui.table.demo.TableRestService</div>
+
+		<pre class="code">
+/**
+ * Sample table rest that returns only a page of data to client
+ * Processing (pagination, filter) is done on server
+ * 
+ * @param data
+ * @return
+ */
+@GET
+@Path("table-2")
+@Produces("application/json")
+public String table2(@QueryParam("data") String data) {
+	TableDataRequest req = gson.fromJson(data, TableDataRequest.class);
+	List&lt;MyData&gt; allRows = MyDataProvider.getDataRows();
+	List&lt;MyData&gt; filtered = filter(allRows, req.getsSearch());
+	List&lt;MyData&gt; list = sublist(filtered, req.getiDisplayStart(), req.getiDisplayLength()); 
+	
+	TableDataResponse&lt;MyData&gt; resp = new TableDataResponse&lt;MyData&gt;();
+	resp.setiTotalRecords(allRows.size());
+	resp.setiTotalDisplayRecords(filtered.size());
+	resp.setData(list);
+	resp.setsEcho(Integer.valueOf(req.getsEcho()).toString());
+	return gson.toJson(resp);
+}
+		</pre>
+	</div>	
+	
+	<div>Request (sent from client): </div>		
+				<pre class="code">
+	public class TableDataRequest {
+		private Integer iDisplayStart;
+		private Integer iDisplayLength;
+		private Integer iColumns;
+		private String sSearch;
+		private Boolean bRegex;
+		private Boolean[] bSearchableArr;
+		private String[] sSearchArr;
+		private Boolean[] bRegexArr;
+		private Boolean[] bSortableArr;
+		private Integer iSortingCols;
+		private Integer[] iSortColArr;
+		private String[] sSortDirArr;
+		private String[] mDataPropArr;
+		private String sColumns;
+		private String sEcho;
+		
+	..... getters and setters ......
+				</pre>
+				
+	<div>Response (that rest service should return): </div>		
+				<pre class="code">
+	public class TableDataResponse&lt;T&gt; {
+		private Integer iTotalRecords;
+		private Integer iTotalDisplayRecords;
+		private String sEcho;
+		private String sColumns;
+	
+		private List&lt;T&gt; data;
+		
+	..... getters and setters ......
+				</pre>
+	</div>
+
+</div>
