@@ -62,6 +62,9 @@
 		<!-- WebDAV module -->
 		<module>net.megx.was.webdav</module>
 		
+		<module>net.megx.content.imp.exp</module>
+		<module>net.megx.ui.table</module>
+		
 		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
 		<!-- what bundles will be included in the final build -->
 		<module>net.megx.product</module>
