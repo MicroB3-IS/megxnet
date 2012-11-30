@@ -32,6 +32,14 @@
 		{
 			name: 'net.megx.security.auth.services.WebResourcesService',
 			class: 'net.megx.security.auth.services.db.DBWebResourcesService'
+		},
+		{
+		    name: 'net.megx.megdb.mixs.MixsWsDao',
+		    class: 'net.megx.megdb.mixs.impl.MixsWsDaoImpl'
+		},
+		{
+			name: 'net.megx.megdb.esa.EarthSamplingAppService',
+			class: 'net.megx.megdb.esa.impl.DBEarthSamplingAppService'
 		}
 	]
 }
