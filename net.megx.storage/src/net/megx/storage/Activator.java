@@ -1,6 +1,5 @@
-package net.megx.storage.osgi;
+package net.megx.storage;
 
-import net.megx.storage.StorageSessionProvider;
 import net.megx.storage.impl.BaseSessionProvider;
 
 import org.apache.commons.logging.Log;
