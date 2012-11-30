@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: My Plugin
 Bundle-SymbolicName: net.megx.storage
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: net.megx.storage.osgi.Activator
+Bundle-Activator: net.megx.storage.Activator
 Import-Package: javax.jcr;version="2.0.0",
  javax.jcr.lock;version="2.0.0",
  javax.jcr.nodetype;version="2.0.0",
