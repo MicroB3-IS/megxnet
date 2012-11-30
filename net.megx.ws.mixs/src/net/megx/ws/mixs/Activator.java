@@ -42,5 +42,5 @@ public class Activator extends ResTplConfiguredActivator {
 	protected String getName() {
 		return "net.megx.ws.mixs";
 	}
-	
+		
 }
