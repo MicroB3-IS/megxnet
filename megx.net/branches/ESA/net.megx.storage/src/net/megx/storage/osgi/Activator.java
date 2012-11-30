@@ -1,5 +1,6 @@
-package net.megx.storage;
+package net.megx.storage.osgi;
 
+import net.megx.storage.StorageSessionProvider;
 import net.megx.storage.impl.BaseSessionProvider;
 
 import org.apache.commons.logging.Log;
@@ -37,7 +38,8 @@ public class Activator extends ResTplConfiguredActivator {
 		log.debug("Building session provider...");
 		if(getConfig() == null){
 			log.error("The configuration is not available. Storage service will not start!");
-			throw new BundleException("The bundle configuration is not available");
+			//throw new BundleException("The bundle configuration is not available");
+			return;
 		}
 		JSONObject spConfig = getConfig().optJSONObject("sessionProvider");
 		if(spConfig == null){
