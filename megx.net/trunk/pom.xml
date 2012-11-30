@@ -59,6 +59,20 @@
 		<!-- build megx.net apps manager -->
 		<module>net.megx.apps-manager</module>
 		
+		<!-- Storage Service bundle -->
+		<module>net.megx.storage</module>
+		
+		<!-- REST Services -->
+		<!-- Common services utilities -->
+		<module>net.megx.ws.common</module>
+		
+		<!-- Genome Services -->
+		<module>net.megx.ws.genome-services</module>
+		<!-- Mixs -->
+		<module>net.megx.ws.mixs</module>
+		<!-- SeqCD -->
+		<module>net.megx.ws.seqcd</module>
+		
 		<!-- WebDAV module -->
 		<module>net.megx.was.webdav</module>
 		
@@ -72,6 +86,9 @@
 		<!-- does not need to be build always: TODO configure the setup.proporteis 
 			according to build -->
 		<module>megx.net-web</module>
+		
+		<!-- Earth Sampling App -->
+		<module>net.megx.esa</module>
 	</modules>
 
 	<dependencyManagement>
