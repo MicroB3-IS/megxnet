@@ -211,3 +211,36 @@ table.woaTable select {
 table.woaTableData {
 	width: 50%;
 }
+.step {
+	clear: left;width: 100%; height:400px; display: block;
+	-khtml-border-radius: 3px; -moz-border-radius: 3px; -opera-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+}
+.step label { display: block; margin: 10px 0 3px 7px; }
+.step legend { padding: 0 2px 3px 2px; font-weight: normal; margin: .7em 0em; color: #00A0FF; font-size: 17px; }
+.step input, .step textarea, .step select { border: 1px solid #AAA; margin-left: 7px; }
+
+.stepy-titles { list-style: none; margin: 0; padding: 0; width: 100%; }
+.stepy-titles li { list-style: none;
+	margin: .5em .5em;
+	padding: 1em 2em!important;
+	float: left;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #ccc;
+	color: #333;
+	}
+.stepy-titles li span { font: 11px verdana; display: block; }
+.stepy-titles .current-step { background-color: #00A0FF;
+	color: #fff; cursor: auto; }
+	
+.default-buttons {width: 250px; float:right;}
+	.button-next, .button-back {
+	list-style: none;
+	margin: 1em;
+	padding: .25em 2em!important;
+	float: left;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #00A0FF;
+	color: #fff;
+	}
