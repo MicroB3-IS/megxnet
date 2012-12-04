@@ -9,9 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Date;
 import java.util.Map;
 
@@ -114,16 +111,17 @@ public class FileAccess extends BaseAccessMechanism{
 	@Override
 	public URI copy(URI uri, URI toURI) throws StorageSecuirtyException,
 			ResourceAccessException {
-		URI srcUri = doResolve(uri);
-		URI destUri = doResolve(toURI);
-		Path src = FileSystems.getDefault().getPath(srcUri.getPath());
-		Path dest = FileSystems.getDefault().getPath(destUri.getPath());
-		try {
-			Files.copy(src, dest);
-		} catch (IOException e) {
-			throw new ResourceAccessException(e);
-		}
-		return destUri;
+//		URI srcUri = doResolve(uri);
+//		URI destUri = doResolve(toURI);
+//		Path src = FileSystems.getDefault().getPath(srcUri.getPath());
+//		Path dest = FileSystems.getDefault().getPath(destUri.getPath());
+//		try {
+//			Files.copy(src, dest);
+//		} catch (IOException e) {
+//			throw new ResourceAccessException(e);
+//		}
+//		return destUri;
+		throw new ResourceAccessException("Not implemented!");
 	}
 
 	@Override
