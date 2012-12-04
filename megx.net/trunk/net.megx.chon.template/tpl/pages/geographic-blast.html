@@ -1,81 +1,31 @@
-<!--section>
-  <noscript>
-  <p style="color: #900;"><b>To get the full functionality please activate javascript in your browser!</b></p>
-  </noscript>
-  <h3>Geographic-BLAST</h3>
-  <hr style="clear:both;">
-  <div style="float:right;"> <img src="$ctx.siteUrl/gms-res/images/earth_01.gif" alt="earth picture"/> </div>
-  <form method="POST" name="geoblast_form" action="submit" enctype="multipart/form-data" class="blastRadioButton">
-    <h5>1. Enter your sequence (unformatted or in fasta format)</h5>
-    <textarea name="seq" class="seq">MNFRNVRNLVWVMAVAWMSVACNSSMASEQPNFLVILADDLGFSDPGCYGGEIATPNLDA
-LAAGGLRYTQFYNTARCWPTRAAVMTGYYPQQVRRDSMPGATRQYGGGGKRPDWAQTLAE
-YLRPAGYRTYHSGKWHIDGKPTDNGFDLSDEATRSPGFFDSIRKKNRDPKFYRTTATAQH
-AIDCLQEHAEEHADQPFFHFLAFHAPHFPLHALPEDIERYRDRYFAGWDALREERKHRQR
-ELGMDVGPLSPIEQEVGPPYAFPDQIEVLGEGEITRPLPWDELTKEKQQFQATKMAIHAA
-MVDRMDQEIGRVLAQLKEMGQFENTWICFLSDNGASAEIMVRGEGHDPSASPGSAATYLC
-LGPGFSSAANTPFRRHKTWVHEGGISTPFIVHWPEGIRSKNELRTNPGHAIDIAPTVLDL
-ARVELDETAGPPMSGQSLKPSFDDSDATIHDELWFYHEGNWALRQGDWKIIHSNISRPFP
-WLRSETAANESKEDGDWQLYHLANDRAEQNDVADKHPERVQQMADRWWELRDQFLRDSMD
-GSNPSKRAN</textarea>
-    <button type="button" id="blast_button" value="Clear" onclick="document.geoblast_form.elements['seq'].value=''">Clear</button>
-    <hr style="clear:both;">
-	<p>Or choose a FASTA File: <input type="file" name="fasta" size="50" id="fasta"/> </p>
-    <p>Note: Only one sequence no longer than 5000 characters per search possible.</p>
-    <hr style="clear:both;">
-    <div style="float:right;"> <img src="$ctx.siteUrl/gms-res/images/earth_02.gif" alt="earth picture"/> </div>
-    <h5>2. Select</span> your database</h5>
-    <p><em>Click on the database name to learn about its content.</em></p>
-    <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#prokes"> Prokaryotic Genomes</a> (blastp)<span><input type="radio" name="blastDb" value="genomes" checked="checked" /></span></label>
-    <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#gos"> Global Ocean Sampling Metagenomes</a> (blastn)<input type="radio" name="blastDb" value="gos" /></label>
-    <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#ssu"> 16S/18S rRNA</a> (blastn)<input type="radio" name="blastDb" value="silva_ssu" /></label>
-    <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#lsu"> 23S/28S rRNA</a> (blastn)<input type="radio" name="blastDb" value="silva_lsu" /></label>
-    <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen"> Marine Phage Genomes</a> (blastp)<input type="radio" name="blastDb" value="marine_phages" /></label>
-    <hr style="clear:both;">
-    <div style="float:right;"> <img src="$ctx.siteUrl/gms-res/images/earth_03.gif" alt="earth picture"/> </div>
-    <h5> 3.Select BLAST options</h5>
-    <!--<p>Low Complexity Filter</p>--> 
-    <!--	<input type="radio" name="lcfilter" value="T" checked="checked"> ON--> 
-    <!--	<input type="radio" name="lcfilter" value="F"> OFF</p>--> 
-    <!--E-value-cutoff
-    <input type="text" name="evalue_cutoff" size="10" maxlength="10" value="5E-10"/>
-    <input type="hidden" id="msid" name="msid" value="556abbade8e942d3bb78ce8716c73dc0">
-    <hr style="clear:both;">
-      <button class="blue" id="blast_button" value="BLAST">BLAST</button>
-  </form>
-<section-->
 <section>
 <noscript>
 <p style="color: #900;"><b>To get the full functionality please activate javascript in your browser!</b></p>
 </noscript>
+
 <h3>Geographic-BLAST</h3>
 <hr style="clear:both;">
 <div id="content">
-  <form method="POST" name="geoblast_form" action="submit" enctype="multipart/form-data" class="blastRadioButton" id="default">
-  <fieldset name="Step 1" title="Step 1" id="Step 1">
-	<div style="float:right;"> <img src="$ctx.siteUrl/gms-res/images/earth_01.gif" alt="earth picture"/> </div>
-		<legend>1. Enter your sequence (unformatted or in fasta format)</legend>
-		<textarea name="seq" class="seq">MNFRNVRNLVWVMAVAWMSVACNSSMASEQPNFLVILADDLGFSDPGCYGGEIATPNLDA
-		LAAGGLRYTQFYNTARCWPTRAAVMTGYYPQQVRRDSMPGATRQYGGGGKRPDWAQTLAE
-		YLRPAGYRTYHSGKWHIDGKPTDNGFDLSDEATRSPGFFDSIRKKNRDPKFYRTTATAQH
-		AIDCLQEHAEEHADQPFFHFLAFHAPHFPLHALPEDIERYRDRYFAGWDALREERKHRQR
-		ELGMDVGPLSPIEQEVGPPYAFPDQIEVLGEGEITRPLPWDELTKEKQQFQATKMAIHAA
-		MVDRMDQEIGRVLAQLKEMGQFENTWICFLSDNGASAEIMVRGEGHDPSASPGSAATYLC
-		LGPGFSSAANTPFRRHKTWVHEGGISTPFIVHWPEGIRSKNELRTNPGHAIDIAPTVLDL
-		ARVELDETAGPPMSGQSLKPSFDDSDATIHDELWFYHEGNWALRQGDWKIIHSNISRPFP
-		WLRSETAANESKEDGDWQLYHLANDRAEQNDVADKHPERVQQMADRWWELRDQFLRDSMD
-		GSNPSKRAN</textarea>
+  <form method="POST" name="geoblast_form" action="submit" enctype="multipart/form-data" class="blastRadioButton" id="geoblast_form_id">
+  	<fieldset title="Step 1">
+		<legend>Enter your sequence (unformatted or in fasta format)</legend>
+  	<div class="wiz_ct">
+		<div class="globus"> <img src="$ctx.siteUrl/gms-res/images/earth_01.gif" alt="earth picture"/> </div>
+		<textarea name="seq" class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
 		<button type="button" id="blast_button" value="Clear" onclick="document.geoblast_form.elements['seq'].value=''">Clear</button>
 		<p>Or choose a FASTA File:
 			<input type="file" name="fasta" size="50" id="fasta"/>
 		</p>
 		<p>Note: Only one sequence no longer than 5000 characters per search possible.</p>
 		<hr style="clear:both;">
+	</div>
     </fieldset>
-    <hr style="clear:both;">
+    
 	<fieldset title="Step 2">
-      <legend>2. Select</span> your database</legend>
+      <legend> Select your database </legend>
+      <div class="wiz_ct">
+      <div class="globus"> <img src="$ctx.siteUrl/gms-res/images/earth_02.gif" alt="earth picture"/> </div>
       <p><em>Click on the database name to learn about its content.</em></p>
-      <div style="float:right;"> <img src="$ctx.siteUrl/gms-res/images/earth_03.gif" alt="earth picture"/> </div>
 	  <label><a class="about" href="$ctx.siteUrl/portal/content/content.html#prokes"> Prokaryotic Genomes</a> (blastp)<span>
         <input type="radio" name="blastDb" value="genomes" checked="checked" />
         </span></label>
@@ -92,22 +42,25 @@ GSNPSKRAN</textarea>
         <input type="radio" name="blastDb" value="marine_phages" />
       </label>
       <hr style="clear:both;">
-      
+      </div>
     </fieldset>
     
 	<fieldset title="Step 3">
-      <legend> 3.Select BLAST options</legend>
+      <legend> BLAST options</legend>
+      <div class="wiz_ct">
+      <div class="globus"> <img src="$ctx.siteUrl/gms-res/images/earth_03.gif" alt="earth picture"/> </div>
       E-value-cutoff
       <input type="text" name="evalue_cutoff" size="10" maxlength="10" value="5E-10"/>
       <input type="hidden" id="msid" name="msid" value="556abbade8e942d3bb78ce8716c73dc0">
       <hr style="clear:both;">
-	  <button class="finish blue" id="blast_button" value="BLAST">BLAST</button>
+      </div>
     </fieldset>
+    <input type="submit" class="finish" id="" value="BLAST" style="width: 250px; float: right;"/>
   </form>
   	<script type="text/javascript">
 			$(function() {
-				$('#default').stepy();
+				$('#geoblast_form_id').stepy();
 			});
 		</script>
 </div>
-<section>
+</section>
