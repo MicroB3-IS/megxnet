@@ -233,14 +233,46 @@ table.woaTableData {
 .stepy-titles .current-step { background-color: #00A0FF;
 	color: #fff; cursor: auto; }
 	
-.default-buttons {width: 250px; float:right;}
-	.button-next, .button-back {
-	list-style: none;
-	margin: 1em;
-	padding: .25em 2em!important;
+.default-buttons {
+	width: 250px;
+	float: right;
+}
+
+.button-next,.button-back {
+	position: relative;
 	float: left;
+	list-style: none;
+	padding: .25em 2em !important;
+	width: 150px;
 	display: block;
 	border: 1px dashed #e7e7e7;
 	background-color: #00A0FF;
 	color: #fff;
-	}
+}
+
+.button-back {
+	top: 0px;
+	left: 200px;
+}
+
+.button-next {
+	top: 0px;
+	left: 300px;
+}
+
+.geoblast_form_id-buttons {
+	text-align: center;
+}
+
+#geoblast_form_id-titles li {
+	width: 200px;
+	height: 40px;
+}
+
+#geoblast_form_id .wiz_ct {
+	height: 350px;
+}
+.globus {
+	float: right;
+	vertical-align: top;
+}
