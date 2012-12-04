@@ -48,7 +48,7 @@
 <body>
 	<div id="wrapper">
 		<header>#parse('header.html')</header>
-		#if($req.user && $req.user.role>=10)
+		#if($req.servletRequset.isUserInRole("cmsAdmin"))
 			<div style="position: absolute; top: 10px; left: 10px;">
 				<a href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit this node</a>
 			</div>
