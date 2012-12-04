@@ -9,24 +9,22 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import net.megx.ui.table.json.TableDataRequest;
 import net.megx.ui.table.json.TableDataResponse;
-
-import com.google.gson.Gson;
+import net.megx.ws.core.BaseRestService;
 
 @Path("ui.table.demo")
-public class TableRestService {
-	
-	private Gson gson = new Gson();
+public class TableRestService extends BaseRestService {
 	
 	@GET
 	@Path("ping")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String ping() {
 		Map<String, String> json = new HashMap<String, String>();
 		json.put("ping", "pong");
-		return gson.toJson(json);
+		return toJSON(json);
 	}
 	
 	/**
@@ -36,12 +34,12 @@ public class TableRestService {
 	 */
 	@GET
 	@Path("table-1")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String table1() {
 		List<MyData> allRows = MyDataProvider.getDataRows();
 		TableDataResponse<MyData> resp = new TableDataResponse<MyData>();
 		resp.setData(allRows);
-		return gson.toJson(resp);
+		return toJSON(resp);
 	}
 	
 	/**
@@ -53,9 +51,9 @@ public class TableRestService {
 	 */
 	@GET
 	@Path("table-2")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String table2(@QueryParam("data") String data) {
-		TableDataRequest req = gson.fromJson(data, TableDataRequest.class);
+		TableDataRequest req = fromJSON(data, TableDataRequest.class);
 		List<MyData> allRows = MyDataProvider.getDataRows();
 		List<MyData> filtered = filter(allRows, req.getsSearch());
 		List<MyData> list = sublist(filtered, req.getiDisplayStart(), req.getiDisplayLength()); 
@@ -65,7 +63,7 @@ public class TableRestService {
 		resp.setiTotalDisplayRecords(filtered.size());
 		resp.setData(list);
 		resp.setsEcho(Integer.valueOf(req.getsEcho()).toString());
-		return gson.toJson(resp);
+		return toJSON(resp);
 	}
 
 	private List<MyData> sublist(List<MyData> list,
@@ -92,12 +90,12 @@ public class TableRestService {
 	
 	@GET
 	@Path("table-countries")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String tableCountries() {
 		List<Country> allRows = CountriesData.getCountries();
 		TableDataResponse<Country> resp = new TableDataResponse<Country>();
 		resp.setData(allRows);
-		return gson.toJson(resp);
+		return toJSON(resp);
 	}
 	
 }

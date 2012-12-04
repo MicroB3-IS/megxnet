@@ -4,8 +4,7 @@ Bundle-Name: My Plugin
 Bundle-SymbolicName: net.megx.ui.table
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.ui.table.Activator
-Import-Package: com.google.gson,
- javax.jcr;version="2.0.0",
+Import-Package: javax.jcr;version="2.0.0",
  javax.jcr.lock;version="2.0.0",
  javax.jcr.nodetype;version="2.0.0",
  javax.jcr.observation;version="2.0.0",
@@ -26,4 +25,6 @@ Require-Bundle: org.chon.cms.content;bundle-version="1.0.0",
  org.chon.core.common;bundle-version="1.0.1",
  org.chon.core.utils;bundle-version="1.1.0",
  org.chon.web;bundle-version="1.0.2",
- org.choncms.chon-rest-libs;bundle-version="1.0.0"
+ org.choncms.chon-rest-libs;bundle-version="1.0.0",
+ net.megx.ws.common;bundle-version="1.0.0"
+Export-Package: net.megx.ui.table.json
