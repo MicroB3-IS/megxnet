@@ -20,7 +20,7 @@
 		@import url('$ctx.siteUrl/stylesheets/jqueryCustom.css');
 		@import url('$ctx.siteUrl/stylesheets/iw-slider.css');
 		@import url("$ctx.siteUrl/stylesheets/webstyle.css");
-		@import url('$ctx.siteUrl/stylesheets/menuSide.css');
+		
 	</style>
 	<!-- END INCLUDING STYLES -->
 	#foreach($css in $ctx.get('head:css'))
@@ -38,6 +38,8 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 	
+	<script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.js"></script>
+	<script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
 	
     #foreach($script in $ctx.get('head:scripts'))
     <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
