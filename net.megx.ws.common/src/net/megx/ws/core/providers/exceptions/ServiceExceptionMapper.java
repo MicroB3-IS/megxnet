@@ -62,11 +62,11 @@ public class ServiceExceptionMapper implements ExceptionMapper<WebApplicationExc
 	private static final String STATUS_CODES_MAPPINGS_LOCATION = "com/iw/megx/ws/resources/httpStatusCodes.properties";
 	static{
 		properties = new Properties();
-		try {
-			properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(STATUS_CODES_MAPPINGS_LOCATION));
-		} catch (IOException e) {
-			log.error(e);
-		}
+		//try {
+		//	properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(STATUS_CODES_MAPPINGS_LOCATION));
+		//} catch (IOException e) {
+		//	log.error(e);
+		//}
 	}
 	
 	private static String getDescriptionForStatusCode(int status){
