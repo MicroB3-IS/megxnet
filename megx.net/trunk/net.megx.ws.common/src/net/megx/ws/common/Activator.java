@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.megx.ws.core.providers.csv.SimpleCSVProvider.SimpleCSVProvider_App_CSV;
 import net.megx.ws.core.providers.csv.SimpleCSVProvider.SimpleCSVProvider_Text_CSV;
+import net.megx.ws.core.providers.exceptions.ServiceExceptionMapper;
 import net.megx.ws.core.providers.html.VelocityHTMLProvider;
 import net.megx.ws.core.providers.txt.AbstractPlainTextProvider.SimplePlainTextProvider;
 
@@ -54,6 +55,7 @@ public class Activator extends ResTplConfiguredActivator {
 		exposedProviders.add(SimpleCSVProvider_App_CSV.class);
 		exposedProviders.add(SimpleCSVProvider_Text_CSV.class);
 		exposedProviders.add(SimplePlainTextProvider.class);
+		exposedProviders.add(ServiceExceptionMapper.class);
 	}
 
 	private void doTest(){
