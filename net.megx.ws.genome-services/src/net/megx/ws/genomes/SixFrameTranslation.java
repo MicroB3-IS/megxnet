@@ -125,7 +125,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 				throw new IllegalArgumentException("Invalid frame: " + frame);
 		}
 		
-		StoredResource input = getAccess().getResource(user, inputFile);
+		StoredResource input = getAccess().getResourceJCR(user, inputFile);
 		String fastaHeader = null;
 		StringBuffer sequence = new StringBuffer();
 		String line = null;
@@ -142,7 +142,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 					doTranslate(frames, fastaHeader, sequence.toString().getBytes(), 
 							output, includeOriginalFASTA, lineSize);
 					sequence = new StringBuffer();
-					fastaHeader = null;
+					
 				}
 			}else if(!"".equals(line)){
 				sequence.append(line);
@@ -159,7 +159,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 	public void sixFrameTranslate(String user, int [] frames, String inputFile, 
 			String outputFile, boolean includeOriginalFASTA, int lineSize) throws RepositoryException, 
 			URISyntaxException, StorageException, IllegalArgumentException, IOException{
-		StoredResource outFile = getAccess().createNewResource(user, outputFile);
+		StoredResource outFile = getAccess().createNewResourceJCR(user, outputFile);
 		OutputStream out = outFile.write();
 		sixFrameTranslate(user, frames, inputFile, out, includeOriginalFASTA, lineSize);
 		out.close();
@@ -194,70 +194,10 @@ public class SixFrameTranslation extends BaseGenomeService{
 		out.write(NEW_LINE.getBytes());
 		lineSize = lineSize > 0 ? lineSize : writeSize;
 		for(int i = 0; i < bytes.length; i+=lineSize){
-			out.write(bytes, i, lineSize);
+			out.write(bytes, i, (i+lineSize) < bytes.length ? lineSize : bytes.length-i-1);
 			out.write(NEW_LINE.getBytes());
 		}
+		out.write(NEW_LINE.getBytes());
 		out.flush();
 	}
-
-	public static void main(String[] args) {
-		String NUC = 
-				"ACCATAGATACTGACTGTACTGACGTACCATAGATACTGACTGTACTGACGTA" +
-				"CCATAGATATAGATACTGACTGTACTGACGTACCATAGATACTGACTGTACTG" +
-				"ACGTACCATAGATACTCATAGATACTGACTGTACTGACGTACCATAGATACTG" +
-				"ACTGTACTGACGTACCATAGATACTGACGACTGTATGTACTGACGT";
-		String REV = new StringBuffer(NUC).reverse().toString();
-		
-		byte [] out = new byte[NUC.length()/3+1];
-		SixFrameTranslation st = new SixFrameTranslation(null);
-		
-		st.translate(NUC.getBytes(), 0, NUC.length(), out);
-		System.out.println(new String(out));
-		System.out.println("------------------------");
-		
-		st.translate(REV.getBytes(), 0, REV.length(), out);
-		System.out.println(new String(out));
-		System.out.println("------------------------");
-		
-		st.translateReverseFrame(NUC.getBytes(), 0, NUC.length(), out);
-		System.out.println(new String(out));
-	}
-	
-	
-	/*
-	public static void main(String[] args) {
-		SixFrameTranslation sft = new SixFrameTranslation(null);
-		int IN_SIZE = 384*1024;
-		int OUT_SIZE = IN_SIZE/3;
-		byte [] input = new byte [IN_SIZE]; // 12KiB
-		byte [] output = new byte[OUT_SIZE];
-		char [] NUC = {'A','C','T','G'};
-		
-		
-		Random r = new Random();
-		for(int i = 0; i < IN_SIZE; i++){
-			input[i] = (byte)NUC[Math.abs(r.nextInt())%4];
-		}
-		
-		int ITERATIONS = 1000;
-		
-		long start = System.currentTimeMillis();
-		for(int i = 0; i < ITERATIONS; i++){
-			sft.translate(input,0, input.length, output);
-		}
-		long end = System.currentTimeMillis();
-		
-		long diff = end-start;
-		double est = IN_SIZE*ITERATIONS/((double)diff);
-		System.out.println("-------");
-		System.out.println(Integer.MAX_VALUE);
-		System.out.println(String.format("%x",Long.MAX_VALUE));
-		System.out.println("-------");
-		System.out.println(est + "Bps");
-		long TOTAL_SIZE = 1024L*1024L*1024L*1024L;
-		double totalSecs = TOTAL_SIZE/est;
-		System.out.println(totalSecs);
-		System.out.println((totalSecs/86400));
-	}
-	*/
 }
