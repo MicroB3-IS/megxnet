@@ -40,6 +40,10 @@
 		{
 			name: 'net.megx.megdb.esa.EarthSamplingAppService',
 			class: 'net.megx.megdb.esa.impl.DBEarthSamplingAppService'
+		},
+		{
+			name: 'net.megx.megdb.wod05.Wod05Service',
+			class: 'net.megx.megdb.wod05.impl.DBWod05Service'
 		}
 	]
 }

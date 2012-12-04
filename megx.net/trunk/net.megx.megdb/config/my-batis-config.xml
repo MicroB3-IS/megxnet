@@ -90,8 +90,11 @@
 		<mapper resource="security/token-mapper.xml" />
 		<mapper resource="security/user-mapper.xml" />
 		<mapper resource="security/web-resources-mapper.xml" />
-				
+		
 		<!-- Mixs -->
 		<mapper  resource="mixs/MixsWsMapper_2_1.xml"/>
+		
+		<!-- wod05 -->
+		<mapper resource="wod05/wod05-mapper.xml" />
 	</mappers>
 </configuration>
