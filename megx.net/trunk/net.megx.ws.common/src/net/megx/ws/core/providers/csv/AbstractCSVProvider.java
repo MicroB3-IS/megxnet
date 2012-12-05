@@ -26,6 +26,7 @@ import java.lang.reflect.Type;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 
@@ -51,6 +52,12 @@ public abstract class AbstractCSVProvider implements
 	
 	public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations,
 			MediaType mediaType) {
+		if(type.equals(String.class) ||
+				StreamingOutput.class.isAssignableFrom(type)){
+			
+			// if the Entity is plain string or a stream - just pass it through.
+			return false;
+		}
 		return true;
 	}
 

@@ -17,6 +17,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
 
@@ -24,6 +25,7 @@ import net.megx.storage.ResourceAccessException;
 import net.megx.storage.StorageException;
 import net.megx.storage.StorageSecuirtyException;
 import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.Result;
 import net.megx.ws.genomes.GCContent;
 
 import org.apache.commons.logging.Log;
@@ -62,6 +64,8 @@ public class GCContentService extends BaseRestService{
 				try{
 					if(outfile != null){
 						gcContent.calculateGCContent(username, infile, outfile, true);
+						Result<String> result = new Result<String>(outfile);
+						out.write(toJSON(result).getBytes());
 					}else{
 						gcContent.calculateGCContent(username, infile, out, true);
 					}
@@ -98,6 +102,12 @@ public class GCContentService extends BaseRestService{
 				}
 			}
 		};
-		return Response.ok(so).build();
+		ResponseBuilder rb = Response.ok(so);
+		if(outfile != null && !"".equals(outfile.trim())){
+			rb.type(MediaType.APPLICATION_JSON);
+		}else{
+			rb.type("application/csv");
+		}
+		return rb.build();
 	}
 }
