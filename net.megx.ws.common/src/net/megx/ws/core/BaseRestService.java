@@ -23,42 +23,50 @@ public class BaseRestService {
 	}
 	
 	public Result<Map<String, Object>> handleException(Exception e){
-		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
 		log.error("An error occured while processing: ", e);
+		return exceptionToResult(e, true);
+	}
+	
+	public static Result<Map<String, Object>> exceptionToResult(Exception e, boolean debugging){
+		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+		
 		result.setError(true);
 		result.setMessage(e.getMessage());
-		result.setData(transformException(e));
+		result.setData(transformException(e, debugging));
 		
 		return result;
 	}
 	
-	protected Map<String, Object> transformException(Exception e){
+	
+	public static Map<String, Object> transformException(Exception e, boolean debugging){
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		_mapException(result, e, new HashSet<Throwable>());
+		_mapException(result, e, new HashSet<Throwable>(), debugging);
 		
 		return result;
 	}
 	
-	private void _mapException(Map<String, Object> map, Throwable e, Set<Throwable> mapped){
+	private static void _mapException(Map<String, Object> map, Throwable e, Set<Throwable> mapped, boolean debugging){
 		if(mapped.contains(e)){
 			return;
 		}
 		map.put("message", e.getMessage());
-		StackTraceElement [] ses = e.getStackTrace();
-		if(ses != null && ses.length > 0){
-			String [] stackTrace = new String [ses.length];
-			for(int i = 0; i < ses.length; i++){
-				StackTraceElement el = ses[i];
-				String line = String.format("%s#%s (%s, line %d)",el.getClassName(), el.getMethodName(), el.getFileName(), el.getLineNumber());
-				stackTrace[i] = line;
+		if(debugging){
+			StackTraceElement [] ses = e.getStackTrace();
+			if(ses != null && ses.length > 0){
+				String [] stackTrace = new String [ses.length];
+				for(int i = 0; i < ses.length; i++){
+					StackTraceElement el = ses[i];
+					String line = String.format("%s#%s (%s, line %d)",el.getClassName(), el.getMethodName(), el.getFileName(), el.getLineNumber());
+					stackTrace[i] = line;
+				}
+				map.put("stackTrace", stackTrace);
 			}
-			map.put("stackTrace", stackTrace);
+			mapped.add(e);
 		}
-		mapped.add(e);
 		if(e.getCause() != null){
 			Map<String, Object> cause = new HashMap<String, Object>();
-			_mapException(cause, e.getCause(), mapped);
+			_mapException(cause, e.getCause(), mapped, debugging);
 			map.put("cause", cause);
 		}
 	}

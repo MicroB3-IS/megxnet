@@ -13,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
@@ -67,7 +68,12 @@ public class SixFrameTranslationService extends BaseRestService{
 				
 			}
 		};
-		return Response.
-				ok(so).header("Content-Encoding", "UTF-8").build();
+		ResponseBuilder rb = Response.ok(so);
+		if(outFile != null && !"".equals(outFile.trim())){
+			rb.type(MediaType.APPLICATION_JSON);
+		}else{
+			rb.type(MediaType.TEXT_PLAIN);
+		}
+		return rb.build();
 	}
 }

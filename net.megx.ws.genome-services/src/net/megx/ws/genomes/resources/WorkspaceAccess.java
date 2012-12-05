@@ -112,7 +112,7 @@ public class WorkspaceAccess {
 		if(parent.hasNode(path)){
 			return parent.getNode(path);
 		}else{
-			Node node = parent.addNode(path, "nt:files");
+			Node node = parent.addNode(path, "nt:folder");
 			return node;
 		}
 	}
