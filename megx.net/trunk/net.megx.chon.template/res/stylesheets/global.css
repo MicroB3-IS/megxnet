@@ -304,6 +304,19 @@ form button.blue {
 }
 form button.blue:hover, form button.blue:focus {
 	color: #ffffff!important;
+}
+
+form button.orange {
+	background-color: #DD4B39!important;
+    background-image: -webkit-linear-gradient(top, #DD4B39, #D14836)!important;
+    background-image: -moz-linear-gradient(top, #DD4B39, #D14836)!important;
+    background-image: -ms-linear-gradient(top, #DD4B39, #D14836)!important;
+    background-image: -o-linear-gradient(top, #DD4B39, #D14836)!important;
+    background-image: linear-gradient(top, #DD4B39, #D14836)!important;
+	color: #fff!important;
+}
+form button.organge:hover, form button.organge:focus {
+	color: #ffffff!important;
 	}
 /*===================================================================================================================================================== */
 ::-webkit-input-placeholder {
