@@ -33,6 +33,7 @@ import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.chon.web.api.ServerInfo;
 
+@Deprecated
 public class LoginModule extends ModuleContentNode {
 	public static final String AUTH_URL = "http://gonde:8080/consumer/auth";
 	
