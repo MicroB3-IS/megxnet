@@ -6,25 +6,25 @@
 <mapper namespace="net.megx.megdb.wod05.mappers.Wod05Mapper">
 
 	<resultMap id="wod05Map" type="net.megx.model.wod05.Wod05">
-		<result column="yr" jdbcType="VARCHAR" property="year" />
-		<result column="mon" jdbcType="VARCHAR" property="month" />
-		<result column="temperature" jdbcType="VARCHAR" property="temperature" />
-		<result column="salinity" jdbcType="VARCHAR" property="salinity" />
-		<result column="oxygen" jdbcType="VARCHAR" property="oxygen" />
-		<result column="phosphate" jdbcType="VARCHAR" property="phosphate" />
-		<result column="silicate" jdbcType="VARCHAR" property="silicate" />
-		<result column="nitrate" jdbcType="VARCHAR" property="nitrate" />
-		<result column="nitrite" jdbcType="VARCHAR" property="nitrite" />
-		<result column="ph" jdbcType="VARCHAR" property="ph" />
-		<result column="chlorophyll" jdbcType="VARCHAR" property="chlorophyll" />
-		<result column="plankton_biomass" jdbcType="VARCHAR" property="planktonBiomass" />
-		<result column="alkalinity" jdbcType="VARCHAR" property="alkalinity" />		
+		<result column="yr" property="year" />
+		<result column="mon" property="month" />
+		<result column="temperature" property="temperature" />
+		<result column="salinity" property="salinity" />
+		<result column="oxygen" property="oxygen" />
+		<result column="phosphate" property="phosphate" />
+		<result column="silicate" property="silicate" />
+		<result column="nitrate" property="nitrate" />
+		<result column="nitrite" property="nitrite" />
+		<result column="ph" property="ph" />
+		<result column="chlorophyll" property="chlorophyll" />
+		<result column="plankton_biomass" property="planktonBiomass" />
+		<result column="alkalinity" property="alkalinity" />		
 	</resultMap>
 	
 	
 	<select id="getWod05Data" parameterType="map" resultMap="wod05Map">
 		SELECT * FROM 
-			core.pp_wod05_idw_ip(
+			elayers.wod05_idw_ip(
 				#{0}::real, 
 				#{1}::real, 
 				#{2}::real, 
