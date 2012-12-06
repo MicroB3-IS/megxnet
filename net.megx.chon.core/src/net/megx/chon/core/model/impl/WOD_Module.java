@@ -58,7 +58,12 @@ public class WOD_Module extends ModuleContentNode {
 			params.put("lon", lon);
 			params.put("depth", depth);
 			params.put("buffer", buffer);
-			VTplNodeRenderer.render("base.html", "pages/wod.html", this, req, resp, serverInfo, params);
+			if(message == null && this.getNode().getName().endsWith(".csv")) {
+				String p = String.format("lat=%s&lon=%s&depth=%s&buffer=%s", lat, lon, depth, buffer);
+				resp.setRedirect("../../ws/wod05/megx_wod.csv?"+p);
+			} else {
+				VTplNodeRenderer.render("base.html", "pages/wod.html", this, req, resp, serverInfo, params);
+			}
 			
 			/*
 			

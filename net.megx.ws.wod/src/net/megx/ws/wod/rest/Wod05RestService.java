@@ -14,6 +14,7 @@ import net.megx.megdb.wod05.Wod05Service;
 import net.megx.model.wod05.Wod05;
 import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.Result;
 
 @Path("wod05")
@@ -66,5 +67,16 @@ public class Wod05RestService extends BaseRestService {
 			Result<Map<String, Object>> r = this.handleException(e);
 			return toJSON(r);
 		}
+	}
+	
+	@GET
+	@Path("megx_wod.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	public List<Wod05> csv(
+			@QueryParam("lat") double lat,
+			@QueryParam("lon") double lon, 
+			@QueryParam("buffer") double buffer,
+			@QueryParam("depth") double depth) throws Exception {
+		return service.getWod05Data(lat, lon, depth, buffer);
 	}
 }
