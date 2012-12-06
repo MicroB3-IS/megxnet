@@ -15,7 +15,8 @@ $(function() {
 		    }, function() {
 		    	$(this).removeClass('highlighted');
 		    });
-		}
+		},
+		"fnOnServerDataLoad": function() {}
 	};
 	
 	## if server side
@@ -32,7 +33,14 @@ $(function() {
               "type": "GET",
               "url": sSource,
               "data": { data: JSON.stringify(json) },
-              "success": fnCallback
+              "success": function() {            	
+            	  //console.log(fnCallback);
+            	  //fnOnServerDataLoad.apply(this, arguments);
+            	  //console.log(sSource, aoData, fnCallback, oSettings );
+            	  //console.log(this, arguments);
+            	  fnCallback.apply(this, arguments);
+              } 
+              
             });
           }
     });

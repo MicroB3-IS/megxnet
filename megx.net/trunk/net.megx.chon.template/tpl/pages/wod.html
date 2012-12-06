@@ -41,7 +41,7 @@
 	<div class="clear"></div>
 	#else
 	<article class="FR">
-		
+	
 	</article>
 	<div class="clear"></div>
 	<div style="height: 30px"></div>
@@ -60,7 +60,11 @@
  </script>
  
 		<div style="width: 915px;">
+			<div class="FR">
+				<a href="$ctx.siteUrl/gms/tools/wod.csv?latitude=$lat&longitude=$lon&depth=$depth&buffer=$buffer&submit=Calculate"> Download results as Excel compatible comma separated file (csv). </a>
+			</div>
 			<h6>Latitude: $lat / Longitude: $lon / Depth: $depth m / Buffer:  $buffer </h6>
+			
 			## RENDER TABLE
 					
 			#set($url = "$ctx.siteUrl/ws/wod05/table?lat=$lat&lon=$lon&depth=$depth&buffer=$buffer")
@@ -138,8 +142,7 @@
 				 	sDefaultContent: 'N/A'
 				 }]
 			}")
-		</div>   
-      ## TODO: <a href="$downLink"> Download results as Excel compatible comma separated file (csv). </a>
+		</div>
       
       ## graph
       #parse("pages/wod-chart.html")
