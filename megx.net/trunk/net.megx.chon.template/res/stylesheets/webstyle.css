@@ -273,3 +273,8 @@ table.woaTableData {
 	float: right;
 	width: 100px;
 }
+.blast-loading {
+	text-align: center;
+	display: block;
+	width: 100%;
+}
