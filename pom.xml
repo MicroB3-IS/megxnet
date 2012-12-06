@@ -79,6 +79,8 @@
 		<module>net.megx.mapserver</module>
 		<module>net.megx.content.imp.exp</module>
 		<module>net.megx.ui.table</module>
+		<module>net.megx.ui.chart</module>
+		<module>net.megx.ws.wod</module>
 		
 		<!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
 		<!-- what bundles will be included in the final build -->
