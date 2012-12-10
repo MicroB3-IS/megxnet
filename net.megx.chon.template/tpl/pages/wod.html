@@ -70,7 +70,7 @@
 			#set($url = "$ctx.siteUrl/ws/wod05/table?lat=$lat&lon=$lon&depth=$depth&buffer=$buffer")
 			
 			$ext.dataTable.renderServerSide(
-				["Year", "Month", "Temp", "Salinity", "Oxygen", "Phosphate", "Silicate", "Nitrate", "Nitrite", "pH", "chl", "alk", "plk_bm"], 
+				["Year", "Month", "Temp", "Salinity", "Oxygen", "Phosphate", "Silicate", "Nitrate", "Nitrite", "pH", "chl", "alk"], 
 				$url,
 				false,
 				"{
@@ -134,11 +134,6 @@
 				 	mData: 'alkalinity',
 				 	mRender: createCellRenderer('alkalinity'),
 				 	scType: 'mEq/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'planktonBiomass',
-				 	mRender: createCellRenderer('planktonBiomass'),
-				 	scType: '???',
 				 	sDefaultContent: 'N/A'
 				 }]
 			}")

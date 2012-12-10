@@ -2,11 +2,36 @@
 <noscript>
 <p style="color: #900;"><b>To get the full functionality please activate javascript in your browser!</b></p>
 </noscript>
+<script type="text/javascript">
+var fileSelected = false;
+onFileSelect = function() {
+	console.log("File selected!");
+	fileSelected = true;
+}
 
+validateForm = function() {
+	
+	//TODO: validation ... 
+	//return false if invalid
+	return true;
+}
+
+$(function() {
+	$('.blastButton').click(function() {
+		var form = $('#geoblast_form_id');
+		if(fileSelected) {
+			form.attr('enctype', 'multipart/form-data');
+		} else {
+			$('input[type=file]', form).remove();
+		}
+	});
+});
+
+</script>
 <h3>Geographic-BLAST</h3>
 <hr style="clear:both;">
 <div id="content">
-  <form method="POST" name="geoblast_form" action="submit" enctype="multipart/form-data" class="blastRadioButton" id="geoblast_form_id">
+  <form method="POST" name="geoblast_form" action="submit" class="blastRadioButton" id="geoblast_form_id" onsubmit="return validateForm();">
   	<fieldset title="Step 1">
 		<legend>Enter your sequence (unformatted or in fasta format)</legend>
   	<div class="wiz_ct">
@@ -14,7 +39,7 @@
 		<textarea name="seq" class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
 		<button type="button" id="blast_button" value="Clear" onclick="document.geoblast_form.elements['seq'].value=''">Clear</button>
 		<p>Or choose a FASTA File:
-			<input type="file" name="fasta" size="50" id="fasta"/>
+			<input type="file" name="fasta" size="50" id="fasta" onchange="onFileSelect()"/>
 		</p>
 		<p>Note: Only one sequence no longer than 5000 characters per search possible.</p>
 		<hr style="clear:both;">
@@ -53,9 +78,11 @@
       <input type="text" name="evalue_cutoff" size="10" maxlength="10" value="5E-10"/>
       <input type="hidden" id="msid" name="msid" value="556abbade8e942d3bb78ce8716c73dc0">
       <hr style="clear:both;">
-      </div><button type="submit" class="finish blastButton orange" id="BLAST" value="BLAST" >BLAST</button>
+      </div>
     </fieldset>
-	
+    <div class="finish" style="text-align: right; width: 850px;">
+		<button type="submit" class="blastButton orange" id="BLAST" value="BLAST">BLAST</button>
+	</div>
   </form>
   	<script type="text/javascript">
 			$(function() {

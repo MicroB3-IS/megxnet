@@ -21,6 +21,7 @@ import javax.jcr.RepositoryException;
 import net.megx.chon.core.model.impl.LoginModule;
 import net.megx.chon.core.model.impl.WOA_Module;
 import net.megx.chon.core.model.impl.WOD_Module;
+import net.megx.chon.core.model.impl.blast.Blast_Module;
 import net.megx.chon.core.renderers.ModuleNodeRenderer;
 import net.megx.chon.core.rest.TestRest;
 import net.megx.chon.core.ui.GenomesExtension;
@@ -71,6 +72,8 @@ public class Activator extends ResTplConfiguredActivator {
 			removeNodeIfExists(contentModel, "/www/wms");
 			// ---
 			
+			
+			registerModuleType(contentModel, "megx.module.blast", Blast_Module.class);
 			
 			//registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
 			registerModuleType(contentModel, "megx.module.woa", WOA_Module.class);
