@@ -35,3 +35,4 @@ Require-Bundle: org.chon.cms.content;bundle-version="1.0.0",
  org.chon.cms.core;bundle-version="1.0.0",
  org.chon.cms.model;bundle-version="1.0.0",
  org.chon.web;bundle-version="1.0.2"
+Export-Package: net.megx.chon.core.model
