@@ -7,11 +7,11 @@ $(function() {
 	}
 	
 	function loop() {
-		checkBlastJob($jobId, function(resp) {
+		checkBlastJob('$jobId', function(resp) {
 			if(resp.status == 'running') {
 				setTimeout(loop, 2000);
 			} else {
-				if(resp.status == 'done' ) {
+				if(resp.status == 'completed' ) {
 					//$('#jobStatus').html('Job Done, redirecting to results.');
 					document.location.href = '$ctx.siteUrl/gms/geographic-blast/job?id=$jobId';
 					
@@ -22,9 +22,7 @@ $(function() {
 			}
 		});
 	}
-	
-	setTimeout(loop, 10000);
-	//loop();
+	loop();
 });
 //-->
 </script>
