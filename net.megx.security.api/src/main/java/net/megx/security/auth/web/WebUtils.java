@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javax.servlet.Filter;
+import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -60,6 +61,20 @@ public class WebUtils {
 		System.out.println("Registered filter: "+filter);
 	}
 	
+	
+	public static void registerServlet(BundleContext context, Servlet servlet, String mapping, 
+			String contextId, Map<String, String> initParams){
+		Hashtable<String, String> props = new Hashtable<String, String>();
+		props.put("alias", mapping);
+		if(contextId != null)
+			props.put("contextId", contextId);
+		if(initParams != null){
+			for(Map.Entry<String, String> e: initParams.entrySet()){
+				props.put("init."+e.getKey(), e.getValue());
+			}
+		}
+		RegUtils.reg(context, Servlet.class.getName(), servlet, props);
+	}
 	
 	public static void replaceSession(HttpServletRequest request){
 		HttpSession session = request.getSession();
