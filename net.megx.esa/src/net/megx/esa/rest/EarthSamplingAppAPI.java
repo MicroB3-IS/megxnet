@@ -118,7 +118,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	@Path("photos")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@POST
-	public void storePhotos(@Context HttpServletRequest request){
+	public void storePhotos(@Context HttpServletRequest request) throws Exception{
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if(isMultipart){
@@ -128,35 +128,34 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			
 			// Parse the request
-			try{
-				List items = upload.parseRequest(request);
-				SamplePhoto photoToSave = new SamplePhoto();
-				
-				Iterator iter = items.iterator();
-				
-				while (iter.hasNext()) {
-				    FileItem item = (FileItem) iter.next();
+			List items = upload.parseRequest(request);
+			SamplePhoto photoToSave = new SamplePhoto();
+			
+			Iterator iter = items.iterator();
+			
+			while (iter.hasNext()) {
+			    FileItem item = (FileItem) iter.next();
 
-				    if (!item.isFormField()) {
-				    	byte[] imageData = item.get();
-				    	photoToSave.setData(imageData);
-				    	photoToSave.setMimeType(item.getContentType());
-				    }
-				    else{
-				    	if(item.getFieldName().equalsIgnoreCase("uuid")){
-				    		photoToSave.setUuid(new String(item.get()));
-				    	}
-				    	else if(item.getFieldName().equalsIgnoreCase("path")){
-				    		photoToSave.setPath(new String(item.get()));
-				    	}
-				    }
-				}
-				
-			    List<String> uuids = service.storePhotos(Arrays.asList(photoToSave));
+			    if (!item.isFormField()) {
+			    	byte[] imageData = item.get();
+			    	photoToSave.setData(imageData);
+			    	photoToSave.setMimeType(item.getContentType());
+			    }
+			    else{
+			    	if(item.getFieldName().equalsIgnoreCase("uuid")){
+			    		photoToSave.setUuid(new String(item.get()));
+			    	}
+			    	else if(item.getFieldName().equalsIgnoreCase("path")){
+			    		photoToSave.setPath(new String(item.get()));
+			    	}
+			    }
 			}
-			catch(Exception e){
-				log.error(e.getStackTrace());
-			}
+			
+		    List<String> uuids = service.storePhotos(Arrays.asList(photoToSave));
+		    
+		    if(uuids.size() == 0){
+		    	throw new Exception();
+		    }
 		}
 	}
 	
