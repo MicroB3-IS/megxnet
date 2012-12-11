@@ -27,7 +27,9 @@ www={type:'sys.public'}
 	apps={type:'html', template: 'apps-manager/home.html', title:'Manage Your Applications'}
 	security={type:'unknown'}
 		admin={type:'html', template:'security-filter/admin/admin.html', title:'Security Administration'}
-	
+	error={type:'megx.error.page', template:'error-pages/server-error.html', title:'Server Error'}
+		notfound={type:'megx.error.page', template:'error-pages/not-found.html', title:'File not found'}
+		
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}
@@ -91,7 +93,7 @@ etc={type:'sys.etc'}
 		
 		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
 		megx.module.login.registration={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.RegisterPageNode'}
-		
+		megx.error.page={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.ExceptionPageNode'}
 var={type:'sys.var'}
 	log={type:'folder'}
 	stats={type:'folder'}
