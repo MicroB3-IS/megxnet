@@ -15,13 +15,10 @@
  */
 package net.megx.chon.core;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
+import net.megx.chon.core.model.ModuleUtils;
 import net.megx.chon.core.model.impl.LoginModule;
 import net.megx.chon.core.model.impl.WOA_Module;
 import net.megx.chon.core.model.impl.WOD_Module;
-import net.megx.chon.core.model.impl.blast.Blast_Module;
 import net.megx.chon.core.renderers.ModuleNodeRenderer;
 import net.megx.chon.core.rest.TestRest;
 import net.megx.chon.core.ui.GenomesExtension;
@@ -39,7 +36,7 @@ import org.chon.cms.content.utils.ChonTypeUtils;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
 import org.chon.cms.model.ContentModel;
-import org.chon.cms.model.content.IContentNode;
+import org.osgi.framework.BundleContext;
 
 public class Activator extends ResTplConfiguredActivator {
 
@@ -50,8 +47,9 @@ public class Activator extends ResTplConfiguredActivator {
 
 	@Override
 	protected void registerExtensions(JCRApplication app) {
+		BundleContext bundleContext = getBundleContext();
 		
-		getBundleContext().registerService(TestRest.class.getName(),
+		bundleContext.registerService(TestRest.class.getName(),
 				new TestRest(), null);
 
 		//ServiceReference ref = getBundleContext().getServiceReference(MixsWsService.class.getName());
@@ -68,20 +66,18 @@ public class Activator extends ResTplConfiguredActivator {
 			
 			//moved to mapserver bundle
 			// ---
-			removeType(contentModel, "megx.module.wms");
-			removeNodeIfExists(contentModel, "/www/wms");
+			ModuleUtils.removeType(contentModel, "megx.module.wms");
+			ModuleUtils.removeNodeIfExists(contentModel, "/www/wms");
 			// ---
 			
 			
-			registerModuleType(contentModel, "megx.module.blast", Blast_Module.class);
-			
 			//registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
-			registerModuleType(contentModel, "megx.module.woa", WOA_Module.class);
-			registerModuleType(contentModel, "megx.module.wod", WOD_Module.class);
-			registerModuleType(contentModel, "megx.module.login", LoginModule.class);
+			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.woa", WOA_Module.class);
+			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.wod", WOD_Module.class);
+			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.login", LoginModule.class);
 			
 			//register common renderer for all above
-			ChonTypeUtils.registerNodeRenderer(getBundleContext(), ModuleNodeRenderer.class);
+			ChonTypeUtils.registerNodeRenderer(bundleContext, ModuleNodeRenderer.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,32 +102,5 @@ public class Activator extends ResTplConfiguredActivator {
 		
 		app.regExtension("test_svc", new TestServicesExtension(this.getBundleContext()));
 		app.regExtension("version", new VersioningExtension(this.getBundleContext()));
-	}
-
-	private void removeNodeIfExists(ContentModel contentModel, String path) throws RepositoryException {
-		IContentNode node = contentModel.getContentNode(path);
-		if(node != null) {
-			node.getNode().remove();
-			contentModel.getSession().save();
-		}
-	}
-
-	private void registerModuleType(ContentModel contentModel, String typeName, Class<? extends IContentNode> clz) {
-		try {
-			//remove previous /etc/types/typeName node
-			removeType(contentModel, typeName);
-			// Create New /etc/types/typeName node (with updated refactoring if any)
-			ChonTypeUtils.registerType(contentModel, typeName, clz, ModuleNodeRenderer.class, null, null);
-			// finally, register content node type in OSGi registry
-			ChonTypeUtils.registerContnetNodeClass(getBundleContext(), clz);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void removeType(ContentModel contentModel, String typeName) throws Exception {
-		Node node = ChonTypeUtils.getType(contentModel, typeName, false);
-		if(node != null) node.remove();
 	}
 }

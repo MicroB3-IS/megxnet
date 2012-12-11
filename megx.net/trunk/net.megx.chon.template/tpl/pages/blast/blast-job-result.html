@@ -1,0 +1,14 @@
+#set( $jobId = $req.get("id") )
+
+#if($jobId)
+	#set( $jobStatus = $ext.blast.getJobStatus($jobId) )
+	<div>
+		#if($jobStatus == 'running')
+			#parse("pages/blast/loading.html")
+		#else
+			#parse("pages/blast/result.html")
+		#end
+	</div>
+#else
+	<div>Job Id Not specified</div>
+#end

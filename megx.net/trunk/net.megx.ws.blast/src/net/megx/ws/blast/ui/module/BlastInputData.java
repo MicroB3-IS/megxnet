@@ -1,4 +1,4 @@
-package net.megx.chon.core.model.impl.blast;
+package net.megx.ws.blast.ui.module;
 
 import java.io.File;
 
