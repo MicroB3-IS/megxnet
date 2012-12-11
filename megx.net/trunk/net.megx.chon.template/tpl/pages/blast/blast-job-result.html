@@ -1,7 +1,7 @@
 #set( $jobId = $req.get("id") )
 
 #if($jobId)
-	#set( $jobStatus = $ext.blast.getJobStatus($jobId) )
+	#set( $jobStatus = $ext.blast.getBlastJobStatus($jobId) )	
 	<div>
 		#if($jobStatus == 'running')
 			#parse("pages/blast/loading.html")

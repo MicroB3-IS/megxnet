@@ -1,8 +1,12 @@
 package net.megx.chon.core.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import net.megx.chon.core.model.impl.GenericModuleNode;
 import net.megx.chon.core.renderers.ModuleNodeRenderer;
 
 import org.chon.cms.content.utils.ChonTypeUtils;
@@ -37,4 +41,17 @@ public class ModuleUtils {
 			contentModel.getSession().save();
 		}
 	}
+	
+	private static Map<String, IModule> instanceModules = new HashMap<String, IModule>();
+	
+	public static void registerModuleInstance(BundleContext bundleContext, ContentModel contentModel, String typeName, IModule module) {
+		registerModuleType(bundleContext, contentModel, typeName, GenericModuleNode.class);
+		instanceModules.put(typeName, module);
+	}
+	
+	public static IModule findIModule(GenericModuleNode node) {
+		return instanceModules.get(node.getType());
+	}
 }
+
+	
