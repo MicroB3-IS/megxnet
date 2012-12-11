@@ -39,7 +39,7 @@ public class Activator extends ResTplConfiguredActivator {
 			Filter filter = new  SecurityFilter(context, cfg, contextParams);
 			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
 		}catch (Exception e) {
-			e.printStackTrace(System.out);
+			log.error("Failed to start security filter",e);
 		}
 	}
 
@@ -81,9 +81,8 @@ public class Activator extends ResTplConfiguredActivator {
 			}
 		}, 
 		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
-		
-		
 	}
+	
 	
 	private JSONObject getRegistrationConfig(){
 		JSONObject retVal = getConfig().optJSONObject("filter");
