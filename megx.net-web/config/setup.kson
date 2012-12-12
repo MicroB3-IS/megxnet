@@ -1,8 +1,8 @@
 www={type:'sys.public'}
 	gms={type: 'html', template: 'pages/gms.html', title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type: 'html', template: 'pages/geographic-blast.html'}
-			submit={type: 'megx.module.blast', title: 'Running Blast'}
-			job={type: 'html', template: 'pages/blast-job-result.html'}
+			submit={type: 'megx.module.blast', title: 'Submit Blast'}
+			job={type: 'megx.module.blast', title: 'Blast Results'}
 		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
 			woa.html={type: 'megx.module.woa', title: ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
 			woa.csv={type: 'megx.module.woa'}
