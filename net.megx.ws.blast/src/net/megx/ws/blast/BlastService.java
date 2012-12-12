@@ -7,11 +7,16 @@ import net.megx.ws.blast.uidomain.BlastJob;
 import net.megx.ws.blast.uidomain.BlastMatchingSequence;
 import net.megx.ws.blast.uidomain.SequenceAlignment;
 
+/**
+ * Main communication point between front end and back end.
+ * 
+ * @author Jovica
+ */
 public interface BlastService {
 	/**
 	 * Called from UI to get blast job status by jobId
 	 * Recognized statuses are 
-	 * 	running
+	 *  running
 	 *  completed
 	 *  
 	 * @param jobId
@@ -45,15 +50,25 @@ public interface BlastService {
 	 * @param evalueCutoff
 	 * @return
 	 */
-	public String runBlastJob(InputStream seq, String blastDb, String evalueCutoff);
+	public String runBlastJob(String username, InputStream seq, String blastDb, String evalueCutoff);
 	
 	/**
 	 * Get Sequence alignment
 	 * 
-	 * TODO: see identifier for a sequence , for now just use index
+	 * TODO: see identifier for a sequence, for now just use index
 	 * @param jobId
 	 * @param seqIdx
 	 * @return
 	 */
 	public SequenceAlignment getSequenceAlignment(String jobId, int seqIdx);
+
+	/**
+	 * Get all blast jobs for user.
+	 * 
+	 * TODO: maybe we should make this paginated (add arguments start, pageSize)...
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public List<BlastJob> getBlastJobs(String username);
 }
