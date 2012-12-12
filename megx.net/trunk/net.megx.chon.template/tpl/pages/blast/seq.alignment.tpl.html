@@ -4,39 +4,39 @@
 	<table style="width: 100%">
 	<tr>
 		<td class="label">Sequence</td>
-		<td class="value"><a href="#">CAM_READ_0900091</a></td>
+		<td class="value"><a href="#" onclick="return false;">{{sequence}}</a></td>
 		<td class="label">Score</td>
-		<td class="value">44.238444</td>
+		<td class="value">{{score}}</td>
 		<td class="label">Identities</td>
-		<td class="value">24 / 40 (57%)</td>
+		<td class="value">{{identities}}</td>
 	</tr>
 	<tr>
 		<td class="label">Sequence Length</td>
-		<td class="value">399</td>
+		<td class="value">{{sequenceLength}}</td>
 		<td class="label">Expect</td>
-		<td class="value">2.76943e-24</td>
+		<td class="value">{{expect}}</td>
 		<td class="label">Positives</td>
-		<td class="value">3 / 40 (7%)</td>
+		<td class="value">{{positives}}</td>
 	</tr>
 	<tr>
 		<td class="label">Alignment Length</td>
-		<td class="value">40</td>
+		<td class="value">{{alignmentLength}}</td>
 		<td class="label">Query Begin/End</td>
-		<td class="value">39 - 78 (+1)</td>
+		<td class="value">{{quereyBeginEnd}}</td>
 		<td class="label">Query Gaps</td>
-		<td class="value">0</td>
+		<td class="value">{{queryGaps}}</td>
 	</tr>
 	<tr>
 		<td class="label">Clear Range</td>
-		<td class="value">unknown</td>
+		<td class="value">{{clearRange}}</td>
 		<td class="label">Subject Begin/End</td>
-		<td class="value">179 - 298 (+1)</td>
+		<td class="value">{{subjectBeginEnd}}</td>
 		<td class="label">Subject Gaps</td>
-		<td class="value">0</td>
+		<td class="value">{{subjectGaps}}</td>
 	</tr>
 	</table>
 	<div style="height: 50px">
-		<pre>#include("pages/blast/seq.a.mock.data")</pre>
+		<pre>{{alignmentData}}</pre>
 	</div>
 	<table>
 		<tr>

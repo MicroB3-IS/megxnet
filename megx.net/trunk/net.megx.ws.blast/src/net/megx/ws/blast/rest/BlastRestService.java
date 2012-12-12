@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.blast.BlastService;
 import net.megx.ws.blast.uidomain.BlastMatchingSequence;
+import net.megx.ws.blast.uidomain.SequenceAlignment;
 import net.megx.ws.core.BaseRestService;
 
 @Path("blast")
@@ -53,4 +54,13 @@ public class BlastRestService extends BaseRestService {
 		return toJSON(resp);
 	}
 	
+	@GET
+	@Path("getSequenceAlignment")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSequenceAlignment(
+			@QueryParam("jobId") String jobId,
+			@QueryParam("seqIndex") int seqIndex) {
+		SequenceAlignment sa = blastService.getSequenceAlignment(jobId, seqIndex);
+		return toJSON(sa);
+	}
 }
