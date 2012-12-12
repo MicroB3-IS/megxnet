@@ -28,7 +28,11 @@ www={type:'sys.public'}
 	security={type:'unknown'}
 		admin={type:'html', template:'security-filter/admin/admin.html', title:'Security Administration'}
 	error={type:'megx.error.page', template:'error-pages/server-error.html', title:'Server Error'}
-		notfound={type:'megx.error.page', template:'error-pages/not-found.html', title:'File not found'}
+		404={type:'megx.error.page', template:'error-pages/error404.html', title:'File not found'}
+		500={type:'megx.error.page', template:'error-pages/error500.html', title:'Internal server error'}
+		503={type:'megx.error.page', template:'error-pages/error503.html', title:'Service unavailable'}
+		403={type:'megx.error.page', template:'error-pages/error403.html', title:'Forbidden'}
+		400={type:'megx.error.page', template:'error-pages/error400.html', title:'Bad request'}
 		
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
