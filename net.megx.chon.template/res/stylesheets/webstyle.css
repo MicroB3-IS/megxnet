@@ -278,3 +278,10 @@ table.woaTableData {
 	display: block;
 	width: 100%;
 }
+.errorPages, .errorPages p, .errorPages form , .errorPages textarea, .errorPages button {
+	text-align: center;
+	margin: 10px auto;
+}
+.errorPages h2 {
+	color: #900;
+}
