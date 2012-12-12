@@ -21,7 +21,15 @@ $ext.dataTable.renderServerSide(
 	 }, {
 	 	mData: 'query' 
 	 }, {
-	 	mData: 'subject' 
+	 	mData: 'subject',
+	 	mRender: function ( data, type, row ) {
+	 		if(type == 'display') {
+	 			return subjectTblLink(data);
+	 		}
+	 		return data;
+	 	},
+	 	sWidth: '150px',
+	 	sClass: 'right'
 	 }, {
 	 	mData: 'samples'
 	 }, {

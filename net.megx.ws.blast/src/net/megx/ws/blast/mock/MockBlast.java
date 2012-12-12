@@ -10,6 +10,7 @@ import java.util.Map;
 import net.megx.ws.blast.BlastService;
 import net.megx.ws.blast.uidomain.BlastJob;
 import net.megx.ws.blast.uidomain.BlastMatchingSequence;
+import net.megx.ws.blast.uidomain.SequenceAlignment;
 
 public class MockBlast implements BlastService {
 
@@ -57,7 +58,7 @@ public class MockBlast implements BlastService {
 		seq.setScore(Math.random()*100);
 		seq.setLen((int) (Math.random()*100));
 		seq.setQuery(i+" Lorem ipsum");
-		seq.setSubject(i+" Phasellus id");
+		seq.setSubject((i - 1) + " CAM_READ_0900091");
 		seq.setSamples(i+" Ut aliquam, ");
 		seq.setLocations(i+" Vestibulum ");		
 		return seq;
@@ -85,5 +86,28 @@ public class MockBlast implements BlastService {
 		b.setHits(3);
 		jobs.put(jobId, b);
 		return jobId;
+	}
+
+	@Override
+	public SequenceAlignment getSequenceAlignment(String jobId, int seqIdx) {
+		SequenceAlignment sa = new SequenceAlignment();
+		sa.setSequence(seqIdx + " CAM_READ_0900091");
+		sa.setScore(44.23844);
+		sa.setIdentities("24 / 40 (57%)");
+		sa.setSequenceLength(399);
+		sa.setExpect(2.76943e-24);
+		sa.setPositives("3 / 40 (7%)");
+		sa.setAlignmentLength(40);
+		sa.setQueryBeginEnd("39 - 78 (+1)");
+		sa.setQueryGaps(0);
+		sa.setClearRange("unknown");
+		sa.setSubjectBeginEnd("Subject Begin/End");
+		sa.setSubjectGaps(0);
+		
+		String data = 	"Query: 39     EIDAPLVLDLXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     78 " + "\n" +
+						"              EIDA  PL+LDLE         +                    AAOOA        " +  "\n" +
+						"Subject: 179  EAMOSSDD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIAOI     298";
+		sa.setAlignmentData(data);
+		return sa;
 	}
 }

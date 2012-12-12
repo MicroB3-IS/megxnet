@@ -1,3 +1,5 @@
+<script type="text/javascript" src="$ctx.siteUrl/js/mustache.js"></script>
+
 #include("pages/blast/css.html")	
 #set( $job = $ext.blast.getBlastJob($jobId) )
 
@@ -57,14 +59,20 @@
 
 <script type="text/javascript">
 <!--
-function loadSeqAlignment(el) {
+function loadSeqAlignment(el, idx) {
 	el.html('<div class="loadingDiv"> Loading ... <img src="$ctx.siteUrl/images/loading.gif" /> </div>');
-	setTimeout(function() {
-		var html = $('#sa_tpl').html();
-		el.html(html);
-	}, 1000);
-	
+	$.getJSON("$ctx.siteUrl/ws/blast/getSequenceAlignment", 
+			{ 
+				jobId: '$job.jobId', 
+				seqIndex: idx
+			}, function(obj) { 
+				var tpl = $('#sa_tpl').html();
+				var html = Mustache.render(tpl, obj);
+				el.html(html);
+			}
+	);	
 }
+
 var activeSeqAlignmentDiv = null;
 function tblRowClick(nRow, aData, iDisplayIndex) {
 	var tbl = $(nRow).closest('table')
@@ -76,7 +84,8 @@ function tblRowClick(nRow, aData, iDisplayIndex) {
 	}
 	activeSeqAlignmentDiv = $('<div class="panel_ct"/>');
 	activeSeqAlignmentDiv.appendTo('#blast_ct');
-	loadSeqAlignment(activeSeqAlignmentDiv);
+	console.log(arguments);
+	loadSeqAlignment(activeSeqAlignmentDiv, iDisplayIndex);
 }
 
 function onRowCreated(nRow, aData, iDisplayIndex) {
@@ -87,6 +96,10 @@ function onRowCreated(nRow, aData, iDisplayIndex) {
 	var td = $($('td', nRow)[0]); //eval el
 	var txt = td.html();
 	td.html('<a href="#" onclick="return false;" title="Tooltip ! ... \n Todo: eval alignment show in tooltip... should be good enough \n\n Jovica">'+txt+'</a>');
+}
+
+function subjectTblLink(data){
+	return '<a href="#" onclick="return false;">'+data+'</a>';
 }
 //-->
 </script>
