@@ -285,3 +285,8 @@ table.woaTableData {
 .errorPages h2 {
 	color: #900;
 }
+.finish {
+	display: block;
+	text-align: right; 
+	width: 850px;
+}
