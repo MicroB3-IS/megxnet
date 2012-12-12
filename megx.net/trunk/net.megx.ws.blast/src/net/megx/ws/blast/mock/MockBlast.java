@@ -72,7 +72,7 @@ public class MockBlast implements BlastService {
 	private Map<String, BlastJob> jobs = new HashMap<String, BlastJob>();
 	
 	@Override
-	public String runBlastJob(InputStream seq, String blastDb,
+	public String runBlastJob(String username, InputStream seq, String blastDb,
 			String evalueCutoff) {
 		String jobId = "10000-" +  jobs.keySet().size();
 		BlastJob b = new BlastJob();
@@ -109,5 +109,10 @@ public class MockBlast implements BlastService {
 						"Subject: 179  EAMOSSDD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIAOI     298";
 		sa.setAlignmentData(data);
 		return sa;
+	}
+
+	@Override
+	public List<BlastJob> getBlastJobs(String username) {
+		return new ArrayList<BlastJob>(jobs.values());
 	}
 }

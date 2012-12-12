@@ -7,9 +7,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.megx.chon.core.model.IModule;
 import net.megx.chon.core.model.ModuleContentNode;
 import net.megx.ws.blast.BlastService;
+import net.megx.ws.blast.utils.BlastUtils;
 
 import org.chon.cms.core.model.renderers.VTplNodeRenderer;
 import org.chon.web.api.Request;
@@ -24,19 +27,21 @@ public class BlastProcessor implements IModule {
 		this.blastService = blastService;
 	}
 	
-	//TODO: implement this method with real sceduler, and return jobId
-	private String sceduleRunBlastJob(BlastInputData blastInputData) throws IOException {
+	private String sceduleRunBlastJob(String username, BlastInputData blastInputData) throws IOException {
 		InputStream is = null;
-		if(blastInputData.getFile() != null) {
-			is = new FileInputStream(blastInputData.getFile());
-		} else {
-			is = new ByteArrayInputStream(blastInputData.getSeq().getBytes());
+		try {
+			if (blastInputData.getFile() != null) {
+				is = new FileInputStream(blastInputData.getFile());
+			} else {
+				is = new ByteArrayInputStream(blastInputData.getSeq().getBytes());
+			}
+			String blastDb = blastInputData.getBlastDb();
+			String evalue_cutoff = blastInputData.getEvalueCutoff();
+			String jobId = blastService.runBlastJob(username, is, blastDb, evalue_cutoff);
+			return jobId;
+		} finally {
+			is.close();
 		}
-		String blastDb = blastInputData.getBlastDb();
-		String evalue_cutoff = blastInputData.getEvalueCutoff();
-		String jobId = blastService.runBlastJob(is, blastDb, evalue_cutoff);
-		is.close();
-		return jobId;
 	}
 
 	/**
@@ -47,10 +52,11 @@ public class BlastProcessor implements IModule {
 	 */
 	private void processSubmit(Request req, Response resp) throws IOException {
 		BlastInputData blastData = new BlastInputData(req);
-		String jobId = sceduleRunBlastJob(blastData);
+		String username = BlastUtils.getUsernameFromRequest(req.getServletRequset());
+		String jobId = sceduleRunBlastJob(username, blastData);
 		resp.setRedirect("job?id="+jobId);
 	}
-	
+
 	/**
 	 * Render blast results
 	 * @param req

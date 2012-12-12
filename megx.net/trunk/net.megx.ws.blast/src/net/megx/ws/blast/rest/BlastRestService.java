@@ -4,16 +4,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.blast.BlastService;
+import net.megx.ws.blast.uidomain.BlastJob;
 import net.megx.ws.blast.uidomain.BlastMatchingSequence;
 import net.megx.ws.blast.uidomain.SequenceAlignment;
+import net.megx.ws.blast.utils.BlastUtils;
 import net.megx.ws.core.BaseRestService;
 
 @Path("blast")
@@ -23,15 +27,6 @@ public class BlastRestService extends BaseRestService {
 
 	public BlastRestService(BlastService blastService) {
 		this.blastService = blastService;
-	}
-
-	@GET
-	@Path("ping")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String ping() {
-		Map<String, String> json = new HashMap<String, String>();
-		json.put("ping", "pong");
-		return toJSON(json);
 	}
 
 	@GET
@@ -62,5 +57,16 @@ public class BlastRestService extends BaseRestService {
 			@QueryParam("seqIndex") int seqIndex) {
 		SequenceAlignment sa = blastService.getSequenceAlignment(jobId, seqIndex);
 		return toJSON(sa);
+	}
+	
+	@GET
+	@Path("getBlastJobsTable")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getBlastJobsTable(@Context HttpServletRequest request) {
+		String username = BlastUtils.getUsernameFromRequest(request);
+		List<BlastJob> ls = blastService.getBlastJobs(username);
+		TableDataResponse<BlastJob> resp = new TableDataResponse<BlastJob>();
+		resp.setData(ls);
+		return toJSON(resp);
 	}
 }
