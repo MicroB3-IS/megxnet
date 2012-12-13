@@ -1,7 +1,7 @@
 #set($url = "$ctx.siteUrl/ws/blast/getMatchingSequencesTable?jobId=$jobId")
 <div id="ms_table">
 $ext.dataTable.renderServerSide(
-	["Eval", "Score", "Len.", "Query", "Subject", "Sample(s)", "Location(s)"], 
+	["", "Eval", "Score", "Len.", "Query", "Subject", "Sample(s)", "Location(s)"], 
 	$url,
 	false,
 	"{
@@ -12,7 +12,14 @@ $ext.dataTable.renderServerSide(
 	 },
 	 iDisplayLength: 5,
 	 aLengthMenu: [5, 10, 25],
-	 aoColumns: [{ 
+	 aoColumns: [{
+	 	mData: null,
+	 	bSortable: false,
+	 	bSearchable: false,
+	 	mRender: function ( data, type, row ) {
+	 		return renderExportCheckBox(data, type, row)
+	 	}
+	 },{ 
 	 	mData: 'eval'
 	 }, {
 	 	mData: 'score' 

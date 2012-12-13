@@ -45,7 +45,8 @@
 	</article>
 	<div class="clear"></div>
 	<div style="height: 30px"></div>
-	<article>	
+	<article>
+		
  <script type="text/javascript">
  ## // calback, when table is rendered, then render graph with the same data 
  function onTableRendered(oSettings, json) {
@@ -54,6 +55,9 @@
  
  function createCellRenderer(prop) {
 	 return function (data, type, full){
+		 if(isNaN(data)) {
+			 return '<span style="color: #ccc">' + data + '</span>';
+		 }
 		 return Math.round(data*1000)/1000
 	 }
  }
@@ -65,78 +69,7 @@
 			</div>
 			<h6>Latitude: $lat / Longitude: $lon / Depth: $depth m / Buffer:  $buffer </h6>
 			
-			## RENDER TABLE
-					
-			#set($url = "$ctx.siteUrl/ws/wod05/table?lat=$lat&lon=$lon&depth=$depth&buffer=$buffer")
-			
-			$ext.dataTable.renderServerSide(
-				["Year", "Month", "Temp", "Salinity", "Oxygen", "Phosphate", "Silicate", "Nitrate", "Nitrite", "pH", "chl", "alk"], 
-				$url,
-				false,
-				"{
-				 fnInitComplete: onTableRendered,
-				 aoColumns: [{ 
-				 	mData: 'year',
-				 	mRender: createCellRenderer('year'),
-				 	scType: 'x-axis',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'month',
-				 	mRender: createCellRenderer('month'),
-				 	scType: 'x-axis',
-				 	sDefaultContent: 'N/A' 
-				 }, {
-				 	mData: 'temperature',
-				 	mRender: createCellRenderer('temperature'),
-				 	scType: 'degrees Celsius',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'salinity',
-				 	mRender: createCellRenderer('salinity'),
-				 	scType: 'PSU',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'oxygen',
-				 	mRender: createCellRenderer('oxygen'),
-				 	scType: 'mL/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'phosphate',
-				 	mRender: createCellRenderer('phosphate'),
-				 	scType: 'micromole/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'silicate',
-				 	mRender: createCellRenderer('silicate'),
-				 	scType: 'micromole/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'nitrate',
-				 	mRender: createCellRenderer('nitrate'),
-				 	scType: 'micromole/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'nitrite',
-				 	mRender: createCellRenderer('nitrite'),
-				 	scType: 'micromole/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'ph',
-				 	mRender: createCellRenderer('ph'),
-				 	scType: 'dimensionless',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'chlorophyll',
-				 	mRender: createCellRenderer('chlorophyll'),
-				 	scType: 'microgram/L',
-				 	sDefaultContent: 'N/A'
-				 }, {
-				 	mData: 'alkalinity',
-				 	mRender: createCellRenderer('alkalinity'),
-				 	scType: 'mEq/L',
-				 	sDefaultContent: 'N/A'
-				 }]
-			}")
+			#parse("pages/wod-table.html")
 		</div>
       
       ## graph
