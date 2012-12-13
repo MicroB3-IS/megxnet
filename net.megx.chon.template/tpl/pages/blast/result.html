@@ -93,13 +93,16 @@ function onRowCreated(nRow, aData, iDisplayIndex) {
 		tblRowClick(nRow, aData, iDisplayIndex);
 	});
 	
-	var td = $($('td', nRow)[0]); //eval el
+	var td = $($('td', nRow)[1]); //eval el
 	var txt = td.html();
 	td.html('<a href="#" onclick="return false;" title="Tooltip ! ... \n Todo: eval alignment show in tooltip... should be good enough \n\n Jovica">'+txt+'</a>');
 }
 
 function subjectTblLink(data){
 	return '<a href="#" onclick="return false;">'+data+'</a>';
+}
+function renderExportCheckBox() {
+	return '<input type="checkbox" onclick="event.stopPropagation();"/>';
 }
 //-->
 </script>
