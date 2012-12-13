@@ -1,38 +1,11 @@
+#parse("pages/wod/wod-js.html")
 <section>
 <h3>.:: WOA05 data interpolation ::.</h3>
+
 <article class="FL">
-  <form id="woa_extractor" name="woa_extractor" method="get" action="">
-    <table class="woaTable">
-      <tr>
-        <th width="10%">Latitude:</th>
-        <td width="15%"><input type="text" name="latitude" id="latitude" title="Give the geographic latitude in decimal degrees" value="$!req.get('latitude')" size="10" maxlength="9"></td>
-        <td width="25%" class="small greenColor">&nbsp; value can be 90.0/-90.0</td>
-      </tr>
-      <tr>
-        <th>Longitude:</th>
-        <td><input type="text" name="longitude" id="longitude" title="Give the geographic longitude in decimal degrees" value="$!req.get('longitude')" size="10" maxlength="10"></td>
-        <td class="small greenColor">&nbsp; 180.0/-180.0</td>
-      </tr>
-      <tr>
-        <th>Depth:</th>
-        <td><input type="text" name="depth" id="depth" title="Give the depth in the water colum for which the environmental parameter should be interpolated" value="$!req.get('depth')" size="10" maxlength="6"></td>
-        <td class="small greenColor">&nbsp; 0.0/5500.0</td>
-      </tr>
-      <tr>
-        <th>Buffer:</th>
-        <td><input type="text" name="buffer" id="buffer" title="Give the depth in the water colum for which the environmental parameter should be interpolated" value="$req.get('buffer', '0.5')" size="10" maxlength="6"></td>
-        <td class="small greenColor">&nbsp; 0.0/5500.0</td>
-      </tr>
-      <tr>
-        <td colspan="3"></td>
-        <hr />
-      </tr>
-      <tr>
-        <td colspan="3"><button type="submit" name="submit" id="submit" value="Calculate">Calculate</button></td>
-      </tr>
-    </table>
-  </form>
+  #parse("pages/wod/wod-form.html")
 </article>
+
 	## only if some get parameters are present and no validation error occured e.g. message is empty
 	#if ($message)
 	<article class="FR">
@@ -46,34 +19,18 @@
 	<div class="clear"></div>
 	<div style="height: 30px"></div>
 	<article>
-		
- <script type="text/javascript">
- ## // calback, when table is rendered, then render graph with the same data 
- function onTableRendered(oSettings, json) {
-	 renderCharts(oSettings, json.data);
- }
- 
- function createCellRenderer(prop) {
-	 return function (data, type, full){
-		 if(isNaN(data)) {
-			 return '<span style="color: #ccc">' + data + '</span>';
-		 }
-		 return Math.round(data*1000)/1000
-	 }
- }
- </script>
- 
+		 
 		<div style="width: 915px;">
 			<div class="FR">
 				<a href="$ctx.siteUrl/gms/tools/wod.csv?latitude=$lat&longitude=$lon&depth=$depth&buffer=$buffer&submit=Calculate"> Download results as Excel compatible comma separated file (csv). </a>
 			</div>
 			<h6>Latitude: $lat / Longitude: $lon / Depth: $depth m / Buffer:  $buffer </h6>
-			
-			#parse("pages/wod-table.html")
+			## wod table
+			#parse("pages/wod/wod-table.html")
 		</div>
       
-      ## graph
-      #parse("pages/wod-chart.html")
+      ## wod graph
+      #parse("pages/wod/wod-chart.html")
       
     </article>
     #end

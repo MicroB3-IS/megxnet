@@ -36,7 +36,7 @@ $(function() {
 		<legend>Enter your sequence (unformatted or in fasta format)</legend>
   	<div class="wiz_ct">
 		<div class="globus"> <img src="$ctx.siteUrl/gms-res/images/earth_01.gif" alt="earth picture"/> </div>
-		<textarea name="seq" class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
+		<textarea style="font-family: monospace" name="seq" class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
 		<button type="button" id="blast_button" value="Clear" onclick="document.geoblast_form.elements['seq'].value=''">Clear</button>
 		<p>Or choose a FASTA File:
 			<input type="file" name="fasta" size="50" id="fasta" onchange="onFileSelect()"/>
