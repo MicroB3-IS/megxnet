@@ -282,8 +282,19 @@ table.woaTableData {
 	text-align: center;
 	margin: 10px auto;
 }
+.errorPages h1, .errorPages h2 {
+	margin: -48px 0px 0px 0px;
+}
+.errorPages h1 {
+	color: #900;
+	font-size: 72px;
+	text-shadow:1px 1px 1px #000;
+	font-weight: bold;
+}
 .errorPages h2 {
 	color: #900;
+	font-size: 48px;
+	text-shadow:1px 1px 1px #000;
 }
 .finish {
 	display: block;
