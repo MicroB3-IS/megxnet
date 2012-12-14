@@ -1,0 +1,303 @@
+@charset "utf-8";
+/* Author: Petar Gligorovski - Zverx // Graphic & Web Designer // http://zverx.com */
+/* Company: InterWorks // www.interworks.com.mk */
+/*===================================================================================================================================================== */
+/*=========================================================================================================================================== IMPORTING */
+/*===================================================================================================================================================== */
+/*================================================================================================================================== IMPORT GOOGLE FONT */
+	@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
+/*===================================================================================================================================================== */
+/*============================================================================================================================ IMPORT SUPPORT CSS FILES */
+	@import url('global.css');
+	@import url('layout.css');
+	@import url('nav.css');
+/*===================================================================================================================================================== */
+/*======================================================================================================================== MAIN DIFFERENT IDs & CLASSES */
+figure.logo {
+	margin: 0;
+	padding: 30px 0px 0px 30px;
+	width: 278px;
+	height: 108px;
+	float: left;
+}
+.headerBack {
+	border-bottom: 1px solid #999;
+}
+.header-right {
+	float: right;
+	width: 300px;
+}
+.header-right a {
+	color: #666;
+	text-decoration: none;
+}
+.header-right a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+.header-right a:visited {
+	color: #333;
+	text-decoration: none;
+}
+.header-right sub {
+	font-size: 12px;
+	text-align: right;
+	float: right;
+	margin: .7em 1em!important;
+	color: #333;
+}
+.header-right h6 {
+	margin: 10px!important;
+}
+.headerInterior {
+	border-bottom: 1px solid #999;
+	background: url("../images/titleBack.png") repeat;
+	height: 75px;
+}
+#slider {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+}
+.Box {
+	width: 285px;
+	height: 150px;
+}
+.Box.LBlue {
+	background-color: #a5ccee;
+	box-shadow: #333 0px 0px 10px;
+}
+.Box.LBlue:hover {
+	background-color: #0e4e96;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+.Box.DBlue {
+	background-color: #63b9f3;
+	box-shadow: #333 0px 0px 10px;
+}
+.Box.DBlue:hover {
+	background-color: #0e4e96;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+.Box h3 {
+	color: #fff;
+	float: right;
+	padding: 0em 1em 0em 3em;
+}
+.Box p {
+	float: right;
+	text-align: center;
+	color: #fff;
+	padding: 0em 1em 0em;
+}
+.padRight1dot5 {
+	margin-right: 2em;
+}
+.lineTopSeparator {
+	border-top: 1px dashed #e7e7e7;
+}
+.lineBottomSeparator {
+	border-bottom: 1px dashed #e7e7e7;
+}
+.footNav {
+	float: right;
+	padding: 0;
+	line-height: 2.88em;
+}
+.copy {
+	float: left;
+	width: 30em;
+	padding: 0;
+	line-height: 2.88em;
+}
+.lineBox {
+	height: .18em;
+	background-color: #fff;
+}
+.viewButton {
+	text-align: center;
+	float: right;
+	margin: 0em .5em 1em 0em;
+	;
+}
+a.viewButton {
+	padding: .3em .7em;
+	color: #0e4e96;
+	background-color: #c9d7e0;
+	text-decoration: none;
+}
+a.viewButton:hover {
+	color: #0e4e96;
+	background-color: #eee;
+	text-decoration: none;
+	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+.ui-helper-reset {
+	margin-top: 0!important;
+	margin-bottom: 0em!important;
+	margin-left: 0!important;
+	margin-right: 0!important;
+}
+.videoScreen {
+	border: 1px solid #e7e7e7;
+	text-align: center;
+}
+.faqTable {
+}
+.faqTable td {
+	vertical-align: top;
+}
+.faqTable tbody tr td a:hover {
+	text-decoration: none!important;
+}
+.faqTable tbody tr td {
+	padding: 10px!important;
+}
+.contactTable td {
+	background-color: #fff;
+}
+.contentTable tr td {
+	padding: 7px!important;
+}
+#chicken {
+	background-color: #f7f7f7;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	color: #333;
+}
+.popup-text {
+	padding: 15px;
+}
+.popup-text table {
+	padding: 15px!important;
+	margin: 15px!important;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	border: 1px solid #ccc!important;
+	color: #333;
+}
+.popup-text table > tbody > tr > td {
+	padding: 7px!important;
+	margin: 5px!important;
+}
+div#samplingSiteLegendImg table > tbody > tr > td {
+	padding: 7px!important;
+	margin: 5px!important;
+	-webkit-border-radius: 7px!important;
+	-moz-border-radius: 7px!important;
+	border-radius: 7px!important;
+	border: 1px solid #ccc!important;
+	color: #333!important;
+}
+div#samplingSiteLegendImg table > tbody > tr > td > img {
+	margin: 0px 15px 0px 0px;
+}
+table.woaTable {
+	width: 100%;
+}
+table.woaTable input {
+	width: 15em!important;
+}
+table.woaTable select {
+	width: 16.1em!important;
+}
+table.woaTableData {
+	width: 50%;
+}
+.step {
+	clear: left;width: 100%; height:400px; display: block;
+	-khtml-border-radius: 3px; -moz-border-radius: 3px; -opera-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+}
+.step label { display: block; margin: 10px 0 3px 7px; }
+.step legend { padding: 0 2px 3px 2px; font-weight: normal; margin: .7em 0em; color: #00A0FF; font-size: 17px; }
+.step input, .step textarea, .step select { border: 1px solid #AAA; margin-left: 7px; }
+
+.stepy-titles { list-style: none; margin: 0; padding: 0; width: 100%; }
+.stepy-titles li { list-style: none;
+	margin: .5em .5em;
+	padding: 1em 2em!important;
+	float: left;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #ccc;
+	color: #333;
+	}
+.stepy-titles li span { font: 11px verdana; display: block; }
+.stepy-titles .current-step { background-color: #00A0FF;
+	color: #fff; cursor: auto; }
+	
+.default-buttons {
+	width: 250px;
+	float: right;
+}
+.button-next,.button-back {
+	float: left;
+	list-style: none;
+	padding: .25em .1em !important;
+	width: 100px;
+	display: block;
+	border: 1px dashed #e7e7e7;
+	background-color: #00A0FF;
+	color: #fff;
+	margin: 0px 5px;
+}
+.button-back {
+	top: 0px;
+}
+.button-next {
+	top: 0px;
+}
+.geoblast_form_id-buttons {
+	text-align: center;
+	float: left;
+}
+#geoblast_form_id-titles li {
+	width: 200px;
+	height: 40px;
+}
+#geoblast_form_id .wiz_ct {
+	height: 350px;
+}
+.globus {
+	float: right;
+	vertical-align: top;
+}
+.blastButton {
+	float: right;
+	width: 100px;
+}
+.blast-loading {
+	text-align: center;
+	display: block;
+	width: 100%;
+}
+.errorPages, .errorPages p, .errorPages form , .errorPages textarea, .errorPages button {
+	text-align: center;
+	margin: 10px auto;
+}
+.errorPages h1, .errorPages h2 {
+	margin: -48px 0px 0px 0px;
+}
+.errorPages h1 {
+	color: #900;
+	font-size: 72px;
+	text-shadow:1px 1px 1px #000;
+	font-weight: bold;
+}
+.errorPages h2 {
+	color: #900;
+	font-size: 48px;
+	text-shadow:1px 1px 1px #000;
+}
+.finish {
+	display: block;
+	text-align: right; 
+	width: 850px;
+}
