@@ -1,19 +1,31 @@
 package net.megx.ws.blast.uidomain;
 
-public class BlastMatchingSequence {
-	private Double eval;
+public class BlastMatchingSequence {	
+	private long id;
+	
+	private EvalueWithAlignemnt evalueWithAlignemnt;
 	private Double score;
 	private int len;
 	private String query;
 	private String subject;
 	private String samples;
 	private String locations;
-	public Double getEval() {
-		return eval;
+	
+	
+	public long getId() {
+		return id;
 	}
-	public void setEval(Double eval) {
-		this.eval = eval;
+	public void setId(long id) {
+		this.id = id;
 	}
+	
+	public EvalueWithAlignemnt getEvalueWithAlignemnt() {
+		return evalueWithAlignemnt;
+	}
+	public void setEvalueWithAlignemnt(EvalueWithAlignemnt evalueWithAlignemnt) {
+		this.evalueWithAlignemnt = evalueWithAlignemnt;
+	}
+	
 	public Double getScore() {
 		return score;
 	}

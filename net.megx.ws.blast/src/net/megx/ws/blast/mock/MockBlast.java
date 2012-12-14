@@ -10,6 +10,7 @@ import java.util.Map;
 import net.megx.ws.blast.BlastService;
 import net.megx.ws.blast.uidomain.BlastJob;
 import net.megx.ws.blast.uidomain.BlastMatchingSequence;
+import net.megx.ws.blast.uidomain.EvalueWithAlignemnt;
 import net.megx.ws.blast.uidomain.SequenceAlignment;
 
 public class MockBlast implements BlastService {
@@ -47,14 +48,18 @@ public class MockBlast implements BlastService {
 	public List<BlastMatchingSequence> getMatchingSequence(String jobId) {
 		List<BlastMatchingSequence> ls = new ArrayList<BlastMatchingSequence>();
 		for(int i=0; i<15; i++) {
-			ls.add(seq(i+1));
+			ls.add(seq(jobId, i+1));
 		}
 		return ls;
 	}
 
-	private BlastMatchingSequence seq(int i) {
+	private BlastMatchingSequence seq(String jobId, int i) {
 		BlastMatchingSequence seq = new BlastMatchingSequence();
-		seq.setEval(Double.parseDouble("2.761E-24"));
+		seq.setId(500+i);
+		EvalueWithAlignemnt v = new EvalueWithAlignemnt();
+		v.setEval(Double.parseDouble("2.761E-24"));
+		v.setAlignment(getSeqAlignmentData(jobId, i));
+		seq.setEvalueWithAlignemnt(v);
 		seq.setScore(Math.random()*100);
 		seq.setLen((int) (Math.random()*100));
 		seq.setQuery(i+" Lorem ipsum");
@@ -88,10 +93,16 @@ public class MockBlast implements BlastService {
 		return jobId;
 	}
 
+	public String getSeqAlignmentData(String jobId, int seqIdx) {
+		String data = 	"Query: 39     EIDAPLVLDLXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     78 " + "\n" +
+				"              EIDA  PL+LDLE         +                    AAOOA        " +  "\n" +
+				"Subject: 179  EAMOSSDD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIAOI     298";
+		return data;
+	}
 	@Override
-	public SequenceAlignment getSequenceAlignment(String jobId, int seqIdx) {
+	public SequenceAlignment getSequenceAlignment(String jobId, int seqId) {
 		SequenceAlignment sa = new SequenceAlignment();
-		sa.setSequence(seqIdx + " CAM_READ_0900091");
+		sa.setSequence(seqId + " CAM_READ_0900091");
 		sa.setScore(44.23844);
 		sa.setIdentities("24 / 40 (57%)");
 		sa.setSequenceLength(399);
@@ -103,10 +114,7 @@ public class MockBlast implements BlastService {
 		sa.setClearRange("unknown");
 		sa.setSubjectBeginEnd("Subject Begin/End");
 		sa.setSubjectGaps(0);
-		
-		String data = 	"Query: 39     EIDAPLVLDLXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX     78 " + "\n" +
-						"              EIDA  PL+LDLE         +                    AAOOA        " +  "\n" +
-						"Subject: 179  EAMOSSDD XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXIAOI     298";
+		String data = getSeqAlignmentData(jobId, seqId);
 		sa.setAlignmentData(data);
 		return sa;
 	}

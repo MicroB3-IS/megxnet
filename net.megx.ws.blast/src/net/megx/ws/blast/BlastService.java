@@ -60,7 +60,7 @@ public interface BlastService {
 	 * @param seqIdx
 	 * @return
 	 */
-	public SequenceAlignment getSequenceAlignment(String jobId, int seqIdx);
+	public SequenceAlignment getSequenceAlignment(String jobId, int seqId);
 
 	/**
 	 * Get all blast jobs for user.
