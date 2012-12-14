@@ -54,8 +54,8 @@ public class BlastRestService extends BaseRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSequenceAlignment(
 			@QueryParam("jobId") String jobId,
-			@QueryParam("seqIndex") int seqIndex) {
-		SequenceAlignment sa = blastService.getSequenceAlignment(jobId, seqIndex);
+			@QueryParam("seqId") int seqId) {
+		SequenceAlignment sa = blastService.getSequenceAlignment(jobId, seqId);
 		return toJSON(sa);
 	}
 	
