@@ -30,7 +30,7 @@
         <mvn.work.dir.name>megx.net-work.dir</mvn.work.dir.name>
         <!-- not sure if should stay here -->
         <mvn.work.dir.path>${user.home}/${mvn.work.dir.name}</mvn.work.dir.path>
-        <tycho.version>0.15.0</tycho.version>
+        <tycho.version>0.16.0</tycho.version>
         <tycho.groupid>org.eclipse.tycho</tycho.groupid>
         <!-- to configure if failed copy of bundle to plugins dir should
             fail the
@@ -85,8 +85,9 @@
         <!-- Earth Sampling App -->
         <module>net.megx.esa</module>
         <!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
-        <!-- what bundles will be included in the final build -->
+        <!-- what bundles will be included in the final build
         <module>net.megx.product</module>
+        -->
         <!-- does not need to be build always: TODO configure the setup.properties
             according to build -->
         <module>megx.net-web</module>
@@ -159,11 +160,21 @@
             pluginManagement definitions. https://maven.apache.org/pom.html#Plugin_Management -->
         <pluginManagement>
             <plugins>
-                <!-- Tycho for OSDI bundle creation -->
+                <!-- Tycho for OSGI bundle creation -->
                 <plugin>
                     <groupId>${tycho.groupid}</groupId>
                     <artifactId>target-platform-configuration</artifactId>
                     <version>${tycho.version}</version>
+                    <configuration>
+                        <!-- <resolver>p2</resolver> -->
+                        <ignoreTychoRepositories>true</ignoreTychoRepositories>
+                        <environments>
+                            <environment>
+                                <os>win32</os>
+                                <arch>x86</arch>
+                            </environment>
+                        </environments>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>${tycho.groupid}</groupId>
@@ -204,15 +215,49 @@
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.2</version>
+                    <configuration>
+                        <rules>
+                            <requireJavaVersion>
+                                <version>[1.6.0,)</version>
+                            </requireJavaVersion>
+                            <requireMavenVersion>
+                                <version>[3.0.3,)</version>
+                            </requireMavenVersion>
+                            <requireProperty>
+                                <property>project.version</property>
+                                <message>"Project version must be
+                                    specified."</message>
+                                <regex>.*(\d|-SNAPSHOT)$</regex>
+                                <regexMessage>"Project version must end
+                                    in a
+                                    number or -SNAPSHOT."</regexMessage>
+                            </requireProperty>
+                            <requireFilesExist>
+                                <files>
+                                    <file>${mvn.work.dir.path}</file>
+                                    <file>${mvn.work.dir.path}/repository</file>
+                                    <file>${mvn.work.dir.path}/plugins</file>
+                                </files>
+                            </requireFilesExist>
+                        </rules>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>${tycho.groupid}</groupId>
                 <artifactId>target-platform-configuration</artifactId>
-                <version>${tycho.version}</version>
                 <configuration>
                     <!-- <resolver>p2</resolver> -->
                     <ignoreTychoRepositories>true</ignoreTychoRepositories>
@@ -225,8 +270,6 @@
                     </environments>
                 </configuration>
             </plugin>
-            <!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId>
-                </plugin> -->
             <plugin>
                 <groupId>${tycho.groupid}</groupId>
                 <artifactId>tycho-maven-plugin</artifactId>
