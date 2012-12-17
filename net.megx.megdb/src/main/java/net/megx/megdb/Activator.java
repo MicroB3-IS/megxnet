@@ -16,7 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
- 
+
 public class Activator extends JCRAppConfgEnabledActivator {
 
 	private static final Log log = LogFactory.getLog(Activator.class);
@@ -26,21 +26,22 @@ public class Activator extends JCRAppConfgEnabledActivator {
 	public void start(BundleContext context) throws Exception {
 		Class<?> pgDriver = Class.forName("org.postgresql.Driver");
 		if(pgDriver == null) {
-			throw new Exception("org.postgresql.Driver not found!!!");
+			throw new ClassNotFoundException("org.postgresql.Driver not found!!!");
 		}
 		// super.start will read json config
 		super.start(context);
 		JSONObject cfg = getConfig();
-		log.debug("Megdb Services starting up...");
+		log.debug("Megdb Services starting.");
 		try {
 			factory = buildSQLSessionFactory(cfg);
 			buildDBServices(cfg.getJSONArray("dbServices"), factory);
-			
+
 			setupPasswordHash(cfg);
-			
-			log.info("Megdb Services layer bundle startup success.");
+
+			log.info("Megdb Services start success.");
 		} catch (Exception e) {
-			log.error("Megdb Services failed to startup successfuly: ", e);
+			log.error("Megdb Services failed to startup: " + e.getMessage(), e);
+			throw e;
 		}
 	}
 
@@ -63,7 +64,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		factory = new SqlSessionFactoryBuilder().build(
 				Resources.getResourceAsReader(configFile),
 				getDatabaseProperties(config));
-		log.info("SQLSessionFactory instance: " + factory);
+
 		return factory;
 	}
 
@@ -71,7 +72,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		Properties properties = new Properties();
 
 		JSONObject dbConfig = config.optJSONObject("dbConfig");
- 
+
 		String[] keys = JSONObject.getNames(dbConfig);
 
 		if (keys != null) {
@@ -135,7 +136,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			throws ClassNotFoundException {
 		return Activator.class.getClassLoader().loadClass(className);
 	}
-	
+
 	protected void setupPasswordHash(JSONObject config){
 		JSONObject passwordHashing = config.optJSONObject("passwordHashing");
 		if(passwordHashing != null){
