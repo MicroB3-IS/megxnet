@@ -1,38 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>net.megx</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<artifactId>parent-microb3-is</artifactId>
-	</parent>
+    <parent>
+        <groupId>net.megx</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>parent-microb3-is</artifactId>
+    </parent>
 
-	<artifactId>net.megx.megdb</artifactId>
-	<packaging>eclipse-plugin</packaging>
+    <artifactId>net.megx.megdb</artifactId>
+    <packaging>eclipse-plugin</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.1-901-1.jdbc4</version>
-		</dependency>
-	</dependencies>
+    <properties>
+        <mvn.db.host>localhost</mvn.db.host>
+        <mvn.db.port>5432</mvn.db.port>
+        <mvn.db.name>megdb_r8</mvn.db.name>
 
-	<build>
-		<plugins>
-			<plugin>
-				<!-- main configuration is in parent pom -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.mybatis.generator</groupId>
-				<artifactId>mybatis-generator-maven-plugin</artifactId>
-				<version>1.3.0</version>
-			</plugin>
-		</plugins>
-	</build>
+        <mvn.db.user>${user.name}</mvn.db.user>
+
+        <mvn.db.password></mvn.db.password>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <!-- main configuration is in parent pom -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <configuration>
+                    <rules>
+                        <requireProperty>
+                            <property>mvn.db.user</property>
+                            <message>MegDb user name must be specified</message>
+                        </requireProperty>
+                    </rules>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
