@@ -48,7 +48,9 @@
 
 		<typeAlias type="net.megx.model.esa.Sample" alias="ESASample"/>
 		<typeAlias type="net.megx.model.esa.SamplePhoto" alias="ESASamplePhoto"/>
-
+		
+		<typeAlias type="net.megx.model.logging.LoggedError" alias="LoggedError"/>
+		
 	</typeAliases>
 
 
@@ -96,5 +98,8 @@
 
 		<!-- wod05 -->
 		<mapper resource="wod05/wod05-mapper.xml" />
+		
+		<!-- Logging mapper -->
+		<mapper resource="logging/error-log-mapper.xml"/>
 	</mappers>
 </configuration>
