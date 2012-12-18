@@ -6,8 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.openid4java.consumer.ConsumerManager;
-
 import net.megx.security.auth.SecurityException;
 import net.megx.security.filter.StopFilterException;
 
@@ -20,7 +18,7 @@ public class OpenIdEndpoint extends BaseSecurityEntrypoint{
 	public void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
-		ConsumerManager manager;
+		//ConsumerManager manager;
 	}
 
 	@Override

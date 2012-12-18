@@ -18,9 +18,6 @@ import net.megx.security.auth.services.WebResourcesService;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.google.gson.Gson;
 
 @Path("/filter/resources")
@@ -30,7 +27,7 @@ public class ResourcesManager extends BaseRestService{
 	
 	private WebResourcesService resourcesService;
 	
-	private Log log = LogFactory.getLog(getClass());
+	//private Log log = LogFactory.getLog(getClass());
 	private Gson gson = new Gson();
 	
 	
