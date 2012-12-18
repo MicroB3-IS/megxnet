@@ -402,7 +402,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
                     request.setAttribute("email", email);
                     
                     String firstName = email;
-                    List<String> firstNames = fetchResp.getAttributeValues("firstName");
+                    @SuppressWarnings("unchecked")
+					List<String> firstNames = fetchResp.getAttributeValues("firstName");
                     if(firstNames != null && firstNames.size() > 0){
                     	firstName = firstNames.get(0);
                     }
@@ -412,7 +413,8 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
                     request.setAttribute("firstName", firstName);
                     
                     String lastName = null;
-                    List<String> lastNames = fetchResp.getAttributeValues("lastName");
+                    @SuppressWarnings("unchecked")
+					List<String> lastNames = fetchResp.getAttributeValues("lastName");
                     if(firstNames != null && firstNames.size() > 0){
                     	lastName = lastNames.get(0);
                     }

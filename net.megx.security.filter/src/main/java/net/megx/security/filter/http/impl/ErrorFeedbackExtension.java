@@ -47,7 +47,6 @@ public class ErrorFeedbackExtension implements Extension{
 			this.request = request;
 		}
 
-		@SuppressWarnings("unused")
 		public String save(){
 			System.out.println("save feedback");
 			if(validateRequest()){
