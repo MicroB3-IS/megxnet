@@ -116,6 +116,12 @@
 		   redirects: {
 		      401: '/login'
 		   }
+		},
+		errors:{
+			feedback:{
+				requestValidity: 1200000,
+				maxNumberOfRequests: 50
+			} 
 		}
 	}
 }
