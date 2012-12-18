@@ -2,6 +2,7 @@ package net.megx.security.api;
 
 import java.util.Map;
 
+import net.megx.megdb.logging.ErrorLogService;
 import net.megx.security.auth.AuthenticationManager;
 import net.megx.security.auth.impl.ExternalLoginHandlerImpl;
 import net.megx.security.auth.impl.GeneralAuthenticationHandlerImpl;
@@ -18,6 +19,8 @@ import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.auth.web.impl.WebLoginAuthenticationManager;
 import net.megx.security.crypto.KeySecretProvider;
 import net.megx.security.crypto.impl.DefaultKeySecretProvider;
+import net.megx.security.logging.ErrorLog;
+import net.megx.security.logging.impl.ErrorLogger;
 import net.megx.security.oauth.OAuthServices;
 import net.megx.security.oauth.TokenServices;
 import net.megx.security.oauth.impl.OAuth1Services;
@@ -66,6 +69,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					ConsumerService consumerService = (ConsumerService)services.get(ConsumerService.class.getName());
 					TokenService tokenService = (TokenService)services.get(TokenService.class.getName());
 					//WebResourcesService webResourcesService = (WebResourcesService)services.get(WebResourcesService.class.getName());
+					ErrorLogService errorLogService = (ErrorLogService)services.get(ErrorLogService.class.getName());
 					
 					AuthenticationManager authenticationManager = new WebLoginAuthenticationManager();
 					RegUtils.reg(context, AuthenticationManager.class.getName(), 
@@ -101,12 +105,16 @@ public class Activator extends JCRAppConfgEnabledActivator {
 					GeneralAuthenticationHandlerImpl genAuthImpl = new GeneralAuthenticationHandlerImpl(null, userService);
 					RegUtils.reg(context, GeneralAuthenticationHandler.class.getName(), genAuthImpl, null);
 					
+					ErrorLog errorLog = new ErrorLogger(errorLogService, keySecretProvider, 18); // FIXME: nonce length should be read from config
+					
+					
 					// register services
 					RegUtils.reg(context, Cache.class.getName(), cache, null);
 					RegUtils.reg(context, KeySecretProvider.class.getName(), keySecretProvider, null);
 					RegUtils.reg(context, TokenServices.class.getName(), tokenServices, null);
 					RegUtils.reg(context, OAuth1Handler.class.getName(), authenticationHandlerImpl, null);
 					RegUtils.reg(context, OAuthServices.class.getName(), oAuthServices, null);
+					RegUtils.reg(context, ErrorLog.class.getName(), errorLog, null);
 				}catch(Exception e){
 					log.error("An error occured while initializng the security API.",e);
 				}
@@ -115,6 +123,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		}, UserService.class.getName(),
 				ConsumerService.class.getName(),
 				TokenService.class.getName(),
-				WebResourcesService.class.getName());
+				WebResourcesService.class.getName(),
+				ErrorLogService.class.getName());
 	}
 }
