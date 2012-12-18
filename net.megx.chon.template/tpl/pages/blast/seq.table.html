@@ -10,7 +10,7 @@ $ext.dataTable.renderServerSide(
 	 fnInitComplete: function() {
 	 	gbPage.onTableRendered();
 	 },
-	 fnRowCallback: function(nRow, aData, iDisplayIndex) {
+	 fnCreatedRow: function(nRow, aData, iDisplayIndex) {
 	 	gbPage.onRowCreated(nRow, aData, iDisplayIndex);
 	 },
 	 sDom: '$sDom',
