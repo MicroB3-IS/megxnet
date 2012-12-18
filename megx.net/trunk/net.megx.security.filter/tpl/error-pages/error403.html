@@ -2,10 +2,13 @@
 	<h1>Error 403</h1>
 	<h2>Forbidden Access</h2>
 	<p>The request was a valid request. The server is refusing to respond to it.</p>
+	#if ($feedbackEnabled == "true")
 	<p>
-	<form name="feedback" method="post" action="">
-		<textarea name="textarea" id="textarea" placeholder="Please describe the problem and send us feedback"></textarea>
+	<form name="feedback" method="post" action="$ctx.siteUrl/error/feedback">
+		<input type="hidden" value="$REQUEST_ID" name="REQUEST_NONCE"/>
+		<textarea name="feedback" id="textarea" placeholder="Please describe the problem and send us feedback"></textarea>
 		<button type="submit" name="button">Send us Feedback</button>
 	</form>
 	</p>
+	#end
 </div>

@@ -26,16 +26,20 @@ import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.http.HttpRequestWrapper;
+import net.megx.security.filter.http.RequestUtils;
 import net.megx.security.filter.http.TemplatePageNodeFactory;
 import net.megx.security.filter.http.TemplatePageRenderer;
 import net.megx.security.filter.http.impl.AuthorizePageNode;
+import net.megx.security.filter.http.impl.ErrorFeedbackExtension;
 import net.megx.security.filter.http.impl.ExceptionPageNode;
 import net.megx.security.filter.http.impl.RegisterPageNode;
 import net.megx.security.filter.impl.DefaultExceptionHandler;
+import net.megx.security.logging.ErrorLog;
 import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.chon.cms.core.JCRApplication;
 import org.chon.cms.model.content.IContentNodeFactory;
 import org.chon.cms.model.content.INodeRenderer;
 import org.chon.web.RegUtils;
@@ -87,26 +91,26 @@ public class SecurityFilter implements Filter{
 				chain.doFilter(request, response);
 				return;
 			}
+			
 			if(httpRequest.getSession() != null){
 				if(log.isDebugEnabled())
 					log.debug("Session at filter start: " + httpRequest.getSession().getId());
 			}else{
 				log.debug("No session at filter start");
 			}
-			//enabled = false;
+			
 			if(!enabled){
 				log.debug("Secuirty filter is not enabled. Will pass the request to the chain.");
 				chain.doFilter(request, response);
 				return;
 			}
-			//boolean hasMatched = false;
+			
 			for(EntryPointWrapper entryPoint: entryPoints){
 					if(log.isDebugEnabled())
 						log.debug(String.format("Matching enty-point %s",entryPoint.name));
 					
 					if(entryPoint.matches(requestPath)){
 						log.debug("\t -> match");
-			//			hasMatched = true;
 						try {
 							entryPoint.entrypoint.doFilter(httpRequest, httpResponse);
 						} catch (StopFilterException e) {
@@ -117,14 +121,14 @@ public class SecurityFilter implements Filter{
 						}
 					}
 			}
-			//if(hasMatched){
+			
 			try {
 				checkAuthenticationResult(httpRequest, httpResponse);
 			} catch (SecurityException e) {
 				handleException(e, httpRequest, httpResponse);
 				return;
 			}
-			//}
+			
 			SecurityContext context = WebContextUtils.getSecurityContext(httpRequest);
 			if(context != null){
 				if(log.isDebugEnabled()){
@@ -341,10 +345,43 @@ public class SecurityFilter implements Filter{
 			}
 		}, null);
 		
-		Hashtable<String, String> props = new Hashtable<String, String>();
-		props.put("renderer", TemplatePageRenderer.class.getName());
-		RegUtils.reg(context, INodeRenderer.class.getName(), new TemplatePageRenderer(), props);
-		log.debug("Initializing endpoints renderers complete.");
+		
+		
+		OSGIUtils.requestService(ErrorLog.class.getName(), context, new OSGIUtils.OnServiceAvailable<ErrorLog>() {
+
+			@Override
+			public void serviceAvailable(String name, ErrorLog service) {
+				Hashtable<String, String> props = new Hashtable<String, String>();
+				props.put("renderer", TemplatePageRenderer.class.getName());
+				RequestUtils requestUtils = buildRequestUtils(service);
+				RegUtils.reg(context, INodeRenderer.class.getName(), new TemplatePageRenderer(requestUtils, service), props);
+				
+				JCRApplication application = (JCRApplication) contextParameters.get("JCRApplicationInstance");
+				if(application != null){
+					application.regExtension("feedback", new ErrorFeedbackExtension(service, requestUtils));
+					log.debug("Feedback extension registered.");
+				}
+				
+				log.debug("Initializing endpoints renderers complete.");
+			}
+			
+		});
+		
+	}
+	
+	private RequestUtils buildRequestUtils(ErrorLog errorLog){
+		JSONObject cfg = null;
+		try {
+			cfg = bundleConfig.getJSONObject("filter").
+					getJSONObject("errors").getJSONObject("feedback");
+			long ttl = cfg.getLong("requestValidity");
+			int maxrequests = cfg.getInt("maxNumberOfRequests");
+			return new RequestUtils(ttl, maxrequests, errorLog);
+		} catch (JSONException e) {
+			log.error("Unable to parse configuration for errors logging", e);
+			return new RequestUtils();
+		}
+		
 	}
 	
 	protected class EntryPointWrapper implements Comparable<EntryPointWrapper>{
