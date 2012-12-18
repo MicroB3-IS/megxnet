@@ -45,6 +45,7 @@ Bundle-ClassPath: .,
 Export-Package: net.megx.security.auth,
  net.megx.security.auth.web,
  net.megx.security.crypto,
+ net.megx.security.logging,
  net.megx.security.oauth,
  net.megx.security.utils,
  net.oauth
