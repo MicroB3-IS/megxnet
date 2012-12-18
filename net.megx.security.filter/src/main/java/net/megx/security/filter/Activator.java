@@ -9,6 +9,7 @@ import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.filter.http.impl.ErrorProducingServlet;
 import net.megx.security.filter.http.impl.RegistrationExtension;
 import net.megx.security.filter.ui.RegistrationManager;
 import net.megx.security.filter.ui.ResourcesManager;
@@ -29,19 +30,19 @@ public class Activator extends ResTplConfiguredActivator {
 	
 	private ContentModel contentModel;
 	
-	@Override
-	public void start(BundleContext context) throws Exception {
-		try{
-			super.start(context);
-			JSONObject cfg = getConfig();
-			Map<String, Object> contextParams = new HashMap<String, Object>();
-			contextParams.put("JCRApplicationInstance", getJCRApp());
-			Filter filter = new  SecurityFilter(context, cfg, contextParams);
-			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
-		}catch (Exception e) {
-			log.error("Failed to start security filter",e);
-		}
-	}
+//	@Override
+//	public void start(BundleContext context) throws Exception {
+//		try{
+//			super.start(context);
+//			JSONObject cfg = getConfig();
+//			Map<String, Object> contextParams = new HashMap<String, Object>();
+//			contextParams.put("JCRApplicationInstance", getJCRApp());
+//			Filter filter = new  SecurityFilter(context, cfg, contextParams);
+//			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
+//		}catch (Exception e) {
+//			log.error("Failed to start security filter",e);
+//		}
+//	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
@@ -56,6 +57,17 @@ public class Activator extends ResTplConfiguredActivator {
 	@Override
 	protected void registerExtensions(final JCRApplication app) {
 		contentModel = app.createContentModelInstance(getName());
+		
+		try{
+			JSONObject cfg = getConfig();
+			Map<String, Object> contextParams = new HashMap<String, Object>();
+			contextParams.put("JCRApplicationInstance", getJCRApp());
+			Filter filter = new  SecurityFilter(getBundleContext(), cfg, contextParams);
+			WebUtils.registerFilter(getBundleContext(), filter, "/.*", null, 1, null);
+		}catch (Exception e) {
+			log.error("Failed to start security filter",e);
+		}
+		
 		OSGIUtils.requestServices(getBundleContext(), new OSGIUtils.OnServicesAvailable(){
 			
 			@Override
@@ -81,6 +93,7 @@ public class Activator extends ResTplConfiguredActivator {
 			}
 		}, 
 		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
+		WebUtils.registerServlet(getBundleContext(), new ErrorProducingServlet(), "/produceError", null, null);
 	}
 	
 	

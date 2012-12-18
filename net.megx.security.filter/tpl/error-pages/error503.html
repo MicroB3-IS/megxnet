@@ -1,10 +1,13 @@
 <div class="errorPages">
   <h1>Error 503</h1>
   <h2>Service Unavailable</h2>
+  #if ($feedbackEnabled == "true")
   <p>
-  <form name="feedback" method="post" action="">
-    <textarea name="textarea" id="textarea" placeholder="Please describe the problem and send us feedback"></textarea>
+  <form name="feedback" method="post" action="$ctx.siteUrl/error/feedback">
+  	<input type="hidden" value="$REQUEST_ID" name="REQUEST_NONCE"/>
+    <textarea name="feedback" id="textarea" placeholder="Please describe the problem and send us feedback"></textarea>
     <button type="submit" name="button">Send us Feedback</button>
   </form>
   </p>
+  #end
 </div>

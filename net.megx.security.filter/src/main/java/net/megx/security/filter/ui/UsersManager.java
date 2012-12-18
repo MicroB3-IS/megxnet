@@ -13,6 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
@@ -244,5 +246,4 @@ public class UsersManager extends BaseRestService{
 			userPasswdEntry.getSession().save();
 		}
 	}
-	
 }
