@@ -37,7 +37,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
+/**
+ * 
+ * @author borce.jadrovski
+ *
+ */
 @Path("esa")
 public class EarthSamplingAppAPI extends BaseRestService{
 	private EarthSamplingAppService service;
@@ -69,7 +73,11 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}).registerTypeAdapter(Sample.class, new SampleDeserializer())
 		.create();
 	}
-	
+	/**
+	 * 
+	 * @param ID of the collector of the samples
+	 * @return JSON formatted string of the samples created by the collector if any. 
+	 */
 	@GET
 	@Path("samples/{creator}")
 	public String getSamplesForCollector(@PathParam("creator") String creator){
@@ -83,6 +91,11 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		
 	}
 	
+	/**
+	 * Stores samples in the database. These samples are being transferred from the user's device.
+	 * @param samplesJson JSON formatted string representing the samples to be stored in the database.
+	 * @return Comma delimited string containing the ID's of the successfully saved samples.
+	 */
 	@Path("samples")
 	@POST
 	public String storeSamples(@FormParam("samples")String samplesJson){
@@ -99,22 +112,11 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}
 	}
 	
-	/*@Path("photos")
-	@POST
-	public String storePhotos(@FormParam("photos")String photosJson){
-		if(photosJson == null){
-			return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
-		}
-		try{
-			SamplePhoto [] photos = gson.fromJson(photosJson, SamplePhoto [].class);
-			List<String> uuids = service.storePhotos(Arrays.asList(photos));
-			Result<List<String>> result = new Result<List<String>>(uuids);
-			return toJSON(result);
-		}catch (Exception e) {
-			return toJSON(handleException(e));
-		}
-	}*/
-	
+	/**
+	 * Store a single photo that belongs to already saved sample in the database.
+	 * @param request Contains the binary data for the photo to be saved along with the photos' UUID, MIME type and path properties.
+	 * @throws Exception If the photo to be saved doesn't belong to a sample that is already saved in the database, exception is thrown.
+	 */
 	@Path("photos")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@POST
@@ -158,7 +160,10 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		    }
 		}
 	}
-	
+	/**
+	 * Retrieve the configuration that will be used by the client application.
+	 * @return JSON formatted string of the configuration to be used by the client application.
+	 */
 	@Path("config")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
