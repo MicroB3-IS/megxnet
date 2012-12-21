@@ -15,24 +15,12 @@
  */
 package com.iw.megx.ws.mpidb;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.iw.megx.ws.dto.mpiws.BlastJob;
-import com.iw.megx.ws.dto.mpiws.BlastJobParams;
 import com.iw.megx.ws.dto.mpiws.GenomeOverview;
-import com.iw.megx.ws.dto.mpiws.HabLiteDist;
-import com.iw.megx.ws.dto.mpiws.IsMarine;
-import com.iw.megx.ws.dto.mpiws.Metagenome;
-import com.iw.megx.ws.dto.mpiws.RRNA;
-import com.iw.megx.ws.dto.mpiws.Sample;
-import com.iw.megx.ws.dto.mpiws.SamplingSite;
-import com.iw.megx.ws.dto.mpiws.Silva;
-import com.iw.megx.ws.dto.mpiws.WOA5;
-import com.iw.megx.ws.dto.mpiws.WOD5;
 import com.iw.megx.ws.service.mpiws.MpiWsService;
 
 public class Tester {
