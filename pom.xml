@@ -359,4 +359,6 @@
             <comments>A business-friendly permisseve OSS license</comments>
         </license>
     </licenses>
+    <name>megx.net</name>
+    <url>http://www.megx.net</url>
 </project>

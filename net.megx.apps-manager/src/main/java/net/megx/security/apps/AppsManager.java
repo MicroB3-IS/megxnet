@@ -36,19 +36,17 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
-
 @Path("/apps")
 public class AppsManager {
-	
+
 	private ConsumerService consumerService;
 	private TokenService tokenService;
 	private KeySecretProvider keySecretProvider;
-	
+
 	private Log log = LogFactory.getLog(getClass());
-	
+
 	private Gson gson = new Gson();
-	
-	
+
 	public AppsManager(ConsumerService consumerService,
 			TokenService tokenService, KeySecretProvider keySecretProvider) {
 		super();
@@ -56,36 +54,36 @@ public class AppsManager {
 		this.tokenService = tokenService;
 		this.keySecretProvider = keySecretProvider;
 	}
-	
+
 	@Path("all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getConsumers(@Context HttpServletRequest request){
+	public String getConsumers(@Context HttpServletRequest request) {
 		String user = request.getUserPrincipal().getName();
 		try {
 			return toJSON(consumerService.getConsumersForUser(user));
 		} catch (Exception e) {
-			log.error("Error while fetching applications:",e);
+			log.error("Error while fetching applications:", e);
 			return toJSON(handleException(e));
 		}
 	}
-	
-	
+
 	@Path("{key}/accessToken")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String generateAccessToken(@Context HttpServletRequest request, @PathParam("key") String appKey){
-		try{
+	public String generateAccessToken(@Context HttpServletRequest request,
+			@PathParam("key") String appKey) {
+		try {
 			String user = request.getUserPrincipal().getName();
 			List<Token> allTokens = tokenService.getTokensForUser(user);
-			for(Token token: allTokens){
-				if(token.getConsumerKey().equals(appKey)){
+			for (Token token : allTokens) {
+				if (token.getConsumerKey().equals(appKey)) {
 					return gson.toJson(token);
 				}
 			}
-			
+
 			Consumer consumer = consumerService.getConsumerForKey(appKey);
-			
+
 			Token token = new Token();
 			KeySecret keySecret = keySecretProvider.createKeySecretPair();
 			token.setAccessToken(true);
@@ -100,177 +98,174 @@ public class AppsManager {
 			token.setUser(u);
 			tokenService.saveToken(token.getToken(), token);
 			return toJSON(token);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error("Failed to generate access token: ", e);
 			return toJSON(handleException(e));
 		}
- 	}
-	
+	}
+
 	@PUT
 	@Path("{key}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateConsumer(
-			@PathParam("key") String appKey,
-			InputStream input, 
-			@Context HttpServletRequest request,
+	public String updateConsumer(@PathParam("key") String appKey,
+			InputStream input, @Context HttpServletRequest request,
 			@FormParam("name") String name,
 			@FormParam("description") String description,
 			@FormParam("callbackUrl") String callback,
-			@FormParam("oob") Boolean oob){
-		try{
+			@FormParam("oob") Boolean oob) {
+		try {
 			Consumer consumer = consumerService.getConsumerForKey(appKey);
-			if(consumer == null){
+			if (consumer == null) {
 				throw new Exception("No consumer with the specified key.");
 			}
-			if(!consumer.getLogname().equals(request.getUserPrincipal().getName())){
+			if (!consumer.getLogname().equals(
+					request.getUserPrincipal().getName())) {
 				throw new Exception("Action forbidden.");
 			}
-			if(name != null)
+			if (name != null)
 				consumer.setName(name);
-			if(description != null)
+			if (description != null)
 				consumer.setDescription(description);
-			if(callback != null){
-				if(validURL(callback)){
+			if (callback != null) {
+				if (validURL(callback)) {
 					consumer.setCallbackUrl(callback);
-				}else{
+				} else {
 					throw new Exception("Invalid callback URL.");
 				}
 			}
-			if(oob != null)
+			if (oob != null)
 				consumer.setOob(oob);
-			
+
 			consumerService.updateConsumer(consumer);
-			return  toJSON(consumer);
-			
-		}catch (Exception e) {
-			log.error("Unable to update consumer",e);
+			return toJSON(consumer);
+
+		} catch (Exception e) {
+			log.error("Unable to update consumer", e);
 			return toJSON(handleException(e));
 		}
 	}
-	
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addConsumer(@FormParam("name") String name,
-			@FormParam("description")String description,
+			@FormParam("description") String description,
 			@FormParam("callbackUrl") String callback,
-			@FormParam("oob") Boolean oob, 
-			@Context HttpServletRequest request){
-		try{
+			@FormParam("oob") Boolean oob, @Context HttpServletRequest request) {
+		try {
 			Consumer consumer = consumerService.getConsumer(name);
-			if(consumer != null){
+			if (consumer != null) {
 				throw new Exception("The consumer name is not available.");
 			}
 			consumer = new Consumer();
 			KeySecret keySecret = keySecretProvider.createKeySecretPair();
 			consumer.setKey(keySecret.getKey());
 			consumer.setSecret(keySecret.getSecret());
-			
+
 			String user = request.getUserPrincipal().getName();
 			consumer.setLogname(user);
-			
-			
+
 			consumer.setName(name);
 			consumer.setDescription(description);
 			consumer.setOob(oob);
-			if(callback != null){
-				if(validURL(callback)){
+			if (callback != null) {
+				if (validURL(callback)) {
 					consumer.setCallbackUrl(callback);
-				}else{
+				} else {
 					throw new Exception("Invalid callback URL.");
 				}
 			}
-			
-			
+
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 3);
 			consumer.setExpirationDate(calendar.getTime());
-			
-			if(callback == null){
+
+			if (callback == null) {
 				consumer.setOob(true); // out of band anyway
 			}
-			
-			
-			
+
 			return toJSON(consumerService.addConsumer(consumer));
-		}catch (Exception e) {
-			log.error("Unable to add consumer",e);
+		} catch (Exception e) {
+			log.error("Unable to add consumer", e);
 			return toJSON(handleException(e));
 		}
 	}
-	
+
 	@Path("{key}")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public String removeConsumer(@PathParam("key") String appKey,
-			@Context HttpServletRequest request){
-		try{
+			@Context HttpServletRequest request) {
+		try {
 			Consumer consumer = consumerService.getConsumerForKey(appKey);
-			if(consumer == null){
+			if (consumer == null) {
 				throw new Exception("No consumer with the specified key.");
 			}
-			if(!consumer.getLogname().equals(request.getUserPrincipal().getName())){
+			if (!consumer.getLogname().equals(
+					request.getUserPrincipal().getName())) {
 				throw new Exception("Action forbidden.");
 			}
 			consumerService.removeConsumer(consumer);
 			return toJSON(consumer);
-		}catch (Exception e) {
-			log.error("Failed to remove Consumer: ",e);
+		} catch (Exception e) {
+			log.error("Failed to remove Consumer: ", e);
 			return toJSON(handleException(e));
 		}
 	}
-	
-	
-	public String toJSON(Object object){
+
+	public String toJSON(Object object) {
 		return gson.toJson(object);
 	}
-	
-	public <T> T fromJSON(String jsonSrc, Class<T> type){
+
+	public <T> T fromJSON(String jsonSrc, Class<T> type) {
 		return gson.fromJson(jsonSrc, type);
 	}
-	
-	public Map<String, Object> handleException(Exception e){
+
+	public Map<String, Object> handleException(Exception e) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		log.error("An error occured while processing: ", e);
-		result.put("error",true);
-		result.put("message",e.getMessage());
-		result.put("data",transformException(e));
+		result.put("error", true);
+		result.put("message", e.getMessage());
+		result.put("data", transformException(e));
 		return result;
 	}
-	
-	protected Map<String, Object> transformException(Exception e){
+
+	protected Map<String, Object> transformException(Exception e) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		_mapException(result, e, new HashSet<Throwable>());
-		
+
 		return result;
 	}
-	
-	private void _mapException(Map<String, Object> map, Throwable e, Set<Throwable> mapped){
-		if(mapped.contains(e)){
+
+	private void _mapException(Map<String, Object> map, Throwable e,
+			Set<Throwable> mapped) {
+		if (mapped.contains(e)) {
 			return;
 		}
 		map.put("message", e.getMessage());
-		StackTraceElement [] ses = e.getStackTrace();
-		if(ses != null && ses.length > 0){
-			String [] stackTrace = new String [ses.length];
-			for(int i = 0; i < ses.length; i++){
+		StackTraceElement[] ses = e.getStackTrace();
+		if (ses != null && ses.length > 0) {
+			String[] stackTrace = new String[ses.length];
+			for (int i = 0; i < ses.length; i++) {
 				StackTraceElement el = ses[i];
-				String line = String.format("%s#%s (%s, line %d)",el.getClassName(), el.getMethodName(), el.getFileName(), el.getLineNumber());
+				String line = String.format("%s#%s (%s, line %d)",
+						el.getClassName(), el.getMethodName(),
+						el.getFileName(), el.getLineNumber());
 				stackTrace[i] = line;
 			}
 			map.put("stackTrace", stackTrace);
 		}
 		mapped.add(e);
-		if(e.getCause() != null){
+		if (e.getCause() != null) {
 			Map<String, Object> cause = new HashMap<String, Object>();
 			_mapException(cause, e.getCause(), mapped);
 			map.put("cause", cause);
 		}
 	}
-	
-	private boolean validURL(String url){
+
+	private boolean validURL(String url) {
 		try {
-			URL t = new URL(url);
+			new URL(url);
 		} catch (MalformedURLException e) {
 			return false;
 		}
