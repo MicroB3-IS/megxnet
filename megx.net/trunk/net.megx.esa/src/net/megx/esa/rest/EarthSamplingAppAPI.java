@@ -1,6 +1,7 @@
 package net.megx.esa.rest;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -104,12 +105,32 @@ public class EarthSamplingAppAPI extends BaseRestService{
 				return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
 			}
 			Sample [] samples = gson.fromJson(samplesJson, Sample [].class);
-			List<String> stored = service.storeSamples(Arrays.asList(samples));
-			Result<List<String>> result = new Result<List<String>>(stored);
-			return toJSON(result);
+			List<Sample> samplesToSave = new ArrayList<Sample>();
+			Map<String, String> errorMap = new HashMap<String, String>();
+			List<String> savedSamples = new ArrayList<String>();
+			Map<String, Object> result = new HashMap<String, Object>();
+			for(Sample sample : samples){
+				if(validateSample(sample)){
+					samplesToSave.add(sample);
+				}
+				else{
+					errorMap.put(sample.getId(), "Sample " + sample.getLabel() + " is missing latitude, longitude or label.");
+				}
+			}
+			savedSamples = service.storeSamples(samplesToSave);
+			result.put("saved", savedSamples);
+			result.put("errors", errorMap);
+			Result<Map<String, Object>> resultToReturn = new Result<Map<String, Object>>(result);
+			return toJSON(resultToReturn);
 		}catch (Exception e) {
 			return toJSON(handleException(e));
 		}
+	}
+	private boolean validateSample(Sample sample){
+		if(sample.getLat() == null || sample.getLon() == null || sample.getLabel() == null){
+			return false;
+		}
+		return true;
 	}
 	
 	/**
