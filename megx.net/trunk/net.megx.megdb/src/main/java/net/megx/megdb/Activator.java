@@ -41,7 +41,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 			log.info("Megdb Services start success.");
 		} catch (Exception e) {
 			log.error("Megdb Services failed to startup: " + e.getMessage(), e);
-			throw e;
+			//throw e;
 		}
 	}
 
