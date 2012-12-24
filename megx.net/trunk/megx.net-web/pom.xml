@@ -190,7 +190,7 @@
                         <containerId>${mvn.cargo.container.id}</containerId>
                         <!-- Location of installation -->
                         <home>${mvn.tomcat.home}</home>
-                        <timeout>50000</timeout>
+                        <timeout>100000</timeout>
                         <!-- 
                         <output>${project.build.directory}/${mvn.cargo.container.id}/container.log</output>
                          -->
