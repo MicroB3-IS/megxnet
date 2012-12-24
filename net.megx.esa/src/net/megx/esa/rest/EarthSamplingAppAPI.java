@@ -114,7 +114,12 @@ public class EarthSamplingAppAPI extends BaseRestService{
 					samplesToSave.add(sample);
 				}
 				else{
-					errorMap.put(sample.getId(), "Sample " + sample.getLabel() + " is missing latitude, longitude or label.");
+					if(sample.getLabel() != null){
+						errorMap.put(sample.getId(), "Sample " + sample.getLabel() + " is missing latitude or longitude");
+					}
+					else{
+						errorMap.put(sample.getId(), "Sample " + sample.getId() + " is missing latitude, longitude or label.");
+					}
 				}
 			}
 			savedSamples = service.storeSamples(samplesToSave);
@@ -127,7 +132,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}
 	}
 	private boolean validateSample(Sample sample){
-		if(sample.getLat() == null || sample.getLon() == null || sample.getLabel() == null){
+		if(sample.getLat() == null || sample.getLon() == null){
 			return false;
 		}
 		return true;
