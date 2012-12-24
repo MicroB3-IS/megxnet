@@ -2,13 +2,13 @@
 	path: '$resources/net.megx.megdb',
 	myBatisConfigFile: 'config/my-batis-config.xml',
 	dbConfig:{
-		development.url: 'jdbc:postgresql://localhost/authdb',
-		development.username: 'postgres',
-		development.password:'pg-admin-iw',
-		development.driver: 'org.postgresql.Driver'
-	},
+		url: 'jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.name}',
+		username: '${mvn.db.user}',
+		password:'${mvn.db.password}',
+		driver: 'org.postgresql.Driver'
+	}, 	
 	passwordHashing:{
-		saltBytes: 24,
+		saltBytes: 24, 
 		hashBytes: 24,
 		PBKDF2iterations: 1000
 	},

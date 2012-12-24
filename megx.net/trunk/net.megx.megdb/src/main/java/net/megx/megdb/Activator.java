@@ -55,16 +55,15 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		return "net.megx.megdb";
 	}
 
-	protected SqlSessionFactory buildSQLSessionFactory(JSONObject config)
+	protected SqlSessionFactory buildSQLSessionFactory(JSONObject chonConfig)
 			throws JSONException, IOException {
 		log.debug("Start building SQLSessionFactory...");
 		SqlSessionFactory factory = null;
-		String configFile = config.getString("myBatisConfigFile");
-		log.debug("MyBatis config file location: " + configFile);
+		String myBatisConfigFile = chonConfig.getString("myBatisConfigFile");
+		log.debug("MyBatis config file location: " + myBatisConfigFile);
 		factory = new SqlSessionFactoryBuilder().build(
-				Resources.getResourceAsReader(configFile),
-				getDatabaseProperties(config));
-
+				Resources.getResourceAsReader(myBatisConfigFile),
+				getDatabaseProperties(chonConfig));
 		return factory;
 	}
 
