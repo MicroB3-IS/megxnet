@@ -1,0 +1,70 @@
+#set( $pg1 = ($paging.offset / $paging.limit)+1)
+#set( $pgm2 = $pg1 - 2 )
+#set( $pgm1 = $pg1 - 1 )
+#set( $pg2 = $pg1 + 1 )
+#set( $pg3 = $pg1 + 2 )
+
+#set( $po1 = $paging.offset )
+#set( $po2 = $paging.offset + $paging.limit  )
+#set( $pom1 = $paging.offset - $paging.limit  )
+#set( $po3 = $paging.offset + 2*$paging.limit )
+#set( $pom2 = $paging.offset - 2*$paging.limit )
+
+#set ($mpage = ($paging.count / $paging.limit) + 1 )
+#set ($lastpage = ($mpage - 1) * $paging.limit)
+
+#set ($lastonpage = $paging.offset + $paging.limit - 1 )
+
+#set ($firstel = $paging.offset + 1)
+#set ($lastel = $lastonpage + 1)
+
+#if( $lastel > $paging.count )
+#set ($lastel = $paging.count)
+#end
+
+
+<div class="bottom">
+	<div id="ovtab_info" class="dataTables_info">Showing $firstel to $lastel of $paging.count entries </div>
+	<div class="dataTables_paginate">
+		<span class="paginate_button first" offset=0>First</span>
+		#if( ($pgm1 > 0) && ($pgm1 <= $mpage)  )
+		<span class="paginate_button previous" offset=$pom1>Previous</span>
+		#end
+		<span>
+			#if( ($pgm2 > 0) && ($pgm2 <= $mpage) )
+			<span class="paginate_button" offset=$pom2>$pgm2</span>
+			#end
+			#if( ($pgm1 > 0) && ($pgm1 <= $mpage)  )
+			<span class="paginate_button" offset=$pom1>$pgm1</span>
+			#end
+			#if( ($pg1 > 0) && ($pg1 <= $mpage) )
+			<span class="paginate_active" offset=$po1>$pg1</span>
+			#end
+			#if( ($pg2 > 0) && ($pg2 <= $mpage) )
+			<span class="paginate_button" offset=$po2>$pg2</span>
+			#end
+			#if( ($pg3 > 0) && ($pg3 <= $mpage) )
+			<span class="paginate_button" offset=$po3>$pg3</span>
+			#end
+		</span>
+		#if( ($pg2 > 0) && ($pg2 <= $mpage) )
+		<span class="paginate_button next" offset=$po2>Next</span>
+		#end
+		<span class="paginate_button last" offset=$lastpage>Last</span>
+	</div>
+</div>
+<script>
+	$(".paginate_active,.paginate_button").click(function(){
+		//alert($(this).attr("offset"));
+		var limit = $(".limit").val();
+		window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + "?offset=" + $(this).attr("offset") + "&limit=" + limit;
+	});
+	
+	$(".limit").change(function(){
+		//alert($(this).attr("offset"));
+		var limit = $(this).val();
+		window.location.href = window.location.protocol + "//" + window.location.host + window.location.pathname + "?offset=0&limit=" + limit;
+	});	
+	
+
+</script>
