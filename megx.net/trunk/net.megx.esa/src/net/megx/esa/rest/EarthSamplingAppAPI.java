@@ -17,6 +17,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -28,6 +29,7 @@ import net.megx.model.esa.SamplePhoto;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -146,7 +148,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	@Path("photos")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@POST
-	public void storePhotos(@Context HttpServletRequest request) throws Exception{
+	public void storePhotos(@Context HttpServletRequest request) throws WebApplicationException{
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if(isMultipart){
@@ -156,7 +158,12 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			
 			// Parse the request
-			List items = upload.parseRequest(request);
+			List items;
+			try {
+				items = upload.parseRequest(request);
+			} catch (FileUploadException e) {
+				throw new WebApplicationException(e);
+			}
 			SamplePhoto photoToSave = new SamplePhoto();
 			
 			Iterator iter = items.iterator();
@@ -179,10 +186,15 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			    }
 			}
 			
-		    List<String> uuids = service.storePhotos(Arrays.asList(photoToSave));
+		    List<String> uuids;
+			try {
+				uuids = service.storePhotos(Arrays.asList(photoToSave));
+			} catch (Exception e) {
+				throw new WebApplicationException(e);
+			}
 		    
 		    if(uuids.size() == 0){
-		    	throw new Exception();
+		    	throw new WebApplicationException();
 		    }
 		}
 	}
