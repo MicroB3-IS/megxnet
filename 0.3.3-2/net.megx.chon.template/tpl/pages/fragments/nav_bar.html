@@ -1,0 +1,52 @@
+<nav>
+  <ul>
+    <li><a href="$ctx.siteUrl">home</a>
+      <ul>
+        #foreach($m in $ext.menu.home.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/tools/About-Genes-Mapserver-3.0">tools</a>
+      <ul>
+        #foreach($m in $ext.menu.tools.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+    #set($menuBrowse=$ext.menu.browse)
+    <li><a href="$menuBrowse.fullLink">$menuBrowse.title</a>
+      <ul class="menu-list">
+        #foreach($m in $menuBrowse.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/portal/edutainment.html">edutainment</a>
+      <ul class="menu-list">
+        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer</a></li>
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/portal/toolbox.html">portal</a>
+      <ul>
+        <li><a href="$ctx.siteUrl/portal/toolbox.html"><b>Overview</b></a></li>
+        <li><span>Maintained</span></li>
+        <li><a href="http://www.jcoast.net" target="_blank">JCoast</a></li>
+        <li><a href="#">MicHanThi</a></li>
+        <li><a href="#">MetaBar</a></li>
+        <li><a href="#">MADA</a></li>
+        <li><a href="#">Ribalign</a></li>
+        <li><a href="http://soma.arb-silva.de" target="_blank">TaxSOM</a></li>
+        <li><span>Unmaintained</span></li>
+        <li><a href="#">MetaLook</a></li>
+        <li><a href="#">MetaMine</a></li>
+        <li><a href="#">Tetra</a></li>
+      </ul>
+    </li>
+	<!--li><a href="$ctx.siteUrl/portal/news/news.html">news</a></li>
+	<li><a href="$ctx.siteUrl/portal/faq.html">faq</a></li-->
+	<li><a href="$ctx.siteUrl/portal/contact.html">contact</a></li>
+  </ul>
+</nav>
+<div class="clear"></div>
+<noscript><h3 style="color:#990000;">To get the full functionality, please, activate javascript in your browser!</h3></noscript>
