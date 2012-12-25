@@ -20,7 +20,7 @@
     <!-- error-page>
     	<error-code>403</error-code>
     	<location>/login</location>
-    </error-page -->
+    </error-page 
     <error-page>
     	<exception-type>java.lang.Throwable</exception-type>
     	<location>/error/500</location>
@@ -45,4 +45,5 @@
     	<error-code>400</error-code>
     	<location>/error/400</location>
     </error-page>
+    -->
 </web-app>
