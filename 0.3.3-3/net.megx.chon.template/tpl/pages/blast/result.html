@@ -1,0 +1,83 @@
+<script type="text/javascript" src="$ctx.siteUrl/js/mustache.js"></script>
+
+#include("pages/blast/css.html")	
+#set( $job = $ext.blast.getBlastJob($jobId) )
+
+<div id="blast_ct" style="min-height: 920px">
+	<div class="panel_ct">
+		<div class="title">Job Summary</div>
+		<div style="clear: both"></div>
+		<div class="panelContent">
+		<table style="width: 100%">
+			<tr>
+				<td class="label">Job Id</td>
+				<td class="value">$job.jobId</td>
+				<td class="label">Submitted</td>
+				<td class="value">$ext.utils.formatDate($job.submitted, "MM/dd/yyyy")</td>
+				<td class="label">Query Sequence</td>
+				<td class="value"><a href="#">$job.querySequence</a></td>
+			</tr>
+			<tr>
+				<td class="label">Job Name</td>
+				<td class="value">$job.jobName</td>
+				<td class="label">Program</td>
+				<td class="value">$job.program</td>
+				<td class="label">Subject Sequence</td>
+				<td class="value">$job.subjectSequence</td>
+			</tr>
+			<tr>
+				<td class="label">Status</td>
+				<td class="value $job.statusColor">$job.status</td>
+				<td class="label"># Hits</td>
+				<td class="value">$job.hits</td>
+				<td class="label">&nbsp;</td>
+				<td class="value">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="label">Job Parementers</td>
+				<td class="value green"><a href="#">view</a></td>
+				<td class="label">&nbsp;</td>
+				<td class="value">&nbsp;</td>
+				<td class="label">&nbsp;</td>
+				<td class="value">&nbsp;</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+	<div class="panel_ct">
+		<div class="title">Matching Sequences</div>
+		<div style="clear: both"></div>
+		<div class="panelContent">
+			#parse("pages/blast/seq.table.html")
+			<div class="notes">
+				<p> * Hover over an Evalue to View the alignment </p>
+				<p> * Click on a row to see alignment details </p>
+				<p> * Blast results were computed using NCBI Blast 2.2.18 XML output. Jobs before 12/17/09 used version 2.2.15 </p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	#parse("pages/blast/js.vtpl.js")
+</script>
+
+<script id="seqAlignmentLoading" type="text/html">
+	<div class="loadingDiv"> Loading ... <img src="$ctx.siteUrl/images/loading.gif" /> </div>
+</script>
+
+<script id="sa_tpl" type="text/html">
+	#parse("pages/blast/seq.alignment.tpl.html")
+</script>
+
+<script id="export_menu_tpl" type="text/html">
+## dis_0 class puts display:none on element
+	<div class="menu_info"> {{numSelected}} {{itLabel}} selected <div class="dis_{{numSelected}}" style="font-weight: normal">Select export format:</div> </div>
+	<ul class="menu dis_{{numSelected}}">
+			<li> <a class="exportLink" href="#" onclick="return false;"> All Matching Query Sequences as FASTA </a> </li>
+			<li> <a class="exportLink" href="#" onclick="return false;"> All Matchin Subject Sequences as FASTA </a> </li>
+			<li> <a class="exportLink" href="#" onclick="return false;"> All BLAST Results with Metadata as CSV  </a> </li>
+			<li> <a class="exportLink" href="#" onclick="return false;"> All BLAST Results with Metadata as MS-Excel </a> </li>
+			<li> <a class="exportLink" href="#" onclick="return false;"> All BLAST Results as NCBI XML </a> </li>
+	</ul>
+</script>
