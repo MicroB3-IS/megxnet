@@ -11,6 +11,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.chon.cms.core.JCRAppConfgEnabledActivator;
+import org.chon.cms.core.JCRApplication;
 import org.chon.web.RegUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +31,13 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		}
 		// super.start will read json config
 		super.start(context);
+	}
+	
+
+	@Override
+	protected void onAppAdded(BundleContext context, JCRApplication app) {
+		// config available only when JCRApplication available
+		// this method will be called when JCRApplication is available
 		JSONObject cfg = getConfig();
 		log.debug("Megdb Services starting.");
 		try {
