@@ -29,7 +29,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		if(pgDriver == null) {
 			throw new ClassNotFoundException("org.postgresql.Driver not found!!!");
 		}
-		// super.start will read json config
+		// super.start calls initialization from JCRAppConfgEnabledActivator
 		super.start(context);
 	}
 	
