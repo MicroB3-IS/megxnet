@@ -36,6 +36,9 @@ public class Activator extends JCRAppConfgEnabledActivator {
 
 	@Override
 	protected void onAppAdded(BundleContext context, JCRApplication app) {
+		//must call super here to copyNonExistingConfigsToDistConfigDir
+		super.onAppAdded(context, app);
+		
 		// config available only when JCRApplication available
 		// this method will be called when JCRApplication is available
 		JSONObject cfg = getConfig();
