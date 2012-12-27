@@ -38,11 +38,15 @@ public class ExceptionPageNode extends TemplatePageNode{
 		
 		if("".equals(message) && "".equals(code) && type ==null && exception == null){
 			resp.getServletResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
 		}
+		
+		int httpErrorCode = Integer.parseInt(code);
 		
 		Map<String, Object> exceptionContext = new HashMap<String, Object>();
 		
 		String requestURI = (String) request.getAttribute("javax.servlet.error.request_uri");
+		
 		exceptionContext.put("message", message);
 		exceptionContext.put("exception", exception);
 		exceptionContext.put("code", code);
@@ -50,6 +54,9 @@ public class ExceptionPageNode extends TemplatePageNode{
 		exceptionContext.put("servlet_name", request.getAttribute("javax.servlet.error.servlet_name"));
 		exceptionContext.put("exception", exception);
 		exceptionContext.put("request_uri", requestURI);
+		
+		
+		System.out.println(String.format("[%s] (%s) -> %s {%s}", requestURI, code, message, exception));
 		
 		Principal up = req.getServletRequset().getUserPrincipal();
 		String user = null;
@@ -65,6 +72,7 @@ public class ExceptionPageNode extends TemplatePageNode{
 			}
 		}
 		
+		resp.getServletResponse().setStatus(httpErrorCode);
 		if(logError && !renderer.getRequestUtils().errorLimitReached(request)){
 			
 			String remoteIp = request.getRemoteAddr();
@@ -84,6 +92,7 @@ public class ExceptionPageNode extends TemplatePageNode{
 		String template = get("template");
 		if(template == null){
 			resp.getServletResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
 		}
 		String baseTemplate = get("baseTemplate");
 		if(baseTemplate == null){
