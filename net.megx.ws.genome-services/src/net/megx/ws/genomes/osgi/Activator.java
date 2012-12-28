@@ -8,8 +8,10 @@ import net.megx.storage.StorageSessionProvider;
 import net.megx.utils.OSGIUtils;
 import net.megx.ws.genomes.DiNucOddsRatio;
 import net.megx.ws.genomes.GCContent;
+import net.megx.ws.genomes.MD5HashMultiFasta;
 import net.megx.ws.genomes.SixFrameTranslation;
 import net.megx.ws.genomes.resources.WorkspaceAccess;
+import net.megx.ws.genomes.rest.FastaMD5Checksum;
 import net.megx.ws.genomes.rest.GCContentService;
 import net.megx.ws.genomes.rest.SixFrameTranslationService;
 
@@ -68,13 +70,18 @@ public class Activator extends ResTplConfiguredActivator {
 							SixFrameTranslationService sixFrameTranslationService = new SixFrameTranslationService();
 							sixFrameTranslationService.setSixFrameTranslation(sixFrameTranslation);
 							
+							
+							FastaMD5Checksum checkSumService = new FastaMD5Checksum(new MD5HashMultiFasta(access));
+							
 							RegUtils.reg(getBundleContext(), 
 									GCContentService.class.getName(), 
 									gcContentService, null);
 							RegUtils.reg(getBundleContext(), 
 									SixFrameTranslationService.class.getName(), 
 									sixFrameTranslationService, null);
-							
+							RegUtils.reg(getBundleContext(), 
+									FastaMD5Checksum.class.getName(),
+									checkSumService, null);
 							log.info("GENOME Services available.");
 						} catch (JSONException e) {
 							log.error("Failed to startup GENOME Services: ", e);

@@ -40,20 +40,31 @@ import com.google.gson.Gson;
  */
 
 @Provider
-public class ServiceExceptionMapper implements ExceptionMapper<WebApplicationException>{
+public class ServiceExceptionMapper implements ExceptionMapper<Exception>{
 	
 	private Gson gson = new Gson();
 	
 	protected static Log log = LogFactory.getLog(ServiceExceptionMapper.class);
 	
-	public Response toResponse(WebApplicationException e) {
+	//@Context
+	//private HttpServletResponse servletResponse;
+	
+	public Response toResponse(Exception e) {
 		Result<Map<String, Object>> exception = 
 				BaseRestService.exceptionToResult(e, false);
-		return Response.
-				status(e.getResponse().getStatus()).
-				entity(gson.toJson(exception)).
-				type(MediaType.APPLICATION_JSON).
-				build();
+		if(e  instanceof WebApplicationException){
+			return Response.
+					status( ((WebApplicationException)e).getResponse().getStatus()).
+					entity(gson.toJson(exception)).
+					type(MediaType.APPLICATION_JSON).
+					build();
+		}else{
+			return Response.
+					status(500).
+					entity(gson.toJson(exception)).
+					type(MediaType.APPLICATION_JSON).
+					build();
+		}
 	}
 	
 }
