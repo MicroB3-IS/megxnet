@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>com.choncms</groupId>
 			<artifactId>choncms.starter</artifactId>
-			<version>1.6</version>
+			<version>1.4</version>
 		</dependency>
 
 
@@ -73,7 +73,7 @@
 							<message>File must exist in correct version for succesful lauch</message>
 							<files>
 								<file>${mvn.work.dir.path}</file>
-								<file>${mvn.work.dir.path}/config</file>
+								<file>${mvn.work.dir.path}/repository</file>
 								<file>${mvn.work.dir.path}/plugins</file>
 								<!-- This is just an indicator if Chon plugins were build from net.megx.product -->
 								<file>${mvn.work.dir.path}/plugins/org.chon.cms.core_1.0.0.jar</file>
