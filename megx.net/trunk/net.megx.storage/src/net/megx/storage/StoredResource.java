@@ -10,4 +10,5 @@ public interface StoredResource {
 	public URI getURI();
 	public URI getAccessURI();
 	public ResourceMeta getResourceMeta();
+	public void dispose();
 }

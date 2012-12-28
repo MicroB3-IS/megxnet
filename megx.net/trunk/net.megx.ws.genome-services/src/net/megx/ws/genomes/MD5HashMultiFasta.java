@@ -60,8 +60,9 @@ public class MD5HashMultiFasta extends BaseGenomeService {
 			}
 		});
 		is.close();
-
-		resource.getResourceMeta().setAttr("fasta:md5-hash", sw);
+		
+		resource.getResourceMeta().setAttr("hash", sw);
+		resource.dispose();
 	}
 
 	public String getMd5Hash(String username, String inputFasta)
@@ -69,7 +70,7 @@ public class MD5HashMultiFasta extends BaseGenomeService {
 			IOException, Exception {
 		StoredResource resource = getAccess().getResourceJCR(username,
 				inputFasta);
-		String md5 = (String)resource.getResourceMeta().getAttr("fasta:md5-hash");
+		String md5 = (String)resource.getResourceMeta().getAttr("hash");
 		return md5;
 	}
 }

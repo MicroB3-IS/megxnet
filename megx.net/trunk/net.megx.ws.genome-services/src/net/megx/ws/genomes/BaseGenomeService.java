@@ -48,6 +48,10 @@ public class BaseGenomeService extends BaseRestService{
 				line.append((char)c);
 			}
 		}
+		if(line.length() > 0){
+			lineHandler.onLine(line.toString(), "");
+			lineHandler.end();
+		}
 	}
 	
 	private static class FastaFileLineHandler{
@@ -77,7 +81,18 @@ public class BaseGenomeService extends BaseRestService{
 				headerLength = line.length();
 				headerSeparator = lineEnd;
 			}
-			fasta.append(line).append(lineEnd);
+			fasta.append(line);//.append(lineEnd);
+		}
+		
+		public void end() throws Exception{
+			if(fasta.length() > 0){
+				String fs = fasta.toString();
+				if(!fs.startsWith(">")){
+					throw new Exception("Not a fasta sequence");
+				}
+				FASTAEntry entry = new FASTAEntry(fasta.toString(), headerLength, headerLength+headerSeparator.length());
+				callback.process(entry);
+			}
 		}
 	}
 }

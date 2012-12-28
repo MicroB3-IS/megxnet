@@ -10,7 +10,9 @@ import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Binary;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
@@ -25,6 +27,8 @@ import net.megx.storage.StorageSecuirtyException;
 import net.megx.storage.StorageSession;
 import net.megx.storage.StoredResource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.chon.cms.model.ContentModel;
 
 public class WorkspaceAccess {
@@ -34,6 +38,7 @@ public class WorkspaceAccess {
 	private ContentModel contentModel;
 	private StorageSession storageSession;
 	
+	private Log log = LogFactory.getLog(getClass());
 	
 	public WorkspaceAccess(ContentModel contentModel,
 			StorageSession storageSession) {
@@ -147,7 +152,9 @@ public class WorkspaceAccess {
 	}
 	
 	private class JCRResourceMeta implements ResourceMeta{
-
+		
+		private static final String META_NODE_NAME = "WORKSPACE_META";
+		
 		private Node contentNode;
 		public JCRResourceMeta(Node contentNode) {
 			this.contentNode = contentNode;
@@ -189,7 +196,13 @@ public class WorkspaceAccess {
 		public Object getAttr(String meta) throws StorageSecuirtyException,
 				ResourceAccessException {
 			try {
-				return contentNode.getProperty(meta).getString();
+				if(contentNode.getParent() != null){
+					Property p = getMetaNode().getProperty(meta);
+					if(p != null){
+						return p.getValue().getString();
+					}
+				}
+				return null;
 			} catch (Exception e) {
 				throw new ResourceAccessException(e);
 			}
@@ -200,10 +213,19 @@ public class WorkspaceAccess {
 				throws StorageSecuirtyException, ResourceAccessException {
 			try{
 				if(contentNode.getParent() != null){
-					contentNode.getParent().setProperty(name, value.toString());
+					getMetaNode().setProperty(name, value.toString());
 				}
 			}catch (RepositoryException e) {
 				throw new ResourceAccessException(e);
+			}
+		}
+		
+		private Node getMetaNode() throws AccessDeniedException, ItemNotFoundException, PathNotFoundException, RepositoryException{
+			if(this.contentNode.hasNode(META_NODE_NAME)){
+				return this.contentNode.getNode(META_NODE_NAME);
+			}else{
+				Node meta = this.contentNode.addNode(META_NODE_NAME,"nt:unstructured");
+				return meta;
 			}
 		}
 		
@@ -261,13 +283,31 @@ public class WorkspaceAccess {
 				try {
 					Binary binary = contentNode.getSession().getValueFactory().createBinary(new ByteArrayInputStream(buffer));
 					contentNode.getProperty("jcr:data").setValue(binary);
-					contentNode.getSession().save();
 					binary.dispose();
 				} catch (RepositoryException e) {
 					throw new IOException(e);
 				}
-				
 			}
+			try{
+				contentNode.getSession().save();
+			}catch (Exception e) {
+				throw new IOException(e);
+			}
+		}
+
+		@Override
+		public void dispose() {
+			try{
+				close();
+			}catch(IOException e){
+				log.warn("An IOException occured when disposing resource: " + getURI(), e);
+			}
+		}
+		
+		@Override
+		protected void finalize() throws Throwable {
+			super.finalize();
+			dispose();
 		}
 	}
 	
