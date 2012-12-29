@@ -14,6 +14,13 @@
 	<name>megx.net</name>
 	<url>http://www.megx.net</url>
 
+<pluginRepositories>
+    <pluginRepository>
+        <id>Wakaleo Repository</id>
+        <url>http://www.wakaleo.com/maven/repos/</url>
+    </pluginRepository>
+</pluginRepositories>
+
 	<repositories>
 		<repository>
 			<id>chon-repo</id>
@@ -310,6 +317,32 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 			</plugin>
+
+
+
+<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.1</version>
+            <configuration>
+                <reportPlugins>
+                    <plugin>
+                        <groupId>com.wakaleo.schemaspy</groupId>
+                        <artifactId>maven-schemaspy-plugin</artifactId>
+                        <version>1.0.4</version>
+                        <configuration>
+                            <databaseType>pgsql</databaseType>
+              <jdbcUrl>jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.name}</jdbcUrl>
+                            <database>${mvn.db.name}</database>
+                            <host>${mvn.db.host}</host>
+                            <user>${mvn.db.user}</user>
+                            <password></password>
+ <schemas>core,cv</schemas>
+                        </configuration>
+                    </plugin>
+                </reportPlugins>
+            </configuration>
+        </plugin>
 			<!-- TODO check if it is necessary her or better in net.megx.product -->
 			<plugin>
 				<groupId>${tycho.groupid}</groupId>
