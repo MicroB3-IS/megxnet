@@ -19,7 +19,7 @@ public class Activator implements BundleActivator {
 	// remote mapserver basic url
 	private static final String PROP_MAPSERVER_URL = "mapserver.remote.url";
 	
-	//map file that goes as a paameter to maprser.remote.url
+	//map file that goes as a parameter to maprser.remote.url
 	private static final String PROP_MAPSERVER_MAPFILE = "mapserver.map.file";
 	
 	
