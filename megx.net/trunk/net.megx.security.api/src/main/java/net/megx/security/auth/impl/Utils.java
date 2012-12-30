@@ -1,10 +1,7 @@
 package net.megx.security.auth.impl;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import net.megx.security.auth.SecurityContext;
 
 public class Utils {
 	public static boolean isArray(Object object){

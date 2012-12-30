@@ -15,13 +15,11 @@
  */
 package net.megx.chon.core.ui;
 
-import java.text.Format;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.chon.cms.model.content.IContentNode;
-import org.chon.megx.net.services.ui.pub.IGenomes;
 import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 

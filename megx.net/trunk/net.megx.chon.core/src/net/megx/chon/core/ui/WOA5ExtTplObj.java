@@ -20,12 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.chon.cms.model.content.IContentNode;
-import org.chon.megx.net.services.ui.pub.IGenomes;
 import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 
-import com.iw.megx.ws.dto.mpiws.GenomeOverview;
-import com.iw.megx.ws.dto.mpiws.Metagenome;
 import com.iw.megx.ws.dto.mpiws.WOA5;
 import com.iw.megx.ws.service.mpiws.MpiWsService;
 

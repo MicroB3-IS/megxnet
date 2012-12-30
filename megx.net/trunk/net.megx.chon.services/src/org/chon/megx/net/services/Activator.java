@@ -19,7 +19,6 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.springframework.context.ApplicationContext;
 
-import com.iw.megx.ws.service.mixsws.MixsWsService;
 import com.iw.megx.ws.service.mpiws.MpiWsService;
 
 public class Activator implements BundleActivator {
