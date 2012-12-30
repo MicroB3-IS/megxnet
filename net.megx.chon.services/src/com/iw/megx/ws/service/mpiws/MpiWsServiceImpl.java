@@ -15,7 +15,6 @@
  */
 package com.iw.megx.ws.service.mpiws;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.iw.megx.ws.dao.mpiws.MpiWsDao;

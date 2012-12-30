@@ -19,7 +19,6 @@ import java.util.List;
 
 import com.iw.megx.ws.dto.mpiws.BlastJob;
 import com.iw.megx.ws.dto.mpiws.BlastJobParams;
-import com.iw.megx.ws.dto.mpiws.BlastStatus;
 import com.iw.megx.ws.dto.mpiws.GenomeOverview;
 import com.iw.megx.ws.dto.mpiws.HabLiteDist;
 import com.iw.megx.ws.dto.mpiws.IsMarine;

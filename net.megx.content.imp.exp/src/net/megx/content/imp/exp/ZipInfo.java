@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.XML;
-
 import com.google.gson.Gson;
 
 public class ZipInfo {

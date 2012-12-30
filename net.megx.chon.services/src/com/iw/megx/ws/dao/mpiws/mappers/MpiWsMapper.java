@@ -17,8 +17,6 @@ package com.iw.megx.ws.dao.mpiws.mappers;
 
 import java.util.List;
 
-import javax.ws.rs.QueryParam;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.iw.megx.ws.dto.mpiws.BlastJob;

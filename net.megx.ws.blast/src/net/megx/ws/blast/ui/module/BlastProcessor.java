@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.megx.chon.core.model.IModule;
 import net.megx.chon.core.model.ModuleContentNode;
 import net.megx.ws.blast.BlastService;

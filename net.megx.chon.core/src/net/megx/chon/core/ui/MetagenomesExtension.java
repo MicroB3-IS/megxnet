@@ -16,7 +16,6 @@
 package net.megx.chon.core.ui;
 
 import org.chon.cms.model.content.IContentNode;
-import org.chon.megx.net.services.ui.pub.IGenomes;
 import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.osgi.framework.BundleContext;
