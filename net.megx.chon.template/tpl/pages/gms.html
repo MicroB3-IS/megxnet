@@ -13,12 +13,7 @@ var gms_host_url = "$ctx.siteUrl";
 </script> 
 <script src="$ctx.siteUrl/gms-res/js/gmslayers.js" type="text/javascript" defer></script> 
 
-<!-- This solves temporarliy the menu behind map story --> 
-<br />
-<br />
-<noscript>
-<h1 style="color:red;">To get the full functionality please activate javascript in your browser!</h1>
-</noscript>
+
 <form name="test" action="" onreset="resetMap()">
 <div class="gms_outerbox">
 <div class="sideMenu">
@@ -229,7 +224,7 @@ var loadfnk = function() {
 	cMap();
 }
 if (window.addEventListener) {
-	 window.addEventListener("load", loadfnk, false) //invoke function
+	 window.addEventListener("load", loadfnk, false)
 } else if (window.attachEvent) {
     window.attachEvent("onload", loadfnk);
 } else {
