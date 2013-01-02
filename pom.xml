@@ -62,7 +62,7 @@
         <mvn.db.password />
 
     </properties>
-
+    <!-- modules only include plugins -->
     <modules>
         <!-- build megx.net core bundle -->
         <module>net.megx.chon.core</module>
@@ -111,7 +111,6 @@
         <!-- what bundles will be included in the final build <module>net.megx.product</module> -->
         <!-- does not need to be build always: TODO configure the setup.properties
             according to build -->
-        <module>megx.net-web</module>
 
     </modules>
 
@@ -165,7 +164,6 @@
             <!-- </dependency> -->
         </dependencies>
     </dependencyManagement>
-
 
     <build>
         <resources>
