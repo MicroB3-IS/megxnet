@@ -21,6 +21,7 @@
     <properties>
         <mvn.host.name>localhost</mvn.host.name>
         <mvn.host.port>${mvn.tomcat.port}</mvn.host.port>
+        <mvn.site.url>http://${mvn.host.name}:${mvn.host.port}</mvn.site.url>
         <mvn.megx.war.file.name>megx.net</mvn.megx.war.file.name>
         <mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
     </properties>
