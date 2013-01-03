@@ -1,6 +1,5 @@
 package net.megx.security.filter.http.impl;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.megx.model.logging.LoggedError;
+import net.megx.security.auth.Authentication;
+import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.filter.http.TemplatePageNode;
 
 import org.chon.cms.core.model.renderers.VTplNodeRenderer;
@@ -56,12 +58,15 @@ public class ExceptionPageNode extends TemplatePageNode{
 		exceptionContext.put("request_uri", requestURI);
 		
 		
-		System.out.println(String.format("[%s] (%s) -> %s {%s}", requestURI, code, message, exception));
+		//System.out.println(String.format("[%s] (%s) -> %s {%s}", requestURI, code, message, exception));
 		
-		Principal up = req.getServletRequset().getUserPrincipal();
+		SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
 		String user = null;
-		if(up != null){
-			user = up.getName();
+		if(securityContext != null){
+			Authentication authentication = securityContext.getAuthentication();
+			if(authentication != null){
+				user = authentication.getUserPrincipal().toString();
+			}
 		}
 		
 		String logErrorStr = get("logError");
