@@ -9,7 +9,14 @@ $ext.dataTable.renderServerSide(
 	false,
 	"{
 	 aoColumns: [{ 
-	 	mData: 'jobName'
+	 	mData: 'jobName',
+	 	mRender: function(data, type, row) {
+	 		console.log(arguments);
+	 		if( type == 'display' ) {
+	 			return '<a href=\'$ctx.siteUrl/gms/geographic-blast/job?id='+row.jobId+'\'>'+data+'</a>';
+	 		}
+	 		return data;
+	 	}
 	 }, {
 	 	mData: 'submitted',
 	 	mRender: function ( data, type, row ) {
@@ -22,7 +29,7 @@ $ext.dataTable.renderServerSide(
 	 }, {
 	 	mData: 'status' 
 	 }, {
-	 	mData: 'program' 
+	 	mData: 'program'
 	 }, {
 	 	mData: 'hits'
 	 }, {
