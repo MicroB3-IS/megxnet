@@ -268,7 +268,8 @@ table.woaTableData {
 	vertical-align: top;
 }
 .blastButton {
-	float: right;
+	float: left;
+	margin-top: -1px;
 	width: 100px;
 }
 .blast-loading {
