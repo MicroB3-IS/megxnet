@@ -87,6 +87,7 @@ public class DiNucOddsRatio extends BaseGenomeService {
 		OutputStream out = resource.write();
 		calculateDiNucleotideOddsRatio(username, fastaResource, out);
 		out.close();
+		resource.dispose();
 	}
 
 	/**
@@ -140,5 +141,6 @@ public class DiNucOddsRatio extends BaseGenomeService {
 				}
 			}
 		});
+		writer.flush();
 	}
 }

@@ -15,7 +15,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
 
@@ -23,6 +25,7 @@ import net.megx.storage.ResourceAccessException;
 import net.megx.storage.StorageException;
 import net.megx.storage.StorageSecuirtyException;
 import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.Result;
 import net.megx.ws.genomes.DiNucOddsRatio;
 
@@ -52,7 +55,8 @@ public class DiNucleotideOddsRatioService extends BaseRestService{
 		}
 		
 		
-		return Response.ok().entity(new StreamingOutput() {
+		ResponseBuilder rb =  Response.ok().
+				entity(new StreamingOutput() {
 			
 			@Override
 			public void write(OutputStream out) throws IOException,
@@ -60,12 +64,16 @@ public class DiNucleotideOddsRatioService extends BaseRestService{
 				try{
 					if(outFile == null){
 						oddsRatio.calculateDiNucleotideOddsRatio(username, inFile, out);
+						out.flush();
 					}else{
 						oddsRatio.calculateDiNucleotideOddsRatio(username, inFile, outFile);
 						Result<String> result = new Result<String>();
 						result.setData(outFile);
-						new PrintWriter(out).print(toJSON(result));
+						PrintWriter pw = new PrintWriter(out);
+						pw.print(toJSON(result));
+						pw.flush();
 					}
+					out.close();
 				} catch (IOException e) {
 					log.error(e);
 					throw e;
@@ -98,6 +106,14 @@ public class DiNucleotideOddsRatioService extends BaseRestService{
 					throw new WebApplicationException(e);
 				}
 			}
-		}).build();
+		});
+		
+		if(outFile == null){
+			rb.type(CustomMediaType.APPLICATION_CSV);
+		}else{
+			rb.type(MediaType.APPLICATION_JSON);
+		}
+		
+		return rb.build();
 	}
 }
