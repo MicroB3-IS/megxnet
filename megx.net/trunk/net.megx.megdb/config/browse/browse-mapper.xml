@@ -4,7 +4,32 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.megx.megdb.browse.mappers.BrowseMapper">
-
+	<resultMap id="genomesMap" type="net.megx.model.browse.GenomesRow">
+		<result column="sid" property="sid" />
+		<result column="geom" property="geom" />
+		<result column="site_name" property="siteName" />
+		<result column="lat" property="lat" />
+		<result column="lon" property="lon" />
+		<result column="latlon" property="latlon" />
+		<result column="depth" property="depth" />
+		<result column="date_taken" property="dateTaken" />
+		<result column="hab_lite" property="habLite" />
+		<result column="hab_uri" property="habUri" />
+		<result column="study_type" property="studyType" />
+		<result column="entity_name" property="entityName" />
+		<result column="entity_url" property="entityUrl" />
+		<result column="entity_country" property="entityCountry" />
+		<result column="entity_iho" property="entityIho" />
+		<result column="entity_region" property="entityRegion" />
+		<result column="entity_descr" property="entityDescr" />
+		<result column="temperature" property="temperature" />
+		<result column="salinity" property="salinity" />
+		<result column="oxygen" property="oxygen" />
+		<result column="chlorophyll" property="chlorophyll" />
+		<result column="taxid" property="taxid" />
+		<result column="gpid" property="gpid" />
+	</resultMap>
+	
 	<resultMap id="metagenomesMap" type="net.megx.model.browse.MetagenomesRow">
 		<result column="sid" property="sid" />
 		<result column="geom" property="geom" />
@@ -70,6 +95,27 @@
 		<result column="phg_gprj_id" property="phgGprjId" />
 	</resultMap>
 
+	<resultMap id="markerGenesMap" type="net.megx.model.browse.MarkerGenesRow">
+		<result column="latlon" property="latlon" />
+		<result column="lat" property="lat" />
+		<result column="lon" property="lon" />
+		<result column="site_name" property="siteName" />
+		<result column="depth" property="depth" />
+		<result column="date_taken" property="dateTaken" />
+		<result column="hab_lite" property="habLite" />
+		<result column="num_seq" property="numSeq" />
+		<result column="ssu_count" property="ssuCount" />
+		<result column="ssu_acc" property="ssuAcc" />
+		<result column="lsu_count" property="lsuCount" />
+		<result column="lsu_acc" property="lsuAcc" />
+	</resultMap>
+	
+	<resultMap id="samplingSitesMap" type="net.megx.model.browse.SamplingSitesRow">
+		<result column="sampling_site" property="samplingSite" />
+		<result column="latlon" property="latlon" />
+		<result column="num_samples" property="numSamples" />
+	</resultMap>
+	
 	<select id="getMetagenomes" resultMap="metagenomesMap">
 		SELECT
 			sid, geom,
@@ -94,5 +140,29 @@
 		FROM
 			web_r8.marine_phages;
 	</select>
-
+	
+	<select id="getGenomes" resultMap="genomesMap">
+		SELECT
+			sid, geom, site_name, lat, lon, latlon, depth, date_taken, hab_lite,
+			hab_uri, study_type, entity_name, entity_url, entity_country,
+			entity_iho, entity_region, entity_descr, temperature, salinity,
+			oxygen, chlorophyll, taxid, gpid
+		FROM
+			web_r8.genomes;
+	</select>
+	
+	<select id="getMarkerGenes" resultMap="markerGenesMap">	
+		SELECT
+			latlon, lat, lon, site_name, depth, date_taken, hab_lite, num_seq, 
+       		ssu_count, ssu_acc, lsu_count, lsu_acc
+		FROM web_r8.silva_overview;
+	</select>
+	
+	<select id="getSamplingSites" resultMap="samplingSitesMap">
+		SELECT 
+			max(site_name) as sampling_site, latlon, 
+			count(8) as num_samples
+		FROM
+			web_r8.samples group by latlon
+	</select>
 </mapper>
