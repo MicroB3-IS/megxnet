@@ -11,6 +11,7 @@ import net.megx.ws.genomes.GCContent;
 import net.megx.ws.genomes.MD5HashMultiFasta;
 import net.megx.ws.genomes.SixFrameTranslation;
 import net.megx.ws.genomes.resources.WorkspaceAccess;
+import net.megx.ws.genomes.rest.DiNucleotideOddsRatioService;
 import net.megx.ws.genomes.rest.FastaMD5Checksum;
 import net.megx.ws.genomes.rest.GCContentService;
 import net.megx.ws.genomes.rest.SixFrameTranslationService;
@@ -25,7 +26,7 @@ import org.json.JSONException;
 public class Activator extends ResTplConfiguredActivator {
 
 	private Log log = LogFactory.getLog(getClass());
-	
+
 	@Override
 	protected void registerExtensions(final JCRApplication app) {
 		log.debug("Starting upd GENOME Services...");
@@ -58,30 +59,36 @@ public class Activator extends ResTplConfiguredActivator {
 									DiNucOddsRatio.class.getName(), oddsRatio,
 									null);
 							RegUtils.reg(getBundleContext(),
-									GCContent.class.getName(), gcContent,
-									null);
+									GCContent.class.getName(), gcContent, null);
 							RegUtils.reg(getBundleContext(),
-									SixFrameTranslation.class.getName(), sixFrameTranslation,
-									null);
+									SixFrameTranslation.class.getName(),
+									sixFrameTranslation, null);
 							log.debug("Registering REST Services");
 							GCContentService gcContentService = new GCContentService();
 							gcContentService.setGcContent(gcContent);
-							
+
 							SixFrameTranslationService sixFrameTranslationService = new SixFrameTranslationService();
-							sixFrameTranslationService.setSixFrameTranslation(sixFrameTranslation);
-							
-							
-							FastaMD5Checksum checkSumService = new FastaMD5Checksum(new MD5HashMultiFasta(access));
-							
-							RegUtils.reg(getBundleContext(), 
-									GCContentService.class.getName(), 
+							sixFrameTranslationService
+									.setSixFrameTranslation(sixFrameTranslation);
+
+							FastaMD5Checksum checkSumService = new FastaMD5Checksum(
+									new MD5HashMultiFasta(access));
+
+							DiNucleotideOddsRatioService diNucOddsRatio = new DiNucleotideOddsRatioService(
+									new DiNucOddsRatio(access));
+
+							RegUtils.reg(getBundleContext(),
+									GCContentService.class.getName(),
 									gcContentService, null);
-							RegUtils.reg(getBundleContext(), 
-									SixFrameTranslationService.class.getName(), 
+							RegUtils.reg(getBundleContext(),
+									SixFrameTranslationService.class.getName(),
 									sixFrameTranslationService, null);
-							RegUtils.reg(getBundleContext(), 
+							RegUtils.reg(getBundleContext(),
 									FastaMD5Checksum.class.getName(),
 									checkSumService, null);
+							RegUtils.reg(getBundleContext(),
+									DiNucleotideOddsRatioService.class
+											.getName(), diNucOddsRatio, null);
 							log.info("GENOME Services available.");
 						} catch (JSONException e) {
 							log.error("Failed to startup GENOME Services: ", e);
