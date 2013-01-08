@@ -100,6 +100,11 @@ public class WorkspaceAccess {
 		}
 		String  [] path = relativePath.split("/");
 		Node node = session.getRootNode();
+		
+		if(node.hasNode(relativePath)){
+			throw new ResourceAccessException("Node already exist.");
+		}
+		
 		for(int i = 0; i < path.length-1; i++){
 			node = getOrCreate(path[i], node);
 		}
