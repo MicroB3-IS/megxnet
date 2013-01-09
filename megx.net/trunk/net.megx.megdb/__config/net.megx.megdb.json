@@ -48,6 +48,10 @@
 		{
 			name: 'net.megx.megdb.logging.ErrorLogService',
 			class: 'net.megx.megdb.logging.impl.DBErrorLogService'
+		},
+		{
+			name: 'net.megx.megdb.browse.BrowseService',
+			class: 'net.megx.megdb.browse.impl.DBBrowseService'
 		}
 	]
 }

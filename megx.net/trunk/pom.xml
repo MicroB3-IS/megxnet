@@ -105,6 +105,7 @@
         <module>net.megx.ui.chart</module>
         <module>net.megx.ws.wod</module>
         <module>net.megx.ws.blast</module>
+        <module>net.megx.ws.browse</module>
         <!-- Earth Sampling App -->
         <module>net.megx.esa</module>
         <!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
