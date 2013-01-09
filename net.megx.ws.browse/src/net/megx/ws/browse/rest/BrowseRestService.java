@@ -12,13 +12,17 @@ import javax.ws.rs.core.MediaType;
 
 import net.megx.megdb.browse.BrowseService;
 import net.megx.model.browse.GenomesRow;
+import net.megx.model.browse.MarkerGenesRow;
 import net.megx.model.browse.MetagenomesRow;
 import net.megx.model.browse.PhagesRow;
+import net.megx.model.browse.SamplingSitesRow;
 import net.megx.ui.table.json.TableDataRequest;
 import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.browse.rest.tables.GenomesUiTblRow;
+import net.megx.ws.browse.rest.tables.MarkerGenesUiTblRow;
 import net.megx.ws.browse.rest.tables.MetagenomesUiTblRow;
 import net.megx.ws.browse.rest.tables.PhagesUiTblRow;
+import net.megx.ws.browse.rest.tables.SamplingSitesUiTblRow;
 import net.megx.ws.browse.rest.utils.ConvUtils;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
@@ -91,4 +95,40 @@ public class BrowseRestService extends BaseRestService {
 			return toJSON(r);
 		}
 	}
+	
+	@GET
+	@Path("markerGenesTable")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String markerGenesTable(@QueryParam("data") String reqData) {
+		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		try {
+			List<MarkerGenesRow> markerGenesList = browseService.getMarkerGenes();
+			List<MarkerGenesUiTblRow> list = ConvUtils.dbMarkerGenesToUiList(markerGenesList);
+			TableDataResponse<MarkerGenesUiTblRow> data = new TableDataResponse<MarkerGenesUiTblRow>();
+			data.setData(list);
+			return toJSON(data);
+		} catch (Exception e) {
+			Result<Map<String, Object>> r = this.handleException(e);
+			return toJSON(r);
+		}
+	}
+	
+	@GET
+	@Path("samplingSitesTable")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String samplingSitesTable(@QueryParam("data") String reqData) {
+		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		try {
+			List<SamplingSitesRow> samplingSitesList = browseService.getSamplingSites();
+			List<SamplingSitesUiTblRow> list = ConvUtils.dbSamplingSitesToUiList(samplingSitesList);
+			TableDataResponse<SamplingSitesUiTblRow> data = new TableDataResponse<SamplingSitesUiTblRow>();
+			data.setData(list);
+			return toJSON(data);
+		} catch (Exception e) {
+			Result<Map<String, Object>> r = this.handleException(e);
+			return toJSON(r);
+		}
+	}
+	
+	
 }
