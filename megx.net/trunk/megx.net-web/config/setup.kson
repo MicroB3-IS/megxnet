@@ -10,12 +10,7 @@ www={type:'sys.public'}
 			wod.csv={type: 'megx.module.wod'}
 	feed={type: 'category'}
 		megxnet-news.xml={type:'rss'}
-	genomes={type:'html'}
-	virus={type:'html'}
-	metagenomes={type:'html'}
-	marker_genes={type:'html'}
-	sites={type:'html'}
-	login.do={type: 'megx.module.login'}
+	
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
 		authorize={type:'megx.module.oauth.authorize'}
 	login={type:'html', template:'security-filter/login.html', title:'Login'}
