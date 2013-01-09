@@ -10,7 +10,6 @@ package net.megx.ws.browse.rest.tables;
  */
 public class SamplingSitesUiTblRow {
 	private String samplingSite;
-	private String description;
 	private String location;
 	private String noOfSamples;
 	
@@ -19,12 +18,6 @@ public class SamplingSitesUiTblRow {
 	}
 	public void setSamplingSite(String samplingSite) {
 		this.samplingSite = samplingSite;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public String getLocation() {
 		return location;
