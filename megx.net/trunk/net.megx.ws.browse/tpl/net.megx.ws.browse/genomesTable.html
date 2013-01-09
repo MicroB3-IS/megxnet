@@ -1,0 +1,23 @@
+#set($url = "$ctx.siteUrl/ws/browse/phagesTable")
+
+$ext.dataTable.renderServerSide(
+	["Organism Name", "Location", "Depth", "Date Sampled", "EnvO-Lite", "TaxID", "Genome PID"],
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'organismName',
+	 }, { 
+	 	mData: 'location',
+	 }, { 
+	 	mData: 'depth',
+	 }, { 
+	 	mData: 'dateSampled',
+	 }, { 
+	 	mData: 'envOLite',
+	 }, { 
+	 	mData: 'taxID',
+	 }, { 
+	 	mData: 'genomePID',
+	 }]
+}")
