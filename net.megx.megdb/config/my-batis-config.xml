@@ -88,6 +88,9 @@
 
 		<!-- wod05 -->
 		<mapper resource="wod05/wod05-mapper.xml" />
+		
+		<!-- Browse -->
+		<mapper resource="browse/browse-mapper.xml" />
 
 		<!-- Logging mapper -->
 		<mapper resource="logging/error-log-mapper.xml" />
