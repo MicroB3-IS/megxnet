@@ -1,0 +1,20 @@
+#set($url = "$ctx.siteUrl/ws/browse/metagenomesTable")
+
+
+$ext.dataTable.renderServerSide(
+	["Dataset Name", "Location", "Depth", "Date Sampled", "EnvO-Lite"],
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'datasetName',
+	 }, { 
+	 	mData: 'location',
+	 }, { 
+	 	mData: 'depth',
+	 }, { 
+	 	mData: 'dateSampled',
+	 }, { 
+	 	mData: 'envOLite',
+	 }]
+}")

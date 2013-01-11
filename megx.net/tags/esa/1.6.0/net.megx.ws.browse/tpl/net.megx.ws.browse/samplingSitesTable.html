@@ -1,0 +1,24 @@
+<style>
+<!--
+.w50 {
+	width: 50%;
+}
+-->
+</style>
+#set($url = "$ctx.siteUrl/ws/browse/samplingSitesTable")
+
+
+$ext.dataTable.renderServerSide(
+	["Sampling site", "Location", "No. sequences"],
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'samplingSite',
+	 	sClass: 'w50',
+	 }, { 
+	 	mData: 'location',
+	 }, { 
+	 	mData: 'noOfSamples',
+	 }]
+}")
