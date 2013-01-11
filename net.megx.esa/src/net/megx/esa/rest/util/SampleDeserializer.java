@@ -50,7 +50,7 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 	private double accuracy;
 	 
 	 */
-	private static final String [] REQUIRED = {"id","taken","modified","collectorId","label","lat","lon"};
+	private static final String [] REQUIRED = {"id","taken","modified","collectorId","label","lat","lon", "permit"};
 	@Override
 	public Sample deserialize(JsonElement el, Type type,
 			JsonDeserializationContext ctx) throws JsonParseException {
@@ -61,7 +61,7 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		}
 		JsonObject jo = el.getAsJsonObject();
 		for(String required: REQUIRED){
-			if(!jo.has(required)){
+			if(!jo.has(required) || jo.get(required).isJsonNull()){
 				throw new JsonParseException("Required property: " + required + " is missing.");
 			}
 		}
@@ -124,7 +124,8 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 	private String getString(String name, JsonObject jo){
 		String s = null;
 		if(jo.has(name)){
-			s = jo.get(name).getAsString();
+			if(!jo.get(name).isJsonNull())
+				s = jo.get(name).getAsString();
 		}
 		return s;
 	}
