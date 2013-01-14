@@ -17,7 +17,7 @@ import net.megx.security.filter.StopFilterException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class AnonnimusAuthenticationEndpoint extends BaseSecurityEntrypoint{
+public class AnonymousAuthenticationEndpoint extends BaseSecurityEntrypoint{
 	Log log = LogFactory.getLog(getClass());
 	@Override
 	public void doFilter(HttpServletRequest request,
@@ -30,30 +30,30 @@ public class AnonnimusAuthenticationEndpoint extends BaseSecurityEntrypoint{
 		}
 		Authentication authentication = context.getAuthentication();
 		if(authentication == null){
-			authentication = getAnnonimusAuthentication();
+			authentication = getAnonymousAuthentication();
 			context.setAuthentication(authentication);
 			if(log.isDebugEnabled())
-				log.debug("Created annonymus authentication: " + authentication);
+				log.debug("Created anonymous authentication: " + authentication);
 		}
 	}
 
 	@Override
 	protected void doInitialize() {	}
 
-	protected Authentication getAnnonimusAuthentication(){
+	protected Authentication getAnonymousAuthentication(){
 		return new Authentication() {
 			
 			@Override
 			public Object getUserPrincipal() {
-				return "Annonymus";
+				return "Anonymous";
 			}
 			
 			@Override
 			public List<Role> getRoles() {
 				List<Role> roles = new ArrayList<Role>(1);
 				Role annon = new Role();
-				annon.setLabel("annonymus");
-				annon.setDescription("Annonymus User");
+				annon.setLabel("anonymous");
+				annon.setDescription("Anonymous User");
 				roles.add(annon);
 				return roles;
 			}
