@@ -1,9 +1,13 @@
-#set($url = "$ctx.siteUrl/ws/browse/metagenomesTable")
+#set($tableUrl = "$ctx.siteUrl/ws/browse/metagenomesTable")
+#set($csvUrl = "$ctx.siteUrl/ws/browse/metagenomes.csv")
 
+## Render download link
+#parse("net.megx.ws.browse/fragments/down.link.html")
 
+## Render table
 $ext.dataTable.renderServerSide(
 	["Dataset Name", "Location", "Depth", "Date Sampled", "EnvO-Lite"],
-	$url,
+	$tableUrl,
 	false,
 	"{
 	 aoColumns: [{ 

@@ -1,6 +1,5 @@
 package net.megx.ws.browse.rest;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,6 @@ import net.megx.model.browse.MarkerGenesRow;
 import net.megx.model.browse.MetagenomesRow;
 import net.megx.model.browse.PhagesRow;
 import net.megx.model.browse.SamplingSitesRow;
-import net.megx.ui.table.json.TableDataRequest;
 import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.browse.rest.tables.GenomesUiTblRow;
 import net.megx.ws.browse.rest.tables.MarkerGenesUiTblRow;
@@ -25,7 +23,10 @@ import net.megx.ws.browse.rest.tables.PhagesUiTblRow;
 import net.megx.ws.browse.rest.tables.SamplingSitesUiTblRow;
 import net.megx.ws.browse.rest.utils.ConvUtils;
 import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.Result;
+import net.megx.ws.core.providers.csv.annotations.CSVDocument;
+import net.megx.ws.core.providers.txt.ColumnNameFormat;
 
 @Path("browse")
 public class BrowseRestService extends BaseRestService {
@@ -36,20 +37,25 @@ public class BrowseRestService extends BaseRestService {
 		this.browseService = browseService;
 	}
 	
+	
+	// Genomes
+	
 	@GET
-	@Path("ping")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String ping() {
-		Map<String, String> json = new HashMap<String, String>();
-		json.put("ping", "pong");
-		return toJSON(json);
+	@Path("genomes.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
+	public List<GenomesUiTblRow> genomesCSV() throws Exception {
+		List<GenomesRow> genomesList = browseService.getGenomes();
+		List<GenomesUiTblRow> list = ConvUtils.dbGenomesToUiList(genomesList);
+		return list;
 	}
 	
 	@GET
 	@Path("genomesTable")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String genomesTable(@QueryParam("data") String reqData) {
-		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		//TODO: we would need req for server pagination, search, sort
+		//TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
 		try {
 			List<GenomesRow> genomesList = browseService.getGenomes();
 			List<GenomesUiTblRow> list = ConvUtils.dbGenomesToUiList(genomesList);
@@ -62,11 +68,25 @@ public class BrowseRestService extends BaseRestService {
 		}
 	}
 	
+	
+	// Phages
+	
+	@GET
+	@Path("phages.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true)
+	public List<PhagesUiTblRow> phagesCSV() throws Exception {
+		List<PhagesRow> phagesList = browseService.getPhages();
+		List<PhagesUiTblRow> list = ConvUtils.dbPhagesToUiList(phagesList);
+		return list;
+	}
+	
 	@GET
 	@Path("phagesTable")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String phagesTable(@QueryParam("data") String reqData) {
-		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		//TODO: we would need req for server pagination, search, sort
+		//TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
 		try {
 			List<PhagesRow> phagesList = browseService.getPhages();
 			List<PhagesUiTblRow> list = ConvUtils.dbPhagesToUiList(phagesList);
@@ -79,11 +99,25 @@ public class BrowseRestService extends BaseRestService {
 		}
 	}
 	
+	
+	// Metagenomes
+	
+	@GET
+	@Path("metagenomes.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true)
+	public List<MetagenomesUiTblRow> metagenomeCSV() throws Exception {
+		List<MetagenomesRow> metagenomesList = browseService.getMetagenomes();
+		List<MetagenomesUiTblRow> list = ConvUtils.dbMetagenomesToUiList(metagenomesList);
+		return list;
+	}
+	
 	@GET
 	@Path("metagenomesTable")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String metagenomesTable(@QueryParam("data") String reqData) {
-		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		//TODO: we would need req for server pagination, search, sort
+		//TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
 		try {
 			List<MetagenomesRow> metagenomesList = browseService.getMetagenomes();
 			List<MetagenomesUiTblRow> list = ConvUtils.dbMetagenomesToUiList(metagenomesList);
@@ -96,11 +130,25 @@ public class BrowseRestService extends BaseRestService {
 		}
 	}
 	
+	
+	// Marker Genes
+	
+	@GET
+	@Path("rrna.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true)
+	public List<MarkerGenesUiTblRow> markerGenesCSV() throws Exception {
+		List<MarkerGenesRow> markerGenesList = browseService.getMarkerGenes();
+		List<MarkerGenesUiTblRow> list = ConvUtils.dbMarkerGenesToUiList(markerGenesList);
+		return list;
+	}
+	
 	@GET
 	@Path("markerGenesTable")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String markerGenesTable(@QueryParam("data") String reqData) {
-		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		//TODO: we would need req for server pagination, search, sort
+		//TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
 		try {
 			List<MarkerGenesRow> markerGenesList = browseService.getMarkerGenes();
 			List<MarkerGenesUiTblRow> list = ConvUtils.dbMarkerGenesToUiList(markerGenesList);
@@ -113,11 +161,25 @@ public class BrowseRestService extends BaseRestService {
 		}
 	}
 	
+	
+	// Sampling Sites
+	
+	@GET
+	@Path("samplingSites.csv")
+	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true)
+	public List<SamplingSitesUiTblRow> samplingSitesCSV() throws Exception {
+		List<SamplingSitesRow> samplingSitesList = browseService.getSamplingSites();
+		List<SamplingSitesUiTblRow> list = ConvUtils.dbSamplingSitesToUiList(samplingSitesList);
+		return list;
+	}
+	
 	@GET
 	@Path("samplingSitesTable")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String samplingSitesTable(@QueryParam("data") String reqData) {
-		TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
+		//TODO: we would need req for server pagination, search, sort
+		//TableDataRequest req = fromJSON(reqData, TableDataRequest.class);
 		try {
 			List<SamplingSitesRow> samplingSitesList = browseService.getSamplingSites();
 			List<SamplingSitesUiTblRow> list = ConvUtils.dbSamplingSitesToUiList(samplingSitesList);
