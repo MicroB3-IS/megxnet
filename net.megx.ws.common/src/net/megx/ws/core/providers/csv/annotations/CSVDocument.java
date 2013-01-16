@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import net.megx.ws.core.providers.txt.ColumnNameFormat;
+
 /**
  * Comma Separated Values document configuration.
  * Annotates POJO class or method that is used to generate CVS document.
@@ -44,7 +46,7 @@ public @interface CSVDocument {
 	 * eg. properyName -> Property Name
 	 * @return
 	 */
-	public String columnNameFormat() default "[default]";
+	public ColumnNameFormat columnNameFormat() default ColumnNameFormat.NONE;
 	
 	/**
 	 * 

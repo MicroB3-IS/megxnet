@@ -19,6 +19,8 @@ package net.megx.ws.core.providers.csv;
 
 import java.util.List;
 
+import net.megx.ws.core.providers.txt.ColumnNameFormat;
+
 /**
  * CSV Document representation holding the data and the additional info needed
  * for serialization of CSV document
@@ -28,7 +30,7 @@ import java.util.List;
  */
 public class CSVDocumentInfo {
 
-	private String format;
+	private ColumnNameFormat format = ColumnNameFormat.NONE;
 
 	/**
 	 * Constructs new CSV Document representation object
@@ -41,7 +43,7 @@ public class CSVDocumentInfo {
 	 */
 	public CSVDocumentInfo(char separator, char quoteChar, String lineEnd,
 			boolean writeHeaderColumns, List<?> data,
-			List<PropertyMapping> columnsMapping, String format) {
+			List<PropertyMapping> columnsMapping, ColumnNameFormat format) {
 		super();
 		this.separator = separator;
 		this.quoteChar = quoteChar;
@@ -123,11 +125,11 @@ public class CSVDocumentInfo {
 		this.data = data;
 	}
 
-	public String getFormat() {
+	public ColumnNameFormat getFormat() {
 		return format;
 	}
 
-	public void setFormat(String format) {
+	public void setFormat(ColumnNameFormat format) {
 		this.format = format;
 	}
 }

@@ -22,7 +22,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import net.megx.ws.core.providers.txt.ColumNameFormat;
+import net.megx.ws.core.providers.txt.ColumNameFormatUtils;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
@@ -58,14 +58,11 @@ public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
 	}
 	
 	
-	private String [] getHeaderColumns(List<PropertyMapping> mappings, CSVDocumentInfo info){
+	private String [] getHeaderColumns(List<PropertyMapping> mappings, CSVDocumentInfo info) throws Exception {
 		String [] headers = new String [mappings.size()];
 		int i = 0;
 		for(PropertyMapping m: mappings){
-			headers[i] = m.getMappedName();
-			if(info.getFormat() != null) {
-				headers[i] = ColumNameFormat.formatStr(headers[i], info.getFormat());
-			}
+			headers[i] = ColumNameFormatUtils.formatStr(m.getMappedName(), info.getFormat());
 			i++;
 		}
 		return headers;
