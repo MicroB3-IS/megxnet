@@ -39,7 +39,6 @@ public class Activator extends ResTplConfiguredActivator {
 		};
 		RegUtils.reg(getBundleContext(), rsp.getClass().getName(), rsp, null);
 		log.debug("Registered the service providers.");
-		doTest();
 			
 		log.debug("The WS Common Bundle started successfully.");
 		
@@ -56,11 +55,6 @@ public class Activator extends ResTplConfiguredActivator {
 		exposedProviders.add(SimpleCSVProvider_Text_CSV.class);
 		exposedProviders.add(SimplePlainTextProvider.class);
 		exposedProviders.add(ServiceExceptionMapper.class);
-	}
-
-	private void doTest(){
-		RegUtils.reg(getBundleContext(), TestResource.class.getName(), 
-				new TestResource(), null);
 	}
 	
 }
