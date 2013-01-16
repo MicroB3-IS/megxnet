@@ -54,14 +54,19 @@ public class SimpleCSVProvider extends AbstractCSVProvider{
 			
 			
 			documentAnnot = getDocumentAnnotation(type, annotations, genericType);
+			String format = null;
 			if(documentAnnot != null){
 				separator = documentAnnot.separator();
 				lineEnd = documentAnnot.newLineSeparator();
 				columns = documentAnnot.columnsOrder();
 				writeHeaderColumns = documentAnnot.preserveHeaderColumns();
+				format = documentAnnot.columnNameFormat();
 			}
 			
-			return CSVDocumentBuilder.getInstance().createDocument(writeHeaderColumns, separator, quoteChar, lineEnd, ReflectionUtils.getEnclosedType(type, genericType), columns, t);
+			return CSVDocumentBuilder.getInstance().createDocument(
+					writeHeaderColumns, separator, quoteChar, lineEnd,
+					ReflectionUtils.getEnclosedType(type, genericType),
+					columns, t, format);
 		}
 		
 	}

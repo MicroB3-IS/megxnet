@@ -22,9 +22,8 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import net.megx.ws.core.providers.txt.ColumNameFormat;
 import au.com.bytecode.opencsv.CSVWriter;
-
-import net.megx.ws.core.providers.csv.CSVMarshaller;
 
 public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
 
@@ -32,7 +31,7 @@ public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
 			throws Exception {
 		CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(stream), t.getSeparator(), t.getQuoteChar(), t.getLineEnd());
 		if(t.isWriteHeaderColumns()){
-			csvWriter.writeNext(getHeaderColumns(t.getColumnsMapping()));
+			csvWriter.writeNext(getHeaderColumns(t.getColumnsMapping(), t));
 		}
 		
 		List<?> data = t.getData();
@@ -59,11 +58,14 @@ public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
 	}
 	
 	
-	private String [] getHeaderColumns(List<PropertyMapping> mappings){
+	private String [] getHeaderColumns(List<PropertyMapping> mappings, CSVDocumentInfo info){
 		String [] headers = new String [mappings.size()];
 		int i = 0;
 		for(PropertyMapping m: mappings){
 			headers[i] = m.getMappedName();
+			if(info.getFormat() != null) {
+				headers[i] = ColumNameFormat.formatStr(headers[i], info.getFormat());
+			}
 			i++;
 		}
 		return headers;

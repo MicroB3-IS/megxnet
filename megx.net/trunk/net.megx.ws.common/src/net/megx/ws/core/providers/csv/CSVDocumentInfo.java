@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class CSVDocumentInfo {
 
+	private String format;
+
 	/**
 	 * Constructs new CSV Document representation object
 	 * @param separator separator character
@@ -39,7 +41,7 @@ public class CSVDocumentInfo {
 	 */
 	public CSVDocumentInfo(char separator, char quoteChar, String lineEnd,
 			boolean writeHeaderColumns, List<?> data,
-			List<PropertyMapping> columnsMapping) {
+			List<PropertyMapping> columnsMapping, String format) {
 		super();
 		this.separator = separator;
 		this.quoteChar = quoteChar;
@@ -47,6 +49,7 @@ public class CSVDocumentInfo {
 		this.writeHeaderColumns = writeHeaderColumns;
 		this.data = data;
 		this.columnsMapping = columnsMapping;
+		this.format = format;
 	}
 
 	/**
@@ -118,5 +121,13 @@ public class CSVDocumentInfo {
 
 	public void setData(List<?> data) {
 		this.data = data;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 }

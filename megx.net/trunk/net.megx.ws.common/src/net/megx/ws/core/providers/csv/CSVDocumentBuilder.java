@@ -171,7 +171,7 @@ public class CSVDocumentBuilder {
 	 */
 	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
 			char separator, char quoteChar, String lineEnd, Class<?> beanType,
-			String[] columns, List<?> data) throws IntrospectionException {
+			String[] columns, List<?> data, String format) throws IntrospectionException {
 		boolean useAllColumns = true;
 		if (columns != null && columns.length > 0)
 			useAllColumns = false;
@@ -192,7 +192,7 @@ public class CSVDocumentBuilder {
 		}
 
 		return new CSVDocumentInfo(separator, quoteChar, lineEnd,
-				writeHeaderColumns, data, mappings);
+				writeHeaderColumns, data, mappings, format);
 	}
 	/**
 	 * Creates new CSV Document representation, ready for serialization
@@ -221,7 +221,7 @@ public class CSVDocumentBuilder {
 	@SuppressWarnings("unchecked")
 	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
 			char separator, char quoteChar, String lineEnd, Class<?> beanType,
-			String[] columns, Object data) throws IntrospectionException {
+			String[] columns, Object data, String format) throws IntrospectionException {
 		List<Object> ld = null;
 		if (data.getClass().isArray()) {
 			ld = Arrays.asList(data);
@@ -236,7 +236,7 @@ public class CSVDocumentBuilder {
 			ld.add(data);
 		}
 		return createDocument(writeHeaderColumns, separator, quoteChar,
-				lineEnd, beanType, columns, ld);
+				lineEnd, beanType, columns, ld, format);
 	}
 
 	private class IndexColumn {

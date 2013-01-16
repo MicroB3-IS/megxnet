@@ -39,6 +39,14 @@ public @interface CSVDocument {
 	public boolean preserveHeaderColumns() default true;
 	
 	/**
+	 * Format property to column name,
+	 * camelCase, will convert camelCase to human readable text
+	 * eg. properyName -> Property Name
+	 * @return
+	 */
+	public String columnNameFormat() default "camelCase";
+	
+	/**
 	 * 
 	 * @return 
 	 */
