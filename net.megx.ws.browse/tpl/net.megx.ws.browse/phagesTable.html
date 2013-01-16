@@ -1,8 +1,13 @@
-#set($url = "$ctx.siteUrl/ws/browse/phagesTable")
+#set($tableUrl = "$ctx.siteUrl/ws/browse/phagesTable")
+#set($csvUrl = "$ctx.siteUrl/ws/browse/phages.csv")
 
+## Render download link
+#parse("net.megx.ws.browse/fragments/down.link.html")
+
+## Render table
 $ext.dataTable.renderServerSide(
 	["Organism Name", "Location", "Depth", "Date Sampled", "EnvO-Lite", "TaxID", "Genome PID"],
-	$url,
+	$tableUrl,
 	false,
 	"{
 	 aoColumns: [{ 

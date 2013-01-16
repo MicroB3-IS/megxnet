@@ -5,12 +5,17 @@
 }
 -->
 </style>
-#set($url = "$ctx.siteUrl/ws/browse/markerGenesTable")
 
+#set($tableUrl = "$ctx.siteUrl/ws/browse/markerGenesTable")
+#set($csvUrl = "$ctx.siteUrl/ws/browse/rrna.csv")
 
+## Render download link
+#parse("net.megx.ws.browse/fragments/down.link.html")
+
+## Render table
 $ext.dataTable.renderServerSide(
 	["Sampling site", "Location", "Depth", "Date Sampled", "EnvO-Lite", "No. sequences"],
-	$url,
+	$tableUrl,
 	false,
 	"{
 	 aoColumns: [{ 
