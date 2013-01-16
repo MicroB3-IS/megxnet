@@ -44,7 +44,7 @@ public @interface CSVDocument {
 	 * eg. properyName -> Property Name
 	 * @return
 	 */
-	public String columnNameFormat() default "camelCase";
+	public String columnNameFormat() default "[default]";
 	
 	/**
 	 * 
