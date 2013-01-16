@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import net.megx.ws.core.providers.csv.annotations.CSVColumn;
+import net.megx.ws.core.providers.txt.ColumnNameFormat;
 
 /**
  * CSV document representation builder. Exposes methods for building
@@ -171,7 +172,7 @@ public class CSVDocumentBuilder {
 	 */
 	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
 			char separator, char quoteChar, String lineEnd, Class<?> beanType,
-			String[] columns, List<?> data, String format) throws IntrospectionException {
+			String[] columns, List<?> data, ColumnNameFormat format) throws IntrospectionException {
 		boolean useAllColumns = true;
 		if (columns != null && columns.length > 0)
 			useAllColumns = false;
@@ -221,7 +222,7 @@ public class CSVDocumentBuilder {
 	@SuppressWarnings("unchecked")
 	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
 			char separator, char quoteChar, String lineEnd, Class<?> beanType,
-			String[] columns, Object data, String format) throws IntrospectionException {
+			String[] columns, Object data, ColumnNameFormat format) throws IntrospectionException {
 		List<Object> ld = null;
 		if (data.getClass().isArray()) {
 			ld = Arrays.asList(data);
