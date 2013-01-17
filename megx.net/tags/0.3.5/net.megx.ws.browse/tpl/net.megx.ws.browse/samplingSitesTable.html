@@ -1,0 +1,28 @@
+<style>
+<!--
+.w50 {
+	width: 50%;
+}
+-->
+</style>
+#set($tableUrl = "$ctx.siteUrl/ws/browse/samplingSitesTable")
+#set($csvUrl = "$ctx.siteUrl/ws/browse/samplingSites.csv")
+
+## Render download link
+#parse("net.megx.ws.browse/fragments/down.link.html")
+
+## Render table
+$ext.dataTable.renderServerSide(
+	["Sampling site", "Location", "No. sequences"],
+	$tableUrl,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'samplingSite',
+	 	sClass: 'w50',
+	 }, { 
+	 	mData: 'location',
+	 }, { 
+	 	mData: 'noOfSamples',
+	 }]
+}")
