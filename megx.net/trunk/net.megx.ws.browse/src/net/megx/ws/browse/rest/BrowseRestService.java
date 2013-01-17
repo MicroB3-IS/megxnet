@@ -74,7 +74,7 @@ public class BrowseRestService extends BaseRestService {
 	@GET
 	@Path("phages.csv")
 	@Produces(CustomMediaType.APPLICATION_CSV)
-	@CSVDocument(preserveHeaderColumns = true)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public List<PhagesUiTblRow> phagesCSV() throws Exception {
 		List<PhagesRow> phagesList = browseService.getPhages();
 		List<PhagesUiTblRow> list = ConvUtils.dbPhagesToUiList(phagesList);
@@ -105,7 +105,7 @@ public class BrowseRestService extends BaseRestService {
 	@GET
 	@Path("metagenomes.csv")
 	@Produces(CustomMediaType.APPLICATION_CSV)
-	@CSVDocument(preserveHeaderColumns = true)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public List<MetagenomesUiTblRow> metagenomeCSV() throws Exception {
 		List<MetagenomesRow> metagenomesList = browseService.getMetagenomes();
 		List<MetagenomesUiTblRow> list = ConvUtils.dbMetagenomesToUiList(metagenomesList);
@@ -136,7 +136,7 @@ public class BrowseRestService extends BaseRestService {
 	@GET
 	@Path("rrna.csv")
 	@Produces(CustomMediaType.APPLICATION_CSV)
-	@CSVDocument(preserveHeaderColumns = true)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public List<MarkerGenesUiTblRow> markerGenesCSV() throws Exception {
 		List<MarkerGenesRow> markerGenesList = browseService.getMarkerGenes();
 		List<MarkerGenesUiTblRow> list = ConvUtils.dbMarkerGenesToUiList(markerGenesList);
@@ -167,7 +167,7 @@ public class BrowseRestService extends BaseRestService {
 	@GET
 	@Path("samplingSites.csv")
 	@Produces(CustomMediaType.APPLICATION_CSV)
-	@CSVDocument(preserveHeaderColumns = true)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public List<SamplingSitesUiTblRow> samplingSitesCSV() throws Exception {
 		List<SamplingSitesRow> samplingSitesList = browseService.getSamplingSites();
 		List<SamplingSitesUiTblRow> list = ConvUtils.dbSamplingSitesToUiList(samplingSitesList);
