@@ -33,7 +33,9 @@ public interface UserMapper {
 	public User getUserByUserId(String userId) throws Exception;
 
 	public User getUserByConsumerKey(String key) throws Exception;
-
+	
+	public boolean isUserIdAvailable(String id) throws Exception;
+	
 	public User getUserForUsernameAndPassword(
 			@Param("username") String username,
 			@Param("password") String password) throws Exception;

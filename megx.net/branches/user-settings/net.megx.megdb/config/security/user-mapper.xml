@@ -359,4 +359,10 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
                 and auth.has_roles.role=#{role}
               </if>
     </select>
+    
+	<select id="isUserIdAvailable" parameterType="string" resultType="boolean">
+	    select count("logname") = 0 as "value" 
+	    		from auth.users 
+	    			where logname = #{id}
+	</select>
 </mapper>

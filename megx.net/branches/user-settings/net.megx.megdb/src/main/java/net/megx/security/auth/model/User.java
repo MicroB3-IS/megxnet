@@ -1,5 +1,6 @@
 package net.megx.security.auth.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -131,4 +132,26 @@ public class User{
 				+ ", roles=" + roles + "]";
 	}
 	
+	public User copy(){
+		User copy = new User();
+		copy.description = description;
+		copy.disabled = disabled;
+		copy.email = email;
+		copy.external = external;
+		copy.firstName = firstName;
+		copy.initials = initials;
+		copy.joinedOn = joinedOn;
+		copy.lastlogin = lastlogin;
+		copy.lastName = lastName;
+		copy.login = login;
+		copy.password = password;
+		copy.provider = provider;
+		List<Role> rolesCopy = null;
+		if(roles != null){
+			rolesCopy = new ArrayList<Role>(roles.size());
+			rolesCopy.addAll(roles);
+			copy.roles = rolesCopy;
+		}
+		return copy;
+	}
 }
