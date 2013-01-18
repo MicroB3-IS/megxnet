@@ -459,6 +459,19 @@ public class DBUserService extends BaseMegdbService implements UserService{
 	}
 
 
+	@Override
+	public boolean isUserIdAvailable(final String userId) throws Exception {
+		return doInSession(new BaseMegdbService.DBTask<UserMapper, Boolean>() {
+
+			@Override
+			public Boolean execute(UserMapper mapper) throws Exception {
+				return mapper.isUserIdAvailable(userId);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
 	
 
 	/*

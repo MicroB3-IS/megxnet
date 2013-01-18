@@ -49,11 +49,21 @@
 <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
 #end
 
+#if ( $ext.settings )
+	#parse('settings/account/check_profile.html')
+#end
+
 </head>
 
 <body>
   <div id="wrapper">
-    <header>#parse('header.html')</header>
+    <header>
+    #if ( $ext.settings )
+    	#parse('settings/header.html')
+    #else
+    	#parse('header.html')
+    #end
+    </header>
     #if($req.servletRequset.isUserInRole("cmsAdmin"))
     <div style="position: absolute; top: 10px; left: 10px;">
       <a href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit

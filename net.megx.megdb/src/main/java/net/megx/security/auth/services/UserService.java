@@ -32,6 +32,8 @@ public interface UserService {
 	public PaginatedResult<User> getUsersByEmail(String email, int start, int pageSize) throws Exception;
 	public List<User> getUsers() throws Exception;
 	
+	public boolean isUserIdAvailable(String userId) throws Exception;
+	
 	public PaginatedResult<User> getUsers(int start, int pageSize) throws Exception;
 	
 	public List<User> getUsersWithRole(String role) throws Exception;
