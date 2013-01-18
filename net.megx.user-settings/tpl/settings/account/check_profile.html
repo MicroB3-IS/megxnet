@@ -1,0 +1,17 @@
+#if ( $ext.settings.user )
+#if ( !$ext.settings.accountComplete )
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/security/security-admin.css">
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/settings/settings.css">
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/components.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/settings/settings.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		pe = new components.settings.ProfileEdit('$ctx.siteUrl/ws/v1/account/v1.0.0', document.body);
+		pe.editUserData();
+		pe.on('info-updated', function(event, profEdit, user){
+			// update the header info
+		});
+	});
+</script>
+#end
+#end
