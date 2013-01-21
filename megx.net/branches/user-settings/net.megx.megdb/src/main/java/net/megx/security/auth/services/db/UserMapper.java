@@ -45,6 +45,9 @@ public interface UserMapper {
 	
 	public void addUser(User user) throws Exception;
 	public void updateUser(User user) throws Exception;
+	public void updateUserId(
+			@Param("oldId") String oldId, 
+			@Param("newId") String newId) throws Exception;
 	public void removeUser(String login) throws Exception;
 	
 	
@@ -108,4 +111,6 @@ public interface UserMapper {
 	public int countFilteredResultsWithRole(
 			@Param("conditions") List<FilterCondition> conditions,
 			@Param("role") String role) throws Exception;
+	
+	public User getExternalUser(@Param("provider") String provider, @Param("externalId") String externalId) throws Exception;
 }

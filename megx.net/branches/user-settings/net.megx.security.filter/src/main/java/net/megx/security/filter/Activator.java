@@ -82,6 +82,8 @@ public class Activator extends ResTplConfiguredActivator {
 						getRegistrationConfig(), app.getTemplate());
 				RolesManager rolesManager = new RolesManager(userService);
 				
+				
+				
 				getBundleContext().registerService(ResourcesManager.class.getName(), rm, null);
 				getBundleContext().registerService(UsersManager.class.getName(), um, null);
 				getBundleContext().registerService(RegistrationManager.class.getName(), regm, null);
