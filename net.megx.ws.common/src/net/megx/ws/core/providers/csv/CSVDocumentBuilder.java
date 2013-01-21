@@ -35,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import net.megx.ws.core.providers.csv.annotations.CSVColumn;
-import net.megx.ws.core.providers.txt.ColumnNameFormat;
 
 /**
  * CSV document representation builder. Exposes methods for building
@@ -216,6 +215,7 @@ public class CSVDocumentBuilder {
 	 *            and the field/property name will be the same if the field is
 	 *            not annotated)
 	 * @param data any type of bean representing the data for this CSV document
+	 * @param format Column name format. See {@link ColumnNameFormat} for more details.
 	 * @return {@link CSVDocumentInfo} representing the real CSV document and additional info needed for serialization
 	 * @throws IntrospectionException
 	 */
@@ -238,6 +238,51 @@ public class CSVDocumentBuilder {
 		}
 		return createDocument(writeHeaderColumns, separator, quoteChar,
 				lineEnd, beanType, columns, ld, format);
+	}
+	
+	/**
+	 * Creates new CSV Document representation, ready for serialization
+	 * 
+	 * @param writeHeaderColumns
+	 *            boolean indicating if the header columns should be written to
+	 *            the document when serializing
+	 * @param separator
+	 *            separator character, defaults to ','
+	 * @param quoteChar
+	 *            quote characte, defaults to '"'
+	 * @param lineEnd
+	 *            EOL (End Of Line) - defaults to "\r\n"
+	 * @param beanType
+	 *            the Type of the bean holding the data for a single row in the
+	 *            CSV document (POJO)
+	 * @param columns
+	 *            array of column names (the mapped names of the columns if
+	 *            annotated, NOT the raw field name - of course the mapped name
+	 *            and the field/property name will be the same if the field is
+	 *            not annotated)
+	 * @param data any type of bean representing the data for this CSV document
+	 * @return {@link CSVDocumentInfo} representing the real CSV document and additional info needed for serialization
+	 * @throws IntrospectionException
+	 */
+	@SuppressWarnings("unchecked")
+	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
+			char separator, char quoteChar, String lineEnd, Class<?> beanType,
+			String[] columns, Object data) throws IntrospectionException {
+		List<Object> ld = null;
+		if (data.getClass().isArray()) {
+			ld = Arrays.asList(data);
+		} else if (List.class.isAssignableFrom(data.getClass())) {
+			ld = (List<Object>) data;
+		} else if (Set.class.isAssignableFrom(data.getClass())) {
+			Set<?> sd = (Set<?>) data;
+			ld = new ArrayList<Object>(sd.size());
+			ld.addAll(sd);
+		} else {
+			ld = new ArrayList<Object>(1);
+			ld.add(data);
+		}
+		return createDocument(writeHeaderColumns, separator, quoteChar,
+				lineEnd, beanType, columns, ld, ColumnNameFormat.NONE);
 	}
 
 	private class IndexColumn {
