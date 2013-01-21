@@ -29,7 +29,10 @@ www={type:'sys.public'}
 		403={type:'megx.error.page', template:'error-pages/error403.html', title:'Forbidden', logError:'true'}
 		400={type:'megx.error.page', template:'error-pages/error400.html', title:'Bad request'}
 		feedback={type:'html', template:'error-pages/feedback-result.html', title:'Thanks for your feedback'}
-		
+	settings={type:'unknown'}
+		account={type:'html', template:'settings/account/profile.html', title: 'Account Settings'}
+	
+	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}

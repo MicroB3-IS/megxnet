@@ -329,7 +329,9 @@
 	         $(this.el).addClass('panel-field-state-notify');
 	      }
 	   },
-	   
+	   message: function(msg){
+		   $(this.notifyEl).html(msg);
+	   },
 	   validate: function(){
 	      if(this.validator){
 	         if(typeof(this.validator) == 'function'){

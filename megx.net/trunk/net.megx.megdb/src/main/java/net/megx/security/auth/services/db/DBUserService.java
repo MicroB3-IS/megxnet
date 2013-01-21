@@ -459,6 +459,47 @@ public class DBUserService extends BaseMegdbService implements UserService{
 	}
 
 
+	@Override
+	public boolean isUserIdAvailable(final String userId) throws Exception {
+		return doInSession(new BaseMegdbService.DBTask<UserMapper, Boolean>() {
+
+			@Override
+			public Boolean execute(UserMapper mapper) throws Exception {
+				return mapper.isUserIdAvailable(userId);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public User getExternalUser(final String provider, final String externalId)
+			throws Exception {
+		return doInSession(new DBTask<UserMapper, User>() {
+
+			@Override
+			public User execute(UserMapper mapper) throws Exception {
+				return mapper.getExternalUser(provider, externalId);
+			}
+			
+		}, UserMapper.class);
+	}
+
+
+	@Override
+	public void updateUserId(final String oldId, final String newId) throws Exception {
+		doInTransaction(new DBTask<UserMapper, Object>() {
+
+			@Override
+			public Object execute(UserMapper mapper) throws Exception {
+				mapper.updateUserId(oldId, newId);
+				return null;
+			}
+			
+		}, UserMapper.class);
+	}
+
+
 	
 
 	/*

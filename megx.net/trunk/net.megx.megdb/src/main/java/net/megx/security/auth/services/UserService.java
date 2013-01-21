@@ -31,6 +31,9 @@ public interface UserService {
 	public User getUser(String username, String password) throws Exception;
 	public PaginatedResult<User> getUsersByEmail(String email, int start, int pageSize) throws Exception;
 	public List<User> getUsers() throws Exception;
+	public User getExternalUser(String provider, String externalId) throws Exception;
+	
+	public boolean isUserIdAvailable(String userId) throws Exception;
 	
 	public PaginatedResult<User> getUsers(int start, int pageSize) throws Exception;
 	
@@ -46,6 +49,7 @@ public interface UserService {
 	public void commitPending(User user, String userVerification, long ttl) throws Exception;
 	public UserVerification getVerification(String verificationValue, long ttl) throws Exception;
 	public User updateUser(User userInfo) throws Exception;
+	public void updateUserId(String oldId, String newId) throws Exception;
 	public User removeUser(String userid) throws Exception;
 	public Role    createRole(Role role)throws Exception;
 	public PaginatedResult<Role> getAvailableRoles(int start, int limit, boolean all) throws Exception;
