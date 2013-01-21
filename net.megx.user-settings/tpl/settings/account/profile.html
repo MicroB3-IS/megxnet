@@ -68,6 +68,12 @@ $(document).ready(function(){
 			$('.user-initials').html(user.initials);
 			$('.user-description').html(user.description);
 			$('.user-email').html(user.email);
+			
+			// update the header info
+			var userLabel = (user.firstName||'') + ' ' + (user.lastName||'');
+			userLabel = $.trim(userLabel);
+			userLabel = userLabel || user.login;
+			$('.header-user-label').html(userLabel);
 		});
 	});
 	
