@@ -5,8 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.impl.AuthenticationImpl;
 import net.megx.security.auth.impl.ChonEnabledSecurityContext;
+import net.megx.security.auth.model.User;
+import net.megx.security.auth.services.UserService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -83,4 +87,34 @@ public class WebContextUtils {
 		return (Map<String, Object>)request.getAttribute(SECURITY_REQUEST_PARAMS_HOLDER);
 	}
 
+	
+	public static User getUser(HttpServletRequest request){
+		SecurityContext ctx = getSecurityContext(request);
+		if(ctx != null){
+			Authentication auth = ctx.getAuthentication();
+			if(auth != null && auth instanceof AuthenticationImpl){
+				AuthenticationImpl authImpl = (AuthenticationImpl)auth;
+				return authImpl.getUser();
+			}
+		}
+		return null;
+	}
+	
+	public static boolean reloadAuthentication(HttpServletRequest  request, UserService  userService){
+		User user = getUser(request);
+		if(user != null){
+			SecurityContext sc = getSecurityContext(request);
+			if(sc != null){
+				try {
+					user = userService.getUserByUserId(user.getLogin());
+					sc.clearAuthentication();
+					sc.setAuthentication(new AuthenticationImpl(user));
+					return true;
+				} catch (Exception e) {
+					log.error("Failed to reload authentication: ", e);
+				}
+			}
+		}
+		return false;
+	}
 }

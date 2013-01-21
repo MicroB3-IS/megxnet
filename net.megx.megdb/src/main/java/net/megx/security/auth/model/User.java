@@ -1,5 +1,6 @@
 package net.megx.security.auth.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class User{
 	private Date lastlogin;
 	private boolean external;
 	private String provider;
+	private String externalId;
 	
 	private List<Role> roles;
 	
@@ -120,6 +122,12 @@ public class User{
 	public void setProvider(String provider) {
 		this.provider = provider;
 	}
+	public String getExternalId() {
+		return externalId;
+	}
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", firstName=" + firstName
@@ -128,7 +136,30 @@ public class User{
 				+ ", password=*****, disabled=" + disabled
 				+ ", email=" + email + ", lastlogin=" + lastlogin
 				+ ", external=" + external + ", provider=" + provider
-				+ ", roles=" + roles + "]";
+				+ ", externalId=" + externalId + ", roles=" + roles + "]";
 	}
 	
+	public User copy(){
+		User copy = new User();
+		copy.description = description;
+		copy.disabled = disabled;
+		copy.email = email;
+		copy.external = external;
+		copy.firstName = firstName;
+		copy.initials = initials;
+		copy.joinedOn = joinedOn;
+		copy.lastlogin = lastlogin;
+		copy.lastName = lastName;
+		copy.login = login;
+		copy.password = password;
+		copy.provider = provider;
+		copy.externalId = externalId;
+		List<Role> rolesCopy = null;
+		if(roles != null){
+			rolesCopy = new ArrayList<Role>(roles.size());
+			rolesCopy.addAll(roles);
+			copy.roles = rolesCopy;
+		}
+		return copy;
+	}
 }

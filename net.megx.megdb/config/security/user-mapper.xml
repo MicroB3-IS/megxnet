@@ -31,6 +31,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="lastlogin" column="lastlogin"/>
 		<result property="external" column="external"/>
 		<result property="provider" column="provider"/>
+		<result property="externalId" column="external_id"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -46,6 +47,7 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		<result property="lastlogin" column="lastlogin"/>
 		<result property="external" column="external"/>
 		<result property="provider" column="provider"/>
+		<result property="externalId" column="external_id"/>
 		<association property="roles" select="getRolesForUser" column="logname"/>
 	</resultMap>
 	
@@ -84,7 +86,8 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
         email,
         lastlogin,
         external,
-        provider
+        provider,
+        external_id
 	</sql>
 	
 	
@@ -191,9 +194,9 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 
 	<insert id="addUser" parameterType="User">
 		insert into auth.users
-			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin)
+			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin, provider, external_id, external)
 			values
-			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin})
+			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin}, #{provider}, #{externalId}, #{external})
 	</insert>
 	
 	<insert id="createVerification" parameterType="UserVerification">
@@ -359,4 +362,24 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
                 and auth.has_roles.role=#{role}
               </if>
     </select>
+    
+	<select id="isUserIdAvailable" parameterType="string" resultType="boolean">
+	    select count("logname") = 0 as "value" 
+	    		from auth.users 
+	    			where logname = #{id}
+	</select>
+	
+	<select id="getExternalUser" parameterType="map" resultMap="user_map_no_pass">
+	    select 
+	    	<include refid="user_columns_list"/>
+	    	from auth.users
+	    	
+	    		where provider=#{provider} and
+	    			external_id=#{externalId}
+	</select>
+	<update id="updateUserId" parameterType="map">
+	    update auth.users
+	    	set logname=#{newId}
+	    		where logname=#{oldId}
+	</update>
 </mapper>

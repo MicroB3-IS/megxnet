@@ -31,4 +31,8 @@ public class AuthenticationImpl implements Authentication{
 	public String toString() {
 		return "AuthenticationImpl [user=" + user + "]";
 	}
+	
+	public User getUser(){
+		return user.copy();
+	}
 }
