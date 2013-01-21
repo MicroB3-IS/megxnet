@@ -25,8 +25,8 @@ import net.megx.ws.browse.rest.utils.ConvUtils;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.Result;
+import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
-import net.megx.ws.core.providers.txt.ColumnNameFormat;
 
 @Path("browse")
 public class BrowseRestService extends BaseRestService {
