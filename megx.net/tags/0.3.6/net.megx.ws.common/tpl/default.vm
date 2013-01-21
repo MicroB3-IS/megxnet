@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	   <meta charset="UTF-8">
+	   <title>Default Page</title>
+	</head>
+    <body>
+        This is default text/html representation of the resource you are looking for:<br/>
+        $data
+    </body>
+</html>

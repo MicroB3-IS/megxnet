@@ -1,0 +1,210 @@
+<style>
+	.settings-info-main-line{
+		font-size: 1.4em;
+		font-weight: bold;
+		color: #999;
+		border-bottom: solid 1px #ccc;
+		
+	}
+	.settings-info-sub-line{
+		font-size: 0.7em;
+		color: #999;
+		text-align: right;
+	}
+	.settings-info-line{
+		margin: 15px;
+		color: #999;
+	}
+	.settings-wrapper{
+		padding: 10px;
+		
+	}
+	.settings-box{
+		/*display: inline-block;*/
+		/*border: 1px solid #DDD;
+		box-shadow: 1px 1px 2px #DDD;*/
+		padding: 15px;
+		
+	}
+	.settings-box-actions{
+		text-align: right;
+	}
+	input.settings-action{
+		border: solid 1px #999;
+		color: #999;
+		box-shadow: 1px 1px 2px #DDD;
+	}
+	.settings-label{
+		font-weight: bold;
+	}
+	
+	.change-password-panel{
+		
+	}
+	
+	.settings-info-error{
+		color: #900;
+	}
+	
+	.settings-info-success{
+		color: #090;
+	}
+	
+</style>
+
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/security/security-admin.css">
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/settings/settings.css">
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/components.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/settings/settings.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.settings-btn-edit-user-info').click(function(){
+		pe = new components.settings.ProfileEdit('$ctx.siteUrl/ws/v1/account/v1.0.0', document.body);
+		pe.editUserData();
+		pe.on('info-updated', function(event, profEdit, user){
+			$('.user-first-name').html(user.firstName);
+			$('.user-last-name').html(user.lastName);
+			$('.user-initials').html(user.initials);
+			$('.user-description').html(user.description);
+			$('.user-email').html(user.email);
+			
+			// update the header info
+			var userLabel = (user.firstName||'') + ' ' + (user.lastName||'');
+			userLabel = $.trim(userLabel);
+			userLabel = userLabel || user.login;
+			$('.header-user-label').html(userLabel);
+		});
+	});
+	
+	var accountManager = new components.settings.AccountManager({
+		wsBase: '$ctx.siteUrl/ws/v1/account/v1.0.0'
+	});
+	
+	$('.show-pass-change').click(function(){
+		$('.change-password-action').hide();
+		$('.change-password-panel').show();
+	});
+	
+	$('#btn-change-pass-cancel').click(function(){
+		$('.change-password-action').show();
+		$('.change-password-panel').hide();
+	});
+	
+	$('#btn-change-pass').click(function(){
+		var oldPass = $.trim($('#old-password').val() ||'');
+		var newPassword = $.trim($('#new-password').val() ||'');
+		var repPassword = $.trim($('#repeat-password').val() ||'');
+		$('.pass-change-notification ul').html('').
+			removeClass('settings-info-error').removeClass('settings-info-success');
+		var valid = true;
+		if(!oldPass){
+			$('.pass-change-notification ul').append('<li>Please enter the old password</li>');
+			valid = false;
+		}
+		if(!newPassword){
+			$('.pass-change-notification ul').append('<li>Please enter the new password</li>');
+			valid = false;
+		}
+		if(!repPassword){
+			$('.pass-change-notification ul').append('<li>Please repeat the new password</li>');
+			valid = false;
+		}
+		if(newPassword && repPassword && (newPassword != repPassword)){
+			$('.pass-change-notification ul').append('<li>The passwords does not match</li>');
+			valid = false;
+		}
+		if(valid){
+			accountManager.updatePassword(oldPass, newPassword, function(){
+				$('.pass-change-notification ul').
+					addClass('settings-info-success').append('<li>Your password has been updated successfully.</li>');
+				$('.change-password-action').show();
+				$('.change-password-panel').hide();
+			}, function(e, message, r){
+				try{
+					if(r && r.responseText){
+						var err = JSON.parse(r.responseText);
+						$('.pass-change-notification ul').
+							addClass('settings-info-error').append('<li>'+err.message+'</li>');
+						return;
+					}
+				}catch(ee){
+					$('.pass-change-notification ul').
+						addClass('settings-info-error').append('<li>Failed to update password.</li>');
+				}
+				
+			});
+		}else{
+			$('.pass-change-notification ul').addClass('settings-info-error');
+		}
+	});
+});
+</script>
+
+<div class="settings-wrapper">
+	<h4>Account Info</h4>
+	<div class="settings-box">
+		<div>
+			<div>
+				<div class="settings-info-main-line">
+					<span class="user-first-name">$ext.settings.user.firstName</span>
+					<span class="user-last-name">$ext.settings.user.lastName</span>
+					,
+					<span class="user-initials">$!ext.settings.user.initials</span>
+					
+				</div>
+				
+				<div class="settings-info-sub-line">
+					Joined on  <span class="user-joined-on">$ext.settings.dateFormat.format($ext.settings.user.joinedOn)</span><br/>
+				</div>
+				<div class="settings-info-line">
+					<span class="user-description">$!ext.settings.user.description</span>
+				</div>
+				#if ($ext.settings.user.external)
+				<div class="settings-info-line">
+					You are logged in with your $ext.settings.user.provider account.
+				</div>
+				#end
+				<div class="settings-info-main-line">
+					Email
+				</div>
+				<div class="settings-info-line">
+					<span class="user-email">$ext.settings.user.email</span>
+				</div>
+				
+				<div class="settings-info-main-line">
+					Password
+				</div>
+				<div class="settings-info-line">
+					<div class="pass-change-notification">
+						<ul></ul>
+					</div>
+					<div class="change-password-action">
+						<a class="settings-action show-pass-change">Change Password</a>
+					</div>
+					<div class="change-password-panel" style="display: none;">
+						<p>
+							<label class="settings-label">Old password: </label>
+							<input type="password" id="old-password">
+						</p>
+						<p>
+							<label class="settings-label">New password: </label>
+							<input type="password" id="new-password">
+						</p>
+						<p>
+							<label class="settings-label">Repeat password: </label>
+							<input type="password" id="repeat-password">
+						</p>
+						<p>
+							<input type="button" id="btn-change-pass" value="Change">
+							<input type="button" id="btn-change-pass-cancel" value="Cancel">
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="settings-box-actions">
+				<input type="button" value="Edit" class="settings-btn-edit-user-info settings-action">
+			</div>
+		</div>
+	</div>
+</div>

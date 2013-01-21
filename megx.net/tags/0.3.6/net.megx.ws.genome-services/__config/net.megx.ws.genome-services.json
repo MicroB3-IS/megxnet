@@ -1,0 +1,10 @@
+{
+	path: '$resources/net.megx.ws.genome-services',
+	exampleProperty: 'Example Value',
+	storage: {
+		userPrincipal: 'testUser',
+		properties: {
+			some: 'property'
+		}
+	}
+}
