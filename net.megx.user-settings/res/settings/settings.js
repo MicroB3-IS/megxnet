@@ -104,6 +104,10 @@
 				        			  this.validatorMessage = 'Please enter your email.';
 				        			  return false;
 				        		  }else{
+				        			  if(val.toLowerCase() == 'na@na.na'){
+				        				  this.validatorMessage = "Please enter valid e-mail."
+				        				  return false;
+				        			  }
 				        			  if(! /^[A-Za-z0-9\._%\+-]+@[A-Za-z0-9\.-]+\.[A-Za-z]{2,4}$/.test(val) ){
 				        				  this.validatorMessage = 'Invalid email. Please enter a valid email address.';
 				        				  return false
@@ -138,23 +142,24 @@
 				        						  
 				        						  if(result.available == "true"){
 				        							  field.message('<span class="notification-ok">The username is available</span>');
-				        							  this.usernameValid = true;
+				        							  field.usernameValid = true;
 				        						  }else{
 				        							  field.notify("The username is not available");
-				        							  this.usernameValid = false;
+				        							  field.usernameValid = false;
 				        						  }
-				        						  this.checking = false;
+				        						  field.checking = false;
 				        					  }, function(){
-				        						  this.checking = false;
+				        						  field.checking = false;
 				        						  field.notify("Unable to check the username");
-				        						  this.usernameValid = false;
+				        						  field.usernameValid = false;
 				        					  });
 				        				  }
 				        			  }
 				        		  },
 				        		  validator: function(val){
 				        			  if(val != self.user.login){
-				        				  if( this.checking){
+				        				  if(this.checking){
+				        					  this.validatorMessage = "The username is still being checked. Please wait.";
 				        					  return false;
 				        				  }else{
 				        					  return this.usernameValid;
@@ -191,6 +196,7 @@
 					'cancel':{
 						text: 'Cancel',
 						handler: function(){
+							self.trigger('cancel');
 							self.destroy();
 						},
 						order: 1

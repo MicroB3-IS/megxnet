@@ -1,6 +1,7 @@
 package net.megx.settings.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import net.megx.security.auth.Authentication;
+import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.web.WebContextUtils;
@@ -50,6 +54,7 @@ public class AccountManager extends BaseRestService {
 				@FormParam("firstName") String firstName,
 				@FormParam("lastName") String lastName,
 				@FormParam("initials") String initials,
+				@FormParam("login") String loginName,
 				@FormParam("description") String description,
 				@FormParam("email") String email) {
 			final User user = WebContextUtils.getUser(request);
@@ -63,10 +68,31 @@ public class AccountManager extends BaseRestService {
 
 			try {
 				userService.updateUser(user);
+				if(loginName != null && !loginName.trim().equals(user.getLogin())){
+					loginName = loginName.trim();
+					userService.updateUserId(user.getLogin(), loginName);
+					user.setLogin(loginName);
+					SecurityContext sc = WebContextUtils.getSecurityContext(request);
+					sc.clearAuthentication();
+					sc.setAuthentication(new Authentication() {
+						
+						@Override
+						public Object getUserPrincipal() {
+							return user.getLogin();
+						}
+						
+						@Override
+						public List<Role> getRoles() {
+							// TODO Auto-generated method stub
+							return null;
+						}
+					});
+				}
 				if(!WebContextUtils.reloadAuthentication(request, userService)){
 					log.warn("Unable to switch authnetication.");
 				}
 			} catch (Exception e) {
+				log.error("Error occured while updating user info.",e);
 				throw new WebApplicationException(e);
 			}
 			return toJSON(user);

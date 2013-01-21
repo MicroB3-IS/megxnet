@@ -23,18 +23,18 @@
 	#if($req.user) 
 		<div class="settings-header-wrapper">
 			<div class="settings-header-top">
-				<a href="$ctx.siteUrl/settings/account">$ext.settings.userLabel</a>
+				<a href="$ctx.siteUrl/settings/account" class="header-user-label">$ext.settings.userLabel</a>
 				<span class="ui-icon ui-icon-triangle-1-s settings-header-action settings-header-expand"></span>
 			</div>
 			<div class="settings-header-menu" style="display: none;">
 				<ul>
 					<li><a href="$ctx.siteUrl/settings/account" class="settings-header-link">Account Settings</a></li>
 					#if($req.servletRequset.isUserInRole("cmsAdmin"))
-					<li><a href="$ctx.siteUrl/admin/explorer.main.do" class="settings-header-link"><span class="settings-header-link">Test</span>CMS Administration</a></li>
+					<li><a href="$ctx.siteUrl/admin/explorer.main.do" class="settings-header-link">CMS Administration</a></li>
 					#end
 					
 					#if($req.servletRequset.isUserInRole("admin"))
-					<li><a href="$ctx.siteUrl/security/admin" class="settings-header-link"><span class="settings-header-link">Test</span>Security Administration</a></li>
+					<li><a href="$ctx.siteUrl/security/admin" class="settings-header-link">Security Administration</a></li>
 					#end
 					
 					<li><a href="$ctx.siteUrl/admin/logout.do" class="settings-header-link">Logout</a></li>

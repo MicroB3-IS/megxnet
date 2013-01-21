@@ -61,6 +61,8 @@ public class SettingsExtension implements Extension {
 			if(user.getEmail() == null ||
 					user.getEmail().isEmpty()){
 				complete = false;
+			}else if("na@na.na".equals(user.getEmail())){
+				complete = false;
 			}
 			
 			return complete;

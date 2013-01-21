@@ -39,6 +39,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		String firstName = (String)request.getAttribute("firstName");
 		String lastName = (String)request.getAttribute("lastName");
 		String email = (String)request.getAttribute("email");
+		String externalId = (String)request.getAttribute("externalId");
 		Authentication authentication = null;
 		if(provider == null)
 			throw new ServletException("External provider was not specified!");
@@ -53,13 +54,16 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		}
 		User user = null;
 		try {
+			
 			if(log.isDebugEnabled())
-				log.debug("Looking for user: " + logname);
-			user = userService.getUserByUserId(logname);
+				log.debug(String.format("Looking for user: [%s,%s,%s]",logname,provider,externalId));
+			
+			//user = userService.getUserByUserId(logname);
+			user = userService.getExternalUser(provider, externalId);
 			Date lastLogin = null;
 			if(user == null){
 				log.debug("This user was not registered. Registering now...");
-				user = getNewUser(logname, email, firstName, lastName, provider);
+				user = getNewUser(logname, email, firstName, lastName, provider, externalId);
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
 				lastLogin = user.getLastlogin();
@@ -67,8 +71,8 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				lastLogin = user.getLastlogin();
 				user.setLastlogin(new Date());
 				user.setPassword(null);
-				user.setFirstName(firstName);
-				user.setLastName(lastName);
+				//user.setFirstName(firstName);
+				//user.setLastName(lastName);
 				user.setExternal(true);
 				userService.updateUser(user);
 				if(lastLogin == null)
@@ -86,7 +90,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		return authentication;
 	}
 	
-	private User getNewUser(String logname, String email, String firstName, String lastName, String provider){
+	private User getNewUser(String logname, String email, String firstName, String lastName, String provider, String externalId){
 		User user = new User();
 		user.setLogin(logname);
 		user.setFirstName(firstName);
@@ -99,6 +103,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		user.setProvider(provider);
 		user.setJoinedOn(new Date());
 		user.setLastlogin(new Date());
+		user.setExternalId(externalId);
 		Role role = new Role();
 		role.setLabel("user");
 		List<Role> roles = new ArrayList<Role>(1);

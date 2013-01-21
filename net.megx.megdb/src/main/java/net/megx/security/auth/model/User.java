@@ -17,6 +17,7 @@ public class User{
 	private Date lastlogin;
 	private boolean external;
 	private String provider;
+	private String externalId;
 	
 	private List<Role> roles;
 	
@@ -121,6 +122,12 @@ public class User{
 	public void setProvider(String provider) {
 		this.provider = provider;
 	}
+	public String getExternalId() {
+		return externalId;
+	}
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 	@Override
 	public String toString() {
 		return "User [login=" + login + ", firstName=" + firstName
@@ -129,7 +136,7 @@ public class User{
 				+ ", password=*****, disabled=" + disabled
 				+ ", email=" + email + ", lastlogin=" + lastlogin
 				+ ", external=" + external + ", provider=" + provider
-				+ ", roles=" + roles + "]";
+				+ ", externalId=" + externalId + ", roles=" + roles + "]";
 	}
 	
 	public User copy(){
@@ -146,6 +153,7 @@ public class User{
 		copy.login = login;
 		copy.password = password;
 		copy.provider = provider;
+		copy.externalId = externalId;
 		List<Role> rolesCopy = null;
 		if(roles != null){
 			rolesCopy = new ArrayList<Role>(roles.size());

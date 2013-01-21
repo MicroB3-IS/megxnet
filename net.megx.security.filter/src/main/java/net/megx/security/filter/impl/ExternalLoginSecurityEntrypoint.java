@@ -286,6 +286,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					try {
 						JSONObject result = new JSONObject(resultJson);
 						request.setAttribute("logname", ""+result.optInt("id"));
+						request.setAttribute("externalId", ""+result.optInt("id"));
 						String firstName = null;
 						String lastName = null;
 						String fullName = result.optString("name");
@@ -400,6 +401,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					List<String> emails = fetchResp.getAttributeValues("email");
                     String email = emails.get(0);
                     request.setAttribute("email", email);
+                    request.setAttribute("externalId", email);
                     
                     String firstName = email;
                     @SuppressWarnings("unchecked")
@@ -532,6 +534,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				request.setAttribute("firstName", user.optString("first_name"));
 				request.setAttribute("lastName", user.optString("last_name"));
 				request.setAttribute("email", user.optString("email"));
+				request.setAttribute("externalId", user.getString("id"));
 			} catch (JSONException e) {
 				log.debug(e);
 				throw new SecurityException(e);
