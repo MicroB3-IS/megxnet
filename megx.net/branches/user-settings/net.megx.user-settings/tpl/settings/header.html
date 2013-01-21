@@ -57,7 +57,7 @@
 	$(document).ready(function(){
 		var expanded = false;
 		
-		$('.settings-header-expand').click(function(){
+		$('.settings-header-expand').click(function(e){
 			if(expanded){
 				$('.settings-header-wrapper').removeClass('settings-header-state-expanded');
 				$('.settings-header-menu').hide();
@@ -66,6 +66,16 @@
 				$('.settings-header-wrapper').addClass('settings-header-state-expanded');
 				$('.settings-header-menu').show();
 				expanded= true;
+				e.stopPropagation();
+				e.preventDefault();
+				return false;
+			}
+		});
+		$(document.body).click(function(){
+			if(expanded){
+				$('.settings-header-wrapper').removeClass('settings-header-state-expanded');
+				$('.settings-header-menu').hide();
+				expanded = false;
 			}
 		});
 		$('.setting-header-link').unbind();
