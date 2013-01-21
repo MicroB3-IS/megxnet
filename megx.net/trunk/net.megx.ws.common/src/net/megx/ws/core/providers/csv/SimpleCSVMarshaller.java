@@ -22,7 +22,6 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import net.megx.ws.core.providers.txt.ColumNameFormatUtils;
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{

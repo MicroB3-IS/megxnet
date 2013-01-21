@@ -19,7 +19,6 @@ package net.megx.ws.core.providers.csv;
 
 import java.util.List;
 
-import net.megx.ws.core.providers.txt.ColumnNameFormat;
 
 /**
  * CSV Document representation holding the data and the additional info needed

@@ -1,4 +1,4 @@
-package net.megx.ws.core.providers.txt;
+package net.megx.ws.core.providers.csv;
 
 public class ColumNameFormatUtils {
 	

@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.megx.ws.core.providers.txt.ColumnNameFormat;
+import net.megx.ws.core.providers.csv.ColumnNameFormat;
 
 /**
  * Comma Separated Values document configuration.

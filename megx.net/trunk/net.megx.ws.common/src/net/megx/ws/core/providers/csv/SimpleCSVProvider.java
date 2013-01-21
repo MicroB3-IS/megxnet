@@ -29,7 +29,6 @@ import javax.ws.rs.ext.Provider;
 
 import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
-import net.megx.ws.core.providers.txt.ColumnNameFormat;
 import net.megx.ws.core.utils.ReflectionUtils;
 
 public class SimpleCSVProvider extends AbstractCSVProvider{
