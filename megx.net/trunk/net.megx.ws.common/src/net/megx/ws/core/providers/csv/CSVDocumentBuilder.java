@@ -171,28 +171,8 @@ public class CSVDocumentBuilder {
 	 */
 	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
 			char separator, char quoteChar, String lineEnd, Class<?> beanType,
-			String[] columns, List<?> data, ColumnNameFormat format) throws IntrospectionException {
-		boolean useAllColumns = true;
-		if (columns != null && columns.length > 0)
-			useAllColumns = false;
-
-		List<PropertyMapping> mappings = new ArrayList<PropertyMapping>();
-
-		if (useAllColumns) {
-			List<PropertyMapping> cachedMappings = getDefaultSortedMapping(beanType);
-			mappings.addAll(cachedMappings);
-		} else {
-			Map<String, PropertyMapping> hashedMappings = getDefaultHashedMapping(beanType);
-			for (String column : columns) {
-				PropertyMapping mapping = hashedMappings.get(column);
-				if (mapping != null) {
-					mappings.add(mapping);
-				}
-			}
-		}
-
-		return new CSVDocumentInfo(separator, quoteChar, lineEnd,
-				writeHeaderColumns, data, mappings, format);
+			String[] columns, List<?> data) throws IntrospectionException {
+		return createDocument(writeHeaderColumns, separator, quoteChar, lineEnd, beanType, columns, data, ColumnNameFormat.NONE);
 	}
 	/**
 	 * Creates new CSV Document representation, ready for serialization
