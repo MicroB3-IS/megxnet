@@ -82,7 +82,8 @@
         <module>net.megx.security.filter</module>
         <!-- build megx.net apps manager -->
         <module>net.megx.apps-manager</module>
-
+		<module>net.megx.user-settings</module>
+        
         <!-- Storage Service bundle -->
         <module>net.megx.storage</module>
 
