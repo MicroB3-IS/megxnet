@@ -1,7 +1,12 @@
 <style>
 <!--
-.w50 {
-	width: 50%;
+.samplingSite_td {
+	width: 60%;
+}
+
+.noOfSamples_td {
+	width: 130px;
+	text-align: right;
 }
 -->
 </style>
@@ -19,10 +24,11 @@ $ext.dataTable.renderServerSide(
 	"{
 	 aoColumns: [{ 
 	 	mData: 'samplingSite',
-	 	sClass: 'w50',
+	 	sClass: 'samplingSite_td',
 	 }, { 
 	 	mData: 'location',
 	 }, { 
 	 	mData: 'noOfSamples',
+	 	sClass: 'noOfSamples_td',
 	 }]
 }")
