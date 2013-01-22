@@ -220,6 +220,58 @@ public class CSVDocumentBuilder {
 				lineEnd, beanType, columns, ld, format);
 	}
 	
+	
+	/**
+	 * Creates new CSV Document representation, ready for serialization
+	 * 
+	 * @param writeHeaderColumns
+	 *            boolean indicating if the header columns should be written to
+	 *            the document when serializing
+	 * @param separator
+	 *            separator character, defaults to ','
+	 * @param quoteChar
+	 *            quote characte, defaults to '"'
+	 * @param lineEnd
+	 *            EOL (End Of Line) - defaults to "\r\n"
+	 * @param beanType
+	 *            the Type of the bean holding the data for a single row in the
+	 *            CSV document (POJO)
+	 * @param columns
+	 *            array of column names (the mapped names of the columns if
+	 *            annotated, NOT the raw field name - of course the mapped name
+	 *            and the field/property name will be the same if the field is
+	 *            not annotated)
+	 * @param data {@link List} of beans holding the actual data
+	 * @return {@link CSVDocumentInfo} representing the real CSV document and additional info needed for serialization
+	 * @throws IntrospectionException
+	 */
+	public CSVDocumentInfo createDocument(boolean writeHeaderColumns,
+			char separator, char quoteChar, String lineEnd, Class<?> beanType,
+			String[] columns, List<?> data, ColumnNameFormat format) throws IntrospectionException {
+		boolean useAllColumns = true;
+		if (columns != null && columns.length > 0)
+			useAllColumns = false;
+
+		List<PropertyMapping> mappings = new ArrayList<PropertyMapping>();
+
+		if (useAllColumns) {
+			List<PropertyMapping> cachedMappings = getDefaultSortedMapping(beanType);
+			mappings.addAll(cachedMappings);
+		} else {
+			Map<String, PropertyMapping> hashedMappings = getDefaultHashedMapping(beanType);
+			for (String column : columns) {
+				PropertyMapping mapping = hashedMappings.get(column);
+				if (mapping != null) {
+					mappings.add(mapping);
+				}
+			}
+		}
+
+		return new CSVDocumentInfo(separator, quoteChar, lineEnd,
+				writeHeaderColumns, data, mappings, format);
+	}
+	
+	
 	/**
 	 * Creates new CSV Document representation, ready for serialization
 	 * 
