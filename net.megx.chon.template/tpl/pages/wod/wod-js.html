@@ -7,9 +7,9 @@ function onTableRendered(oSettings, json) {
 function createCellRenderer(prop) {
  return function (data, type, full){
 	 if(isNaN(data)) {
-		 return '<span style="color: #ccc">' + data + '</span>';
+		 return '<div class="cell_d cell_na">' + data + '</div>';
 	 }
-	 return Math.round(data*1000)/1000
+	 return  '<div class="cell_d cell_num">' + Math.round(data*1000)/1000 + '</div>'; 
  }
 }
 </script>
