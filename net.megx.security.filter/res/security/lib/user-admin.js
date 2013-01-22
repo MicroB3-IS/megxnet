@@ -94,12 +94,12 @@
 		            	   displayName = users[i].login;
 		               }
 		               var um = [
-		                  '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
+		                  '<div class="user-entry ui-corner-all" title="',users[i].email,'">',
 		                     '<span class="user-label user-action-edit">',
 		                        displayName,
 		                     '</span>',
 		                     '<span class="entry-description">',
-		                     	 '(',users[i].email, ')',
+		                     	 '(',users[i].login, ')',
 		                     '</span>',
 		                     '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
 		                  '</div>'
@@ -355,8 +355,10 @@
 		   },
 		   removeUser: function(user){
 		      var self = this;
+		      var userLabel = $.trim( (user.firstName||'') + " " + (user.lastName||'') );
+		      userLabel = userLabel || user.login;
 		      this.n.confirm('Confirm', "Are you sure you want to remove user '" + 
-		         user.firstName + " " + user.lastName + "'?",
+		         userLabel + "'?",
 		            function(){
 		               self.userService.del(user.login, undefined, function(){
 		                  self.n.message('Info: ', "User " + user.firstName + " " + user.lastName + "' has been removed");
