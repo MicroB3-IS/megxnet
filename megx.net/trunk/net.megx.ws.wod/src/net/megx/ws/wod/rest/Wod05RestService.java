@@ -16,6 +16,8 @@ import net.megx.ui.table.json.TableDataResponse;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.Result;
+import net.megx.ws.core.providers.csv.ColumnNameFormat;
+import net.megx.ws.core.providers.csv.annotations.CSVDocument;
 
 @Path("wod05")
 public class Wod05RestService extends BaseRestService {
@@ -72,6 +74,7 @@ public class Wod05RestService extends BaseRestService {
 	@GET
 	@Path("megx_wod.csv")
 	@Produces(CustomMediaType.APPLICATION_CSV)
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public List<Wod05> csv(
 			@QueryParam("lat") double lat,
 			@QueryParam("lon") double lon, 
