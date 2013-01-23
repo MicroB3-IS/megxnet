@@ -1,0 +1,12 @@
+<form method="post">
+	<!--input type="hidden" name="oauth_callback" value="$req.servletRequest.getAttribute("CALLBACK")"-->
+	<input type="hidden" name="oauth_callback" value="$req.getServletRequset().getAttribute( 'CALLBACK' )">
+	<input type="hidden" name="oauth_token" value="$req.getServletRequset().getAttribute( 'TOKEN' )">
+	<p>
+	Do you wish to authorize the application $req.getServletRequset().getAttribute( 'CONS_DESC' ) to access some of your resources on Megx?
+	</p>
+	<div style="text-align: right; width: 100%;">
+		<input type="button" id="cancel" value="Deny">
+		<input type="submit" value="Allow">
+	</div>
+</form>
