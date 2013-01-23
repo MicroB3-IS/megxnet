@@ -56,7 +56,7 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 					}
 					
 				} catch (OAuthProblemException e) {
-					throw new SecurityException(e, HttpServletResponse.SC_UNAUTHORIZED);
+					throw new SecurityException(e, e.getHttpStatusCode());
 				} catch (OAuthException e) {
 					throw new SecurityException(e, HttpServletResponse.SC_UNAUTHORIZED);
 				}

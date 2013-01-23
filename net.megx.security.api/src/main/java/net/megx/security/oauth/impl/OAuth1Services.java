@@ -140,6 +140,7 @@ public class OAuth1Services extends BaseOAuthServices{
             callback = "none";
         }
         String consumer_description = (String)accessor.consumer.getProperty("description");
+        request.setAttribute("CONS_NAME", (String)accessor.consumer.getProperty("name"));
         request.setAttribute("CONS_DESC", consumer_description);
         request.setAttribute("CALLBACK", callback);
         request.setAttribute("TOKEN", accessor.requestToken);

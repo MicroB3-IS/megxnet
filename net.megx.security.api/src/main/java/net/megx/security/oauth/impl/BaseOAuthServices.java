@@ -57,6 +57,7 @@ public abstract class BaseOAuthServices implements OAuthServices{
 					consumerKey, consumer.getSecret(), 
 					null // service provider ?
 					);
+			oaConsumer.setProperty("name", consumer.getName());
 			oaConsumer.setProperty("description", consumer.getDescription());
 			return 	oaConsumer;
 			
