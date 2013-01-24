@@ -1,0 +1,166 @@
+<div id="chart_ct"></div>
+
+<script type="text/javascript">
+function renderCharts(oSettings, data) {
+	// first combine columns by units
+	var groups = {};
+	oSettings.aoColumns.map(function(c) {
+		if(!groups[c.scType]) groups[c.scType]=[];
+		groups[c.scType].push(c.mData);
+	});
+	
+	//get (column) data for property
+	var getSerie = function(prop) {
+		var arr = [];
+		for(var i=0; i<data.length; i++) {
+			var row = data[i];
+			var x = Date.UTC(row['year'], row['month'], 1);
+			var y = row[prop];
+			arr.push({
+				x:x,
+				y:y
+			});
+		}
+		return {
+			name: prop,
+			data: arr
+		};
+	}
+	
+	//we need to dynamicly build 
+	var yAxis = [];
+	var series = [];
+	
+	for(var k in groups) {
+		if(k == 'x-axis') continue;
+		//add y-axis for each (unit) group
+		yAxis.push({
+			title: {
+				text: k,
+				align: 'low',
+				margin: 5,
+				style: {
+					fontSize: '11px'
+				}
+			},
+			showEmpty: false,
+			labels: {
+				align: 'right',
+				style: {
+					fontSize: '8px'
+				},
+				enabled: true
+			}
+			//,
+			//allowDecimals: false
+		});
+		
+		//add series data for each entity in the group
+		var arr = groups[k];
+		for(var i=0; i<arr.length; i++) {
+			var s = getSerie(arr[i]) // eg.  arr[i] == nitrates
+			s.yAxis = yAxis.length-1;
+			s.grName = k; 
+			series.push(s);
+		}
+	}
+	
+	
+	//We have all data transformed now, we can create the chart
+	
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chart_ct',
+            type: 'scatter',
+            zoomType: 'xy',
+            events: {
+	            load: function() {
+	            	var visible = [0,2,3,4,5,6];
+	            	for(var i=0; i<this.series.length; i++) {
+	            		if(visible.indexOf(i)<0) {
+	            			this.series[i].hide();
+	            		}
+	            	}
+	            }
+            },
+            resetZoomButton: {
+                theme: {
+                    fill: 'white',
+                    stroke: 'silver',
+                    r: 5,
+                    states: {
+                        hover: {
+                            fill: '#666',
+                            style: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        credits: {
+        	enabled: false	
+        },
+        title: {
+            text: 'WOD05 Data graphical representation'
+        },
+        subtitle: {
+            text: 'Latitude: $lat / Longitude: $lon / Depth: $depth m / Buffer:  $buffer'
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'Time (year/month)'
+            },
+            type: 'datetime',
+            //dateTimeLabelFormats: { // don't display the dummy year
+            //    month: '%e. %b',
+            //    year: '%b'
+            //}
+        },
+        yAxis: yAxis,
+        tooltip: {
+            formatter: function() {
+            	//console.log(this);
+            		var d = new Date(this.x);
+            		var s = d.getFullYear() + "/" + (d.getMonth() + 1)
+            		var unit = this.series.yAxis.options.title.text
+                    return '' + this.series.name + ": " + s + " - " + this.y + unit;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'middle',
+            floating: false,
+            backgroundColor: '#ededed',
+            shadow: true,
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                }
+            }
+        },
+        series: series
+    });	
+}
+
+</script>	
+<script src="$ctx.siteUrl/highcharts/js/highcharts.js"></script> 
