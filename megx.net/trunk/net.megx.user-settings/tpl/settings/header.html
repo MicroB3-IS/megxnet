@@ -44,7 +44,9 @@
 		<div class="clear"></div>
 		<sub>Last Login: 
 			<span>
-				$ext.settings.dateFormat.format( $req.servletRequset.session.getAttribute("userLastLogin") )
+				#if ($req.servletRequset.session.getAttribute("userLastLogin"))
+					$ext.settings.dateFormat.format( $req.servletRequset.session.getAttribute("userLastLogin") )
+				#end
 			</span>
 		</sub>
 	#else
