@@ -65,12 +65,12 @@ public class SixFrameTranslationService extends BaseRestService{
 				try {
 					if(outFile != null){
 						sixFrameTranslation.sixFrameTranslate(username, ALL_FRAMES, 
-								infile, outFile, true, LINE_SIZE);
+								infile, outFile, false, LINE_SIZE);
 						Result<String> result = new Result<String>(outFile);
 						output.write(toJSON(result).getBytes());
 					}else{
 						sixFrameTranslation.sixFrameTranslate(username, ALL_FRAMES, 
-								infile, output, true, LINE_SIZE);
+								infile, output, false, LINE_SIZE);
 					}
 				} catch (IOException e) {
 					log.error(e);
