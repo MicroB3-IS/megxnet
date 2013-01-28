@@ -55,7 +55,7 @@ public class DiNucOddsRatio extends BaseGenomeService {
 		calculateDiNucleotideOddsRatio(readstream, csvOut);
 
 		readstream.close();
-
+		resource.dispose();
 	}
 
 	/**
