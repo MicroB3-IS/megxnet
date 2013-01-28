@@ -102,9 +102,13 @@ public class OAuth1Services extends BaseOAuthServices{
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();
             out.println("You have successfully authorized '" 
-                    + accessor.consumer.getProperty("description") 
-                    + "'. Please close this browser window and click continue"
-                    + " in the client.");
+                    + accessor.consumer.getProperty("name") +"'.");
+            out.println("Your verification code is: " + 
+                    accessor.getProperty("oauth_verifier"));
+            out.println();
+            out.println("Please close this browser window, " +
+            		"enter the verfication code and click " +
+            		"continue in the client.");
             out.close();
         } else {
             // if callback is not passed in, use the callback from config
@@ -117,7 +121,8 @@ public class OAuth1Services extends BaseOAuthServices{
             }
             String token = accessor.requestToken;
             if (token != null) {
-                callback = OAuth.addParameters(callback, "oauth_token", token);
+                callback = OAuth.addParameters(callback, OAuth.OAUTH_TOKEN, token, 
+                		OAuth.OAUTH_VERIFIER, (String)accessor.getProperty(OAuth.OAUTH_VERIFIER));
             }
             
             response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
@@ -140,9 +145,11 @@ public class OAuth1Services extends BaseOAuthServices{
             callback = "none";
         }
         String consumer_description = (String)accessor.consumer.getProperty("description");
+        request.setAttribute("CONS_NAME", (String)accessor.consumer.getProperty("name"));
         request.setAttribute("CONS_DESC", consumer_description);
         request.setAttribute("CALLBACK", callback);
         request.setAttribute("TOKEN", accessor.requestToken);
+        request.setAttribute("VERIFIER", accessor.getProperty("oauth_verifier"));
         //request.getRequestDispatcher //
          //           ("/authorize.html").forward(request,
           //              response);
@@ -179,9 +186,15 @@ public class OAuth1Services extends BaseOAuthServices{
 			HttpServletResponse response) throws IOException, ServletException {
 		try{
 			OAuthMessage message = OAuthServlet.getMessage(request, null);
+			String verifier = message.getParameter(OAuth.OAUTH_VERIFIER);
 			OAuthAccessor accessor =getAccessorForRequestToken(message.getToken()); 
 			getValidator().validateMessage(message, accessor);
-			
+			String storedVerifier = (String)accessor.getProperty(OAuth.OAUTH_VERIFIER);
+			if(storedVerifier != null){
+				if(!storedVerifier.equals(verifier)){
+					throw new InvalidOAuthRequestException(OAuth.Problems.OAUTH_PARAMETERS_REJECTED, 401);
+				}
+			}
 			if(!Boolean.TRUE.equals(accessor.getProperty("authorized"))){
 				throw new OAuthProblemException("permission_denied");
 			}

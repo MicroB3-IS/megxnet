@@ -59,6 +59,8 @@ public class OAuthTokenServices implements TokenServices{
 			token.setToken(keySecret.getKey());
 			token.setSecret(keySecret.getSecret());
 			
+			token.setVerifier(keySecretProvider.getRandomSequence(7));
+			
 			cache.storeObject(token.getToken(), token);
 			return token;
 		} catch (GeneralSecurityException e) {
@@ -78,21 +80,23 @@ public class OAuthTokenServices implements TokenServices{
 			Token rToken = getRequestToken(requestToken);
 			if(rToken == null || !rToken.isAuthorized() || rToken.getUser() == null)
 				return null;
-			Token token = new Token();
 			
-			token.setAccessToken(true);
-			token.setConsumerKey(consumerKey);
-			token.setTimestamp(new Date());
-			token.setToken(keySecret.getKey());
-			token.setSecret(keySecret.getSecret());
+			Token token = tokenService.getToken(rToken.getUser().getLogin(), consumerKey);
+			if(token == null){
+				token = new Token();
 			
-			
-			
-			token.setUser(rToken.getUser());
-			
+				token.setAccessToken(true);
+				token.setConsumerKey(consumerKey);
+				token.setTimestamp(new Date());
+				token.setToken(keySecret.getKey());
+				token.setSecret(keySecret.getSecret());
+				
+				token.setUser(rToken.getUser());
+				tokenService.saveToken(token.getToken(), token);
+			}
 			cache.removeObject(rToken.getToken());
 			
-			tokenService.saveToken(token.getToken(), token);
+			
 			return token;
 		} catch (GeneralSecurityException e) {
 			// TODO Auto-generated catch block
