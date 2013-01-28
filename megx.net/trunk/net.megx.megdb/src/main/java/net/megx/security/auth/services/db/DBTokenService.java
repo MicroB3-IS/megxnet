@@ -80,4 +80,16 @@ public class DBTokenService extends BaseMegdbService implements TokenService {
 		}, TokenMapper.class);
 	}
 
+	@Override
+	public Token getToken(final String userId, final String consumerKey) throws Exception {
+		return doInSession(new DBTask<TokenMapper, Token>() {
+
+			@Override
+			public Token execute(TokenMapper mapper) throws Exception {
+				return mapper.getTokenForUserAndConsumer(userId, consumerKey);
+			}
+			
+		}, TokenMapper.class);
+	}
+
 }
