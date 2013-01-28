@@ -87,7 +87,7 @@ public class ErrorLogger implements ErrorLog{
 
 	
 	protected void mapStackTrace(Throwable t, StringBuffer buffer){
-		buffer.append(t + "%n");
+		buffer.append( String.format("%s%n",t) );
 		do{
 			StackTraceElement [] stackTrace = t.getStackTrace();
 			for(StackTraceElement se: stackTrace){
