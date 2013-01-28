@@ -154,8 +154,10 @@ public class SecurityFilter implements Filter{
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		for(ExceptionHandlerWrapper w: exceptionHandlers){
-			if(!w.handler.handleException(e, request, response)){
-				break;
+			if(w.canHandle(request)){
+				if(!w.handler.handleException(e, request, response)){
+					break;
+				}
 			}
 		}
 	}
@@ -249,7 +251,7 @@ public class SecurityFilter implements Filter{
 		JSONArray handlersCfg = config.optJSONArray("exceptionHandlers");
 		DefaultExceptionHandler defaultExceptionHandler = new DefaultExceptionHandler();
 		defaultExceptionHandler.init(config.optJSONObject("defaultHandler"));
-		ExceptionHandlerWrapper defaultHandler = new ExceptionHandlerWrapper(defaultExceptionHandler, -1);
+		ExceptionHandlerWrapper defaultHandler = new ExceptionHandlerWrapper(defaultExceptionHandler, -1, new String[]{"/.*"});
 		if(handlersCfg == null){
 			log.debug("Using only the default exception handler");
 			exceptionHandlers.add(defaultHandler);
@@ -261,7 +263,14 @@ public class SecurityFilter implements Filter{
 			if(cfg != null){
 				String className = cfg.optString("class");
 				int order = cfg.optInt("order", 0);
-				
+				String [] patterns = null;
+				JSONArray patternsArr = cfg.optJSONArray("patterns");
+				if(patternsArr != null && patternsArr.length() > 0){
+					patterns = new String[patternsArr.length()];
+					for(int pi = 0; pi < patternsArr.length(); pi++){
+						patterns[pi] = patternsArr.optString(pi);
+					}
+				}
 				log.debug("Building exception handler of type: " + className);
 				try {
 					Class<?> ehClass = getClassLoader().loadClass(className);
@@ -270,7 +279,7 @@ public class SecurityFilter implements Filter{
 					
 					if(instance instanceof ExceptionHandler){
 						((ExceptionHandler)instance).init(cfg);
-						exceptionHandlers.add(new ExceptionHandlerWrapper((ExceptionHandler)instance, order));
+						exceptionHandlers.add(new ExceptionHandlerWrapper((ExceptionHandler)instance, order, patterns));
 						log.debug("Build exception handler of instance: " + instance + " with order=" + order);
 					}else{
 						log.warn(String.format("Object (%s) is not instance of ExceptionHandler. Discarding instance.", instance.toString()));
@@ -418,20 +427,33 @@ public class SecurityFilter implements Filter{
 	protected class ExceptionHandlerWrapper implements Comparable<ExceptionHandlerWrapper>{
 		public ExceptionHandler handler;
 		public int order;
+		public String [] patterns;
 
 		public ExceptionHandlerWrapper() {	}
 		
 		
-		public ExceptionHandlerWrapper(ExceptionHandler handler, int order) {
+		public ExceptionHandlerWrapper(ExceptionHandler handler, int order, String [] patterns) {
 			super();
 			this.handler = handler;
 			this.order = order;
+			this.patterns = patterns;
 		}
 
 
 		@Override
 		public int compareTo(ExceptionHandlerWrapper o) {
 			return order - o.order;
+		}
+		
+		public boolean canHandle(HttpServletRequest request){
+			if(patterns == null)
+				return false;
+			String path = WebUtils.getRequestPath(request, false);
+			for(String pattern: patterns){
+				if(path.matches(pattern))
+					return true;
+			}
+			return false;
 		}
 		
 	}
