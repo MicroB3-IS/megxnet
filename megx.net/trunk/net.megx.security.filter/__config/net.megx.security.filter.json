@@ -20,7 +20,10 @@
 					'/oauth/request_token',
 					'/oauth/access_token',
 					'/oauth/authorize',
-					'/ws/pubmap.*'
+					'/ws/pubmap.*',
+					'/ws/v1/di-nucleotides-odds-ratio/.*',
+					'/ws/v1/gc-content/.*',
+					'/ws/v1/six-frame-translation/.*'
 				],
 				order: 0
 			},
@@ -109,6 +112,10 @@
 		      'class': 'net.megx.security.filter.impl.WebDavExceptionHandler',
 		      'order': 1,
 		      'patterns': ['/dav/.*']
+		  },{
+		  	  'class': 'net.megx.security.filter.impl.OAuthExceptionHandler',
+		  	  'order': 6,
+		  	  'patterns':['/.*']
 		  }
 		],
 		defaultHandler:{
