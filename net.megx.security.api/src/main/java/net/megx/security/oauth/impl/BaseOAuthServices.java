@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.megx.model.auth.Consumer;
+import net.megx.security.auth.SecurityException;
+import net.megx.security.auth.StopSecurityChainException;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.UserService;
@@ -114,12 +116,15 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	
 	protected void handleException(Exception e, HttpServletRequest request,
             HttpServletResponse response, boolean sendBody)
-            throws IOException, ServletException {
+            throws IOException, ServletException, SecurityException {
 		/*
         String realm = (request.isSecure())?"https://":"http://";
         realm += request.getLocalName();
         OAuthServlet.handleException(response, e, realm, sendBody);
         */ 
+		if(e instanceof StopSecurityChainException){
+			throw (SecurityException)e;
+		}
 		log.debug("Error during OAuth step.",e);
 		throw new ServletException("OAuth error",e);
     }

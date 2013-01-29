@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.StopSecurityChainException;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.filter.StopFilterException;
@@ -40,7 +41,11 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 				oAuthServices.processRequestTokenRequest(request, response);
 				throw new StopFilterException();
 			}else if(path.matches(authorizationUrl)){
+				try{
 				oAuthServices.processAuthorization(request, response);
+				}catch (StopSecurityChainException e) {
+					throw new StopFilterException();
+				}
 				//throw new StopFilterException();
 				if(response.isCommitted()){
 					throw new StopFilterException();
