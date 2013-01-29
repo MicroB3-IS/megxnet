@@ -2,7 +2,6 @@ package net.megx.security.oauth.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 
 import javax.servlet.ServletException;
@@ -30,7 +29,7 @@ public class OAuth1Services extends BaseOAuthServices{
 	
 	@Override
 	public void processRequestTokenRequest(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws IOException, ServletException{
 		try{
 			OAuthMessage message = OAuthServlet.getMessage(request, null);
 			OAuthConsumer consumer = getConsumer(message.getConsumerKey());
@@ -52,13 +51,17 @@ public class OAuth1Services extends BaseOAuthServices{
                              out);
             out.close();
 		}catch (Exception e) {
+			try{
 			handleException(e, request, response, true);
+			}catch (SecurityException se) {
+				log.error("Security Exception");
+			}
 		}
 	}
 
 	@Override
 	public void processAuthorization(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws IOException, ServletException, SecurityException{
 		if(request.getMethod().toLowerCase().equals("get")){
 			processAuthorization_GET(request, response);
 		}else if(request.getMethod().toLowerCase().equals("post")){
@@ -69,7 +72,7 @@ public class OAuth1Services extends BaseOAuthServices{
 	}
 	
 	private void processAuthorization_GET(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws IOException, ServletException, SecurityException {
 		OAuthMessage requestMessage = OAuthServlet.getMessage(request, null);
 		try{
 			OAuthAccessor requestToken = getAccessorForRequestToken(requestMessage.getToken());
@@ -87,7 +90,7 @@ public class OAuth1Services extends BaseOAuthServices{
 	
 	private void returnToConsumer(HttpServletRequest request, 
             HttpServletResponse response, OAuthAccessor accessor)
-    throws IOException, ServletException {
+    throws IOException, ServletException, SecurityException {
         // send the user back to site's callBackUrl
         String callback = request.getParameter("oauth_callback");
         if("none".equals(callback) 
@@ -99,17 +102,10 @@ public class OAuth1Services extends BaseOAuthServices{
         
         if( "none".equals(callback) || "oob".equals(callback)) {
             // no call back it must be a client
-            response.setContentType("text/plain");
-            PrintWriter out = response.getWriter();
-            out.println("You have successfully authorized '" 
-                    + accessor.consumer.getProperty("name") +"'.");
-            out.println("Your verification code is: " + 
-                    accessor.getProperty("oauth_verifier"));
-            out.println();
-            out.println("Please close this browser window, " +
-            		"enter the verfication code and click " +
-            		"continue in the client.");
-            out.close();
+        	request.setAttribute("oauth.consumer.name", accessor.consumer.getProperty("name"));
+        	request.setAttribute("oauth.verifier", accessor.getProperty("oauth_verifier"));
+        	request.setAttribute("oauth.token.authorized", true);
+        	
         } else {
             // if callback is not passed in, use the callback from config
             if(callback == null || callback.length() <=0 ){
@@ -145,19 +141,15 @@ public class OAuth1Services extends BaseOAuthServices{
             callback = "none";
         }
         String consumer_description = (String)accessor.consumer.getProperty("description");
-        request.setAttribute("CONS_NAME", (String)accessor.consumer.getProperty("name"));
-        request.setAttribute("CONS_DESC", consumer_description);
-        request.setAttribute("CALLBACK", callback);
-        request.setAttribute("TOKEN", accessor.requestToken);
-        request.setAttribute("VERIFIER", accessor.getProperty("oauth_verifier"));
-        //request.getRequestDispatcher //
-         //           ("/authorize.html").forward(request,
-          //              response);
-        
+        request.setAttribute("oauth.consumer.name", (String)accessor.consumer.getProperty("name"));
+        request.setAttribute("oauth.consumer.description", consumer_description);
+        request.setAttribute("oauth.callback", callback);
+        request.setAttribute("oauth.request.token", accessor.requestToken);
+        request.setAttribute("oauth.verifier", accessor.getProperty("oauth_verifier"));
     }
 	
 	private void processAuthorization_POST(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws IOException, ServletException, SecurityException {
 		OAuthMessage requestMessage = OAuthServlet.getMessage(request, null);
 		try{
 			OAuthAccessor requestToken = getAccessorForRequestToken(requestMessage.getToken());
@@ -207,7 +199,12 @@ public class OAuth1Services extends BaseOAuthServices{
                              out);
             out.close();
 		}catch (Exception e) {
-			handleException(e, request, response, true);
+			try {
+				handleException(e, request, response, true);
+			} catch (SecurityException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -233,5 +230,5 @@ public class OAuth1Services extends BaseOAuthServices{
 	public void setoAuthHandler(WebAuthenticationHandler oAuthHandler) {
 		this.oAuthHandler = oAuthHandler;
 	}
-
+	
 }
