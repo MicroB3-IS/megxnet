@@ -77,19 +77,25 @@ $(document).ready(function(){
 
 <style>
    .user-entry{
-      border: solid 1px #AAA;
+      border: solid 1px #e7e7e7;
       padding: 10px;
       margin: 5px;
    }
    
    .user-label{
-      color: #999;
-      font-weight: bold;
-      font-size: 12px;
+      color: #00AEEF;
+      font-weight: normal;
+      font-size: 1em;
+      display: block;
+      float: left;
    } 
+   
    .user-action-edit{
-      text-decoration: underline;
       cursor: pointer;
+   }
+   
+   .user-action-edit:hover{
+   		text-decoration: underline;
    }
    
    .user-action-remove{
@@ -107,7 +113,7 @@ $(document).ready(function(){
       padding: 10px;
    }
    .security-users-panel{
-      border: solid 1px #AAA;
+      border: solid 1px #e7e7e7;
       padding: 10px;
    }
    
@@ -132,10 +138,16 @@ $(document).ready(function(){
       margin-left: 20px;
       padding: 5px;
    }
+   
+   .content-placeholder{
+   		background: #fff;
+   		box-shadow: 2px 5px 10px rgba(0,0,0, 0.2);
+   }
+   
 </style>
 
 
-<div style="margin: 5px;">
+<div style="margin: 15px;">
 	<div class="admin-left-container">
 		<div class="admin-action-container admin-action-state-default admin-action-users">
 			Users
