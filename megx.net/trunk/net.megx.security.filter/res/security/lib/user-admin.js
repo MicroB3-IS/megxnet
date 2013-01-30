@@ -271,13 +271,13 @@
 		            },
 		            {
 		               type: 'section',
-		               title: 'Roles',
+		               title: 'Groups',
 		               content: [
 		                  {
 		                     type: 'array-values',
-		                     title: 'Roles',
+		                     title: 'Groups',
 		                     name: 'roles',
-		                     label: 'Roles: ',
+		                     label: 'Groups: ',
 		                     events: {
 		                        'value-remove': function(e,f,val){
 		                           uep.getDataField('select_roles').addValue(val);
@@ -285,7 +285,7 @@
 		                     },
 		                     validator: function(val){
 		                    	 if(!val || !val.length){
-		                    		 this.validatorMessage = 'The user must have at least one role.';
+		                    		 this.validatorMessage = 'The user must be member of at least one group.';
 		                    		 return false;
 		                    	 }
 		                    	 return true;
@@ -293,9 +293,9 @@
 		                  },
 		                  {
 		                     type: 'select',
-		                     title: 'select roles',
+		                     title: 'select groups',
 		                     name: 'select_roles',
-		                     label: 'Select Role: ',
+		                     label: 'Select Group: ',
 		                     events: {
 		                        'change': function(e, f){
 		                           var value = f.getValue();
@@ -307,7 +307,7 @@
 		                  },
 		                  {
 		                     type: 'button',
-		                     title: 'Add Role',
+		                     title: 'Add Group',
 		                     value: 'Add',
 		                     name: 'add_role',
 		                     events: {

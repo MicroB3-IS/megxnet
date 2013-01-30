@@ -119,7 +119,7 @@
                                  getArr(resources[i].httpMethods),
                               '</div>',
                               '<div class="panel-field-right">',
-                                 '<label class="panel-field-label">Allowed Roles:</label>',
+                                 '<label class="panel-field-label">Allowed Groups:</label>',
                                  getArr(resources[i].roles),
                               '</div>',
                         '</div>',
@@ -357,13 +357,13 @@
 	            },
 	            {
 	               type: 'section',
-	               title: 'Allowed Roles',
+	               title: 'Allowed Groups',
 	               content: [
 	                  {
 	                     type: 'array-values',
 	                     name: 'roles',
-	                     label: 'Allowed For Roles',
-	                     title: 'Allowed roles to access this resource',
+	                     label: 'Allowed For Groups',
+	                     title: 'Memebers of these groups will be able to access this resource',
 	                     value: (function(o){
 	                        var r = [];
 	                        each(o, function(k){r.push(k);});
@@ -371,7 +371,7 @@
 	                     })(resource.roles),//this.getRolesForResource(resource),
 	                     validator: function(val){
 	                    	 if(!val || !val.length){
-	                    		 this.validatorMessage = "Please enter at least one role that has the access privileges to this resource.";
+	                    		 this.validatorMessage = "Please enter at least one group that has the access privileges to this resource.";
 	                    		 return false;
 	                    	 }
 	                    	 return true;
@@ -389,7 +389,7 @@
 	                  {
 	                     type: 'select',
 	                     name: 'allRoles',
-	                     label: 'Available Roles: ',
+	                     label: 'Available Groups: ',
 	                     options: this.availableRolesForResource(resource),
 	                     events:{
 	                        'change': function(e, f){
