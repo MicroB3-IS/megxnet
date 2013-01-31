@@ -20,7 +20,7 @@
 </style>
 <figure class="logo"><a href="$ctx.siteUrl/"><img src="$ctx.siteUrl/images/logo.png"></a></figure>
 <article class="header-right"> 
-	#if($req.user) 
+	#if($req.user and !$req.servletRequset.isUserInRole("anonymous")) 
 		<div class="settings-header-wrapper">
 			<div class="settings-header-top">
 				<a href="$ctx.siteUrl/settings/account" class="header-user-label">$ext.settings.userLabel</a>
@@ -44,7 +44,11 @@
 		<div class="clear"></div>
 		<sub>Last Login: 
 			<span>
-				$ext.settings.dateFormat.format( $req.servletRequset.session.getAttribute("userLastLogin") )
+				#if ($req.servletRequset.session.getAttribute("userLastLogin"))
+					$ext.settings.dateFormat.format( $req.servletRequset.session.getAttribute("userLastLogin") )
+				#else
+				N/A
+				#end
 			</span>
 		</sub>
 	#else

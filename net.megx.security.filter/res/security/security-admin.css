@@ -86,9 +86,10 @@
 	cursor: pointer;
 }
 .admin-action-state-default {
-	border: solid 1px #c7c7c7;
+	border: solid 1px #e7e7e7;
 	border-right: none;
 	background: none;
+	box-shadow: 0px 2px 4px rgba(0,0,0, 0.2);
 }
 .admin-action-state-selected {
 	border: solid 1px #6dcff6;
@@ -130,7 +131,7 @@
 }
 .resource-entry {
 	padding: 10px;
-	border: solid 1px #999;
+	border: solid 1px #e7e7e7;
 	margin: 3px;
 }
 .resources-panel-wrapper {
@@ -213,17 +214,24 @@
 }
 .role-entry {
 	margin: 5px;
-	border-bottom: 1px dashed #e7e7e7;
-	padding: 7px 3px;
+	/*border-bottom: 1px dashed #e7e7e7;*/
+	border: solid 1px #e7e7e7;
+	/*padding: 7px 3px;*/
+	padding: 10px;
 }
 .role-entry a {
 	text-decoration: none;
 }
 .role-entry-title {
-	font-weight: bold;
-	float: left;
-	width: 300px;
+	cursor: pointer;
+	text-decoration: none;
+	color: #00AEEF;
+	margin-bottom: 5px;
 }
+.role-entry-title:hover{
+	text-decoration: underline;
+}
+
 .role-entry-description {
 	font-weight: normal;
 	color: #999;
@@ -232,6 +240,12 @@
 .role-action {
 	text-decoration: underline;
 	cursor: pointer;
+}
+.role-entry .role-action{
+	text-decoration: none;
+}
+.role-entry .role-action:hover{
+	text-decoration: underline;
 }
 .filter-select-result-label {
 	color: #999;
@@ -250,37 +264,65 @@
 	width: 300px;
 }
 .filter-select-hint {
-	float: left;
-	width: 500px;
+	position: absolute;
 	padding: 5px;
-	border: solid 1px #AAA;
+	border-right: solid 1px #999;
+	border-bottom: solid 1px #999;
+	border-top: solid 1px #CCC;
+	border-left: solid 1px #CCC;
 	background: #fff;
+	border-radius: 3px;
+	box-shadow: 2px 2px 7px rgba(0,0,0,0.3);
 }
 .filter-select-result {
-	border-bottom: solid 1px #AAA;
+	/*border-bottom: solid 1px #AAA;*/
 	padding: 5px;
+	background: #f3f3f3;
 }
+
+.filter-select-result:HOVER{
+	background: #EEE;
+}
+
 .result-entry-action {
 	display: inline-block;
+	font-size: 0.8em;
+	text-decoration: underline;
+	color: #00AEEF;
+	cursor: pointer;
 }
 .filter-select-action {
 	float: right;
 	cursor: pointer;
 	text-decoration: underline;
 	color: #999;
+	font-size: 0.9em;
 }
+.filter-select-footer{
+	background: #eee;	
+}
+.long-select-wrapper{
+	border: solid 1px #e7e7e7;
+	border-radius: 3px 3px 3px 3px;
+	padding: 10px;
+}
+
 .long-select-filter-wrapper {
 	margin-right: 15px;
 	padding-right: 10px;
-	border-right: solid 1px #e7e7e7;
+	/*border-right: solid 1px #e7e7e7;*/
 }
 .long-select-entry {
 	padding: 10px;
 	border-bottom: dashed 1px #e7e7e7;
 	margin-right: 0px;
 }
+.long-select-entry:hover{
+	background: #eee;
+}
+
 .long-select-content {
-	width: 600px;
+	padding: 10px;
 }
 .long-select-entry-content {
 	display: inline-block;
@@ -290,9 +332,20 @@
 }
 .long-select-entry-action {
 	text-decoration: underline;
-	;
+	color: #00AEEF;
 	cursor: pointer;
+	font-size: 0.9em;
 }
+
+.long-select-entry-title{
+	
+}
+.long-select-entry-description{
+	font-size: 0.9em;
+	color: #999;
+	margin-left: 15px;
+}
+
 /* Begin Form Design */
 label {
 	display: block;
@@ -387,7 +440,7 @@ button.blue:hover, form button.blue:focus {
 	vertical-align: middle;
 }
 .user-label {
-	color: #333!important;
+	color: #00AEEF;
 	font-weight: normal;
 }
 .security-action-add-user {
@@ -415,4 +468,10 @@ input[type="checkbox"] {
 }
 .errorPages h2 {
 	color: #900;
+}
+.users-list-wrapper{
+	margin-top: 25px;
+}
+.users-list{
+	background: #f3f3f3;
 }

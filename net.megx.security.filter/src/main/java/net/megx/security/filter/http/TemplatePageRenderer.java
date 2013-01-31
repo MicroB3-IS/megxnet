@@ -42,6 +42,7 @@ public class TemplatePageRenderer implements INodeRenderer{
 		log.debug("Ok, got to render.");
 		if(contentNode instanceof TemplatePageNode){
 			log.debug("Trying to render...");
+			log.debug("Rendering node: " + contentNode.getNode());
 			try {
 				((TemplatePageNode)contentNode).setPageRenderer(this);
 				((TemplatePageNode)contentNode).process(request, response, serverInfo);

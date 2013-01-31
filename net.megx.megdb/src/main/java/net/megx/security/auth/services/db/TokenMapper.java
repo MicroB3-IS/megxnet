@@ -19,12 +19,18 @@ package net.megx.security.auth.services.db;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import net.megx.security.auth.model.Token;
 
 
 public interface TokenMapper {
 	public Token getToken(String value);
 	public List<Token> getTokensForUser(String userid);
+	public Token getTokenForUserAndConsumer(
+			@Param("userId") String userId,
+			@Param("consumerKey") String consumerKey
+			);
 	public void saveToken(Token token);
 	public void removeToken(String value);
 	public int removeTokensBeforeTimestamp(long timestamp);

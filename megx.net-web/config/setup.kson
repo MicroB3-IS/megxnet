@@ -12,7 +12,8 @@ www={type:'sys.public'}
 		megxnet-news.xml={type:'rss'}
 	
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
-		authorize={type:'megx.module.oauth.authorize'}
+		authorize={type:'megx.module.oauth.authorize', title:'App Authorization'}
+		
 	login={type:'html', template:'security-filter/login.html', title:'Login'}
 	register={type:'html', template:'security-filter/register.html', title:'Create Account'}
 		doRegistration={type: 'megx.module.login.registration', title: 'Account Created'}

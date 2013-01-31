@@ -24,6 +24,7 @@ import net.megx.security.auth.model.Token;
 public interface TokenService {
 	public Token getToken(String value) throws Exception;
 	public List<Token> getTokensForUser(String userid) throws Exception;
+	public Token getToken(String userId, String consumerKey) throws Exception;
 	public Token saveToken(String value, Token token) throws Exception;
 	public Token removeToken(String value) throws Exception;
 	public int cleanupTokens(long beforeTimestamp) throws Exception;

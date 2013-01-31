@@ -100,6 +100,12 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 		 	from auth.access_tokens where user_log=#{value}
 	</select>	
 	
+	<select id="getTokenForUserAndConsumer" parameterType="map" resultMap="token_map">
+	    select 
+			<include refid="access_tokens_list"/>
+	    	from auth.access_tokens where user_log=#{userId} and consumer_key=#{consumerKey}
+	</select>
+	
 	<insert id="saveToken" parameterType="Token">
 		insert into auth.access_tokens (token, secret, verifier, callback_url, consumer_key, token_created, user_log)
 						values(#{token}, #{secret}, #{verifier}, #{callbackUrl}, #{consumerKey},#{timestamp},#{user.login})

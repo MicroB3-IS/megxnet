@@ -9,11 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.megx.model.auth.Consumer;
+import net.megx.security.auth.SecurityException;
+import net.megx.security.auth.StopSecurityChainException;
 import net.megx.security.auth.model.Token;
 import net.megx.security.auth.services.ConsumerService;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.oauth.OAuthServices;
 import net.megx.security.oauth.TokenServices;
+import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthException;
@@ -48,18 +51,24 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	
 	protected OAuthConsumer getConsumer(String consumerKey) throws OAuthProblemException{
 		try {
+			if(consumerKey == null){
+				throw new InvalidOAuthRequestException(OAuth.Problems.PARAMETER_ABSENT);
+			}
 			Consumer consumer = consumerService.getConsumerForKey(consumerKey);
 			if(consumer == null){
-				throw new OAuthProblemException("token_rejected");
+				throw new InvalidOAuthRequestException(OAuth.Problems.CONSUMER_KEY_UNKNOWN, 401);
 			}
 			OAuthConsumer oaConsumer = new OAuthConsumer(
 					consumer.getCallbackUrl(), 
 					consumerKey, consumer.getSecret(), 
 					null // service provider ?
 					);
+			oaConsumer.setProperty("name", consumer.getName());
 			oaConsumer.setProperty("description", consumer.getDescription());
 			return 	oaConsumer;
 			
+		}catch (OAuthProblemException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new OAuthProblemException(e.getMessage());
 		}
@@ -89,12 +98,12 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	
 	protected OAuthAccessor getAccessorForAccessToken(String aToken)throws IOException, OAuthProblemException{
 		if(aToken == null){
-			throw new OAuthProblemException("Invalid oAuth parameters - access token not supplied!");
+			throw new InvalidOAuthRequestException(OAuth.Problems.PARAMETER_ABSENT);
 		}
 		OAuthAccessor accessor = null;
 		Token accessToken = tokenServices.getAccessToken(aToken);
 		if(accessToken == null){
-			throw new OAuthProblemException("token_expired");
+			throw new InvalidOAuthRequestException(OAuth.Problems.TOKEN_EXPIRED, 401);
 		}
 		OAuthConsumer consumer = getConsumer(accessToken.getConsumerKey());
 		accessor = new OAuthAccessor(consumer);
@@ -107,24 +116,27 @@ public abstract class BaseOAuthServices implements OAuthServices{
 	
 	protected void handleException(Exception e, HttpServletRequest request,
             HttpServletResponse response, boolean sendBody)
-            throws IOException, ServletException {
+            throws IOException, ServletException, SecurityException {
 		/*
         String realm = (request.isSecure())?"https://":"http://";
         realm += request.getLocalName();
         OAuthServlet.handleException(response, e, realm, sendBody);
         */ 
+		if(e instanceof StopSecurityChainException){
+			throw (SecurityException)e;
+		}
 		log.debug("Error during OAuth step.",e);
 		throw new ServletException("OAuth error",e);
     }
 	
 	protected OAuthAccessor getAccessorForRequestToken(String token) throws IOException, OAuthProblemException{
 		if(token == null){
-			throw new OAuthProblemException("Invalid oAuth parameters - request token not supplied!");
+			throw new InvalidOAuthRequestException(OAuth.Problems.PARAMETER_ABSENT);
 		}
 		OAuthAccessor accessor = null;
 		Token requestToken = tokenServices.getRequestToken(token);
 		if(requestToken == null){
-			throw new OAuthProblemException("token_expired");
+			throw new InvalidOAuthRequestException(OAuth.Problems.TOKEN_EXPIRED, 401);
 		}
 		OAuthConsumer consumer = getConsumer(requestToken.getConsumerKey());
 		accessor = new OAuthAccessor(consumer);
@@ -133,6 +145,31 @@ public abstract class BaseOAuthServices implements OAuthServices{
 		accessor.accessToken = null;
 		accessor.setProperty("authorized", requestToken.isAuthorized());
 		accessor.setProperty("oauth_callback", requestToken.getCallbackUrl());
+		accessor.setProperty("oauth_verifier", requestToken.getVerifier());
 		return accessor;
 	}
+	
+	public class InvalidOAuthRequestException extends OAuthProblemException{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -5012131135544203039L;
+
+		public InvalidOAuthRequestException() {
+			super();
+		}
+
+		public InvalidOAuthRequestException(String problem) {
+			super(problem);
+			setParameter(HTTP_STATUS_CODE, 400);
+		}
+		
+		public InvalidOAuthRequestException(String problem, int httpCode) {
+			super(problem);
+			setParameter(HTTP_STATUS_CODE, httpCode);
+		}
+		
+	}
+	
 }
