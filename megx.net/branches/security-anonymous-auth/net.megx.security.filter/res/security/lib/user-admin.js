@@ -94,12 +94,12 @@
 		            	   displayName = users[i].login;
 		               }
 		               var um = [
-		                  '<div class="user-entry ui-corner-all" title="',users[i].login,'">',
+		                  '<div class="user-entry ui-corner-all" title="',users[i].email,'">',
 		                     '<span class="user-label user-action-edit">',
 		                        displayName,
 		                     '</span>',
 		                     '<span class="entry-description">',
-		                     	 '(',users[i].email, ')',
+		                     	 '(',users[i].login, ')',
 		                     '</span>',
 		                     '<span class="user-action-remove ui-icon ui-icon-closethick"></span>',
 		                  '</div>'
@@ -271,13 +271,13 @@
 		            },
 		            {
 		               type: 'section',
-		               title: 'Roles',
+		               title: 'Groups',
 		               content: [
 		                  {
 		                     type: 'array-values',
-		                     title: 'Roles',
+		                     title: 'Groups',
 		                     name: 'roles',
-		                     label: 'Roles: ',
+		                     label: 'Groups: ',
 		                     events: {
 		                        'value-remove': function(e,f,val){
 		                           uep.getDataField('select_roles').addValue(val);
@@ -285,7 +285,7 @@
 		                     },
 		                     validator: function(val){
 		                    	 if(!val || !val.length){
-		                    		 this.validatorMessage = 'The user must have at least one role.';
+		                    		 this.validatorMessage = 'The user must be member of at least one group.';
 		                    		 return false;
 		                    	 }
 		                    	 return true;
@@ -293,9 +293,9 @@
 		                  },
 		                  {
 		                     type: 'select',
-		                     title: 'select roles',
+		                     title: 'select groups',
 		                     name: 'select_roles',
-		                     label: 'Select Role: ',
+		                     label: 'Select Group: ',
 		                     events: {
 		                        'change': function(e, f){
 		                           var value = f.getValue();
@@ -307,7 +307,7 @@
 		                  },
 		                  {
 		                     type: 'button',
-		                     title: 'Add Role',
+		                     title: 'Add Group',
 		                     value: 'Add',
 		                     name: 'add_role',
 		                     events: {
@@ -355,8 +355,10 @@
 		   },
 		   removeUser: function(user){
 		      var self = this;
+		      var userLabel = $.trim( (user.firstName||'') + " " + (user.lastName||'') );
+		      userLabel = userLabel || user.login;
 		      this.n.confirm('Confirm', "Are you sure you want to remove user '" + 
-		         user.firstName + " " + user.lastName + "'?",
+		         userLabel + "'?",
 		            function(){
 		               self.userService.del(user.login, undefined, function(){
 		                  self.n.message('Info: ', "User " + user.firstName + " " + user.lastName + "' has been removed");

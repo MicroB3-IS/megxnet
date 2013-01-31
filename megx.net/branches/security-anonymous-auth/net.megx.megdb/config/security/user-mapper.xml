@@ -326,18 +326,18 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	   filter pagination
 	 -->
 	<select id="filterUsersWithRole" parameterType="map" resultMap="user_map_no_pass">
-	   select 
+	   select distinct(auth.users.logname),
 	       <include refid="user_columns_list"/>
 	       from auth.users
 	          
 	          <if test="role != null">
 	             left join auth.has_roles on auth.users.logname = auth.has_roles.user_login
 	          </if>
-	          <foreach collection="conditions" item="cond" open="where">
+	          <foreach collection="conditions" item="cond" open="where (" close=")">
                    <if test="cond.condition != null">
                        ${cond.condition}
                    </if>
-                   ${cond.name} like #{cond.query}
+                   ${cond.name} ilike #{cond.query}
               </foreach>
               <if test="role != null">
                 and auth.has_roles.role=#{role}
@@ -347,16 +347,16 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 	</select>
 	<select id="countFilteredResultsWithRole" parameterType="map" resultType="int">
        select 
-           count(*) as value
+           count(distinct(auth.users.logname)) as value
            from auth.users
               <if test="role != null">
                  left join auth.has_roles on auth.users.logname = auth.has_roles.user_login
               </if>
-              <foreach collection="conditions" item="cond" open="where">
+              <foreach collection="conditions" item="cond" open="where (" close=")">
                    <if test="cond.condition != null">
                        ${cond.condition}
                    </if>
-                   ${cond.name} like #{cond.query}
+                   ${cond.name} ilike #{cond.query}
               </foreach>
               <if test="role != null">
                 and auth.has_roles.role=#{role}

@@ -16,7 +16,7 @@ public interface OAuthServices {
 			HttpServletResponse response) throws IOException, ServletException;
 
 	public void processAuthorization(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException;
+			HttpServletResponse response) throws IOException, ServletException, SecurityException;
 
 	public void processAccessTokenRequest(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException;

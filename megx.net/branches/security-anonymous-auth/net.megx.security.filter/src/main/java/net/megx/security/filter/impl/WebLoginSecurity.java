@@ -30,10 +30,14 @@ public class WebLoginSecurity extends BaseSecurityEntrypoint{
 		if(webLoginHandler == null){
 			throw new SecurityException("WebAuthenticationHandler service is not available yet!",HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		}
+		SecurityContext context = WebContextUtils.getSecurityContext(request);
+		if(context != null){
+			context.clearAuthentication();
+		}
 		Authentication authentication = webLoginHandler.createAuthentication(request);
 		
 		if(authentication != null){
-			SecurityContext context = WebContextUtils.getSecurityContext(request);
+			
 			saveAuthentication(authentication, request);
 			String redirectURL = context.getLastRequestedURL();
 			if(redirectURL != null){

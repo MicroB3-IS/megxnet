@@ -363,6 +363,7 @@ public class DBUserService extends BaseMegdbService implements UserService{
 	@Override
 	public List<User> filterUsers(final String username, final int maxResults)
 			throws Exception {
+		/*
 		return doInSession(new DBTask<UserMapper, List<User>>() {
 			@Override
 			public List<User> execute(UserMapper mapper) throws Exception {
@@ -370,6 +371,9 @@ public class DBUserService extends BaseMegdbService implements UserService{
 				return mapper.filterUsers(filter, maxResults);
 			}
 		}, UserMapper.class);
+		*/
+		PaginatedResult<User>result =  filterUsers(username, null, 0, maxResults);
+		return result.getResults();
 	}
 
 
@@ -409,7 +413,8 @@ public class DBUserService extends BaseMegdbService implements UserService{
 		final List<FilterCondition> conditions = 
 				FilterCondition.likeBuilder().
 				add("logname", username).
-				//add("and", "first_name", "pavle").
+				add("or", "first_name", username).
+				add("or", "last_name", username).
 				build();
 		return doInTransaction(new DBTask<UserMapper, PaginatedResult<User>>() {
 

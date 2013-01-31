@@ -122,19 +122,26 @@ public class AppsManager {
 					request.getUserPrincipal().getName())) {
 				throw new Exception("Action forbidden.");
 			}
-			if (name != null)
+			if (name != null){
 				consumer.setName(name);
-			if (description != null)
-				consumer.setDescription(description);
-			if (callback != null) {
-				if (validURL(callback)) {
-					consumer.setCallbackUrl(callback);
-				} else {
-					throw new Exception("Invalid callback URL.");
-				}
 			}
-			if (oob != null)
+			if (description != null){
+				consumer.setDescription(description);
+			}
+			if (oob != null){
 				consumer.setOob(oob);
+			}
+			if(!consumer.isOob()){
+				if (callback != null && !consumer.isOob()) {
+					if (validURL(callback)) {
+						consumer.setCallbackUrl(callback);
+					} else {
+						throw new Exception("Invalid callback URL.");
+					}
+				}
+			}else{
+				consumer.setCallbackUrl(null);
+			}
 
 			consumerService.updateConsumer(consumer);
 			return toJSON(consumer);

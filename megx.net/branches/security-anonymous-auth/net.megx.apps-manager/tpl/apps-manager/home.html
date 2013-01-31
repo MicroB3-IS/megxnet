@@ -122,19 +122,23 @@ $(document).ready(function(){
 		var app = currentApp.app;
 		var isNew = !currentApp.edit; 
 		if(!isNew){
+			$(".apps-edit-panel").show();
 			$("#app-name").val(app.name);
 			$("#app-description").val(app.description);
 			$("#app-callback").val(app.callbackUrl);
 			if(app.oob){
-				$("#app-oob")[0].checked=true;
+				$("#app-oob").attr('checked', true);
+				$('#callback-url-wrapper').hide();
 			}else{
-				$("#app-oob")[0].checked=false;
+				$("#app-oob").attr('checked', false);
+				$('#callback-url-wrapper').show();
 			}
 		}else{
 			$("#app-name").val('');
 			$("#app-description").val('');
 			$("#app-callback").val('');
-			$("#app-oob")[0].checked=false;
+			$("#app-oob").attr('checked', false);
+			$('#callback-url-wrapper').show();
 		}
 		$(".apps-content").hide();
 		$(".apps-static-content").hide();
@@ -341,6 +345,15 @@ $(document).ready(function(){
 	
 	$(".apps-action-confirm").click(saveApp);
 	
+	$('#app-oob').click(function(){
+		if(this.checked){
+			$('#callback-url-wrapper').hide();
+		}else{
+			$('#callback-url-wrapper').show();
+		}
+	});
+	
+	
 });
 </script>
 <div>
@@ -384,7 +397,7 @@ $(document).ready(function(){
 					<label class="apps-label">Desktop Client (Out Of Band): </label>
 					<input type="checkbox" id="app-oob">
 				</div>
-				<div>
+				<div id="callback-url-wrapper">
 					<label class="apps-label">Callback URL: </label>
 					<input type="text" id="app-callback">
 				</div>

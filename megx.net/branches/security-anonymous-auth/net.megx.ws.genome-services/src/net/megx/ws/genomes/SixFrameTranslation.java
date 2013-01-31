@@ -54,7 +54,7 @@ public class SixFrameTranslation extends BaseGenomeService{
 		'L','L','L','L',
 		'R','R','R','R',
 		
-		'.','T','T','.',
+		'*','T','T','*',
 		'S','S','S','S',
 		'L','F','F','L',
 		'.','C','C','W',

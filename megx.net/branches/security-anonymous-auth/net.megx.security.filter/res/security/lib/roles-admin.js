@@ -65,7 +65,7 @@
 				
 				each(roles, function(i, role){
 					var m = [
-					   '<div class="role-entry">',
+					   '<div class="role-entry ui-corner-all">',
 					      '<div class="role-entry-title role-action role-action-edit">',
 					      	role.label,
 					      '</div>',
@@ -368,7 +368,7 @@
 			var m = [
 			     '<div class="">',
 			     	'<div class="users-filter-placeholder"></div>',
-			     	'<div>',
+			     	'<div class="users-list-wrapper">',
 			     		'<div>List of users in this group</div>',
 			     		'<div class="users-list"></div>',
 			     	'</div>',
@@ -385,11 +385,14 @@
 				label: 'Search for user to add: ',
 				filter: function(query, success, error){
 					
-					self.usersService.get('q/'+query, undefined, function(users){
+					self.usersService.get('q/'+encodeURI(query), undefined, function(users){
 						var results = [];
 						each(users, function(i, user){
+							var userLabel = $.trim( (user.firstName||'') + ' ' + (user.lastName||'') );
+							userLabel = userLabel || user.login;
 							var result = {
-									label: user.login,
+									label: userLabel,
+									title: user.login,
 									description: user.description,
 									actions: [
 									    {
@@ -497,7 +500,7 @@
 				listSelect.filter = function(query, page, pageSize, success, error){
 					query = query || '';
 					query = $.trim(query) || '*';
-					self.usersService.get('q/'+(role.label || '') +'/'+query +'/' + ((page-1)*pageSize) +':'+pageSize, undefined,
+					self.usersService.get('q/'+(role.label || '') +'/'+encodeURI(query) +'/' + ((page-1)*pageSize) +':'+pageSize, undefined,
 							function(result){
 								if(result.error){
 									error(result.message);
@@ -548,7 +551,7 @@
 	
 	var FilterSelect = function(config){
 		extend(this, config);
-		this.triggerLength = this.triggerLength || 3;
+		this.triggerLength = this.triggerLength || 1;
 		FilterSelect.superclass.constructor.call(this, config);
 		this.init();
 	};
@@ -621,8 +624,7 @@
 			each(results || [], function(i, result){
 				var actionHandlers = [];
 				var m = [
-				     '<div class="filter-select-result">',
-				     	
+				     '<div class="filter-select-result" title="',(result.title||''),'">',
 				     	'<div class="filter-select-result-actions">',
 				     			(function(actions){
 				     				actions = actions || [];

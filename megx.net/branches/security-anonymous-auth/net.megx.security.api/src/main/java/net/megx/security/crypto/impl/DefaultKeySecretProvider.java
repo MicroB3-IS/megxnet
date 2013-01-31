@@ -54,10 +54,20 @@ public class DefaultKeySecretProvider implements KeySecretProvider{
 
 	public String getRandomSequence(int length) {
 		if(length <= 0) return "";
-		if(length == 1) length = 2;
-		byte [] randomBytes = new byte[(6*length)/8];
+		byte [] randomBytes = new byte[(int)Math.ceil( ((double)(6*length))/8) ];
 		secureRandom.nextBytes(randomBytes);
 		String base64 =base64encode(randomBytes);
-		return base64.substring(0, length-1);
+		return base64.substring(0, length);
+	}
+	public static void main(String[] args) {
+		DefaultKeySecretProvider k = new DefaultKeySecretProvider();
+		for(int  i = 1; i <= 100; i++){
+			String r = k.getRandomSequence(i);
+			if(r.length() == i){
+				System.out.println(String.format("%d. %s [%d]",i,r,r.length()));
+			}else{
+				System.err.println(String.format("%d. %s [%d]",i,r,r.length()));
+			}
+		}
 	}
 }

@@ -66,7 +66,7 @@
 		#end
 	#end
 	
-	#if($req.user)
+	#if($req.user and !$req.servletRequset.isUserInRole("anonymous") )
         You're already logged in. Please wait while being redirected to the home page...
         <script type="text/javascript">
 			  window.location = '$ctx.siteUrl/';
