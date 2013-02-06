@@ -33,12 +33,12 @@ import net.megx.chon.core.ui.WOA5Extension;
 import net.megx.chon.core.ui.WOD5Extension;
 
 import org.chon.cms.content.utils.ChonTypeUtils;
+import org.chon.cms.core.JCRAppConfgEnabledActivator;
 import org.chon.cms.core.JCRApplication;
-import org.chon.cms.core.ResTplConfiguredActivator;
 import org.chon.cms.model.ContentModel;
 import org.osgi.framework.BundleContext;
 
-public class Activator extends ResTplConfiguredActivator {
+public class Activator extends JCRAppConfgEnabledActivator {
 
 	@Override
 	protected String getName() {
@@ -46,10 +46,11 @@ public class Activator extends ResTplConfiguredActivator {
 	}
 
 	@Override
-	protected void registerExtensions(JCRApplication app) {
-		BundleContext bundleContext = getBundleContext();
+	protected void onAppRemoved(BundleContext context) {
+		JCRApplication app = getJCRApp();
+		super.onAppAdded(context, app);
 		
-		bundleContext.registerService(TestRest.class.getName(),
+		context.registerService(TestRest.class.getName(),
 				new TestRest(), null);
 
 		//ServiceReference ref = getBundleContext().getServiceReference(MixsWsService.class.getName());
@@ -72,12 +73,12 @@ public class Activator extends ResTplConfiguredActivator {
 			
 			
 			//registerModuleType(contentModel, "megx.module.wms", WMS_Module.class);
-			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.woa", WOA_Module.class);
-			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.wod", WOD_Module.class);
-			ModuleUtils.registerModuleType(bundleContext, contentModel, "megx.module.login", LoginModule.class);
+			ModuleUtils.registerModuleType(context, contentModel, "megx.module.woa", WOA_Module.class);
+			ModuleUtils.registerModuleType(context, contentModel, "megx.module.wod", WOD_Module.class);
+			ModuleUtils.registerModuleType(context, contentModel, "megx.module.login", LoginModule.class);
 			
 			//register common renderer for all above
-			ChonTypeUtils.registerNodeRenderer(bundleContext, ModuleNodeRenderer.class);
+			ChonTypeUtils.registerNodeRenderer(context, ModuleNodeRenderer.class);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
