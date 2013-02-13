@@ -3,10 +3,9 @@ package net.megx.ws.genomes;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.megx.ws.core.BaseRestService;
 import net.megx.ws.genomes.resources.WorkspaceAccess;
 
-public class BaseGenomeService extends BaseRestService{
+public class BaseGenomeService{
 	private WorkspaceAccess access;
 
 	public BaseGenomeService(WorkspaceAccess access) {
