@@ -9,8 +9,8 @@ import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
-import net.megx.security.filter.http.impl.ErrorProducingServlet;
 import net.megx.security.filter.http.impl.RegistrationExtension;
+import net.megx.security.filter.impl.OAuthEchoVerifyCredentials;
 import net.megx.security.filter.ui.RegistrationManager;
 import net.megx.security.filter.ui.ResourcesManager;
 import net.megx.security.filter.ui.RolesManager;
@@ -92,10 +92,13 @@ public class Activator extends ResTplConfiguredActivator {
 				RegistrationExtension registrationExtension = new RegistrationExtension(userService, 
 						getRegistrationConfig().optLong("verificationTTL", 24*60*60*1000));
 				app.regExtension("registration", registrationExtension);
+				
+				OAuthEchoVerifyCredentials verifyCredentialsService = new OAuthEchoVerifyCredentials();
+				getBundleContext().registerService(OAuthEchoVerifyCredentials.class.getName(), verifyCredentialsService, null);
 			}
 		}, 
 		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
-		WebUtils.registerServlet(getBundleContext(), new ErrorProducingServlet(), "/produceError", null, null);
+		//WebUtils.registerServlet(getBundleContext(), new ErrorProducingServlet(), "/produceError", null, null);
 	}
 	
 	

@@ -23,7 +23,8 @@
 					'/ws/pubmap.*',
 					'/ws/v1/di-nucleotides-odds-ratio/.*',
 					'/ws/v1/gc-content/.*',
-					'/ws/v1/six-frame-translation/.*'
+					'/ws/v1/six-frame-translation/.*',
+					'/ws/v1/verify_credentials/.*'
 				],
 				order: 0
 			},
