@@ -87,7 +87,13 @@ public class WebContextUtils {
 		return (Map<String, Object>)request.getAttribute(SECURITY_REQUEST_PARAMS_HOLDER);
 	}
 
-	
+	/**
+	 * Returns the current {@link User} stored in the current {@link SecurityContext}.
+	 * If the Security Context does not have an {@link Authentication}, then <code>null</code>
+	 * is returned.
+	 * @param request the current Http Request. The user is usually retrieved from the HTTP Session.
+	 * @return {@link User} instance or <code>null</code> if not user is present in the current context.
+	 */
 	public static User getUser(HttpServletRequest request){
 		SecurityContext ctx = getSecurityContext(request);
 		if(ctx != null){
