@@ -1,0 +1,56 @@
+#set($url = "$ctx.siteUrl/ws/blast/getMatchingSequencesTable?jobId=$jobId")
+<div id="ms_table">
+#set( $sDom = '<"H"lfr>t<"F"<"#bexp">ip>')
+
+$ext.dataTable.renderServerSide(
+	["", "Evalue", "Score", "<div title='Hits Length'>Len.</div>", "Query", "Subject", "Sample(s)", "Location(s)"], 
+	$url,
+	false,
+	"{
+	 fnInitComplete: function() {
+	 	gbPage.onTableRendered();
+	 },
+	 fnCreatedRow: function(nRow, aData, iDisplayIndex) {
+	 	gbPage.onRowCreated(nRow, aData, iDisplayIndex);
+	 },
+	 sDom: '$sDom',
+	 iDisplayLength: 5,
+	 aLengthMenu: [5, 10, 25],
+	 aoColumns: [{
+	 	mData: null,
+	 	bSortable: false,
+	 	bSearchable: false,
+	 	mRender: function ( data, type, row ) {
+	 		return gbPage.renderExportCheckBox(data, type, row)
+	 	}
+	 },{ 
+	 	mData: 'evalueWithAlignemnt',
+	 	mRender: function ( data, type, row ) {
+	 		if(type == 'display') {
+	 			return gbPage.renderEvalueWithAlignemnt(data);
+	 		}
+	 		return data.eval;
+	 	},
+	 }, {
+	 	mData: 'score' 
+	 }, {
+	 	mData: 'len' 
+	 }, {
+	 	mData: 'query' 
+	 }, {
+	 	mData: 'subject',
+	 	mRender: function ( data, type, row ) {
+	 		if(type == 'display') {
+	 			return gbPage.subjectTblLink(data);
+	 		}
+	 		return data;
+	 	},
+	 	sWidth: '150px',
+	 	sClass: 'right'
+	 }, {
+	 	mData: 'samples'
+	 }, {
+	 	mData: 'locations' 
+	 }]
+}")
+</div>
