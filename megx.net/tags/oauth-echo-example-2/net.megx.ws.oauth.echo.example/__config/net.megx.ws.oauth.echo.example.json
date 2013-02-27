@@ -1,0 +1,4 @@
+{
+	path: '$resources/net.megx.ws.oauth.echo.example',
+	exampleProperty: 'Example Value'
+}
