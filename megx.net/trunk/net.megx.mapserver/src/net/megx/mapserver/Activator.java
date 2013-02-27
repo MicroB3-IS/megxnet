@@ -35,11 +35,11 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		//registering ProxyServlet under mapserver.root, default /wms
-		String serveltRoot = System.getProperty(PROP_MAPSERVER_ROOT, DEFAULT_MAPSERVER_ROOT);
+		String servletRoot = System.getProperty(PROP_MAPSERVER_ROOT, DEFAULT_MAPSERVER_ROOT);
 		Hashtable<String, String> props = new Hashtable<String, String>();
-		props.put("alias", serveltRoot);
+		props.put("alias", servletRoot);
 		
-		log.debug("Registering mapserver ProxyServlet under mapserver.root = " + serveltRoot);
+		log.debug("Registering mapserver ProxyServlet under mapserver.root = " + servletRoot);
 		
 		String mapserverUrl = System.getProperty(PROP_MAPSERVER_URL, DEFAULT_MAPSERVER_URL);
 		String mapserverMapfile = System.getProperty(PROP_MAPSERVER_MAPFILE, DEFAULT_MAPSERVER_MAPFILE);
