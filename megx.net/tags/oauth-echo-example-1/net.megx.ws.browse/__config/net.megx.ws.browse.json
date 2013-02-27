@@ -1,0 +1,4 @@
+{
+	path: '$resources/net.megx.ws.browse',
+	exampleProperty: 'Example Value'
+}
