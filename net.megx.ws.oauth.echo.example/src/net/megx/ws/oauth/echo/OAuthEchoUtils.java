@@ -3,6 +3,12 @@ package net.megx.ws.oauth.echo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +28,10 @@ public class OAuthEchoUtils {
 			throws OAuthEchoException, IOException {
 		UserInfo userInfo = null;
 
+		if(!isServiceProviderTrusted(serviceProviderURL)){
+			throw new OAuthEchoException("Service Provider is not trusted", 403);
+		}
+		
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 
 		HttpGet httpGet = new HttpGet(serviceProviderURL);
@@ -89,5 +99,50 @@ public class OAuthEchoUtils {
 		}
 		return validateCredentials(serviceProviderURL, authorization);
 	}
+	
+	private static class TrustedServiceProvider{
+		public URL verifyCredentialsURL;
+		
+		public TrustedServiceProvider(URL verifyCredentialsURL) {
+			super();
+			this.verifyCredentialsURL = verifyCredentialsURL;
+		}
 
+
+		public boolean matches(URL authServiceProvider){
+			return authServiceProvider.getAuthority().equals(verifyCredentialsURL.getAuthority()) &&
+					authServiceProvider.getPath().equals(verifyCredentialsURL.getPath());
+		}
+	}
+	
+	private static Map<String, List<TrustedServiceProvider>> trustedProviders = new HashMap<String, List<OAuthEchoUtils.TrustedServiceProvider>>();
+	
+	public static void addTrustedProvider(String verifyCredentialsURL) throws MalformedURLException {
+		URL vcURL = new URL(verifyCredentialsURL);
+		List<TrustedServiceProvider> trustedServiceProviders = trustedProviders.get(vcURL.getAuthority());
+		if(trustedServiceProviders == null){
+			trustedServiceProviders = new LinkedList<OAuthEchoUtils.TrustedServiceProvider>();
+			trustedProviders.put(vcURL.getAuthority(), trustedServiceProviders);
+		}
+		trustedServiceProviders.add(new TrustedServiceProvider(vcURL));
+	}
+	
+	public static boolean isServiceProviderTrusted(String verifyCredentialsURL) throws OAuthEchoException{
+		try {
+			URL verifyCredentials = new URL(verifyCredentialsURL);
+			List<TrustedServiceProvider> trustedServiceProviders = trustedProviders.get(verifyCredentials.getAuthority());
+			if(trustedServiceProviders == null){
+				return false;
+			}
+			for(TrustedServiceProvider tse: trustedServiceProviders){
+				if(tse.matches(verifyCredentials)){
+					return true;
+				}
+			}
+			return false;
+		} catch (MalformedURLException e) {
+			throw new OAuthEchoException("Verify Credentials URL is malformed",e, 400);
+		}
+	}
+	
 }
