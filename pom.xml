@@ -97,7 +97,10 @@
         <module>net.megx.ws.mixs</module>
         <!-- SeqCD -->
         <module>net.megx.ws.seqcd</module>
-
+        
+        <!-- OAuth Echo Examples -->
+		<module>net.megx.ws.oauth.echo.example</module>
+		
         <!-- WebDAV module -->
         <module>net.megx.was.webdav</module>
         <module>net.megx.mapserver</module>
