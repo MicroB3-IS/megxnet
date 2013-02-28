@@ -16,12 +16,13 @@
     <name>megx.net-workdir</name>
 
     <properties>
-        <mvn.jcr.source.url>http://dl.dropbox.com/s/27ox0oq0qb5yfc1/</mvn.jcr.source.url>
-        <mvn.jcr.source.file>repository-20121230.tar.gz?dl=1</mvn.jcr.source.file>
+        <mvn.jcr.source.url>http://dl.dropbox.com/s/636gs56mj2nr9ul/</mvn.jcr.source.url>
+        <mvn.jcr.source.file>repository-20130227.tar.gz?dl=1</mvn.jcr.source.file>
         <mvn.jcr.target.file>${project.build.directory}/megx.jcr.repo.tar.gz</mvn.jcr.target.file>
     </properties>
 
     <build>
+        <defaultGoal>initialize</defaultGoal>
         <!-- required because of bug https://jira.codehaus.org/browse/MOJO-1821 -->
         <extensions>
             <extension>
@@ -55,7 +56,6 @@
             <plugin>
                 <groupId>com.github.goldin</groupId>
                 <artifactId>copy-maven-plugin</artifactId>
-                <version>0.2.5</version>
                 <executions>
                     <execution>
                         <id>get-jcr-repository</id>
