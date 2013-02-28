@@ -45,9 +45,9 @@ public class Activator extends JCRAppConfgEnabledActivator {
 		return "net.megx.chon.core";
 	}
 
+	
 	@Override
-	protected void onAppRemoved(BundleContext context) {
-		JCRApplication app = getJCRApp();
+	protected void onAppAdded(BundleContext context, JCRApplication app) {
 		super.onAppAdded(context, app);
 		
 		context.registerService(TestRest.class.getName(),
