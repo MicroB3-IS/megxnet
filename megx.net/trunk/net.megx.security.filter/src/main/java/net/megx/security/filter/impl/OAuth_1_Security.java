@@ -15,6 +15,7 @@ import net.megx.security.filter.StopFilterException;
 import net.megx.security.auth.SecurityException;
 import net.megx.security.oauth.OAuthServices;
 import net.megx.utils.OSGIUtils;
+import net.oauth.OAuth;
 import net.oauth.OAuthException;
 import net.oauth.OAuthProblemException;
 
@@ -70,7 +71,16 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 					}
 					
 				} catch (OAuthProblemException e) {
-					throw new SecurityException(e, e.getHttpStatusCode());
+					if(e.getParameters().containsKey(OAuthProblemException.HTTP_STATUS_CODE)){
+						throw new SecurityException(e, e.getHttpStatusCode());
+					}else{
+						if(OAuth.Problems.TO_HTTP_CODE.containsKey(e.getProblem())){
+							throw new SecurityException(e, OAuth.Problems.TO_HTTP_CODE.get(e.getProblem()));
+						}else{
+							throw new SecurityException(e, 400);
+						}
+					}
+					
 				} catch (OAuthException e) {
 					throw new SecurityException(e, HttpServletResponse.SC_UNAUTHORIZED);
 				}
