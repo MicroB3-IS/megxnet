@@ -17,25 +17,28 @@ import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.chon.web.api.ServerInfo;
 
-public class BlastProcessor implements IModule {	
-	
+public class BlastProcessor implements IModule {
+
 	private BlastService blastService;
 
 	public BlastProcessor(BlastService blastService) {
 		this.blastService = blastService;
 	}
-	
-	private String sceduleRunBlastJob(String username, BlastInputData blastInputData) throws IOException {
+
+	private String scheduleRunBlastJob(String username,
+			BlastInputData blastInputData) throws IOException {
 		InputStream is = null;
 		try {
 			if (blastInputData.getFile() != null) {
 				is = new FileInputStream(blastInputData.getFile());
 			} else {
-				is = new ByteArrayInputStream(blastInputData.getSeq().getBytes());
+				is = new ByteArrayInputStream(blastInputData.getSeq()
+						.getBytes());
 			}
 			String blastDb = blastInputData.getBlastDb();
 			String evalue_cutoff = blastInputData.getEvalueCutoff();
-			String jobId = blastService.runBlastJob(username, is, blastDb, evalue_cutoff);
+			String jobId = blastService.runBlastJob(username, is, blastDb,
+					evalue_cutoff);
 			return jobId;
 		} finally {
 			is.close();
@@ -44,36 +47,42 @@ public class BlastProcessor implements IModule {
 
 	/**
 	 * Initial submit
+	 * 
 	 * @param req
 	 * @param resp
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	private void processSubmit(Request req, Response resp) throws IOException {
 		BlastInputData blastData = new BlastInputData(req);
-		String username = BlastUtils.getUsernameFromRequest(req.getServletRequset());
-		String jobId = sceduleRunBlastJob(username, blastData);
-		resp.setRedirect("job?id="+jobId);
+		String username = BlastUtils.getUsernameFromRequest(req
+				.getServletRequset());
+		String jobId = scheduleRunBlastJob(username, blastData);
+		resp.setRedirect("job?id=" + jobId);
 	}
 
 	/**
 	 * Render blast results
+	 * 
 	 * @param req
 	 * @param resp
 	 * @param serverInfo
 	 */
-	private void processBlastJob(ModuleContentNode node, Request req, Response resp, ServerInfo serverInfo) {
+	private void processBlastJob(ModuleContentNode node, Request req,
+			Response resp, ServerInfo serverInfo) {
 		String jobId = req.get("id");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("jobId", jobId);
-		VTplNodeRenderer.render("base.html", "pages/blast/blast-job-result.html", node, req, resp, serverInfo, params);
+		VTplNodeRenderer.render("base.html",
+				"pages/blast/blast-job-result.html", node, req, resp,
+				serverInfo, params);
 	}
 
 	@Override
 	public void process(ModuleContentNode node, Request req, Response resp,
 			ServerInfo serverInfo) throws Exception {
-		if("submit".equals(node.getName())) {
+		if ("submit".equals(node.getName())) {
 			processSubmit(req, resp);
-		} else if("job".equals(node.getName())){
+		} else if ("job".equals(node.getName())) {
 			processBlastJob(node, req, resp, serverInfo);
 		}
 	}
