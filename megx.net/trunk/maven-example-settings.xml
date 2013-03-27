@@ -23,12 +23,12 @@
 		</mirror>
 	</mirrors>
 
-	<!-- making use of Maven Profile concept for enironemtn specific settings. 
+	<!-- making use of Maven Profile concept for environment specific settings. 
 		For background see https://maven.apache.org/guides/introduction/introduction-to-profiles.html -->
 	<profiles>
 		<profile>
 			<id>renzo-laptop</id>
-			<!-- profile gets only activaten if user rkottman is logged in a Windows 
+			<!-- profile gets only activated if user rkottman is logged in a Windows 
 				OS i.e. maven is running under rkottman on windows -->
 			<activation>
 				<os>
@@ -36,7 +36,7 @@
 				</os>
 				<property>
 					<name>user.name</name>
-					<!-- please change to your user name if you wnat this activation logic -->
+					<!-- please change to your user name if you want this activation logic -->
 					<value>rkottman</value>
 				</property>
 			</activation>
