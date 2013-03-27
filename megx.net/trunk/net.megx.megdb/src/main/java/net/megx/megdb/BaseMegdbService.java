@@ -80,7 +80,7 @@ public class BaseMegdbService {
 	}
 	
 	/**
-	 * Is a basic implementation of {@link Task}. This class implemnts the boilerplate code around
+	 * Is a basic implementation of {@link Task}. This class implements the boilerplate code around
 	 * the SQL session setup.
 	 * 
 	 * @author pavle

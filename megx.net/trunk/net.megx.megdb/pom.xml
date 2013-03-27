@@ -17,7 +17,7 @@
         <mvn.db.host>localhost</mvn.db.host>
         <mvn.db.port>5432</mvn.db.port>
         <mvn.db.name>megdb_r8</mvn.db.name>
-        <mvn.db.user>${user.name}</mvn.db.user>
+        <mvn.db.user>megxuser</mvn.db.user>
         <mvn.db.password></mvn.db.password>
     </properties>
 
