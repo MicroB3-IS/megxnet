@@ -32,8 +32,8 @@ www={type:'sys.public'}
 		feedback={type:'html', template:'error-pages/feedback-result.html', title:'Thanks for your feedback'}
 	settings={type:'unknown'}
 		account={type:'html', template:'settings/account/profile.html', title: 'Account Settings'}
-	prox={type:'undefined'}
-		browse={type:'html', template:'prox/index.html', baseTemplate: 'prox/base-empty.html'}
+	prox={type:'html', template:'prox/home.html', title:'ProX home page'}
+		browse={type:'html', template:'prox/index.html', baseTemplate: 'prox/base-empty.html', title:'ProX'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
