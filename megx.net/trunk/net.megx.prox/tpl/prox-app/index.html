@@ -1,22 +1,24 @@
 ﻿<!doctype html>
 <head>
+	<base href="$ctx.siteUrl/prox-app/index.html">
     <meta charset="utf-8">
     <title>ProX</title>
+    
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="$ctx.siteUrl/prox/browse/css/style.css">
+    <link rel="stylesheet" href="$ctx.siteUrl/prox-app/css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/jquery.mousewheel.js"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/underscore-min.js?v=0.4.5"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/backbone-min.js?v=0.4.5"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/three.min.js?v=0.4.5"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/tween.min.js?v=0.4.5"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/prox.min.js?v=0.4.5"></script>
-    <script src="$ctx.siteUrl/prox/browse/js/grax.min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/jquery.mousewheel.js"></script>
+    <script src="$ctx.siteUrl/prox-app/js/underscore-min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/backbone-min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/three.min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/tween.min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/prox.min.js?v=0.4.5"></script>
+    <script src="$ctx.siteUrl/prox-app/js/grax.min.js?v=0.4.5"></script>
 	<script>
 		$(document).ready(function() {
 			prox.init({
-				"filename"  : "$ctx.siteUrl/prox/browse/ggm_mrs_network.graphml",
+				"filename"  : "$ctx.siteUrl/prox-app/ggm_mrs_network.graphml",
 				"ajaxProxy" : "$ctx.siteUrl/ws/v1/PfamProxy/v1.0.0/"
 			});
 		});
