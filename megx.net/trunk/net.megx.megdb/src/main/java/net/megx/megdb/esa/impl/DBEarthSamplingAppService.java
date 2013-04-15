@@ -13,6 +13,7 @@ import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.megdb.esa.mappers.ESAMapper;
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
+import net.megx.model.esa.SampleRow;
 
 public class DBEarthSamplingAppService extends BaseMegdbService implements EarthSamplingAppService {
 	
@@ -178,6 +179,20 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 			public Object execute(ESAMapper mapper) throws Exception{
 				mapper.clearConfig(category);
 				return null;
+			}
+		}, ESAMapper.class);
+	}
+
+	@Override
+	public List<SampleRow> getAllSamples() throws Exception {
+		return doInSession(new DBTask<ESAMapper, List<SampleRow>>(){
+			@Override
+			public List<SampleRow> execute(ESAMapper mapper) throws Exception{
+				List<SampleRow> samplesToReturn = new ArrayList<SampleRow>();
+				for (SampleRow sample : mapper.getAllSamples()) {
+					samplesToReturn.add(sample);
+				}
+				return samplesToReturn;
 			}
 		}, ESAMapper.class);
 	}

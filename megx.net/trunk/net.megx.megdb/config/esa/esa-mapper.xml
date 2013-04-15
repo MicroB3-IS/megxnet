@@ -36,6 +36,33 @@
 		<association property="photos" column="id" select="getPhotosForSample"/>
 	</resultMap>
 	
+	<resultMap type="ESASampleRow" id="esa_sample_row_map">
+		<result column="id" property="id"/>
+		<result column="taken" property="taken"/>
+		<result column="modified" property="modified"/>
+		<result column="collector_id" property="collectorId"/>
+		<result column="label" property="label"/>
+		<result column="barcode" property="barcode"/>
+		<result column="elevation" property="elevation"/>
+		<result column="biome" property="biome"/>
+		<result column="feature" property="feature"/>
+		<result column="collection" property="collection"/>
+		<result column="permit" property="permit"/>
+		<result column="sampling_depth" property="samplingDepth"/>
+		<result column="water_depth" property="waterDepth"/>
+		<result column="sample_size" property="sampleSize"/>
+		<result column="weather_condition" property="weatherCondition"/>
+		<result column="air_temperature" property="airTemperature"/>
+		<result column="water_temperature" property="waterTemerature"/>
+		<result column="conductivity" property="conductivity"/>
+		<result column="wind_speed" property="windSpeed"/>
+		<result column="salinity" property="salinity"/>
+		<result column="comment" property="comment"/>
+		<result column="lat" property="lat"/>
+		<result column="lon" property="lon"/>
+		<result column="accuracy" property="accuracy"/>
+	</resultMap>
+	
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
 		<result column="uuid" property="uuid"/>
 		<result column="data" property="data"/>
@@ -53,6 +80,11 @@
 	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
 	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
 	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
+	</sql>
+	
+	<sql id="esa_sample_row_columns_no_geom">
+	    id,taken, modified, collector_id, label, barcode, elevation, biome, feature, collection, permit, sampling_depth, water_depth, 
+	    sample_size, weather_condition, air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
 	</sql>
 	
 	<sql id="esa_sample_images_columns_all">
@@ -90,6 +122,11 @@
 	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
 	    FROM esa.samples
 	    WHERE collector_id=#{collectorId}
+	</select>
+	
+	<select id="getAllSamples" resultMap="esa_sample_row_map">
+	    SELECT <include refid="esa_sample_row_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    FROM esa.samples
 	</select>
 	
 	<insert id="addSample" parameterType="ESASample">

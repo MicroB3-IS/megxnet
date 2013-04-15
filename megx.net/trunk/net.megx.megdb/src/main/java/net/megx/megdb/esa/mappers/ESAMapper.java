@@ -6,12 +6,14 @@ import java.util.Set;
 
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
+import net.megx.model.esa.SampleRow;
 
 import org.apache.ibatis.annotations.Param;
 
 public interface ESAMapper {
 	public Sample getSample(String id);
 	public List<Sample> getSamples(String collectorId);
+	public List<SampleRow> getAllSamples();
 	
 	/**
 	 * Adds entry to the samples table

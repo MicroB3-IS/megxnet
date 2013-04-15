@@ -50,6 +50,7 @@
 
 
 		<typeAlias type="net.megx.model.esa.Sample" alias="ESASample" />
+		<typeAlias type="net.megx.model.esa.SampleRow" alias="ESASampleRow" />
 		<typeAlias type="net.megx.model.esa.SamplePhoto" alias="ESASamplePhoto" />
 		<typeAlias type="net.megx.model.logging.LoggedError" alias="LoggedError" />
 
