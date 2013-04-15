@@ -47,6 +47,17 @@ CMapLayers.prototype = {
 			maxExtent : extent,
 			maxResolution : "auto"
 		});
+		
+		layers.esa = new OpenLayers.Layer.WMS("esa", gms_wms_url, {
+			layers : 'esa',
+			format : 'image/png',
+			transparent : "true"
+		}, {
+			isBaseLayer : false,
+			singleTile : true,
+			maxExtent : extent,
+			maxResolution : "auto"
+		});
 				
 		layers.samplingsites = new OpenLayers.Layer.WMS("samplingsites", gms_wms_url, {
 			layers : 'samplingsites',
