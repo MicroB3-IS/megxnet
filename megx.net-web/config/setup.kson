@@ -34,6 +34,7 @@ www={type:'sys.public'}
 		account={type:'html', template:'settings/account/profile.html', title: 'Account Settings'}
 	prox={type:'html', template:'prox-app/home.html', title:'ProX home page'}
 		browse={type:'html', template:'prox-app/index.html', baseTemplate: 'prox-app/base-empty.html', title:'ProX'}
+	samples={type:'html', template:'net.megx.esa/index.html', title:'All samples'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
