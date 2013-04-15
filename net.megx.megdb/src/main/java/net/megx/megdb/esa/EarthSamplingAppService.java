@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
+import net.megx.model.esa.SampleRow;
 
 public interface EarthSamplingAppService {
 	public List<Sample> getSamples(String creator) throws Exception;
+	public List<SampleRow> getAllSamples() throws Exception;
 	public Sample getSample(String id) throws Exception;
 	
 	public List<String> storeSamples(List<Sample> samples) throws Exception;
