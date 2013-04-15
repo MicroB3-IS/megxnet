@@ -22,10 +22,10 @@
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-antrun-plugin</artifactId>
 		</plugin>
+		<!-- Commented out because of 'No valid model was found' exception
 		<plugin>
 		    <groupId>ro.isdc.wro4j</groupId>
 		    <artifactId>wro4j-maven-plugin</artifactId>
-		    <!-- Commented out because of 'No valid model was found' exception
 		    <executions>
 		        <execution>
 		            <phase>compile</phase>
@@ -39,8 +39,7 @@
 		        <wroFile>prox-app/wro.xml</wroFile>
 		        <ignoreMissingResources>false</ignoreMissingResources>
 		    </configuration>
-		     -->
-  		</plugin>
+  		</plugin> -->
 	</plugins>
   </build>
   
