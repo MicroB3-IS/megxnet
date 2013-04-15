@@ -25,6 +25,7 @@ import net.megx.esa.rest.util.SampleDeserializer;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
+import net.megx.model.esa.SampleRow;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
@@ -40,6 +41,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+
+import net.megx.ui.table.json.TableDataResponse;
 /**
  * 
  * @author borce.jadrovski
@@ -74,12 +77,32 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			}
 			
 		}).registerTypeAdapter(Sample.class, new SampleDeserializer())
+		.serializeNulls()
 		.create();
 	}
 	/**
 	 * 
 	 * @param ID of the collector of the samples
 	 * @return JSON formatted string of the samples created by the collector if any. 
+	 */
+	@GET
+	@Path("allSamples")
+	public String getAllSamples(){
+		List<SampleRow> samples;
+		try {
+			samples = service.getAllSamples();
+			TableDataResponse<SampleRow> resp = new TableDataResponse<SampleRow>();
+			resp.setData(samples);
+			return toJSON(resp);
+		} catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @return JSON formatted string of the all of the samples stored in DB. 
 	 */
 	@GET
 	@Path("samples/{creator}")
