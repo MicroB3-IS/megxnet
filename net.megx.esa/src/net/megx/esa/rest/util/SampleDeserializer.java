@@ -89,6 +89,10 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		sample.setProjectId(getString("projectId", jo));
 		sample.setUserName(getString("userName", jo));
 		sample.setShipName(getString("shipName", jo));
+		sample.setBoatManufacturer(getString("boatManufacturer", jo));
+		sample.setBoatModel(getString("boatModel", jo));
+		sample.setBoatLength(parseDouble(getString("boatLength", jo)));
+		sample.setHomeport(getString("homeport", jo));
 		sample.setNationality(getString("nationality", jo));
 		
 		sample.setBiome(getString("biome", jo));
