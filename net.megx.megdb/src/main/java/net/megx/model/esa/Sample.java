@@ -18,6 +18,10 @@ public class Sample {
 	private String userName;
 	private String shipName;
 	private String nationality;
+	private String boatManufacturer;
+	private String boatModel;
+	private Double boatLength;
+	private String homeport;
 	
 	private Double elevation;
 	private String biome;
@@ -118,8 +122,33 @@ public class Sample {
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
+	public String getBoatManufacturer() {
+		return boatManufacturer;
+	}
+	public void setBoatManufacturer(String boatManufacturer) {
+		this.boatManufacturer = boatManufacturer;
+	}
+	public String getBoatModel() {
+		return boatModel;
+	}
+	public void setBoatModel(String boatModel) {
+		this.boatModel = boatModel;
+	}
+	public Double getBoatLength() {
+		return boatLength;
+	}
+	public void setBoatLength(Double boatLength) {
+		this.boatLength = boatLength;
+	}
+	
 	public Double getElevation() {
 		return elevation;
+	}
+	public String getHomeport() {
+		return homeport;
+	}
+	public void setHomeport(String homeport) {
+		this.homeport = homeport;
 	}
 	public void setElevation(Double elevation) {
 		this.elevation = elevation;
@@ -250,6 +279,8 @@ public class Sample {
 				+ label + ", barcode=" + barcode
 				+ ", projectId=" + projectId + ", userName=" + userName
 				+ ", shipName=" + shipName + ", nationality=" + nationality
+				+ ", boatManufacturer=" + boatManufacturer + ", boatModel=" + boatModel
+				+ ", boatLength=" + boatLength + ", homeport=" + homeport
 				+ ", elevation=" + elevation + ", biome=" + biome
 				+ ", feature=" + feature + ", collection=" + collection
 				+ ", permit=" + permit + ", samplingDepth=" + samplingDepth

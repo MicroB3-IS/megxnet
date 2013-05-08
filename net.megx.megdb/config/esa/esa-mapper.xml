@@ -14,6 +14,10 @@
 		<result column="project_id" property="projectId"/>
 		<result column="user_name" property="userName"/>
 		<result column="ship_name" property="shipName"/>
+		<result column="boat_manufacturer" property="boatManufacturer"/>
+		<result column="boat_model" property="boatModel"/>
+		<result column="boat_length" property="boatLength"/>
+		<result column="homeport" property="homeport"/>
 		<result column="nationality" property="nationality"/>
 		<result column="elevation" property="elevation"/>
 		<result column="biome" property="biome"/>
@@ -71,14 +75,14 @@
 	</resultMap>
 	
 	<sql id="esa_sample_columns_all">
-		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
-	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
+	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
 	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom, accuracy
 	</sql>
 	
 	<sql id="esa_sample_columns_no_geom">
-	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, 
-	    nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
+	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
 	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
 	</sql>
 	
@@ -133,9 +137,9 @@
 	    INSERT INTO esa.samples(<include refid="esa_sample_columns_all"/>)
 	    VALUES
 	    (#{id}, #{taken}, #{modified}, #{collectorId}, #{label}, #{rawData}, #{barcode}, #{projectId}, #{userName}, #{shipName}, 
-	    #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, #{permit}, #{samplingDepth}, #{waterDepth}, 
-	    #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, #{conductivity}, #{windSpeed}, 
-	    #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326), #{accuracy})
+	    #{boatManufacturer}, #{boatModel}, #{boatLength}, #{homeport}, #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, 
+	    #{permit}, #{samplingDepth}, #{waterDepth}, #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, 
+	    #{conductivity}, #{windSpeed}, #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326), #{accuracy})
 	</insert>
 	
 	<delete id="removeSample" parameterType="int">
