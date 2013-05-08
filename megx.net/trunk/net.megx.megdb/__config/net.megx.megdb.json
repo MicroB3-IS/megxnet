@@ -52,6 +52,10 @@
 		{
 			name: 'net.megx.megdb.browse.BrowseService',
 			class: 'net.megx.megdb.browse.impl.DBBrowseService'
+		},
+		{
+			name: 'net.megx.megdb.geopfam.GeoPfamService',
+			class: 'net.megx.megdb.geopfam.impl.DBGeoPfamService'
 		}
 	]
 }

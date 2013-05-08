@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.megx.megdb.geopfam.mappers.GeoPfamMapper">
+	<resultMap id="geopfamMap" type="net.megx.model.geopfam.GeoPfamRow">
+		<result column="latlon" property="latlon" />
+		<result column="sample_name" property="sampleName" />
+		<result column="num_hits" property="numHits" />
+	</resultMap>
+	
+	
+	<select id="getAll" resultMap="geopfamMap">
+		SELECT latlon, sample_name, num_hits
+		FROM web_r8.geopfam
+		<!-- WHERE target_accession = %PFAM_ACC%;  -->
+	</select>
+	
+</mapper>

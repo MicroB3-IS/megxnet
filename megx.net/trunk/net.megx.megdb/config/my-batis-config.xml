@@ -92,11 +92,12 @@
 		
 		<!-- Browse -->
 		<mapper resource="browse/browse-mapper.xml" />
+		
+		<!-- GeoPfam -->
+		<mapper resource="geopfam/geopfam-mapper.xml" />
 
 		<!-- Logging mapper -->
 		<mapper resource="logging/error-log-mapper.xml" />
 	</mappers>
-
-
-
+	
 </configuration>
