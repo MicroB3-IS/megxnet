@@ -14,12 +14,12 @@ public class DBGeoPfamService extends BaseMegdbService implements GeoPfamService
 	private static final Log log = LogFactory.getLog(GeoPfamService.class);
 	
 	@Override
-	public List<GeoPfamRow> getAll() throws Exception {
+	public List<GeoPfamRow> getByTargetAccession(final String targetAccession) throws Exception {
 		return doInSession(new BaseMegdbService.DBTask<GeoPfamMapper, List<GeoPfamRow>>() {
 			@Override
 			public List<GeoPfamRow> execute(GeoPfamMapper mapper) throws Exception {
-				log.debug("Executing  GeoPfam getAll ...");
-				return mapper.getAll();
+				log.debug("Executing  GeoPfam getByTargetAccession ...");
+				return mapper.getByTargetAccession(targetAccession);
 			}
 		}, GeoPfamMapper.class);
 	}
