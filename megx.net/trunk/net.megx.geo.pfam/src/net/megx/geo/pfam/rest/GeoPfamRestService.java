@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import net.megx.megdb.geopfam.GeoPfamService;
@@ -27,9 +28,11 @@ public class GeoPfamRestService extends BaseRestService {
 	@GET
 	@Path("geopfamTable")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String geopfamTable() {
+	public String geopfamTable(
+			@QueryParam("targetAccession") 
+			String targetAccession) {
 		try {
-			List<GeoPfamRow> list = geoPfamService.getAll();
+			List<GeoPfamRow> list = geoPfamService.getByTargetAccession(targetAccession);
 			TableDataResponse<GeoPfamRow> data = new TableDataResponse<GeoPfamRow>();
 			data.setData(list);
 			return toJSON(data);

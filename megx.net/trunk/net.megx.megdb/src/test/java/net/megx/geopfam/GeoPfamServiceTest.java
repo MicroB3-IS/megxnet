@@ -25,8 +25,8 @@ public class GeoPfamServiceTest extends DBServiceTest {
 	}
 	
 	@Test
-	public void testGetAll() throws Exception {
-		List<GeoPfamRow> ls = geoPfamService.getAll();
+	public void getByTargetAccession() throws Exception {
+		List<GeoPfamRow> ls = geoPfamService.getByTargetAccession("PF0002");
 		Assert.assertNotNull(ls);
 	}
 }

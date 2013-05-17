@@ -8,13 +8,14 @@
 		<result column="latlon" property="latlon" />
 		<result column="sample_name" property="sampleName" />
 		<result column="num_hits" property="numHits" />
+		<result column="target_accession" property="targetAccession" />
 	</resultMap>
 	
 	
-	<select id="getAll" resultMap="geopfamMap">
-		SELECT latlon, sample_name, num_hits
+	<select id="getByTargetAccession" resultMap="geopfamMap" parameterType="string">
+		SELECT latlon, sample_name, num_hits, target_accession
 		FROM web_r8.geopfam
-		<!-- WHERE target_accession = %PFAM_ACC%;  -->
+		WHERE target_accession LIKE '%' || #{targetAccession} || '%';
 	</select>
 	
 </mapper>
