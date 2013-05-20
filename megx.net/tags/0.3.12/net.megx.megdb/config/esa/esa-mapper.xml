@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.esa.mappers.ESAMapper">
+	<resultMap type="ESASample" id="esa_sample_map">
+		<result column="id" property="id"/>
+		<result column="taken" property="taken"/>
+		<result column="modified" property="modified"/>
+		<result column="collector_id" property="collectorId"/>
+		<result column="label" property="label"/>
+		<result column="raw_data" property="rawData"/>
+		<result column="barcode" property="barcode"/>
+		<result column="project_id" property="projectId"/>
+		<result column="user_name" property="userName"/>
+		<result column="ship_name" property="shipName"/>
+		<result column="boat_manufacturer" property="boatManufacturer"/>
+		<result column="boat_model" property="boatModel"/>
+		<result column="boat_length" property="boatLength"/>
+		<result column="homeport" property="homeport"/>
+		<result column="nationality" property="nationality"/>
+		<result column="elevation" property="elevation"/>
+		<result column="biome" property="biome"/>
+		<result column="feature" property="feature"/>
+		<result column="collection" property="collection"/>
+		<result column="permit" property="permit"/>
+		<result column="sampling_depth" property="samplingDepth"/>
+		<result column="water_depth" property="waterDepth"/>
+		<result column="sample_size" property="sampleSize"/>
+		<result column="weather_condition" property="weatherCondition"/>
+		<result column="air_temperature" property="airTemperature"/>
+		<result column="water_temperature" property="waterTemerature"/>
+		<result column="conductivity" property="conductivity"/>
+		<result column="wind_speed" property="windSpeed"/>
+		<result column="salinity" property="salinity"/>
+		<result column="comment" property="comment"/>
+		<result column="lat" property="lat"/>
+		<result column="lon" property="lon"/>
+		<result column="accuracy" property="accuracy"/>
+		<association property="photos" column="id" select="getPhotosForSample"/>
+	</resultMap>
+	
+	<resultMap type="ESASampleRow" id="esa_sample_row_map">
+		<result column="id" property="id"/>
+		<result column="taken" property="taken"/>
+		<result column="modified" property="modified"/>
+		<result column="collector_id" property="collectorId"/>
+		<result column="label" property="label"/>
+		<result column="barcode" property="barcode"/>
+		<result column="elevation" property="elevation"/>
+		<result column="biome" property="biome"/>
+		<result column="feature" property="feature"/>
+		<result column="collection" property="collection"/>
+		<result column="permit" property="permit"/>
+		<result column="sampling_depth" property="samplingDepth"/>
+		<result column="water_depth" property="waterDepth"/>
+		<result column="sample_size" property="sampleSize"/>
+		<result column="weather_condition" property="weatherCondition"/>
+		<result column="air_temperature" property="airTemperature"/>
+		<result column="water_temperature" property="waterTemerature"/>
+		<result column="conductivity" property="conductivity"/>
+		<result column="wind_speed" property="windSpeed"/>
+		<result column="salinity" property="salinity"/>
+		<result column="comment" property="comment"/>
+		<result column="lat" property="lat"/>
+		<result column="lon" property="lon"/>
+		<result column="accuracy" property="accuracy"/>
+	</resultMap>
+	
+	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
+		<result column="uuid" property="uuid"/>
+		<result column="data" property="data"/>
+		<result column="path" property="path"/>
+		<result column="mime_type" property="mimeType"/>
+	</resultMap>
+	
+	<sql id="esa_sample_columns_all">
+		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
+	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom, accuracy
+	</sql>
+	
+	<sql id="esa_sample_columns_no_geom">
+	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
+	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
+	</sql>
+	
+	<sql id="esa_sample_row_columns_no_geom">
+	    id,taken, modified, collector_id, label, barcode, elevation, biome, feature, collection, permit, sampling_depth, water_depth, 
+	    sample_size, weather_condition, air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy
+	</sql>
+	
+	<sql id="esa_sample_images_columns_all">
+	    uuid,
+	    sid,
+	    data,
+	    path,
+	    mime_type
+	</sql>
+	
+	<select id="getSample" resultMap="esa_sample_map">
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    FROM esa.samples 
+	    WHERE esa.samples.id=#{id}
+	</select>
+	
+	<select id="getConfiguration" resultType="map" parameterType="String">
+	    SELECT name,value 
+	    FROM esa.gen_config WHERE category=#{category}
+	</select>
+	
+	<select id="getConfigValue" parameterType="map" resultType="String">
+	    SELECT value
+	    FROM esa.gen_config
+	    WHERE category=#{category} and name=#{name}
+	</select>
+	
+	<select id="getPhotosForSample" resultMap="esa_sample_photo" parameterType="String">
+	    SELECT esa.sample_images.uuid, esa.sample_images.data, esa.sample_images.path, esa.sample_images.mime_type
+	    FROM esa.sample_images LEFT JOIN esa.samples ON esa.sample_images.sid=esa.samples.id
+	    WHERE esa.samples.id=#{sampleId}
+	</select>
+	
+	<select id="getSamples" parameterType="String" resultMap="esa_sample_map">
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    FROM esa.samples
+	    WHERE collector_id=#{collectorId}
+	</select>
+	
+	<select id="getAllSamples" resultMap="esa_sample_row_map">
+	    SELECT <include refid="esa_sample_row_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    FROM esa.samples
+	</select>
+	
+	<insert id="addSample" parameterType="ESASample">
+	    INSERT INTO esa.samples(<include refid="esa_sample_columns_all"/>)
+	    VALUES
+	    (#{id}, #{taken}, #{modified}, #{collectorId}, #{label}, #{rawData}, #{barcode}, #{projectId}, #{userName}, #{shipName}, 
+	    #{boatManufacturer}, #{boatModel}, #{boatLength}, #{homeport}, #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, 
+	    #{permit}, #{samplingDepth}, #{waterDepth}, #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, 
+	    #{conductivity}, #{windSpeed}, #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326), #{accuracy})
+	</insert>
+	
+	<delete id="removeSample" parameterType="int">
+	    DELETE FROM esa.samples
+	    WHERE esa.samples.id=#{id}
+	</delete>
+	
+	<delete id="clearConfigValue" parameterType="map">
+	    DELETE FROM esa.gen_config
+	    WHERE esa.gen_config.category=#{category} AND esa.gen_config.name=#{name}
+	</delete>
+	
+	<delete id="clearConfig" parameterType="String">
+	    DELETE FROM esa.gen_config
+	    WHERE esa.gen_config.category=#{category}
+	</delete>
+	
+	<insert id="storeConfiguration" parameterType="map">
+	    INSERT INTO esa.gen_config(category, name, value)
+	    VALUES 
+	    <foreach item="itm" index="index" collection="config" separator=",">
+	    	 (#{category}, #{itm.key}, #{itm.value})
+	    </foreach>
+	</insert>
+	
+	<insert id="storeConfigValue" parameterType="map"> 
+	   	INSERT INTO esa.gen_config(category, name, value)
+	    VALUES (#{category}, #{name}, #{value})
+	</insert>
+	
+	<insert id="addPhoto" parameterType="map">
+	    INSERT INTO esa.sample_images (<include refid="esa_sample_images_columns_all"/>)
+	    VALUES (#{photo.uuid}, #{sampleId}, #{photo.data}, #{photo.path}, #{photo.mimeType})
+	</insert>
+	
+	<update id="updatePhoto" parameterType="map">
+	    UPDATE esa.sample_images
+	    SET data=#{data},
+	    	path=#{path},
+	    	mime_type=#{mimeType}
+    	WHERE
+    		uuid=#{uuid}
+	</update>
+
+</mapper>

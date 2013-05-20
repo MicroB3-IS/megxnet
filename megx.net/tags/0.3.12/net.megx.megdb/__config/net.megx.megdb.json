@@ -1,0 +1,61 @@
+{
+	path: '$resources/net.megx.megdb',
+	myBatisConfigFile: 'config/my-batis-config.xml',
+	dbConfig:{
+		url: 'jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.name}',
+		username: '${mvn.db.user}',
+		password:'${mvn.db.password}',
+		driver: 'org.postgresql.Driver'
+	}, 	
+	passwordHashing:{
+		saltBytes: 24, 
+		hashBytes: 24,
+		PBKDF2iterations: 1000
+	},
+	dbServices:[
+		{
+			name: 'net.megx.megdb.pubmap.PubMapService',
+			class: 'net.megx.megdb.pubmap.impl.DBPubMapService'
+		},
+		{
+			name: 'net.megx.security.auth.services.ConsumerService',
+			class: 'net.megx.security.auth.services.db.DBConsumerService'
+		},
+		{
+			name: 'net.megx.security.auth.services.TokenService',
+			class: 'net.megx.security.auth.services.db.DBTokenService'
+		},
+		{
+			name: 'net.megx.security.auth.services.UserService',
+			class: 'net.megx.security.auth.services.db.DBUserService'
+		},
+		{
+			name: 'net.megx.security.auth.services.WebResourcesService',
+			class: 'net.megx.security.auth.services.db.DBWebResourcesService'
+		},
+		{
+		    name: 'net.megx.megdb.mixs.MixsWsDao',
+		    class: 'net.megx.megdb.mixs.impl.MixsWsDaoImpl'
+		},
+		{
+			name: 'net.megx.megdb.esa.EarthSamplingAppService',
+			class: 'net.megx.megdb.esa.impl.DBEarthSamplingAppService'
+		},
+		{
+			name: 'net.megx.megdb.wod05.Wod05Service',
+			class: 'net.megx.megdb.wod05.impl.DBWod05Service'
+		},
+		{
+			name: 'net.megx.megdb.logging.ErrorLogService',
+			class: 'net.megx.megdb.logging.impl.DBErrorLogService'
+		},
+		{
+			name: 'net.megx.megdb.browse.BrowseService',
+			class: 'net.megx.megdb.browse.impl.DBBrowseService'
+		},
+		{
+			name: 'net.megx.megdb.geopfam.GeoPfamService',
+			class: 'net.megx.megdb.geopfam.impl.DBGeoPfamService'
+		}
+	]
+}
