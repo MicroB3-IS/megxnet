@@ -112,6 +112,8 @@
         <module>net.megx.ws.browse</module>
         <module>net.megx.prox</module>
         <module>net.megx.geo.pfam</module>
+		<module>net.megx.osd.registry</module>
+		
         <!-- Earth Sampling App -->
         <module>net.megx.esa</module>
         <!-- where and what is chon and get all chon bundles <module>target-definition</module> -->
