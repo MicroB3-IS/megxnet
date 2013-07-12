@@ -1,0 +1,65 @@
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+  #if($req.id)
+  	participantID = '$req.id';
+  	isInEditMode = true;
+  #else
+  	isInEditMode = false;
+  #end
+</script>
+
+<form action="$ctx.siteUrl/v1/OSDRegistry/v1.0.0/addParticipant" method="post" id="participantForm">
+	<table id="osdRegistryInputTable">
+		<tr>
+			<td>Site name:</td>
+			<td><input type="text" name="siteName" id="siteName" required /></td>
+		</tr>
+		<tr>
+			<td>Institute name:</td>
+			<td><input type="text" name="institution" id="institution" required /></td>
+		</tr>
+		<tr>
+			<td>Institute address:</td>
+			<td><input type="text" name="institutionAddress" id="institutionAddress" required /></td>
+		</tr>
+		<tr>
+			<td>Country:</td>
+			<td><input type="text" name="country" id="country" required /></td>
+		</tr>
+		<tr>
+			<td>Institute web address:</td>
+			<td><input type="text" name="institutionWebAddress" id="institutionWebAddress" required url /></td>
+		</tr>
+		<tr>
+			<td>Site coordinator:</td>
+			<td><input type="text" name="siteCoordinator" id="siteCoordinator" required /></td>
+		</tr>
+		<tr>
+			<td>Coordinator email:</td>
+			<td><input type="text" name="coordinatorEmail" id="coordinatorEmail" required email /></td>
+		</tr>
+		<tr>
+			<td>Site latitude:</td>
+			<td><input type="text" name="siteLat" id="siteLat" required number /></td>
+		</tr>
+		<tr>
+			<td>Site longitude:</td>
+			<td><input type="text" name="siteLong" id="siteLong" required number /></td>
+		</tr>
+		<tr>
+			<td>Institute latitude:</td>
+			<td><input type="text" name="institutionLat" id="institutionLat" required number /></td>
+		</tr>
+		<tr>
+			<td>Institute longitude:</td>
+			<td><input type="text" name="institutionLong" id="institutionLong" required number /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="button" value="Submit" id="submitOSDParticipant" /></td>
+		</tr>
+	</table>
+	
+</form>

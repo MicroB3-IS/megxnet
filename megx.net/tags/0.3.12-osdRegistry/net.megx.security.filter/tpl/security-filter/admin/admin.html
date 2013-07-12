@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="$ctx.siteUrl/jquery/css/smoothness/jquery-ui-1.8.9.custom.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="$ctx.siteUrl/security/security-admin.css" />
+
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/components.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/user-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/resources-admin.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/security/lib/roles-admin.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+   var ERROR_HND = function(status, e, xhr, errorCallback){
+	   if(xhr.status == 401 || xhr.status == 403){
+		   document.location.reload(true);
+	   }else{
+		   if(errorCallback){
+			   errorCallback.call(this, status, e, xhr);
+		   }
+	   }
+   }
+   
+   var um = new admin.UserManager({
+      placeholder: '.content-placeholder',
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
+   });
+   
+   
+   var rm = new admin.ResourcesManager({
+      resourcesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/resources', ERROR_HND),
+      userService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
+   });
+   
+   var rolesManager = new admin.RolesManager({
+	   placeholder: '.content-placeholder',
+	   rolesService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/roles', ERROR_HND),
+	   usersService: new components.data.RESTClient('$ctx.siteUrl/ws/filter/users', ERROR_HND)
+   });
+   
+   var AdminManager = {
+      userManager: um,
+      resourcesManager: rm,
+      rolesManager: rolesManager,
+      manageUsers: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-users').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('');
+         this.userManager.show();
+      },
+      manageResources: function(){
+         $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+         $('.admin-action-resources').addClass('admin-action-state-selected');
+         $('.content-placeholder').html('Resources manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
+         this.resourcesManager.show();
+      },
+      manageRoles: function(){
+    	  $('.admin-action-container').removeClass('admin-action-state-selected').addClass('admin-action-state-default');
+          $('.admin-action-roles').addClass('admin-action-state-selected');
+          $('.content-placeholder').html('Groups manager <span style="font-size: 14px; color: #999;">Not available yet</span>');
+          this.rolesManager.show();
+      },
+      init: function(){
+         $('.admin-action-users').click(function(){
+            AdminManager.manageUsers();
+         });
+         $('.admin-action-resources').click(function(){
+            AdminManager.manageResources();
+         });
+         $('.admin-action-roles').click(function(){
+             AdminManager.manageRoles();
+          });
+         AdminManager.manageUsers();
+      }
+   };
+   AdminManager.init();
+});
+</script>
+
+<style>
+   .user-entry{
+      border: solid 1px #e7e7e7;
+      padding: 10px;
+      margin: 5px;
+   }
+   
+   .user-label{
+      color: #00AEEF;
+      font-weight: normal;
+      font-size: 1em;
+      display: block;
+      float: left;
+   } 
+   
+   .user-action-edit{
+      cursor: pointer;
+   }
+   
+   .user-action-edit:hover{
+   		text-decoration: underline;
+   }
+   
+   .user-action-remove{
+      float: right;
+   }
+   .security-users-header{
+      height: 30px;
+      width: 100%;
+      font-size: 17px;
+	  font-width: 500;
+   }
+   .security-users-panel-container{
+      border-top: dashed 1px #e7e7e7;
+      margin-top: 10px;
+      padding: 10px;
+   }
+   .security-users-panel{
+      border: solid 1px #e7e7e7;
+      padding: 10px;
+   }
+   
+ 
+   .resources-action-add, .security-action-add-user {
+      padding: 5px;
+
+   }
+   .resources-panel-actions {
+      height: 35px;
+	  
+      font-size: 17px;
+	  font-width: 500;
+   }
+   .resource-entry-details label {
+      font-size: 10px;
+     
+   }
+   .resource-entry-details{
+      /*border-top: solid 1px #e7e7e7;*/
+      margin-top: 5px;
+      margin-left: 20px;
+      padding: 5px;
+   }
+   
+   .content-placeholder{
+   		background: #fff;
+   		box-shadow: 2px 5px 10px rgba(0,0,0, 0.2);
+   }
+   
+</style>
+
+
+<div style="margin: 15px;">
+	<div class="admin-left-container">
+		<div class="admin-action-container admin-action-state-default admin-action-users">
+			Users
+		</div>
+		<div class="admin-action-container admin-action-state-default admin-action-roles">
+            Groups
+        </div>
+		<div class="admin-action-container admin-action-state-default admin-action-resources">
+			Web Resources
+		</div>
+		
+	</div>
+	<div class="admin-content">
+		<div class="content-placeholder"></div>
+	</div>
+</div>
