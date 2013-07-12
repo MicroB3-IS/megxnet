@@ -1,0 +1,62 @@
+<script type="text/javascript">
+	isAdmin = false;
+	#if($req.user)
+		#if($req.servletRequset.isUserInRole("admin"))
+			isAdmin = true;
+		#end
+	#end
+</script>
+
+
+#set($url = "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants")
+
+$ext.dataTable.renderServerSide(
+	['Site name', 'Institution', 'Institution web address', 'Site coordinator', 'Country', 'Action'], 
+	$url,
+	false,
+	"{
+	 aoColumns: [
+	 { 
+	 	mData: 'siteName',
+	 	sClass: 'data-pad',
+	 	sWidth: '160px'
+	 }, {
+	 	mData: 'institution',
+	 	sClass: 'data-pad',
+	 	sWidth: '100px' 
+	 }, {
+	 	mData: 'institutionWebAddress',
+	 	sClass: 'data-pad',
+	 	sWidth: '130px',
+	 	mRender: function(institutionWebAddress){
+	 		return '<a href=' + institutionWebAddress + '>' + institutionWebAddress + '</a>';
+	 	}
+	 }, {
+	 	mData: 'siteCoordinator',
+	 	sClass: 'data-pad',
+	 	sWidth: '160px'
+	 }, {
+	 	mData: 'country',
+	 	sClass: 'data-pad',
+	 	sWidth: '100px'
+	 }, {
+	 	mData: 'id',
+	 	sClass: 'center',
+	 	sWidth: '160px',
+	 	mRender: function(id){
+	 		var editUrl = '$ctx.siteUrl/osd/add?id=' + id;
+	 		var deleteUrl = '$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/deleteParticipant?id=' + id;
+	 		if(isAdmin){
+	 			return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a> / <a href=' + editUrl + '>Edit</a> / <a href=\'\' class=\'deleteParticipantClass\' id=' + id + '>Delete</a>';
+ 			} else {
+ 				return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a>';
+ 			}
+	 	}
+	 }]
+}")
+
+<div id="deleteDialog">
+	<p class="deleteRecordQst">Are you sure ou want to delete this record?</p>
+</div>
+
+#parse("net.megx.osd.registry/viewDialog.html")

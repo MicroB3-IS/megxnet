@@ -56,6 +56,10 @@
 		{
 			name: 'net.megx.megdb.geopfam.GeoPfamService',
 			class: 'net.megx.megdb.geopfam.impl.DBGeoPfamService'
+		},
+		{
+			name: 'net.megx.megdb.osdregistry.OSDRegistryService',
+			class: 'net.megx.megdb.osdregistry.impl.DBOSDRegistryService'
 		}
 	]
 }

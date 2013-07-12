@@ -27,6 +27,7 @@ $(function() {
         "sAjaxSource": "$url",
         "bServerSide": $serverSideProcessing,
         "sAjaxDataProp": "data",
+        "bAutoWidth": false,
         "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
         	var json = TableUtils.converToReqObj(aoData);
             oSettings.jqXHR = $.ajax( {
