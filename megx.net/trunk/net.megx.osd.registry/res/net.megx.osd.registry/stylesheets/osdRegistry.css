@@ -1,0 +1,50 @@
+#osdRegistryInputTable{
+	margin-top: 50px;
+	margin-left: 50px;
+	width: 600px;
+}
+
+#osdRegistryInputTable td{
+	vertical-align: middle;
+}
+
+#submitOSDParticipant{
+	width: 416px;
+}
+
+.participantIDClass{
+	display: none;
+}
+
+p.osdIntroText{
+	font-size: 15px;
+	text-align: left;
+	padding-left: 30px;
+}
+
+table.viewDialogTable{
+	width: 500px;
+}
+
+#viewDialog a{
+	color: #0000FF;
+}
+
+td.viewLabel{
+	width: 300px;
+	font-family: Ubuntu, sans-serif;
+}
+
+td.viewValue{
+	width: 300px;
+	text-align: left;
+	font-family: Ubuntu, sans-serif;
+}
+
+p.deleteRecordQst{
+	font-family: Ubuntu, sans-serif;
+}
+
+.error{
+	color: red;
+}

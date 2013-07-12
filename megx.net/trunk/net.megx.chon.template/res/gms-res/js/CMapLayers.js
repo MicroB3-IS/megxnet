@@ -58,6 +58,17 @@ CMapLayers.prototype = {
 			maxExtent : extent,
 			maxResolution : "auto"
 		});
+		
+		layers.osdRegistry = new OpenLayers.Layer.WMS("osdRegistry", gms_wms_url, {
+			layers : 'osdRegistry',
+			format : 'image/png',
+			transparent : "true"
+		}, {
+			isBaseLayer : false,
+			singleTile : true,
+			maxExtent : extent,
+			maxResolution : "auto"
+		});
 				
 		layers.samplingsites = new OpenLayers.Layer.WMS("samplingsites", gms_wms_url, {
 			layers : 'samplingsites',

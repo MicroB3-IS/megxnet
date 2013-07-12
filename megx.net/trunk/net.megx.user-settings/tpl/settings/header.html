@@ -18,7 +18,14 @@
 		background-color: #E0E0E0;
 	}
 </style>
-<figure class="logo"><a href="$ctx.siteUrl/"><img src="$ctx.siteUrl/images/logo.png"></a></figure>
+<figure class="logo"><a href="$ctx.siteUrl/">
+
+#if($this.showOSDLogo == 'true')
+	<img src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png"></a></figure>
+#else
+	<img src="$ctx.siteUrl/images/logo.png"></a></figure>
+#end
+
 <article class="header-right"> 
 	#if($req.user) 
 		<div class="settings-header-wrapper">

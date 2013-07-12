@@ -53,6 +53,9 @@
 		<typeAlias type="net.megx.model.esa.SampleRow" alias="ESASampleRow" />
 		<typeAlias type="net.megx.model.esa.SamplePhoto" alias="ESASamplePhoto" />
 		<typeAlias type="net.megx.model.logging.LoggedError" alias="LoggedError" />
+		
+		<!-- OSDRegistry -->
+		<typeAlias type="net.megx.model.osdregistry.OSDParticipant" alias="OSDParticipant" />
 
 	</typeAliases>
 
@@ -77,6 +80,9 @@
 		<mapper resource="pubmap/samples-mapper.xml" />
 		<!-- Earth sampling app mapper -->
 		<mapper resource="esa/esa-mapper.xml" />
+		
+		<!-- OSD registry mapper -->
+		<mapper resource="osdregistry/osdregistry-mapper.xml" />
 
 		<!-- security API DB services mappers -->
 		<mapper resource="security/consumer-mapper.xml" />
