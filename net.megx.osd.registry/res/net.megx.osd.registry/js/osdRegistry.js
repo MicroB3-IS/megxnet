@@ -81,11 +81,14 @@ $(document).ready(function() {
 			url = ctx.siteUrl + "/ws/v1/OSDRegistry/v1.0.0/addParticipant";
 		}
 		
-		ajaxCall("POST", url, JSON.stringify(retrieveFormData()), redirectToURL(redirectUrl));
-	};
-	
-	var redirectToURL = function(url){
-		window.location.href = url;
+		ajaxCall(
+				"POST", 
+				url, 
+				JSON.stringify(retrieveFormData()),
+				function(){
+					window.location.href = redirectUrl;
+				}
+			);
 	};
 	
 	var retrieveFormData = function(){
@@ -135,16 +138,17 @@ $(document).ready(function() {
 		var url = ctx.siteUrl + "/ws/v1/OSDRegistry/v1.0.0/deleteParticipant";
 		var redirectUrl = ctx.siteUrl + "/osd/list";
 		
-		ajaxCall("POST", url, {id:id}, deleteDialogSuccess(redirectUrl), deleteDialogError);
-	};
-	
-	var deleteDialogSuccess = function(redirectUrl){
-		$("#deleteDialog").dialog( "close" );
-		  window.location.href = redirectUrl;
-	};
-	
-	var deleteDialogError = function() {
-		$("#deleteDialog").dialog( "close" );
+		ajaxCall(
+				"POST",
+				url, 
+				{id:id}, 
+				function(){
+					$("#deleteDialog").dialog( "close" );
+					window.location.href = redirectUrl;
+				},
+				function(){
+					$("#deleteDialog").dialog( "close" );
+			});
 	};
 	
 	$("#deleteDialog").dialog({
