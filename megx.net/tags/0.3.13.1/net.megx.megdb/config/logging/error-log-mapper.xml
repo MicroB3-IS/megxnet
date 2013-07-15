@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.logging.mappers.ErrorLogMapper">
+	<resultMap type="LoggedError" id="error_full">
+	    <result column="id" property="id"/>
+	    <result column="http_code" property="httpCode"/>
+	    <result column="time" property="time"/>
+	    <result column="message" property="message"/>
+	    <result column="request_uri" property="requestURI"/>
+	    <result column="stack_trace" property="stackTrace"/>
+	    <result column="java_type" property="javaType"/>
+	    <result column="user" property="user"/>
+	    <result column="remote_ip" property="remoteIP"/>
+	    <result column="feedback" property="feedback"/>
+	</resultMap>
+	
+	<resultMap type="LoggedError" id="error_lite">
+	    <result column="id" property="id"/>
+	    <result column="http_code" property="httpCode"/>
+	    <result column="time" property="time"/>
+	    <result column="message" property="message"/>
+	    <result column="request_uri" property="requestURI"/>
+	    <result column="user" property="user"/>
+	</resultMap>
+	
+	<sql id="errors_columns_full">
+	    id,
+	    http_code,
+	    "time",
+	    message,
+	    request_uri,
+	    stack_trace,
+	    java_type,
+	    "user",
+	    remote_ip,
+	    feedback
+	</sql>
+	
+	<sql id="errors_columns_lite">
+	    id,
+	    http_code,
+	    "time",
+	    message,
+	    request_uri,
+	    "user",
+	    remote_ip
+	</sql>
+	
+	<insert id="saveError" parameterType="LoggedError">
+	    insert into logging.errors (
+	    	<include refid="errors_columns_full"/>
+	    )
+	    values(
+	    	#{id},
+	    	#{httpCode},
+	    	#{time},
+	    	#{message},
+	    	#{requestURI},
+	    	#{stackTrace},
+	    	#{javaType},
+	    	#{user},
+	    	#{remoteIP},
+	    	#{feedback}
+	    )
+	</insert>
+	
+	<select id="getErrors" parameterType="map" resultMap="error_lite">
+	    select
+	    	<include refid="errors_columns_lite"/>
+	    	
+	    	from logging.errors
+	    	offset #{start}
+	    	limit #{size} 
+	</select>
+	
+	<update id="updateFeedback" parameterType="map">
+	    update logging.errors
+	    set feedback=#{feedback}
+	    
+	    	where id=#{id}
+	</update>
+	
+	<select id="getError" resultMap="error_full" parameterType="string">
+	    select 
+	    	<include refid="errors_columns_full"/>
+	    	
+	    	from logging.errors
+	    
+	    	where id=#{id}
+	</select>
+	
+	<select id="countError" parameterType="map" resultType="int">
+	    select count(id) from logging.errors
+	    	where time &gt;= #{timestamp}
+	    	<if test="remoteIP != null">
+	    	   and remote_ip = #{remoteIP}
+	    	</if>
+	    	<if test="user != null">
+	    	    and "user" = #{user}
+	    	</if>
+	</select>
+	
+</mapper>
