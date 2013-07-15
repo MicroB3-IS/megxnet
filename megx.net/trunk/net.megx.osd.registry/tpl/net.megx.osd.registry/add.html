@@ -10,7 +10,7 @@
   #end
 </script>
 
-<form action="$ctx.siteUrl/v1/OSDRegistry/v1.0.0/addParticipant" method="post" id="participantForm">
+<form id="participantForm">
 	<table id="osdRegistryInputTable">
 		<tr>
 			<td>Site name:</td>
@@ -56,10 +56,7 @@
 			<td>Institute longitude:</td>
 			<td><input type="text" name="institutionLong" id="institutionLong" required number /></td>
 		</tr>
-		<tr>
-			<td></td>
-			<td><input type="button" value="Submit" id="submitOSDParticipant" /></td>
-		</tr>
 	</table>
-	
 </form>
+
+<input type="button" value="Submit" id="submitOSDParticipant" />
