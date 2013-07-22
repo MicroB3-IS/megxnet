@@ -38,6 +38,7 @@ www={type:'sys.public'}
 	osd={type:'html', template:'net.megx.osd.registry/index.html', title:'OSD registry start page', showOSDLogo: 'true'}
 		list={type:'html', template:'net.megx.osd.registry/list.html', title:'List of OSD institutes'}
 		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
+	bookmark={type:'html', template:'net.megx.esa/bookmarklet.html', baseTemplate: 'net.megx.esa/bookmarkletTamplate.html', title:'Bookmarklet'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
