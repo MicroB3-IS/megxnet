@@ -1,0 +1,45 @@
+#parse("pages/wod/wod-css.html")
+#parse("pages/wod/wod-js.html")
+
+<section>
+<h3>.:: WOA05 data interpolation ::.</h3>
+
+<article>
+		<div class="wod_form_ct ts_box">
+ 			#parse("pages/wod/wod-form.html")
+ 		</div>
+ 		
+ 	## only if some get parameters are present and no validation error occured e.g. message is empty
+ 	#if(!$message)
+		<div class="table_ct ts_box">
+			<div style="margin: 15px; margin-bottom: 30px;">
+			<table style="width: 100%">
+				<tr>
+					<td>
+						<h6 style="display: inline;">Latitude: $lat / Longitude: $lon / Depth: $depth m / Buffer:  $buffer </h6>
+					</td>
+					<td>
+						<div style="text-align: right;">
+							<a href="$ctx.siteUrl/gms/tools/wod.csv?latitude=$lat&longitude=$lon&depth=$depth&buffer=$buffer&submit=Calculate">
+								Download results as Excel compatible comma separated file (csv).
+							</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+			</div>
+			## wod table
+			#parse("pages/wod/wod-table.html")
+		</div>
+	
+		<div class="graph_ct ts_box">
+			## wod graph
+			#parse("pages/wod/wod-chart.html")
+			<div class="clear"></div>
+		</div>
+	#end
+	
+</article>
+
+<div class="clear"></div>
+</section>
