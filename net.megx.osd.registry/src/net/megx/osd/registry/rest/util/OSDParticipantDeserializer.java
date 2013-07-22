@@ -30,6 +30,7 @@ public class OSDParticipantDeserializer implements JsonDeserializer<OSDParticipa
 			participant.setId(getString("id", jo));
 		}
 		
+		participant.setOSDID(getString("osdID", jo));
 		participant.setSiteName(getString("siteName", jo));
 		participant.setSiteLat(parseDouble(getString("siteLat", jo)));
 		participant.setSiteLong(parseDouble(getString("siteLong", jo)));

@@ -2,7 +2,13 @@ $(document).ready(function() {
 	
 	$("#submitOSDParticipant").click(function() {
 		$("#participantForm").validate({
+			errorPlacement: function(error, element) {
+				error.appendTo(element.parent("td").next("td"));
+			},
 			rules: {
+				osdID: {
+					required: true
+				},
 				siteName: {
 					required: true
 				},
@@ -16,14 +22,14 @@ $(document).ready(function() {
 					required: true
 				},
 				institutionWebAddress: {
-					required: true,
+					required: false,
 					url: true
 				},
 				siteCoordinator: {
 					required: true
 				},
 				coordinatorEmail: {
-					required: true,
+					required: false,
 					email: true
 				},
 				siteLat: {
@@ -93,6 +99,7 @@ $(document).ready(function() {
 	
 	var retrieveFormData = function(){
 		var populatedObject = {
+			"osdID" : $("#osdID").val(),
 			"siteName" : $("#siteName").val(),
 			"institution" : $("#institution").val(),
 			"institutionAddress" : $("#institutionAddress").val(),
@@ -111,6 +118,7 @@ $(document).ready(function() {
 	};
 	
 	var populateFormData = function(retrievedData){
+		$("#osdID").val(retrievedData.osdID);
 		$("#siteName").val(retrievedData.siteName);
 		$("#institution").val(retrievedData.institution);
 		$("#institutionAddress").val(retrievedData.institutionAddress);
@@ -189,7 +197,7 @@ $(document).ready(function() {
 		  resizable: false,
 	      autoOpen: false,
 		  height: 'auto',
-		  width: 600,
+		  width: 'auto',
 	      modal: true,
 	      title: "OSD participant info",
 	      buttons: {
@@ -204,14 +212,6 @@ $(document).ready(function() {
 	});
 	
 	var populateViewDialog = function(retrievedData){
-		$("#siteNameVal").text(retrievedData.siteName);
-		$("#institutionVal").text(retrievedData.institution);
-		$("#institutionAddressVal").text(retrievedData.institutionAddress);
-		$("#countryVal").text(retrievedData.country);
-		var webAddress = "<a href='" + retrievedData.institutionWebAddress + "'>" + retrievedData.institutionWebAddress + "</a>";
-		$("#institutionWebAddressVal").html(webAddress);
-		$("#siteCoordinatorVal").text(retrievedData.siteCoordinator);
-		$("#coordinatorEmailVal").text(retrievedData.coordinatorEmail);
 		$("#siteLatVal").text(retrievedData.siteLat);
 		$("#siteLongVal").text(retrievedData.siteLong);
 		$("#institutionLatVal").text(retrievedData.institutionLat);

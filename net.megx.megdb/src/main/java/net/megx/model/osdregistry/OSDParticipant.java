@@ -4,6 +4,7 @@ public class OSDParticipant {
 	
 	private String id;
 	
+	private String osdID;
 	private String siteName;
 	private Double siteLat;
 	private Double siteLong;
@@ -16,6 +17,13 @@ public class OSDParticipant {
 	private String coordinatorEmail;
 	private String country;
 	
+	
+	public String getOSDID() {
+		return osdID;
+	}
+	public void setOSDID(String osdID) {
+		this.osdID = osdID;
+	}
 	public String getId() {
 		return id;
 	}
@@ -113,7 +121,7 @@ public class OSDParticipant {
 	}
 	@Override
 	public String toString() {
-		return "OSDParticipant [id=" + id + ", siteName=" + siteName + ", siteLat="
+		return "OSDParticipant [id=" + id + ", osdID=" + osdID + ", siteName=" + siteName + ", siteLat="
 				+ siteLat + ", siteLon=" + siteLong + ", institution="
 				+ institution + ", institutionLat=" + institutionLat
 				+ ", institutionLong=" + institutionLong + ", institutionAddress=" + institutionAddress

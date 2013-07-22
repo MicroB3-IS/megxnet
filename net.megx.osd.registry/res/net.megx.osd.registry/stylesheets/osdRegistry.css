@@ -1,17 +1,28 @@
 #osdRegistryInputTable{
 	margin-top: 50px;
 	margin-left: 50px;
-	width: 600px;
+	width: 880px;
 }
 
-#osdRegistryInputTable td{
+#osdRegistryInputTable td.label{
 	vertical-align: middle;
+	width: 150px;
+}
+
+#osdRegistryInputTable td.input{
+	vertical-align: middle;
+	width: 430px;
+}
+
+#osdRegistryInputTable td.errorLabelContainer{
+	vertical-align: middle;
+	width: 300px;
 }
 
 #submitOSDParticipant{
 	width: 416px;
 	float: left;
-	margin-left: 197px;
+	margin-left: 199px;
 	background-color: rgb(236, 233, 216);
 	border-collapse: collapse;
 	border-image-outset: 0px;
@@ -51,7 +62,7 @@ p.osdIntroText{
 }
 
 table.viewDialogTable{
-	width: 500px;
+	width: 620px;
 }
 
 #viewDialog a{
@@ -59,12 +70,13 @@ table.viewDialogTable{
 }
 
 td.viewLabel{
-	width: 300px;
+	width: 160px;
 	font-family: Ubuntu, sans-serif;
+	white-space: nowrap;
 }
 
 td.viewValue{
-	width: 300px;
+	width: 440px;
 	text-align: left;
 	font-family: Ubuntu, sans-serif;
 }
