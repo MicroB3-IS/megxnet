@@ -1,0 +1,4 @@
+{
+	path: '$resources/net.megx.esa',
+	exampleProperty: 'Example Value'
+}
