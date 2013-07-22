@@ -20,7 +20,6 @@
 					'/oauth/request_token',
 					'/oauth/access_token',
 					'/oauth/authorize',
-					'/ws/pubmap.*',
 					'/ws/v1/di-nucleotides-odds-ratio/.*',
 					'/ws/v1/gc-content/.*',
 					'/ws/v1/six-frame-translation/.*',
