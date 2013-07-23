@@ -1,0 +1,352 @@
+<!doctype html>
+<head>
+<base href="$ctx.siteUrl/net.megx.esa/bookmarklet.html">
+<meta charset="utf-8">
+<title>Bookmarklet</title>
+
+<link rel="stylesheet"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>	
+<script
+	src="$ctx.siteUrl/net.megx.esa/js/handlebars.js"></script>
+<script
+	src="$ctx.siteUrl/net.megx.esa/js/bookmarkletFunctions.js"></script>
+
+<style type="text/css">
+input[type="text"] {
+	height: 18px;
+}
+
+textarea {
+	height: 30px;
+	width: 124px;
+}
+
+.close {
+	color: #000000;
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 20px;
+	opacity: 0.2;
+	text-shadow: 0 1px 0 #FFFFFF;
+}
+
+button.close {
+	background: none repeat scroll 0 0 transparent;
+	border: 0 none;
+	cursor: pointer;
+	padding: 0;
+}
+</style>
+
+<script id="sample-template" type="text/x-handlebars-template">
+<div id='sample{{allSamples}}'>
+	<table>
+		<tr>
+			<td>Sample name</td>
+			<td><input type='text' id='label'></td>
+		</tr>
+		<tr>
+			<td>Region name</td>
+			<td><input type='text' id='region'></td>
+		</tr>
+		<tr>#*
+			<td><select id='region'>
+					<option value='b'>Bitola</option>
+					<option value='s'>Skopje</option>
+					<option value='p'>Prilep</option>
+			</select></td>
+		</tr>
+		<tr>*#
+			<td>Habitat</td>
+			<td><input type='text' id='habitat'></td>
+		</tr>
+		<tr>#*
+			<td><select id='habitat'>
+					<option value='b'>Habitat</option>
+					<option value='s'>Habitat1</option>
+					<option value='p'>Habitat2</option>
+			</select></td>
+		</tr>
+		<tr>*#
+			<td>Longitude</td>
+			<td><input type='text' id='longitude'></td>
+		</tr>
+		<tr>
+			<td>Latitude</td>
+			<td><input type='text' id='latitude'></td>
+		</tr>
+		<tr>
+			<td>Material</td>
+			<td><input type='text' id='material'></td>
+		</tr>
+		<tr>
+			<td>Depth</td>
+			<td><input type='text' id='depth'></td>
+		</tr>
+		<tr>
+			<td>Sample Date</td>
+			<td><input type='text' id='date{{allSamples}}'></td>
+		</tr>
+		<tr>
+			<td>Sample Time</td>
+			<td><input type='text' id='time{{allSamples}}'></td>
+		</tr>
+		<tr>
+			<td>sequence accession<br /> number
+			</td>
+			<td><input type='text' id='san'></td>
+		</tr>
+	</table>
+</div>
+</script>
+
+
+<script id="author-template" type="text/x-handlebars-template">
+<div id='aurhor{{allAurhors}}'>
+	<table>
+		<tr>
+			<td width='109px'>Forename</td>
+			<td><input type='text' id='forename'></td>
+		</tr>
+		<tr>
+			<td>Initials</td>
+			<td><input type='text' id='initials'></td>
+		</tr>
+		<tr>
+			<td>Surename</td>
+			<td><input type='text' id='surename'></td>
+		</tr>
+		<tr>
+			<td>Position</td>
+			<td><input type='text' id='position{{allAurhors}}'></td>
+		</tr>
+	</table>
+</div>
+</script>
+
+</head>
+<body style="background-color:white;font-size: small;">
+
+	<img src="$ctx.siteUrl/images/logo.png"
+		style="padding-left: 35px; padding-top: 10px; height:85px;"> #if($req.user)
+
+	
+	<div id="message"></div>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td width="50"><input id="back_button_aurhor" type="image"
+							onclick="previous('aurhor')"
+							src="$ctx.siteUrl/images/icons/blue-document-page-previous.png"
+							width="20" height="20"></td>
+						<td width="50"><input id="next_button_aurhor" type="image"
+							onclick="next('aurhor')"
+							src="$ctx.siteUrl/images/icons/blue-document-page-next.png"
+							width="20" height="20"></td>
+						<td><input id="add_button_aurhor" type="button"
+							onclick="add('aurhor')" value="Add" style="width:32px"></td>
+						<td><div id="curentAurhor"></div></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="authors">
+					<div id="aurhor1">
+						<table>
+							<tr>
+								<td width="109px">Forename</td>
+								<td><input type="text" id="forename"></td>
+							</tr>
+							<tr>
+								<td>Initials</td>
+								<td><input type="text" id="initials"></td>
+							</tr>
+							<tr>
+								<td>Surename</td>
+								<td><input type="text" id="surename"></td>
+							</tr>
+							<tr>
+								<td>Position</td>
+								<td><input type="text" id="position" value="1"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td width="108">Title</td>
+						<td><input type="text" id="title"></td>
+					</tr>
+					<tr>
+						<td>URL</td>
+						<td><input type="text" id="url"></td>
+					</tr>
+					<tr>
+						<td>Abstract URL</td>
+						<td><input type="text" id="abstractUrl"></td>
+					</tr>
+					<tr>
+						<td>Publication Date</td>
+						<td><input type="text" id="publicationDate"></td>
+					</tr>
+					<tr>
+						<td>DOI</td>
+						<td><input type="text" id="doi"></td>
+					</tr>
+					<tr>
+						<td>Issue</td>
+						<td><input type="text" id="issue"></td>
+					</tr>
+					<tr>
+						<td>Journal name</td>
+						<td><input type="text" id="journalName"></td>
+					</tr>
+					<tr>
+						<td>Pages</td>
+						<td><input type="text" id="pages"></td>
+					</tr>
+					<tr>
+						<td>Kind of publication</td>
+						<td><input type="text" id="publicationType"></td>
+					</tr>
+					<tr>
+						<td>PubMed ID</td>
+						<td><input type="text" id="pubmedId"></td>
+					</tr>
+					<tr>
+						<td>Institute</td>
+						<td><input type="text" id="institute"></td>
+					</tr>
+					<tr>
+						<td>Abstract text</td>
+						<td><textarea type="text" id="abstractText"></textarea></td>
+					</tr>
+					<tr>
+						<td>ISSN</td>
+						<td><input type="text" id="issn"></td>
+					</tr>
+					<tr>
+						<td>ISO abbreviation</td>
+						<td><input type="text" id="iso"></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td width="50"><input id="back_button" type="image"
+							onclick="previous('sample')"
+							src="$ctx.siteUrl/images/icons/blue-document-page-previous.png"
+							width="20" height="20"></td>
+						<td width="50"><input id="next_button" type="image"
+							onclick="next('sample')"
+							src="$ctx.siteUrl/images/icons/blue-document-page-next.png"
+							width="20" height="20"></td>
+						<td><input id="add_button" type="button"
+							class="add_sample" onclick="add('sample')" value="Add" style="width:32px"></td>
+						<td><div id="curentSample"></div></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				<div id="samples">
+					<div id="sample1">
+						<table>
+							<tr>
+								<td>Sample name</td>
+								<td><input type="text" id="label"></td>
+							</tr>
+							<tr>
+								<td>Region name</td>
+								<td>#*<select id="region">
+										<option value="b">Bitola</option>
+										<option value="s">Skopje</option>
+										<option value="p">Prilep</option>
+								</select>*# <input type="text" id="region">
+								</td>
+							</tr>
+							<tr>
+								<td>Habitat</td>
+								<td>
+									<!-- 	<select id="habitat">
+									<option value="b">Habitat</option>
+									<option value="s">Habitat1</option>
+									<option value="p">Habitat2</option>
+							</select> --> <input type="text" id="habitat">
+								</td>
+							</tr>
+							<tr>
+								<td>Longitude</td>
+								<td><input type="text" id="longitude"></td>
+							</tr>
+							<tr>
+								<td>Latitude</td>
+								<td><input type="text" id="latitude"></td>
+							</tr>
+							<tr>
+								<td>Material</td>
+								<td><input type="text" id="material"></td>
+							</tr>
+							<tr>
+								<td>Depth</td>
+								<td><input type="text" id="depth"></td>
+							</tr>
+							<tr>
+								<td>Sample Date</td>
+								<td><input type="text" id="date"></td>
+							</tr>
+							<tr>
+								<td>Sample Time</td>
+								<td><input type="text" id="time"></td>
+							</tr>
+							<tr>
+								<td>sequence accession<br /> number
+								</td>
+								<td><input type="text" id="san"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td align="right"><input id="next_button" type="button"
+				onclick="insertBookmark()" value="Submit"></td>
+		</tr>
+	</table>
+
+	#else #* not logged in *#
+	<script type="text/javascript">
+		function changeLoginCheck() {
+			var change = "<a href='$ctx.siteUrl/bookmark' onclick='changeLoginCheck()' style='border: 2px solid #002638; padding: 10px 40px; background: #00A3EF; border-radius: 25px;'>Refresh</a>";
+			$("#loginCheck").html(change);
+			$("#loginCheck").css("padding-left" , "95px");
+		}
+	</script>
+	<div id="loginCheck" style="padding-left: 55px;">
+		<a href="$ctx.siteUrl/login"
+			style="border: 2px solid #002638; padding: 10px 40px; background: #00A3EF; border-radius: 25px;"
+			target="_blank" onclick="changeLoginCheck()">Log in to megx.com</a>
+	</div>
+
+	#end
+</body>
+</html>
