@@ -1,212 +1,455 @@
 /*===================================================================================================================================================== */
 /*===================================================================================================================== DEFINES FONT OF THE APPLICATION */
-p, li, a, blockquote, input, textarea, checkbox, radio, button {font-family: 'Ubuntu', sans-serif; font-weight: normal!important;}
+p,li,a,blockquote,input,textarea,checkbox,radio,button {
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: normal !important;
+}
 /*===================================================================================================================================================== */
 /*============================================================================================================================================ HEADINGS */
-h1,h2,h3,h4,h5,h6, {font-family: 'Ubuntu', sans-serif;}
-h1 				{ font-weight: normal; padding: .7em 0em; color: #0e4e96; }	
-h3 				{ font-weight: normal; padding: 0.2em 0em 0em 3em; margin: .7em 0em; color: #0e4e96; }	
-h2,h4,h5,h6		{ font-weight: normal; margin: .7em 0em; color: #00A0FF; }
-span.vers 		{ font-weight: normal; margin: .7em 0em; color: #333; font-size: .66em; }
-h1 				{ font-size: 30px; }
-h2 				{ font-size: 27px; }
-h3 				{ font-size: 24px; }
-h4 				{ font-size: 21px; }
-h5 				{ font-size: 17px; }
-h6 				{ font-size: 15px; }
-h3 				{ background-image: url(../images/titleDot.png); background-repeat: no-repeat;	background-position: 0em -0.04m; }
-h4 a, h5 a, h6 a, h4 a:hover, h5 a:hover, h6 a:hover {color: #00A0FF; text-decoration:none;}
+h1
+,
+h2
+,
+h3
+,
+h4
+,
+h5
+,
+h6
+,
+{
+font-family
+:
+ 
+'
+Ubuntu
+'
+,
+sans-serif
+;
+}
+h1 {
+	font-weight: normal;
+	padding: .7em 0em;
+	color: #0e4e96;
+}
+
+h3 {
+	font-weight: normal;
+	padding: 0.2em 0em 0em 3em;
+	margin: .7em 0em;
+	color: #0e4e96;
+}
+
+h2,h4,h5,h6 {
+	font-weight: normal;
+	margin: .7em 0em;
+	color: #00A0FF;
+}
+
+span.vers {
+	font-weight: normal;
+	margin: .7em 0em;
+	color: #333;
+	font-size: .66em;
+}
+
+h1 {
+	font-size: 30px;
+}
+
+h2 {
+	font-size: 27px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h4 {
+	font-size: 21px;
+}
+
+h5 {
+	font-size: 17px;
+}
+
+h6 {
+	font-size: 15px;
+}
+
+h3 {
+	background-image: url(../images/titleDot.png);
+	background-repeat: no-repeat;
+	background-position: 0em -0.04m;
+}
+
+h4 a,h5 a,h6 a,h4 a:hover,h5 a:hover,h6 a:hover {
+	color: #00A0FF;
+	text-decoration: none;
+}
 /*===================================================================================================================================================== */
 /*======================================================================================================================================= TEXT ELEMENTS */
-p				{ margin: .4em 0em; line-height:150%; font-size:1em; text-align: justify;}
-p img.left  	{ float: left; margin: .5em 1.5em .5em 0em; padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
-p img.right 	{ float: right; margin: .5em 0em .5em 1.5em;padding: 0; border:1px solid #eee; box-shadow: #333 0px 0px 10px;}
-img 			{ border: 0; }
-a 				{ color:#0000ff; text-decoration: none; font-size:1em; cursor: pointer;
-				  /* FADE IN TRANSITION */
-					-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-					-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
-					-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
-				}     
-a:hover			{ 	color:#000; 
-					text-decoration: underline;
-				}  
-blockquote p	{ 
-					padding-left:20px; 
-					color: #666; 
-					font-style: italic;
-					border-left:1px solid #ccc;
-				}
-strong      	{ font-weight: bold; }
-em,dfn      	{ font-style: italic; }
-dfn         	{ font-weight: bold; }
-sup, sub    	{ line-height: 0; }
+p {
+	margin: .4em 0em;
+	line-height: 150%;
+	font-size: 1em;
+	text-align: justify;
+}
 
-abbr, 
-acronym     	{ border-bottom: 1px dotted #666; }
-address     	{ margin: 0 0 1.5em; font-style: italic; }
-del         	{ color:#666; text-decoration: line-through; }
-pre 			{ margin: 1.5em 0; white-space: pre; }
-pre,code,tt		{ font: 1em 'andale mono', 'lucida console', monospace; }
+p img.left {
+	float: left;
+	margin: .5em 1.5em .5em 0em;
+	padding: 0;
+	border: 1px solid #eee;
+	box-shadow: #333 0px 0px 10px;
+}
+
+p img.right {
+	float: right;
+	margin: .5em 0em .5em 1.5em;
+	padding: 0;
+	border: 1px solid #eee;
+	box-shadow: #333 0px 0px 10px;
+}
+
+img {
+	border: 0;
+}
+
+a {
+	color: #0000ff;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	/* FADE IN TRANSITION */
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
+}
+
+a:hover {
+	color: #000;
+	text-decoration: underline;
+}
+
+blockquote p {
+	padding-left: 20px;
+	color: #666;
+	font-style: italic;
+	border-left: 1px solid #ccc;
+}
+
+strong {
+	font-weight: bold;
+}
+
+em,dfn {
+	font-style: italic;
+}
+
+dfn {
+	font-weight: bold;
+}
+
+sup,sub {
+	line-height: 0;
+}
+
+abbr,acronym {
+	border-bottom: 1px dotted #666;
+}
+
+address {
+	margin: 0 0 1.5em;
+	font-style: italic;
+}
+
+del {
+	color: #666;
+	text-decoration: line-through;
+}
+
+pre {
+	margin: 1.5em 0;
+	white-space: pre;
+}
+
+pre,code,tt {
+	font: 1em 'andale mono', 'lucida console', monospace;
+}
 /*===================================================================================================================================================== */
 /*=============================================================================================================================================== LISTS */
------------------------------------------------------------*/
-li ul,li ol			{ margin: 0em; padding: .3em 0 .3em .3em; }
-ul, ol				{ margin: 0 0 2em 0; padding-left: 1.25em; }
-ul          		{ list-style-type: disk; list-style-position: inside;}
-ol          		{ list-style-type: decimal; list-style-position: inside;}
-li					{ padding: .0em .0em;}
-dl          		{ margin: 0 0 1.5em 0; }
-dl dt       		{ font-weight: bold; }
-dd          		{ margin-left: 0em; display: inline-block;}
+-----------------------------------------------------------
+* /
+li ul,li ol {
+	margin: 0em;
+	padding: .3em 0 .3em .3em;
+}
+
+ul,ol {
+	margin: 0 0 2em 0;
+	padding-left: 1.25em;
+}
+
+ul {
+	list-style-type: disk;
+	list-style-position: inside;
+}
+
+ol {
+	list-style-type: decimal;
+	list-style-position: inside;
+}
+
+li {
+	padding: .0em .0em;
+}
+
+dl {
+	margin: 0 0 1.5em 0;
+}
+
+dl dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-left: 0em;
+	display: inline-block;
+}
 /*===================================================================================================================================================== */
 /*============================================================================================================================= LISTS STYLING WITH DOTS */
 ul.uldotli li {
-	list-style-image:url(../images/dot.png);
+	list-style-image: url(../images/dot.png);
 	list-style-position: outside;
 	margin: .5em 0em;
 }
-ul.uldotli li a{color: #333;}
+
+ul.uldotli li a {
+	color: #333;
+}
 /*===================================================================================================================================================== */
 /*====================================================================================================== LISTS STYLING FOR REFERENCES ON THE ABOUT PAGE */
 ul.reflistlx {
-	clear:both;
+	clear: both;
 	border-bottom: 1px dashed #e7e7e7;
 }
-ul.reflistlx li.authors{
+
+ul.reflistlx li.authors {
 	margin-top: -10px;
 }
+
 ul.reflistlx li {
 	list-style: none;
 	margin: .5em .0em;
-	padding: .2em .275em!important;
+	padding: .2em .275em !important;
 	float: left;
 	display: block;
 	/*border: 1px dashed #e7e7e7;
 	background-color: #f1f1f1;*/
 }
-ul.reflistlx li:hover, ul.reflistlx li:hover p, ul.reflistlx li:hover a {
+
+ul.reflistlx li:hover,ul.reflistlx li:hover p,ul.reflistlx li:hover a {
 	background-color: #47505b;
 	color: #fff;
-	
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
-	
 }
+
 ul.reflistlx li a {
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
-	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */	
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
+
 ul.reflistlx li a:hover {
 	color: #fff;
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
 /*===================================================================================================================================================== */
 /*==================================================================================================== LISTS STYLING FOR REFERENCES ON THE AUTHORS PAGE */
-
 ul.authors {
 	list-style: none;
 }
+
 ul.authors li {
 	margin: .5em 0em;
 }
+
 ul.authors li a {
 	color: #0000ff;
 	text-decoration: none;
 }
+
 ul.authors li a:hover {
 	color: #333;
 	text-decoration: none;
 }
+
 ul.authors li p {
 	color: #333;
 }
+
 ul.authors li.authorsTitle {
 	font-weight: bold;
 }
+
 ul.authors li.authorsDate {
 	color: #999;
-	}
+}
+
 ul.authors li.authorsNames {
 	font-style: italic;
-	}
+}
+
 ul.authors li.authorsJournal {
-	font-style: undeline;	
+	font-style: undeline;
 }
 /*===================================================================================================================================================== */
 /*=============================================================================================== LISTS STYLING FOR REFERENCES ON THE TEAM MEMBERS PAGE */
-
 ul.teamMembers {
-	clear:both;
+	clear: both;
 	border-bottom: 1px dashed #e7e7e7;
 }
-ul.teamMembers{
+
+ul.teamMembers {
 	margin-top: -10px;
 }
+
 ul.teamMembers li {
 	list-style: none;
 	margin: .5em .5em;
-	padding: .2em .275em!important;
+	padding: .2em .275em !important;
 	float: left;
 	display: block;
 	border: 1px dashed #e7e7e7;
 	background-color: #f1f1f1;
 }
-ul.teamMembers li:hover, ul.teamMembers li:hover p, ul.teamMembers li:hover a {
+
+ul.teamMembers li:hover,ul.teamMembers li:hover p,ul.teamMembers li:hover a
+	{
 	background-color: #47505b;
 	color: #fff;
-	
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
-	
 }
+
 ul.teamMembers li a {
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
-	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */	
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
+	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
+
 ul.teamMembers li a:hover {
 	color: #fff;
-	-moz-transition: all 500ms ease-in-out;  /* FF 3.7+ */
-	-o-transition: all 500ms ease-in-out;	/* OPERA 10.5+ */
+	-moz-transition: all 500ms ease-in-out; /* FF 3.7+ */
+	-o-transition: all 500ms ease-in-out; /* OPERA 10.5+ */
 	-webkit-transition: all 500ms ease-in-out; /* SAFARI & CHROME */
 }
 /*===================================================================================================================================================== */
 /*====================================================================================================================================== TABLES DEFAULT */
-table									{border-collapse: collapse;}
-tr, td									{padding: 1px 0px;}
-thead tr th								{font-weight: bold;}
+table {
+	border-collapse: collapse;
+}
 
-tbody tr td								{font-weight: normal;}
-tbody tr td ul, tbody tr td ol			{font-weight: normal; margin:0px; padding: 0px;}
-tbody tr td ul li, tbody tr td ol li	{font-weight: normal; margin:10px 0px 10px 0px; padding: 0px; text-indent: 0px;}
-tbody tr.even td						{background-color: #fff;}
-tbody tr.odd td							{background-color: #f8f8f8;}
+tr,td {
+	padding: 1px 0px;
+}
 
-tbody tr:nth-child(even) 				{background: #fdfdfd;}
-tbody tr:nth-child(odd) 				{background: #ffffff; }
+thead tr th {
+	font-weight: bold;
+}
 
-tr, th, td 								{text-align: left; vertical-align:top;}
-caption									{background: #eee;}
-tfoot tr td								{font-weight: bold; color: #999;}
+tbody tr td {
+	font-weight: normal;
+}
+
+tbody tr td ul,tbody tr td ol {
+	font-weight: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+tbody tr td ul li,tbody tr td ol li {
+	font-weight: normal;
+	margin: 10px 0px 10px 0px;
+	padding: 0px;
+	text-indent: 0px;
+}
+
+tbody tr.even td {
+	background-color: #fff;
+}
+
+tbody tr.odd td {
+	background-color: #f8f8f8;
+}
+
+tbody tr:nth-child(even) {
+	background: #fdfdfd;
+}
+
+tbody tr:nth-child(odd) {
+	background: #ffffff;
+}
+
+tr,th,td {
+	text-align: left;
+	vertical-align: top;
+}
+
+caption {
+	background: #eee;
+}
+
+tfoot tr td {
+	font-weight: bold;
+	color: #999;
+}
 /*===================================================================================================================================================== */
 /*================================================================================================================================== MISC DEBUG CLASSES */
-.debug1	{ background:#ccc; }
-.debug2 { background:#666; }
-.debug3	{ background:#000; }
-.debug4 { background:#fff; }
+.debug1 {
+	background: #ccc;
+}
+
+.debug2 {
+	background: #666;
+}
+
+.debug3 {
+	background: #000;
+}
+
+.debug4 {
+	background: #fff;
+}
 /*===================================================================================================================================================== */
 /*=========================================================================================================================== FLOATS, PADDINGS, MARGINS */
-.clear 	{ clear:both;}
-.FL 	{ float:left;} 
-.FR		{ float:right;} 
-.pad10 	{ margin: 10px;}
-.marginNone 	{ marigin:0!important; }
+.clear {
+	clear: both;
+}
+
+.FL {
+	float: left;
+}
+
+.FR {
+	float: right;
+}
+
+.pad10 {
+	margin: 10px;
+}
+
+.marginNone {
+	marigin: 0 !important;
+}
 /*===================================================================================================================================================== */
 /*=============================================================================================================================================== FORMS */
 form label {
@@ -216,6 +459,7 @@ form label {
 	text-align: left;
 	background-color: transparent;
 }
+
 form input {
 	display: block;
 	padding: .5em .5em;
@@ -224,6 +468,7 @@ form input {
 	width: 30em;
 	line-height: 13px;
 }
+
 form select {
 	display: block;
 	padding: .5em .5em;
@@ -232,6 +477,7 @@ form select {
 	width: 31.20em;
 	line-height: 13px;
 }
+
 form checkbox {
 	float: right;
 	padding: 0em;
@@ -239,6 +485,7 @@ form checkbox {
 	border: .1em solid #e7e7e7;
 	color: #999;
 }
+
 form.tutorials input[type=radio] {
 	float: left;
 	padding: 0em;
@@ -248,6 +495,7 @@ form.tutorials input[type=radio] {
 	width: 24px;
 	height: 24px;
 }
+
 form.blastRadioButton input[type=radio] {
 	float: left;
 	padding: 0em;
@@ -261,27 +509,30 @@ form.blastRadioButton input[type=radio] {
 form textarea {
 	display: block;
 	padding: .5em .5em;
-	margin:  .5em 0em;
+	margin: .5em 0em;
 	border: .1em solid #e7e7e7;
 	color: #999;
 	width: 30em;
 	height: 3em;
 }
-form input disabled, form input disabled:hover {
+
+form input disabled,form input disabled:hover {
 	display: block;
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #666;
 }
+
 form input:hover {
 	display: block;
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #333;
 }
+
 form button {
 	display: block;
-	padding: .1em 1em .1em 1em!important;
+	padding: .1em 1em .1em 1em !important;
 	font-weight: bold;
 	cursor: pointer;
 	text-align: center;
@@ -293,39 +544,44 @@ form button {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 }
+
 form button.blue {
 	background-color: #4ea5cd;
-    background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd);
-    background-image: -moz-linear-gradient(top, #56a9cf, #4ea5cd);
-    background-image: -ms-linear-gradient(top, #56a9cf, #4ea5cd);
-    background-image: -o-linear-gradient(top, #56a9cf, #4ea5cd);
-    background-image: linear-gradient(top, #56a9cf, #4ea5cd);
-	color: #b1e1f8!important;
+	background-image: -webkit-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -moz-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -ms-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: -o-linear-gradient(top, #56a9cf, #4ea5cd);
+	background-image: linear-gradient(top, #56a9cf, #4ea5cd);
+	color: #b1e1f8 !important;
 }
-form button.blue:hover, form button.blue:focus {
-	color: #ffffff!important;
+
+form button.blue:hover,form button.blue:focus {
+	color: #ffffff !important;
 }
 
 form button.orange {
-	background-color: #DD4B39!important;
-    background-image: -webkit-linear-gradient(top, #DD4B39, #D14836)!important;
-    background-image: -moz-linear-gradient(top, #DD4B39, #D14836)!important;
-    background-image: -ms-linear-gradient(top, #DD4B39, #D14836)!important;
-    background-image: -o-linear-gradient(top, #DD4B39, #D14836)!important;
-    background-image: linear-gradient(top, #DD4B39, #D14836)!important;
-	color: #fff!important;
-}
-form button.organge:hover, form button.organge:focus {
-	color: #ffffff!important;
-	}
-/*===================================================================================================================================================== */
-::-webkit-input-placeholder {
-   color: #999;
+	background-color: #DD4B39 !important;
+	background-image: -webkit-linear-gradient(top, #DD4B39, #D14836)
+		!important;
+	background-image: -moz-linear-gradient(top, #DD4B39, #D14836) !important;
+	background-image: -ms-linear-gradient(top, #DD4B39, #D14836) !important;
+	background-image: -o-linear-gradient(top, #DD4B39, #D14836) !important;
+	background-image: linear-gradient(top, #DD4B39, #D14836) !important;
+	color: #fff !important;
 }
 
-:-moz-placeholder {  
-   color: #999;
+form button.organge:hover,form button.organge:focus {
+	color: #ffffff !important;
 }
+/*===================================================================================================================================================== */
+::-webkit-input-placeholder {
+	color: #999;
+}
+
+:-moz-placeholder {
+	color: #999;
+}
+
 hr {
 	border-bottom: 1px dashed #e7e7e7;
 	border-top: none;
@@ -335,11 +591,38 @@ hr {
 
 /*===================================================================================================================================================== */
 /*================================================================================================================================ CUSTOM IDs & CLASSES */
-#feedback 		{ margin: 0px auto; width: 500px; }
-.small 			{ font-size: 0.75em; }
-.greenColor 	{ color: #093; }
+#feedback {
+	margin: 0px auto;
+	width: 500px;
+}
+
+.small {
+	font-size: 0.75em;
+}
+
+.greenColor {
+	color: #093;
+}
+
 textarea.seq {
 	width: 600px;
 	height: 175px;
+}
+/*===================================================================================================================================================== */
+a#save-to-megx {
+	background: none repeat scroll 0 0 #999999;
+	border: 1px solid #666666;
+	border-radius: 20px 20px 20px 20px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+	color: #FFFFFF;
+	cursor: move;
+	display: inline-block;
+	font-family: "Lucida Grande", "Segoe UI", Ubuntu, sans-serif;
+	font-size: 13px;
+	margin-top: 5px;
+	padding: 2px 14px;
+	position: relative;
+	text-decoration: none;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 /*===================================================================================================================================================== */
