@@ -1,0 +1,41 @@
+#set($url = "$ctx.siteUrl/ws/esa/allSamples")
+
+$ext.dataTable.renderServerSide(
+	['Sample name', 'Date of creation', 'Biome', 'Weather condition', 'Feature', 'Air temperature', 'Latitude', 'Longitude'], 
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'label',
+	 	sClass: 'data-pad',
+	 	sWidth: '35%'
+	 }, {
+	 	mData: 'taken',
+	 	sClass: 'right data-pad',
+	 	sWidth: '15%' 
+	 }, {
+	 	mData: 'biome',
+	 	sClass: 'right data-pad',
+	 	sWidth: '20%'
+	 }, {
+	 	mData: 'weatherCondition',
+	 	sClass: 'right data-pad',
+	 	sWidth: '15%'
+	 }, {
+	 	mData: 'feature',
+	 	sClass: 'right data-pad',
+	 	sWidth: '10%'
+	 }, {
+	 	mData: 'airTemperature',
+	 	sClass: 'right data-pad',
+	 	sWidth: '1%'
+	 }, {
+	 	mData: 'lat',
+	 	sClass: 'right data-pad',
+	 	sWidth: '2%'
+	 }, {
+	 	mData: 'lon',
+	 	sClass: 'right data-pad',
+	 	sWidth: '2%'
+	 }]
+}")
