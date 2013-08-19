@@ -25,7 +25,7 @@
         <repository>
             <id>chon-repo</id>
             <layout>p2</layout>
-            <url>http://p2.choncms.com/SNAPSHOT
+            <url>http://choncms.megx.net/p2
 		 </url>
         </repository>
     </repositories>
