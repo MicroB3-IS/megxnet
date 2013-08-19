@@ -1,134 +1,138 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>net.megx</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-		<artifactId>parent-microb3-is</artifactId>
-	</parent>
+    <parent>
+        <groupId>net.megx</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>parent-microb3-is</artifactId>
+    </parent>
 
-
-	<groupId>net.megx</groupId>
-	<artifactId>net.megx.specbyexample.accepttest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+    <artifactId>specbyexample.accepttest</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
 
-	<build>
+    <build>
 
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.2.2</version>
-				<executions>
-					<execution>
-						<id>start-tomcat</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<container>
-						<containerId>tomcat7x</containerId>
-						<zipUrlInstaller>
-							<url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
-						</zipUrlInstaller>
-						<output>${project.build.directory}/tomcat-logs/container.log</output>
-						<append>false</append>
-						<log>${project.build.directory}/tomcat-logs/cargo.log</log>
-					</container>
+        <plugins>
+<!-- 
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.2.2</version>
+                <executions>
+                    <execution>
+                        <id>start-tomcat</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-tomcat</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <container>
+                        <containerId>tomcat7x</containerId>
+                        <zipUrlInstaller>
+                            <url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
+                        </zipUrlInstaller>
+                        <output>${project.build.directory}/tomcat-logs/container.log</output>
+                        <append>false</append>
+                        <log>${project.build.directory}/tomcat-logs/cargo.log</log>
+                    </container>
 
-					<configuration>
-						<type>standalone</type>
-						<home>${project.build.directory}/tomcat-home</home>
-						<properties>
-							<cargo.servlet.port>7077</cargo.servlet.port>
-							<cargo.logging>high</cargo.logging>
-						</properties>
-
-
-						<deployables>
-							<deployable>
-								<groupId>net.megx</groupId>
-								<artifactId>megx.net-web</artifactId>
-								<type>war</type>
-							</deployable>
-						</deployables>
+                    <configuration>
+                        <type>standalone</type>
+                        <home>${project.build.directory}/tomcat-home</home>
+                        <properties>
+                            <cargo.servlet.port>7077</cargo.servlet.port>
+                            <cargo.logging>high</cargo.logging>
+                        </properties>
 
 
-					</configuration>
-				</configuration>
-			</plugin>
+                        <deployables>
+                            <deployable>
+                                <groupId>net.megx</groupId>
+                                <artifactId>megx.net-web</artifactId>
+                                <type>war</type>
+                            </deployable>
+                        </deployables>
 
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.12</version>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-					</execution>
-					
-					
-				</executions>
-			</plugin>
+                    </configuration>
+                </configuration>
+            </plugin>
+             -->
+            <plugin>
+                <!-- block unit tests execution -->
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.16</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
 
 
-
-		</plugins>
-
-	</build>
-
-	<dependencies>
-
-
-		<dependency>
-			<groupId>net.megx</groupId>
-			<artifactId>megx.net-web</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-			<type>war</type>
-			<scope>test</scope>
-		</dependency>
+                </executions>
+            </plugin>
 
 
 
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>1.0.14</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>1.0.14</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>2.25.0</version>
-		</dependency>
-	</dependencies>
+
+
+        </plugins>
+
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.megx</groupId>
+            <artifactId>megx.net-web</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>1.1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>1.1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.25.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
 </project>
