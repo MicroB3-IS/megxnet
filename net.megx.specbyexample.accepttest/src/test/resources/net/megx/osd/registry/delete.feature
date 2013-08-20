@@ -1,7 +1,7 @@
 Feature: Delete Data 
 
     As an administrator of the OSD-Registry
-    I want delete stored participant data
+    I want delete stored participant and sampling site data
     so that I can remove a participant 
     
 Scenario: Delete all data from one participant
