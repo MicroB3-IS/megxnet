@@ -1,3 +1,53 @@
+Busisness Goals
+
+
+Business Goal:
+
+With the Ocean Sampling Day Sample Tracker (OSD-ST), a better data quality through consistent data collection methods should be achieved for the Ocean Sampling Day. The OSD is a simultaneous sampling campaign of the world’s oceans and will take place on the summer solstice (June 21st) in the year 2014. These cumulative samples, related in time, space and environmental parameters, will provide insights into fundamental rules describing microbial diversity and function and will contribute to the blue economy through the identification of novel, ocean-derived biotechnologies. We expect that these data will provide a reference data set for generations of experiments to follow in the coming decade. It could also function as starting point for regularly coordinated future OSDs.
+
+
+What should be done:
+
+The OSD-ST should provide the technical support in managing and co-ordination of the status of each sample and citizen observation from time of sampling until final data integration. It should facilitate the documentation of the real-world workflow as depicted in Figure below.
+
+
+
+
+The workflow entails that an OSD participant takes a water sample, filters the sample, sends some filters to the bio-archive (currently Smithonian) with a unique bar-code attached to it and some filters to the sequencing center. Some OSD participants will use a smartphone application to note the time the sample was taken, where it was taken, the amount of water taken and the filter method used among other data. The smartphone application will send the data to megx.net. Additionally, OSD participant sends the measured and digitized environmental parameters to the Pangaea database, which in turn will synchronize itself with SeaDataNet.
+
+The sequencing center will sequence the sample and sent the sequence data to ENA which in turn will synchronize itself with megx.net. In paralell megx.net will also receive notification about successful or un-successful bio-archiving of the filters sent to Smithonian.
+
+Measurement:
+
+In the past, each person gathered samples without digital support. Information about the sample size, when the sample was taken and where exactly it was taken were not systematically stored. Compare sampling results with those from previous years. The goal is to collect more samples.
+
+Through digitalization all these information may be captured automatically.
+
+If about 100 people submit samples with the following data quality within half a year the OSD will be successful:
+
+    100% of the samples are delivered with the location, where the sample was taken, in lat/lon-coordinates given in decimal degrees and a precision of 6 digits.
+
+    90% of the samples possess a timestamp, when they were taken, with an adequate accuracy in minutes including the time-zone in ISO 8601.
+
+    100% of the samples have a report the volume water taken in Litre (L).
+
+
+receive data from OSD Participants
+
+these data supply all simpling-site information
+
+ensure data correctness
+
+public presentation of these information 
+
+
+Personas:
+
+registry admin
+
+OSD participant contact person
+
+
 User Stories
 
 1
@@ -23,3 +73,7 @@ So that I can explore the geographical dissemination
 5
 As a user or scientist
 I want see the sampling-site information in a list 
+
+6.
+
+sampling site details page
