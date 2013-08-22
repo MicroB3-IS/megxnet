@@ -120,6 +120,9 @@
         <!-- what bundles will be included in the final build <module>net.megx.product</module> -->
         <!-- does not need to be build always: TODO configure the setup.properties
             according to build -->
+            
+        <!-- Features Files and Acceptance Tests -->
+        <module>net.megx.specbyexample.accepttest</module>
 
     </modules>
 
