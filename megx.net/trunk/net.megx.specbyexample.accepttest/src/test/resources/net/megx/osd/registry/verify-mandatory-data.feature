@@ -4,7 +4,7 @@ Feature: Verify Mandatory Data
     I want ensure to have all valid mandatory data,
     so that I can already start registration procedure even in absence of important other data fields
     
-Scenario Outline: Mandatory Fields
+Scenario Outline: Mandatory Fields existing and input complete
 
     Given the admin want ensure to have complete mandatory data on page "http://www.megx.net/bla/bla"   
     When the entered contact name is "<contact_name>" 
