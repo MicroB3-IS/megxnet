@@ -19,18 +19,19 @@ public class EditDataStepDefs
 		//driver = new FirefoxDriver();
 	}
 	@Given("the administrator is on osd_admin_edit page \"([^\"]*)\"") 
-	public void the_administrator_is_on_the_osd_admin_edit_page(String tail_of_url) throws Throwable
+	public void the_administrator_is_on_the_osd_admin_edit_page(String url) throws Throwable
 	{
-	    //driver.get("http://www.megx.net/"+ tail_of_url);		
+	    //driver.get("http://www.megx.net/bla/bla);		
 		throw new PendingException();
-
 	}
+	
 	@When("he submits modified data by clicking the save button")
 	public void he_submits_modified_data_by_clicking_the_save_button() throws Throwable
 	{
 		//driver.findElement(By.id("<id>")).click();		
 		throw new PendingException();
 	}
+	
 	@Then("ensure the modified data were stored by displaying the message \"([^\"]*)\"")
 	public void ensure_the_modified_data_were_stored(String msg) throws Throwable
 	{

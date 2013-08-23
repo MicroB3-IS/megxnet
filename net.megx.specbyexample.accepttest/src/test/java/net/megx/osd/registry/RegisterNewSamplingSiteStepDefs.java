@@ -17,12 +17,11 @@ public class RegisterNewSamplingSiteStepDefs
 	{
 		//driver = new FirefoxDriver();
 	}
-	@Given("the administrator is on the osd_admin_register Page \"([^\"]*)\"") 
-	public void the_administrator_is_on_the_osd_admin_register_page(String tail_of_url) throws Throwable
+	@Given("the administrator is on the osd_admin_register page \"([^\"]*)\"") 
+	public void the_administrator_is_on_the_osd_admin_register_page(String url) throws Throwable
 	{
-	    //driver.get("http://www.megx.net/"+ tail_of_url);		
+	    //driver.get("http://www.megx.net/bls/bla");		
 		throw new PendingException();
-
 	}
 
 	@When("he submits data by clicking the save button")
@@ -31,8 +30,9 @@ public class RegisterNewSamplingSiteStepDefs
 		//driver.findElement(By.id("<id>")).click();		
 		throw new PendingException();
 	}
-	@Then("ensure the data were stored by displaying the message \"([^\"]*)\"")
-	public void ensure_the_data_were_stored(String message) throws Throwable
+	
+	@Then("ensure the data were stored by displaying the message")
+	public void ensure_the_data_were_stored() throws Throwable
 	{
 	    //WebElement message = driver.findElement(By.id("<id>"));		
 		//assertEquals(message.getText(),"message");		

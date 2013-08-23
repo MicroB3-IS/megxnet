@@ -20,9 +20,9 @@ public class DeleteDataStepDefs
 			//driver = new FirefoxDriver();
 		}
 		@Given("the administrator is on osd_admin_delete page \"([^\"]*)\"") 
-		public void the_administrator_is_on_the_osd_admin_delete_page(String tail_of_url) throws Throwable
+		public void the_administrator_is_on_the_osd_admin_delete_page(String url) throws Throwable
 		{
-		    //driver.get("http://www.megx.net/"+ tail_of_url);		
+		    //driver.get("http://www.megx.net/bla/bla");		
 			throw new PendingException();
 
 		}
@@ -33,7 +33,7 @@ public class DeleteDataStepDefs
 			throw new PendingException();
 		}
 		
-		@And("he clicks the ok button from an appearing confirmation panel")
+		@And("he clicks the ok button of an appearing confirmation panel")
 		public void he_click_confirmation_ok() throws Throwable
 		{
 			//driver.findElement(By.id("<id>")).click();		
