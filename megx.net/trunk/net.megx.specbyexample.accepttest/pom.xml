@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -7,8 +8,9 @@
         <version>1.0.0-SNAPSHOT</version>
         <artifactId>parent-microb3-is</artifactId>
     </parent>
-
-    <artifactId>specbyexample.accepttest</artifactId>
+    
+    <groupId>net.megx</groupId>
+    <artifactId>net.megx.specbyexample.accepttest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
 
@@ -72,6 +74,7 @@
             <plugin>
                 <!-- block unit tests execution -->
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -102,12 +105,7 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>net.megx</groupId>
-            <artifactId>megx.net-web</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-            <type>war</type>
-        </dependency>
+       
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
