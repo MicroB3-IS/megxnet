@@ -3,6 +3,7 @@ package net.megx.osd.registry;
 import org.openqa.selenium.WebDriver;
 
 import cucumber.api.PendingException;
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -96,5 +97,11 @@ public class VerifyMandatoryDataStepDefs
 	public void check_validation_status_name(String status) throws Throwable
 	{
 		throw new PendingException();
+	}
+	
+	@After
+	public void tearDown() 
+	{
+	    //driver.close();
 	}
 }

@@ -39,11 +39,11 @@ Scenario Outline: Verification of Contact Name
     
     Examples:
     
-    | contact_first_name | contact_last_name | validation_status |
-    | 1234               |                   | invalid           |
+    | contact_first_name | contact_last_name | validation_status | 
     | Anne               | Kolhoff           | valid             |
     | Julia              |                   | valid             |
     |                    | Schnetzer         | valid             |
+    | 1234               |                   | invalid           |
     |                    |                   | invalid           |
     
     

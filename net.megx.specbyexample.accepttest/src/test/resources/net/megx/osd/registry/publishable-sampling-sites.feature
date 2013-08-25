@@ -6,7 +6,7 @@ Feature: Verify Publishable Sampling Sites
   
 Scenario: Availablity of minimum data for a new Sampling Site
 
-    Given the admin wants check minimum data availble on page "http://www.megx.net/bla/bla" 
+    Given the admin wants check minimum data available on page "http://www.megx.net/bla/bla" 
     When a minimum of data is available
     
     | minimum_data_for_sampling_site |
@@ -18,7 +18,7 @@ Scenario: Availablity of minimum data for a new Sampling Site
   
     Then the admin gets a message with 
     """
-    The minimum Sampling Site data is complete. Now you can publisch 
+    The minimum Sampling Site data is complete. Now you can publish 
     a new Sampling Site.
     """
     
