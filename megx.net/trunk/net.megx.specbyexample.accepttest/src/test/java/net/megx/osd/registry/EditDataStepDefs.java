@@ -18,10 +18,10 @@ public class EditDataStepDefs
 	{
 		//driver = new FirefoxDriver();
 	}
-	@Given("the administrator is on osd_admin_edit page \"([^\"]*)\"") 
-	public void the_administrator_is_on_the_osd_admin_edit_page(String url) throws Throwable
+	@Given("the admin is on edit participant and sampling-site data page \"([^\"]*)\"") 
+	public void the_admin_is_on_edit_page(String url) throws Throwable
 	{
-	    //driver.get("http://www.megx.net/bla/bla);		
+	    //driver.get(url);		
 		throw new PendingException();
 	}
 	

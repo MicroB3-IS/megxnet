@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -11,7 +12,7 @@ import cucumber.api.java.en.When;
 
 public class PublishableSamplingSiteStepDefs 
 {
-protected WebDriver driver;
+    protected WebDriver driver;
 	
 	@Before
 	public void setUp() 
@@ -22,7 +23,7 @@ protected WebDriver driver;
 	//Scenario: Availability of minimum data for a new Sampling Site,
     //data correctness will be tested with verify-optional-data.feature
 	
-	@Given("the admin wants check minimum data availble on page \"([^\"]*)\"") 
+	@Given("the admin wants check minimum data available on page \"([^\"]*)\"") 
 	public void minimum_data_for_sampling_available(String url) throws Throwable
 	{
 	    //driver.get("http://www.megx.net/bla/bla);		
@@ -39,5 +40,11 @@ protected WebDriver driver;
 	public void the_admin_gets_a_message(String message)
 	{
 		throw new PendingException();
+	}
+	
+	@After
+	public void tearDown() 
+	{
+	    //driver.close();
 	}
 }
