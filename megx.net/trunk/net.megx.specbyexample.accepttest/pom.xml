@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
         <artifactId>parent-microb3-is</artifactId>
     </parent>
-    
+
     <groupId>net.megx</groupId>
     <artifactId>net.megx.specbyexample.accepttest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -17,60 +17,60 @@
     <build>
 
         <plugins>
-<!-- 
-            <plugin>
+            <!--
+                <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>1.2.2</version>
                 <executions>
-                    <execution>
-                        <id>start-tomcat</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop-tomcat</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
+                <execution>
+                <id>start-tomcat</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                <goal>start</goal>
+                </goals>
+                </execution>
+                <execution>
+                <id>stop-tomcat</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                <goal>stop</goal>
+                </goals>
+                </execution>
                 </executions>
                 <configuration>
-                    <container>
-                        <containerId>tomcat7x</containerId>
-                        <zipUrlInstaller>
-                            <url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
-                        </zipUrlInstaller>
-                        <output>${project.build.directory}/tomcat-logs/container.log</output>
-                        <append>false</append>
-                        <log>${project.build.directory}/tomcat-logs/cargo.log</log>
-                    </container>
+                <container>
+                <containerId>tomcat7x</containerId>
+                <zipUrlInstaller>
+                <url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
+                </zipUrlInstaller>
+                <output>${project.build.directory}/tomcat-logs/container.log</output>
+                <append>false</append>
+                <log>${project.build.directory}/tomcat-logs/cargo.log</log>
+                </container>
 
-                    <configuration>
-                        <type>standalone</type>
-                        <home>${project.build.directory}/tomcat-home</home>
-                        <properties>
-                            <cargo.servlet.port>7077</cargo.servlet.port>
-                            <cargo.logging>high</cargo.logging>
-                        </properties>
-
-
-                        <deployables>
-                            <deployable>
-                                <groupId>net.megx</groupId>
-                                <artifactId>megx.net-web</artifactId>
-                                <type>war</type>
-                            </deployable>
-                        </deployables>
+                <configuration>
+                <type>standalone</type>
+                <home>${project.build.directory}/tomcat-home</home>
+                <properties>
+                <cargo.servlet.port>7077</cargo.servlet.port>
+                <cargo.logging>high</cargo.logging>
+                </properties>
 
 
-                    </configuration>
+                <deployables>
+                <deployable>
+                <groupId>net.megx</groupId>
+                <artifactId>megx.net-web</artifactId>
+                <type>war</type>
+                </deployable>
+                </deployables>
+
+
                 </configuration>
-            </plugin>
-             -->
+                </configuration>
+                </plugin>
+            -->
             <plugin>
                 <!-- block unit tests execution -->
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -91,9 +91,14 @@
                             <goal>verify</goal>
                         </goals>
                     </execution>
-
-
                 </executions>
+
+                <configuration>
+                    <systemPropertyVariables>
+                        <cucumber.options>--tags @anne</cucumber.options>
+                        <base.url>${mvn.site.url}</base.url>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
 
 
@@ -105,7 +110,7 @@
     </build>
 
     <dependencies>
-       
+
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
