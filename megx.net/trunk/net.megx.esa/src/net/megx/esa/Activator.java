@@ -29,7 +29,7 @@ public class Activator extends ResTplConfiguredActivator {
 			}
 			
 		});
-		log.debug("EarthSamplingApp service requested.");
+		log.debug("Earth Sampling App service requested.");
 	}
 
 	@Override

@@ -1,13 +1,13 @@
-var curent = 1;
+var current = 1;
 var allSamples = 1;
-var curentAuthor = 1;
-var allAurhors = 1;
+var currentAuthor = 1;
+var allAuthors = 1;
 
 $(document).ready(function() {
 	$("#next_button").hide();
 	$("#back_button").hide();
-	$("#next_button_aurhor").hide();
-	$("#back_button_aurhor").hide();
+	$("#next_button_author").hide();
+	$("#back_button_author").hide();
 	setDateTime("");
 });
 
@@ -34,19 +34,19 @@ function getSampleHtml(allSamples) {
 	return html;
 }
 
-function getAuthorHtml(allSamples) {
+function getAuthorHtml(allAuthors) {
 	var source = $("#author-template").html();
 	var template = Handlebars.compile(source);
 
 	var context = {
-		allAurhors : allAurhors
+		allAuthors : allAuthors
 	}
 	var html = template(context);
 
 	return html;
 }
 
-function getAllAuthores() {
+function getAllAuthors() {
 	var forename = $('[id^="forename"]');
 	var initials = $('[id^="initials"]');
 	var surename = $('[id^="surename"]');
@@ -102,85 +102,85 @@ function getAllSamples() {
 
 function add(id) {
 	if (id == "sample") {
-		$("#sample" + curent).hide();
+		$("#sample" + current).hide();
 		allSamples++;
-		curent = allSamples;
+		current = allSamples;
 		$("#samples").append(getSampleHtml(allSamples));
 		$("#next_button").hide();
 		if (!($("#back_button").is(":visible"))) {
 			$("#back_button").show();
 		}
-		$("#curentSample").html("Curent sample :" + curent);
-		setDateTime(curent);
+		$("#currentSample").html("current sample :" + current);
+		setDateTime(current);
 	} else {
-		$("#aurhor" + curentAuthor).hide();
-		allAurhors++;
-		curentAuthor = allAurhors;
-		$("#authors").append(getAuthorHtml(allAurhors));
-		$("#next_button_aurhor").hide();
-		if (!($("#back_button_aurhor").is(":visible"))) {
-			$("#back_button_aurhor").show();
+		$("#author" + currentAuthor).hide();
+		allAuthors++;
+		currentAuthor = allAuthors;
+		$("#authors").append(getAuthorHtml(allAuthors));
+		$("#next_button_author").hide();
+		if (!($("#back_button_author").is(":visible"))) {
+			$("#back_button_author").show();
 		}
-		$("#curentAurhor").html("Curent aurhor :" + curentAuthor);
-		$("#position" + curentAuthor).val(curentAuthor);
+		$("#currentAuthor").html("Current author :" + currentAuthor);
+		$("#position" + currentAuthor).val(currentAuthor);
 	}
 }
 
 function previous(id) {
 	if (id == "sample") {
-		$("#sample" + curent).hide();
-		curent--;
-		$("#sample" + (curent)).show();
+		$("#sample" + current).hide();
+		current--;
+		$("#sample" + (current)).show();
 
-		if (curent < allSamples) {
+		if (current < allSamples) {
 			$("#next_button").show();
 		}
-		if (curent == 1) {
+		if (current == 1) {
 			$("#back_button").hide();
 		}
-		$("#curentSample").html("Curent sample :" + curent);
+		$("#currentSample").html("Current sample :" + current);
 	} else {
-		$("#aurhor" + curentAuthor).hide();
-		curentAuthor--;
-		$("#aurhor" + (curentAuthor)).show();
+		$("#author" + currentAuthor).hide();
+		currentAuthor--;
+		$("#author" + (currentAuthor)).show();
 
-		if (curentAuthor < allAurhors) {
-			$("#next_button_aurhor").show();
+		if (currentAuthor < allAuthors) {
+			$("#next_button_author").show();
 		}
-		if (curentAuthor == 1) {
-			$("#back_button_aurhor").hide();
+		if (currentAuthor == 1) {
+			$("#back_button_author").hide();
 		}
-		$("#curentAurhor").html("Curent aurhor :" + curentAuthor);
+		$("#curtentAuthor").html("Current author :" + currentAuthor);
 	}
 }
 
 function next(id) {
 	if (id == "sample") {
-		$("#sample" + curent).hide();
-		curent++;
-		$("#sample" + curent).show();
+		$("#sample" + current).hide();
+		current++;
+		$("#sample" + current).show();
 
-		if (curent == allSamples) {
+		if (current == allSamples) {
 			$("#next_button").hide();
 		}
 
 		if (!($("#back_button").is(":visible"))) {
 			$("#back_button").show();
 		}
-		$("#curentSample").html("Curent sample :" + curent);
+		$("#currentSample").html("current sample :" + current);
 	} else {
-		$("#aurhor" + curentAuthor).hide();
-		curentAuthor++;
-		$("#aurhor" + curentAuthor).show();
+		$("#author" + currentAuthor).hide();
+		currentAuthor++;
+		$("#author" + currentAuthor).show();
 
-		if (curentAuthor == allAurhors) {
-			$("#next_button_aurhor").hide();
+		if (currentAuthor == allAuthors) {
+			$("#next_button_author").hide();
 		}
 
-		if (!($("#back_button_aurhor").is(":visible"))) {
-			$("#back_button_aurhor").show();
+		if (!($("#back_button_author").is(":visible"))) {
+			$("#back_button_author").show();
 		}
-		$("#curentAurhor").html("Curent aurhor :" + curentAuthor);
+		$("#currentAuthor").html("current author :" + currentAuthor);
 	}
 }
 
@@ -224,7 +224,7 @@ function insertBookmark() {
 
 function collectData() {
 	var json = {
-		authors : getAllAuthores(),
+		authors : getAllAuthors(),
 		title : $('#title').val(),
 		website : $('#url').val(),
 		abstractUrl : $('#abstractUrl').val(),
