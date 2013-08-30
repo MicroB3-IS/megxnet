@@ -1,0 +1,8 @@
+{
+	path: '$resources/net.megx.ws.oauth.echo.example',
+	exampleProperty: 'Example Value',
+	trustedServiceProviders:[
+		"http://localhost:8080/megx.net/ws/v1/verify_credentials/v1.0.0",
+		"http://iwgate.poweredbyclear.com:9080/megx.net/ws/v1/verify_credentials/v1.0.0"
+	]
+}
