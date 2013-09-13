@@ -11,6 +11,92 @@
 	padding: 15px;
 	font-size: 0.9em;
 }
+@media(max-width: 980px){
+	input[type='submit']{
+		width: 100%;
+	}
+	article.header-right{
+		width: auto;
+	}
+	div.input-wrapper{
+		margin: 0px;
+	}
+	.registration-wrapper{
+		width: auto;
+	}
+	input[type='text'], input[type='password']{
+		width: 80%;
+	}
+	#wrapper{
+		box-shadow: none;
+		width: 100%;
+	}
+	header nav ul{
+		display: none;
+	}
+	div.headerBorder{
+		display: none;
+	}
+	header nav{
+		width: 100%;
+	}
+	.copy, .footNav, footer{
+		width: auto;
+		display: inline-block;	
+	}
+	footer{
+		background-image: none;
+	}
+	header{
+		width: auto;
+	}
+	header, body{
+		min-width: 100%;
+	}
+	body{
+		width: 100%;
+	}
+	figure.logo{
+		width: auto;
+	}	
+}	
+@media (max-width: 655px){
+	form{
+		width: 100%;
+	}
+	header, body{
+		min-width: 100%;
+	}
+	body{
+		width: 100%;
+	}
+	header{
+		width: auto;
+	}
+	.copy, .footNav{
+		width: 100%;
+	}
+	div.headerBorder{
+		display: none;
+	}
+}
+@media (max-width: 535px){
+	footer section ul{
+		width: 98%;
+		float: none;
+	}
+	footer section ul li, footer section.footNav ul{
+		width: 98%;
+		display: inline-block;
+		float: none;
+		text-align: center;
+	}
+}
+@media(max-width: 465px) {
+	div.oauth-content{
+		margin-top: 70px;
+	}
+}
 </style>
 #if ($req.getServletRequset().getAttribute('oauth.token.authorized') )
 <div class="oauth-content">

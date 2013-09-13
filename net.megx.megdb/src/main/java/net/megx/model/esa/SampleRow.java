@@ -31,6 +31,10 @@ public class SampleRow {
 	private Double lat;
 	private Double lon;
 	private Double accuracy;
+	private Double phosphate;
+	private Double nitrate;
+	private Double nitrite;
+	private Double ph;
 	
 	public Double getAccuracy() {
 		return accuracy;
@@ -185,6 +189,30 @@ public class SampleRow {
 	}
 	public void setLon(Double lon) {
 		this.lon = lon;
+	}
+	public Double getPhosphate() {
+		return phosphate;
+	}
+	public void setPhosphate(Double phosphate) {
+		this.phosphate = phosphate;
+	}
+	public Double getNitrate() {
+		return nitrate;
+	}
+	public void setNitrate(Double nitrate) {
+		this.nitrate = nitrate;
+	}
+	public Double getNitrite() {
+		return nitrite;
+	}
+	public void setNitrite(Double nitrite) {
+		this.nitrite = nitrite;
+	}
+	public Double getPh() {
+		return ph;
+	}
+	public void setPh(Double ph) {
+		this.ph = ph;
 	}
 	@Override
 	public int hashCode() {
