@@ -44,8 +44,8 @@
 				enabled: true,
 				providers:{
 					'twitter.com': {
-						'app.key': 'kBvJsxD6Ns3FTDzTiBsmOQ',
-						'app.secret': 'f1v0u5K4mLiEfjqrzaCIbH0AU4M5J8RjRHbV0LOtxvQ',
+						'app.key': 'Y6JNHUNtTdaL82BOmvGYQ',Facebook 
+						'app.secret': 'Ah3lqcQsmExuKfJzHcGg2zvGocAxhjoY8wYrNu2gRrU',
 						'api.userInfoURL': 'https://api.twitter.com/1/account/verify_credentials.json'
 					},
 					'google.com':{

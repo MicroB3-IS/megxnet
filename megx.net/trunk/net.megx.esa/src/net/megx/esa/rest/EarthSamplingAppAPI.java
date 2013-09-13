@@ -18,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -124,7 +125,8 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	 */
 	@Path("samples")
 	@POST
-	public String storeSamples(@FormParam("samples")String samplesJson){
+	@Produces(MediaType.APPLICATION_JSON)
+	public String storeSamples(@FormParam("samples")String samplesJson, @Context HttpServletRequest request){
 		try{
 			if(samplesJson == null){
 				return toJSON(new Result<String>(true, "Samples not provided", "bad-request"));
@@ -134,8 +136,10 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			Map<String, String> errorMap = new HashMap<String, String>();
 			List<String> savedSamples = new ArrayList<String>();
 			Map<String, Object> result = new HashMap<String, Object>();
+			String sampleCreator = request.getUserPrincipal().getName();
 			for(Sample sample : samples){
 				if(validateSample(sample)){
+					sample.setUserName(sampleCreator);
 					samplesToSave.add(sample);
 				}
 				else{

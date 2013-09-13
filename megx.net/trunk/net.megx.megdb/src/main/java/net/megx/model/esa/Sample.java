@@ -41,12 +41,40 @@ public class Sample {
 	private Double lat;
 	private Double lon;
 	private Double accuracy;
+	private Double phosphate;
+	private Double nitrate;
+	private Double nitrite;
+	private Double ph;
 	
 	public Double getAccuracy() {
 		return accuracy;
 	}
 	public void setAccuracy(Double accuracy) {
 		this.accuracy = accuracy;
+	}
+	public Double getPhosphate() {
+		return phosphate;
+	}
+	public void setPhosphate(Double phosphate) {
+		this.phosphate = phosphate;
+	}
+	public Double getNitrate() {
+		return nitrate;
+	}
+	public void setNitrate(Double nitrate) {
+		this.nitrate = nitrate;
+	}
+	public Double getNitrite() {
+		return nitrite;
+	}
+	public void setNitrite(Double nitrite) {
+		this.nitrite = nitrite;
+	}
+	public Double getPh() {
+		return ph;
+	}
+	public void setPh(Double ph) {
+		this.ph = ph;
 	}
 	private SamplePhoto [] photos;
 	
@@ -290,7 +318,8 @@ public class Sample {
 				+ waterTemerature + ", conductivity=" + conductivity
 				+ ", windSpeed=" + windSpeed + ", salinity=" + salinity
 				+ ", comment=" + comment + ", lat=" + lat + ", lon=" + lon
-				+ ", accuracy=" + accuracy + ", photos="
+				+ ", accuracy=" + accuracy + ", phosphate=" + phosphate
+				+ ", nitrate=" + nitrate + ", nitrite=" + nitrite + ", pH=" + ph + ", photos="
 				+ Arrays.toString(photos) + "]";
 	}
 	
