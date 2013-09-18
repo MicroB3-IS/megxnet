@@ -46,16 +46,16 @@
 				enabled: true,
 				providers:{
 					'twitter.com': {
-						'app.key': 'Y6JNHUNtTdaL82BOmvGYQ',Facebook 
-						'app.secret': 'Ah3lqcQsmExuKfJzHcGg2zvGocAxhjoY8wYrNu2gRrU',
+						'app.key': '***************', 
+						'app.secret': '***************',
 						'api.userInfoURL': 'https://api.twitter.com/1/account/verify_credentials.json'
 					},
 					'google.com':{
 						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
 					},
 					'facebook.com': {
-						'app.key': '134984939977307',
-						'app.secret': 'c52b35eda99cedd0726bcca3b88de63c',
+						'app.key': '*************',
+						'app.secret': '***************',
 						'dialog.url': 'http://www.facebook.com/dialog/oauth',
 						'access.token.url': 'https://graph.facebook.com/oauth/access_token',
 						'user.info.url': 'https://graph.facebook.com/me'
@@ -74,15 +74,15 @@
 		],
 		registration:{
 			reCaptcha: {
-				publicKey: '6LfARNUSAAAAAG5g9ad_DArzhQqt84x-5CtNOo3U',
-				privateKey: '6LfARNUSAAAAACCeZGoQLBjNQIgdO6joTCkZ__x_',
+				publicKey: '********************',
+				privateKey: '**************************',
 				verifyUrl: 'http://www.google.com/recaptcha/api/verify',
 				dgbSkipCaptchaValidation: false
 			},
 			mail:{
-				user: 'megxdevinfo@gmail.com',
-				password: '2mfk89^43g$5l',
-				address: 'registration@megx.net',
+				user: '*********************',
+				password: '************************',
+				address: '************************',
 				options: {
 					'mail.smtp.auth' : 'true',
 					'mail.smtp.starttls.enable': 'true',
