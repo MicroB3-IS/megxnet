@@ -9,8 +9,14 @@
         <requiredProperty key="groupId">
             <defaultValue>net.megx</defaultValue>
         </requiredProperty>
+        <requiredProperty key="version">
+            <defaultValue>0.0.1-SNAPSHOT</defaultValue>
+        </requiredProperty>
         <requiredProperty key="plugin_name">
-            <defaultValue>megx.net plugin groupid: ${archetypeGroupId} or ${groupId}</defaultValue>
+            <defaultValue>${groupId}.${artifactId}</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="chon_activator">
+            <defaultValue>ResTplConfiguredActivator</defaultValue>
         </requiredProperty>
     </requiredProperties>
 
@@ -22,7 +28,7 @@
             </includes>
         </fileSet>
 
-        <fileSet filtered="true" filencoding="UTF-8">
+        <fileSet filtered="true" filencoding="UTF-8" packaged="true">
             <directory>__config</directory>
             <includes>
                 <include>**/*.json</include>

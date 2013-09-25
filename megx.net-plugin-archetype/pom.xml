@@ -4,7 +4,7 @@
 
   <groupId>net.megx</groupId>
   <artifactId>plugin-archetype</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>megx.net-plugin-archetype</name>
