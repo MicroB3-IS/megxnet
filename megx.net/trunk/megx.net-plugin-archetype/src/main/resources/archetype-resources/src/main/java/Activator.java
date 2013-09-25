@@ -5,6 +5,8 @@ package ${package};
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.chon.cms.core.JCRApplication;
+import org.chon.cms.core.${chon_activator};
 
 public class Activator extends ${chon_activator} {
 
@@ -14,7 +16,7 @@ public class Activator extends ${chon_activator} {
 
     @Override
     protected String getName() {
-        return "${package}.";
+        return "${plugin_name}";
     }
 
 }
