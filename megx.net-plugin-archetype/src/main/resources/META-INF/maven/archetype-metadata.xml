@@ -15,6 +15,9 @@
         <requiredProperty key="plugin_name">
             <defaultValue>${groupId}.${artifactId}</defaultValue>
         </requiredProperty>
+        <requiredProperty key="symbolic_name">
+            <defaultValue>megx.net ${artifactId}</defaultValue>
+        </requiredProperty>
         <requiredProperty key="chon_activator">
             <defaultValue>ResTplConfiguredActivator</defaultValue>
         </requiredProperty>
