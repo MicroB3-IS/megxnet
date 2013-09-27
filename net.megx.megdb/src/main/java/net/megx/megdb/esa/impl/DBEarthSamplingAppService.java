@@ -42,13 +42,28 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 	}
 	
 	@Override
-	public Map<String, String> getConfiguration(final String category) throws Exception{
+	public Map<String, String> getConfigurationForCitizen(final String category) throws Exception{
 		
 		return doInSession(new DBTask<ESAMapper, Map<String, String>>(){
 			@Override
 			public Map<String, String> execute(ESAMapper mapper) throws Exception{
 				Map<String, String> savedConfigs = new HashMap<String, String>();
-				for (Map<String, String> configuration: mapper.getConfiguration(category)) {
+				for (Map<String, String> configuration: mapper.getConfigurationForCitizen(category)) {
+					savedConfigs.put(configuration.get("name"), configuration.get("value"));
+				}
+				return savedConfigs;
+			}
+		}, ESAMapper.class);
+	}
+	
+	@Override
+	public Map<String, String> getConfigurationForScientist(final String category) throws Exception{
+		
+		return doInSession(new DBTask<ESAMapper, Map<String, String>>(){
+			@Override
+			public Map<String, String> execute(ESAMapper mapper) throws Exception{
+				Map<String, String> savedConfigs = new HashMap<String, String>();
+				for (Map<String, String> configuration: mapper.getConfigurationForScientist(category)) {
 					savedConfigs.put(configuration.get("name"), configuration.get("value"));
 				}
 				return savedConfigs;
@@ -196,5 +211,4 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 			}
 		}, ESAMapper.class);
 	}
-	
 }

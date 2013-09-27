@@ -114,9 +114,14 @@
 	    WHERE esa.samples.id=#{id}
 	</select>
 	
-	<select id="getConfiguration" resultType="map" parameterType="String">
+	<select id="getConfigurationForScientist" resultType="map" parameterType="String">
 	    SELECT name,value 
-	    FROM esa.gen_config WHERE category=#{category}
+	    FROM esa.gen_config WHERE category=#{category} AND available_in_scientist
+	</select>
+	
+	<select id="getConfigurationForCitizen" resultType="map" parameterType="String">
+	    SELECT name,value 
+	    FROM esa.gen_config WHERE category=#{category} AND available_in_citizen
 	</select>
 	
 	<select id="getConfigValue" parameterType="map" resultType="String">

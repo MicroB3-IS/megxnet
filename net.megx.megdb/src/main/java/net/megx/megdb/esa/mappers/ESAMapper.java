@@ -39,7 +39,8 @@ public interface ESAMapper {
 	
 	public void removeSample(String id);
 	
-	public List<Map<String, String>> getConfiguration(String category);
+	public List<Map<String, String>> getConfigurationForScientist(String category);
+	public List<Map<String, String>> getConfigurationForCitizen(String category);
 	public void storeConfiguration(
 			@Param("category") String category, 
 			@Param("config")   Set<Map.Entry<String, String>> config);
