@@ -1,0 +1,15 @@
+<script type="text/javascript">
+## // calback, when table is rendered, then render graph with the same data 
+function onTableRendered(oSettings, json) {
+ renderCharts(oSettings, json.data);
+}
+ 
+function createCellRenderer(prop) {
+ return function (data, type, full){
+	 if(isNaN(data)) {
+		 return '<div class="cell_d cell_na">' + data + '</div>';
+	 }
+	 return  '<div class="cell_d cell_num">' + Math.round(data*1000)/1000 + '</div>'; 
+ }
+}
+</script>
