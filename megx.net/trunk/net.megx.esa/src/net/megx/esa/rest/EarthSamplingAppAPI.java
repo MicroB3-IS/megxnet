@@ -226,27 +226,27 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}
 	}
 	/**
-	 * Retrieve the configuration that will be used by the client application.
+	 * Retrieve the configuration that will be used by the Citizen version of the client application.
 	 * @return JSON formatted string of the configuration to be used by the client application.
 	 */
-	@Path("config")
+	@Path("citizenConfig")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getConfiguration(){
+	public String getConfigurationForCitizen(){
 		try{
 			Map<String, Object> configuration = new HashMap<String, Object>();
 			
 			Result<Map<String, Object>> r = new Result<Map<String,Object>>(configuration);
 			
 			List<String> exported = new LinkedList<String>();
-			Map<String, String> exportedCfg = service.getConfiguration("categories");
+			Map<String, String> exportedCfg = service.getConfigurationForCitizen("categories");
 			for(Map.Entry<String, String> e: exportedCfg.entrySet()){
 				if(e.getValue().contains("exported")){
 					exported.add(e.getKey());
 				}
 			}
 			for(String exportedCategory: exported){
-				Map<String, String> cat = service.getConfiguration(exportedCategory);
+				Map<String, String> cat = service.getConfigurationForCitizen(exportedCategory);
 				configuration.put(exportedCategory, cat);
 			}
 			return toJSON(r);
@@ -255,6 +255,35 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}
 	}
 	
+	/**
+	 * Retrieve the configuration that will be used by the Scientist version of the client application.
+	 * @return JSON formatted string of the configuration to be used by the client application.
+	 */
+	@Path("scientistConfig")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getConfigurationForScientist(){
+		try{
+			Map<String, Object> configuration = new HashMap<String, Object>();
+			
+			Result<Map<String, Object>> r = new Result<Map<String,Object>>(configuration);
+			
+			List<String> exported = new LinkedList<String>();
+			Map<String, String> exportedCfg = service.getConfigurationForScientist("categories");
+			for(Map.Entry<String, String> e: exportedCfg.entrySet()){
+				if(e.getValue().contains("exported")){
+					exported.add(e.getKey());
+				}
+			}
+			for(String exportedCategory: exported){
+				Map<String, String> cat = service.getConfigurationForScientist(exportedCategory);
+				configuration.put(exportedCategory, cat);
+			}
+			return toJSON(r);
+		}catch (Exception e) {
+			return toJSON(handleException(e));
+		}
+	}
 	
 	public static void main(String[] args) {
 		String sampleJSON = "[{\"id\":1,\"collectorId\":\"username\",\"projectId\":\"Micro B3\",\"userName\":\" \"," +
