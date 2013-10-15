@@ -104,6 +104,9 @@
 
 		<!-- Logging mapper -->
 		<mapper resource="logging/error-log-mapper.xml" />
+		
+		<!-- MGTraits mapper -->
+		<mapper resource="mgtraits/mgtraits-mapper.xml"/>
 	</mappers>
 	
 </configuration>
