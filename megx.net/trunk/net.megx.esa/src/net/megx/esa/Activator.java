@@ -1,5 +1,6 @@
 package net.megx.esa;
 
+import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.EarthSamplingAppAPI;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.utils.OSGIUtils;
@@ -12,29 +13,44 @@ import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
 	protected Log log = LogFactory.getLog(getClass());
+
 	@Override
 	protected void registerExtensions(JCRApplication app) {
 		log.debug("ESA Starting up...");
-		OSGIUtils.requestService(EarthSamplingAppService.class.getName(), 
-				getBundleContext(), 
+		OSGIUtils.requestService(EarthSamplingAppService.class.getName(),
+				getBundleContext(),
 				new OSGIUtils.OnServiceAvailable<EarthSamplingAppService>() {
+					@Override
+					public void serviceAvailable(String name,
+							final EarthSamplingAppService service) {
+						log.debug("EarthSamplingApp service received...");
 
-			@Override
-			public void serviceAvailable(String name,
-					EarthSamplingAppService service) {
-				log.debug("EarthSamplingApp service received...");
-				EarthSamplingAppAPI api = new EarthSamplingAppAPI(service);
-				RegUtils.reg(getBundleContext(), EarthSamplingAppAPI.class.getName(), api, null);
-				log.debug("Earth Sampling App API started.");
-			}
-			
-		});
-		log.debug("Earth Sampling App service requested.");
+						log.debug("Requesting BroadcasterProxy service now...");
+						OSGIUtils.requestService(
+								BroadcasterProxy.class.getName(),
+								getBundleContext(),
+								new OSGIUtils.OnServiceAvailable<BroadcasterProxy>() {
+
+									@Override
+									public void serviceAvailable(String name,
+											BroadcasterProxy broadcasterProxy) {
+										log.debug("BroadcasterProxy service received...");
+										EarthSamplingAppAPI api = new EarthSamplingAppAPI(
+												service, broadcasterProxy);
+										RegUtils.reg(getBundleContext(),
+												EarthSamplingAppAPI.class
+														.getName(), api, null);
+										log.debug("Earth Sampling App API started.");
+									}
+
+								});
+					}
+
+				});
 	}
 
 	@Override
 	protected String getName() {
 		return "net.megx.esa";
 	}
-	
 }

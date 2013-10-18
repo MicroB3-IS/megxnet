@@ -141,6 +141,16 @@
                 <version>9.1-901.jdbc4</version>
                 <scope>compile</scope>
             </dependency>
+            <dependency>
+				<groupId>org.atmosphere</groupId>
+				<artifactId>atmosphere-runtime</artifactId>
+				<version>2.0.2</version>
+			</dependency>
+	        <dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.5</version>
+			</dependency>
             <!-- <dependency> -->
             <!-- <groupId>${project.groupId}</groupId> -->
             <!-- <artifactId>megx.net-web</artifactId> -->

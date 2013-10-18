@@ -10,10 +10,22 @@
 		<listener-class>com.choncms.felix.bridge.StartupListener</listener-class>
 	</listener>
 	<servlet>
+        <servlet-name>AtmosphereServlet</servlet-name>
+        <servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+        <init-param>
+            <param-name>org.atmosphere.cpr.packages</param-name>
+            <param-value>net.megx.atmosphere</param-value>
+        </init-param>
+    </servlet>
+	<servlet>
 		<servlet-name>proxy</servlet-name>
 		<servlet-class>com.choncms.felix.proxy.ProxyServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet-mapping>
+        <servlet-name>AtmosphereServlet</servlet-name>
+        <url-pattern>/topic/*</url-pattern>
+    </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>proxy</servlet-name>
 		<url-pattern>/*</url-pattern>
