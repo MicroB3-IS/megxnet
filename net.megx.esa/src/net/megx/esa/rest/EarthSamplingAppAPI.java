@@ -18,15 +18,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.util.SampleDeserializer;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
+import net.megx.ui.table.json.TableDataResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
@@ -42,8 +43,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import net.megx.ui.table.json.TableDataResponse;
 /**
  * 
  * @author borce.jadrovski
@@ -52,9 +51,11 @@ import net.megx.ui.table.json.TableDataResponse;
 @Path("esa")
 public class EarthSamplingAppAPI extends BaseRestService{
 	private EarthSamplingAppService service;
+	private BroadcasterProxy broadcasterProxy;
 	
-	public EarthSamplingAppAPI(EarthSamplingAppService service) {
+	public EarthSamplingAppAPI(EarthSamplingAppService service, BroadcasterProxy broadcasterProxy) {
 		this.service = service;
+		this.broadcasterProxy = broadcasterProxy;
 		gson = new GsonBuilder().registerTypeAdapter(SamplePhoto.class, new JsonDeserializer<SamplePhoto>() {
 
 			@Override
@@ -235,9 +236,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	public String getConfigurationForCitizen(){
 		try{
 			Map<String, Object> configuration = new HashMap<String, Object>();
-			
 			Result<Map<String, Object>> r = new Result<Map<String,Object>>(configuration);
-			
 			List<String> exported = new LinkedList<String>();
 			Map<String, String> exportedCfg = service.getConfigurationForCitizen("categories");
 			for(Map.Entry<String, String> e: exportedCfg.entrySet()){
@@ -249,7 +248,9 @@ public class EarthSamplingAppAPI extends BaseRestService{
 				Map<String, String> cat = service.getConfigurationForCitizen(exportedCategory);
 				configuration.put(exportedCategory, cat);
 			}
-			return toJSON(r);
+			String JsonToReturn = toJSON(r);
+			this.broadcasterProxy.broadcastMessage("/topic/notifications", JsonToReturn);
+			return toJSON(JsonToReturn);
 		}catch (Exception e) {
 			return toJSON(handleException(e));
 		}
