@@ -245,7 +245,7 @@
                         <id>run-server</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>redeploy</goal>
                         </goals>
                     </execution>
                 </executions>

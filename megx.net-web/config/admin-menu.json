@@ -13,11 +13,11 @@ items: [{
 			name: 'List Actions',
 			link: 'listActions.do'
 		}, {
-			name: 'Query Repo',
+			name: 'Query Repository',
 			link: 'org.choncms.dev.tools.queryRepo.do'
 		}]
 	}, {
-		name: 'Create / Edit Cotent',
+		name: 'Create / Edit Content',
 		icon: 'create-icon',
 		link: '#',
 		childs: [{
@@ -31,7 +31,7 @@ items: [{
 			link: 'content.edit.do?path=/www',
 		}]
 	}, {
-		name: 'Extensions / Config',
+		name: 'Extensions / Configurations',
 		icon: 'plugin-icon',
 		link: '#',
 		childs: [{
