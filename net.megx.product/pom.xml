@@ -18,6 +18,9 @@
 		<!-- just a local child property to skip an ant target the value does not 
 			matter. ant skips it just by the presence of this property -->
 		<mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
+        <mvn.work.dir.plugin.path>
+            ${mvn.work.dir.path}/plugins
+        </mvn.work.dir.plugin.path>
 	</properties>
 
 	<repositories>
