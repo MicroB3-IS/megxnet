@@ -1,7 +1,7 @@
 body = document.getElementsByTagName("BODY")[0];
 
 ifrm = document.createElement("IFRAME");
-ifrm.setAttribute("src", "http://iwgate.poweredbyclear.com:9080/megx.net/bookmark");
+ifrm.setAttribute("src", "http://localhost:9990/bookmark");
 ifrm.style.width = "350px";
 ifrm.style.height = "100%";
 ifrm.style.top = "0";
