@@ -125,6 +125,9 @@
         
         <!-- MegxBar -->
         <module>net.megx.megxbar</module>
+        
+        <!-- WebSocket broadcast module -->
+        <module>net.megx.broadcast</module>
 
     </modules>
 
