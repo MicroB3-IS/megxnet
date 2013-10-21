@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: My Plugin
+Bundle-Name: MegxBar
 Bundle-SymbolicName: net.megx.megxbar
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.megxbar.Activator

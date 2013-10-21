@@ -1,8 +1,8 @@
 <!doctype html>
 <head>
-<base href="$ctx.siteUrl/net.megx.esa/bookmarklet.html">
+<base href="$ctx.siteUrl/net.megx.megxbar/bookmarklet.html">
 <meta charset="utf-8">
-<title>Bookmarklet</title>
+<title>MegxBar Bookmarklet</title>
 
 <link rel="stylesheet"
   href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css">
@@ -18,10 +18,10 @@
   stype="text/javascript"></script>
 
 <script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.esa/js/handlebars.js"></script>
+  src="$ctx.siteUrl/net.megx.megxbar/js/handlebars.js"></script>
 
 <script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.esa/js/bookmarkletFunctions.js"></script>
+  src="$ctx.siteUrl/net.megx.megxbar/js/bookmarkletFunctions.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -138,7 +138,7 @@ button.close {
 <div id='author{{allAuthors}}'>
 	<table>
 		<tr>
-			<td width='109px'>Forename</td>
+			<td width='109px'>Forename??</td>
 			<td><input type='text' id='forename'></td>
 		</tr>
 		<tr>
@@ -193,7 +193,7 @@ button.close {
 	          <div id="author1">
 	            <table>
 	              <tr>
-	                <td width="109px">Forename</td>
+	                <td width="109px">Forename!!!++</td>
 	                <td><input type="text" id="forename"></td>
 	              </tr>
 	              <tr>
@@ -366,7 +366,7 @@ button.close {
   #else #* not logged in *#
   <script type="text/javascript">
             function changeLoginCheck() {
-                var change = "<a href='$ctx.siteUrl/bookmark' onclick='changeLoginCheck()' style='border: 2px solid #002638; padding: 10px 40px; background: #00A3EF; border-radius: 25px;'>Refresh</a>";
+                var change = "<a href='$ctx.siteUrl/bookmark' onclick='changeLoginCheck()' style='border: 2px solid #002638; padding: 10px 40px; background: #00A3EF; border-radius: 25px;'>Refresh Renzo</a>";
                 $("#loginCheck").html(change);
                 $("#loginCheck").css("padding-left", "95px");
             }
@@ -374,7 +374,7 @@ button.close {
   <div id="loginCheck" style="padding-left: 55px;">
     <a href="$ctx.siteUrl/login"
       style="border: 2px solid #002638; padding: 10px 40px; background: #00A3EF; border-radius: 25px;"
-      target="_blank" onclick="changeLoginCheck()">Log in to
+      target="_blank" onclick="changeLoginCheck()">LOG in to
       megx.net</a>
   </div>
 
