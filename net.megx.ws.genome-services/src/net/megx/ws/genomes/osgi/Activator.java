@@ -25,84 +25,84 @@ import org.json.JSONException;
 
 public class Activator extends ResTplConfiguredActivator {
 
-	private Log log = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass());
 
-	@Override
-	protected void registerExtensions(final JCRApplication app) {
-		log.debug("Starting upd GENOME Services...");
-		log.debug("Requesting StorageSessionProvider");
-		OSGIUtils.requestService(StorageSessionProvider.class.getName(),
-				getBundleContext(),
-				new OSGIUtils.OnServiceAvailable<StorageSessionProvider>() {
+    @Override
+    protected void registerExtensions(final JCRApplication app) {
+        log.debug("Starting up GENOME Services...");
+        log.debug("Requesting StorageSessionProvider");
+        OSGIUtils.requestService(StorageSessionProvider.class.getName(),
+                getBundleContext(),
+                new OSGIUtils.OnServiceAvailable<StorageSessionProvider>() {
 
-					@Override
-					public void serviceAvailable(String name,
-							StorageSessionProvider service) {
-						log.debug("StorageSessionProvider available...");
-						try {
-							Context storageContext = StorageContext
-									.fromJSONConfiguration(getConfig()
-											.getJSONObject("storage"));
-							StorageSession session = service
-									.openSession(storageContext);
-							WorkspaceAccess access = new WorkspaceAccess(app
-									.createContentModelInstance(getName()),
-									session);
+                    @Override
+                    public void serviceAvailable(String name,
+                            StorageSessionProvider service) {
+                        log.debug("StorageSessionProvider available...");
+                        try {
+                            Context storageContext = StorageContext
+                                    .fromJSONConfiguration(getConfig()
+                                            .getJSONObject("storage"));
+                            StorageSession session = service
+                                    .openSession(storageContext);
+                            WorkspaceAccess access = new WorkspaceAccess(app
+                                    .createContentModelInstance(getName()),
+                                    session);
 
-							DiNucOddsRatio oddsRatio = new DiNucOddsRatio(
-									access);
-							GCContent gcContent = new GCContent(access);
-							SixFrameTranslation sixFrameTranslation = new SixFrameTranslation(
-									access);
+                            DiNucOddsRatio oddsRatio = new DiNucOddsRatio(
+                                    access);
+                            GCContent gcContent = new GCContent(access);
+                            SixFrameTranslation sixFrameTranslation = new SixFrameTranslation(
+                                    access);
 
-							RegUtils.reg(getBundleContext(),
-									DiNucOddsRatio.class.getName(), oddsRatio,
-									null);
-							RegUtils.reg(getBundleContext(),
-									GCContent.class.getName(), gcContent, null);
-							RegUtils.reg(getBundleContext(),
-									SixFrameTranslation.class.getName(),
-									sixFrameTranslation, null);
-							log.debug("Registering REST Services");
-							GCContentService gcContentService = new GCContentService();
-							gcContentService.setGcContent(gcContent);
+                            RegUtils.reg(getBundleContext(),
+                                    DiNucOddsRatio.class.getName(), oddsRatio,
+                                    null);
+                            RegUtils.reg(getBundleContext(),
+                                    GCContent.class.getName(), gcContent, null);
+                            RegUtils.reg(getBundleContext(),
+                                    SixFrameTranslation.class.getName(),
+                                    sixFrameTranslation, null);
+                            log.debug("Registering REST Services");
+                            GCContentService gcContentService = new GCContentService();
+                            gcContentService.setGcContent(gcContent);
 
-							SixFrameTranslationService sixFrameTranslationService = new SixFrameTranslationService();
-							sixFrameTranslationService
-									.setSixFrameTranslation(sixFrameTranslation);
+                            SixFrameTranslationService sixFrameTranslationService = new SixFrameTranslationService();
+                            sixFrameTranslationService
+                                    .setSixFrameTranslation(sixFrameTranslation);
 
-							FastaMD5Checksum checkSumService = new FastaMD5Checksum(
-									new MD5HashMultiFasta(access));
+                            FastaMD5Checksum checkSumService = new FastaMD5Checksum(
+                                    new MD5HashMultiFasta(access));
 
-							DiNucleotideOddsRatioService diNucOddsRatio = new DiNucleotideOddsRatioService(
-									new DiNucOddsRatio(access));
+                            DiNucleotideOddsRatioService diNucOddsRatio = new DiNucleotideOddsRatioService(
+                                    new DiNucOddsRatio(access));
 
-							RegUtils.reg(getBundleContext(),
-									GCContentService.class.getName(),
-									gcContentService, null);
-							RegUtils.reg(getBundleContext(),
-									SixFrameTranslationService.class.getName(),
-									sixFrameTranslationService, null);
-							RegUtils.reg(getBundleContext(),
-									FastaMD5Checksum.class.getName(),
-									checkSumService, null);
-							RegUtils.reg(getBundleContext(),
-									DiNucleotideOddsRatioService.class
-											.getName(), diNucOddsRatio, null);
-							log.info("GENOME Services available.");
-						} catch (JSONException e) {
-							log.error("Failed to startup GENOME Services: ", e);
-						} catch (StorageException e) {
-							log.error("Failed to startup GENOME Services: ", e);
-						}
-					}
+                            RegUtils.reg(getBundleContext(),
+                                    GCContentService.class.getName(),
+                                    gcContentService, null);
+                            RegUtils.reg(getBundleContext(),
+                                    SixFrameTranslationService.class.getName(),
+                                    sixFrameTranslationService, null);
+                            RegUtils.reg(getBundleContext(),
+                                    FastaMD5Checksum.class.getName(),
+                                    checkSumService, null);
+                            RegUtils.reg(getBundleContext(),
+                                    DiNucleotideOddsRatioService.class
+                                            .getName(), diNucOddsRatio, null);
+                            log.info("GENOME Services available.");
+                        } catch (JSONException e) {
+                            log.error("Failed to startup GENOME Services: ", e);
+                        } catch (StorageException e) {
+                            log.error("Failed to startup GENOME Services: ", e);
+                        }
+                    }
 
-				});
-	}
+                });
+    }
 
-	@Override
-	protected String getName() {
-		return "net.megx.ws.genome-services";
-	}
+    @Override
+    protected String getName() {
+        return "net.megx.ws.genome-services";
+    }
 
 }
