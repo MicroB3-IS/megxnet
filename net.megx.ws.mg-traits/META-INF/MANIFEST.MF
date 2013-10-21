@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: megx.net metagenomic traits web services
 Bundle-SymbolicName: net.megx.ws.mg-traits
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: net.megx.ws.metagenome.traits.Activator
 Import-Package: com.google.gson,
  javax.jcr;version="2.0.0",
