@@ -80,6 +80,11 @@ CMap.prototype = {
 
 	setTopClickable: function(name) {
 		//TODO: set clickable layer, show on top order ...
+	},
+	
+	redraw: function(name){
+		name = name || '';
+		return this.layers.get(name).redraw();
 	}
 };
 

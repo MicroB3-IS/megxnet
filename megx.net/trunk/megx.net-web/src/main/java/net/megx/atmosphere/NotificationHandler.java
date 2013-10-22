@@ -10,7 +10,7 @@ import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
 import org.atmosphere.cpr.DefaultBroadcaster;
 
-@ManagedService(path = "/topic/notifications", broadcaster = DefaultBroadcaster.class)
+@ManagedService(path = "/topic/notifications/esa", broadcaster = DefaultBroadcaster.class)
 public class NotificationHandler{
 	
 	/**
