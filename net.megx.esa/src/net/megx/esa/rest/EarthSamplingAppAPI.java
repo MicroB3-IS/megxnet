@@ -136,6 +136,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			List<Sample> samplesToSave = new ArrayList<Sample>();
 			Map<String, String> errorMap = new HashMap<String, String>();
 			List<String> savedSamples = new ArrayList<String>();
+			List<SampleRow> samplesToBroadcast = new ArrayList<SampleRow>();
 			Map<String, Object> result = new HashMap<String, Object>();
 			String sampleCreator = request.getUserPrincipal().getName();
 			for(Sample sample : samples){
@@ -156,11 +157,36 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			result.put("saved", savedSamples);
 			result.put("errors", errorMap);
 			Result<Map<String, Object>> resultToReturn = new Result<Map<String, Object>>(result);
+			
+			//Broadcast JSON string with saved samples to subscribed clients
+			for(Sample sample : samplesToSave){
+				if(savedSamples.contains(sample.getId())){
+					samplesToBroadcast.add(mapSampleToRow(sample));
+				}
+			}
+			this.broadcasterProxy.broadcastMessage("/topic/notifications/esa", toJSON(samplesToBroadcast));
+			
 			return toJSON(resultToReturn);
 		}catch (Exception e) {
 			return toJSON(handleException(e));
 		}
 	}
+	
+	private SampleRow mapSampleToRow(Sample sample){
+		SampleRow row = new SampleRow();
+		
+		row.setLabel(sample.getLabel());
+		row.setTaken(sample.getTaken());
+		row.setBiome(sample.getBiome());
+		row.setWeatherCondition(sample.getWeatherCondition());
+		row.setFeature(sample.getFeature());
+		row.setAirTemperature(sample.getAirTemperature());
+		row.setLat(sample.getLat());
+		row.setLon(sample.getLon());
+		
+		return row;
+	}
+	
 	private boolean validateSample(Sample sample){
 		if(sample.getLat() == null || sample.getLon() == null){
 			return false;
@@ -248,9 +274,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 				Map<String, String> cat = service.getConfigurationForCitizen(exportedCategory);
 				configuration.put(exportedCategory, cat);
 			}
-			String JsonToReturn = toJSON(r);
-			this.broadcasterProxy.broadcastMessage("/topic/notifications", JsonToReturn);
-			return toJSON(JsonToReturn);
+			return toJSON(r);
 		}catch (Exception e) {
 			return toJSON(handleException(e));
 		}
