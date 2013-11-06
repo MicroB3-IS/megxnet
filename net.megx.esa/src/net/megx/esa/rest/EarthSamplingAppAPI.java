@@ -1,5 +1,8 @@
 package net.megx.esa.rest;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,14 +20,20 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.StreamingOutput;
 
 import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.util.SampleDeserializer;
+import net.megx.esa.util.ImageResizer;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
 import net.megx.ui.table.json.TableDataResponse;
@@ -50,12 +59,21 @@ import com.google.gson.JsonParseException;
  */
 @Path("esa")
 public class EarthSamplingAppAPI extends BaseRestService{
+	
 	private EarthSamplingAppService service;
 	private BroadcasterProxy broadcasterProxy;
+	private ImageResizer imageResizer;
+	
+	private static final int THUMBNAIL_WIDTH = 240;
+	private static final int THUMBNAIL_HEIGHT = 240;
+	
+	private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit,Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
+	private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 	
 	public EarthSamplingAppAPI(EarthSamplingAppService service, BroadcasterProxy broadcasterProxy) {
 		this.service = service;
 		this.broadcasterProxy = broadcasterProxy;
+		this.imageResizer = new ImageResizer();
 		gson = new GsonBuilder().registerTypeAdapter(SamplePhoto.class, new JsonDeserializer<SamplePhoto>() {
 
 			@Override
@@ -82,10 +100,10 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		.serializeNulls()
 		.create();
 	}
+	
 	/**
 	 * 
-	 * @param ID of the collector of the samples
-	 * @return JSON formatted string of the samples created by the collector if any. 
+	 * @return JSON formatted string of the all of the samples stored in DB. 
 	 */
 	@GET
 	@Path("allSamples")
@@ -102,9 +120,112 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		
 	}
 	
+	@POST
+	@Path("downloadSamples.csv")
+	public Response downloadSamples(@FormParam("sampleIds") final String sampleIds){
+		ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+			
+			@Override
+			public void write(OutputStream out) throws IOException,
+					WebApplicationException {
+				
+				try {
+					List<String> ids = new ArrayList<String>(Arrays.asList(sampleIds.split(",")));
+					List<Sample> samples = service.downloadSamples(ids);
+					PrintWriter writer = new PrintWriter(out);
+					writer.println(CSV_HEADER);
+					for(Sample sample : samples){
+							writer.println(String.format(CSV_ROW,
+									sample.getId(),
+									sample.getTaken(),
+									sample.getModified(),
+									sample.getCollectorId(),
+									sample.getLabel(),
+									sample.getBarcode(),
+									sample.getProjectId(),
+									sample.getUserName(),
+									sample.getShipName(),
+									sample.getBoatManufacturer(),
+									sample.getBoatModel(),
+									sample.getBoatLength(),
+									sample.getHomeport(),
+									sample.getNationality(),
+									sample.getElevation(),
+									sample.getBiome(),
+									sample.getFeature(),
+									sample.getCollection(),
+									sample.getPermit(),
+									sample.getSamplingDepth(),
+									sample.getWaterDepth(),
+									sample.getSampleSize(),
+									sample.getWeatherCondition(),
+									sample.getAirTemperature(),
+									sample.getWaterTemerature(),
+									sample.getConductivity(),
+									sample.getWindSpeed(),
+									sample.getSalinity(),
+									sample.getComment(),
+									sample.getLat(),
+									sample.getLon(),
+									sample.getAccuracy(),
+									sample.getPhosphate(),
+									sample.getNitrate(),
+									sample.getNitrite(),
+									sample.getPh(),
+									sample.getPhotos().length
+									));
+					}
+					writer.flush();
+					out.flush();
+				} catch (Exception e) {
+					throw new WebApplicationException(500);
+				}
+			}
+		});
+		
+		rb.header("Content-Disposition: attachment", "filename=\"samplesData.csv\"");
+		rb.type(MediaType.APPLICATION_OCTET_STREAM);
+		return rb.build();
+	}
+	
 	/**
 	 * 
-	 * @return JSON formatted string of the all of the samples stored in DB. 
+	 * @return JSON formatted string of a sample stored in DB. 
+	 */
+	@GET
+	@Path("sample")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSample(@QueryParam("sampleId") String sampleId){
+		Sample sample;
+		try{
+			sample = service.getSample(sampleId);
+			return toJSON(new Result<Sample>(sample));
+		} catch(Exception e){
+			return toJSON(handleException(e));
+		}
+	}
+	
+	/**
+	 * @param nbObservations
+	 * @return JSON formatted string of latest nbObservations (or less if query returns less) sample retrievals 
+	 */
+	@GET
+	@Path("observations/{nbObservations}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getObservations(@PathParam("nbObservations") int nbObservations){
+		List<SampleObservation> observations = new ArrayList<SampleObservation>();
+		try{
+			observations = service.getLatestObservations(nbObservations);
+			return toJSON(new Result<List<SampleObservation>>(observations));
+		} catch(Exception e){
+			return toJSON(handleException(e));
+		}
+	}
+	
+	/**
+	 * 
+	 * @param ID of the collector of the samples
+	 * @return JSON formatted string of the samples created by the collector if any. 
 	 */
 	@GET
 	@Path("samples/{creator}")
@@ -136,7 +257,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			List<Sample> samplesToSave = new ArrayList<Sample>();
 			Map<String, String> errorMap = new HashMap<String, String>();
 			List<String> savedSamples = new ArrayList<String>();
-			List<SampleRow> samplesToBroadcast = new ArrayList<SampleRow>();
+			List<Sample> samplesToBroadcast = new ArrayList<Sample>();
 			Map<String, Object> result = new HashMap<String, Object>();
 			String sampleCreator = request.getUserPrincipal().getName();
 			for(Sample sample : samples){
@@ -161,7 +282,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			//Broadcast JSON string with saved samples to subscribed clients
 			for(Sample sample : samplesToSave){
 				if(savedSamples.contains(sample.getId())){
-					samplesToBroadcast.add(mapSampleToRow(sample));
+					samplesToBroadcast.add(sample);
 				}
 			}
 			this.broadcasterProxy.broadcastMessage("/topic/notifications/esa", toJSON(samplesToBroadcast));
@@ -170,21 +291,6 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		}catch (Exception e) {
 			return toJSON(handleException(e));
 		}
-	}
-	
-	private SampleRow mapSampleToRow(Sample sample){
-		SampleRow row = new SampleRow();
-		
-		row.setLabel(sample.getLabel());
-		row.setTaken(sample.getTaken());
-		row.setBiome(sample.getBiome());
-		row.setWeatherCondition(sample.getWeatherCondition());
-		row.setFeature(sample.getFeature());
-		row.setAirTemperature(sample.getAirTemperature());
-		row.setLat(sample.getLat());
-		row.setLon(sample.getLon());
-		
-		return row;
 	}
 	
 	private boolean validateSample(Sample sample){
@@ -197,12 +303,13 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	/**
 	 * Store a single photo that belongs to already saved sample in the database.
 	 * @param request Contains the binary data for the photo to be saved along with the photos' UUID, MIME type and path properties.
+	 * @throws IOException 
 	 * @throws Exception If the photo to be saved doesn't belong to a sample that is already saved in the database, exception is thrown.
 	 */
 	@Path("photos")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@POST
-	public void storePhotos(@Context HttpServletRequest request) throws WebApplicationException{
+	public void storePhotos(@Context HttpServletRequest request) throws WebApplicationException, IOException{
 		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if(isMultipart){
@@ -228,6 +335,7 @@ public class EarthSamplingAppAPI extends BaseRestService{
 			    if (!item.isFormField()) {
 			    	byte[] imageData = item.get();
 			    	photoToSave.setData(imageData);
+			    	photoToSave.setThumbnail(this.imageResizer.resizeImage(imageData, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT));
 			    	photoToSave.setMimeType(item.getContentType());
 			    }
 			    else{

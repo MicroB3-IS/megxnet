@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
 
@@ -14,6 +15,8 @@ public interface ESAMapper {
 	public Sample getSample(String id);
 	public List<Sample> getSamples(String collectorId);
 	public List<SampleRow> getAllSamples();
+	public List<Sample> downloadSamples(@Param("sampleIds") List<String> sampleIds);
+	public List<SampleObservation> getLatestObservations(@Param("nbObservations") int nbObservations);
 	
 	/**
 	 * Adds entry to the samples table
@@ -36,6 +39,10 @@ public interface ESAMapper {
 	public int updatePhoto(SamplePhoto photo);
 	
 	public List<SamplePhoto> getPhotosForSample(String sampleId);
+	
+	public SamplePhoto getThumbnail(@Param("imageId") String imageId);
+	
+	public SamplePhoto getOriginalPhoto(@Param("imageId") String imageId);
 	
 	public void removeSample(String id);
 	

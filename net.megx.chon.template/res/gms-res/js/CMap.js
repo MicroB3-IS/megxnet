@@ -58,6 +58,10 @@ CMap.prototype = {
 		map.addControl(permalinkContr);
 	},
 	
+	addLayer: function(layer){
+		this.map.addLayer(layer);
+	},
+	
 	showLayer: function(name) {
 		this.layers.get(name).setVisibility(true);
 	},

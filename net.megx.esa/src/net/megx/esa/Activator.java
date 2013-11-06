@@ -2,6 +2,7 @@ package net.megx.esa;
 
 import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.EarthSamplingAppAPI;
+import net.megx.esa.rest.EarthSamplingPhotoApi;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.utils.OSGIUtils;
 
@@ -35,12 +36,22 @@ public class Activator extends ResTplConfiguredActivator {
 									public void serviceAvailable(String name,
 											BroadcasterProxy broadcasterProxy) {
 										log.debug("BroadcasterProxy service received...");
+										
 										EarthSamplingAppAPI api = new EarthSamplingAppAPI(
 												service, broadcasterProxy);
+										
+										EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(service);
+										
 										RegUtils.reg(getBundleContext(),
 												EarthSamplingAppAPI.class
 														.getName(), api, null);
+										
+										RegUtils.reg(getBundleContext(),
+												EarthSamplingPhotoApi.class
+														.getName(), photoApi, null);
+										
 										log.debug("Earth Sampling App API started.");
+										log.debug("Earth Sampling Photo API started.");
 									}
 
 								});

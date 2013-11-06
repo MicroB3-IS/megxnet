@@ -12,6 +12,7 @@ import net.megx.megdb.BaseMegdbService;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.megdb.esa.mappers.ESAMapper;
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
 
@@ -210,5 +211,40 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 				return samplesToReturn;
 			}
 		}, ESAMapper.class);
+	}
+
+	@Override
+	public SamplePhoto getSamplePhoto(final String imageId, final boolean originalPhoto) throws Exception {
+		
+		return doInSession(new DBTask<ESAMapper, SamplePhoto>(){
+			@Override
+			public SamplePhoto execute(ESAMapper mapper) throws Exception{
+				return originalPhoto ? mapper.getOriginalPhoto(imageId) : mapper.getThumbnail(imageId);
+			}
+		}, ESAMapper.class);
+	}
+
+	@Override
+	public List<Sample> downloadSamples(final List<String> sampleIds) throws Exception {
+		
+		return doInSession(new DBTask<ESAMapper, List<Sample>>(){
+			@Override
+			public List<Sample> execute(ESAMapper mapper) throws Exception{
+				return mapper.downloadSamples(sampleIds);
+			}
+		}, ESAMapper.class);
+	}
+
+	@Override
+	public List<SampleObservation> getLatestObservations(final int nbObservations)
+			throws Exception {
+		
+		return doInSession(new DBTask<ESAMapper, List<SampleObservation>>(){
+			@Override
+			public List<SampleObservation> execute(ESAMapper mapper) throws Exception{
+				return mapper.getLatestObservations(nbObservations);
+			}
+		}, ESAMapper.class);
+		
 	}
 }
