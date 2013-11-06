@@ -4,6 +4,7 @@ package net.megx.model.esa;
 public class SamplePhoto {
 	private String uuid;
 	private byte [] data;
+	private byte [] thumbnail;
 	private String path;
 	private String mimeType;
 	
@@ -19,6 +20,12 @@ public class SamplePhoto {
 	}
 	public void setData(byte[] data) {
 		this.data = data;
+	}
+	public byte[] getThumbnail() {
+		return thumbnail;
+	}
+	public void setThumbnail(byte[] thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 	public String getPath() {
 		return path;

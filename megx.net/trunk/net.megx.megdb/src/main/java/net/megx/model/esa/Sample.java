@@ -45,6 +45,7 @@ public class Sample {
 	private Double nitrate;
 	private Double nitrite;
 	private Double ph;
+	private SamplePhoto [] photos;
 	
 	public Double getAccuracy() {
 		return accuracy;
@@ -76,7 +77,6 @@ public class Sample {
 	public void setPh(Double ph) {
 		this.ph = ph;
 	}
-	private SamplePhoto [] photos;
 	
 	public SamplePhoto[] getPhotos() {
 		return photos;

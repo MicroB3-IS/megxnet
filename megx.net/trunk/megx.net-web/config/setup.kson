@@ -35,6 +35,7 @@ www={type:'sys.public'}
 	prox={type:'html', template:'prox-app/home.html', title:'ProX home page'}
 		browse={type:'html', template:'prox-app/index.html', baseTemplate: 'prox-app/base-empty.html', title:'ProX'}
 	samples={type:'html', template:'net.megx.esa/index.html', title:'All samples'}
+		sampleDetails={type:'html', template:'net.megx.esa/sampleDetails.html', title:'View sample details'}
 	osd={type:'html', template:'net.megx.osd.registry/index.html', title:'OSD registry start page', showOSDLogo: 'true'}
 		list={type:'html', template:'net.megx.osd.registry/list.html', title:'List of OSD institutes'}
 		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
