@@ -1,0 +1,72 @@
+.selectAllSamplesLnk{
+	margin-left: 45px;
+	color: #0000ff !important;
+	font-size: 14px;
+}
+.deselectAllSamplesLnk{
+	margin-left: 45px;
+	color: #0000ff !important;
+	display: none;
+	font-size: 14px;
+}
+p.columnEditingNote{
+	color: red;
+	width: 290px;
+	margin-bottom: 30px;
+}
+.downloadSelected{
+	margin-right: 20px;
+	color: #0000ff !important;
+	font-size: 14px;
+}
+div.dataTables_info{
+	width: 42% !important;
+}
+td.sampleImages{
+	vertical-align: 45%;
+	color: red;
+	font-size: 20px;
+	width: 413px;
+	height: 400px;
+	overflow-y: auto;
+	text-align: center;
+	min-width: 413px;
+}
+.sampleData{
+	padding: 10px;
+}
+table.sampleData td.label{
+	white-space: nowrap;
+}
+td.label{
+	padding-right: 20px;
+}
+#sampleDetails{
+	margin: 20px;
+	width: 800px;
+}
+#sampleDetails td{
+	margin: 20px;
+}
+img.sampleImage{
+	width: 150px;
+	height: 113px;
+	padding: 1px;
+	border-radius: 4px;
+	border: 2px solid #5e5e5e;
+}
+a.gallery{
+	padding: 10px;
+}
+img.noImageClass{
+	width: 150px;
+	padding: 11px;
+	border-radius: 4px;
+	border: 2px solid #5e5e5e;
+}
+.downloadSample{
+	font-size: 20px;
+}
+td.sampledOcean{
+	padding-left: 15px;
+}
