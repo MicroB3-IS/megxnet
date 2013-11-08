@@ -1,0 +1,152 @@
+#set($url = "$ctx.siteUrl/ws/esa/allSamples")
+#set ($columnNames = ["", "Sample name", "Date of creation", "Biome", "Weather condition", "Feature", "Air temperature", "Latitude", "Longitude",
+                      "Barcode", "Elevation", "Collection", "Permit", "Sampling depth", "Water depth", "Sample size", 
+                      "Water temperature", "Conductivity", "Wind speed", "Salinity", "Comment", "Accuracy", "Phosphate", "Nitrate", 
+                      "Nitrite", "pH", "Action"])
+
+<div>
+	<table style="width: 930px;">
+		<tr>
+			<td style="text-align: right;">
+				<input id="filterScientist" class="filterRows" type="checkbox" value="scientist" checked="checked"/><span style="font-size: 17px;">Scientists</span>&nbsp;&nbsp;
+				<input id="filterCitizen" class="filterRows" type="checkbox" value="citizen" checked="checked"/><span style="font-size: 17px;">Citizens</span>
+			</td>
+			<td style="text-align: right;">
+				<a id="customizeTableLnk" href="#" style="font-size: 18px;">Customize table</a>
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<div id="columnsDialog">
+	<p class='columnEditingNote'>Table cannot contain more than 7 or less than 4 columns due to readability purposes.</p>
+</div>
+
+<div id="noSamplesSelected"><span>Please select some samples for download first.</span></div>
+
+$ext.dataTable.renderServerSide(
+	$columnNames, 
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'id',
+	 	sClass: 'center data-pad',
+	 	mRender: function(id){
+	 		return '<input class=\'downloadSample\' type=\'checkbox\' value=\'' + id + '\'>';
+	 	},
+	 	sWidth: '80px',
+	 	bSortable: false
+	 }, { 
+	 	mData: 'label',
+	 	sClass: 'left data-pad'
+	 }, {
+	 	mData: 'taken',
+	 	sClass: 'left data-pad' 
+	 }, {
+	 	mData: 'biome',
+	 	sClass: 'left data-pad'
+	 }, {
+	 	mData: 'weatherCondition',
+	 	sClass: 'left data-pad'
+	 }, {
+	 	mData: 'feature',
+	 	sClass: 'left data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'airTemperature',
+	 	sClass: 'right data-pad'
+	 }, {
+	 	mData: 'lat',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'lon',
+	 	sClass: 'right data-pad',
+	 	bVisible: false,
+	 }, {
+	 	mData: 'barcode',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'elevation',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'collection',
+	 	sClass: 'left data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'permit',
+	 	sClass: 'center data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'samplingDepth',
+	 	sClass: 'right data-pad'
+	 }, {
+	 	mData: 'waterDepth',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'sampleSize',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'waterTemerature',
+	 	sClass: 'right data-pad'
+	 }, {
+	 	mData: 'conductivity',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'windSpeed',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'salinity',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'comment',
+	 	sClass: 'left data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'accuracy',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'phosphate',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'nitrate',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'nitrite',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'ph',
+	 	sClass: 'right data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'id',
+	 	sClass: 'center',
+	 	sWidth: '130px',
+	 	mRender: function(id){
+	 		var viewUrl = '$ctx.siteUrl/samples/sampleDetails?sampleId=' + id;
+			return '<a href=' + viewUrl + ' class=\'viewSampleClass\'>View more</a>';
+	 	}
+	 }]
+}")
+
+<form id="sf" action="$ctx.siteUrl/ws/esa/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
+	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
+</form>
+
+<iframe name="csvDownloadTarget" style="display: none;"></iframe>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesTableCustomization.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesDownload.min.js"></script>
