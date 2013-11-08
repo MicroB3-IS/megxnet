@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>net.megx</groupId>
-        <artifactId>parent-microb3-is</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
-
-
-    <groupId>net.megx</groupId>
-    <artifactId>net.megx.esa</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>eclipse-plugin</packaging>
+	<parent>
+		<groupId>net.megx</groupId>
+		<artifactId>parent-microb3-is</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <!-- main configuration is in parent pom -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+	<groupId>net.megx</groupId>
+	<artifactId>net.megx.esa</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
+
+
+	<build>
+		<plugins>
+		    <plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<configuration>
+					<minimize>true</minimize>
+					<cssDestinationFolder>res/net.megx.esa/css</cssDestinationFolder>
+					<jsDestinationFolder>res/net.megx.esa/js</jsDestinationFolder>
+					<contextFolder>${basedir}</contextFolder>
+					<wroFile>wro.xml</wroFile>
+					<ignoreMissingResources>false</ignoreMissingResources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- main configuration is in parent pom -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

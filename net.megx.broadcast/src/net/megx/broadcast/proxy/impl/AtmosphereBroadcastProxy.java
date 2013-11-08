@@ -18,8 +18,10 @@ public class AtmosphereBroadcastProxy implements BroadcasterProxy{
 			broadcasterProxy = Class.forName("net.megx.atmosphere.BroadcastProxy");
 			Method broadcastMethod = broadcasterProxy.getMethod("broadcastMessage", String.class, String.class);
 			broadcastMethod.invoke(broadcasterProxy.newInstance(), path, message);
+		} catch (ClassNotFoundException e) {
+			log.debug("No clients registered for receiving broadcasts.");
 		} catch (Exception e) {
-			log.debug("Exception occured while trying to broadcast message to client. Details follow:");
+			log.debug("Exception occured while trying to boradcast message. Details follow: ");
 			e.printStackTrace();
 		}
 	}

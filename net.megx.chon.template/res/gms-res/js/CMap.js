@@ -58,6 +58,13 @@ CMap.prototype = {
 		map.addControl(permalinkContr);
 	},
 	
+	removeControl: function(controlName){
+		var controls = this.map.getControlsByClass(controlName);
+		for(var i = 0; i < controls.length; i++){
+			controls[i].deactivate();
+		}
+	},
+	
 	addLayer: function(layer){
 		this.map.addLayer(layer);
 	},

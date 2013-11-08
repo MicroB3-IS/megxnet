@@ -17,7 +17,19 @@ $(document).ready(function () {
         gmsURL: ctx.siteUrl + "/wms",
         layers: ["satellite", "esa"]
     });
+    
+    //Draw map of samples
+    map.hideAll();
 
+    map.showLayer("satellite");
+    map.showLayer("esa");
+
+    //TODO: This is a hack. 
+    //A layer ordering functionality has to be implemented in CMapLayers so that the esa layer is always on top of the satellite layer 
+    var esa = map.map.getLayersByName('esa')[0];
+    map.map.setLayerIndex(esa, 100);
+    map.removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
+    
     //Define event handlers
     request.onOpen = function (response) {
         console.log('Atmosphere connected using ' + response.transport);
@@ -85,15 +97,4 @@ $(document).ready(function () {
 
     //Subscribe to AtmosphereServlet
     var subSocket = socket.subscribe(request);
-
-    //Draw map of samples
-    map.hideAll();
-
-    map.showLayer("satellite");
-    map.showLayer("esa");
-
-    //TODO: This is a hack. 
-    //A layer ordering functionality has to be implemented in CMapLayers so that the esa layer is always on top of the satellite layer 
-    var esa = map.map.getLayersByName('esa')[0];
-    map.map.setLayerIndex(esa, 100);
 });
