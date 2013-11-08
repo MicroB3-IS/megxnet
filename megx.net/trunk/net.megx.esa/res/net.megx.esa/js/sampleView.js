@@ -12,8 +12,8 @@ $(document).ready(function(){
 	
 	//Draw map of samples
 	map.hideAll();
-	
 	map.showLayer("satellite");
+	map.removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
 	
 	var ajaxCall = function(httpVerb, url, data, successHandler, errorHandler){
 		$.ajax({
@@ -55,6 +55,13 @@ $(document).ready(function(){
 		$('td.pH').text(renderText(data.ph));
 		$('td.secchiDepth').text(renderText(data.secchiDepth));
 		$('td.comment').text(renderText(data.comment));
+		$('td.project').text(renderText(data.projectId));
+		$('td.shipName').text(renderText(data.shipName));
+		$('td.boatManufacturer').text(renderText(data.boatManufacturer));
+		$('td.model').text(renderText(data.boatModel));
+		$('td.length').text(renderText(data.boatLength));
+		$('td.homeport').text(renderText(data.homeport));
+		$('td.nationality').text(renderText(data.nationality));
 		$('input.sid').val(data.id);
 	};
 	
