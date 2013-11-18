@@ -68,7 +68,7 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		
 		sample.setId(getString("id", jo));
 		try{
-			sample.setTaken((Date)ctx.deserialize(jo.get("taken"), Date.class));
+			sample.setTaken((Date)ctx.deserialize(jo.get("time"), Date.class));
 		}catch(Exception e){
 			throw new JsonParseException("The sample taken date is invalid.",e);
 		}
@@ -94,25 +94,26 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		sample.setBoatLength(parseDouble(getString("boatLength", jo)));
 		sample.setHomeport(getString("homeport", jo));
 		sample.setNationality(getString("nationality", jo));
+		sample.setMaterial(getString("material", jo));
 		
 		sample.setBiome(getString("biome", jo));
 		sample.setFeature(getString("feature", jo));
-		sample.setCollection(getString("collection", jo));
+		sample.setCollection(getString("collectionMethod", jo));
 		sample.setPermit(getString("permit", jo));
 		sample.setWeatherCondition(getString("weatherCondition", jo));
 		sample.setConductivity(getString("conductivity", jo));
 		sample.setComment(getString("comment", jo));
 		
-		
 		sample.setAccuracy(parseDouble(getString("accuracy", jo)));
 		sample.setAirTemperature(parseDouble(getString("airTemperature", jo)));
-		sample.setWaterTemerature(parseDouble(getString("waterTemerature", jo)));
+		sample.setWaterTemperature(parseDouble(getString("waterTemperature", jo)));
 		sample.setSamplingDepth(parseDouble(getString("samplingDepth", jo)));
 		sample.setWaterDepth(parseDouble(getString("waterDepth", jo)));
 		sample.setElevation(parseDouble(getString("elevation", jo)));
 		sample.setWindSpeed(parseDouble(getString("windSpeed", jo)));
 		sample.setSalinity(parseDouble(getString("salinity", jo)));
 		sample.setSampleSize(parseInt(getString("sampleSize", jo)));
+		sample.setSecchiDepth(parseDouble(getString("secchiDepth", jo)));
 		
 		//Citizen app specific fields
 		sample.setPhosphate(parseDouble(getString("phosphate", jo)));

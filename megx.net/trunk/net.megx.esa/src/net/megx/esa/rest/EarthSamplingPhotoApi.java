@@ -17,7 +17,7 @@ import net.megx.esa.util.ImageResizer;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.SamplePhoto;
 
-@Path("esa/content")
+@Path("v1/esa/v1.0.0/content")
 public class EarthSamplingPhotoApi extends BaseRestService{
 	
 	private EarthSamplingAppService service;

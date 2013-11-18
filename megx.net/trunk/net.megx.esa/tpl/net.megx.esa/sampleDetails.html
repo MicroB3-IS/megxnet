@@ -12,13 +12,30 @@
   	sampleId = '$req.sampleId';
   #end
 </script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleView.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleView.js"></script>
 
 <div id="sampleTable">
 	<table id="sampleDetails">
 		<tr>
-			<td class="sampleImages"></td>
-			<td style="padding-left: 20px;">
+			<td style="width: 550px;">
+				<table style="width: 100%;">
+					<tr style="max-height: 132px;">
+						<td>
+							<div class="sampleImages"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="gms_center" style="margin: 0 auto; width: 550px;">
+							  <div id="gms_center_gmsbox" class="MapBox" style="width: 550px;">
+							    <div id="sampleMap" class="olMap wh100"></div>
+							  </div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td style="padding-left: 20px; width: 330px;">
 				<table class="sampleData">
 					<tr>
 						<td class="label">Observer:</td>
@@ -124,30 +141,22 @@
 						<td class="label">Nationality:</td>
 						<td class="nationality"></td>
 					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center; padding-top: 10px;">
+							<a href="#" class="downloadSample" >Download data</a>
+						</td>
+					</tr>
 				</table>	
 			</td>
 		</tr>
 	</table>
 </div>
-<input type="hidden" class="sid" />
-<div>
-	<table>
-		<tr style="width: 800px;">
-			<td style="width: 453px;"></td>
-			<td><a href="#" class="downloadSample" >Download data</a></td>
-		</tr>
-	</table>
-</div>
 
-<div class="gms_center" style="margin: 0 auto; padding-top: 30px;">
-  <div id="gms_center_gmsbox" class="MapBox">
-    <div id="sampleMap" class="olMap wh100"></div>
-  </div>
-</div>
+<input type="hidden" class="sid" />
 
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/lightbox-2.6.min.js"></script>
 
-<form id="sf" action="$ctx.siteUrl/ws/esa/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
+<form id="sf" action="$ctx.siteUrl/ws/v1/esa/v1.0.0/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
 	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
 </form>
 
