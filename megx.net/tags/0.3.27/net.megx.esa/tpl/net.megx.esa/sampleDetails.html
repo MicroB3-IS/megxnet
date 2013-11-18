@@ -1,0 +1,163 @@
+<link href="$ctx.siteUrl/net.megx.esa/css/esa.css" rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/net.megx.esa/css/lightbox.css" rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/gms-res/gms.css" rel="stylesheet" type="text/css">
+
+<script src="$ctx.siteUrl/js/OpenLayers.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/gms-res/js/CMapLayers.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/gms-res/js/CMap.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/modernizr.custom.js"></script>
+<script type="text/javascript">
+  #if($req.sampleId)
+  	sampleId = '$req.sampleId';
+  #end
+</script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleView.js"></script>
+
+<div id="sampleTable">
+	<table id="sampleDetails">
+		<tr>
+			<td style="width: 550px;">
+				<table style="width: 100%;">
+					<tr style="max-height: 132px;">
+						<td>
+							<div class="sampleImages"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="gms_center" style="margin: 0 auto; width: 550px;">
+							  <div id="gms_center_gmsbox" class="MapBox" style="width: 550px;">
+							    <div id="sampleMap" class="olMap wh100"></div>
+							  </div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td style="padding-left: 20px; width: 330px;">
+				<table class="sampleData">
+					<tr>
+						<td class="label">Observer:</td>
+						<td class="observer"></td>
+					</tr>
+					<tr>
+						<td class="label">Date:</td>
+						<td class="date"></td>
+					</tr>
+					<tr>
+						<td class="label">Biome:</td>
+						<td class="biome"></td>
+					</tr>
+					<tr>
+						<td class="label">Weather condition:</td>
+						<td class="weatherCondition"></td>
+					</tr>
+					<tr>
+						<td class="label">Air temperature:</td>
+						<td class="airTemperature"></td>
+					</tr>
+					<tr>
+						<td class="label">Water temperature:</td>
+						<td class="waterTemperature"></td>
+					</tr>
+					<tr>
+						<td class="label">Wind speed:</td>
+						<td class="windSpeed"></td>
+					</tr>
+					<tr>
+						<td class="label">Longitude:</td>
+						<td class="longitude"></td>
+					</tr>
+					<tr>
+						<td class="label">Latitude:</td>
+						<td class="latitude"></td>
+					</tr>
+					<tr>
+						<td class="label">Accuracy:</td>
+						<td class="accuracy"></td>
+					</tr>
+					<tr>
+						<td class="label">Sampling depth:</td>
+						<td class="samplingDepth"></td>
+					</tr>
+					<tr>
+						<td class="label">Sample name:</td>
+						<td class="sampleName"></td>
+					</tr>
+					<tr>
+						<td class="label">Salinity:</td>
+						<td class="salinity"></td>
+					</tr>
+					<tr>
+						<td class="label">Phosphate:</td>
+						<td class="phosphate"></td>
+					</tr>
+					<tr>
+						<td class="label">Nitrate:</td>
+						<td class="nitrate"></td>
+					</tr>
+					<tr>
+						<td class="label">Nitrite:</td>
+						<td class="nitrite"></td>
+					</tr>
+					<tr>
+						<td class="label">pH:</td>
+						<td class="pH"></td>
+					</tr>
+					<tr>
+						<td class="label">Secchi depth:</td>
+						<td class="secchiDepth"></td>
+					</tr>
+					<tr>
+						<td class="label">Comment:</td>
+						<td class="comment"></td>
+					</tr>
+					<tr>
+						<td class="label">Project:</td>
+						<td class="project"></td>
+					</tr>
+					<tr>
+						<td class="label">Ship name:</td>
+						<td class="shipName"></td>
+					</tr>
+					<tr>
+						<td class="label">Boat manufacturer:</td>
+						<td class="boatManufacturer"></td>
+					</tr>
+					<tr>
+						<td class="label">Model:</td>
+						<td class="model"></td>
+					</tr>
+					<tr>
+						<td class="label">Length:</td>
+						<td class="length"></td>
+					</tr>
+					<tr>
+						<td class="label">Homeport:</td>
+						<td class="homeport"></td>
+					</tr>
+					<tr>
+						<td class="label">Nationality:</td>
+						<td class="nationality"></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: center; padding-top: 10px;">
+							<a href="#" class="downloadSample" >Download data</a>
+						</td>
+					</tr>
+				</table>	
+			</td>
+		</tr>
+	</table>
+</div>
+
+<input type="hidden" class="sid" />
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/lightbox-2.6.min.js"></script>
+
+<form id="sf" action="$ctx.siteUrl/ws/v1/esa/v1.0.0/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
+	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
+</form>
+
+<iframe name="csvDownloadTarget" style="display: none;"></iframe>
