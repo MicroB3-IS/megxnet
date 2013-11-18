@@ -99,16 +99,6 @@ $(document).ready(function(){
 	    var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
 	    var marker = new OpenLayers.Marker(new OpenLayers.LonLat(data.lon, data.lat),icon);
 	    markers.addMarker(marker);
-	    
-	    marker.events.register("click", marker, function(e){
-	    	popup = new OpenLayers.Popup.FramedCloud("chicken",
-	    	new OpenLayers.LonLat(data.lon, data.lat),
-	    	new OpenLayers.Size(200, 200),
-	    	//"I was here <br><img src='" + SAMPLE_THUMBNAILS_URL + data.photos[0].uuid + "' width='90' height='90'>",
-	    	"I was here",
-	    	null, true);
-	    	map.addPopup(popup);
-    	});
 	};
 	
 	var populatePage = function(data){
