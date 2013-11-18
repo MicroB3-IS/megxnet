@@ -2,6 +2,8 @@ $(document).ready(function(){
 	var MAX_VISIBLE_COLUMNS = 7;
 	var MIN_VISIBLE_COLUMNS = 4;
 	
+	var SAMPLE_CREATION_COLUMN_INDEX = 3;
+	
 	var samplesTable = $(".megx_dataTable");
 	var allColumnsLength = samplesTable.dataTable().fnSettings().aoColumns.length;
 	var allCollumns = samplesTable.dataTable().fnSettings().aoColumns.slice(1, allColumnsLength-1);//Zero index column will always be visible and shouldn't be manipulated;
@@ -44,7 +46,7 @@ $(document).ready(function(){
 		  resizable: false,
 	      autoOpen: false,
 		  height: 780,
-		  width: 320,
+		  width: 350,
 	      modal: true,
 	      title: "Turn on/off column visibility",
 	      buttons: {
@@ -75,7 +77,6 @@ $(document).ready(function(){
 		enableDisableChb();
 	});
 	
-	$('.viewSampleClass').live('click', function(){
-		
-	});
+	//Sort table by newest sample, https://colab.mpi-bremen.de/its/browse/MB3_IS-297
+	samplesTable.dataTable().fnSort([[SAMPLE_CREATION_COLUMN_INDEX, 'desc']]);
 });

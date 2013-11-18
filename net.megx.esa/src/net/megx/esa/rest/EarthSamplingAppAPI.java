@@ -33,6 +33,7 @@ import net.megx.esa.rest.util.SampleDeserializer;
 import net.megx.esa.util.ImageResizer;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleLocationCount;
 import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
@@ -57,7 +58,7 @@ import com.google.gson.JsonParseException;
  * @author borce.jadrovski
  *
  */
-@Path("esa")
+@Path("v1/esa/v1.0.0")
 public class EarthSamplingAppAPI extends BaseRestService{
 	
 	private EarthSamplingAppService service;
@@ -67,8 +68,8 @@ public class EarthSamplingAppAPI extends BaseRestService{
 	private static final int THUMBNAIL_WIDTH = 240;
 	private static final int THUMBNAIL_HEIGHT = 240;
 	
-	private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit,Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
-	private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
+	private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
+	private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 	
 	public EarthSamplingAppAPI(EarthSamplingAppService service, BroadcasterProxy broadcasterProxy) {
 		this.service = service;
@@ -120,6 +121,18 @@ public class EarthSamplingAppAPI extends BaseRestService{
 		
 	}
 	
+	@GET
+	@Path("sampledOceans")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSampledOceans(){
+		try{
+			List<SampleLocationCount> sampledOceans = service.getSamplesLocationAndCount();
+			return toJSON(new Result<List<SampleLocationCount>>(sampledOceans));
+		} catch (Exception e){
+			return toJSON(handleException(e));
+		}
+	}
+	
 	@POST
 	@Path("downloadSamples.csv")
 	public Response downloadSamples(@FormParam("sampleIds") final String sampleIds){
@@ -155,12 +168,14 @@ public class EarthSamplingAppAPI extends BaseRestService{
 									sample.getFeature(),
 									sample.getCollection(),
 									sample.getPermit(),
+									sample.getMaterial(),
+									sample.getSecchiDepth(),
 									sample.getSamplingDepth(),
 									sample.getWaterDepth(),
 									sample.getSampleSize(),
 									sample.getWeatherCondition(),
 									sample.getAirTemperature(),
-									sample.getWaterTemerature(),
+									sample.getWaterTemperature(),
 									sample.getConductivity(),
 									sample.getWindSpeed(),
 									sample.getSalinity(),

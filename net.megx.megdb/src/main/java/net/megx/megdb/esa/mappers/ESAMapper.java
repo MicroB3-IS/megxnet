@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleLocationCount;
 import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
@@ -17,6 +18,7 @@ public interface ESAMapper {
 	public List<SampleRow> getAllSamples();
 	public List<Sample> downloadSamples(@Param("sampleIds") List<String> sampleIds);
 	public List<SampleObservation> getLatestObservations(@Param("nbObservations") int nbObservations);
+	public List<SampleLocationCount> getSamplesLocationAndCount();
 	
 	/**
 	 * Adds entry to the samples table

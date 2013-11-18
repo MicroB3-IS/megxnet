@@ -29,7 +29,7 @@
 		<result column="sample_size" property="sampleSize"/>
 		<result column="weather_condition" property="weatherCondition"/>
 		<result column="air_temperature" property="airTemperature"/>
-		<result column="water_temperature" property="waterTemerature"/>
+		<result column="water_temperature" property="waterTemperature"/>
 		<result column="conductivity" property="conductivity"/>
 		<result column="wind_speed" property="windSpeed"/>
 		<result column="salinity" property="salinity"/>
@@ -41,6 +41,8 @@
 		<result column="nitrate" property="nitrate"/>
 		<result column="nitrite" property="nitrite"/>
 		<result column="ph" property="ph"/>
+		<result column="secchi_depth" property="secchiDepth"/>
+		<result column="material" property="material"/>
 		<association property="photos" column="id" select="getPhotosForSample"/>
 	</resultMap>
 	
@@ -61,7 +63,7 @@
 		<result column="sample_size" property="sampleSize"/>
 		<result column="weather_condition" property="weatherCondition"/>
 		<result column="air_temperature" property="airTemperature"/>
-		<result column="water_temperature" property="waterTemerature"/>
+		<result column="water_temperature" property="waterTemperature"/>
 		<result column="conductivity" property="conductivity"/>
 		<result column="wind_speed" property="windSpeed"/>
 		<result column="salinity" property="salinity"/>
@@ -73,6 +75,8 @@
 		<result column="nitrate" property="nitrate"/>
 		<result column="nitrite" property="nitrite"/>
 		<result column="ph" property="ph"/>
+		<result column="secchi_depth" property="secchiDepth"/>
+		<result column="material" property="material"/>
 	</resultMap>
 	
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
@@ -87,24 +91,32 @@
 		<result column="uuid" property="thumbnailId"/>
 		<result column="modified" property="taken"/>
 		<result column="collector_id" property="observer"/>
+		<result column="label" property="sampleName"/>
+	</resultMap>
+	
+	<resultMap type="ESASampleLocationCount" id="esa_sample_location_count">
+		<result column="label" property="location"/>
+		<result column="count" property="nbSamples"/>
 	</resultMap>
 	
 	<sql id="esa_sample_columns_all">
 		id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
 	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
-	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom, accuracy, phosphate, nitrate, nitrite, ph
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, geom, accuracy, phosphate, nitrate, nitrite, ph,
+	    secchi_depth, material
 	</sql>
 	
 	<sql id="esa_sample_columns_no_geom">
 	    id,taken, modified, collector_id, label, raw_data, barcode, project_id, user_name, ship_name, boat_manufacturer, boat_model, boat_length, 
 	    homeport, nationality, elevation, biome, feature, collection, permit, sampling_depth, water_depth, sample_size, weather_condition, 
-	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy, phosphate, nitrate, nitrite, ph
+	    air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy, phosphate, nitrate, nitrite, ph, secchi_depth,
+	    material
 	</sql>
 	
 	<sql id="esa_sample_row_columns_no_geom">
 	    id,taken, modified, collector_id, label, barcode, elevation, biome, feature, collection, permit, sampling_depth, water_depth, 
 	    sample_size, weather_condition, air_temperature, water_temperature, conductivity, wind_speed, salinity, comment, accuracy,
-	    phosphate, nitrate, nitrite, ph
+	    phosphate, nitrate, nitrite, ph, secchi_depth, material
 	</sql>
 	
 	<sql id="esa_sample_images_columns_all">
@@ -134,12 +146,19 @@
 	<select id="getLatestObservations" resultMap="esa_sample_observations" parameterType="int">
 	    SELECT s.collector_id,
 		       s.modified,
+		       s.label,
 		       COALESCE (
 		                   (SELECT i.uuid
 		                    FROM esa.sample_images AS i
 		                    WHERE i.sid=s.id LIMIT 1) ) AS uuid
 		FROM esa.samples AS s
 		ORDER BY s.modified DESC LIMIT #{nbObservations}
+	</select>
+	
+	<select id="getSamplesLocationAndCount" resultMap="esa_sample_location_count">
+	    SELECT label, count
+	    FROM esa.oceans_sampled
+	    ORDER BY esa.oceans_sampled.count DESC
 	</select>
 	
 	<select id="getConfigurationForScientist" resultType="map" parameterType="String">
@@ -192,9 +211,9 @@
 	    VALUES
 	    (#{id}, #{taken}, #{modified}, #{collectorId}, #{label}, #{rawData}, #{barcode}, #{projectId}, #{userName}, #{shipName}, 
 	    #{boatManufacturer}, #{boatModel}, #{boatLength}, #{homeport}, #{nationality}, #{elevation}, #{biome}, #{feature}, #{collection}, 
-	    #{permit}, #{samplingDepth}, #{waterDepth}, #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemerature}, 
+	    #{permit}, #{samplingDepth}, #{waterDepth}, #{sampleSize}, #{weatherCondition}, #{airTemperature}, #{waterTemperature}, 
 	    #{conductivity}, #{windSpeed}, #{salinity}, #{comment}, ST_PointFromText('POINT(${lon} ${lat})',4326), #{accuracy},
-	    #{phosphate}, #{nitrate}, #{nitrite}, #{ph})
+	    #{phosphate}, #{nitrate}, #{nitrite}, #{ph}, #{secchiDepth}, #{material})
 	</insert>
 	
 	<delete id="removeSample" parameterType="int">

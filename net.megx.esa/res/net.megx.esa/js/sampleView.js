@@ -1,7 +1,7 @@
 $(document).ready(function(){
-	var SAMPLE_DETAILS_URL = ctx.siteUrl + '/ws/esa/sample?sampleId=';
-	var SAMPLE_THUMBNAILS_URL = ctx.siteUrl + '/ws/esa/content/photo/thumbnail/';
-	var SAMPLE_ORIGINAL_PHOTOS_URL = ctx.siteUrl + '/ws/esa/content/photo/original/';
+	var SAMPLE_DETAILS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/sample?sampleId=';
+	var SAMPLE_THUMBNAILS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/content/photo/thumbnail/';
+	var SAMPLE_ORIGINAL_PHOTOS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/content/photo/original/';
 	var NO_IMAGE_ICON_URL = ctx.siteUrl + '/net.megx.esa/img/no_photo.png';
 	
 	var map = new CMap({
@@ -36,38 +36,39 @@ $(document).ready(function(){
 	
 	var populateSampleTable = function(data){
 		data = data || {};
-		$('td.observer').text(renderText(data.collectorId));
-		$('td.date').text(renderText(data.taken));
-		$('td.biome').text(renderText(data.biome));
-		$('td.weatherCondition').text(renderText(data.weatherCondition));
-		$('td.airTemperature').text(renderText(data.airTemperature));
-		$('td.waterTemperature').text(renderText(data.waterTemperature));
-		$('td.windSpeed').text(renderText(data.windSpeed));
-		$('td.longitude').text(renderText(data.lon));
-		$('td.latitude').text(renderText(data.lat));
-		$('td.accuracy').text(renderText(data.accuracy));
-		$('td.samplingDepth').text(renderText(data.samplingDepth));
-		$('td.sampleName').text(renderText(data.label));
-		$('td.salinity').text(renderText(data.salinity));
-		$('td.phosphate').text(renderText(data.phosphate));
-		$('td.nitrate').text(renderText(data.nitrate));
-		$('td.nitrite').text(renderText(data.nitrite));
-		$('td.pH').text(renderText(data.ph));
-		$('td.secchiDepth').text(renderText(data.secchiDepth));
-		$('td.comment').text(renderText(data.comment));
-		$('td.project').text(renderText(data.projectId));
-		$('td.shipName').text(renderText(data.shipName));
-		$('td.boatManufacturer').text(renderText(data.boatManufacturer));
-		$('td.model').text(renderText(data.boatModel));
-		$('td.length').text(renderText(data.boatLength));
-		$('td.homeport').text(renderText(data.homeport));
-		$('td.nationality').text(renderText(data.nationality));
+		$('td.observer').html(renderText(data.collectorId));
+		$('td.date').html(renderText(data.taken));
+		$('td.biome').html(renderText(data.biome));
+		$('td.weatherCondition').html(renderText(data.weatherCondition));
+		$('td.airTemperature').html(renderText(data.airTemperature, '&deg;C'));
+		$('td.waterTemperature').html(renderText(data.waterTemperature, '&deg;C'));
+		$('td.windSpeed').html(renderText(data.windSpeed, 'km/h'));
+		$('td.longitude').html(renderText(data.lon));
+		$('td.latitude').html(renderText(data.lat));
+		$('td.accuracy').html(renderText(data.accuracy, 'm'));
+		$('td.samplingDepth').html(renderText(data.samplingDepth, 'm'));
+		$('td.sampleName').html(renderText(data.label));
+		$('td.salinity').html(renderText(data.salinity));
+		$('td.phosphate').html(renderText(data.phosphate, 'mg/l'));
+		$('td.nitrate').html(renderText(data.nitrate, 'mg/l'));
+		$('td.nitrite').html(renderText(data.nitrite, 'mg/l'));
+		$('td.pH').html(renderText(data.ph));
+		$('td.secchiDepth').html(renderText(data.secchiDepth));
+		$('td.comment').html(renderText(data.comment));
+		$('td.project').html(renderText(data.projectId));
+		$('td.shipName').html(renderText(data.shipName));
+		$('td.boatManufacturer').html(renderText(data.boatManufacturer));
+		$('td.model').html(renderText(data.boatModel));
+		$('td.length').html(renderText(data.boatLength, 'm'));
+		$('td.homeport').html(renderText(data.homeport));
+		$('td.nationality').html(renderText(data.nationality));
 		$('input.sid').val(data.id);
 	};
 	
-	var renderText = function(text){
+	var renderText = function(text, measurementSymbol){
 		text = text || '';
-		return text !== '' ? text : '/';
+		measurementSymbol = measurementSymbol || '';
+		return text !== '' ? text + '&nbsp;' + measurementSymbol : '/';
 	}
 	
 	handleError = function(img){
@@ -81,11 +82,11 @@ $(document).ready(function(){
 			$.each(data.photos, function(index, photo){
 				var anchor = '<a class="gallery" data-lightbox="example-set" href="' + SAMPLE_ORIGINAL_PHOTOS_URL + photo.uuid + '">';
 				anchor+= '<img src="' + SAMPLE_THUMBNAILS_URL + photo.uuid + '" class="sampleImage" onError="handleError(this);" /></a>';
-				$('td.sampleImages').append(anchor);
+				$('div.sampleImages').append(anchor);
 			});
 		} else{
 			var noImageIcon = '<img src="' + NO_IMAGE_ICON_URL + '" class="noImageClass" />';
-			$('td.sampleImages').html(noImageIcon);
+			$('div.sampleImages').html(noImageIcon);
 		}
 	};
 	
@@ -96,7 +97,18 @@ $(document).ready(function(){
 	    var size = new OpenLayers.Size(21,25);
 	    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 	    var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
-	    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(data.lon, data.lat),icon));
+	    var marker = new OpenLayers.Marker(new OpenLayers.LonLat(data.lon, data.lat),icon);
+	    markers.addMarker(marker);
+	    
+	    marker.events.register("click", marker, function(e){
+	    	popup = new OpenLayers.Popup.FramedCloud("chicken",
+	    	new OpenLayers.LonLat(data.lon, data.lat),
+	    	new OpenLayers.Size(200, 200),
+	    	//"I was here <br><img src='" + SAMPLE_THUMBNAILS_URL + data.photos[0].uuid + "' width='90' height='90'>",
+	    	"I was here",
+	    	null, true);
+	    	map.addPopup(popup);
+    	});
 	};
 	
 	var populatePage = function(data){

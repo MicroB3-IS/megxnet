@@ -1,6 +1,6 @@
-#set($url = "$ctx.siteUrl/ws/esa/allSamples")
-#set ($columnNames = ["", "Sample name", "Date of creation", "Biome", "Weather condition", "Feature", "Air temperature", "Latitude", "Longitude",
-                      "Barcode", "Elevation", "Collection", "Permit", "Sampling depth", "Water depth", "Sample size", 
+#set($url = "$ctx.siteUrl/ws/v1/esa/v1.0.0/allSamples")
+#set ($columnNames = ["", "Observer", "Sample name", "Date of creation", "Biome", "Weather condition", "Feature", "Air temperature", "Latitude", "Longitude",
+                      "Barcode", "Elevation", "Collection method", "Permit", "Material", "Secchi depth", "Sampling depth", "Water depth", "Sample size", 
                       "Water temperature", "Conductivity", "Wind speed", "Salinity", "Comment", "Accuracy", "Phosphate", "Nitrate", 
                       "Nitrite", "pH", "Action"])
 
@@ -38,6 +38,10 @@ $ext.dataTable.renderServerSide(
 	 	},
 	 	sWidth: '80px',
 	 	bSortable: false
+	 }, {
+	 	mData: 'collectorId',
+	 	sClass: 'left data-pad',
+	 	bVisible: false
 	 }, { 
 	 	mData: 'label',
 	 	sClass: 'left data-pad'
@@ -82,6 +86,14 @@ $ext.dataTable.renderServerSide(
 	 	sClass: 'center data-pad',
 	 	bVisible: false
 	 }, {
+	 	mData: 'material',
+	 	sClass: 'left data-pad',
+	 	bVisible: false
+	 }, {
+	 	mData: 'secchiDepth',
+	 	sClass: 'center data-pad',
+	 	bVisible: false
+	 }, {
 	 	mData: 'samplingDepth',
 	 	sClass: 'right data-pad'
 	 }, {
@@ -93,7 +105,7 @@ $ext.dataTable.renderServerSide(
 	 	sClass: 'right data-pad',
 	 	bVisible: false
 	 }, {
-	 	mData: 'waterTemerature',
+	 	mData: 'waterTemperature',
 	 	sClass: 'right data-pad'
 	 }, {
 	 	mData: 'conductivity',
@@ -142,7 +154,7 @@ $ext.dataTable.renderServerSide(
 	 }]
 }")
 
-<form id="sf" action="$ctx.siteUrl/ws/esa/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
+<form id="sf" action="$ctx.siteUrl/ws/v1/esa/v1.0.0/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
 	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
 </form>
 

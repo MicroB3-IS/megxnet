@@ -28,12 +28,14 @@ public class Sample {
 	private String feature;
 	private String collection;
 	private String permit;
+	private String material;
+	private Double secchiDepth;
 	private Double samplingDepth;
 	private Double waterDepth;
 	private Integer sampleSize;
 	private String weatherCondition;
 	private Double airTemperature;
-	private Double waterTemerature;
+	private Double waterTemperature;
 	private String conductivity;
 	private Double windSpeed;
 	private Double salinity;
@@ -205,6 +207,18 @@ public class Sample {
 	public void setPermit(String permit) {
 		this.permit = permit;
 	}
+	public String getMaterial() {
+		return material;
+	}
+	public void setMaterial(String material) {
+		this.material = material;
+	}
+	public Double getSecchiDepth() {
+		return secchiDepth;
+	}
+	public void setSecchiDepth(Double secchiDepth) {
+		this.secchiDepth = secchiDepth;
+	}
 	public Double getSamplingDepth() {
 		return samplingDepth;
 	}
@@ -235,11 +249,11 @@ public class Sample {
 	public void setAirTemperature(Double airTemperature) {
 		this.airTemperature = airTemperature;
 	}
-	public Double getWaterTemerature() {
-		return waterTemerature;
+	public Double getWaterTemperature() {
+		return waterTemperature;
 	}
-	public void setWaterTemerature(Double waterTemerature) {
-		this.waterTemerature = waterTemerature;
+	public void setWaterTemperature(Double waterTemperature) {
+		this.waterTemperature = waterTemperature;
 	}
 	public String getConductivity() {
 		return conductivity;
@@ -304,24 +318,23 @@ public class Sample {
 	public String toString() {
 		return "Sample [id=" + id + ", taken=" + taken + ", modified="
 				+ modified + ", collectorId=" + collectorId + ", label="
-				+ label + ", barcode=" + barcode
-				+ ", projectId=" + projectId + ", userName=" + userName
-				+ ", shipName=" + shipName + ", nationality=" + nationality
-				+ ", boatManufacturer=" + boatManufacturer + ", boatModel=" + boatModel
+				+ label + ", barcode=" + barcode + ", projectId=" + projectId
+				+ ", userName=" + userName + ", shipName=" + shipName
+				+ ", nationality=" + nationality + ", boatManufacturer="
+				+ boatManufacturer + ", boatModel=" + boatModel
 				+ ", boatLength=" + boatLength + ", homeport=" + homeport
 				+ ", elevation=" + elevation + ", biome=" + biome
 				+ ", feature=" + feature + ", collection=" + collection
-				+ ", permit=" + permit + ", samplingDepth=" + samplingDepth
-				+ ", waterDepth=" + waterDepth + ", sampleSize=" + sampleSize
-				+ ", weatherCondition=" + weatherCondition
-				+ ", airTemperature=" + airTemperature + ", waterTemerature="
-				+ waterTemerature + ", conductivity=" + conductivity
-				+ ", windSpeed=" + windSpeed + ", salinity=" + salinity
-				+ ", comment=" + comment + ", lat=" + lat + ", lon=" + lon
-				+ ", accuracy=" + accuracy + ", phosphate=" + phosphate
-				+ ", nitrate=" + nitrate + ", nitrite=" + nitrite + ", pH=" + ph + ", photos="
-				+ Arrays.toString(photos) + "]";
+				+ ", permit=" + permit + ", material=" + material
+				+ ", secchiDepth=" + secchiDepth + ", samplingDepth="
+				+ samplingDepth + ", waterDepth=" + waterDepth
+				+ ", sampleSize=" + sampleSize + ", weatherCondition="
+				+ weatherCondition + ", airTemperature=" + airTemperature
+				+ ", waterTemperature=" + waterTemperature + ", conductivity="
+				+ conductivity + ", windSpeed=" + windSpeed + ", salinity="
+				+ salinity + ", comment=" + comment + ", lat=" + lat + ", lon="
+				+ lon + ", accuracy=" + accuracy + ", phosphate=" + phosphate
+				+ ", nitrate=" + nitrate + ", nitrite=" + nitrite + ", ph="
+				+ ph + ", photos=" + Arrays.toString(photos) + "]";
 	}
-	
-	
 }

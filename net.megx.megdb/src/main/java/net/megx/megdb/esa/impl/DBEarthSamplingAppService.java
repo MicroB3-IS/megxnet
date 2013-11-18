@@ -12,6 +12,7 @@ import net.megx.megdb.BaseMegdbService;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.megdb.esa.mappers.ESAMapper;
 import net.megx.model.esa.Sample;
+import net.megx.model.esa.SampleLocationCount;
 import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
@@ -246,5 +247,17 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 			}
 		}, ESAMapper.class);
 		
+	}
+
+	@Override
+	public List<SampleLocationCount> getSamplesLocationAndCount()
+			throws Exception {
+		
+		return doInSession(new DBTask<ESAMapper, List<SampleLocationCount>>(){
+			@Override
+			public List<SampleLocationCount> execute(ESAMapper mapper) throws Exception{
+				return mapper.getSamplesLocationAndCount();
+			}
+		}, ESAMapper.class);
 	}
 }
