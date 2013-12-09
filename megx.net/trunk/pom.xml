@@ -124,8 +124,7 @@
 		<module>net.megx.ws.mg-traits</module>
 		<!-- WebSocket broadcast module -->
 		<module>net.megx.broadcast</module>
-		<!-- Features Files and Acceptance Tests -->
-		<module>net.megx.specbyexample.accepttest</module>
+		
 	</modules>
 
 	<dependencyManagement>
@@ -158,9 +157,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-
-
 	<build>
 		<resources>
 			<resource>
@@ -276,6 +272,7 @@
 								<version>[1.6.0,)</version>
 							</requireJavaVersion>
 
+
 							<requireMavenVersion>
 								<version>[3.0.3,)</version>
 							</requireMavenVersion>
@@ -291,6 +288,7 @@
 							</requireProperty>
 						</rules>
 					</configuration>
+
 
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
