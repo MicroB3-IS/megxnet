@@ -79,7 +79,7 @@ $(document).ready(function() {
 	var submitParticipant = function() {
 		
 		var url = "";
-		var redirectUrl = ctx.siteUrl + "/osd/list";
+		var redirectUrl = ctx.siteUrl + "/osd-registry/list";
 		
 		if(isInEditMode){
 			url = ctx.siteUrl + "/ws/v1/OSDRegistry/v1.0.0/updateParticipant";
@@ -144,7 +144,7 @@ $(document).ready(function() {
 	
 	var deleteParticipant = function(id){
 		var url = ctx.siteUrl + "/ws/v1/OSDRegistry/v1.0.0/deleteParticipant";
-		var redirectUrl = ctx.siteUrl + "/osd/list";
+		var redirectUrl = ctx.siteUrl + "/osd-registry/list";
 		
 		ajaxCall(
 				"POST",
@@ -219,7 +219,7 @@ $(document).ready(function() {
 	};
 	
 	$(".addNewParticipant").click(function(){
-		window.location.href = ctx.siteUrl + "/osd/add";
+		window.location.href = ctx.siteUrl + "/osd-registry/add";
 	});
 
 });
