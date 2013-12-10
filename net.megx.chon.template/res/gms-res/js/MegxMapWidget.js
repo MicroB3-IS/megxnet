@@ -1,28 +1,34 @@
-//Absract widget
-CMap = function(config) {
-	/*
-	config = {
-		ct: '', 			 // div container
-		layers: ['layer1', 'layer2']	 // named layers anabled for this map
-	}	
-	*/
+/**
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+//Abstract widget
+
+// load layersets
+
+MegxMapWidget = function(config) {
+    //TODO: check minimum config params 
+    //TODO: check URL  
 	this.init(config);
 }
 
-CMap.prototype = {
+MegxMapWidget.prototype = {
 	init: function(config) {
-		
 		this.map = new OpenLayers.Map(config.el, {
 			controls : [],
 			numZoomLevels : 16,
 			projection : "EPSG:4326"
 		});
 		
-		this.initMap(this.map);
+		this.addMapControls(this.map);
 		
 		console.log("Init map on gmsURL = " + config.gmsURL);
 		
-		this.layers = new CMapLayers({
+		this.layers = new MegxMapWidgetLayers({
 			gms_wms_url: config.gmsURL,
 			sam_genomes: 'genome',
 			sam_metagenomes: 'metagenome',
@@ -32,16 +38,12 @@ CMap.prototype = {
 		});
 		this.map.addLayers(this.layers.getLayersArray());
 		var map = this.map;
+		//will fail without base layer
+        map.zoomToMaxExtent();
 		
-		
-		//map.setBaseLayer(this.layers.get('satellite_mod'));
-		//map.setCenter(new OpenLayers.LonLat(lon, lat), 0);
-		if (!map.getCenter()) {
-			map.zoomToMaxExtent();
-		}
 	},
 	
-	initMap: function(map) {
+	addMapControls: function(map) {
 		var navContr = new OpenLayers.Control.Navigation();
 		navContr.setMap(map);
 
@@ -49,11 +51,13 @@ CMap.prototype = {
 		map.addControl(new OpenLayers.Control.ScaleLine());
 		map.addControl(new OpenLayers.Control.MousePosition());
 		map.addControl(new OpenLayers.Control.KeyboardDefaults());
-		var panZoomContr = new OpenLayers.Control.PanZoomBar();
+		
+        var panZoomContr = new OpenLayers.Control.PanZoomBar();
 		panZoomContr.setMap(map);
 		map.addControl(panZoomContr);
 		map.addControl(new OpenLayers.Control.Attribution());
-		var permalinkContr = new OpenLayers.Control.Permalink('permalink');
+		
+        var permalinkContr = new OpenLayers.Control.Permalink('permalink');
 		permalinkContr.setMap(map);
 		map.addControl(permalinkContr);
 	},
@@ -84,10 +88,9 @@ CMap.prototype = {
 		}
 	},
 
-	reorder: function(arr) {
-		// argument array, new order of layers on the map
-		//TODO: showLayer
-	},
+    getName: function() {
+        return 'renzo';
+    },
 
 	setTopClickable: function(name) {
 		//TODO: set clickable layer, show on top order ...
@@ -98,7 +101,4 @@ CMap.prototype = {
 		return this.layers.get(name).redraw();
 	}
 };
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 

@@ -1,32 +1,9 @@
-CMapLayers = function(cfg) {
+MegxMapWidgetLayers = function(cfg) {
 	
 	this.init(cfg);
 }
-CMapLayers.prototype = {
-	getLayersNames: function() {
-		var rv = [];
-		for(var k in this.layers) {
-			rv.push(k);
-		}
-		return rv;
-	},
-	
-	getLayersArray: function() {
-		var rv = [];
-		for(var k in this.layers) {
-			rv.push(this.layers[k]);
-		}
-		return rv;
-	},
-	
-	getLayers: function() {
-		return this.layers;
-	},
-	
-	get: function(layerName) {
-		return this.layers[layerName];
-	},
-	
+MegxMapWidgetLayers.prototype = {
+		
 	init: function(cfg) {
 		var gms_wms_url = cfg.gms_wms_url;
 		var extent = cfg.extent;
@@ -195,5 +172,28 @@ CMapLayers.prototype = {
 		});
 		
 		this.layers = layers;
-	}
+	},
+    getLayersNames: function() {
+		var layerNames = [];
+		for(var k in this.layers) {
+			layerNames.push(k);
+		}
+		return layerNames;
+	},
+	
+	getLayersArray: function() {
+		var layerArray = [];
+		for(var k in this.layers) {
+			layerArray.push(this.layers[k]);
+		}
+		return layerArray;
+	},
+	
+	getLayers: function() {
+		return this.layers;
+	},
+	
+	get: function(layerName) {
+		return this.layers[layerName];
+	},
 }
