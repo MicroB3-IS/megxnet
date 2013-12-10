@@ -1,0 +1,32 @@
+<link href="$ctx.siteUrl/gms-res/gms.css" rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/net.megx.esa/css/esa.css" rel="stylesheet" type="text/css">
+
+<script src="$ctx.siteUrl/js/OpenLayers.js" type="text/javascript"></script>
+
+<script src="$ctx.siteUrl/gms-res/js/CMapLayers.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/gms-res/js/CMap.js" type="text/javascript"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/atmosphere-min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/esa.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleObservations.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampledOceans.js"></script>
+
+<div style="padding: 15px">
+	<h3>Map of samples</h3>
+	<div>
+		<table>
+			<tr>
+				<td style="width: 625px; height: 410px;">
+					#parse("net.megx.esa/samplesMap.html")	
+				</td>
+				<td style="width: 340px; height: 410px;">
+					#parse("net.megx.esa/sampleStats.html")		
+				</td> 
+			</tr>
+		</table>
+	</div>
+	
+	<h3>Table representation</h3>
+	<div>
+		#parse("net.megx.esa/samplesTable.html")
+	</div>
+</div>

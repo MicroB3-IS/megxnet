@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>net.megx</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+		<artifactId>parent-microb3-is</artifactId>
+	</parent>
+
+	<properties>
+	    <credentials.file>security-filter.properties</credentials.file>
+	</properties>
+	
+	<groupId>net.megx</groupId>
+	<artifactId>net.megx.security.filter</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+	    <filters>
+            <filter>${credentials.file}</filter>
+        </filters>
+		<plugins>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-to-config-folder</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${mvn.work.dir.path}/config</outputDirectory>
+							<resources>
+								<resource>
+									<directory>__config</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+					    <id>replace-placeholders</id>
+					    <phase>validate</phase>
+					    <goals>
+					        <goal>copy-resources</goal>
+				        </goals>
+				        <configuration>
+				            <outputDirectory>${project.build.outputDirectory}/__config</outputDirectory>
+							<resources>
+								<resource>
+									<directory>__config</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- main configuration is in parent pom -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
