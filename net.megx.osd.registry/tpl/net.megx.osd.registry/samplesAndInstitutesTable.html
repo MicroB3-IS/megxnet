@@ -32,7 +32,7 @@ $ext.dataTable.renderServerSide(
 	 	sWidth: '130px',
 	 	mRender: function(id){
 	 		#if($req.user && $req.servletRequset.isUserInRole('admin'))
-	 			var editUrl = '$ctx.siteUrl/osd/add?id=' + id;
+	 			var editUrl = '$ctx.siteUrl/osd-registry/add?id=' + id;
 	 			var deleteUrl = '$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/deleteParticipant?id=' + id;
 	 			return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a> / <a href=' + editUrl + '>Edit</a> / <a href=\'\' class=\'deleteParticipantClass\' id=' + id + '>Delete</a>';
  			#else
