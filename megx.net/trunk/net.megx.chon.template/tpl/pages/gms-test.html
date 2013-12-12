@@ -34,15 +34,15 @@
         <div class="group">
             <h3>Baselayer</h3>
             <div class="mx-layer-configuration-header">icon for visibility| icon for external layer description document</div>
-            <div class="mx-layer-configuration">
-                <p class="mx-layer-description"></p>
+            <div class="mx-layer-configuration" id="layer_1">
+                <p class="mx-layer-description">World Map (Base Layer)</p>
                 <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
             </div>
         </div>
 <div class="group">
             <h3>ENA - Samples</h3>
             <div class="mx-layer-configuration-header">icon for visibility| icon for external layer description document</div>
-            <div class="mx-layer-configuration">
+            <div class="mx-layer-configuration" id="layer_2">
                 <p class="mx-layer-description"></p>
                 <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
             </div>
@@ -50,7 +50,7 @@
 
     </div>
 
-	<div id="megxMap" style="width: 700px; height: 480px; float: left; margin-left: 15px;" class="megxmap"></div>   
+	<div id="megxMap" style="width: 700px; height: 480px; float: left; margin-left: 15px;" class="mx-map"></div>   
 </div>
 
 <div id="samplingSiteLegendImg"></div>
@@ -59,7 +59,7 @@
 
 jQuery(function($) {
 	map = new MegxMapWidget({
-		el: "megxMap",
+		el: "mx-map",
         layerSet: "ena",
 		gmsURL: "http://mb3is.megx.net/wms"
 	});
