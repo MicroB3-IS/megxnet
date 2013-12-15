@@ -1,34 +1,56 @@
 package support;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import junit.framework.Assert;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class GUITest {
-	
-	private String base_url;
-	
-	public GUITest(){
-			
-	}
-	public void saveButtonAvailabilityTest() {
-        // FirefoxDriver driver = new FirefoxDriver(); does not work!
-        // Caused by: org.openqa.selenium.firefox.NotConnectedException: 
-        // Failed to start up socket within 45000
-		
-		base_url = System.getProperty("base.url");		
-        HtmlUnitDriver driver = new HtmlUnitDriver(); 
 
-        try {
-            driver.get(base_url);
-            WebElement saveButton = driver.findElement(By.id("saveButton"));
-            
-           
-        } finally {
-            driver.close();
-        }
-    }   
+	HtmlUnitDriver driver = new HtmlUnitDriver();
+
+	public GUITest() {
+
+	}
+
+	public void pageAvailability(String pagePath) {
+
+		try {
+			String baseUrl = System.getProperty("base.url");
+			driver.get(baseUrl + pagePath);
+
+		} finally {
+			driver.close();
+		}
+	}
+
+	public void formDataAvailability() {
+		// TODO		
+	}
+
+	public void buttonAvailability(String pagePath) {
+
+		try {
+			String baseUrl = System.getProperty("base.url");
+			driver.get(baseUrl + pagePath);
+			WebElement saveButton = driver.findElementById("saveButton");						
+			
+		} finally {
+			driver.close();
+		}
+
+	}
+
+	public void reponseMessageElement(String pagePath) {
+		
+		try {
+			String baseUrl = System.getProperty("base.url");
+			driver.get(baseUrl + pagePath);
+			WebElement element = driver.findElementById("responseMessage");						
+			
+		} finally {
+			driver.close();
+		}
+
+	}
 
 }
