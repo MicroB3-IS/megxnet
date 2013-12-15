@@ -22,6 +22,13 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.megx</groupId>
+			<artifactId>dummy.webapp</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+	
+		<dependency>
 			<groupId>org.jbehave</groupId>
 			<artifactId>jbehave-core</artifactId>
 			<version>${jbehave.core.version}</version>
@@ -40,28 +47,28 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>            
-            <version>2.37.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-	<groupId>org.seleniumhq.webdriver</groupId>
-	<artifactId>webdriver-htmlunit</artifactId>
-	<version>0.9.7376</version>            
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>2.37.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.webdriver</groupId>
+			<artifactId>webdriver-htmlunit</artifactId>
+			<version>0.9.7376</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.webdriver</groupId>
+			<artifactId>webdriver-firefox</artifactId>
+			<version>0.9.7376</version>
+		</dependency>
+		
+		<dependency>
+	<groupId>com.jayway.restassured</groupId>
+	<artifactId>rest-assured</artifactId>
+	<version>2.0.1</version>
 </dependency>
-<dependency>
-	<groupId>org.seleniumhq.webdriver</groupId>
-	<artifactId>webdriver-firefox</artifactId>
-	<version>0.9.7376</version>
-</dependency>
-<dependency>
-	<groupId>net.megx</groupId>
-	<artifactId>dummy.webapp</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <type>war</type>
-</dependency>
-            
+
 	</dependencies>
 
 	<build>
@@ -145,15 +152,13 @@
 							<threads>1</threads>
 							<metaFilters>
 								<metaFilter></metaFilter>
-							</metaFilters>
-							<!-- value NOCH Ändern -->
+							</metaFilters>							
 							<systemProperties>
-							   <property>
-							      <name>base.url</name>
-							      <value>http://localhost:8080/osd-registry</value>							      
-							   </property>
+								<property>
+									<name>base.url</name>
+									<value>http://localhost:8080/osd-registry</value>
+								</property>																						
 							</systemProperties>
-							
 						</configuration>
 						<goals>
 							<goal>run-stories-as-embeddables</goal>
@@ -161,7 +166,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- TOMCAT STARTEN /STOPPEN -->
+			<!--TOMCAT STARTEN /STOPPEN -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
@@ -185,16 +190,12 @@
 				<configuration>
 					<container>
 						<containerId>tomcat7x</containerId>
-						
-						
+						<home>/home/anne/apache-tomcat-7.0.47</home>
 						<append>false</append>
 						<log>${project.build.directory}/tomcat-logs/cargo.log</log>
 					</container>
 					<configuration>
-						<type>existing</type>
-						
-						<home>/home/anne/apache-tomcat-7.0.47</home>
-						
+						<type>standalone</type>						
 						<properties>
 							<cargo.servlet.port>8080</cargo.servlet.port>
 							<cargo.logging>high</cargo.logging>
@@ -202,16 +203,14 @@
 						<deployables>
 							<deployable>
 								<groupId>net.megx</groupId>
-								<artifactId>dummy.webapp</artifactId>
-								<!-- <version>1.0-SNAPSHOT</version> -->
+								<artifactId>dummy.webapp</artifactId>								
 								<type>war</type>
 							</deployable>
 						</deployables>
 					</configuration>
 				</configuration>
-			</plugin>
+			</plugin> 
 			
 		</plugins>
 	</build>
-
 </project>
