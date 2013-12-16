@@ -1,119 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-<!-- <META HTTP-EQUIV="refresh" CONTENT="2;"/> -->
-<meta charset=UTF-8”>
 
-<!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<!--
+<link rel="stylesheet" href="../../res/gms-res/gms.css"  type="text/css"/>
 
-</head>
-<link rel="stylesheet" href="../../gms-res/gms.css"  type="text/css"/>
-<link rel="stylesheet" href="../../js/theme/default/style.css" type="text/css"/>
+<link rel="stylesheet" href="../../res/js/theme/default/style.css" type="text/css"/>
+-->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="$ctx.siteUrl/js/theme/default/style.css" type="text/css"/>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
 <script src="http://openlayers.org/api/2.13.1/OpenLayers.js" type="text/javascript"></script>
-<!-- <script src="../../res/js/OpenLayers.js" type="text/javascript"></script> -->
-<script src="../../res/gms-res/js/MegxMapWidgetLayers.js" type="text/javascript"></script>
-<script src="../../res/gms-res/js/MegxMapWidget.js" type="text/javascript"></script>
+
+<script src="$ctx.siteUrl/gms-res/js/MegxMapWidgetLayers.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/gms-res/js/MegxMapWidget.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
 
 
 <style>
 /* IE has layout issues when sorting (see #5413) */
-.group { zoom: 1 }
+.group {
+  zoom : 1
+}
+
+.smallmap {
+  height : 256,
+  width : 512px
+}
+html, body {
+  width : 100 % ;
+  height : 100 % ;
+  margin : 0;
+  padding : 0;
+}
 </style>
 
-<!-- TODO: html5ify this with semantic tags -->
-<div style="border: solid red 1px; padding: 10px;">
-
-    <div id="mx-layers">
-        <div class="group">
-            <h3>Baselayer</h3>
-            <div class="mx-layer-configuration-header">icon for visibility| icon for external layer description document</div>
-            <div class="mx-layer-configuration">
-                <p class="mx-layer-description"></p>
-                <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
-            </div>
-        </div>
-<div class="group">
-            <h3>ENA - Samples</h3>
-            <div class="mx-layer-configuration-header">icon for visibility| icon for external layer description document</div>
-            <div class="mx-layer-configuration">
-                <p class="mx-layer-description"></p>
-                <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
-            </div>
-        </div>
-
-    </div>
-
-	<div id="megxMap" style="width: 700px; height: 480px; float: left; margin-left: 15px;" class="megxmap"></div>   
+<div id="megxMapWidget">
 </div>
 
-<div id="samplingSiteLegendImg"></div>
-
 <script type="text/javascript">
-
-jQuery(function($) {
-	map = new MegxMapWidget({
-		el: "megxMap",
-        layerSet: "ena",
-		gmsURL: "http://mb3is.megx.net/wms"
-	});
-	
-	map.hideAll();
-	//map.showLayer('satellite');
-	//map.showLayer('samplingsites');
-	map.showLayer('bathymetry');
-	
-	var names = map.layers.getLayersNames();
-	var ct = $("#layers");
-	for(var i=0; i<names.length; i++) {
-		var name = names[i];
-		var id = names[i] + "_id";
-		
-		var d = $("<div />");
-		$('<input type="checkbox" />')
-			.attr("name", name)
-			.attr("id", id)
-			.on('change', function() {
-				var n = $(this).attr('name');
-				var checked = !! $(this).attr("checked");
-				if(checked) {
-					map.showLayer(n);
-				} else {
-					map.hideLayer(n);
-				}
-			}).appendTo(d);
-		$('<label for="'+id+'" />').html(name).appendTo(d);
-		d.appendTo(ct);
-	}
+$(document).ready(function () {
+  //the only required parameter is the layerSet to be rendered
+  var megxMapWidget = new MegxMapWidget("ena", null);
 });
+</script> 
 
-</script>
-
-<script>
-$(function () {
-  $("#layerConfiguration")
-  .accordion({
-    collapsible: true,
-    heightStyle: "content",
-    header : "> div > h3"
-  })
-  .sortable({
-    axis : "y",
-    handle : "h3",
-    stop : function (event, ui) {
-      // IE doesn't register the blur when sorting
-      // so trigger focusout handlers to remove .ui-state-focus
-      ui.item.children("h3").triggerHandler("focusout");
-    }
-  });
-});
-</script>
-
-
-</html>

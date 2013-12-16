@@ -3,7 +3,30 @@ MegxMapWidgetLayers = function(cfg) {
 	this.init(cfg);
 }
 MegxMapWidgetLayers.prototype = {
-		
+	getLayersNames: function() {
+		var rv = [];
+		for(var k in this.layers) {
+			rv.push(k);
+		}
+		return rv;
+	},
+	
+	getLayersArray: function() {
+		var rv = [];
+		for(var k in this.layers) {
+			rv.push(this.layers[k]);
+		}
+		return rv;
+	},
+	
+	getLayers: function() {
+		return this.layers;
+	},
+	
+	get: function(layerName) {
+		return this.layers[layerName];
+	},
+	
 	init: function(cfg) {
 		var gms_wms_url = cfg.gms_wms_url;
 		var extent = cfg.extent;
@@ -25,6 +48,21 @@ MegxMapWidgetLayers.prototype = {
 			maxResolution : "auto"
 		});
 		
+        
+		layers.ena_samples = new OpenLayers.Layer.WMS("ena_samples", gms_wms_url, {
+			layers : 'ena_samples',
+			format : 'image/png',
+			transparent : "true"
+		}, {
+			isBaseLayer : false,
+			singleTile : true,
+			maxExtent : extent,
+			maxResolution : "auto"
+		});
+        layers.ena_samples.desc = "European Nucleotide Archive Samples";
+        layers.ena_samples.niceName = "ENA Samples";
+        layers.ena_samples.controlHtml = "";
+        
 		layers.esa = new OpenLayers.Layer.WMS("esa", gms_wms_url, {
 			layers : 'esa',
 			format : 'image/png',
@@ -143,13 +181,10 @@ MegxMapWidgetLayers.prototype = {
 			maxExtent : extent,
 			maxResolution : "auto"
 		});
-/*
- * not used yet gdemLayer = new OpenLayers.Layer.WMS("gdem", gms_wms_url, {
- * layers : 'gdem', format : 'image/png', transparent : "true", map :
- * gms_map_file }, { singleTile : true, maxExtent : extent, maxResolution :
- * "auto" });
- */
-		layers.limitsoceans = new OpenLayers.Layer.WMS("limitsoceans", gms_wms_url, {
+        layers.boundaries.niceName = "Boundaries";
+        layers.boundaries.desc = "Non-authoritative boundaries of the World Oceans";
+
+        layers.limitsoceans = new OpenLayers.Layer.WMS("limitsoceans", gms_wms_url, {
 			layers : 'limitsoceans',
 			format : 'image/png',
 			transparent : "true"
@@ -172,28 +207,5 @@ MegxMapWidgetLayers.prototype = {
 		});
 		
 		this.layers = layers;
-	},
-    getLayersNames: function() {
-		var layerNames = [];
-		for(var k in this.layers) {
-			layerNames.push(k);
-		}
-		return layerNames;
-	},
-	
-	getLayersArray: function() {
-		var layerArray = [];
-		for(var k in this.layers) {
-			layerArray.push(this.layers[k]);
-		}
-		return layerArray;
-	},
-	
-	getLayers: function() {
-		return this.layers;
-	},
-	
-	get: function(layerName) {
-		return this.layers[layerName];
-	},
+	}
 }
