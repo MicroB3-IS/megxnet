@@ -9,23 +9,23 @@ MegxMapWidget = function (layerSetName, config) {
 MegxMapWidget.prototype = {
   init : function (layerSetName, config, gu) {
 
-    this.renderLayoutSceleton('megxMapWidget');
+    this.renderWidget('megxMapWidget');
 
     this.map = new OpenLayers.Map('megxMap', {
         controls : [],
         numZoomLevels : 16,
-        projection : "EPSG:4326"
+        projection : "EPSG:4326",
+        allOverlays : true
       });
 
     this.LAYERSET = {
-      'esa' : ['satellite_mod', 'esa']
+      'esa' : ['satellite_mod', 'esa'],
+      'ena' : ['boundaries', 'ena_samples']
     };
 
     this.infoPanel = '#layersAccordion';
 
     this.initMap(this.map);
-
-    //console.log("Init map on gmsURL = " + config.gmsURL);
 
     this.layers = new MegxMapWidgetLayers({
         gms_wms_url : 'http://mb3is.megx.net/wms',
@@ -39,33 +39,64 @@ MegxMapWidget.prototype = {
     var layerset = this.LAYERSET[layerSetName.toLowerCase()];
 
     if (layerset) {
-      for (var i = 0; i < layerset.length; i++) {
+      for (var i = 0, j = layerset.length - 1; i < layerset.length; i++, j--) {
         this.map.addLayer(this.layers.get(layerset[i]));
-        this.addAccordionChild(layerset[i]);
+        this.addLayerPanel(this.layers.get(layerset[j]));
       }
     }
-
-    this.accordifyInfoPanel();
-
-    var map = this.map;
+    this.createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
+    this.accordifyLayerPanel();
 
     //map.setBaseLayer(this.layers.get('satellite_mod'));
     //map.setCenter(new OpenLayers.LonLat(lon, lat), 0);
-    if (!map.getCenter()) {
-      map.zoomToMaxExtent();
+    if (!this.map.getCenter()) {
+      this.map.zoomToMaxExtent();
     }
   },
 
-  renderLayoutSceleton : function (layoutParent) {
+  createWMSFeatureInfo : function (layer, map) {
+
+    var featureInfo = new OpenLayers.Control.WMSGetFeatureInfo({
+        /* vendorParams : {
+        RRNAS : sam_rrna,
+        GENOMES : sam_genomes,
+        PHAGES : sam_phages,
+        METAGENOMES : sam_metagenomes
+        }, */
+        url: this.gmsBaseURL,
+        queryVisible: true,
+        infoFormat: 'text/html',
+        layers : [layer],
+        title : 'Identify features by clicking',
+        //queryVisible : true,
+        //format: new OpenLayers.Format.WMSGetFeatureInfo(),
+        eventListeners : {
+          getfeatureinfo : function (event) {
+            var lonlat = map.getLonLatFromPixel(event.xy);
+            map
+            .addPopup(new OpenLayers.Popup.FramedCloud(
+                "chicken", lonlat, null, event.text
+                 ? event.text
+                 : 'No data at ' + event.text+ ': ' + lonlat + event.features + event.xy,
+                null, true));
+          }
+        }
+      });
+
+    map.addControl(featureInfo);
+    featureInfo.activate();
+  },
+
+  renderWidget : function (layoutParent) {
     var layoutParentSelector = '#' + layoutParent;
     var layoutHtml = ['<table style="width: 99%; margin-top:10px; margin-bottom:10px;">',
       '<tr>',
       '<td id="layersAccordion" style="width: 30%; padding-left:10px;">',
       '</td>',
       '<td class="mapPlaceholder">',
-      
+
       '<div id="megxMap" style="width: 900px; height: 450px"></div>',
-     
+
       '</td>',
       '</tr>',
       '</table>'
@@ -74,15 +105,21 @@ MegxMapWidget.prototype = {
     $(layoutParentSelector).append(layoutHtml);
   },
 
-  addAccordionChild : function (layer) {
-    var htmlToAppend = ['<div class="group">',
-      '<h3>', layer, '</h3>',
-      '<div>',
-      '<p>Some layer desc etc...</p>',
+  addLayerPanel : function (layer) {
+
+    var layerPanelHtml = ['<div id="mx-layer" class="group">',
+      '<h3>' + layer.niceName,
+      '<div class="mx-layer-configuration-header">',
+      '<!-- icon for visibility| icon for external layer description document -->',
       '</div>',
-      '</div>'
-    ].join('');
-    $(this.infoPanel).append(htmlToAppend);
+      '</h3>',
+      '<div class="mx-layer-configuration">',
+      '<p class="mx-layer-description">' + layer.desc + '</p>',
+      '<div class="mx-layer-control"></div>',
+      '</div>',
+      '</div>'].join('');
+
+    $(this.infoPanel).append(layerPanelHtml);
   },
 
   initMap : function (map) {
@@ -102,7 +139,7 @@ MegxMapWidget.prototype = {
     map.addControl(permalinkContr);
   },
 
-  accordifyInfoPanel : function () {
+  accordifyLayerPanel : function () {
     $(this.infoPanel)
     .accordion({
       collapsible : true,
