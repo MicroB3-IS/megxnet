@@ -48,6 +48,21 @@ MegxMapWidgetLayers.prototype = {
 			maxResolution : "auto"
 		});
 		
+        
+		layers.ena_samples = new OpenLayers.Layer.WMS("ena_samples", gms_wms_url, {
+			layers : 'ena_samples',
+			format : 'image/png',
+			transparent : "true"
+		}, {
+			isBaseLayer : false,
+			singleTile : true,
+			maxExtent : extent,
+			maxResolution : "auto"
+		});
+        layers.ena_samples.desc = "European Nucleotide Archive Samples";
+        layers.ena_samples.niceName = "ENA Samples";
+        layers.ena_samples.controlHtml = "";
+        
 		layers.esa = new OpenLayers.Layer.WMS("esa", gms_wms_url, {
 			layers : 'esa',
 			format : 'image/png',
@@ -166,13 +181,10 @@ MegxMapWidgetLayers.prototype = {
 			maxExtent : extent,
 			maxResolution : "auto"
 		});
-/*
- * not used yet gdemLayer = new OpenLayers.Layer.WMS("gdem", gms_wms_url, {
- * layers : 'gdem', format : 'image/png', transparent : "true", map :
- * gms_map_file }, { singleTile : true, maxExtent : extent, maxResolution :
- * "auto" });
- */
-		layers.limitsoceans = new OpenLayers.Layer.WMS("limitsoceans", gms_wms_url, {
+        layers.boundaries.niceName = "Boundaries";
+        layers.boundaries.desc = "Non-authoritative boundaries of the World Oceans";
+
+        layers.limitsoceans = new OpenLayers.Layer.WMS("limitsoceans", gms_wms_url, {
 			layers : 'limitsoceans',
 			format : 'image/png',
 			transparent : "true"
