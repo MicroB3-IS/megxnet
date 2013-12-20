@@ -42,9 +42,9 @@ MegxMapWidget.prototype = {
         var layerset = this.LAYERSET[layerSetName.toLowerCase()];
 
         if (layerset) {
-            for ( var i = 0, j = layerset.length - 1; i < layerset.length; i++, j--) {
+            for ( var i = 0; i < layerset.length; i++ ) {
                 this.map.addLayer(this.layers.get(layerset[i]));
-                this.addLayerPanel(layerset[j]);
+                this.addLayerPanel(layerset[i]);
                 this.displayedLayers[layerset[i]] = true;
             }
         }
@@ -94,7 +94,7 @@ MegxMapWidget.prototype = {
                 '<table style="width: 99%; margin-top:10px; margin-bottom:10px;">',
                 	'<tr>',
                 		'<td colspan="2">',
-                			'<button id="manipulateLayers" style="margin-left: 12px;">Add layers to the map</button>',
+                			'<button id="manipulateLayers" style="margin-left: 12px; margin-bottom: 10px;">Add layers to the map</button>',
                 		'</td>',
                 	'</tr>',
                 	'<tr>',
@@ -193,7 +193,7 @@ MegxMapWidget.prototype = {
     				'</div>',
 				'</div>' ].join('');
 
-        $(this.infoPanel).append(layerPanelHtml);
+        $(this.infoPanel).prepend(layerPanelHtml);
         this.buttonizeRemoveIcon();
         if(success){
         	success.call(this);
@@ -304,7 +304,7 @@ MegxMapWidget.prototype = {
         }
         
         //Then add the layers to the map as per the newly chosen order
-        for(var i=0; i<arr.length; i++){
+        for(var i=arr.length - 1; i>=0; i--){
         	this.map.addLayer(this.layers.get(arr[i]));
         }
         this.map.zoomTo(currentZoomLevel);
