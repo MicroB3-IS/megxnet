@@ -10,6 +10,9 @@ MegxMapWidget.prototype = {
     init : function(layerSetName, config, gu) {
 
         this.renderWidget('megxMapWidget');
+        this.initializeLayerDialog();
+        this.initializeAddRemoveLink();
+        this.displayedLayers = {};
 
         this.map = new OpenLayers.Map('megxMap', {
             controls : [],
@@ -41,7 +44,8 @@ MegxMapWidget.prototype = {
         if (layerset) {
             for ( var i = 0, j = layerset.length - 1; i < layerset.length; i++, j--) {
                 this.map.addLayer(this.layers.get(layerset[i]));
-                this.addLayerPanel(this.layers.get(layerset[j]));
+                this.addLayerPanel(layerset[j]);
+                this.displayedLayers[layerset[i]] = true;
             }
         }
         this.createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
@@ -88,32 +92,137 @@ MegxMapWidget.prototype = {
         var layoutParentSelector = '#' + layoutParent;
         var layoutHtml = [
                 '<table style="width: 99%; margin-top:10px; margin-bottom:10px;">',
-                '<tr>',
-                '<td id="layersAccordion" style="width: 30%; padding-left:10px;">',
-                '</td>', '<td class="mapPlaceholder">',
-
-                '<div id="megxMap" style="width: 800px; height: 400px"></div>',
-
-                '</td>', '</tr>', '</table>' ].join('');
+                	'<tr>',
+                		'<td colspan="2">',
+                			'<button id="manipulateLayers" style="margin-left: 12px;">Add layers to the map</button>',
+                		'</td>',
+                	'</tr>',
+                	'<tr>',
+                		'<td id="layersAccordion" style="width: 30%; padding-left:10px;">',
+            			'</td>', 
+            			'<td class="mapPlaceholder">',
+            				'<div id="megxMap" style="width: 800px; height: 400px"></div>',
+        				'</td>',
+    				'</tr>',
+				'</table>',
+				'<div id="layerDialog">',
+				'</div>'].join('');
 
         $(layoutParentSelector).append(layoutHtml);
+        this.buttonizeAddIcon();
     },
-
-    addLayerPanel : function(layer) {
+    
+    initializeLayerDialog: function(){
+    	var self = this;
+    	
+    	$("#layerDialog").dialog({
+			  resizable: false,
+		      autoOpen: false,
+			  height: 600,
+			  width: 400,
+			  title: 'Add/remove layers from the map',
+		      modal: true,
+		      buttons: {
+		        Ok: function() {
+		        	self.addLayers();
+		        	$(this).dialog("close");
+		        },
+		        Cancel: function() {
+		        	$(this).dialog( "close" );
+		        }
+		      }
+		});
+    	$('.ui-dialog').css('z-index', '10000');
+    },
+    
+    initializeAddRemoveLink: function(){
+    	var self = this;
+    	
+    	$('#manipulateLayers').click(function(){
+    		$("#layerDialog").dialog("open");
+    		self.populateLayersDialog();
+    		return false;
+    	});
+    	
+    	$(document).on('click', 'button.removeLayer', function(){
+    		var layerToRemove = $(this).closest('div.mx-layer').attr('id');
+    		self.removeLayer(layerToRemove);
+    		self.removeLayerPanel(layerToRemove);
+    	});
+    },
+    
+    populateLayersDialog: function(){
+    	var allLayers = this.layers.getLayersNameDesc();
+    	var htmlToRender = [];
+    	for(var layer in allLayers){
+    		var currentLayer = allLayers[layer];
+    		if(!this.displayedLayers[currentLayer.genericName]){
+    			htmlToRender.push('<input class="layer" type="radio" value="' + currentLayer.genericName + '" name="layerChoice" />' + currentLayer.niceName + '<br/>');
+    		}
+    	}
+    	
+    	$("#layerDialog").html(htmlToRender.join(''));
+    },
+    
+    addLayers: function(){
+    	var self = this;
+    	var selectedLayer = $('input.layer:checked').val();
+    	this.map.addLayer(this.layers.get(selectedLayer));
+    	this.addLayerPanel(selectedLayer, function(){
+    		$(this.infoPanel).accordion('refresh');
+    	});
+        this.displayedLayers[selectedLayer] = true;
+    },
+    
+    addLayerPanel : function(layer, success) {
         // TODO check if layer exists and take pre-cautions
-        var layerPanelHtml = [
-                '<div id="mx-layer" class="group">',
-                '<h3>' + layer.niceName,
-                '<div class="mx-layer-configuration-header">',
-                '<!-- icon for visibility| icon for external layer description document -->',
-                '</div>', '</h3>', '<div class="mx-layer-configuration">',
-                '<p class="mx-layer-description">' + layer.desc + '</p>',
-                '<div class="mx-layer-control"></div>', '</div>', '</div>' ]
-                .join('');
+        var layerInfo = this.layers.getLayerNameDesc(layer);
+    	var layerPanelHtml = [
+                '<div id="' + layerInfo.genericName + '" class="mx-layer">',
+                	'<h3>',
+                		layerInfo.niceName,
+                		'<span class="ui-icon-trash"></span>',
+                		'<div class="mx-layer-configuration-header">',
+                			'<button class="removeLayer" style="width: 19px; height: 20px;"></button>',
+                			'<!-- icon for visibility| icon for external layer description document -->',
+            			'</div>',
+        			'</h3>',
+        			'<div class="mx-layer-configuration">',
+        				'<p class="mx-layer-description">' + layerInfo.description + '</p>',
+        				'<div class="mx-layer-control"></div>',
+    				'</div>',
+				'</div>' ].join('');
 
         $(this.infoPanel).append(layerPanelHtml);
+        this.buttonizeRemoveIcon();
+        if(success){
+        	success.call(this);
+        }
     },
-
+    
+    removeLayerPanel: function(layer){
+    	$('#' + layer).remove();
+    	$(this.infoPanel).accordion('refresh');
+    },
+    
+    buttonizeAddIcon: function(){
+    	$( '#manipulateLayers' ).button({
+		    icons: {
+		      primary: "ui-icon-plusthick"
+		    },
+		    text: false
+	    });
+    },
+    
+    buttonizeRemoveIcon: function(){
+    	$( 'button.removeLayer' ).button({
+		    icons: {
+		      primary: "ui-icon-close"
+		    },
+		    text: false
+	    });
+    },
+    
     initMap : function(map) {
         var navContr = new OpenLayers.Control.Navigation();
         navContr.setMap(map);
@@ -132,7 +241,8 @@ MegxMapWidget.prototype = {
     },
 
     accordifyLayerPanel : function() {
-        $(this.infoPanel).accordion({
+        var self = this;
+    	$(this.infoPanel).accordion({
             collapsible : true,
             heightStyle : "content",
             header : "> div > h3"
@@ -142,6 +252,11 @@ MegxMapWidget.prototype = {
             stop : function(event, ui) {
                 // IE doesn't register the blur when sorting
                 // so trigger focusout handlers to remove .ui-state-focus
+            	var newLayerOrder = [];
+            	$('.mx-layer').each(function(){
+            		newLayerOrder.push($(this).attr('id'));
+        		});
+            	self.reorder(newLayerOrder);
                 ui.item.children("h3").triggerHandler("focusout");
             }
         });
@@ -156,6 +271,13 @@ MegxMapWidget.prototype = {
 
     addLayer : function(layer) {
         this.map.addLayer(layer);
+    },
+    
+    removeLayer: function(layer){
+    	var currentZoomLevel = this.map.getZoom();
+    	this.displayedLayers[layer] = false;
+    	this.map.removeLayer(this.layers.get(layer));
+    	this.map.zoomTo(currentZoomLevel);
     },
 
     showLayer : function(name) {
@@ -174,8 +296,18 @@ MegxMapWidget.prototype = {
     },
 
     reorder : function(arr) {
-        // argument array, new order of layers on the map
-        // TODO: showLayer
+    	var currentZoomLevel = this.map.getZoom();
+    	
+    	//First remove all layers from the map
+        for(var i=0; i<arr.length; i++){
+        	this.map.removeLayer(this.layers.get(arr[i]));
+        }
+        
+        //Then add the layers to the map as per the newly chosen order
+        for(var i=0; i<arr.length; i++){
+        	this.map.addLayer(this.layers.get(arr[i]));
+        }
+        this.map.zoomTo(currentZoomLevel);
     },
 
     setTopClickable : function(name) {
