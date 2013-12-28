@@ -1,58 +1,54 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-<!--[if IE]>  
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>  
-<![endif]-->
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
 <meta charset="utf-8">
-<title>$this.title</title> #if($ctx.base)
-<base href="$ctx.base" />
-#end
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="keywords" content="$!this.keywords">
 <meta name="description" content="$!this.description">
+
+<!-- bootstrap 3.0 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+  href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 
-<!-- START INCLUDING STYLES -->
-<style type="text/css" media="screen">
-@import url('$ctx.siteUrl/stylesheets/reset.css');
+<!-- Optional theme -->
+<link rel="stylesheet"
+  href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 
-@import url('$ctx.siteUrl/stylesheets/jqueryCustom.css');
 
-@import url('$ctx.siteUrl/stylesheets/iw-slider.css');
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 
-@import url("$ctx.siteUrl/stylesheets/webstyle.css");
+<!-- Must follow after bootstrap -->
+<link rel="stylesheet"
+  href="$ctx.siteUrl/stylesheets/megx.css">
 
-</style>
-<!-- END INCLUDING STYLES -->
+
+<title>$this.title</title> #if($ctx.base)
+<base href="$ctx.base" />
+#end
+
+
+
 #foreach($css in $ctx.get('head:css'))
 <link rel="stylesheet" href="$ctx.siteUrl/$css" type="text/css"
   media="screen" />
 #end
 
 <script type="text/javascript">
-  ctx = {
-    siteUrl : "$ctx.siteUrl"
-  };
+    ctx = {
+        siteUrl : "$ctx.siteUrl"
+    };
 </script>
-
-
-<!-- include jQuery -->
-<script type="text/javascript"
-  src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<script type="text/javascript"
-  src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-
-<script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
 
 #foreach($script in $ctx.get('head:scripts'))
 <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
-#end
-
-#if ( $ext.settings )
-	#parse('settings/account/check_profile.html')
+#end #if ( $ext.settings ) #parse('settings/account/check_profile.html')
 #end
 
 </head>
@@ -60,19 +56,27 @@
 <body>
   <div id="wrapper">
     <header>
-    #if ( $ext.settings )
-    	#parse('settings/header.html')
-    #else
-    	#parse('header.html')
-    #end
+      <!-- parsing header -->
+      #if ( $ext.settings ) #parse('settings/header.html') #else
+      #parse('header.html') #end
     </header>
+    <!-- admin gets access to content repository -->
     #if($req.servletRequset.isUserInRole("cmsAdmin"))
+    <!-- the edit button  -->
     <div style="position: absolute; top: 10px; left: 10px;">
       <a href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit
         this node</a>
     </div>
-    #end ${BODY} #parse('footer.html')
+    #end
+    <!-- the variable body content -->
+    ${BODY}
+    <!-- the footer -->
+    #parse('footer.html')
   </div>
+  <!-- Latest compiled and minified JavaScript -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script
+    src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 </body>
-
 </html>

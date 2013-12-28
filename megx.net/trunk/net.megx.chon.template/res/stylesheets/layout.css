@@ -1,5 +1,5 @@
-/* === LAYOUT MAIN ELEMENTS SETTINGS ===*/
-header, footer, article, section, nav, menu, hgroup {
+
+header, footer, article, section, menu, hgroup {
 	display: block;
 }
 html, body {
