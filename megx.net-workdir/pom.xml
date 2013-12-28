@@ -91,9 +91,11 @@
                     <target name="jcr-repository">
                       <untar dest="${mvn.work.dir.path}"
                              src="${mvn.jcr.target.file}">
+<!--
                         <patternset>
                           <exclude name="**/.lock"/>
                         </patternset>
+-->
                       </untar>
                     </target>
                   </configuration>
