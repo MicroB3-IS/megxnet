@@ -11,7 +11,7 @@
 	</parent>
 
 	<properties>
-	    <credentials.file>security-filter.properties</credentials.file>
+	    <credentials.file>security-filter-example.properties</credentials.file>
 	</properties>
 	
 	<groupId>net.megx</groupId>
@@ -30,7 +30,7 @@
 				<executions>
 					<execution>
 						<id>copy-to-config-folder</id>
-						<phase>validate</phase>
+						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
@@ -46,7 +46,7 @@
 					</execution>
 					<execution>
 					    <id>replace-placeholders</id>
-					    <phase>validate</phase>
+					    <phase>process-resources</phase>
 					    <goals>
 					        <goal>copy-resources</goal>
 				        </goals>
