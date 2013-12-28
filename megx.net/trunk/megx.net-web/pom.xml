@@ -82,7 +82,7 @@
 
     <build>
 
-        <defaultGoal>verify</defaultGoal>
+        <defaultGoal>post-integration-test</defaultGoal>
         <!-- also used for war file name -->
         <finalName>${mvn.megx.war.file.name}</finalName>
 
