@@ -9,6 +9,7 @@ import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.services.WebResourcesService;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.filter.extensions.SecurityFilterExtension;
 import net.megx.security.filter.http.impl.RegistrationExtension;
 import net.megx.security.filter.impl.OAuthEchoVerifyCredentials;
 import net.megx.security.filter.ui.RegistrationManager;
@@ -99,6 +100,7 @@ public class Activator extends ResTplConfiguredActivator {
 		}, 
 		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
 		//WebUtils.registerServlet(getBundleContext(), new ErrorProducingServlet(), "/produceError", null, null);
+		app.regExtension("securityFilter", new SecurityFilterExtension(getConfig()));
 	}
 	
 	
