@@ -47,6 +47,8 @@ MegxMapWidget.prototype = {
                 this.addLayerPanel(layerset[i]);
                 this.displayedLayers[layerset[i]] = true;
             }
+            //As per ticket https://colab.mpi-bremen.de/its/browse/MB3_IS-159, display legend data for the topmost layer only
+            this.redrawLegend(layerset[layerset.length - 1]);
         }
         this.createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
         this.accordifyLayerPanel();
@@ -104,6 +106,17 @@ MegxMapWidget.prototype = {
             				'<div id="megxMap" style="width: 800px; height: 400px"></div>',
         				'</td>',
     				'</tr>',
+    				'<tr>',
+    					'<td id="samplingSiteLegendImg" colspan="2" style="padding-left: 16%;">',
+    						'<legend>',
+    							'<h6>',
+    								'Legend',
+    							'</h6>',
+    							'<div id="legendDataPlaceholder">',
+    							'</div>',
+    						'</legend>',
+    					'</td>',
+					'</tr>',
 				'</table>',
 				'<div id="layerDialog">',
 				'</div>'].join('');
@@ -172,6 +185,10 @@ MegxMapWidget.prototype = {
     		$(this.infoPanel).accordion('refresh');
     	});
         this.displayedLayers[selectedLayer] = true;
+        
+        var newLayerOrder = this.getNewLayerOrder();
+        this.redrawLegend(newLayerOrder[0]);
+        
     },
     
     addLayerPanel : function(layer, success) {
@@ -203,6 +220,9 @@ MegxMapWidget.prototype = {
     removeLayerPanel: function(layer){
     	$('#' + layer).remove();
     	$(this.infoPanel).accordion('refresh');
+    	
+    	var newLayerOrder = this.getNewLayerOrder();
+    	this.redrawLegend(newLayerOrder[0]);
     },
     
     buttonizeAddIcon: function(){
@@ -252,16 +272,21 @@ MegxMapWidget.prototype = {
             stop : function(event, ui) {
                 // IE doesn't register the blur when sorting
                 // so trigger focusout handlers to remove .ui-state-focus
-            	var newLayerOrder = [];
-            	$('.mx-layer').each(function(){
-            		newLayerOrder.push($(this).attr('id'));
-        		});
-            	self.reorder(newLayerOrder);
+            	self.reorder(self.getNewLayerOrder());
                 ui.item.children("h3").triggerHandler("focusout");
             }
         });
     },
-
+    
+    getNewLayerOrder: function(){
+    	var newLayerOrder = [];
+    	$('.mx-layer').each(function(){
+    		newLayerOrder.push($(this).attr('id'));
+		});
+    	
+    	return newLayerOrder;
+    },
+    
     removeControl : function(controlName) {
         var controls = this.map.getControlsByClass(controlName);
         for ( var i = 0; i < controls.length; i++) {
@@ -308,6 +333,22 @@ MegxMapWidget.prototype = {
         	this.map.addLayer(this.layers.get(arr[i]));
         }
         this.map.zoomTo(currentZoomLevel);
+        
+        this.redrawLegend(arr[0]);
+    },
+    
+    redrawLegend: function(layerName){
+    	var self = this;
+    	var legendData = OpenLayers.Request.GET({
+            url : self.gmsBaseURL,
+            async : false,
+            params : {
+                LAYER : layerName,
+                MODE : 'LEGEND'
+            }
+        });
+    	
+    	$('#legendDataPlaceholder').html(legendData.responseText);
     },
 
     setTopClickable : function(name) {
