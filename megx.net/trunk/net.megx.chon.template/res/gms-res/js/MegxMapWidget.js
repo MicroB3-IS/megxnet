@@ -40,15 +40,23 @@ MegxMapWidget.prototype = {
         });
 
         var layerset = this.LAYERSET[layerSetName.toLowerCase()];
-
+        
+        this.log.message('Chosen layerset is ' + layerset);
+        this.log.message('Adding layers to map...');
+        
         if (layerset) {
             for ( var i = 0; i < layerset.length; i++ ) {
-                this.map.addLayer(this.layers.get(layerset[i]));
-                this.addLayerPanel(layerset[i]);
-                this.displayedLayers[layerset[i]] = true;
+                var addMap = this.map.addLayer(this.layers.get(layerset[i]));
+                if(addMap){
+                	this.addLayerPanel(layerset[i]);
+                    this.displayedLayers[layerset[i]] = true;
+                    //As per ticket https://colab.mpi-bremen.de/its/browse/MB3_IS-159, display legend data for the topmost layer only
+                    this.redrawLegend(layerset[layerset.length - 1]);
+                    this.log.message('Added layer ' + layerset[i] + ' to map');
+                } else{
+                	this.log.error('An error occured while adding layer ' + layerset[i] + ' to map!');
+                }
             }
-            //As per ticket https://colab.mpi-bremen.de/its/browse/MB3_IS-159, display legend data for the topmost layer only
-            this.redrawLegend(layerset[layerset.length - 1]);
         }
         this.createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
         this.accordifyLayerPanel();
@@ -107,7 +115,13 @@ MegxMapWidget.prototype = {
         				'</td>',
     				'</tr>',
     				'<tr>',
-    					'<td id="samplingSiteLegendImg" colspan="2" style="padding-left: 16%;">',
+    					'<td colspan="2" style="padding-left: 16%;">',
+    						'<div id="messagesPlaceholder" style="border: 1px solid; border-color: grey; border-radius: 5px; max-height: 120px; overflow-y: auto;">',
+    						'</div>',
+    					'</td>',
+    				'</tr>',
+    				'<tr>',
+    					'<td colspan="2" style="padding-left: 16%;">',
     						'<legend>',
     							'<h6>',
     								'Legend',
@@ -125,6 +139,27 @@ MegxMapWidget.prototype = {
         this.buttonizeAddIcon();
     },
     
+    log: {
+    	message: function(msg){
+    		msg = msg || '';
+    		var timeStamp = new Date();
+    		var msgToDisplay = ['<p style="color: green; padding-left: 10px;">', timeStamp.toLocaleString(), ' ',  msg, '</p>'].join('');
+    		var nbDisplayedMsgs = $('#messagesPlaceholder').children().length;
+    		var childrenHeight = $('#messagesPlaceholder').children().height();
+    		$('#messagesPlaceholder').append(msgToDisplay);
+    		$('#messagesPlaceholder').animate({ scrollTop: nbDisplayedMsgs * childrenHeight }, "slow");
+    	},
+    	error: function(msg){
+    		msg = msg || '';
+    		var timeStamp = new Date();
+    		var msgToDisplay = ['<p style="color: red; padding-left: 10px;">', timeStamp.toLocaleString(), ' ',   msg, '</p>'].join('');
+    		var nbDisplayedMsgs = $('#messagesPlaceholder').children().length;
+    		var childrenHeight = $('#messagesPlaceholder').children().height();
+    		$('#messagesPlaceholder').append(msgToDisplay);
+    		$('#messagesPlaceholder').animate({ scrollTop: nbDisplayedMsgs * childrenHeight }, "slow");
+    	}
+    },
+    
     initializeLayerDialog: function(){
     	var self = this;
     	
@@ -138,9 +173,11 @@ MegxMapWidget.prototype = {
 		      buttons: {
 		        Ok: function() {
 		        	self.addLayers();
+		        	self.log.message('Closing dialog window. New layer is added on map');
 		        	$(this).dialog("close");
 		        },
 		        Cancel: function() {
+		        	self.log.message('Closing dialog window. No layer is added on map');
 		        	$(this).dialog( "close" );
 		        }
 		      }
@@ -161,6 +198,7 @@ MegxMapWidget.prototype = {
     		var layerToRemove = $(this).closest('div.mx-layer').attr('id');
     		self.removeLayer(layerToRemove);
     		self.removeLayerPanel(layerToRemove);
+    		self.log.message('Layer ' + layerToRemove + ' removed from map');
     	});
     },
     
@@ -323,6 +361,8 @@ MegxMapWidget.prototype = {
     reorder : function(arr) {
     	var currentZoomLevel = this.map.getZoom();
     	
+    	this.log.message('Reordering layers as per new layer order...');
+    	
     	//First remove all layers from the map
         for(var i=0; i<arr.length; i++){
         	this.map.removeLayer(this.layers.get(arr[i]));
@@ -334,21 +374,27 @@ MegxMapWidget.prototype = {
         }
         this.map.zoomTo(currentZoomLevel);
         
+        this.log.message('Redrawing legend...');
         this.redrawLegend(arr[0]);
     },
     
     redrawLegend: function(layerName){
     	var self = this;
-    	var legendData = OpenLayers.Request.GET({
+    	OpenLayers.Request.GET({
             url : self.gmsBaseURL,
             async : false,
             params : {
                 LAYER : layerName,
                 MODE : 'LEGEND'
+            },
+            success: function(response){
+            	self.log.message('Legend data successfully retrieved from map server');
+            	$('#legendDataPlaceholder').html(response.responseText);
+            },
+            failure: function(response){
+            	self.log.error('Error occured while retrieveing legend data for layer ' + layerName + '. Error details: ' + JSON.stringify(response));
             }
         });
-    	
-    	$('#legendDataPlaceholder').html(legendData.responseText);
     },
 
     setTopClickable : function(name) {
