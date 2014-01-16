@@ -29,6 +29,14 @@
  * 
  * @param {Object} options Configuration object.  
  * 
+ * @option {string} target
+ *    Identifier of the DIV tag where the component should be displayed.
+ *
+ * @option {string} [layerSet="ena"] 
+ *    Name of the layerSet.
+ * 
+ * @option {string} [gmsBaseURL="http://mb3is.megx.net/wms"] 
+ *    Base URL.
  * 
  * @example
  * var megxMapWidget = new Biojs.MegxMapWidget({
@@ -92,9 +100,16 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	
 	     if (layerset) {
 	         for ( var i = 0; i < layerset.length; i++ ) {
-	             this.map.addLayer(this.layers.get(layerset[i]));
-	             this._addLayerPanel(layerset[i]);
-	             this.displayedLayers[layerset[i]] = true;
+	             var addMap = this.map.addLayer(this.layers.get(layerset[i]));
+                if(addMap){
+                	this._addLayerPanel(layerset[i]);
+                    this.displayedLayers[layerset[i]] = true;
+                    //As per ticket https://colab.mpi-bremen.de/its/browse/MB3_IS-159, display legend data for the topmost layer only
+                    this._redrawLegend(layerset[layerset.length - 1]);
+                    this._log.message('Added layer ' + layerset[i] + ' to map');
+                } else{
+                	this._log.error('An error occured while adding layer ' + layerset[i] + ' to map!');
+                }
 	         }
 	     }
 	     this._createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
@@ -170,6 +185,23 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	         				'<div id="megxMap" style="width: 600px; height: 400px"></div>',
 	     				'</td>',
 	 				'</tr>',
+					'<tr>',
+    					'<td colspan="2" style="padding-left: 16%;">',
+    						'<div id="messagesPlaceholder" style="border: 1px solid; border-color: grey; border-radius: 5px; max-height: 120px; overflow-y: auto;">',
+    						'</div>',
+    					'</td>',
+    				'</tr>',
+    				'<tr>',
+    					'<td colspan="2" style="padding-left: 16%;">',
+    						'<legend>',
+    							'<h6>',
+    								'Legend',
+    							'</h6>',
+    							'<div id="legendDataPlaceholder">',
+    							'</div>',
+    						'</legend>',
+    					'</td>',
+					'</tr>',
 					'</table>',
 					'<div id="layerDialog">',
 					'</div>'].join('');
@@ -177,6 +209,27 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	     $(layoutParentSelector).append(layoutHtml);
 	     this._buttonizeAddIcon();
 	 },
+	 
+	_log: {
+    	message: function(msg){
+    		msg = msg || '';
+    		var timeStamp = new Date();
+    		var msgToDisplay = ['<p style="color: green; padding-left: 10px;">', timeStamp.toLocaleString(), ' ',  msg, '</p>'].join('');
+    		var nbDisplayedMsgs = $('#messagesPlaceholder').children().length;
+    		var childrenHeight = $('#messagesPlaceholder').children().height();
+    		$('#messagesPlaceholder').append(msgToDisplay);
+    		$('#messagesPlaceholder').animate({ scrollTop: nbDisplayedMsgs * childrenHeight }, "slow");
+    	},
+    	error: function(msg){
+    		msg = msg || '';
+    		var timeStamp = new Date();
+    		var msgToDisplay = ['<p style="color: red; padding-left: 10px;">', timeStamp.toLocaleString(), ' ',   msg, '</p>'].join('');
+    		var nbDisplayedMsgs = $('#messagesPlaceholder').children().length;
+    		var childrenHeight = $('#messagesPlaceholder').children().height();
+    		$('#messagesPlaceholder').append(msgToDisplay);
+    		$('#messagesPlaceholder').animate({ scrollTop: nbDisplayedMsgs * childrenHeight }, "slow");
+    	}
+    },
 	 
 	 /**
 	 *  Initializes the Layer Dialog 
@@ -194,9 +247,11 @@ Biojs.MegxMapWidget = Biojs.extend ({
 			      buttons: {
 			        Ok: function() {
 			        	self._addLayers();
+						self._log.message('Closing dialog window. New layer is added on map');
 			        	$(this).dialog("close");
 			        },
 			        Cancel: function() {
+						self._log.message('Closing dialog window. No layer is added on map');
 			        	$(this).dialog( "close" );
 			        }
 			      }
@@ -218,8 +273,9 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	 	
 	 	$(document).on('click', 'button.removeLayer', function(){
 	 		var layerToRemove = $(this).closest('div.mx-layer').attr('id');
-	 		self.removeLayer(layerToRemove);
+	 		self._removeLayer(layerToRemove);
 	 		self._removeLayerPanel(layerToRemove);
+			self._log.message('Layer ' + layerToRemove + ' removed from map');
 	 	});
 	 },
 	 
@@ -250,6 +306,10 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	 		$(this.infoPanel).accordion('refresh');
 	 	});
 	     this.displayedLayers[selectedLayer] = true;
+		 
+        var newLayerOrder = this._getNewLayerOrder();
+        this._redrawLegend(newLayerOrder[0]);
+        
 	 },
 	 
 	 /**
@@ -298,6 +358,9 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	 _removeLayerPanel: function(layer){
 	 	$('#' + layer).remove();
 	 	$(this.infoPanel).accordion('refresh');
+		
+    	var newLayerOrder = this._getNewLayerOrder();
+    	this._redrawLegend(newLayerOrder[0]);
 	 },
 	 
 	 /**
@@ -350,7 +413,7 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	 },
 	
 	 /**
-	 * _accordifyLayerPanel
+	 * Accordify Layer Panel
 	 */
 	 _accordifyLayerPanel : function() {
 	     var self = this;
@@ -364,15 +427,24 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	         stop : function(event, ui) {
 	             // IE doesn't register the blur when sorting
 	             // so trigger focusout handlers to remove .ui-state-focus
-	         	var newLayerOrder = [];
-	         	$('.mx-layer').each(function(){
-	         		newLayerOrder.push($(this).attr('id'));
-	     		});
-	         	self._reorder(newLayerOrder);
-	             ui.item.children("h3").triggerHandler("focusout");
+	         	self._reorder(self._getNewLayerOrder());
+	            ui.item.children("h3").triggerHandler("focusout");
 	         }
 	     });
 	 },
+	 
+	 /**
+	 * Returns the New Layer Order
+	 */
+    _getNewLayerOrder: function(){
+    	var newLayerOrder = [];
+    	$('.mx-layer').each(function(){
+    		newLayerOrder.push($(this).attr('id'));
+		});
+    	
+    	return newLayerOrder;
+    },
+    
 	
 	 /**
 	 * Remove Control 
@@ -456,6 +528,8 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	 */
 	 _reorder : function(arr) {
 	 	var currentZoomLevel = this.map.getZoom();
+		
+		this._log.message('Reordering layers as per new layer order...');
 	 	
 	 	//First remove all layers from the map
 	     for(var i=0; i<arr.length; i++){
@@ -467,22 +541,39 @@ Biojs.MegxMapWidget = Biojs.extend ({
 	     	this.map.addLayer(this.layers.get(arr[i]));
 	     }
 	     this.map.zoomTo(currentZoomLevel);
-	     
+		 
+	     this._log.message('Redrawing legend...');
 	     this._redrawLegend(arr[0]);
 	 },
 	 
-	 _redrawLegend: function(layerName){
-	 	var self = this;
-	 	var legend = OpenLayers.Request.GET({
-	         url : self.gmsBaseURL,
-	         async : false,
-	         params : {
-	             LAYER : layerName,
-	             MODE : 'LEGEND'
-	         }
-	     });
-	 	var a = legend;
-	 },
+	 
+	 /**
+	 * Redraws Legend 
+	 */
+	 
+	_redrawLegend: function (layerName) {
+		var self = this;
+
+	//	 try {
+	//			OpenLayers.Request.GET({
+	//				url: self.gmsBaseURL,
+	//				async: false,
+	//				params: {
+	//					LAYER: layerName,
+	//					MODE: 'LEGEND'
+	//				},
+	//				success: function (response) {
+	//					self._log.message('Legend data successfully retrieved from map server');
+	//					$('#legendDataPlaceholder').html(response.responseText);
+	//				},
+	//				failure: function (response) {
+	//					self._log.error('Error occured while retrieveing legend data for layer ' + layerName + '. Error details: ' + JSON.stringify(response));
+	//				}
+	//			});
+	//		} catch (err) {
+	//			console.log('error ocured', JSON.stringify(err));
+	//		}
+	},
 	
 	 /**
 	 * Set clickable layer
