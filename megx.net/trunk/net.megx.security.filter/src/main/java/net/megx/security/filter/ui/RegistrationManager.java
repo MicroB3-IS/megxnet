@@ -3,6 +3,7 @@ package net.megx.security.filter.ui;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -289,7 +290,7 @@ public class RegistrationManager {
 		return captchaConfig;
 	}
 	
-	protected String getActivationURL(HttpServletRequest request, UserVerification verification, JSONObject activationEmailConfig){
+	protected String getActivationURL(HttpServletRequest request, UserVerification verification, JSONObject activationEmailConfig) throws URISyntaxException{
 		String activationURL = WebUtils.getAppURL(request);
 		String endpoint = activationEmailConfig.optString("activationEndpoint","register/activate");
 		

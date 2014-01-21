@@ -1,6 +1,7 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,8 +21,12 @@ public class WebDavExceptionHandler extends BaseExceptionHandler{
 	@Override
 	public boolean handleException(Exception e, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-		if(!canHandle(e, request)){
-			return true;
+		try {
+			if(!canHandle(e, request)){
+				return true;
+			}
+		} catch (URISyntaxException e1) {
+			throw new ServletException(e1);
 		}
 		if(e instanceof SecurityException){
 			SecurityException wde = (SecurityException)e;
@@ -60,7 +65,7 @@ public class WebDavExceptionHandler extends BaseExceptionHandler{
 		}
 	}
 	
-	protected boolean canHandle(Exception e, HttpServletRequest request){
+	protected boolean canHandle(Exception e, HttpServletRequest request) throws URISyntaxException{
 		if(patterns == null)
 			return false;
 		String path = WebUtils.getRequestPath(request, false);

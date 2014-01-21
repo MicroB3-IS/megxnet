@@ -1,6 +1,7 @@
 package net.megx.security.filter;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -83,7 +84,12 @@ public class SecurityFilter implements Filter{
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			WebContextUtils.storeExtraParameters(httpRequest, new HashMap<String, Object>(contextParameters));
-			String requestPath = WebUtils.getRequestPath(httpRequest, false); 
+			String requestPath = null;
+			try {
+				requestPath = WebUtils.getRequestPath(httpRequest, false);
+			} catch (URISyntaxException e1) {
+				throw new ServletException(e1);
+			} 
 			
 			if(requestPath.matches(ignorePattern)){
 				if(log.isDebugEnabled())
@@ -445,10 +451,15 @@ public class SecurityFilter implements Filter{
 			return order - o.order;
 		}
 		
-		public boolean canHandle(HttpServletRequest request){
+		public boolean canHandle(HttpServletRequest request) throws ServletException{
 			if(patterns == null)
 				return false;
-			String path = WebUtils.getRequestPath(request, false);
+			String path;
+			try {
+				path = WebUtils.getRequestPath(request, false);
+			} catch (URISyntaxException e) {
+				throw new ServletException(e);
+			}
 			for(String pattern: patterns){
 				if(path.matches(pattern))
 					return true;

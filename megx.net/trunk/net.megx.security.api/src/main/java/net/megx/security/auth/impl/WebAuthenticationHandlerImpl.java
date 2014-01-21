@@ -1,5 +1,6 @@
 package net.megx.security.auth.impl;
 
+import java.net.URISyntaxException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import net.megx.security.auth.Authentication;
 import net.megx.security.auth.InvalidCredentialsException;
 import net.megx.security.auth.SecurityContext;
 import net.megx.security.auth.SecurityException;
+import net.megx.security.auth.StopSecurityChainException;
+import net.megx.security.auth.WebLogoutException;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.web.WebContextUtils;
@@ -37,50 +40,60 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 			WebContextUtils.replaceSecurityContext(context, request, true);
 		}
 		Authentication authentication = context.getAuthentication();
-		if(getRequestPath(request).equals(loginEndpointUrl)){ // try default login...
-			if(authentication == null){
-				String username = request.getParameter(usernameField);
-				String password = request.getParameter(passwordField);
-				if(username != null && password != null){
-					try {
-						User user = userService.getUser(username.trim(), password.trim());
-						if(user == null){
-							throw new InvalidCredentialsException("Invalid username or password.");
+		try {
+			if(getRequestPath(request).equals(loginEndpointUrl)){ // try default login...
+				if(authentication == null){
+					String username = request.getParameter(usernameField);
+					String password = request.getParameter(passwordField);
+					if(username != null && password != null){
+						try {
+							User user = userService.getUser(username.trim(), password.trim());
+							if(user == null){
+								throw new InvalidCredentialsException("Invalid username or password.");
+							}
+							if(user.isExternal()){
+								throw new InvalidCredentialsException("Login with external account.");
+							}
+							Date lastLogin = user.getLastlogin();
+							user.setPassword(null);
+							user.setLastlogin(new Date());
+							if(lastLogin == null){
+								lastLogin = user.getLastlogin();
+							}
+							userService.updateUser(user);
+							authentication = new AuthenticationImpl(user);
+							request.getSession().setAttribute("userLastLogin", lastLogin);
+							checkRedirectUrl(request, context);
+						}catch (SecurityException e) {
+							throw e;
+						}catch (Exception e) {
+							throw new ServletException(e);
 						}
-						if(user.isExternal()){
-							throw new InvalidCredentialsException("Login with external account.");
-						}
-						Date lastLogin = user.getLastlogin();
-						user.setPassword(null);
-						user.setLastlogin(new Date());
-						if(lastLogin == null){
-							lastLogin = user.getLastlogin();
-						}
-						userService.updateUser(user);
-						authentication = new AuthenticationImpl(user);
-						request.getSession().setAttribute("userLastLogin", lastLogin);
-						checkRedirectUrl(request, context);
-					}catch (SecurityException e) {
-						throw e;
-					}catch (Exception e) {
-						throw new ServletException(e);
 					}
+				}else{
+					WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
 				}
-			}else{
-				WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
 			}
+		} catch (URISyntaxException e) {
+			throw new ServletException(e);
 		}
-		if(getRequestPath(request).matches(logoutEndpointUrl)){
-			WebContextUtils.clearSecurityContext(request);
-			request.getSession().invalidate();
-			WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
-			return null;
+		try {
+			if(getRequestPath(request).matches(logoutEndpointUrl)){
+				WebContextUtils.clearSecurityContext(request);
+				request.getSession().invalidate();
+				//WebContextUtils.newSecurityContext(request).storeLastRequestedURL(getSiteHomeUrl(request));
+				//return null;
+				throw new WebLogoutException();
+			}
+		} catch (URISyntaxException e) {
+			throw new ServletException(e);
 		}
+		
 		return authentication;
 	}
 
 	
-	protected String getRequestPath(HttpServletRequest request){
+	protected String getRequestPath(HttpServletRequest request) throws URISyntaxException{
 		return WebUtils.getRequestPath(request, false);
 	}
 	
@@ -90,10 +103,10 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler impl
 	
 	
 	protected void checkRedirectUrl(HttpServletRequest request, SecurityContext context){
-		String savedRequestPath = context.getLastRequestedURL();
+		String savedRequestPath = context.getLastRequestedURL().trim();
 		if(savedRequestPath != null){
-			if(savedRequestPath.matches(loginEndpointUrl) || savedRequestPath.matches(logoutEndpointUrl)){
-				context.storeLastRequestedURL(null);
+			if(savedRequestPath.matches(loginEndpointUrl) || savedRequestPath.matches(logoutEndpointUrl) || savedRequestPath.compareTo("") == 0){
+				//context.storeLastRequestedURL(null);
 				context.storeLastRequestedURL(getSiteHomeUrl(request));
 			}
 		}else{

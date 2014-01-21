@@ -1,6 +1,7 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,11 @@ public class DefaultExceptionHandler extends BaseExceptionHandler{
 	public boolean handleException(Exception e, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 		log.debug("Exception: ",e);
-		storeRequestURL(request);
+		try {
+			storeRequestURL(request);
+		} catch (URISyntaxException e1) {
+			throw new ServletException(e1);
+		}
 		if(e instanceof IOException ){
 			throw (IOException)e;
 		}else if(e instanceof ServletException){
@@ -39,18 +44,27 @@ public class DefaultExceptionHandler extends BaseExceptionHandler{
 			}
 			if(!response.isCommitted()){
 				//response.sendError(((SecurityException)e).getResponseCode(),e.getMessage());
-				handleExceptionRedirect(e, request, response, ((SecurityException)e).getResponseCode());
+				try {
+					handleExceptionRedirect(e, request, response, ((SecurityException)e).getResponseCode());
+				} catch (URISyntaxException e1) {
+					throw new ServletException(e1);
+				}
 			}
 		}else if(e instanceof AccessDeniedException){
 			//response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			handleExceptionRedirect(e, request, response, HttpServletResponse.SC_FORBIDDEN);
+			try {
+				handleExceptionRedirect(e, request, response, HttpServletResponse.SC_FORBIDDEN);
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				throw new ServletException(e1);
+			}
 		}else{
 			throw new ServletException(e);
 		}
 		return true;
 	}
 	
-	private void storeRequestURL(HttpServletRequest request){
+	private void storeRequestURL(HttpServletRequest request) throws URISyntaxException{
 		if(!"get".equals(request.getMethod().toLowerCase())){
 			if(log.isDebugEnabled())
 				log.debug("Last Request will not be stored. Method: " + request.getMethod());
@@ -98,7 +112,7 @@ public class DefaultExceptionHandler extends BaseExceptionHandler{
 	
 	
 	protected void handleExceptionRedirect(Exception e, HttpServletRequest request,
-			HttpServletResponse response, int code)throws IOException, ServletException{
+			HttpServletResponse response, int code)throws IOException, ServletException, URISyntaxException{
 		String redirectURL = redirects.get(code);
 		if(redirectURL != null){
 			String appUrl = WebUtils.getAppURL(request);

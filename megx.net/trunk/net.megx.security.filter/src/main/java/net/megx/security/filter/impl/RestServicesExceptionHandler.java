@@ -1,6 +1,7 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +26,12 @@ public class RestServicesExceptionHandler extends BaseExceptionHandler{
 	public boolean handleException(Exception e, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
 		if(resourcesPatterns != null){
-			String path = WebUtils.getRequestPath(request, false);
+			String path;
+			try {
+				path = WebUtils.getRequestPath(request, false);
+			} catch (URISyntaxException e1) {
+				throw new ServletException(e1);
+			}
 			for(String pattern: resourcesPatterns){
 				if(path.matches(pattern)){
 					return doHandleException(e, request, response);

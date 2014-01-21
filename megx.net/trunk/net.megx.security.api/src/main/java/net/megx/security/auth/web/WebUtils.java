@@ -6,6 +6,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
@@ -16,12 +18,10 @@ import org.chon.web.RegUtils;
 import org.osgi.framework.BundleContext;
 
 public class WebUtils {
-	public static String getRequestPath(HttpServletRequest request, boolean withQuery){
+	public static String getRequestPath(HttpServletRequest request, boolean withQuery) throws URISyntaxException{
 		String requestedPath = request.getRequestURI().substring(request.getContextPath().length());
 		
-		if(withQuery && request.getQueryString() != null){
-			requestedPath += "?" + request.getQueryString();
-		}
+		
 		
 		//System.out.println("------------------------------------");
 		//System.out.println("RequestURI: "+request.getRequestURI());
@@ -31,6 +31,13 @@ public class WebUtils {
 		//System.out.println("------------------");
 		//System.out.println("REQUESTED_PATH: " + requestedPath);
 		//System.out.println("------------------------------------");
+		Pattern pattern = Pattern.compile("^(/+)");
+		Matcher matcher = pattern.matcher(requestedPath);
+		requestedPath = matcher.replaceFirst("/");
+		requestedPath =  new URI(requestedPath).normalize().getPath();
+		if(withQuery && request.getQueryString() != null){
+			requestedPath += "?" + request.getQueryString();
+		}
 		return requestedPath;
 	}
 	
@@ -99,7 +106,7 @@ public class WebUtils {
 		return request.getRequestURL().toString(); // FIXME: Is there a better way to do this?
 	}
 	
-	public static String getAppURL(HttpServletRequest request){
+	public static String getAppURL(HttpServletRequest request) throws URISyntaxException{
 		String requestPath = getRequestPath(request, false);
 		String fullRequestUrl = getFullContextURL(request);
 		return fullRequestUrl.substring(0, fullRequestUrl.length() - requestPath.length()) + "/";

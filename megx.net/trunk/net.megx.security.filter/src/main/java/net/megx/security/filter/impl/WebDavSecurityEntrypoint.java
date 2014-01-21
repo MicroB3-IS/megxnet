@@ -1,6 +1,7 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletException;
@@ -29,7 +30,12 @@ public class WebDavSecurityEntrypoint extends BaseSecurityEntrypoint{
 			SecurityException, StopFilterException {
 		log.debug("Checking WebDAV Request...");
 		checkAuthentication(request, response);
-		String path = WebUtils.getRequestPath(request, false);
+		String path;
+		try {
+			path = WebUtils.getRequestPath(request, false);
+		} catch (URISyntaxException e) {
+			throw new ServletException(e);
+		}
 		String username = null;
 		SecurityContext context = WebContextUtils.getSecurityContext(request);
 		

@@ -1,6 +1,7 @@
 package net.megx.security.filter.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,12 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 			// case url match access token URL: handle access token, then stop
 			// else
 				// check signature ...
-			String path = WebUtils.getRequestPath(request, false);
+			String path;
+			try {
+				path = WebUtils.getRequestPath(request, false);
+			} catch (URISyntaxException e1) {
+				throw new ServletException(e1);
+			}
 			if(path.matches(requestTokenUrl)){
 				oAuthServices.processRequestTokenRequest(request, response);
 				throw new StopFilterException();

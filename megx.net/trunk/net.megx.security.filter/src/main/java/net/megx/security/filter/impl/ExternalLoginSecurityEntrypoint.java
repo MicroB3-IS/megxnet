@@ -3,6 +3,7 @@ package net.megx.security.filter.impl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -73,12 +74,21 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 	public void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
-		String requestPath = WebUtils.getRequestPath(request, false);
+		String requestPath;
+		try {
+			requestPath = WebUtils.getRequestPath(request, false);
+		} catch (URISyntaxException e) {
+			throw new ServletException(e);
+		}
 		String provider = request.getParameter("provider");
 		if(log.isDebugEnabled())
 			log.debug(String.format("Processing external login for provider [%s] and request path [%s]",provider, requestPath));
 		if (requestPath.matches(callbackEntrypoint)) {
-			processCallback(provider, request, response);
+			try {
+				processCallback(provider, request, response);
+			} catch (URISyntaxException e) {
+				throw new ServletException(e);
+			}
 		} else {
 			processExternalLogin(provider, request, response);
 		}
@@ -86,7 +96,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	protected void processCallback(String provider, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
-			SecurityException, StopFilterException {
+			SecurityException, StopFilterException, URISyntaxException {
 		request.setAttribute("provider", provider);
 		log.debug("Processing callback...");
 		ExternalLoginProvider loginProvider = getProvider(provider);
