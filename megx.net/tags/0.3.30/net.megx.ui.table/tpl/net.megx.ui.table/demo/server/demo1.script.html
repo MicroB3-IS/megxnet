@@ -1,0 +1,61 @@
+#################################################################
+##
+## Function: $ext.dataTable.renderServerSide
+##		
+## Arguments:
+##  0 - Array   :> Table Column names
+##
+##  1 - String  :> Service Url
+##
+##  2 - boolean :> if processing (filter, pagination) 
+##                 is on server side
+## 
+##  3 - String  :> json object config passed to velocity 
+##                 and rendered back to javascript as is
+##				   see http://www.datatables.net/ref
+##
+#################################################################
+
+## Example, client processing:
+
+#set($url = "$ctx.siteUrl/ws/ui.table.demo/table-countries")
+
+$ext.dataTable.renderServerSide(
+	["Name", "Population", "GDP (PPP)", "Unemployment Rate"], 
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'name',
+	 	sClass: 'data-pad'
+	 }, {
+	 	mData: 'population',
+	 	mRender: function ( data, type, row ) {
+	 		if(type == 'display') {
+	 			return addCommas(data);
+	 		}
+	 		return data;
+	 	},
+	 	sClass: 'right data-pad',
+	 	sWidth: '150px' 
+	 }, {
+	 	mData: 'gdpPPP',
+	 	mRender: function ( val, type, row ) {
+	 		if(type == 'display') {
+	 			var color;
+	 			if(val<4000) color='red';
+	 			else if(val<30000) color='black'
+	 			else color='green'
+	 			var v = '$' + addCommas(val);
+	 			return spanElement(v, color);
+	 		}
+	 		return val;
+	 	}, 
+	 	sClass: 'right data-pad',
+	 	 sWidth: '150px'
+	 }, {
+	 	mData: 'unemploymentRate',
+	 	sClass: 'right data-pad',
+	 	sWidth: '150px'
+	 }]
+}")

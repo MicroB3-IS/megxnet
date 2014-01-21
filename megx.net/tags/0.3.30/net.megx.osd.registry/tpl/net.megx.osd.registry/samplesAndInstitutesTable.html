@@ -1,0 +1,49 @@
+#set($url = "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants")
+
+$ext.dataTable.renderServerSide(
+	['OSD ID', 'Site name', 'Institution', 'Site coordinator', 'Country', 'Action'], 
+	$url,
+	false,
+	"{
+	 aoColumns: [
+	 {
+	 	mData: 'osdID',
+	 	sClass: 'data-pad',
+	 	sWidth: '80px'
+	 }, { 
+	 	mData: 'siteName',
+	 	sClass: 'data-pad',
+	 	sWidth: '130px'
+	 }, {
+	 	mData: 'institution',
+	 	sClass: 'data-pad',
+	 	sWidth: '220px' 
+	 }, {
+	 	mData: 'siteCoordinator',
+	 	sClass: 'data-pad',
+	 	sWidth: '160px'
+	 }, {
+	 	mData: 'country',
+	 	sClass: 'data-pad',
+	 	sWidth: '110px'
+	 }, {
+	 	mData: 'id',
+	 	sClass: 'center',
+	 	sWidth: '130px',
+	 	mRender: function(id){
+	 		#if($req.user && $req.servletRequset.isUserInRole('admin'))
+	 			var editUrl = '$ctx.siteUrl/osd-registry/add?id=' + id;
+	 			var deleteUrl = '$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/deleteParticipant?id=' + id;
+	 			return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a> / <a href=' + editUrl + '>Edit</a> / <a href=\'\' class=\'deleteParticipantClass\' id=' + id + '>Delete</a>';
+ 			#else
+ 				return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a>';
+			#end
+	 	}
+	 }]
+}")
+
+<div id="deleteDialog">
+	<p class="deleteRecordQst">Are you sure ou want to delete this record?</p>
+</div>
+
+#parse("net.megx.osd.registry/viewDialog.html")
