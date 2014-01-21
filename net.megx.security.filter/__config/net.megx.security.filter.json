@@ -37,6 +37,13 @@
 				enabled: false
 			},
 			{
+				name: 'redirectToURL',
+				class: 'net.megx.security.filter.impl.RedirectToURLEntryPoint',
+				urlPattern: '/.*',
+				order: 4,
+				enabled: true
+			},
+			{
 				name: 'externalLogin',
 				class: 'net.megx.security.filter.impl.ExternalLoginSecurityEntrypoint',
 				urlPattern: [

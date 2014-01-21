@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.megx.security.auth.Authentication;
 import net.megx.security.auth.SecurityContext;
+import net.megx.security.auth.WebLogoutException;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.auth.SecurityException;
@@ -30,15 +31,20 @@ public class WebLoginSecurity extends BaseSecurityEntrypoint{
 		if(webLoginHandler == null){
 			throw new SecurityException("WebAuthenticationHandler service is not available yet!",HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		}
-		Authentication authentication = webLoginHandler.createAuthentication(request);
-		
+		Authentication authentication = null;
+		try{
+			authentication = webLoginHandler.createAuthentication(request);
+		}catch (WebLogoutException e) {
+			response.sendRedirect(request.getContextPath());
+			throw new StopFilterException();
+		}
 		if(authentication != null){
 			SecurityContext context = WebContextUtils.getSecurityContext(request);
 			saveAuthentication(authentication, request);
 			String redirectURL = context.getLastRequestedURL();
 			if(redirectURL != null){
 				log.debug(" ### Redirect ===> " + redirectURL);
-				context.storeLastRequestedURL(null);
+				//context.storeLastRequestedURL(null);
 				response.sendRedirect(request.getContextPath() + redirectURL);
 				throw new StopFilterException();
 			}

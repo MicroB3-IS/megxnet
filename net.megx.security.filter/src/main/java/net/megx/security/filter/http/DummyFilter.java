@@ -1,6 +1,7 @@
 package net.megx.security.filter.http;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,11 +23,6 @@ public class DummyFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		if(request instanceof HttpServletRequest){
-			System.out.println("REQUEST-PATH >>> " + WebUtils.getRequestPath((HttpServletRequest)request, true));
-		}else{
-			System.out.println("REQUEST IS NOT HTTP REQUEST");
-		}
 	}
 
 	@Override
