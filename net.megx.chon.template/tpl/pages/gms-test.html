@@ -8,12 +8,12 @@
 <script src="http://openlayers.org/api/2.13.1/OpenLayers.js" type="text/javascript"></script>
 
 <script src="$ctx.siteUrl/gms-res/js/MegxMapWidgetLayers.js" type="text/javascript"></script>
-<script src="$ctx.siteUrl/gms-res/js/MegxMapWidget.js" type="text/javascript"></script>
+
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
-
-
+<script src="https://www.ebi.ac.uk/Tools/biojs/registry/src/Biojs.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/gms-res/js/Biojs.MegxMapWidget.js" type="text/javascript"></script>
 <style>
 /* IE has layout issues when sorting (see #5413) */
 .group {
@@ -38,6 +38,6 @@ html, body {
 <script type="text/javascript">
 $(document).ready(function () {
   //the only required parameter is the layerSet to be rendered
-  var megxMapWidget = new MegxMapWidget("ena", null);
+  var megxMapWidget = new Biojs.MegxMapWidget();
 });
 </script>
