@@ -63,8 +63,8 @@ MegxMapWidgetLayers.prototype = {
         		},
         		'osdRegistry' : {
         			'genericName': 'osdRegistry',
-        			'niceName': 'osdRegistry layer',
-        			'description' : 'This is a layer for osdRegistry'
+        			'niceName': 'OSD Registry Layer',
+        			'description' : 'Map of OSD participating Sites and Institutes'
         		},
         		'samplingsites' : {
         			'genericName': 'samplingsites',
@@ -103,7 +103,7 @@ MegxMapWidgetLayers.prototype = {
         		},
         		'boundaries' : {
         			'genericName': 'boundaries',
-        			'niceName': 'boundaries layer',
+        			'niceName': 'Boundaries',
         			'description' : 'This is a layer for boundaries'
         		},
         		'limitsoceans' : {
@@ -159,7 +159,7 @@ MegxMapWidgetLayers.prototype = {
 
         layers.osdRegistry = new OpenLayers.Layer.WMS(this.layersNames["osdRegistry"].genericName,
                 gms_wms_url, {
-                    layers : 'osdRegistry',
+                    layers : 'osd_registry',
                     format : 'image/png',
                     transparent : "true"
                 }, {
@@ -279,7 +279,7 @@ MegxMapWidgetLayers.prototype = {
                     maxResolution : "auto"
                 });
         layers.boundaries.niceName = "Boundaries";
-        layers.boundaries.desc = "Non-authoritative boundaries of the World Oceans";
+        layers.boundaries.description = "Non-authoritative boundaries of the World Oceans";
 
         layers.limitsoceans = new OpenLayers.Layer.WMS(this.layersNames["limitsoceans"].genericName,
                 gms_wms_url, {
