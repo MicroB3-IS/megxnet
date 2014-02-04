@@ -63,6 +63,9 @@
 		<mvn.db.name>megdb_r8</mvn.db.name>
 		<mvn.db.user>${user.name}</mvn.db.user>
 		<mvn.db.password />
+		<!-- security filters -->
+		<credentials.file>security-filter.properties</credentials.file>
+
 	</properties>
 
 	<!-- modules only include plugins -->
