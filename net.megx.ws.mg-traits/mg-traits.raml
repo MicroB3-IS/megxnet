@@ -1,0 +1,117 @@
+#%RAML 0.8
+title: Metagenomic Traits API
+# URIL template level one: http://tools.ietf.org/html/rfc6570 
+# http://tools.ietf.org/html/rfc6570#section-2.3
+version: v1
+protocols: [ HTTP, HTTPS ]
+baseUri: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}
+mediaType: application/csv
+baseUriParameters: 
+  mg.traits.version:
+    description: The version of the MG-Traits module
+    example: v1.0.0
+    default: v1.0.0
+    type: string
+    required: true
+    pattern: "^v[0-9].[0-9].[0-9]$"
+
+
+documentation:
+ - title: Hello
+   content: |
+     The RESTful API of the Micro B3 Information System (MB3-IS).
+     A file must correpsond to a single sample.
+
+
+/{mg.sample.name}:
+  displayName: Metagenome Sample Name
+  description: |
+     Parent of specific sub-ordinated traits of this metagenome sample.
+     the patter is 'mg{id}:{sample_name} (here id, sample_name correspond to columns in mg_traits_jobs
+
+     uriParameters:
+       mg.sample.name:
+       displayName: Metagenome Sample name
+       type: string
+       pattern: ^mg[0-9]+:.*$
+       minLength: 1
+  
+  /simple-traits:
+    displayName: metagenome name
+    description: | 
+      Returns all simple traits of a given metagenome. Table: mg_traits_results
+    get: 
+      description: Returns all simple traits of a given metagenome
+      responses:
+        200: 
+          body:
+            text/csv:
+            #example: |
+            # sldkdlsk, lkldskd
+      
+     
+  /function-table:
+    displayName: Predicted Protein Domain Functions
+    description: |
+        table: mg_traits_pfam Take care column pfam is an integer[]
+    get:
+      description: Returns a  CSV of PFAM hit counts
+      #  we need table withh all pfams as headers and the counts from the array
+      responses:
+        200:
+         body: 
+           text/csv:
+  /amino-acid-content:
+    displayName: (easy-csv)
+    description: |
+      table: mg_traits_aa
+    get:
+      description:
+      responses:
+          200:
+           body: 
+             text/csv:
+      
+  /di-nucleotide-odds-ratio: 
+    displayName: (easy csv)
+    description: |
+      Table: mg_traits_dinuc
+    get:
+      description: <<insert text or markdown here>>
+      responses:
+        200:
+      body:
+        text/csv:
+  
+/jobs:
+  post:
+    description: | 
+      Creates a job to calculate traits for metagenome samples.
+      The post body must include the _URL_ of the metagenome to process. 
+      And must include the _name_ of the sample.
+      
+      # It may
+      # also include output settings for the job, including an output
+      # destination, notification settings, and transcoding settings.     
+      We currently support downloading files using HTTP/HTTPS
+      #, S3, Cloud Files, FTP/FTPS, SFTP, and Aspera.
+      When you create a new encoding job through the API, our server
+      will immediately respond with details about the job and output
+      files being created. You should store the job and outputs IDs
+      to track them through the encoding process.
+    body:
+      
+  /{job.id}:
+    get:
+      description: | 
+        Get details of a job calculating metgenomic traits.
+        Table: mg_traits_jobs
+      responses:
+        200: 
+          description: 
+          body:
+            text/csv:
+        404:
+          description: job does not exist
+          
+    
