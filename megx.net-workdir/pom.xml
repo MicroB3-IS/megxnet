@@ -98,8 +98,7 @@
                                 <mkdir dir="${mvn.work.dir.path}/plugins" />
                                 <mkdir dir="${mvn.work.dir.path}/dropins" />
 
-                                <untar dest="${mvn.work.dir.path}"
-                                    src="${mvn.jcr.target.file}">
+                                <untar src="${mvn.jcr.target.file}" dest="${mvn.work.dir.path}" compression="gzip">
                                     <patternset>
                                         <exclude name="**/.lock" />
                                     </patternset>
