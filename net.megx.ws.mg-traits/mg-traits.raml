@@ -100,18 +100,47 @@ documentation:
       files being created. You should store the job and outputs IDs
       to track them through the encoding process.
     body:
-      
-  /{job.id}:
+      text/csv:
+        #schema: 
+        example: |
+         sample_label,url
+         label1, https://example.org/test-data/mg-traits-test2.fasta
+      application/json: # not needed yet
+        schema: 
+        example: |
+          {
+            "sample_label" : "label1"
+            "url": "https://example.org/test-data/mg-traits-test2.fasta"
+          }
+    responses:
+      201:
+        headers:
+          Location:
+            description: The location of the newly created job resource. The client can get information about job status
+            type: string
+            required: true
+            example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}
+            
+
+        
+  /{mg.sample.name}:
     get:
       description: | 
         Get details of a job calculating metgenomic traits.
         Table: mg_traits_jobs
       responses:
         200: 
-          description: 
+          description: Data about the running OR finished job. In case finished an additional location header will be sent
           body:
             text/csv:
-        404:
+    
+          headers:
+            Location:
+              description: The location of the job results IF job is finished
+              type: string
+              required: true
+              example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}
+        204:
           description: job does not exist
           
     
