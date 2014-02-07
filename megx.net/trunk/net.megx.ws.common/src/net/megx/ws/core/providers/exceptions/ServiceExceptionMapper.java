@@ -55,14 +55,19 @@ public class ServiceExceptionMapper implements ExceptionMapper<Exception>{
 		if(e  instanceof WebApplicationException){
 			Response origResponse = ((WebApplicationException)e).getResponse(); 
 			int status = origResponse.getStatus();
-			if(status != 500){
-				exception.setMessage(HttpStatusCodes.phraseForStatusCode(status));
+			if(status == 204){
+				return null;
+			} else{
+				if(status != 500){
+					exception.setMessage(HttpStatusCodes.phraseForStatusCode(status));
+				}
+				return Response.
+						status( status ).
+						entity(gson.toJson(exception)).
+						type(MediaType.APPLICATION_JSON).
+						build();
+				
 			}
-			return Response.
-					status( status ).
-					entity(gson.toJson(exception)).
-					type(MediaType.APPLICATION_JSON).
-					build();
 		}else{
 			return Response.
 					status(500).

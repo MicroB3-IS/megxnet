@@ -58,7 +58,15 @@
 		
 		<!-- OSDRegistry -->
 		<typeAlias type="net.megx.model.osdregistry.OSDParticipant" alias="OSDParticipant" />
-
+		
+		<!-- MGTraits -->
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsResult" alias="MGTraitsResult" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsPfam" alias="MGTraitsPfam" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsAA" alias="MGTraitsAA" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsDNORatio" alias="MGTraitsDinuc" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsJobDetails" alias="MGTraitsJobDetails" />
+		<typeAlias type="net.megx.megdb.mgtraits.mappers.ArrayTypeMapper" alias="ArrayTypeMapper" />
+		
 	</typeAliases>
 
 	<environments default="main">

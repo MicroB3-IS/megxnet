@@ -3,9 +3,122 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.megx.megdb.mgtraits.mappers.MGTraitsMapper">
-	<insert id="insertMGTraitsJob" parameterType="map">
-	    INSERT INTO mg_traits.mg_traits_jobs(mg_url, sample_label, sample_environment)
-	    VALUES
-	    (#{inputFileURL}, #{sampleName}, #{envName})
+	<resultMap type="MGTraitsResult" id="mg_traits_result">
+		<result column="id" property="id" />
+		<result column="sample_label" property="sampleLabel" />
+		<result column="gc_content" property="gcContent" />
+		<result column="gc_variance" property="gcVariance" />
+		<result column="num_genes" property="numGenes" />
+		<result column="total_mb" property="totalMB" />
+		<result column="num_reads" property="numReads" />
+		<result column="ab_ratio" property="ABRatio" />
+		<result column="perc_tf" property="percTf" />
+		<result column="perc_classified" property="percClassified" />
+	</resultMap>
+
+	<resultMap type="MGTraitsPfam" id="mg_traits_pfam">
+		<result column="id" property="id" />
+		<result column="sample_label" property="sampleLabel" />
+		<result column="pfam" property="pfam" jdbcType="ARRAY" javaType="java.sql.Array" typeHandler="ArrayTypeMapper" />
+	</resultMap>
+
+	<resultMap type="MGTraitsAA" id="mg_traits_aa">
+		<result column="sample_label" property="sampleLabel" />
+		<result column="ala" property="ala" />
+		<result column="cys" property="cys" />
+		<result column="asp" property="asp" />
+		<result column="glu" property="glu" />
+		<result column="phe" property="phe" />
+		<result column="gly" property="gly" />
+		<result column="his" property="his" />
+		<result column="ile" property="ile" />
+		<result column="lys" property="lys" />
+		<result column="leu" property="leu" />
+		<result column="met" property="met" />
+		<result column="asn" property="asn" />
+		<result column="pro" property="pro" />
+		<result column="gln" property="gln" />
+		<result column="arg" property="arg" />
+		<result column="ser" property="ser" />
+		<result column="thr" property="thr" />
+		<result column="val" property="val" />
+		<result column="trp" property="trp" />
+		<result column="tyr" property="tyr" />
+		<result column="id" property="id" />
+	</resultMap>
+
+	<resultMap type="MGTraitsDinuc" id="mg_traits_dinuc">
+		<result column="sample_label" property="sampleLabel" />
+		<result column="paa_ptt" property="paa_ptt" />
+		<result column="pac_pgt" property="pac_pgt" />
+		<result column="pcc_pgg" property="pcc_pgg" />
+		<result column="pca_ptg" property="pca_ptg" />
+		<result column="pga_ptc" property="pga_ptc" />
+		<result column="pag_pct" property="pag_pct" />
+		<result column="pat" property="pat" />
+		<result column="pcg" property="pcg" />
+		<result column="pgc" property="pgc" />
+		<result column="pta" property="pta" />
+		<result column="id" property="id" />
+	</resultMap>
+
+	<resultMap type="MGTraitsJobDetails" id="mg_traits_job_details">
+		<result column="customer" property="customer" />
+		<result column="mg_url" property="mgUrl" />
+		<result column="sample_label" property="sampleLabel" />
+		<result column="sample_environment" property="sampleEnvironment" />
+		<result column="time_submitted" property="timeSubmitted" />
+		<result column="time_finished" property="timeFinished" />
+		<result column="make_public" property="makePublic" />
+		<result column="keep_data" property="keepData" />
+		<result column="time_started" property="timeStarted" />
+		<result column="cluster_node" property="clusterNode" />
+		<result column="job_id" property="jobId" />
+		<result column="return_code" property="returnCode" />
+		<result column="error_message" property="errorMessage" />
+		<result column="total_run_time" property="totalRunTime" />
+		<result column="time_protocol" property="timeProtocol" />
+		<result column="id" property="id" />
+	</resultMap>
+
+	<select id="getSimpleTraits" parameterType="String" resultMap="mg_traits_result">
+		SELECT *
+		FROM mg_traits.mg_traits_results
+		WHERE id=#{id}
+	</select>
+
+	<select id="getFunctionTable" parameterType="String" resultMap="mg_traits_pfam">
+		SELECT *
+		FROM mg_traits.mg_traits_pfam
+		WHERE id=#{id}
+	</select>
+
+	<select id="getAminoAcidContent" parameterType="String"
+		resultMap="mg_traits_aa">
+		SELECT *
+		FROM mg_traits.mg_traits_aa
+		WHERE id=#{id}
+	</select>
+
+	<select id="getDiNucleotideOddsRatio" parameterType="String"
+		resultMap="mg_traits_dinuc">
+		SELECT *
+		FROM mg_traits.mg_traits_dinuc
+		WHERE id=#{id}
+	</select>
+
+	<select id="getJobDetails" parameterType="String" resultMap="mg_traits_job_details">
+		SELECT
+		id, sample_label, time_submitted, time_finished, return_code, error_message
+		FROM mg_traits.mg_traits_jobs
+		WHERE sample_label=#{sampleLabel}
+	</select>
+
+	<insert id="insertMGTraitsJob" parameterType="MGTraitsJobDetails">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+		    SELECT currval('mg_traits.mg_traits_jobs_id_seq')
+		 </selectKey>
+	    INSERT INTO mg_traits.mg_traits_jobs(customer, mg_url, sample_label,sample_environment)
+		VALUES (#{customer}, #{mgUrl}, #{sampleLabel}, #{sampleEnvironment})
 	</insert>
 </mapper>

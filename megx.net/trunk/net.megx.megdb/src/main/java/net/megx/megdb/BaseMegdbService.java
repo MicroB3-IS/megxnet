@@ -1,5 +1,7 @@
 package net.megx.megdb;
 
+import net.megx.megdb.exceptions.DBGeneralFailureException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.session.SqlSession;
@@ -107,7 +109,7 @@ public class BaseMegdbService {
 	}
 	
 	
-	protected <M,R> R  doInTransaction(Task<M, R> task, Class<? extends M> mapperClass) throws Exception{
+	protected <M,R> R  doInTransaction(Task<M, R> task, Class<? extends M> mapperClass) throws DBGeneralFailureException{
 		log.debug("Executing Task in transaction...");
 		SqlSession session = sessionFactory.openSession();
 		log.debug("Session is opened.");
@@ -125,13 +127,13 @@ public class BaseMegdbService {
 			log.debug("An error occured. The transaction will be rolled back. Exception: ", e);
 			session.rollback(true);
 			log.debug("Transaction has been rolled back.");
-			throw e;
+			throw new DBGeneralFailureException(e);
 		} finally{
 			session.close();
 			log.debug("Session closed.");
 		}
 	}
-	protected <M,R> R  doInSession(Task<M, R> task, Class<? extends M> mapperClass) throws Exception{
+	protected <M,R> R  doInSession(Task<M, R> task, Class<? extends M> mapperClass) throws DBGeneralFailureException{
 		log.debug("Executing Task in session...");
 		SqlSession session = sessionFactory.openSession();
 		log.debug("Session is opened.");
@@ -145,7 +147,7 @@ public class BaseMegdbService {
 			return result;
 		} catch (Exception e) {
 			log.debug("An error occured: ", e);
-			throw e;
+			throw new DBGeneralFailureException(e);
 		} finally{
 			session.close();
 			log.debug("Session closed.");
