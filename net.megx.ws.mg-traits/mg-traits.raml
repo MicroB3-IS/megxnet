@@ -116,10 +116,10 @@ documentation:
       201:
         headers:
           Location:
-            description: The location of the newly created job resource. The client can get information about job status
+            description: The location of the newly created job resource whThe client can get information about job status
             type: string
             required: true
-            example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}
+            example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}/jobs/{mg.sample.name}
             
 
         
@@ -139,7 +139,7 @@ documentation:
               description: The location of the job results IF job is finished
               type: string
               required: true
-              example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}
+              example: http://mb3is.megx.net/ws/{version}/mg-traits/{mg.traits.version}/{mg.sample.name}
         204:
           description: job does not exist
           
