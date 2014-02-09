@@ -1,6 +1,6 @@
 #%RAML 0.8
 title: Metagenomic Traits API
-# URIL template level one: http://tools.ietf.org/html/rfc6570 
+# URI  template level one: http://tools.ietf.org/html/rfc6570 
 # http://tools.ietf.org/html/rfc6570#section-2.3
 version: v1
 protocols: [ HTTP, HTTPS ]
@@ -17,25 +17,25 @@ baseUriParameters:
 
 
 documentation:
- - title: Hello
+ - title: Metagenomic Traits (mg-traits)
    content: |
-     The RESTful API of the Micro B3 Information System (MB3-IS).
+     The RESTful API of the Micro B3 Information System (MB3-IS) Metagenomic Traits Services.
      A file must correpsond to a single sample.
 
-
+  
 /{mg.sample.name}:
   displayName: Metagenome Sample Name
   description: |
      Parent of specific sub-ordinated traits of this metagenome sample.
      the patter is 'mg{id}:{sample_name} (here id, sample_name correspond to columns in mg_traits_jobs
-
-     uriParameters:
-       mg.sample.name:
-       displayName: Metagenome Sample name
-       type: string
-       pattern: ^mg[0-9]+:.*$
-       minLength: 1
   
+  uriParameters:
+       mg.sample.name:
+         displayName: Metagenome Sample name
+         type: string
+         pattern: ^mg[0-9]+-.*$
+         minLength: 1
+
   /simple-traits:
     displayName: metagenome name
     description: | 
@@ -124,6 +124,13 @@ documentation:
 
         
   /{mg.sample.name}:
+    uriParameters:
+       mg.sample.name:
+         displayName: Metagenome Sample name
+         type: string
+         pattern: ^mg[0-9]+-.*$
+         minLength: 1
+
     get:
       description: | 
         Get details of a job calculating metgenomic traits.
@@ -143,4 +150,3 @@ documentation:
         204:
           description: job does not exist
           
-    
