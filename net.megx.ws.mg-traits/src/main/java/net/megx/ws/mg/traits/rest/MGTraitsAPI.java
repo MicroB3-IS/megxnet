@@ -52,7 +52,7 @@ public class MGTraitsAPI extends BaseRestService {
 		this.service = service;
 	}
 
-	@Path("mg{id}:{sample_name}/simple-traits")
+	@Path("mg{id}-{sample_name}/simple-traits")
 	@GET
 	@Produces("text/csv")
 	public Response getSimpleTraits(@PathParam("id") int id,
@@ -91,7 +91,7 @@ public class MGTraitsAPI extends BaseRestService {
 		}
 	}
 
-	@Path("mg{id}:{sample_name}/function-table")
+	@Path("mg{id}-{sample_name}/function-table")
 	@GET
 	@Produces("text/csv")
 	public Response getFunctionTable(@PathParam("id") int id,
@@ -126,7 +126,7 @@ public class MGTraitsAPI extends BaseRestService {
 		}
 	}
 
-	@Path("mg{id}:{sample_name}/amino-acid-content")
+	@Path("mg{id}-{sample_name}/amino-acid-content")
 	@GET
 	@Produces("text/csv")
 	public Response getAminoAcidContent(@PathParam("id") int id,
@@ -170,7 +170,7 @@ public class MGTraitsAPI extends BaseRestService {
 		}
 	}
 
-	@Path("mg{id}:{sample_name}/di-nucleotide-odds-ratio")
+	@Path("mg{id}-{sample_name}/di-nucleotide-odds-ratio")
 	@GET
 	@Produces("text/csv")
 	public Response getDiNucleotideOddsRatio(@PathParam("id") int id,
