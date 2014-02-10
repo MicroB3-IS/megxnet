@@ -18,6 +18,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.core.MediaType;
+
 
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
@@ -261,7 +264,10 @@ public class MGTraitsAPI extends BaseRestService {
 	@Path("jobs")
 	@POST
 	@Produces("text/csv")
-	public Response postJob(@FormParam("customer") String customer,
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	
+	public Response postJob(
+			@FormParam("customer") String customer,
 			@FormParam("mg_url") final String mgUrl,
 			@FormParam("sample_label") final String sampleLabel,
 			@FormParam("sample_environment") String sampleEnvironment,
