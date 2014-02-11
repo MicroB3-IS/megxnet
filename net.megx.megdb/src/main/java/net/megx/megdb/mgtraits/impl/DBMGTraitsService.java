@@ -141,4 +141,24 @@ public class DBMGTraitsService extends BaseMegdbService implements
 		return jobUrl;
 	}
 
+	@Override
+	public List<MGTraitsJobDetails> getAllFinishedJobs()
+			throws DBGeneralFailureException, DBNoRecordsException {
+
+		List<MGTraitsJobDetails> result = doInSession(
+				new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
+					@Override
+					public List<MGTraitsJobDetails> execute(
+							MGTraitsMapper mapper) throws Exception {
+						return mapper.getAllFinishedJobs();
+					}
+				}, MGTraitsMapper.class);
+
+		if (result.size() == 0) {
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {
+			return result;
+		}
+	}
+
 }

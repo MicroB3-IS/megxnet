@@ -121,4 +121,11 @@
 	    INSERT INTO mg_traits.mg_traits_jobs(customer, mg_url, sample_label,sample_environment)
 		VALUES (#{customer}, #{mgUrl}, #{sampleLabel}, #{sampleEnvironment})
 	</insert>
+	
+	<select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
+		SELECT
+		sample_label
+		FROM mg_traits.mg_traits_jobs
+		WHERE time_finished IS NOT NULL;
+	</select>
 </mapper>

@@ -17,4 +17,5 @@ public interface MGTraitsService {
 	public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(int id) throws DBGeneralFailureException, DBNoRecordsException;
 	public List<MGTraitsJobDetails> getJobDetails(String sampleLabel) throws DBGeneralFailureException, DBNoRecordsException;
 	public String insertJob(String customer, String mgUrl, String sampleLabel, String sampleEnvironment) throws DBGeneralFailureException;
+	public List<MGTraitsJobDetails> getAllFinishedJobs() throws DBGeneralFailureException, DBNoRecordsException;
 }

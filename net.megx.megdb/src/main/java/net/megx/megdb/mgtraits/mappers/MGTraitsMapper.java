@@ -24,5 +24,9 @@ public interface MGTraitsMapper {
 			@Param("id") int id);
 
 	public List<MGTraitsJobDetails> getJobDetails(@Param("sampleLabel") String sampleLabel);
+	
+	public List<MGTraitsJobDetails> getAllFinishedJobs();
+	
+	
 
 }

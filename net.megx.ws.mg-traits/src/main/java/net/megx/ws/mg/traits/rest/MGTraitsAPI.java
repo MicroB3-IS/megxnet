@@ -297,4 +297,40 @@ public class MGTraitsAPI extends BaseRestService {
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	@Path("all")
+	@GET
+	@Produces("text/csv")
+	public Response getAllFinishedJobs(@Context HttpServletRequest request) {
+		try {
+			final List<MGTraitsJobDetails> result = service
+					.getAllFinishedJobs();
+			ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+				@Override
+				public void write(OutputStream out) throws IOException {
+					PrintWriter writer = new PrintWriter(out);
+					writer.println("sample_label");
+					for (MGTraitsJobDetails currJobDetail : result) {
+						writer.println(String.format("%s",		
+								currJobDetail.getSampleLabel()));			
+					}
+					writer.flush();
+					out.flush();
+				}
+			});
+			
+			rb.type("text/csv");
+			return rb.build();
+		} catch (DBGeneralFailureException e) {
+			throw new WebApplicationException(
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(Response.Status.NO_CONTENT);
+		} catch (Exception e) {
+			throw new WebApplicationException(
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }
