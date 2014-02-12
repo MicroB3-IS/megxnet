@@ -123,8 +123,7 @@
 	</insert>
 	
 	<select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
-		SELECT
-		sample_label
+		SELECT *
 		FROM mg_traits.mg_traits_jobs
 		WHERE time_finished IS NOT NULL;
 	</select>
