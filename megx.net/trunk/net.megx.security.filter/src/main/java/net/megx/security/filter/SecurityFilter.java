@@ -80,15 +80,19 @@ public class SecurityFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		log.debug("Security filter start...");
-		if(request instanceof HttpServletRequest && response instanceof HttpServletResponse){
+		
+		if( request instanceof HttpServletRequest && response instanceof HttpServletResponse){
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			
 			WebContextUtils.storeExtraParameters(httpRequest, new HashMap<String, Object>(contextParameters));
+			
 			String requestPath = null;
 			try {
 				requestPath = WebUtils.getRequestPath(httpRequest, false);
-			} catch (URISyntaxException e1) {
-				throw new ServletException(e1);
+			} catch (URISyntaxException e) {
+				log.error("Wrong URI: " + e.getMessage() );
+				throw new ServletException(e);
 			} 
 			
 			if(requestPath.matches(ignorePattern)){
@@ -106,20 +110,21 @@ public class SecurityFilter implements Filter{
 			}
 			
 			if(!enabled){
-				log.debug("Secuirty filter is not enabled. Will pass the request to the chain.");
+				log.debug("Security filter is not enabled. Will pass the request to the chain.");
 				chain.doFilter(request, response);
 				return;
 			}
 			
 			for(EntryPointWrapper entryPoint: entryPoints){
 					if(log.isDebugEnabled())
-						log.debug(String.format("Matching enty-point %s",entryPoint.name));
+						log.debug(String.format("Matching entry-point %s",entryPoint.name));
 					
 					if(entryPoint.matches(requestPath)){
 						log.debug("\t -> match");
 						try {
 							entryPoint.entrypoint.doFilter(httpRequest, httpResponse);
 						} catch (StopFilterException e) {
+							log.error("Catched a StopFilterException: " + e);
 							return;
 						} catch (Exception e) {
 							handleException(e, httpRequest, httpResponse);
@@ -146,12 +151,12 @@ public class SecurityFilter implements Filter{
 			if(httpRequest.getSession() != null){
 				if(log.isDebugEnabled())
 					log.debug("Session at filter end: " + httpRequest.getSession().getId());
-			}else{
+			} else{
 				log.debug("No session at filter end");
 			}
 			log.debug("Security filter end.");
 			chain.doFilter(httpRequest, httpResponse);
-		}else{
+		} else{
 			throw new ServletException("Wrong Request Type.");
 		}
 	}
@@ -159,6 +164,7 @@ public class SecurityFilter implements Filter{
 	
 	
 	protected void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		log.error("Handling additional exception:" + e);
 		for(ExceptionHandlerWrapper w: exceptionHandlers){
 			if(w.canHandle(request)){
 				if(!w.handler.handleException(e, request, response)){
@@ -209,7 +215,7 @@ public class SecurityFilter implements Filter{
 			enabled = Boolean.TRUE.equals(filterConfig.optBoolean("enabled"));
 			JSONArray entryPoints = filterConfig.getJSONArray("entrypoints");
 			
-			log.debug("Initializing secuirty entrypoints...");
+			log.debug("Initializing security entrypoints...");
 			for(int i = 0; i < entryPoints.length(); i++){
 				JSONObject entryPointConfig = entryPoints.getJSONObject(i);
 				buildEntryPoint(entryPointConfig);
@@ -249,7 +255,7 @@ public class SecurityFilter implements Filter{
 			log.error(e);
 			throw new ServletException(e);
 		}
-		log.debug("Secuirty filter successfully initialized.");
+		log.debug("Security filter successfully initialized.");
 	}
 
 	
