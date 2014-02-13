@@ -51,8 +51,8 @@ public class MGTraitsAPI extends BaseRestService {
     private static final String JOB_DETAILS_HEADER = "Id,sample label,time submitted,time finished,return code,error message";
     private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
 
-    private static final String BASE_CONTEXT_PATH="v1/mg-traits/v1.0.0";
-    
+    private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
+
     public MGTraitsAPI(MGTraitsService service) {
         this.service = service;
     }
@@ -212,40 +212,44 @@ public class MGTraitsAPI extends BaseRestService {
     @Produces("text/csv")
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
             @Context HttpServletRequest request) {
-        
+
         int id = -1;
-        
+
         try {
             // skipping mg prefix and searching for eventuallay. 2nd - in case
             // id is a minus value
             String sampleId = sampleLabel.substring(2,
                     sampleLabel.indexOf('-', 3));
             id = Integer.parseInt(sampleId);
-            
+
             final MGTraitsJobDetails job = service.getJobDetails(id);
 
-            ResponseBuilder rb = null;
+            ResponseBuilder rb = Response.ok();
 
             if (job == null) {
-                rb.status(Response.Status.NO_CONTENT);
+                rb = Response.status(Response.Status.NO_CONTENT);
             }
-            
+
             // job is still running
-            if ( job.getReturnCode() == -1 ) {
-                rb.status(Response.Status.ACCEPTED);
+            if (job.getReturnCode() == -1) {
+                rb = Response.status(Response.Status.ACCEPTED);
             }
             // job finished and correct results
-            if ( job.getReturnCode() == 0 ) {
-                rb.status(Response.Status.SEE_OTHER);
-                rb.header("Location",
-                        request.getContextPath() + "/ws" + BASE_CONTEXT_PATH);
+            if (job.getReturnCode() == 0) {
+                rb = Response.status(Response.Status.SEE_OTHER);
+                rb.header(
+                        "Location",
+                        request.getScheme() + "://" + request.getServerName()
+                                + ":" + request.getServerPort()
+                                + request.getContextPath() + "/ws/"
+                                + BASE_CONTEXT_PATH
+                                + job.getPublicSampleLabel());
             }
             // job finished and bad results
-            if ( job.getReturnCode() > 0 ) {
-                rb.status(Response.Status.OK);
+            if (job.getReturnCode() > 0) {
+                rb = Response.status(Response.Status.OK);
             }
-            
-            
+
             rb = rb.entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
@@ -262,14 +266,14 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            log.error("Db error: for id" + id );
+            log.error("Db general error for id=" + id + "\n" + e);
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
-            log.error("No DB entry: for id" + id );
+            log.error("No DB no record: for id=" + id + "\n" + e);
             throw new WebApplicationException(Response.Status.NO_CONTENT);
         } catch (Exception e) {
-            log.error("Db error: for id" + id );
+            log.error("Db exception for id=" + id + "\n" + e);
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
