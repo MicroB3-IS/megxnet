@@ -12,21 +12,19 @@ import org.apache.ibatis.annotations.Param;
 
 public interface MGTraitsMapper {
 
-	public void insertMGTraitsJob(MGTraitsJobDetails job);
+    public void insertMGTraitsJob(MGTraitsJobDetails job);
 
-	public List<MGTraitsResult> getSimpleTraits(@Param("id") int id);
+    public List<MGTraitsResult> getSimpleTraits(@Param("id") int id);
 
-	public List<MGTraitsPfam> getFunctionTable(@Param("id") int id);
+    public List<MGTraitsPfam> getFunctionTable(@Param("id") int id);
 
-	public List<MGTraitsAA> getAminoAcidContent(@Param("id") int id);
+    public List<MGTraitsAA> getAminoAcidContent(@Param("id") int id);
 
-	public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(
-			@Param("id") int id);
+    public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(@Param("id") int id);
 
-	public List<MGTraitsJobDetails> getJobDetails(@Param("sampleLabel") String sampleLabel);
-	
-	public List<MGTraitsJobDetails> getAllFinishedJobs();
-	
-	
+    public List<MGTraitsJobDetails> getJobDetails(
+            @Param("id") int  id);
+
+    public List<MGTraitsJobDetails> getAllFinishedJobs();
 
 }

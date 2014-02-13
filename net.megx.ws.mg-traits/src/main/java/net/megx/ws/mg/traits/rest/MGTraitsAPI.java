@@ -220,8 +220,12 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
             @Context HttpServletRequest request) {
         try {
+            // skipping mg prefix and searching for evtl. 2nd -
+            String sampleId = sampleLabel.substring(2, sampleLabel.indexOf('-', 3));
+            int id = Integer.parseInt(sampleId);
             final List<MGTraitsJobDetails> result = service
-                    .getJobDetails(sampleLabel);
+                    .getJobDetails(id);
+            
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
@@ -272,16 +276,17 @@ public class MGTraitsAPI extends BaseRestService {
             @FormParam("sample_environment") String sampleEnvironment,
             @Context HttpServletRequest request) {
         try {
-            String jobUrl = service.insertJob(customer, mgUrl, sampleLabel,
+            final String publicSampleLabel;
+            publicSampleLabel = service.insertJob(customer, mgUrl, sampleLabel,
                     sampleEnvironment);
             ResponseBuilder rb = Response.ok()
-                    .header("Location", request.getRequestURL() + "/" + jobUrl)
+                    .header("Location", request.getRequestURL() + "/" + publicSampleLabel)
                     .entity(new StreamingOutput() {
                         @Override
                         public void write(OutputStream out) throws IOException {
                             PrintWriter writer = new PrintWriter(out);
                             writer.println("Sample label,URL");
-                            writer.println(String.format("%s,%s", sampleLabel,
+                            writer.println(String.format("%s,%s", publicSampleLabel,
                                     mgUrl));
                             writer.flush();
                             out.flush();
@@ -311,10 +316,8 @@ public class MGTraitsAPI extends BaseRestService {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println("sample_label, environment");
                     for (MGTraitsJobDetails currJobDetail : result) {
-                        writer.println(String.format("%s",
-                                "mg" + currJobDetail.getId() + "-"
-                                        + currJobDetail.getSampleLabel())
-                                + "," + currJobDetail.getSampleEnvironment());
+                        writer.println(String.format("%s,%s",
+                                currJobDetail.getPublicSampleLabel(), currJobDetail.getSampleEnvironment()));
                     }
                     writer.flush();
                     out.flush();
@@ -328,6 +331,8 @@ public class MGTraitsAPI extends BaseRestService {
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
             throw new WebApplicationException(Response.Status.NO_CONTENT);
+        } catch(IllegalStateException e) {
+            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
