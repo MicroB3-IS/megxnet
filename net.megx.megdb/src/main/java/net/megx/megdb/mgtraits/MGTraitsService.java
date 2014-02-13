@@ -11,19 +11,20 @@ import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsResult;
 
 public interface MGTraitsService {
-    public List<MGTraitsResult> getSimpleTraits(int id)
+
+    public MGTraitsResult getSimpleTraits(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
-    public List<MGTraitsPfam> getFunctionTable(int id)
+    public MGTraitsPfam getFunctionTable(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
-    public List<MGTraitsAA> getAminoAcidContent(int id)
+    public MGTraitsAA getAminoAcidContent(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
-    public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(int id)
+    public MGTraitsDNORatio getDiNucleotideOddsRatio(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
-    public List<MGTraitsJobDetails> getJobDetails(int id)
+    public MGTraitsJobDetails getJobDetails(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
     public String insertJob(String customer, String mgUrl, String sampleLabel,

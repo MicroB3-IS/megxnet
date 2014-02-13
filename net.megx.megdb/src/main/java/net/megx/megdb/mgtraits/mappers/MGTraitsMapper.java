@@ -14,15 +14,15 @@ public interface MGTraitsMapper {
 
     public void insertMGTraitsJob(MGTraitsJobDetails job);
 
-    public List<MGTraitsResult> getSimpleTraits(@Param("id") int id);
+    public MGTraitsResult getSimpleTraits(@Param("id") int id);
 
-    public List<MGTraitsPfam> getFunctionTable(@Param("id") int id);
+    public MGTraitsPfam getFunctionTable(@Param("id") int id);
 
-    public List<MGTraitsAA> getAminoAcidContent(@Param("id") int id);
+    public MGTraitsAA getAminoAcidContent(@Param("id") int id);
 
-    public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(@Param("id") int id);
+    public MGTraitsDNORatio getDiNucleotideOddsRatio(@Param("id") int id);
 
-    public List<MGTraitsJobDetails> getJobDetails(
+    public MGTraitsJobDetails getJobDetails(
             @Param("id") int  id);
 
     public List<MGTraitsJobDetails> getAllFinishedJobs();
