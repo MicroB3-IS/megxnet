@@ -50,6 +50,8 @@ public class MGTraitsAPI extends BaseRestService {
     private static final String JOB_DETAILS_HEADER = "Id,sample label,time submitted,time finished,return code,error message";
     private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
 
+    private static final String BASE_CONTEXT_PATH="v1/mg-traits/v1.0.0";
+    
     public MGTraitsAPI(MGTraitsService service) {
         this.service = service;
     }
@@ -60,21 +62,18 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getSimpleTraits(@PathParam("id") int id,
             @PathParam("sample_name") String sampleName) {
         try {
-            final List<MGTraitsResult> result = service.getSimpleTraits(id);
+            final MGTraitsResult mgTrait = service.getSimpleTraits(id);
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(SIMPLE_TRAITS_HEADER);
-                    for (MGTraitsResult mgTrait : result) {
-                        writer.println(String.format(SIMPLE_TRAITS_ROW,
-                                mgTrait.getSampleLabel(),
-                                mgTrait.getGcContent(),
-                                mgTrait.getGcVariance(), mgTrait.getNumGenes(),
-                                mgTrait.getTotalMB(), mgTrait.getNumReads(),
-                                mgTrait.getABRatio(), mgTrait.getPercTf(),
-                                mgTrait.getPercClassified(), mgTrait.getId()));
-                    }
+                    writer.println(String.format(SIMPLE_TRAITS_ROW,
+                            mgTrait.getSampleLabel(), mgTrait.getGcContent(),
+                            mgTrait.getGcVariance(), mgTrait.getNumGenes(),
+                            mgTrait.getTotalMB(), mgTrait.getNumReads(),
+                            mgTrait.getABRatio(), mgTrait.getPercTf(),
+                            mgTrait.getPercClassified(), mgTrait.getId()));
                     writer.flush();
                     out.flush();
                 }
@@ -99,18 +98,16 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getFunctionTable(@PathParam("id") int id,
             @PathParam("sample_name") String sampleName) {
         try {
-            final List<MGTraitsPfam> result = service.getFunctionTable(id);
+            final MGTraitsPfam functionTable = service.getFunctionTable(id);
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(FUNCTION_TABLE_HEADER);
-                    for (MGTraitsPfam functionTable : result) {
-                        writer.println(String.format(FUNCTION_TABLE_ROW,
-                                functionTable.getSampleLabel(),
-                                Arrays.toString(functionTable.getPfam()),
-                                functionTable.getId()));
-                    }
+                    writer.println(String.format(FUNCTION_TABLE_ROW,
+                            functionTable.getSampleLabel(),
+                            Arrays.toString(functionTable.getPfam()),
+                            functionTable.getId()));
                     writer.flush();
                     out.flush();
                 }
@@ -135,26 +132,24 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getAminoAcidContent(@PathParam("id") int id,
             @PathParam("sample_name") String sampleName) {
         try {
-            final List<MGTraitsAA> result = service.getAminoAcidContent(id);
+            final MGTraitsAA aminoAcid = service.getAminoAcidContent(id);
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(AMINO_ACID_HEADER);
-                    for (MGTraitsAA aminoAcid : result) {
-                        writer.println(String.format(AMINO_ACID_ROW,
-                                aminoAcid.getSampleLabel(), aminoAcid.getAla(),
-                                aminoAcid.getCys(), aminoAcid.getAsp(),
-                                aminoAcid.getGlu(), aminoAcid.getPhe(),
-                                aminoAcid.getGly(), aminoAcid.getHis(),
-                                aminoAcid.getIle(), aminoAcid.getLys(),
-                                aminoAcid.getLeu(), aminoAcid.getMet(),
-                                aminoAcid.getAsn(), aminoAcid.getPro(),
-                                aminoAcid.getGln(), aminoAcid.getArg(),
-                                aminoAcid.getSer(), aminoAcid.getThr(),
-                                aminoAcid.getVal(), aminoAcid.getTrp(),
-                                aminoAcid.getTyr(), aminoAcid.getId()));
-                    }
+                    writer.println(String.format(AMINO_ACID_ROW,
+                            aminoAcid.getSampleLabel(), aminoAcid.getAla(),
+                            aminoAcid.getCys(), aminoAcid.getAsp(),
+                            aminoAcid.getGlu(), aminoAcid.getPhe(),
+                            aminoAcid.getGly(), aminoAcid.getHis(),
+                            aminoAcid.getIle(), aminoAcid.getLys(),
+                            aminoAcid.getLeu(), aminoAcid.getMet(),
+                            aminoAcid.getAsn(), aminoAcid.getPro(),
+                            aminoAcid.getGln(), aminoAcid.getArg(),
+                            aminoAcid.getSer(), aminoAcid.getThr(),
+                            aminoAcid.getVal(), aminoAcid.getTrp(),
+                            aminoAcid.getTyr(), aminoAcid.getId()));
                     writer.flush();
                     out.flush();
                 }
@@ -179,23 +174,20 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getDiNucleotideOddsRatio(@PathParam("id") int id,
             @PathParam("sample_name") String sampleName) {
         try {
-            final List<MGTraitsDNORatio> result = service
+            final MGTraitsDNORatio dnoRatio = service
                     .getDiNucleotideOddsRatio(id);
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(DNORatio_HEADER);
-                    for (MGTraitsDNORatio dnoRatio : result) {
-                        writer.println(String.format(DNORatio_ROW,
-                                dnoRatio.getSampleLabel(),
-                                dnoRatio.getPaa_ptt(), dnoRatio.getPac_pgt(),
-                                dnoRatio.getPcc_pgg(), dnoRatio.getPca_ptg(),
-                                dnoRatio.getPga_ptc(), dnoRatio.getPag_pct(),
-                                dnoRatio.getPat(), dnoRatio.getPcg(),
-                                dnoRatio.getPgc(), dnoRatio.getPta(),
-                                dnoRatio.getId()));
-                    }
+                    writer.println(String.format(DNORatio_ROW,
+                            dnoRatio.getSampleLabel(), dnoRatio.getPaa_ptt(),
+                            dnoRatio.getPac_pgt(), dnoRatio.getPcc_pgg(),
+                            dnoRatio.getPca_ptg(), dnoRatio.getPga_ptc(),
+                            dnoRatio.getPag_pct(), dnoRatio.getPat(),
+                            dnoRatio.getPcg(), dnoRatio.getPgc(),
+                            dnoRatio.getPta(), dnoRatio.getId()));
                     writer.flush();
                     out.flush();
                 }
@@ -220,39 +212,48 @@ public class MGTraitsAPI extends BaseRestService {
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
             @Context HttpServletRequest request) {
         try {
-            // skipping mg prefix and searching for evtl. 2nd -
-            String sampleId = sampleLabel.substring(2, sampleLabel.indexOf('-', 3));
+            // skipping mg prefix and searching for eventuallay. 2nd - in case
+            // id is a minus value
+            String sampleId = sampleLabel.substring(2,
+                    sampleLabel.indexOf('-', 3));
             int id = Integer.parseInt(sampleId);
-            final List<MGTraitsJobDetails> result = service
-                    .getJobDetails(id);
+            final MGTraitsJobDetails job = service.getJobDetails(id);
+
+            ResponseBuilder rb = null;
+
+            if (job == null) {
+                rb.status(Response.Status.NO_CONTENT);
+            }
             
-            ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+            // job is still running
+            if ( job.getReturnCode() == -1 ) {
+                rb.status(Response.Status.ACCEPTED);
+            }
+            // job finished and correct results
+            if ( job.getReturnCode() == 0 ) {
+                rb.status(Response.Status.SEE_OTHER);
+                rb.header("Location",
+                        request.getContextPath() + "/ws" + BASE_CONTEXT_PATH);
+            }
+            // job finished and bad results
+            if ( job.getReturnCode() > 0 ) {
+                rb.status(Response.Status.OK);
+            }
+            
+            
+            rb = rb.entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(JOB_DETAILS_HEADER);
-                    for (MGTraitsJobDetails currJobDetail : result) {
-                        writer.println(String.format(JOB_DETAILS_ROW,
-                                currJobDetail.getId(),
-                                currJobDetail.getSampleLabel(),
-                                currJobDetail.getTimeSubmitted(),
-                                currJobDetail.getTimeFinished(),
-                                currJobDetail.getReturnCode(),
-                                currJobDetail.getErrorMessage()));
-                    }
+                    writer.println(String.format(JOB_DETAILS_ROW, job.getId(),
+                            job.getSampleLabel(), job.getTimeSubmitted(),
+                            job.getTimeFinished(), job.getReturnCode(),
+                            job.getErrorMessage()));
                     writer.flush();
                     out.flush();
                 }
             });
-
-            // Check if job finished
-            for (MGTraitsJobDetails currJobDetail : result) {
-                if (currJobDetail.getTimeFinished() != null) {
-                    rb.header("Location", request.getRequestURL());
-                    break;
-                }
-            }
-
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
@@ -279,15 +280,17 @@ public class MGTraitsAPI extends BaseRestService {
             final String publicSampleLabel;
             publicSampleLabel = service.insertJob(customer, mgUrl, sampleLabel,
                     sampleEnvironment);
-            ResponseBuilder rb = Response.ok()
-                    .header("Location", request.getRequestURL() + "/" + publicSampleLabel)
+            ResponseBuilder rb = Response
+                    .ok()
+                    .header("Location",
+                            request.getRequestURL() + "/" + publicSampleLabel)
                     .entity(new StreamingOutput() {
                         @Override
                         public void write(OutputStream out) throws IOException {
                             PrintWriter writer = new PrintWriter(out);
                             writer.println("Sample label,URL");
-                            writer.println(String.format("%s,%s", publicSampleLabel,
-                                    mgUrl));
+                            writer.println(String.format("%s,%s",
+                                    publicSampleLabel, mgUrl));
                             writer.flush();
                             out.flush();
                         }
@@ -317,7 +320,8 @@ public class MGTraitsAPI extends BaseRestService {
                     writer.println("sample_label, environment");
                     for (MGTraitsJobDetails currJobDetail : result) {
                         writer.println(String.format("%s,%s",
-                                currJobDetail.getPublicSampleLabel(), currJobDetail.getSampleEnvironment()));
+                                currJobDetail.getPublicSampleLabel(),
+                                currJobDetail.getSampleEnvironment()));
                     }
                     writer.flush();
                     out.flush();
@@ -331,8 +335,9 @@ public class MGTraitsAPI extends BaseRestService {
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
             throw new WebApplicationException(Response.Status.NO_CONTENT);
-        } catch(IllegalStateException e) {
-            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+        } catch (IllegalStateException e) {
+            throw new WebApplicationException(e,
+                    Response.Status.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);

@@ -17,10 +17,12 @@ public class MGTraitsJobDetails {
     private Date timeStarted;
     private String clusterNode;
     private int jobId;
-    private int returnCode;
+    //we can not use a zero initialized 
+    private int returnCode = -1;
     private String errorMessage;
     private Double totalRunTime;
     private String[] timeProtocol;
+   
     private int id;
 
     public String getCustomer() {
