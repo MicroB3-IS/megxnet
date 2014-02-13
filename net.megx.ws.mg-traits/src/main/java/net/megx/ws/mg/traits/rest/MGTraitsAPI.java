@@ -242,7 +242,7 @@ public class MGTraitsAPI extends BaseRestService {
                         request.getScheme() + "://" + request.getServerName()
                                 + ":" + request.getServerPort()
                                 + request.getContextPath() + "/ws/"
-                                + BASE_CONTEXT_PATH
+                                + BASE_CONTEXT_PATH + "/"
                                 + job.getPublicSampleLabel());
             }
             // job finished and bad results
