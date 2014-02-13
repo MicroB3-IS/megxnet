@@ -29,6 +29,7 @@ import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsResult;
+import net.megx.ws.core.BaseRestService;
 
 @Path("v1/mg-traits/v1.0.0")
 public class MGTraitsAPI extends BaseRestService {
