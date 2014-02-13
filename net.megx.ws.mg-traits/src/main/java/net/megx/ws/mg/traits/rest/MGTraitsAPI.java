@@ -211,12 +211,16 @@ public class MGTraitsAPI extends BaseRestService {
     @Produces("text/csv")
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
             @Context HttpServletRequest request) {
+        
+        int id = -1;
+        
         try {
             // skipping mg prefix and searching for eventuallay. 2nd - in case
             // id is a minus value
             String sampleId = sampleLabel.substring(2,
                     sampleLabel.indexOf('-', 3));
-            int id = Integer.parseInt(sampleId);
+            id = Integer.parseInt(sampleId);
+            
             final MGTraitsJobDetails job = service.getJobDetails(id);
 
             ResponseBuilder rb = null;
@@ -257,11 +261,14 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
+            log.error("Db error: for id" + id );
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
+            log.error("No DB entry: for id" + id );
             throw new WebApplicationException(Response.Status.NO_CONTENT);
         } catch (Exception e) {
+            log.error("Db error: for id" + id );
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
