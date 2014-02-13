@@ -11,11 +11,24 @@ import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsResult;
 
 public interface MGTraitsService {
-	public List<MGTraitsResult> getSimpleTraits(int id) throws DBGeneralFailureException, DBNoRecordsException;
-	public List<MGTraitsPfam> getFunctionTable(int id) throws DBGeneralFailureException, DBNoRecordsException;
-	public List<MGTraitsAA> getAminoAcidContent(int id) throws DBGeneralFailureException, DBNoRecordsException;
-	public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(int id) throws DBGeneralFailureException, DBNoRecordsException;
-	public List<MGTraitsJobDetails> getJobDetails(String sampleLabel) throws DBGeneralFailureException, DBNoRecordsException;
-	public String insertJob(String customer, String mgUrl, String sampleLabel, String sampleEnvironment) throws DBGeneralFailureException;
-	public List<MGTraitsJobDetails> getAllFinishedJobs() throws DBGeneralFailureException, DBNoRecordsException;
+    public List<MGTraitsResult> getSimpleTraits(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+
+    public List<MGTraitsPfam> getFunctionTable(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+
+    public List<MGTraitsAA> getAminoAcidContent(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+
+    public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+
+    public List<MGTraitsJobDetails> getJobDetails(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+
+    public String insertJob(String customer, String mgUrl, String sampleLabel,
+            String sampleEnvironment) throws DBGeneralFailureException;
+
+    public List<MGTraitsJobDetails> getAllFinishedJobs()
+            throws DBGeneralFailureException, DBNoRecordsException;
 }

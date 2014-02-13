@@ -17,148 +17,151 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class DBMGTraitsService extends BaseMegdbService implements
-		MGTraitsService {
+        MGTraitsService {
 
-	private Log log = LogFactory.getLog(getClass());
-	
-	@Override
-	public List<MGTraitsResult> getSimpleTraits(final int id)
-			throws DBGeneralFailureException, DBNoRecordsException {
+    private Log log = LogFactory.getLog(getClass());
 
-		List<MGTraitsResult> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsResult>>() {
-					@Override
-					public List<MGTraitsResult> execute(MGTraitsMapper mapper)
-							throws Exception {
-						return mapper.getSimpleTraits(id);
-					}
-				}, MGTraitsMapper.class);
+    @Override
+    public List<MGTraitsResult> getSimpleTraits(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        List<MGTraitsResult> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsResult>>() {
+                    @Override
+                    public List<MGTraitsResult> execute(MGTraitsMapper mapper)
+                            throws Exception {
+                        return mapper.getSimpleTraits(id);
+                    }
+                }, MGTraitsMapper.class);
 
-	@Override
-	public List<MGTraitsPfam> getFunctionTable(final int id)
-			throws DBGeneralFailureException, DBNoRecordsException {
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
 
-		List<MGTraitsPfam> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsPfam>>() {
-					@Override
-					public List<MGTraitsPfam> execute(MGTraitsMapper mapper)
-							throws Exception {
-						return mapper.getFunctionTable(id);
-					}
-				}, MGTraitsMapper.class);
+    @Override
+    public List<MGTraitsPfam> getFunctionTable(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        List<MGTraitsPfam> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsPfam>>() {
+                    @Override
+                    public List<MGTraitsPfam> execute(MGTraitsMapper mapper)
+                            throws Exception {
+                        return mapper.getFunctionTable(id);
+                    }
+                }, MGTraitsMapper.class);
 
-	@Override
-	public List<MGTraitsAA> getAminoAcidContent(final int id)
-			throws DBGeneralFailureException, DBNoRecordsException {
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
 
-		List<MGTraitsAA> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsAA>>() {
-					@Override
-					public List<MGTraitsAA> execute(MGTraitsMapper mapper)
-							throws Exception {
-						return mapper.getAminoAcidContent(id);
-					}
-				}, MGTraitsMapper.class);
+    @Override
+    public List<MGTraitsAA> getAminoAcidContent(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        List<MGTraitsAA> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsAA>>() {
+                    @Override
+                    public List<MGTraitsAA> execute(MGTraitsMapper mapper)
+                            throws Exception {
+                        return mapper.getAminoAcidContent(id);
+                    }
+                }, MGTraitsMapper.class);
 
-	@Override
-	public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(final int id)
-			throws DBGeneralFailureException, DBNoRecordsException {
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
 
-		List<MGTraitsDNORatio> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsDNORatio>>() {
-					@Override
-					public List<MGTraitsDNORatio> execute(MGTraitsMapper mapper)
-							throws Exception {
-						return mapper.getDiNucleotideOddsRatio(id);
-					}
-				}, MGTraitsMapper.class);
+    @Override
+    public List<MGTraitsDNORatio> getDiNucleotideOddsRatio(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        List<MGTraitsDNORatio> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsDNORatio>>() {
+                    @Override
+                    public List<MGTraitsDNORatio> execute(MGTraitsMapper mapper)
+                            throws Exception {
+                        return mapper.getDiNucleotideOddsRatio(id);
+                    }
+                }, MGTraitsMapper.class);
 
-	@Override
-	public List<MGTraitsJobDetails> getJobDetails(final String sampleLabel)
-			throws DBGeneralFailureException, DBNoRecordsException {
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
+ 
+    @Override
+    public List<MGTraitsJobDetails> getJobDetails(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		List<MGTraitsJobDetails> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
-					@Override
-					public List<MGTraitsJobDetails> execute(
-							MGTraitsMapper mapper) throws Exception {
-						return mapper.getJobDetails(sampleLabel);
-					}
-				}, MGTraitsMapper.class);
+        List<MGTraitsJobDetails> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
+                    @Override
+                    public List<MGTraitsJobDetails> execute(
+                            MGTraitsMapper mapper) throws Exception {
+                        return mapper.getJobDetails(id);
+                    }
+                }, MGTraitsMapper.class);
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
 
-	@Override
-	public String insertJob(final String customer, final String mgUrl, final String sampleLabel,
-			final String sampleEnvironment) throws DBGeneralFailureException {
+    @Override
+    public String insertJob(final String customer, final String mgUrl,
+            final String sampleLabel, final String sampleEnvironment)
+            throws DBGeneralFailureException {
 
-		String jobUrl = doInTransaction(new DBTask<MGTraitsMapper, String>() {
-			@Override
-			public String execute(MGTraitsMapper mapper) throws Exception {
-				MGTraitsJobDetails job = new MGTraitsJobDetails();
-				job.setCustomer(customer);
-				job.setMgUrl(mgUrl);
-				job.setSampleLabel(sampleLabel);
-				job.setSampleEnvironment(sampleEnvironment);
-				mapper.insertMGTraitsJob(job);
-				return  job.getSampleLabel();
-			}
-		}, MGTraitsMapper.class);
-		
-		return jobUrl;
-	}
+        String publicSampleLable = doInTransaction(
+                new DBTask<MGTraitsMapper, String>() {
+                    @Override
+                    public String execute(MGTraitsMapper mapper)
+                            throws Exception {
+                        MGTraitsJobDetails job = new MGTraitsJobDetails();
+                        job.setCustomer(customer);
+                        job.setMgUrl(mgUrl);
+                        job.setSampleLabel(sampleLabel);
+                        job.setSampleEnvironment(sampleEnvironment);
+                        mapper.insertMGTraitsJob(job);
+                        return job.getPublicSampleLabel();
+                    }
+                }, MGTraitsMapper.class);
 
-	@Override
-	public List<MGTraitsJobDetails> getAllFinishedJobs()
-			throws DBGeneralFailureException, DBNoRecordsException {
+        return publicSampleLable;
+    }
 
-		List<MGTraitsJobDetails> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
-					@Override
-					public List<MGTraitsJobDetails> execute(
-							MGTraitsMapper mapper) throws Exception {
-						return mapper.getAllFinishedJobs();
-					}
-				}, MGTraitsMapper.class);
+    @Override
+    public List<MGTraitsJobDetails> getAllFinishedJobs()
+            throws DBGeneralFailureException, DBNoRecordsException {
 
-		if (result.size() == 0) {
-			throw new DBNoRecordsException("Query returned zero results");
-		} else {
-			return result;
-		}
-	}
+        List<MGTraitsJobDetails> result = doInSession(
+                new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
+                    @Override
+                    public List<MGTraitsJobDetails> execute(
+                            MGTraitsMapper mapper) throws Exception {
+                        return mapper.getAllFinishedJobs();
+                    }
+                }, MGTraitsMapper.class);
+
+        if (result.size() == 0) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
 
 }
