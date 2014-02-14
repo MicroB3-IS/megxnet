@@ -24,7 +24,10 @@ public interface MGTraitsMapper {
 
     public MGTraitsJobDetails getJobDetails(
             @Param("id") int  id);
-
+    
+    public MGTraitsJobDetails getSuccesfulJob(
+            @Param("id") int  id);
+    
     public List<MGTraitsJobDetails> getAllFinishedJobs();
 
 }

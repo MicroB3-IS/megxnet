@@ -27,6 +27,9 @@ public interface MGTraitsService {
     public MGTraitsJobDetails getJobDetails(int id)
             throws DBGeneralFailureException, DBNoRecordsException;
 
+    public MGTraitsJobDetails getSuccesfulJob(int id)
+            throws DBGeneralFailureException, DBNoRecordsException;
+    
     public String insertJob(String customer, String mgUrl, String sampleLabel,
             String sampleEnvironment) throws DBGeneralFailureException;
 

@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.megx.megdb.mgtraits.mappers.MGTraitsMapper">
+
     <resultMap type="MGTraitsResult" id="mg_traits_result">
         <result column="id" property="id" />
         <result column="sample_label" property="sampleLabel" />
@@ -113,10 +114,12 @@
     <select id="getJobDetails" parameterType="int"
         resultMap="mg_traits_job_details">
         SELECT
-        id, sample_label, time_submitted, time_finished, return_code,
+        id, sample_label, time_submitted, time_finished,
+        return_code,
         error_message
         FROM mg_traits.mg_traits_jobs
-        WHERE id=#{id}
+        WHERE
+        id=#{id}
     </select>
 
     <insert id="insertMGTraitsJob" parameterType="MGTraitsJobDetails">
@@ -125,12 +128,22 @@
         </selectKey>
         INSERT INTO mg_traits.mg_traits_jobs(customer, mg_url,
         sample_label,sample_environment)
-        VALUES (#{customer}, #{mgUrl}, #{sampleLabel}, #{sampleEnvironment})
+        VALUES (#{customer}, #{mgUrl},
+        #{sampleLabel}, #{sampleEnvironment})
     </insert>
 
+    <select id="getSuccesfulJob" parameterType="int" resultMap="mg_traits_job_details">
+        SELECT *
+        FROM
+        mg_traits.mg_traits_jobs
+        WHERE return_code = 0 and id = #{id};
+    </select>
+    
     <select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
         SELECT *
-        FROM mg_traits.mg_traits_jobs
-        WHERE time_finished IS NOT NULL;
+        FROM
+        mg_traits.mg_traits_jobs
+        WHERE return_code = 0;
     </select>
+
 </mapper>
