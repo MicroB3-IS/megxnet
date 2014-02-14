@@ -35,29 +35,111 @@ import net.megx.ws.core.BaseRestService;
 public class MGTraitsAPI extends BaseRestService {
 
     private MGTraitsService service;
+    
+    private static final String SAMPLE_LABEL = "sample_label";
 
-    private static final String SIMPLE_TRAITS_HEADER = "Sample label,GcContent,GcVariance,NumGenes,TotalMB,NumReads,AbRatio,PercTF,PercClassified,Id";
+    private static final String SIMPLE_TRAITS_HEADER = SAMPLE_LABEL + ",GcContent,GcVariance,NumGenes,TotalMB,NumReads,AbRatio,PercTF,PercClassified,Id";
     private static final String SIMPLE_TRAITS_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    private static final String FUNCTION_TABLE_HEADER = "Sample label,Pfam,Id";
+    private static final String FUNCTION_TABLE_HEADER = SAMPLE_LABEL + ",Pfam,Id";
     private static final String FUNCTION_TABLE_ROW = "%s,%s,%s";
 
-    private static final String AMINO_ACID_HEADER = "Sample label,ala,cys,asp,glu,phe,gly,his,ile,lys,leu,met,asn,pro,gln,arg,ser,thr,val,trp,tyr,id";
+    private static final String AMINO_ACID_HEADER = SAMPLE_LABEL +",ala,cys,asp,glu,phe,gly,his,ile,lys,leu,met,asn,pro,gln,arg,ser,thr,val,trp,tyr,id";
     private static final String AMINO_ACID_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    private static final String DNORatio_HEADER = "Sample label,paa_ptt,pac_pgt,pcc_pgg,pca_ptg,pga_ptc,pag_pct,pat,pcg,pgc,pta,id";
+    private static final String DNORatio_HEADER = SAMPLE_LABEL + ",paa_ptt,pac_pgt,pcc_pgg,pca_ptg,pga_ptc,pag_pct,pat,pcg,pgc,pta,id";
     private static final String DNORatio_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    private static final String JOB_DETAILS_HEADER = "Id,sample label,time submitted,time finished,return code,error message";
-    private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
+    private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL +",time submitted,time finished,return code,error message";
+    private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s";
 
     private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
+
+    private static final String SAMPLE_PATH_MATCHER = "mg{id}-{sample_name}";
 
     public MGTraitsAPI(MGTraitsService service) {
         this.service = service;
     }
 
-    @Path("mg{id}-{sample_name}/simple-traits")
+    private String jobAsCSV(MGTraitsJobDetails job) {
+        return String.format("%s,%s", job.getPublicSampleLabel(),
+                job.getSampleEnvironment());
+    }
+
+    @Path(SAMPLE_PATH_MATCHER)
+    @GET
+    @Produces({ "text/csv", MediaType.APPLICATION_JSON })
+    public Response getTraitOverview(@PathParam("id") int id) {
+        ResponseBuilder rb = Response.ok();
+
+        try {
+            final MGTraitsJobDetails jobDetail = service.getSuccesfulJob(id);
+            rb = Response.ok().entity(new StreamingOutput() {
+                @Override
+                public void write(OutputStream out) throws IOException {
+                    PrintWriter writer = new PrintWriter(out);
+                    writer.println( SAMPLE_LABEL + ", environment" );
+                    writer.println( jobAsCSV(jobDetail) );
+                    writer.flush();
+                    out.flush();
+                }
+            });
+        } catch (DBGeneralFailureException e) {
+            log.error("Db general error for id=" + id + "\n" + e);
+            throw new WebApplicationException(
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        } catch (DBNoRecordsException e) {
+            log.error("No DB no record: for id=" + id + "\n" + e);
+            throw new WebApplicationException(Response.Status.NO_CONTENT);
+        } catch (Exception e) {
+            log.error("Db exception for id=" + id + "\n" + e);
+            throw new WebApplicationException(
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        }
+
+        return rb.build();
+    }
+
+    @Path("all")
+    @GET
+    @Produces("text/csv")
+    public Response getAllFinishedJobs(@Context HttpServletRequest request) {
+        try {
+            final List<MGTraitsJobDetails> result = service
+                    .getAllFinishedJobs();
+            ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+                @Override
+                public void write(OutputStream out) throws IOException {
+                    PrintWriter writer = new PrintWriter(out);
+                    writer.println( SAMPLE_LABEL + ", environment" );
+                    for (MGTraitsJobDetails currJobDetail : result) {
+                        writer.println(jobAsCSV(currJobDetail));
+                    }
+                    writer.flush();
+                    out.flush();
+                }
+            });
+
+            rb.type("text/csv");
+            return rb.build();
+        } catch (DBGeneralFailureException e) {
+            log.error("Could not retrieve all finished jobs");
+            throw new WebApplicationException(
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        } catch (DBNoRecordsException e) {
+            log.error("No finished job exists");
+            throw new WebApplicationException(Response.Status.NO_CONTENT);
+        } catch (IllegalStateException e) {
+            log.error("Could not generate public Id");
+            throw new WebApplicationException(e,
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new WebApplicationException(
+                    Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Path(SAMPLE_PATH_MATCHER + "/simple-traits")
     @GET
     @Produces("text/csv")
     public Response getSimpleTraits(@PathParam("id") int id,
@@ -93,7 +175,7 @@ public class MGTraitsAPI extends BaseRestService {
         }
     }
 
-    @Path("mg{id}-{sample_name}/function-table")
+    @Path(SAMPLE_PATH_MATCHER + "/function-table")
     @GET
     @Produces("text/csv")
     public Response getFunctionTable(@PathParam("id") int id,
@@ -127,7 +209,7 @@ public class MGTraitsAPI extends BaseRestService {
         }
     }
 
-    @Path("mg{id}-{sample_name}/amino-acid-content")
+    @Path(SAMPLE_PATH_MATCHER + "/amino-acid-content")
     @GET
     @Produces("text/csv")
     public Response getAminoAcidContent(@PathParam("id") int id,
@@ -169,7 +251,7 @@ public class MGTraitsAPI extends BaseRestService {
         }
     }
 
-    @Path("mg{id}-{sample_name}/di-nucleotide-odds-ratio")
+    @Path(SAMPLE_PATH_MATCHER + "/di-nucleotide-odds-ratio")
     @GET
     @Produces("text/csv")
     public Response getDiNucleotideOddsRatio(@PathParam("id") int id,
@@ -207,20 +289,29 @@ public class MGTraitsAPI extends BaseRestService {
         }
     }
 
+    private int getInternalId(String publicSampleLabel)
+            throws NumberFormatException {
+        String sampleId = publicSampleLabel.substring(2,
+                publicSampleLabel.indexOf('-', 3));
+        int id = Integer.parseInt(sampleId);
+
+        return id;
+    }
+
+    // TODO: change this maybe to use SAMPLE_ATH_MATCHER mg{id}-{sample_name}
     @Path("jobs/{sampleLabel}")
     @GET
     @Produces("text/csv")
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
             @Context HttpServletRequest request) {
 
-        int id = -1;
+        int id = -10000;
 
         try {
             // skipping mg prefix and searching for eventuallay. 2nd - in case
             // id is a minus value
-            String sampleId = sampleLabel.substring(2,
-                    sampleLabel.indexOf('-', 3));
-            id = Integer.parseInt(sampleId);
+
+            id = this.getInternalId(sampleLabel);
 
             final MGTraitsJobDetails job = service.getJobDetails(id);
 
@@ -272,7 +363,12 @@ public class MGTraitsAPI extends BaseRestService {
         } catch (DBNoRecordsException e) {
             log.error("No DB no record: for id=" + id + "\n" + e);
             throw new WebApplicationException(Response.Status.NO_CONTENT);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
+            log.error("Could not parse internal id from " + sampleLabel);
+            throw new WebApplicationException(Response.Status.NO_CONTENT);
+        }
+
+        catch (Exception e) {
             log.error("Db exception for id=" + id + "\n" + e);
             throw new WebApplicationException(
                     Response.Status.INTERNAL_SERVER_ERROR);
@@ -317,43 +413,4 @@ public class MGTraitsAPI extends BaseRestService {
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @Path("all")
-    @GET
-    @Produces("text/csv")
-    public Response getAllFinishedJobs(@Context HttpServletRequest request) {
-        try {
-            final List<MGTraitsJobDetails> result = service
-                    .getAllFinishedJobs();
-            ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
-                @Override
-                public void write(OutputStream out) throws IOException {
-                    PrintWriter writer = new PrintWriter(out);
-                    writer.println("sample_label, environment");
-                    for (MGTraitsJobDetails currJobDetail : result) {
-                        writer.println(String.format("%s,%s",
-                                currJobDetail.getPublicSampleLabel(),
-                                currJobDetail.getSampleEnvironment()));
-                    }
-                    writer.flush();
-                    out.flush();
-                }
-            });
-
-            rb.type("text/csv");
-            return rb.build();
-        } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
-                    Response.Status.INTERNAL_SERVER_ERROR);
-        } catch (DBNoRecordsException e) {
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
-        } catch (IllegalStateException e) {
-            throw new WebApplicationException(e,
-                    Response.Status.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            throw new WebApplicationException(
-                    Response.Status.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

@@ -122,6 +122,26 @@ public class DBMGTraitsService extends BaseMegdbService implements
     }
 
     @Override
+    public MGTraitsJobDetails getSuccesfulJob(final int id)
+            throws DBGeneralFailureException, DBNoRecordsException {
+
+        MGTraitsJobDetails result = doInSession(
+                new DBTask<MGTraitsMapper, MGTraitsJobDetails>() {
+                    @Override
+                    public MGTraitsJobDetails execute(
+                            MGTraitsMapper mapper) throws Exception {
+                        return mapper.getSuccesfulJob(id);
+                    }
+                }, MGTraitsMapper.class);
+
+        if (result == null) {
+            throw new DBNoRecordsException("Query returned zero results");
+        } else {
+            return result;
+        }
+    }
+    
+    @Override
     public String insertJob(final String customer, final String mgUrl,
             final String sampleLabel, final String sampleEnvironment)
             throws DBGeneralFailureException {
