@@ -50,7 +50,8 @@ public class MGTraitsAPI extends BaseRestService {
     private static final String DNORatio_HEADER = SAMPLE_LABEL + ",paa_ptt,pac_pgt,pcc_pgg,pca_ptg,pga_ptc,pag_pct,pat,pcg,pgc,pta,id";
     private static final String DNORatio_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL +",time submitted,time finished,return code,error message";
+    private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL + 
+            ",environment"+ ",time_submitted,time_finished,return_code,error_message";
     
     private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
 
