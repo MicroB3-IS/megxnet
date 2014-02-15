@@ -51,6 +51,7 @@ public class MGTraitsAPI extends BaseRestService {
     private static final String DNORatio_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
     private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL +",time submitted,time finished,return code,error message";
+    
     private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s";
 
     private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
@@ -62,8 +63,12 @@ public class MGTraitsAPI extends BaseRestService {
     }
 
     private String jobAsCSV(MGTraitsJobDetails job) {
-        return String.format("%s,%s", job.getPublicSampleLabel(),
-                job.getSampleEnvironment());
+        return String.format(JOB_DETAILS_ROW, 
+                job.getPublicSampleLabel(),
+                job.getSampleEnvironment(),
+                job.getTimeSubmitted(),
+                job.getTimeFinished(), job.getReturnCode(),
+                job.getErrorMessage());
     }
 
     @Path(SAMPLE_PATH_MATCHER)
@@ -182,6 +187,9 @@ public class MGTraitsAPI extends BaseRestService {
             @PathParam("sample_name") String sampleName) {
         try {
             final MGTraitsPfam functionTable = service.getFunctionTable(id);
+            final String pfams = Arrays.toString( functionTable.getPfam() );
+            final String pfamsString = pfams.substring(pfams.indexOf('['), pfams.indexOf(']'));
+            
             ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
                 @Override
                 public void write(OutputStream out) throws IOException {
@@ -189,7 +197,7 @@ public class MGTraitsAPI extends BaseRestService {
                     writer.println(FUNCTION_TABLE_HEADER);
                     writer.println(String.format(FUNCTION_TABLE_ROW,
                             functionTable.getSampleLabel(),
-                            Arrays.toString(functionTable.getPfam()),
+                            pfamsString,
                             functionTable.getId()));
                     writer.flush();
                     out.flush();
@@ -346,10 +354,7 @@ public class MGTraitsAPI extends BaseRestService {
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
                     writer.println(JOB_DETAILS_HEADER);
-                    writer.println(String.format(JOB_DETAILS_ROW, job.getId(),
-                            job.getSampleLabel(), job.getTimeSubmitted(),
-                            job.getTimeFinished(), job.getReturnCode(),
-                            job.getErrorMessage()));
+                    writer.println( jobAsCSV(job) );
                     writer.flush();
                     out.flush();
                 }
