@@ -52,7 +52,7 @@ public class MGTraitsAPI extends BaseRestService {
 
     private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL +",time submitted,time finished,return code,error message";
     
-    private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s";
+    private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
 
     private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
 
