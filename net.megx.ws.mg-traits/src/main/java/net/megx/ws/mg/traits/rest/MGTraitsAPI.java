@@ -84,7 +84,7 @@ public class MGTraitsAPI extends BaseRestService {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
-                    writer.println( SAMPLE_LABEL + ", environment" );
+                    writer.println( JOB_DETAILS_HEADER );
                     writer.println( jobAsCSV(jobDetail) );
                     writer.flush();
                     out.flush();
@@ -117,7 +117,7 @@ public class MGTraitsAPI extends BaseRestService {
                 @Override
                 public void write(OutputStream out) throws IOException {
                     PrintWriter writer = new PrintWriter(out);
-                    writer.println( SAMPLE_LABEL + ", environment" );
+                    writer.println( JOB_DETAILS_HEADER );
                     for (MGTraitsJobDetails currJobDetail : result) {
                         writer.println(jobAsCSV(currJobDetail));
                     }
