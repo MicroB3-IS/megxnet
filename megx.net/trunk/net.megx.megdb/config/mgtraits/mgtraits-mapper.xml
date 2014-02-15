@@ -114,7 +114,7 @@
     <select id="getJobDetails" parameterType="int"
         resultMap="mg_traits_job_details">
         SELECT
-        id, sample_label, time_submitted, time_finished,
+        id, sample_label, sample_environment,time_submitted, time_finished,
         return_code,
         error_message
         FROM mg_traits.mg_traits_jobs
