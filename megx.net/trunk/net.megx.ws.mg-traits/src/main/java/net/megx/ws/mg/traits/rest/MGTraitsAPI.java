@@ -57,7 +57,7 @@ public class MGTraitsAPI extends BaseRestService {
 
     private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
 
-    private static final String SAMPLE_PATH_MATCHER = "mg{id}-{sample_name}";
+    private static final String SAMPLE_PATH_MATCHER = "mg{id : \\d+}-{sample_name}";
 
     public MGTraitsAPI(MGTraitsService service) {
         this.service = service;
@@ -308,7 +308,7 @@ public class MGTraitsAPI extends BaseRestService {
     }
 
     // TODO: change this maybe to use SAMPLE_ATH_MATCHER mg{id}-{sample_name}
-    @Path("jobs/{sampleLabel}")
+    @Path("jobs/{sampleLabel :.*}")
     @GET
     @Produces("text/csv")
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
