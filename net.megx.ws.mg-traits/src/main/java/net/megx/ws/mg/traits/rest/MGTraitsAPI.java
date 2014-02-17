@@ -92,14 +92,14 @@ public class MGTraitsAPI extends BaseRestService {
             });
         } catch (DBGeneralFailureException e) {
             log.error("Db general error for id=" + id + "\n" + e);
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
             log.error("No DB no record: for id=" + id + "\n" + e);
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (Exception e) {
             log.error("Db exception for id=" + id + "\n" + e);
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
 
@@ -130,17 +130,17 @@ public class MGTraitsAPI extends BaseRestService {
             return rb.build();
         } catch (DBGeneralFailureException e) {
             log.error("Could not retrieve all finished jobs");
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
             log.error("No finished job exists");
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (IllegalStateException e) {
             log.error("Could not generate public Id");
             throw new WebApplicationException(e,
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -171,12 +171,12 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -208,12 +208,12 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -250,12 +250,12 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -288,12 +288,12 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -364,14 +364,14 @@ public class MGTraitsAPI extends BaseRestService {
             return rb.build();
         } catch (DBGeneralFailureException e) {
             log.error("Db general error for id=" + id + "\n" + e);
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (DBNoRecordsException e) {
             log.error("No DB no record: for id=" + id + "\n" + e);
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         } catch (NumberFormatException e) {
             log.error("Could not parse internal id from " + sampleLabel);
-            throw new WebApplicationException(Response.Status.NO_CONTENT);
+            throw new WebApplicationException(e, Response.Status.NO_CONTENT);
         }
 
         catch (Exception e) {
@@ -412,10 +412,10 @@ public class MGTraitsAPI extends BaseRestService {
             rb.type("text/csv");
             return rb.build();
         } catch (DBGeneralFailureException e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            throw new WebApplicationException(
+            throw new WebApplicationException(e, 
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
