@@ -69,11 +69,11 @@
         <result column="mg_url" property="mgUrl" />
         <result column="sample_label" property="sampleLabel" />
         <result column="sample_environment" property="sampleEnvironment" />
-        <result column="time_submitted" property="timeSubmitted" />
-        <result column="time_finished" property="timeFinished" />
+        <result column="time_submitted" property="timeSubmitted" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="time_finished" property="timeFinished" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
         <result column="make_public" property="makePublic" />
         <result column="keep_data" property="keepData" />
-        <result column="time_started" property="timeStarted" />
+        <result column="time_started" property="timeStarted" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
         <result column="cluster_node" property="clusterNode" />
         <result column="job_id" property="jobId" />
         <result column="return_code" property="returnCode" />
