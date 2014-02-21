@@ -15,20 +15,6 @@
 
     <name>net.megx.ws.mg-traits</name>
 
-    <dependencies>
-        <dependency>
-            <artifactId>net.megx.megdb</artifactId>
-            <groupId>net.megx</groupId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <artifactId>net.megx.ws.common</artifactId>
-            <groupId>net.megx</groupId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
