@@ -25,7 +25,8 @@
 					'/ws/v1/six-frame-translation/.*',
 					'/ws/v1/verify_credentials/.*',
 					'/ws/v1/esa/v1.0.0/samples',
-					'/ws/v1/esa/v1.0.0/photos'
+					'/ws/v1/esa/v1.0.0/photos',
+					'/ws/v1/mg-traits/v1.0.0/.*'
 				],
 				order: 0
 			},
