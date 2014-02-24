@@ -27,6 +27,9 @@ public class MGTraitsJobDetails {
 	private String[] timeProtocol;
 
 	private int id;
+	private String formatedTimeSubmitted = "";
+	private String formatedTimeFinished = "";
+	private String formatedTimeStarted = "";
 
 	public String getCustomer() {
 		return customer;
@@ -61,9 +64,11 @@ public class MGTraitsJobDetails {
 	}
 
 	public String getTimeSubmitted() {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-		String result = df.format(this.timeSubmitted);
-		return result;
+		if (this.timeSubmitted != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeSubmitted = df.format(this.timeSubmitted);
+		}
+		return formatedTimeSubmitted;
 	}
 
 	public void setTimeSubmitted(Timestamp timeSubmitted) {
@@ -71,9 +76,11 @@ public class MGTraitsJobDetails {
 	}
 
 	public String getTimeFinished() {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-		String result = df.format(this.timeFinished);
-		return result;
+		if (this.timeFinished != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeFinished = df.format(this.timeFinished);
+		}
+		return formatedTimeFinished;
 	}
 
 	public void setTimeFinished(Timestamp timeFinished) {
@@ -97,9 +104,11 @@ public class MGTraitsJobDetails {
 	}
 
 	public String getTimeStarted() {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-		String result = df.format(this.timeStarted);
-		return result;
+		if (this.timeStarted != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeStarted = df.format(this.timeStarted);
+		}
+		return formatedTimeStarted;
 	}
 
 	public void setTimeStarted(Timestamp timeStarted) {
