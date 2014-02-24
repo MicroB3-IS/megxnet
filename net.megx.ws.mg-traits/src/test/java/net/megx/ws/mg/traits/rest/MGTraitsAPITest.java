@@ -1,5 +1,7 @@
 package net.megx.ws.mg.traits.rest;
 
+
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
@@ -24,8 +26,10 @@ public class MGTraitsAPITest {
 
 	@Before
 	public void setUp() throws Exception {
-		in = new FileInputStream("accessToken.properties");
+		
+		in = new FileInputStream("src/test/resources/accessToken.properties");
 		p.load(in);
+		
 		service = new ServiceBuilder().provider(MegxApi.class)
 				.apiKey(p.getProperty("apiKey"))
 				.apiSecret(p.getProperty("apiSecret"))
@@ -69,7 +73,7 @@ public class MGTraitsAPITest {
 	@Test
 	public void testGetFunctionTable() {
 		OAuthRequest request = new OAuthRequest(Verb.GET,
-				p.getProperty("GET_FUNCTION_TABLE"));
+				p.getProperty("GET_FUNCTION_TABLE_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 200);
@@ -78,7 +82,7 @@ public class MGTraitsAPITest {
 	@Test
 	public void testGetAminoAcidContent() {
 		OAuthRequest request = new OAuthRequest(Verb.GET,
-				p.getProperty("GET_AMINO_ACID_URL"));
+				p.getProperty("GET_AMINO_ACID_CONTENT_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 200);
@@ -91,6 +95,24 @@ public class MGTraitsAPITest {
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 200);
+	}
+	
+	@Test
+	public void testGetJobDetails() {
+		OAuthRequest request = new OAuthRequest(Verb.GET,
+				p.getProperty("GET_JOB_DETAILS_URL"));
+		service.signRequest(accessToken, request);
+		Response response = request.send();
+		Assert.assertEquals(response.getCode(), 200);
+	}
+	
+	@Test
+	public void testPostJob() {
+		OAuthRequest request = new OAuthRequest(Verb.POST,
+				p.getProperty("POST_JOB_URL"));
+		service.signRequest(accessToken, request);
+		Response response = request.send();
+		Assert.assertEquals(response.getCode(), 201);
 	}
 
 }
