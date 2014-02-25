@@ -103,13 +103,17 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_JOB_DETAILS_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertTrue(response.getCode() >= 200 && response.getCode() < 400);
 	}
 	
 	@Test
 	public void testPostJob() {
 		OAuthRequest request = new OAuthRequest(Verb.POST,
 				p.getProperty("POST_JOB_URL"));
+		request.addBodyParameter("customer", p.getProperty("POST_JOB_CUSTOMER"));
+		request.addBodyParameter("mg_url", p.getProperty("POST_JOB_MG_URL"));
+		request.addBodyParameter("sample_label", p.getProperty("POST_JOB_SAMPLE_LABEL"));
+		request.addBodyParameter("sample_environment", p.getProperty("POST_JOB_SAMPLE_ENVIRONMENT"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 201);
