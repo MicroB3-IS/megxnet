@@ -82,6 +82,72 @@
         <result column="time_protocol" property="timeProtocol" />
         <result column="id" property="id" />
     </resultMap>
+    
+    <resultMap type="MGTraitsCodon" id="mg_traits_codon">
+        <result column="id" property="id"/>
+        <result column="sample_label" property="sample_label"/>
+        <result column="gcc" property="gcc"/>
+        <result column="gcg" property="gcg"/>
+        <result column="gct" property="gct"/>
+        <result column="tgc" property="tgc"/>
+        <result column="tgt" property="tgt"/>
+	    <result column="gac" property="gac"/>
+	    <result column="gat" property="gat"/>
+	    <result column="gaa" property="gaa"/>
+	    <result column="gag" property="gag"/>
+	    <result column="ttc" property="ttc"/>
+	    <result column="ttt" property="ttt"/>
+	    <result column="gga" property="gga"/>
+	    <result column="ggc" property="ggc"/>
+	    <result column="ggg" property="ggg"/>
+	    <result column="ggt" property="ggt"/>
+	    <result column="cac" property="cac"/>
+	    <result column="cat" property="cat"/>
+	    <result column="ata" property="ata"/>
+        <result column="atc" property="atc"/>
+        <result column="att" property="att"/>
+        <result column="aaa" property="aaa"/>
+        <result column="aag" property="aag"/>
+	    <result column="cta" property="cta"/>
+	    <result column="ctc" property="ctc"/>
+	    <result column="ctg" property="ctg"/>
+	    <result column="ctt" property="ctt"/>
+	    <result column="tta" property="tta"/>
+	    <result column="ttg" property="ttg"/>
+	    <result column="atg" property="atg"/>
+	    <result column="aac" property="aac"/>
+	    <result column="aat" property="aat"/>
+	    <result column="cca" property="cca"/>
+	    <result column="ccc" property="ccc"/>
+	    <result column="ccg" property="ccg"/>
+	    <result column="cct" property="cct"/>
+        <result column="caa" property="caa"/>
+        <result column="cag" property="cag"/>
+        <result column="aga" property="aga"/>
+        <result column="agg" property="agg"/>
+	    <result column="cga" property="cga"/>
+	    <result column="cgc" property="cgc"/>
+	    <result column="cgg" property="cgg"/>
+	    <result column="cgt" property="cgt"/>
+	    <result column="agc" property="agc"/>
+	    <result column="agt" property="agt"/>
+	    <result column="tca" property="tca"/>
+	    <result column="tcc" property="tcc"/>
+	    <result column="tcg" property="tcg"/>
+	    <result column="tct" property="tct"/>
+	    <result column="aca" property="aca"/>
+	    <result column="acc" property="acc"/>
+	    <result column="acg" property="acg"/>
+	    <result column="act" property="act"/>
+	    <result column="gta" property="gta"/>
+	    <result column="gtc" property="gtc"/>
+	    <result column="gtg" property="gtg"/>
+	    <result column="gtt" property="gtt"/>
+	    <result column="tgg" property="tgg"/>
+	    <result column="tac" property="tac"/>
+	    <result column="tat" property="tat"/>
+	    
+    </resultMap>
 
     <select id="getSimpleTraits" parameterType="String"
         resultMap="mg_traits_result">
@@ -144,6 +210,12 @@
         FROM
         mg_traits.mg_traits_jobs
         WHERE return_code = 0;
+    </select>
+    
+    <select id="getCodonUsage" resultMap="mg_traits_codon">
+        SELECT * 
+        FROM
+        mg_traits.mg_traits_codon
     </select>
 
 </mapper>

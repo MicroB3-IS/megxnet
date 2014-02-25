@@ -66,6 +66,7 @@
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsDNORatio" alias="MGTraitsDinuc" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsJobDetails" alias="MGTraitsJobDetails" />
 		<typeAlias type="net.megx.megdb.mgtraits.mappers.ArrayTypeMapper" alias="ArrayTypeMapper" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsCodon" alias="MGTraitsCodon" />
 		
 	</typeAliases>
 

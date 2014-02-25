@@ -118,5 +118,13 @@ public class MGTraitsAPITest {
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 201);
 	}
+	@Test
+	public void testGetCodonUsage(){
+		OAuthRequest request = new OAuthRequest(Verb.GET,
+				p.getProperty("GET_CODON_USAGE_URL"));
+		service.signRequest(accessToken, request);
+		Response response = request.send();
+		Assert.assertEquals(response.getCode(), 200);
+	}
 
 }

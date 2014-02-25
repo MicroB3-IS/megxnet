@@ -5,6 +5,7 @@ import java.util.List;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.model.mgtraits.MGTraitsAA;
+import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
@@ -34,5 +35,8 @@ public interface MGTraitsService {
             String sampleEnvironment) throws DBGeneralFailureException;
 
     public List<MGTraitsJobDetails> getAllFinishedJobs()
+            throws DBGeneralFailureException, DBNoRecordsException;
+    
+    public List<MGTraitsCodon> getCodonUsage()
             throws DBGeneralFailureException, DBNoRecordsException;
 }
