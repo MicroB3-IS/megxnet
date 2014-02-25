@@ -3,6 +3,7 @@ package net.megx.megdb.mgtraits.mappers;
 import java.util.List;
 
 import net.megx.model.mgtraits.MGTraitsAA;
+import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
@@ -29,5 +30,7 @@ public interface MGTraitsMapper {
             @Param("id") int  id);
     
     public List<MGTraitsJobDetails> getAllFinishedJobs();
+    
+    public List<MGTraitsCodon> getCodonUsage();
 
 }

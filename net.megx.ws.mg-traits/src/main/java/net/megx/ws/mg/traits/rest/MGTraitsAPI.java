@@ -25,6 +25,7 @@ import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.mgtraits.MGTraitsService;
 import net.megx.model.mgtraits.MGTraitsAA;
+import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
@@ -54,7 +55,10 @@ public class MGTraitsAPI extends BaseRestService {
             ",environment"+ ",time_submitted,time_finished,return_code,error_message";
     
     private static final String JOB_DETAILS_ROW = "%s,%s,%s,%s,%s,%s";
-
+    
+    private static final String CODON_USAGE_HEADER = "id," + SAMPLE_LABEL + ",gcc,gcg,gct,tgc,tgt,gac,gat,gaa,gag,ttc,ttt,gga,ggc,ggg,ggt,cac,cat,ata,atc,att,aaa,aag,cta,ctc,ctg,ctt,tta,ttg,atg,aac,aat,cca,ccc,ccg,cct,caa,cag,aga,agg,cga,cgc,cgg,cgt,agc,agt,tca,tcc,tcg,tct,aca,acc,acg,act,gta,gtc,gtg,gtt,tgg,tac,tat";
+    private static final String CODON_USAGE_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
+    
     private static final String BASE_CONTEXT_PATH = "v1/mg-traits/v1.0.0";
 
     private static final String SAMPLE_PATH_MATCHER = "mg{id : \\d+}-{sample_name}";
@@ -144,7 +148,7 @@ public class MGTraitsAPI extends BaseRestService {
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     @Path(SAMPLE_PATH_MATCHER + "/simple-traits")
     @GET
     @Produces("text/csv")
@@ -308,7 +312,7 @@ public class MGTraitsAPI extends BaseRestService {
     }
 
     // TODO: change this maybe to use SAMPLE_ATH_MATCHER mg{id}-{sample_name}
-    @Path("jobs/{sampleLabel :.*}")
+    @Path("jobs/{sampleLabel : .*}")
     @GET
     @Produces("text/csv")
     public Response getJobDetails(@PathParam("sampleLabel") String sampleLabel,
@@ -419,4 +423,47 @@ public class MGTraitsAPI extends BaseRestService {
                     Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @Path("codon-usage")
+    @GET
+    @Produces("text/csv")
+    public Response getCodonUsage(@Context HttpServletRequest request){
+    	try{
+    		final List<MGTraitsCodon> result = service.getCodonUsage();
+    		ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+				
+				@Override
+				public void write(OutputStream out) throws IOException {
+					PrintWriter writer = new PrintWriter(out);
+					writer.println(CODON_USAGE_HEADER);
+					for(MGTraitsCodon codon : result){
+						writer.println(String.format(CODON_USAGE_ROW, codon.getId(),codon.getSample_label(),codon.getGcc(),
+								codon.getGcg(),codon.getGct(),codon.getTgc(),codon.getTgt(),codon.getGac(),codon.getGat(),
+								codon.getGaa(),codon.getGag(),codon.getTtc(),codon.getTtt(),codon.getGga(),codon.getGgc(),
+								codon.getGgg(),codon.getGgt(),codon.getCac(),codon.getCat(),codon.getAta(),codon.getAtc(),
+								codon.getAtt(),codon.getAaa(),codon.getAag(),codon.getCta(),codon.getCtc(),codon.getCtg(),
+								codon.getCtt(),codon.getTta(),codon.getTtg(),codon.getAtg(),codon.getAac(),codon.getAat(),
+								codon.getCca(),codon.getCcc(),codon.getCcg(),codon.getCct(),codon.getCaa(),codon.getCag(),
+								codon.getAga(),codon.getAgg(),codon.getCga(),codon.getCgc(),codon.getCgg(),codon.getCgt(),
+								codon.getAgc(),codon.getAgt(),codon.getTca(),codon.getTcc(),codon.getTcg(),codon.getTct(),
+								codon.getAcc(),codon.getAcg(),codon.getAct(),codon.getGta(),codon.getAca(),codon.getGtc(),
+								codon.getGtg(),codon.getGtt(),codon.getTgg(),codon.getTac(),codon.getTat()));
+					}
+					writer.flush();
+					out.flush();
+				}
+			});
+    		rb.type("text/csv");
+    		return rb.build();
+    	} catch(DBGeneralFailureException e){
+    		throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+    	} catch(DBNoRecordsException e){
+    		log.error("No DB no record: \n" + e);
+    		throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+    	} catch(Exception e){
+    		throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+    	}
+    }
+  
+    
 }

@@ -8,6 +8,7 @@ import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.mgtraits.MGTraitsService;
 import net.megx.megdb.mgtraits.mappers.MGTraitsMapper;
 import net.megx.model.mgtraits.MGTraitsAA;
+import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
@@ -183,5 +184,24 @@ public class DBMGTraitsService extends BaseMegdbService implements
             return result;
         }
     }
+
+	@Override
+	public List<MGTraitsCodon> getCodonUsage()
+			throws DBGeneralFailureException, DBNoRecordsException {
+		
+		List<MGTraitsCodon> result = doInSession(
+				new DBTask<MGTraitsMapper,List<MGTraitsCodon>>(){
+					@Override
+					public List<MGTraitsCodon> execute(MGTraitsMapper mapper) throws Exception{
+						return mapper.getCodonUsage();
+					}
+				},MGTraitsMapper.class);
+		
+		if(result.size() == 0){
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {	
+		return result;
+		}
+	}
 
 }
