@@ -10,7 +10,7 @@
             <defaultValue>net.megx</defaultValue>
         </requiredProperty>
         <requiredProperty key="version">
-            <defaultValue>0.0.1-SNAPSHOT</defaultValue>
+            <defaultValue>0.0.1</defaultValue>
         </requiredProperty>
         <requiredProperty key="plugin_name">
             <defaultValue>${artifactId}</defaultValue>
