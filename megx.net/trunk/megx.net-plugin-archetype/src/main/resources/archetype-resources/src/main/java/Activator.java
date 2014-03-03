@@ -16,7 +16,7 @@ public class Activator extends ${chon_activator} {
 
     @Override
     protected String getName() {
-        return "${plugin_name}";
+        return "${artifactId}";
     }
 
 }
