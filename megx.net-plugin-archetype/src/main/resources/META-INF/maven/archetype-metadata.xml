@@ -13,10 +13,10 @@
             <defaultValue>0.0.1-SNAPSHOT</defaultValue>
         </requiredProperty>
         <requiredProperty key="plugin_name">
-            <defaultValue>${groupId}.${artifactId}</defaultValue>
+            <defaultValue>${artifactId}</defaultValue>
         </requiredProperty>
         <requiredProperty key="symbolic_name">
-            <defaultValue>megx.net ${artifactId}</defaultValue>
+            <defaultValue>${artifactId}</defaultValue>
         </requiredProperty>
         <requiredProperty key="chon_activator">
             <defaultValue>ResTplConfiguredActivator</defaultValue>
