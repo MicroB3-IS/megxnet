@@ -21,6 +21,9 @@
         <requiredProperty key="chon_activator">
             <defaultValue>ResTplConfiguredActivator</defaultValue>
         </requiredProperty>
+        <requiredProperty key="configDir">
+            <defaultValue>__config</defaultValue>
+        </requiredProperty>
     </requiredProperties>
 
     <fileSets>
@@ -31,10 +34,10 @@
             </includes>
         </fileSet>
 
-        <fileSet filtered="true" filencoding="UTF-8" packaged="true">
-            <directory>__config</directory>
+        <fileSet filtered="true" filencoding="UTF-8" packaged="false">
+            <directory>__configDir__</directory>
             <includes>
-                <include>**/*.json</include>
+                <include>*.json</include>
             </includes>
         </fileSet>
 
