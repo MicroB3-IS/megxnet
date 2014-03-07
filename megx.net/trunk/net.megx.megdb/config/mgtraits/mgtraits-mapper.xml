@@ -146,7 +146,12 @@
 	    <result column="tgg" property="tgg"/>
 	    <result column="tac" property="tac"/>
 	    <result column="tat" property="tat"/>
-	    
+    </resultMap>
+    
+    <resultMap type="MGTraitsTaxonomy" id="mg_traits_taxonomy_content">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="key" property="key" />
+        <result column="value" property="value" />
     </resultMap>
 
     <select id="getSimpleTraits" parameterType="String"
@@ -216,6 +221,11 @@
         SELECT * 
         FROM
         mg_traits.mg_traits_codon
+    </select>
+    
+    <select id="getTaxonomyContent" resultMap="mg_traits_taxonomy_content">
+        SELECT sample_label,(each(taxonomy_group)).key as key, (each(taxonomy_group)).value as value
+		FROM mg_traits.mg_traits_taxonomy order by sample_label, key;
     </select>
 
 </mapper>
