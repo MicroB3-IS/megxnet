@@ -43,6 +43,8 @@ www={type:'sys.public'}
 		list={type:'html', template:'net.megx.osd.registry/list.html', title:'List of OSD institutes'}
 		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
 	bookmark={type:'html', template:'net.megx.megxbar/bookmarklet.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Bookmarklet'}
+	mg-traits={type:'unknown'}
+		samples={type:'html', template:'net.megx.mg-traits/index.html', title:'Simple Traits'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}

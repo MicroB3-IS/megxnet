@@ -98,6 +98,7 @@ public class MGTraitsAPI extends BaseRestService {
 		result.put("time_finished", job.getTimeFinished());
 		result.put("return_code", String.valueOf(job.getReturnCode()));
 		result.put("error_message", job.getErrorMessage());
+		result.put("id", String.valueOf(job.getId()));
 		return result;
 	}
 	

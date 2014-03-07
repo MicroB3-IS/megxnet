@@ -1,4 +1,4 @@
-package net.megx;
+package net.megx.mg.traits;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,5 +15,13 @@ public class Activator extends ResTplConfiguredActivator {
     protected String getName() {
         return "net.megx.mg-traits";
     }
+
+
+
+	@Override
+	protected void registerExtensions(JCRApplication arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
