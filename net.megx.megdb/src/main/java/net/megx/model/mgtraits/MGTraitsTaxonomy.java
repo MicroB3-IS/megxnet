@@ -4,6 +4,7 @@ public class MGTraitsTaxonomy {
 	private String sampleLabel;
 	private String key;
 	private String value;
+	private int id;
 
 	public String getSampleLabel() {
 		return sampleLabel;
@@ -29,10 +30,19 @@ public class MGTraitsTaxonomy {
 		this.value = value;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + id;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime * result
 				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
@@ -49,6 +59,8 @@ public class MGTraitsTaxonomy {
 		if (getClass() != obj.getClass())
 			return false;
 		MGTraitsTaxonomy other = (MGTraitsTaxonomy) obj;
+		if (id != other.id)
+			return false;
 		if (key == null) {
 			if (other.key != null)
 				return false;
@@ -70,6 +82,7 @@ public class MGTraitsTaxonomy {
 	@Override
 	public String toString() {
 		return "MGTraitsTaxonomy [sampleLabel=" + sampleLabel + ", key=" + key
-				+ ", value=" + value + "]";
+				+ ", value=" + value + ", id=" + id + "]";
 	}
+
 }

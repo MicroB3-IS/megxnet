@@ -1,0 +1,24 @@
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/highcharts.js"></script>	
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/exporting.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/no-data-to-display.js"></script>
+<script type="text/javascript">
+  #if($req.id && !$req.id.empty)
+	  currentMetagenomeId = $req.id;
+  #else
+	  currentMetagenomeId = null;
+  #end
+</script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/aminoAcidBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/diNucleotideBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/functionTableBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/codonUsageBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/taxonomy.js"></script>
+
+<div style="margin: 1em;"> 
+<div id="aminoAcidContainer" style="width:100%; height:500px;" ></div>
+<div id="codonUsageContainer" style="width: 100%; height:1000px;"></div>
+<div id="diNucleotideContainer" style="width: 100%; height:500px;"></div>
+<div id="functionalContainer" style="width: 100%; height:500px;"></div>
+<div id="taxonomyContainer" style="width: 100%; height:500px;"></div>
+</div>
+

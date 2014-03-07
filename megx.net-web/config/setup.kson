@@ -45,6 +45,7 @@ www={type:'sys.public'}
 	bookmark={type:'html', template:'net.megx.megxbar/bookmarklet.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Bookmarklet'}
 	mg-traits={type:'unknown'}
 		samples={type:'html', template:'net.megx.mg-traits/index.html', title:'Simple Traits'}
+		sampleDetails={type:'html', template:'net.megx.mg-traits/metagenomeDetails.html', title:'Metagenome description'}
 	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
