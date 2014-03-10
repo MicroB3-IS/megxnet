@@ -9,19 +9,15 @@ public class Activator extends ResTplConfiguredActivator {
 
     private Log log = LogFactory.getLog(getClass());
 
-    
-
     @Override
     protected String getName() {
         return "net.megx.mg-traits";
     }
 
+    @Override
+    protected void registerExtensions(JCRApplication arg0) {
+        // TODO Auto-generated method stub
 
-
-	@Override
-	protected void registerExtensions(JCRApplication arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
 }
