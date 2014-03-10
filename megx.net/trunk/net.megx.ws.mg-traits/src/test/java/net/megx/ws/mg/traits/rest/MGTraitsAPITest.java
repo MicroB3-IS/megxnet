@@ -118,6 +118,7 @@ public class MGTraitsAPITest {
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 201);
 	}
+	
 	@Test
 	public void testGetCodonUsage(){
 		OAuthRequest request = new OAuthRequest(Verb.GET,
@@ -126,5 +127,13 @@ public class MGTraitsAPITest {
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 200);
 	}
-
+	
+	@Test
+	public void testGetTaxonomicContent(){
+		OAuthRequest request = new OAuthRequest(Verb.GET,
+				p.getProperty("GET_TAXONOMIC_CONTENT_URL"));
+		service.signRequest(accessToken, request);
+		Response response = request.send();
+		Assert.assertEquals(response.getCode(), 200);
+	}
 }
