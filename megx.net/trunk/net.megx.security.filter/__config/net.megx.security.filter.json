@@ -26,7 +26,7 @@
 					'/ws/v1/verify_credentials/.*',
 					'/ws/v1/esa/v1.0.0/samples',
 					'/ws/v1/esa/v1.0.0/photos',
-					'/ws/v1/mg-traits/v1.0.0/.*'
+					'/ws/v1/mg-traits/v1.0.0/jobs.*'
 				],
 				order: 0
 			},
