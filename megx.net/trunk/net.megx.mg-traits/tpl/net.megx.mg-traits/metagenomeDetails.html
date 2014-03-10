@@ -1,3 +1,13 @@
+#set( $currId = $req.id )
+#set( $baseWsURL = "${ctx.siteUrl}/ws/v1/mg-traits/v1.0.0" )
+#set( $aminoAcidURL = "${baseWsURL}/mg${currId}-someLabel/amino-acid-content")
+#set( $codonUsageURL = "${baseWsURL}/codon-usage")
+#set( $diNucleotideURL = "${baseWsURL}/mg${currId}-someLabel/di-nucleotide-odds-ratio")
+#set( $functionalContainerURL = "${baseWsURL}/mg${currId}-someLabel/function-table")
+#set( $taxonomyURL = "${baseWsURL}/taxonomic-content")
+
+<link href="$ctx.siteUrl/net.megx.mg-traits/css/mg-traits.css" rel="stylesheet" type="text/css">
+
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/highcharts.js"></script>	
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/exporting.js"></script>
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/no-data-to-display.js"></script>
@@ -7,6 +17,15 @@
   #else
 	  currentMetagenomeId = null;
   #end
+  $(document).ready(function(){
+	  $('.downloadData').click(function(){
+		  var url = $(this).attr('href');
+		  $.ajax(url,{
+			  accepts: 'text/csv',
+			  async: false
+		  });
+	  });
+  });
 </script>
 <script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/aminoAcidBarChart.js"></script>
 <script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/diNucleotideBarChart.js"></script>
@@ -14,11 +33,59 @@
 <script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/codonUsageBarChart.js"></script>
 <script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/taxonomy.js"></script>
 
-<div style="margin: 1em;"> 
-<div id="aminoAcidContainer" style="width:100%; height:500px;" ></div>
-<div id="codonUsageContainer" style="width: 100%; height:1000px;"></div>
-<div id="diNucleotideContainer" style="width: 100%; height:500px;"></div>
-<div id="functionalContainer" style="width: 100%; height:500px;"></div>
-<div id="taxonomyContainer" style="width: 100%; height:500px;"></div>
+<div style="margin: 1em;">
+<table style="width: 100%">
+	<tr>
+		<td style="width: 80%;">
+			<div id="aminoAcidContainer" style="width:100%; height:500px;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$aminoAcidURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="codonUsageContainer" style="width:100%; height:1500px;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$codonUsageURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="diNucleotideContainer" style="width:100%; height:500px;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$diNucleotideURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="functionalContainer" style="width:100%; height:500px;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$functionalContainerURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="taxonomyContainer" style="width:100%; height:500px;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$taxonomyURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	
+</table> 
 </div>
 
