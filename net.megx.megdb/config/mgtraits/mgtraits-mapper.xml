@@ -69,11 +69,14 @@
         <result column="mg_url" property="mgUrl" />
         <result column="sample_label" property="sampleLabel" />
         <result column="sample_environment" property="sampleEnvironment" />
-        <result column="time_submitted" property="timeSubmitted" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
-        <result column="time_finished" property="timeFinished" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="time_submitted" property="timeSubmitted"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="time_finished" property="timeFinished"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
         <result column="make_public" property="makePublic" />
         <result column="keep_data" property="keepData" />
-        <result column="time_started" property="timeStarted" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="time_started" property="timeStarted"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
         <result column="cluster_node" property="clusterNode" />
         <result column="job_id" property="jobId" />
         <result column="return_code" property="returnCode" />
@@ -82,72 +85,72 @@
         <result column="time_protocol" property="timeProtocol" />
         <result column="id" property="id" />
     </resultMap>
-    
+
     <resultMap type="MGTraitsCodon" id="mg_traits_codon">
-        <result column="id" property="id"/>
-        <result column="sample_label" property="sample_label"/>
-        <result column="gcc" property="gcc"/>
-        <result column="gcg" property="gcg"/>
-        <result column="gct" property="gct"/>
-        <result column="tgc" property="tgc"/>
-        <result column="tgt" property="tgt"/>
-	    <result column="gac" property="gac"/>
-	    <result column="gat" property="gat"/>
-	    <result column="gaa" property="gaa"/>
-	    <result column="gag" property="gag"/>
-	    <result column="ttc" property="ttc"/>
-	    <result column="ttt" property="ttt"/>
-	    <result column="gga" property="gga"/>
-	    <result column="ggc" property="ggc"/>
-	    <result column="ggg" property="ggg"/>
-	    <result column="ggt" property="ggt"/>
-	    <result column="cac" property="cac"/>
-	    <result column="cat" property="cat"/>
-	    <result column="ata" property="ata"/>
-        <result column="atc" property="atc"/>
-        <result column="att" property="att"/>
-        <result column="aaa" property="aaa"/>
-        <result column="aag" property="aag"/>
-	    <result column="cta" property="cta"/>
-	    <result column="ctc" property="ctc"/>
-	    <result column="ctg" property="ctg"/>
-	    <result column="ctt" property="ctt"/>
-	    <result column="tta" property="tta"/>
-	    <result column="ttg" property="ttg"/>
-	    <result column="atg" property="atg"/>
-	    <result column="aac" property="aac"/>
-	    <result column="aat" property="aat"/>
-	    <result column="cca" property="cca"/>
-	    <result column="ccc" property="ccc"/>
-	    <result column="ccg" property="ccg"/>
-	    <result column="cct" property="cct"/>
-        <result column="caa" property="caa"/>
-        <result column="cag" property="cag"/>
-        <result column="aga" property="aga"/>
-        <result column="agg" property="agg"/>
-	    <result column="cga" property="cga"/>
-	    <result column="cgc" property="cgc"/>
-	    <result column="cgg" property="cgg"/>
-	    <result column="cgt" property="cgt"/>
-	    <result column="agc" property="agc"/>
-	    <result column="agt" property="agt"/>
-	    <result column="tca" property="tca"/>
-	    <result column="tcc" property="tcc"/>
-	    <result column="tcg" property="tcg"/>
-	    <result column="tct" property="tct"/>
-	    <result column="aca" property="aca"/>
-	    <result column="acc" property="acc"/>
-	    <result column="acg" property="acg"/>
-	    <result column="act" property="act"/>
-	    <result column="gta" property="gta"/>
-	    <result column="gtc" property="gtc"/>
-	    <result column="gtg" property="gtg"/>
-	    <result column="gtt" property="gtt"/>
-	    <result column="tgg" property="tgg"/>
-	    <result column="tac" property="tac"/>
-	    <result column="tat" property="tat"/>
+        <result column="id" property="id" />
+        <result column="sample_label" property="sample_label" />
+        <result column="gcc" property="gcc" />
+        <result column="gcg" property="gcg" />
+        <result column="gct" property="gct" />
+        <result column="tgc" property="tgc" />
+        <result column="tgt" property="tgt" />
+        <result column="gac" property="gac" />
+        <result column="gat" property="gat" />
+        <result column="gaa" property="gaa" />
+        <result column="gag" property="gag" />
+        <result column="ttc" property="ttc" />
+        <result column="ttt" property="ttt" />
+        <result column="gga" property="gga" />
+        <result column="ggc" property="ggc" />
+        <result column="ggg" property="ggg" />
+        <result column="ggt" property="ggt" />
+        <result column="cac" property="cac" />
+        <result column="cat" property="cat" />
+        <result column="ata" property="ata" />
+        <result column="atc" property="atc" />
+        <result column="att" property="att" />
+        <result column="aaa" property="aaa" />
+        <result column="aag" property="aag" />
+        <result column="cta" property="cta" />
+        <result column="ctc" property="ctc" />
+        <result column="ctg" property="ctg" />
+        <result column="ctt" property="ctt" />
+        <result column="tta" property="tta" />
+        <result column="ttg" property="ttg" />
+        <result column="atg" property="atg" />
+        <result column="aac" property="aac" />
+        <result column="aat" property="aat" />
+        <result column="cca" property="cca" />
+        <result column="ccc" property="ccc" />
+        <result column="ccg" property="ccg" />
+        <result column="cct" property="cct" />
+        <result column="caa" property="caa" />
+        <result column="cag" property="cag" />
+        <result column="aga" property="aga" />
+        <result column="agg" property="agg" />
+        <result column="cga" property="cga" />
+        <result column="cgc" property="cgc" />
+        <result column="cgg" property="cgg" />
+        <result column="cgt" property="cgt" />
+        <result column="agc" property="agc" />
+        <result column="agt" property="agt" />
+        <result column="tca" property="tca" />
+        <result column="tcc" property="tcc" />
+        <result column="tcg" property="tcg" />
+        <result column="tct" property="tct" />
+        <result column="aca" property="aca" />
+        <result column="acc" property="acc" />
+        <result column="acg" property="acg" />
+        <result column="act" property="act" />
+        <result column="gta" property="gta" />
+        <result column="gtc" property="gtc" />
+        <result column="gtg" property="gtg" />
+        <result column="gtt" property="gtt" />
+        <result column="tgg" property="tgg" />
+        <result column="tac" property="tac" />
+        <result column="tat" property="tat" />
     </resultMap>
-    
+
     <resultMap type="MGTraitsTaxonomy" id="mg_traits_taxonomy_content">
         <result column="sample_label" property="sampleLabel" />
         <result column="key" property="key" />
@@ -186,7 +189,8 @@
     <select id="getJobDetails" parameterType="int"
         resultMap="mg_traits_job_details">
         SELECT
-        id, sample_label, sample_environment,time_submitted, time_finished,
+        id, sample_label,
+        sample_environment,time_submitted, time_finished,
         return_code,
         error_message
         FROM mg_traits.mg_traits_jobs
@@ -204,29 +208,35 @@
         #{sampleLabel}, #{sampleEnvironment})
     </insert>
 
-    <select id="getSuccesfulJob" parameterType="int" resultMap="mg_traits_job_details">
+    <select id="getSuccesfulJob" parameterType="int"
+        resultMap="mg_traits_job_details">
         SELECT *
         FROM
         mg_traits.mg_traits_jobs
-        WHERE return_code = 0 and id = #{id};
+        WHERE return_code
+        = 0 and id = #{id};
     </select>
-    
+
     <select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
         SELECT *
         FROM
         mg_traits.mg_traits_jobs
-        WHERE return_code = 0;
+        WHERE return_code = 0
+        AND time_finished + make_public <= now();
     </select>
-    
+
     <select id="getCodonUsage" resultMap="mg_traits_codon">
-        SELECT * 
+        SELECT *
         FROM
         mg_traits.mg_traits_codon
     </select>
-    
+
     <select id="getTaxonomyContent" resultMap="mg_traits_taxonomy_content">
-        SELECT sample_label,(each(taxonomy_group)).key as key, (each(taxonomy_group)).value as value, id
-		FROM mg_traits.mg_traits_taxonomy order by sample_label, key;
+        SELECT
+        sample_label,(each(taxonomy_order)).key as key,
+        (each(taxonomy_order)).value as value, id
+        FROM
+        mg_traits.mg_traits_taxonomy order by sample_label, key;
     </select>
 
 </mapper>
