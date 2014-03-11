@@ -218,11 +218,27 @@
     </select>
 
     <select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
-        SELECT *
+        <![CDATA[ SELECT *
         FROM
         mg_traits.mg_traits_jobs
         WHERE return_code = 0
-        AND time_finished + make_public <![CDATA[<=]]> now();
+        AND time_finished + make_public <= now();
+        ]]>
+    </select>
+
+    <select id="getAllPublicJobs" resultMap="mg_traits_job_details">
+        <![CDATA[
+        SELECT id, customer, mg_url,
+               sample_label,sample_environment,time_submitted,
+               gc_content,gc_variance,num_genes,total_mb,num_reads,
+               ab_ratio,perc_tf,perc_classified
+          FROM mg_traits.mg_traits_jobs 
+               inner join
+               mg_traits.mg_traits_results 
+               using (id)
+          WHERE return_code = 0
+            AND time_finished + make_public <= now()
+        ]]>
     </select>
 
     <select id="getCodonUsage" resultMap="mg_traits_codon">
