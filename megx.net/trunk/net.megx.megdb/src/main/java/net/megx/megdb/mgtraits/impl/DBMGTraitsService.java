@@ -12,6 +12,7 @@ import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
+import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
 
@@ -167,15 +168,15 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public List<MGTraitsJobDetails> getAllFinishedJobs()
+	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
 			throws DBGeneralFailureException, DBNoRecordsException {
 
-		List<MGTraitsJobDetails> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsJobDetails>>() {
+		List<MGTraitsPublicJobDetails> result = doInSession(
+				new DBTask<MGTraitsMapper, List<MGTraitsPublicJobDetails>>() {
 					@Override
-					public List<MGTraitsJobDetails> execute(
+					public List<MGTraitsPublicJobDetails> execute(
 							MGTraitsMapper mapper) throws Exception {
-						return mapper.getAllFinishedJobs();
+						return mapper.getAllPublicJobs();
 					}
 				}, MGTraitsMapper.class);
 

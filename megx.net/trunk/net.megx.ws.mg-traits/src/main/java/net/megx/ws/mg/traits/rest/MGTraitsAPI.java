@@ -29,6 +29,7 @@ import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
+import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
 import net.megx.ws.core.BaseRestService;
@@ -37,6 +38,7 @@ import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
 import net.megx.ws.mg.traits.rest.mappers.FunctionTableToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
+import net.megx.ws.mg.traits.rest.mappers.PublicJobDetailsToClient;
 import net.megx.ws.mg.traits.rest.mappers.TaxonomicContentToClient;
 
 import com.google.gson.GsonBuilder;
@@ -117,11 +119,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<JobDetailsToClient> getAllFinishedJobs(@Context HttpServletRequest request) {
+	public List<PublicJobDetailsToClient> getAllFinishedJobs(@Context HttpServletRequest request) {
 		try {
-			List<JobDetailsToClient> result = new ArrayList<JobDetailsToClient>();
-			for (MGTraitsJobDetails currJobDetail : service.getAllFinishedJobs()) {
-				result.add(new JobDetailsToClient(currJobDetail));
+			List<PublicJobDetailsToClient> result = new ArrayList<PublicJobDetailsToClient>();
+			for (MGTraitsPublicJobDetails currJobDetail : service.getAllFinishedJobs()) {
+				result.add(new PublicJobDetailsToClient(currJobDetail));
 			}
 			return result;
 		} catch (DBGeneralFailureException e) {
@@ -146,11 +148,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllFinishedJobsAsJSON(@Context HttpServletRequest request) {
 		try {
-			List<JobDetailsToClient> result = new ArrayList<JobDetailsToClient>();
-			for (MGTraitsJobDetails currJobDetail : service.getAllFinishedJobs()) {
-				result.add(new JobDetailsToClient(currJobDetail));
+			List<PublicJobDetailsToClient> result = new ArrayList<PublicJobDetailsToClient>();
+			for (MGTraitsPublicJobDetails currJobDetail : service.getAllFinishedJobs()) {
+				result.add(new PublicJobDetailsToClient(currJobDetail));
 			}
-			return toJSON(new Result<List<JobDetailsToClient>>(result));
+			return toJSON(new Result<List<PublicJobDetailsToClient>>(result));
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,

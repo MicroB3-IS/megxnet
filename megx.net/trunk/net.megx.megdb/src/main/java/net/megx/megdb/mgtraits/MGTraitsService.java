@@ -9,6 +9,7 @@ import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
+import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
 
@@ -35,7 +36,7 @@ public interface MGTraitsService {
 	public String insertJob(String customer, String mgUrl, String sampleLabel,
 			String sampleEnvironment) throws DBGeneralFailureException;
 
-	public List<MGTraitsJobDetails> getAllFinishedJobs()
+	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
 			throws DBGeneralFailureException, DBNoRecordsException;
 
 	public List<MGTraitsCodon> getCodonUsage()
