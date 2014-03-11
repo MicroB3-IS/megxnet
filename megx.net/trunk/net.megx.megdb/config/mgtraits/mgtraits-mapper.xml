@@ -107,6 +107,7 @@
     <resultMap type="MGTraitsCodon" id="mg_traits_codon">
         <result column="id" property="id" />
         <result column="sample_label" property="sample_label" />
+        <result column="gca" property="gca" />
         <result column="gcc" property="gcc" />
         <result column="gcg" property="gcg" />
         <result column="gct" property="gct" />
