@@ -222,7 +222,7 @@
         FROM
         mg_traits.mg_traits_jobs
         WHERE return_code = 0
-        AND time_finished + make_public <= now();
+        AND time_finished + make_public <![CDATA[<=]]> now();
     </select>
 
     <select id="getCodonUsage" resultMap="mg_traits_codon">
