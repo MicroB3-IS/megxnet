@@ -85,6 +85,24 @@
         <result column="time_protocol" property="timeProtocol" />
         <result column="id" property="id" />
     </resultMap>
+    
+    <resultMap type="MGTraitsPublicJobDetails" id="mg_traits_public_job_details">
+        <result column="id" property="id" />
+        <result column="customer" property="customer" />
+        <result column="sample_label" property="sampleLabel" />
+        <result column="sample_environment" property="sampleEnvironment" />
+        <result column="mg_url" property="mgUrl" />
+        <result column="time_submitted" property="timeSubmitted"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="gc_content" property="gcContent" />
+        <result column="gc_variance" property="gcVariance" />
+        <result column="num_genes" property="numGenes" />
+        <result column="total_mb" property="totalMB" />
+        <result column="num_reads" property="numReads" />
+        <result column="ab_ratio" property="ABRatio" />
+        <result column="perc_tf" property="percTf" />
+        <result column="perc_classified" property="percClassified" />
+    </resultMap>
 
     <resultMap type="MGTraitsCodon" id="mg_traits_codon">
         <result column="id" property="id" />
@@ -226,12 +244,12 @@
         ]]>
     </select>
 
-    <select id="getAllPublicJobs" resultMap="mg_traits_job_details">
+    <select id="getAllPublicJobs" resultMap="mg_traits_public_job_details">
         <![CDATA[
-        SELECT id, customer, mg_url,
-               sample_label,sample_environment,time_submitted,
-               gc_content,gc_variance,num_genes,total_mb,num_reads,
-               ab_ratio,perc_tf,perc_classified
+        SELECT id, customer, mg_traits.mg_traits_jobs.sample_label, 
+	       	   mg_url, sample_environment, time_submitted,
+               gc_content, gc_variance, num_genes, total_mb, num_reads,
+               ab_ratio, perc_tf, perc_classified
           FROM mg_traits.mg_traits_jobs 
                inner join
                mg_traits.mg_traits_results 

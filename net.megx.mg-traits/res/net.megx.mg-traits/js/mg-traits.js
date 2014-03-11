@@ -47,48 +47,22 @@ $(document).ready(function() {
 	$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/all",
         function(allTraits){
         	var nbRorwsToAdd = allTraits.data.length;
-        	var trait = {};
         	var rowsToAdd = [];
         	
             for(var i = 0; i < allTraits.data.length; i++) {
-            	var currId = allTraits.data[i].id;
-            	var currSampleLabel = allTraits.data[i].sample_label;
-            	var currSampleEnvironment = allTraits.data[i].environment;
-            	trait[currId] = {
-            			'id' : currId,
-            			'label' : currSampleLabel,
-            			'environment' : currSampleEnvironment
-            	};
             	
-            	$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" + currId + "-sample-label/simple-traits",
-                    function(simpleTrait){
-                    	var idReturned = simpleTrait.data.id;
-                    	var size = simpleTrait.data.totalMB;
-                    	var numberOfSequences = simpleTrait.data.numReads;
-                    	
-                    	$.extend(trait[idReturned], {
-                    		'size' : size,
-                    		'numberOfSequences' : numberOfSequences
-                    	}); 
-                    	
-                    	 rowsToAdd.push({
-         	                'id': trait[idReturned].id,
-         	                'sampleLabel': trait[idReturned].label,
-         	                'sampleEnvironment': trait[idReturned].environment,
-         	                'size': trait[idReturned].size,
-         	                'numberOfSequences': trait[idReturned].numberOfSequences  
-         	            });
-                    	 
-                    	 if(rowsToAdd.length === nbRorwsToAdd){
-                    		 oTable.dataTable().fnAddData(rowsToAdd);
-                    	 }
-                    }).error(function() {
-                    	$("#errorMessage").show();
-                    });
-            }
+            	rowsToAdd.push({
+ 	                'id': allTraits.data[i].id,
+ 	                'sampleLabel': allTraits.data[i].sampleLabel,
+ 	                'sampleEnvironment': allTraits.data[i].sampleEnvironment,
+ 	                'size': allTraits.data[i].totalMB,
+ 	                'numberOfSequences': allTraits.data[i].numReads  
+ 	            });
+            }    	 
+	    	if(rowsToAdd.length === nbRorwsToAdd){
+	    		oTable.dataTable().fnAddData(rowsToAdd);
+	    	}    
         }).error(function() {
         	$("#errorMessage").show();
-        
         });
-
 });
