@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.mgtraits.mappers.MGTraitsMapper">
+
+    <resultMap type="MGTraitsResult" id="mg_traits_result">
+        <result column="id" property="id" />
+        <result column="sample_label" property="sampleLabel" />
+        <result column="gc_content" property="gcContent" />
+        <result column="gc_variance" property="gcVariance" />
+        <result column="num_genes" property="numGenes" />
+        <result column="total_mb" property="totalMB" />
+        <result column="num_reads" property="numReads" />
+        <result column="ab_ratio" property="ABRatio" />
+        <result column="perc_tf" property="percTf" />
+        <result column="perc_classified" property="percClassified" />
+    </resultMap>
+
+    <resultMap type="MGTraitsPfam" id="mg_traits_pfam">
+        <result column="id" property="id" />
+        <result column="sample_label" property="sampleLabel" />
+        <result column="pfam" property="pfam" jdbcType="ARRAY"
+            javaType="java.sql.Array" typeHandler="ArrayTypeMapper" />
+    </resultMap>
+
+    <resultMap type="MGTraitsAA" id="mg_traits_aa">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="ala" property="ala" />
+        <result column="cys" property="cys" />
+        <result column="asp" property="asp" />
+        <result column="glu" property="glu" />
+        <result column="phe" property="phe" />
+        <result column="gly" property="gly" />
+        <result column="his" property="his" />
+        <result column="ile" property="ile" />
+        <result column="lys" property="lys" />
+        <result column="leu" property="leu" />
+        <result column="met" property="met" />
+        <result column="asn" property="asn" />
+        <result column="pro" property="pro" />
+        <result column="gln" property="gln" />
+        <result column="arg" property="arg" />
+        <result column="ser" property="ser" />
+        <result column="thr" property="thr" />
+        <result column="val" property="val" />
+        <result column="trp" property="trp" />
+        <result column="tyr" property="tyr" />
+        <result column="id" property="id" />
+    </resultMap>
+
+    <resultMap type="MGTraitsDinuc" id="mg_traits_dinuc">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="paa_ptt" property="paa_ptt" />
+        <result column="pac_pgt" property="pac_pgt" />
+        <result column="pcc_pgg" property="pcc_pgg" />
+        <result column="pca_ptg" property="pca_ptg" />
+        <result column="pga_ptc" property="pga_ptc" />
+        <result column="pag_pct" property="pag_pct" />
+        <result column="pat" property="pat" />
+        <result column="pcg" property="pcg" />
+        <result column="pgc" property="pgc" />
+        <result column="pta" property="pta" />
+        <result column="id" property="id" />
+    </resultMap>
+
+    <resultMap type="MGTraitsJobDetails" id="mg_traits_job_details">
+        <result column="customer" property="customer" />
+        <result column="mg_url" property="mgUrl" />
+        <result column="sample_label" property="sampleLabel" />
+        <result column="sample_environment" property="sampleEnvironment" />
+        <result column="time_submitted" property="timeSubmitted"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="time_finished" property="timeFinished"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="make_public" property="makePublic" />
+        <result column="keep_data" property="keepData" />
+        <result column="time_started" property="timeStarted"
+            jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+        <result column="cluster_node" property="clusterNode" />
+        <result column="job_id" property="jobId" />
+        <result column="return_code" property="returnCode" />
+        <result column="error_message" property="errorMessage" />
+        <result column="total_run_time" property="totalRunTime" />
+        <result column="time_protocol" property="timeProtocol" />
+        <result column="id" property="id" />
+    </resultMap>
+
+    <resultMap type="MGTraitsCodon" id="mg_traits_codon">
+        <result column="id" property="id" />
+        <result column="sample_label" property="sample_label" />
+        <result column="gcc" property="gcc" />
+        <result column="gcg" property="gcg" />
+        <result column="gct" property="gct" />
+        <result column="tgc" property="tgc" />
+        <result column="tgt" property="tgt" />
+        <result column="gac" property="gac" />
+        <result column="gat" property="gat" />
+        <result column="gaa" property="gaa" />
+        <result column="gag" property="gag" />
+        <result column="ttc" property="ttc" />
+        <result column="ttt" property="ttt" />
+        <result column="gga" property="gga" />
+        <result column="ggc" property="ggc" />
+        <result column="ggg" property="ggg" />
+        <result column="ggt" property="ggt" />
+        <result column="cac" property="cac" />
+        <result column="cat" property="cat" />
+        <result column="ata" property="ata" />
+        <result column="atc" property="atc" />
+        <result column="att" property="att" />
+        <result column="aaa" property="aaa" />
+        <result column="aag" property="aag" />
+        <result column="cta" property="cta" />
+        <result column="ctc" property="ctc" />
+        <result column="ctg" property="ctg" />
+        <result column="ctt" property="ctt" />
+        <result column="tta" property="tta" />
+        <result column="ttg" property="ttg" />
+        <result column="atg" property="atg" />
+        <result column="aac" property="aac" />
+        <result column="aat" property="aat" />
+        <result column="cca" property="cca" />
+        <result column="ccc" property="ccc" />
+        <result column="ccg" property="ccg" />
+        <result column="cct" property="cct" />
+        <result column="caa" property="caa" />
+        <result column="cag" property="cag" />
+        <result column="aga" property="aga" />
+        <result column="agg" property="agg" />
+        <result column="cga" property="cga" />
+        <result column="cgc" property="cgc" />
+        <result column="cgg" property="cgg" />
+        <result column="cgt" property="cgt" />
+        <result column="agc" property="agc" />
+        <result column="agt" property="agt" />
+        <result column="tca" property="tca" />
+        <result column="tcc" property="tcc" />
+        <result column="tcg" property="tcg" />
+        <result column="tct" property="tct" />
+        <result column="aca" property="aca" />
+        <result column="acc" property="acc" />
+        <result column="acg" property="acg" />
+        <result column="act" property="act" />
+        <result column="gta" property="gta" />
+        <result column="gtc" property="gtc" />
+        <result column="gtg" property="gtg" />
+        <result column="gtt" property="gtt" />
+        <result column="tgg" property="tgg" />
+        <result column="tac" property="tac" />
+        <result column="tat" property="tat" />
+    </resultMap>
+
+    <resultMap type="MGTraitsTaxonomy" id="mg_traits_taxonomy_content">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="key" property="key" />
+        <result column="value" property="value" />
+        <result column="id" property="id" />
+    </resultMap>
+
+    <select id="getSimpleTraits" parameterType="String"
+        resultMap="mg_traits_result">
+        SELECT *
+        FROM mg_traits.mg_traits_results
+        WHERE id=#{id}
+    </select>
+
+    <select id="getFunctionTable" parameterType="String"
+        resultMap="mg_traits_pfam">
+        SELECT *
+        FROM mg_traits.mg_traits_pfam
+        WHERE id=#{id}
+    </select>
+
+    <select id="getAminoAcidContent" parameterType="String"
+        resultMap="mg_traits_aa">
+        SELECT *
+        FROM mg_traits.mg_traits_aa
+        WHERE id=#{id}
+    </select>
+
+    <select id="getDiNucleotideOddsRatio" parameterType="String"
+        resultMap="mg_traits_dinuc">
+        SELECT *
+        FROM mg_traits.mg_traits_dinuc
+        WHERE id=#{id}
+    </select>
+
+    <select id="getJobDetails" parameterType="int"
+        resultMap="mg_traits_job_details">
+        SELECT
+        id, sample_label,
+        sample_environment,time_submitted, time_finished,
+        return_code,
+        error_message
+        FROM mg_traits.mg_traits_jobs
+        WHERE
+        id=#{id}
+    </select>
+
+    <insert id="insertMGTraitsJob" parameterType="MGTraitsJobDetails">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT currval('mg_traits.mg_traits_jobs_id_seq')
+        </selectKey>
+        INSERT INTO mg_traits.mg_traits_jobs(customer, mg_url,
+        sample_label,sample_environment)
+        VALUES (#{customer}, #{mgUrl},
+        #{sampleLabel}, #{sampleEnvironment})
+    </insert>
+
+    <select id="getSuccesfulJob" parameterType="int"
+        resultMap="mg_traits_job_details">
+        SELECT *
+        FROM
+        mg_traits.mg_traits_jobs
+        WHERE return_code
+        = 0 and id = #{id};
+    </select>
+
+    <select id="getAllFinishedJobs" resultMap="mg_traits_job_details">
+        SELECT *
+        FROM
+        mg_traits.mg_traits_jobs
+        WHERE return_code = 0
+        AND time_finished + make_public <![CDATA[<=]]> now();
+    </select>
+
+    <select id="getCodonUsage" resultMap="mg_traits_codon">
+        SELECT *
+        FROM
+        mg_traits.mg_traits_codon
+    </select>
+
+    <select id="getTaxonomyContent" resultMap="mg_traits_taxonomy_content">
+        SELECT
+        sample_label,(each(taxonomy_order)).key as key,
+        (each(taxonomy_order)).value as value, id
+        FROM
+        mg_traits.mg_traits_taxonomy order by sample_label, key;
+    </select>
+
+</mapper>

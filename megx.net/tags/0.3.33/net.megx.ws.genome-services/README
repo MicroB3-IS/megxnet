@@ -1,0 +1,10 @@
+Testing with curl:
+
+Obtain a session  (without oAuth):
+
+curl -d "j_username=_username_&j_password=_password_" -c curl_session http://localhost:8080/megx.net/j_security_check
+
+Shoot a request to GC-Content service using the previous session:
+
+curl -b curl_session "http://localhost:8080/megx.net/ws/v1/gc-content/v1.0.0?infile=test1.fasta&outfile=test1.fasta.gccontent"
+

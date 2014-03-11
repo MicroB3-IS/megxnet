@@ -1,0 +1,287 @@
+<link href="$ctx.siteUrl/gms-res/gms.css" rel="stylesheet"
+  type="text/css">
+<link rel="stylesheet" href="$ctx.siteUrl/js/theme/default/style.css"
+  type="text/css">
+
+<!-- must be before OpenLayers.js gets loaded -->
+<script src="$ctx.siteUrl/js/lib/Firebug/firebug.js"
+  type="text/javascript"></script>
+
+#* for debug
+<script src="$ctx.siteUrl/js/OpenLayers-2.10/lib/OpenLayers.js"
+  type="text/javascript"></script>
+*#
+<script src="$ctx.siteUrl/js/OpenLayers.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var gms_host_url = "$ctx.siteUrl";
+</script>
+<script src="$ctx.siteUrl/gms-res/js/gmslayers.js"
+  type="text/javascript" defer></script>
+
+
+<form name="test" action="" onreset="resetMap()">
+  <div class="gms_outerbox">
+    <div class="sideMenu">
+      <form action="" name="samplingsite_form" onreset="reset()">
+        <ul class="menuSide">
+          <li><a href="#">Select Layer<span>4</span></a>
+            <ul>
+              <li><label> <input type="checkbox"
+                  id="genomes_cb" value="genome" checked="checked"
+                  onclick="setSamplingSiteFilter(this.value, this.checked)" />
+                  Prokaryote Genomes
+              </label></li>
+              <li><label> <input type="checkbox"
+                  id="metagenomes_cb" value="metagenome"
+                  checked="checked"
+                  onclick="setSamplingSiteFilter(this.value, this.checked)" />
+                  Metagenomes
+              </label></li>
+              <li><label> <input type="checkbox"
+                  id="phages_cb" value="phage" checked="checked"
+                  onclick="setSamplingSiteFilter(this.value, this.checked)" />
+                  Phage Genomes
+              </label></li>
+              <li><label> <input type="checkbox"
+                  id="rrnas_cb" value="rRNA"
+                  onclick="setSamplingSiteFilter(this.value, this.checked)" />
+                  rRNA Sequences
+              </label></li>
+            </ul></li>
+        </ul>
+      </form>
+      <div class="clear"></div>
+      <ul class="menuSide">
+        <li><a href="#">Physicochemical &amp; Biological Layers
+            <span>3</span>
+        </a>
+          <ul>
+            <li><label> <select id="woa05"
+                title="Select a layer for a given environmetal parameter"
+                onclick="selectThematicLayer(this.options[this.selectedIndex].value)">
+                  <option value="">Select Layer</option>
+                  <option value="woa05_temperature">Temperature</option>
+                  <option value="woa05_nitrate">Nitrate</option>
+                  <option value="woa05_phosphate">Phosphate</option>
+                  <option value="woa05_salinity">Salinity</option>
+                  <option value="woa05_silicate">Silicate</option>
+                  <option value="woa05_oxygen_dissolved">Dissolved
+                    oxygen</option>
+                  <option value="woa05_oxygen_saturation">Oxygen
+                    Saturation</option>
+                  <option value="woa05_oxygen_utilization">Oxygen
+                    Utilization</option>
+                  <option value="chlorophyll">Chlorophyll</option>
+                  <option value="stability">Environment
+                    Stability</option>
+              </select>
+            </label></li>
+            <li><label> <select id="season"
+                title="Select the season for which an environmental parameter layer should be shown"
+                onclick="setSeason(this.options[this.selectedIndex].value)">
+                  <option value="0">Annual</option>
+                  <optgroup label="Month">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </optgroup>
+                  <optgroup label="Seasons">
+                    <option value="13">1. Quarter</option>
+                    <option value="14">2. Quarter</option>
+                    <option value="15">3. Quarter</option>
+                    <option value="16">4. Quarter</option>
+                  </optgroup>
+              </select>
+            </label></li>
+            <li><label> <select
+                title="Select the depth for which an environmental parameter layer should be shown"
+                id="depth"
+                onclick="setDepth(this.options[this.selectedIndex].value)">
+                  <option value="0">0m</option>
+                  <option value="10">10m</option>
+                  <option value="20">20m</option>
+                  <option value="30">30m</option>
+                  <option value="50">50m</option>
+                  <option value="75">75m</option>
+                  <option value="700">100m</option>
+                  <option value="125">125m</option>
+                  <option value="150">150m</option>
+                  <option value="200">200m</option>
+                  <option value="250">250m</option>
+                  <option value="300">300m</option>
+                  <option value="400">400m</option>
+                  <option value="500">500m</option>
+                  <option value="600">600m</option>
+                  <option value="700">700m</option>
+                  <option value="800">800m</option>
+                  <option value="900">900m</option>
+                  <option value="1000">1000m</option>
+                  <option value="1100">1100m</option>
+                  <option value="1200">1200m</option>
+                  <option value="1300">1300m</option>
+                  <option value="1400">1400m</option>
+                  <option value="1500">1500m</option>
+                  <option value="1750">1750m</option>
+                  <option value="2000">2000m</option>
+                  <option value="2500">2500m</option>
+                  <option value="3000">3000m</option>
+                  <option value="3500">3500m</option>
+                  <option value="4000">4000m</option>
+                  <option value="4500">4500m</option>
+                  <option value="5000">5000m</option>
+                  <option value="5500">5500m</option>
+              </select>
+            </label></li>
+            <button class="blue FR" value="Map It" name="load_woa"
+              title="Click button to show a selected layer at given season and depth or year"
+              onclick="refreshThematicLayers(); return false;">Map
+              It</button>
+          </ul></li>
+      </ul>
+      <form action="" onreset="reset()">
+        <div class="clear"></div>
+        <form action="" name="samplingsite_form" onreset="reset()">
+          <ul class="menuSide">
+            <li><a href="#">Base Layers<span>4</span></a>
+              <ul>
+                <li><label>Default haah <input
+                    type="checkbox" id="satellite_mod_cb"
+                    value="satellite_mod" checked="checked"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+                <li><label>Bathymetry <input
+                    type="checkbox" id="bathymetry_cb"
+                    value="bathymetry"
+                    onclick="setVisible(this.value,this.checked)" /> <a
+                    href="tools/metadata.php?id=1"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a></label></li>
+                <li><label>Boundaries <input
+                    type="checkbox" id="boundaries_cb"
+                    value="boundaries"
+                    onclick="setVisible(this.value,this.checked)" /> <a
+                    href="tools/metadata.php?id=4"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a></label></li>
+                <li><label>Limits of Oceans &amp; Seas 1953
+                    <input type="checkbox" id="limitsoceans_cb"
+                    value="limitsoceans"
+                    onclick="setVisible(this.value,this.checked)" /> <a
+                    href="tools/metadata.php?id=5"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a>
+                </label></li>
+                <li><label>Coordinates <a
+                    href="tools/metadata.php?id=0"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a> <input
+                    type="checkbox" id="coordinates_cb"
+                    value="coordinates"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+                <li><label>Lakes <a
+                    href="tools/metadata.php?id=7"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a> <input
+                    type="checkbox" id="lakes_cb" value="lakes"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+                <li><label>Satellite <a
+                    href="tools/metadata.php?id=6"><img
+                      src="/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a> <input
+                    type="checkbox" id="satellite_cb" value="satellite"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+                <li><label>Undersea Features <a
+                    href="tools/metadata.php?id=2"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a> <input
+                    type="checkbox" id="undersea_arc_cb"
+                    value="undersea_arc"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+                <li><label>Undersea Point Features <a
+                    href="tools/metadata.php?id=3"><img
+                      src="/megx.net/images/icons/blue-document-code.png"
+                      alt="Metadata test"
+                      title="Metadata about the origin of the layer data"
+                      width="16px" height="16px"></a> <input
+                    type="checkbox" id="undersea_point_cb"
+                    value="undersea_point"
+                    onclick="setVisible(this.value,this.checked)" />
+                </label></li>
+              </ul></li>
+            <button id="button" class="blue FR" type="reset"
+              name="reset"
+              title="Click button to reset page to initial status">Reset</button>
+          </ul>
+        </form>
+    </div>
+    <!-- 
+    <script>
+                    $('article').addClass('padRight1dot5');
+                    $('article').last().removeClass('padRight1dot5');
+
+                    $('button').click(function() {
+                        $('div.SideMenuNav').show();
+                    });
+
+                    $('footer > section > ul > li').css('float', 'left');
+                </script>
+                 -->
+    <div class="gms_center">
+      <h6 class="InnerBox">Click on a sampling site (dot) to
+        retrieve environmental data!</h6>
+
+      <div id="gms_center_gmsbox" class="MapBox">
+        <div id="gmsmap" class="olMap wh100"></div>
+      </div>
+      <legend>
+        <h6>
+          <img src="$ctx.siteUrl/images/icons/blue-document-node.png">
+          Legend
+        </h6>
+        <div id="samplingSiteLegendImg" class="FL"></div>
+        <div id="legendImg" class="FL"></div>
+        <div class="clear"></div>
+      </legend>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+    var loadfnk = function() {
+        cMap();
+    }
+    if (window.addEventListener) {
+        window.addEventListener("load", loadfnk, false)
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", loadfnk);
+    } else {
+        window.onload = loadfnk;
+    }
+</script>
