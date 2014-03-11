@@ -20,17 +20,16 @@ $(document).ready(function () {
                 text: 'Codon Trait'
             },
             xAxis: {
-                categories: ['gcc','gcg','gct','tgc','tgt','gac',
-                             'gat','gaa','gag','ttc','ttt','gga',
-                             'ggc','ggg','ggt','cac','cat','ata', 
-                             'atc','att','aaa','aag','cta','ctc',
-                             'ctg','ctt','tta','ttg','atg','aac',
-                             'aat','cca','ccc','ccg','cct','caa',
-                             'cag','aga','agg','cga','cgc','cgg',
-                             'cgt','agc','agt','tca','tcc','tcg',
-                             'tct','aca','acc','acg','act','gta',
-                             'gtc','gtg','gtt','tgg','tac','tat'
-                             ],
+            	categories: ['gca', 'gcc', 'gcg', 'gct', 'tgc', 'tgt', 'gac',
+            	             'gat', 'gaa', 'gag', 'ttc', 'ttt', 'gga', 'ggc',
+            	             'ggg', 'ggt', 'cac', 'cat', 'ata', 'atc', 'att',
+            	             'aaa', 'aag', 'cta', 'ctc', 'ctg', 'ctt', 'tta', 'ttg', 'atg', 'aac',
+            	             'aat', 'cca', 'ccc', 'ccg', 'cct', 'caa',
+            	             'cag', 'aga', 'agg', 'cga', 'cgc', 'cgg',
+            	             'cgt', 'agc', 'agt', 'tca', 'tcc', 'tcg',
+            	             'tct', 'aca', 'acc', 'acg', 'act', 'gta',
+            	             'gtc', 'gtg', 'gtt', 'tgg', 'tac', 'tat'
+            	         ],
                 title: {
                     text: null
                 }

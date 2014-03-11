@@ -4,6 +4,7 @@ public class MGTraitsCodon {
 	
 	private int id;
 	private String sample_label;
+	private double gca;
 	private double gcc;
 	private double gcg;
 	private double gct;
@@ -75,6 +76,12 @@ public class MGTraitsCodon {
 	}
 	public void setSample_label(String sample_label) {
 		this.sample_label = sample_label;
+	}
+	public double getGca() {
+		return gca;
+	}
+	public void setGca(double gca) {
+		this.gca = gca;
 	}
 	public double getGcc() {
 		return gcc;
@@ -513,6 +520,8 @@ public class MGTraitsCodon {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(gat);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(gca);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(gcc);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(gcg);
@@ -647,6 +656,8 @@ public class MGTraitsCodon {
 			return false;
 		if (Double.doubleToLongBits(gat) != Double.doubleToLongBits(other.gat))
 			return false;
+		if (Double.doubleToLongBits(gca) != Double.doubleToLongBits(other.gca))
+			return false;
 		if (Double.doubleToLongBits(gcc) != Double.doubleToLongBits(other.gcc))
 			return false;
 		if (Double.doubleToLongBits(gcg) != Double.doubleToLongBits(other.gcg))
@@ -707,25 +718,23 @@ public class MGTraitsCodon {
 	@Override
 	public String toString() {
 		return "MGTraitsCodon [id=" + id + ", sample_label=" + sample_label
-				+ ", gcc=" + gcc + ", gcg=" + gcg + ", gct=" + gct + ", tgc="
-				+ tgc + ", tgt=" + tgt + ", gac=" + gac + ", gat=" + gat
-				+ ", gaa=" + gaa + ", gag=" + gag + ", ttc=" + ttc + ", ttt="
-				+ ttt + ", gga=" + gga + ", ggc=" + ggc + ", ggg=" + ggg
-				+ ", ggt=" + ggt + ", cac=" + cac + ", cat=" + cat + ", ata="
-				+ ata + ", atc=" + atc + ", att=" + att + ", aaa=" + aaa
-				+ ", aag=" + aag + ", cta=" + cta + ", ctc=" + ctc + ", ctg="
-				+ ctg + ", ctt=" + ctt + ", tta=" + tta + ", ttg=" + ttg
-				+ ", atg=" + atg + ", aac=" + aac + ", aat=" + aat + ", cca="
-				+ cca + ", ccc=" + ccc + ", ccg=" + ccg + ", cct=" + cct
-				+ ", caa=" + caa + ", cag=" + cag + ", aga=" + aga + ", agg="
-				+ agg + ", cga=" + cga + ", cgc=" + cgc + ", cgg=" + cgg
-				+ ", cgt=" + cgt + ", agc=" + agc + ", agt=" + agt + ", tca="
-				+ tca + ", tcc=" + tcc + ", tcg=" + tcg + ", tct=" + tct
-				+ ", aca=" + aca + ", acc=" + acc + ", acg=" + acg + ", act="
-				+ act + ", gta=" + gta + ", gtc=" + gtc + ", gtg=" + gtg
-				+ ", gtt=" + gtt + ", tgg=" + tgg + ", tac=" + tac + ", tat="
-				+ tat + "]";
+				+ ", gca=" + gca + ", gcc=" + gcc + ", gcg=" + gcg + ", gct="
+				+ gct + ", tgc=" + tgc + ", tgt=" + tgt + ", gac=" + gac
+				+ ", gat=" + gat + ", gaa=" + gaa + ", gag=" + gag + ", ttc="
+				+ ttc + ", ttt=" + ttt + ", gga=" + gga + ", ggc=" + ggc
+				+ ", ggg=" + ggg + ", ggt=" + ggt + ", cac=" + cac + ", cat="
+				+ cat + ", ata=" + ata + ", atc=" + atc + ", att=" + att
+				+ ", aaa=" + aaa + ", aag=" + aag + ", cta=" + cta + ", ctc="
+				+ ctc + ", ctg=" + ctg + ", ctt=" + ctt + ", tta=" + tta
+				+ ", ttg=" + ttg + ", atg=" + atg + ", aac=" + aac + ", aat="
+				+ aat + ", cca=" + cca + ", ccc=" + ccc + ", ccg=" + ccg
+				+ ", cct=" + cct + ", caa=" + caa + ", cag=" + cag + ", aga="
+				+ aga + ", agg=" + agg + ", cga=" + cga + ", cgc=" + cgc
+				+ ", cgg=" + cgg + ", cgt=" + cgt + ", agc=" + agc + ", agt="
+				+ agt + ", tca=" + tca + ", tcc=" + tcc + ", tcg=" + tcg
+				+ ", tct=" + tct + ", aca=" + aca + ", acc=" + acc + ", acg="
+				+ acg + ", act=" + act + ", gta=" + gta + ", gtc=" + gtc
+				+ ", gtg=" + gtg + ", gtt=" + gtt + ", tgg=" + tgg + ", tac="
+				+ tac + ", tat=" + tat + "]";
 	}
-	
-
 }
