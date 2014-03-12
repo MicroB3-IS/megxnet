@@ -21,7 +21,10 @@
 	  $('.downloadData').click(function(){
 		  var url = $(this).attr('href');
 		  $.ajax(url,{
-			  accepts: 'text/csv',
+			  headers: {          
+                 Accept : "text/csv; charset=utf-8",         
+                 "Content-Type": "text/csv; charset=utf-8"   
+	 		  },
 			  async: false
 		  });
 	  });

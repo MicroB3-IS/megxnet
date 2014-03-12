@@ -1,3 +1,34 @@
+#set( $baseWsURL = "${ctx.siteUrl}/ws/v1/mg-traits/v1.0.0" )
+#set( $allURL = "${baseWsURL}/all")
+
+<script type="text/javascript">
+  $(document).ready(function(){
+	  $('.downloadAllTraitsLink').click(function(){
+		  var url = $(this).attr('href');
+		  $.ajax(url,{
+			  headers: {          
+                 Accept : "text/csv; charset=utf-8",         
+                 "Content-Type": "text/csv; charset=utf-8"   
+	 		  },
+			  async: false
+		  });
+	  });
+  });
+</script>
+
+<table style="width: 100%">
+	<tr>
+		<td style="width: 80%;">
+			<span id="errorMessage" class="errorMsg">Error occured. Reload the page.</span>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadAllTraits">
+				<a href="$allURL" class="downloadAllTraitsLink">Download All</a>
+			</div>
+		</td>
+	</tr>
+</table>
+
 <table id="simpleTraitsTableId" class="display">
 	<thead>
 		<tr>

@@ -3,3 +3,14 @@
 	padding-top: 1em;
 	font-size: 1.5em;
 }
+.downloadAllTraits{
+	text-align: right;
+	font-size: 18px;
+}
+.errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 351px;
+}
+
