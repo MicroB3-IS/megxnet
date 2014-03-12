@@ -188,7 +188,7 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public List<MGTraitsCodon> getCodonUsage()
+	public List<MGTraitsCodon> getCodonUsage(final int id)
 			throws DBGeneralFailureException, DBNoRecordsException {
 
 		List<MGTraitsCodon> result = doInSession(
@@ -208,7 +208,7 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public List<MGTraitsTaxonomy> getTaxonomyContent()
+	public List<MGTraitsTaxonomy> getTaxonomyContent(final int id)
 			throws DBGeneralFailureException, DBNoRecordsException {
 		List<MGTraitsTaxonomy> result = doInSession(
 				new DBTask<MGTraitsMapper, List<MGTraitsTaxonomy>>() {
