@@ -64,5 +64,6 @@ $(document).ready(function() {
 	    	}    
         }).error(function() {
         	$("#errorMessage").show();
+        	$(".downloadAllTraits").hide();
         });
 });
