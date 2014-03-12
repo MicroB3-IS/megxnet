@@ -39,9 +39,9 @@ public interface MGTraitsService {
 	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
 			throws DBGeneralFailureException, DBNoRecordsException;
 
-	public List<MGTraitsCodon> getCodonUsage()
+	public List<MGTraitsCodon> getCodonUsage(int id)
 			throws DBGeneralFailureException, DBNoRecordsException;
 
-	public List<MGTraitsTaxonomy> getTaxonomyContent()
+	public List<MGTraitsTaxonomy> getTaxonomyContent(int id)
 			throws DBGeneralFailureException, DBNoRecordsException;
 }
