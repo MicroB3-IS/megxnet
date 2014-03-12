@@ -13,4 +13,15 @@
 	color: #FF0000; 
 	margin-left: 351px;
 }
+#simpleTrait
+{
+font-family:"Trebuchet MS", Arial;
+width:100%;
+border-collapse:collapse;
+}
+#simpleTrait td, #simpleTrait th 
+{
+font-size:1em;
+padding:3px 7px 2px 7px;
+}
 
