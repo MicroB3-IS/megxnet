@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	if(currentMetagenomeId){
 		$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg"+ currentMetagenomeId + "-j/codon-usage", function(codonUsageResponse) {
-			var BAR_WIDTH = 10;
+			var BAR_WIDTH = 20;
 			var data = [];
 			if(codonUsageResponse){
 				data= codonUsageResponse.data;
@@ -29,7 +29,8 @@ $(document).ready(function () {
 								 'cgt', 'agc', 'agt', 'tca', 'tcc', 'tcg',
 								 'tct', 'aca', 'acc', 'acg', 'act', 'gta',
 								 'gtc', 'gtg', 'gtt', 'tgg', 'tac', 'tat'
-							 ]
+							 ],
+							 min : 40
 				},
 				yAxis: {
 					labels: {
