@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: My Plugin
+Bundle-Name: Megx.net Web service Core
 Bundle-SymbolicName: net.megx.ws.common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.ws.common.Activator
