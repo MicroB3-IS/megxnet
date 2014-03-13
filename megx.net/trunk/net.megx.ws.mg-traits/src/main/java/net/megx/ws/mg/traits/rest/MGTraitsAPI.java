@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import net.megx.megdb.mgtraits.MGTraitsService;
 import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
+import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
@@ -36,6 +38,7 @@ import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
+import net.megx.ws.mg.traits.rest.mappers.DownloadJobsToClient;
 import net.megx.ws.mg.traits.rest.mappers.FunctionTableToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
 import net.megx.ws.mg.traits.rest.mappers.PublicJobDetailsToClient;
@@ -158,6 +161,39 @@ public class MGTraitsAPI extends BaseRestService {
 				result.add(new PublicJobDetailsToClient(currJobDetail));
 			}
 			return toJSON(new Result<List<PublicJobDetailsToClient>>(result));
+		} catch (DBGeneralFailureException e) {
+			log.error("Could not retrieve all finished jobs");
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			log.error("No finished job exists");
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+		} catch (IllegalStateException e) {
+			log.error("Could not generate public Id");
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (Exception e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@Path("all")
+	@POST
+	@Produces("text/csv")
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
+	public List<DownloadJobsToClient> downloadJobs(@Context HttpServletRequest request, @FormParam("traitIds") final String traitIds) {
+		try {
+			List<String> ids = new ArrayList<String>(Arrays.asList(traitIds.split(",")));
+			List<Integer> intIds = new ArrayList<Integer>();
+			for (String strId : ids) {
+				intIds.add(Integer.valueOf(strId));
+			}
+			List<DownloadJobsToClient> result = new ArrayList<DownloadJobsToClient>();
+			for (MGTraitsDownloadJobs currJobDetail : service.downloadJobs(intIds)) {
+				result.add(new DownloadJobsToClient(currJobDetail));
+			}
+			return result;
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,

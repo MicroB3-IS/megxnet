@@ -16,7 +16,15 @@ $(document).ready(function() {
 	        });
 	    },
 	    "fnOnServerDataLoad": function () {},
-        aoColumns: [{
+        aoColumns: [{ 
+    	 	mData: 'id',
+    	 	sClass: 'center data-pad',
+    	 	mRender: function(id){
+    	 		return '<input class=\'downloadTrait\' type=\'checkbox\' value=\'' + id + '\'>';
+    	 	},
+    	 	sWidth: '80px',
+    	 	bSortable: false
+    	 },{
             mData: 'sampleLabel',
             sClass: 'left data-pad'
         }, {

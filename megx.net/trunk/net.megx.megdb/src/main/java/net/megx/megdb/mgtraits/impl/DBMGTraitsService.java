@@ -10,6 +10,7 @@ import net.megx.megdb.mgtraits.mappers.MGTraitsMapper;
 import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
+import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
@@ -177,6 +178,26 @@ public class DBMGTraitsService extends BaseMegdbService implements
 					public List<MGTraitsPublicJobDetails> execute(
 							MGTraitsMapper mapper) throws Exception {
 						return mapper.getAllPublicJobs();
+					}
+				}, MGTraitsMapper.class);
+
+		if (result.size() == 0) {
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {
+			return result;
+		}
+	}
+	
+	@Override
+	public List<MGTraitsDownloadJobs> downloadJobs(final List<Integer> traitIds)
+			throws DBGeneralFailureException, DBNoRecordsException {
+
+		List<MGTraitsDownloadJobs> result = doInSession(
+				new DBTask<MGTraitsMapper, List<MGTraitsDownloadJobs>>() {
+					@Override
+					public List<MGTraitsDownloadJobs> execute(
+							MGTraitsMapper mapper) throws Exception {
+						return mapper.downloadJobs(traitIds);
 					}
 				}, MGTraitsMapper.class);
 
