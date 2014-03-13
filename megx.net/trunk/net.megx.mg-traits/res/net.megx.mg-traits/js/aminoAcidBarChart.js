@@ -18,29 +18,22 @@ $(document).ready(function () {
 		}
         $('#aminoAcidContainer').highcharts({
             chart: {
-                type: 'bar',
-                inverted : true
+                type: 'column'
             },
+            plotOptions: {
+    	        series: {
+    	            pointWidth: 20
+    	        }
+    	    },
             title: {
                 text: 'Aminoacid Trait'
             },
             xAxis: {
-                categories: ['ala', 'cys', 'asp', 'glu', 'phe','gly', 'his', 'ile', 'lys', 'leu','met', 'asn', 'pro', 'gln', 'arg','ser', 'thr', 'val', 'trp', 'tyr'],
-                title: {
-                    text: null
-                }
+                categories: ['ala', 'cys', 'asp', 'glu', 'phe','gly', 'his', 'ile', 'lys', 'leu','met', 'asn', 'pro', 'gln', 'arg','ser', 'thr', 'val', 'trp', 'tyr']
             },
             yAxis: {
-                min: 0,
                 labels: {
                     overflow: 'justify'
-                }
-            },
-            plotOptions: {
-                bar: {
-                    dataLabels: {
-                        enabled: true
-                    }
                 }
             },
             credits: {

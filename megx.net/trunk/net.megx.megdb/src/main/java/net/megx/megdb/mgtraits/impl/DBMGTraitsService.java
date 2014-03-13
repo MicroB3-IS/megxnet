@@ -188,19 +188,19 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public List<MGTraitsCodon> getCodonUsage(final int id)
+	public MGTraitsCodon getCodonUsage(final int id)
 			throws DBGeneralFailureException, DBNoRecordsException {
 
-		List<MGTraitsCodon> result = doInSession(
-				new DBTask<MGTraitsMapper, List<MGTraitsCodon>>() {
+		MGTraitsCodon result = doInSession(
+				new DBTask<MGTraitsMapper, MGTraitsCodon>() {
 					@Override
-					public List<MGTraitsCodon> execute(MGTraitsMapper mapper)
+					public MGTraitsCodon execute(MGTraitsMapper mapper)
 							throws Exception {
-						return mapper.getCodonUsage();
+						return mapper.getCodonUsage(id);
 					}
 				}, MGTraitsMapper.class);
 
-		if (result.size() == 0) {
+		if (result == null) {
 			throw new DBNoRecordsException("Query returned zero results");
 		} else {
 			return result;
@@ -215,7 +215,7 @@ public class DBMGTraitsService extends BaseMegdbService implements
 					@Override
 					public List<MGTraitsTaxonomy> execute(MGTraitsMapper mapper)
 							throws Exception {
-						return mapper.getTaxonomyContent();
+						return mapper.getTaxonomyContent(id);
 					}
 				}, MGTraitsMapper.class);
 

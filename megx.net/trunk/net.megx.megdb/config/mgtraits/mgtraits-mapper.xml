@@ -176,29 +176,29 @@
         <result column="value" property="value" />
         <result column="id" property="id" />
     </resultMap>
-    <!-- TODO change parameterType to int? -->
-    <select id="getSimpleTraits" parameterType="String"
+    
+    <select id="getSimpleTraits" parameterType="int"
         resultMap="mg_traits_result">
         SELECT *
         FROM mg_traits.mg_traits_results
         WHERE id=#{id}
     </select>
-    <!-- TODO change parameterType to int? -->
-    <select id="getFunctionTable" parameterType="String"
+    
+    <select id="getFunctionTable" parameterType="int"
         resultMap="mg_traits_pfam">
         SELECT *
         FROM mg_traits.mg_traits_pfam
         WHERE id=#{id}
     </select>
-    <!-- TODO change parameterType to int? -->
-    <select id="getAminoAcidContent" parameterType="String"
+    
+    <select id="getAminoAcidContent" parameterType="int"
         resultMap="mg_traits_aa">
         SELECT *
         FROM mg_traits.mg_traits_aa
         WHERE id=#{id}
     </select>
-    <!-- TODO change parameterType to int? -->
-    <select id="getDiNucleotideOddsRatio" parameterType="String"
+    
+    <select id="getDiNucleotideOddsRatio" parameterType="int"
         resultMap="mg_traits_dinuc">
         SELECT *
         FROM mg_traits.mg_traits_dinuc
@@ -217,11 +217,12 @@
         id=#{id}
     </select>
 
-    <select id="getCodonUsage" resultMap="mg_traits_codon">
+    <select id="getCodonUsage" resultMap="mg_traits_codon" parameterType="int">
     <![CDATA[
         SELECT *
         FROM
         mg_traits.mg_traits_codon
+        WHERE id=#{id}
         ]]>
     </select>
 

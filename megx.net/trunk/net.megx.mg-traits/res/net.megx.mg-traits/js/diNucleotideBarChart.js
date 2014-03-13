@@ -18,30 +18,18 @@ $(document).ready(function () {
 		}
         $('#diNucleotideContainer').highcharts({
             chart: {
-                type: 'bar',
-                inverted : true
+                type: 'column'
             },
+            plotOptions: {
+    	        series: {
+    	            pointWidth: 20
+    	        }
+    	    },
             title: {
                 text: 'Dinuc Trait'
             },
             xAxis: {
-                categories: ['paa_ptt', 'pac_pgt', 'pcc_pgg', 'pca_ptg', 'pga_ptc','pag_pct', 'pat', 'pcg', 'pgc', 'pta'],
-                title: {
-                    text: null
-                }
-            },
-            yAxis: {
-                min: 0,
-                labels: {
-                    overflow: 'justify'
-                }
-            },
-            plotOptions: {
-                bar: {
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
+                categories: ['paa_ptt', 'pac_pgt', 'pcc_pgg', 'pca_ptg', 'pga_ptc','pag_pct', 'pat', 'pcg', 'pgc', 'pta']
             },
             credits: {
                 enabled: false
