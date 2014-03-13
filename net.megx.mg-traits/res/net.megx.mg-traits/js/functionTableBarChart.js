@@ -9,28 +9,19 @@ $(document).ready(function () {
 		}
         $('#functionalContainer').highcharts({
             chart: {
-                type: 'bar',
-                inverted : true	
+                type: 'column'
             },
+            plotOptions: {
+    	        series: {
+    	            pointWidth: 20
+    	        }
+    	    },
             title: {
                 text: 'Functional Content'
             },
-            xAxis: {
-                title: {
-                    text: null
-                }
-            },
             yAxis: {
-                min: 0,
                 labels: {
                     overflow: 'justify'
-                }
-            },
-            plotOptions: {
-                bar: {
-                    dataLabels: {
-                        enabled: true
-                    }
                 }
             },
             credits: {

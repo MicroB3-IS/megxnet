@@ -28,13 +28,11 @@ public interface MGTraitsMapper {
 	public MGTraitsJobDetails getJobDetails(@Param("id") int id);
 
 	public MGTraitsJobDetails getSuccesfulJob(@Param("id") int id);
-
-//	public List<MGTraitsJobDetails> getAllFinishedJobs();
 	
 	public List<MGTraitsPublicJobDetails> getAllPublicJobs();
 
-	public List<MGTraitsCodon> getCodonUsage();
+	public MGTraitsCodon getCodonUsage(@Param("id") int id);
 
-	public List<MGTraitsTaxonomy> getTaxonomyContent();
+	public List<MGTraitsTaxonomy> getTaxonomyContent(@Param("id") int id);
 
 }
