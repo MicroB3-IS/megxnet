@@ -5,6 +5,7 @@ import java.util.List;
 import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
+import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
@@ -30,6 +31,8 @@ public interface MGTraitsMapper {
 	public MGTraitsJobDetails getSuccesfulJob(@Param("id") int id);
 	
 	public List<MGTraitsPublicJobDetails> getAllPublicJobs();
+	
+	public List<MGTraitsDownloadJobs> downloadJobs(@Param("traitIds") List<Integer> traitIds);
 
 	public MGTraitsCodon getCodonUsage(@Param("id") int id);
 

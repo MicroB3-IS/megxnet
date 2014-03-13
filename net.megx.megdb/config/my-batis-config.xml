@@ -69,6 +69,7 @@
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsCodon" alias="MGTraitsCodon" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsTaxonomy" alias="MGTraitsTaxonomy"/>
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsPublicJobDetails" alias="MGTraitsPublicJobDetails" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsDownloadJobs" alias="MGTraitsDownloadJobs" />
 		
 	</typeAliases>
 

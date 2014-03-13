@@ -103,6 +103,11 @@
         <result column="perc_tf" property="percTf" />
         <result column="perc_classified" property="percClassified" />
     </resultMap>
+    
+    <resultMap type="MGTraitsDownloadJobs" id="mg_traits_download_jobs">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="sample_environment" property="sampleEnvironment" />
+    </resultMap>
 
     <resultMap type="MGTraitsCodon" id="mg_traits_codon">
         <result column="id" property="id" />
@@ -281,5 +286,14 @@
             AND time_finished + make_public <= now()
         ]]>
     </select>
+    
+    <select id="downloadJobs" resultMap="mg_traits_download_jobs" parameterType="int">
+	    SELECT sample_label, sample_environment
+	    FROM mg_traits.mg_traits_jobs
+	    WHERE mg_traits.mg_traits_jobs.id IN
+	    <foreach item="item" index="index" collection="traitIds" open="(" separator="," close=")">
+       		#{item}
+  		</foreach>
+	</select>
 
 </mapper>

@@ -7,6 +7,7 @@ import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
+import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
@@ -37,6 +38,9 @@ public interface MGTraitsService {
 			String sampleEnvironment) throws DBGeneralFailureException;
 
 	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
+			throws DBGeneralFailureException, DBNoRecordsException;
+	
+	public List<MGTraitsDownloadJobs> downloadJobs(List<Integer> traitIds)
 			throws DBGeneralFailureException, DBNoRecordsException;
 
 	public MGTraitsCodon getCodonUsage(int id)
