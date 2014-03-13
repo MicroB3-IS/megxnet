@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: My Plugin
+Bundle-Name: Table UI Elements
 Bundle-SymbolicName: net.megx.ui.table
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.ui.table.Activator
