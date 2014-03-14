@@ -34,7 +34,7 @@
 	<!-- Properties are just defaults: need to be overwritten in profiles etc. -->
 	<properties>
 		<!-- maven plugin configuration properties -->
-		<tycho.version>0.16.0</tycho.version>
+		<tycho.version>0.19.0</tycho.version>
 		<tycho.groupid>org.eclipse.tycho</tycho.groupid>
 		<wagon.version>2.5</wagon.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
