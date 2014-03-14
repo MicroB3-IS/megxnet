@@ -1,0 +1,15 @@
+#if ( $ext.registration.activateAccount() )
+ Your account has been successfully activated.<br/>
+ Please proceed to the <a href="$ctx.siteUrl/login">login</a> page to login to Megx.net.
+#else
+	#if ( $ext.registration.reason == "verification-code-missing" )
+		The activation code is missing.<br/>
+		Please check your email for the activation code and follow the instructions in the activation mail.
+	#elseif ( $ext.registration.reason == "verification-exired" )
+		This activation code was not found. You either have already confirmed your account on Megx.net or the activation code is not valid.
+	#elseif ( $ext.registration.reason == "verification-invalid" )
+		The activation code is invalid. Please follow the instructions in the activation email.
+	#else
+		The activation code is invalid. Please follow the instructions in the activation email.
+	#end
+#end
