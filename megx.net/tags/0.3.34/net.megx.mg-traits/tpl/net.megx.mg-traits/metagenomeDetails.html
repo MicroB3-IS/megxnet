@@ -1,0 +1,144 @@
+#set( $currId = $req.id )
+#set( $baseWsURL = "${ctx.siteUrl}/ws/v1/mg-traits/v1.0.0" )
+#set( $aminoAcidURL = "${baseWsURL}/mg${currId}-someLabel/amino-acid-content")
+#set( $codonUsageURL = "${baseWsURL}/mg${currId}-someLabel/codon-usage")
+#set( $diNucleotideURL = "${baseWsURL}/mg${currId}-someLabel/di-nucleotide-odds-ratio")
+#set( $functionalContainerURL = "${baseWsURL}/mg${currId}-someLabel/function-table")
+#set( $taxonomyURL = "${baseWsURL}/mg${currId}-someLabel/taxonomic-content")
+#set( $simpleTraitURL = "${baseWsURL}/mg${currId}-someLabel/simple-traits")
+
+<link href="$ctx.siteUrl/net.megx.mg-traits/css/mg-traits.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/highstock.js"></script>	
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/exporting.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/no-data-to-display.js"></script>
+<script type="text/javascript">
+  #if($req.id && !$req.id.empty)
+	  currentMetagenomeId = $req.id;
+  #else
+	  currentMetagenomeId = null;
+  #end
+  $(document).ready(function(){
+	  $('.downloadData').click(function(){
+		  var url = $(this).attr('href');
+		  $.ajax(url,{
+			  headers: { 
+			        Accept : "text/csv; charset=utf-8",
+			        "Content-Type": "text/csv; charset=utf-8"
+			    },
+			  async: false
+		  });
+	  });
+	  $.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" +currentMetagenomeId+ "-someLabel/simple-traits",
+		        function(simpleTrait){
+		  			if(simpleTrait !== null){
+		        	$( "#sampleName" ).text( simpleTrait.data.sampleLabel );
+		        	$( "#gcContent" ).text( simpleTrait.data.gcContent );
+		        	$( "#gcVariance" ).text( simpleTrait.data.gcVariance );
+		        	$( "#numOfReads" ).text( simpleTrait.data.numReads );
+		        	$( "#totalNucl" ).text( simpleTrait.data.totalMB );
+		        	$( "#numOfGenes" ).text( simpleTrait.data.numGenes );
+		        	$( "#abRatio" ).text( simpleTrait.data.ABRatio );
+		        	$( "#tf" ).text( simpleTrait.data.percTf );
+		        	$( "#classified" ).text( simpleTrait.data.percClassified );
+		  			}
+		        });
+  });
+</script>
+
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/aminoAcidBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/diNucleotideBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/functionTableBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/codonUsageBarChart.js"></script>
+<script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/taxonomy.js"></script>
+
+<div style="margin: 1em;">
+	<h3>Metagenome Description</h3>
+	
+	<div class="downloadLink" style="float:right; margin-right:50px;">
+		<a href="$simpleTraitURL" class="downloadData">Download</a>
+	</div>
+	
+	<table id="simpleTrait">
+		<tr>
+			<td>Sample name: <label id="sampleName"></label></td>
+		</tr>
+		<tr>
+			<td>Latitude: <label id="latitude"></label></td>
+			<td>Longitude: <label id="longitude"></label></td>
+			<td>Environment: <label id="environment"></label></td>
+		</tr>
+		<tr>
+			<td>Site description: <label id="siteDescription"></label></td>
+			<td>GC content: <label id="gcContent"></label></td>
+			<td>GC variance: <label id="gcVariance"></label></td>
+		</tr>
+		<tr >
+			<td>Number of reads: <label id="numOfReads"></label></td>
+			<td>Total nucleotides: <label id="totalNucl"></label></td>
+			<td>Number of genes: <label id="numOfGenes"></label></td>
+		</tr>
+		<tr >
+			<td>AB ratio: <label id="abRatio"></label></td>
+			<td>%TF: <label id="tf"></label></td>
+			<td>%Classified: <label id="classified"></label></td>
+		</tr>
+	</table>
+</div>
+
+<div style="margin: 1em;">
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 80%;">
+			<div id="aminoAcidContainer" style="height: auto;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$aminoAcidURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="codonUsageContainer" style="height: auto;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$codonUsageURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="diNucleotideContainer" style="height: auto;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$diNucleotideURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="functionalContainer" style="height: auto;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$functionalContainerURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 80%;">
+			<div id="taxonomyContainer" style="height: auto;" ></div>
+		</td>
+		<td style="width: 20%;">
+			<div class="downloadLink">
+				<a href="$taxonomyURL" class="downloadData">Download</a>
+			</div>
+		</td>
+	</tr>
+	
+</table> 
+</div>
+

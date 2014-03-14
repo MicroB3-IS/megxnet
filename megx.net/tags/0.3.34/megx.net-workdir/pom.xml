@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<project
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>net.megx</groupId>
+        <artifactId>parent-microb3-is</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>net.megx</groupId>
+    <artifactId>megx.net-workdir</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>eclipse-repository</packaging>
+
+    <name>megx.net-workdir</name>
+
+    <repositories>
+      <repository>
+	<id>indigo</id>
+	<layout>p2</layout>
+	<url>http://download.eclipse.org/releases/indigo</url>
+      </repository>
+    </repositories>
+
+    <properties>
+        <mvn.jcr.source.url>https://dl.dropboxusercontent.com/s/82u7stspa8ec9ja/</mvn.jcr.source.url>
+        <mvn.jcr.source.file>repository-20131015.tar.gz?token_hash=AAEDQM3_tOEi8wNKml7-QsHrj8mKD5Ke3-A0REXONuhTUg&amp;dl=1</mvn.jcr.source.file>
+        <mvn.jcr.target.file>${project.build.directory}/megx.jcr.repo.tar.gz</mvn.jcr.target.file>
+        <mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
+    </properties>
+
+    <build>
+        <defaultGoal>process-resources</defaultGoal>
+        <!-- required because of bug https://jira.codehaus.org/browse/MOJO-1821 -->
+        <extensions>
+
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-http</artifactId>
+                <version>2.2</version>
+            </extension>
+
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>${wagon.version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <id>download-test-data</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <maven.wagon.http.ssl.insecure>true</maven.wagon.http.ssl.insecure>
+                                <maven.wagon.http.ssl.allowall>true</maven.wagon.http.ssl.allowall>
+                            </systemPropertyVariables>
+                            <serverId>dev-dav.megx.net</serverId>
+                            <url>${mvn.jcr.source.url}</url>
+                            <fromFile>${mvn.jcr.source.file}</fromFile>
+                            <toFile>${mvn.jcr.target.file}</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <configuration>
+                    <failOnError>${mvn.ant.failonerror}</failOnError>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-jcr-repository</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="jcr-repository">
+                                <mkdir dir="${mvn.work.dir.path}" />
+                                <mkdir dir="${mvn.work.dir.path}/config" />
+                                <mkdir dir="${mvn.work.dir.path}/plugins" />
+                                <mkdir dir="${mvn.work.dir.path}/dropins" />
+
+                                <untar src="${mvn.jcr.target.file}" dest="${mvn.work.dir.path}">
+                                    <patternset>
+                                        <exclude name="**/.lock" />
+                                    </patternset>
+                                </untar>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <!-- this is just to ignore/overwrite parent pom config -->
+                    <execution>
+                        <id>copy-chon-plugins</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copy-single-bundle"
+                                unless="mvn.ant.target.copy-single-bundle.skip"></target>
+
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>clean-work-dir</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="clean-work-dir">
+                                <delete verbose="true"
+                                    includeemptydirs="true" quiet="true">
+                                    <fileset
+                                        dir="${mvn.work.dir.path}/config"
+                                        includes="**" />
+                                    <fileset
+                                        dir="${mvn.work.dir.path}/felix-cache" />
+                                    <fileset
+                                        dir="${mvn.work.dir.path}/repository" />
+                                    <fileset
+                                        dir="${mvn.work.dir.path}/plugins" />
+                                    <fileset
+                                        dir="${mvn.work.dir.path}/dropins" />
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>copy-megx-product-bundles</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target name="copy-product-bundles">
+                                <!-- Note the combine.self! It prevents
+                                    merged
+                                    inheritance from parent
+                                    see https://maven.apache.org/pom.html#Plugins -->
+                                <copy todir="${mvn.work.dir.path}/plugins">
+                                    <fileset
+                                        dir="${project.build.directory}/repository/plugins" />
+                                    <firstmatchmapper>
+                                        <!-- copying and stripping of
+                                            the
+                                            build identifier -->
+                                        <regexpmapper
+                                            from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.jar$$"
+                                            to="\1.jar" />
+                                        <regexpmapper
+                                            from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.[0-9A-Z]{6,}\.jar$$"
+                                            to="\1.jar" />
+                                        <regexpmapper
+                                            from="^(osgi.compendium_[0-9]+\.[0-9]+\.[0-9]+).build-[0-9A-Z]{6,}\.jar$$"
+                                            to="\1.jar" />
+                                    </firstmatchmapper>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

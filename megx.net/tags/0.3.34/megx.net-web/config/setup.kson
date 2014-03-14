@@ -1,0 +1,119 @@
+www={type:'sys.public'}
+	gms={type: 'html', template: 'pages/gms.html', title: ".:: Genes Mapserver - Home ::." }
+		geographic-blast={type: 'html', template: 'pages/geographic-blast.html'}
+			submit={type: 'megx.module.blast', title: 'Submit Blast'}
+			job={type: 'megx.module.blast', title: 'Blast Results'}
+		geographic-pfam={type:'html', template:'net.megx.geo.pfam/index.html', title:'Geographic PFAM'}
+
+		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
+			woa.html={type: 'megx.module.woa', title: ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
+			woa.csv={type: 'megx.module.woa'}
+			wod.html={type: 'megx.module.wod', title: ".:: megx.net - GIS tools -- WOD05 Interpolator ::."}
+			wod.csv={type: 'megx.module.wod'}
+	feed={type: 'category'}
+		megxnet-news.xml={type:'rss'}
+	
+	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
+		authorize={type:'megx.module.oauth.authorize', title:'Application Authorization'}
+		
+	login={type:'html', template:'security-filter/login.html', title:'Login'}
+	register={type:'html', template:'security-filter/register.html', title:'Create Account'}
+		doRegistration={type: 'megx.module.login.registration', title: 'Account Created'}
+		activate={type:'html', template:'security-filter/activate.html', title:'Account Activation'}
+	pubmap={type:'category', template:'pubmap/start.html'}
+		articles={type:'category', template:'pubmap/articles.html'}
+	apps={type:'html', template: 'apps-manager/home.html', title:'Manage Your Applications'}
+	security={type:'unknown'}
+		admin={type:'html', template:'security-filter/admin/admin.html', title:'Security Administration'}
+	error={type:'megx.error.page', template:'error-pages/server-error.html', title:'Server Error'}
+		404={type:'megx.error.page', template:'error-pages/error404.html', title:'File not found'}
+		500={type:'megx.error.page', template:'error-pages/error500.html', title:'Internal server error', logError:'true'}
+		503={type:'megx.error.page', template:'error-pages/error503.html', title:'Service unavailable', logError:'true'}
+		403={type:'megx.error.page', template:'error-pages/error403.html', title:'Forbidden', logError:'true'}
+		400={type:'megx.error.page', template:'error-pages/error400.html', title:'Bad request'}
+		feedback={type:'html', template:'error-pages/feedback-result.html', title:'Thanks for your feedback'}
+	settings={type:'unknown'}
+		account={type:'html', template:'settings/account/profile.html', title: 'Account Settings'}
+	prox={type:'html', template:'prox-app/home.html', title:'ProX home page'}
+		browse={type:'html', template:'prox-app/index.html', baseTemplate: 'prox-app/base-empty.html', title:'ProX'}
+	osd-app={type:'unknown'}
+		samples={type:'html', template:'net.megx.esa/index.html', title:'All samples'}
+		sampleDetails={type:'html', template:'net.megx.esa/sampleDetails.html', title:'View sample details'}
+	osd-registry={type:'html', template:'net.megx.osd.registry/index.html', title:'OSD registry start page', showOSDLogo: 'true'}
+		list={type:'html', template:'net.megx.osd.registry/list.html', title:'List of OSD institutes'}
+		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
+	bookmark={type:'html', template:'net.megx.megxbar/bookmarklet.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Bookmarklet'}
+	mg-traits={type:'unknown'}
+		samples={type:'html', template:'net.megx.mg-traits/index.html', title:'Simple Traits'}
+		sampleDetails={type:'html', template:'net.megx.mg-traits/metagenomeDetails.html', title:'Metagenome description'}
+	
+home={type:'sys.home'}
+	jveljanovski={type:'user'}
+	rkottman={type:'user'}
+	guest={type:'user'}
+	jveljan.gmail.com={type:'user'}
+	pjonoski={type:'user'}
+	
+root={type:'sys.root'}
+
+usr={type:'sys.usr'}
+	local={type:'app.dir'}
+		etc={type:'app.etc'}
+			menu={type: 'config', description: 'Menu Container'}
+				home={type: 'menu.item.local', title: 'Home Menu', link: '#' }
+					about={type:'menu.item.local', title: 'About', link: 'portal/about/about.html', order: 1}
+					tutorials={type:'menu.item.local', title: 'Tutorials', link: 'portal/tutorial.html', order: 2}
+					content={type:'menu.item.local', title: 'Content', link: 'portal/content/content.html', order: 3}
+					faq={type:'menu.item.local', title: 'FAQ', link: 'portal/faq.html', order: 4}
+					team={type:'menu.item.local', title: 'Team', link: 'portal/team/team.html', order: 5}
+					news={type:'menu.item.local', title: 'News', link: 'portal/news/news.html', order: 6}
+					related={type:'menu.item.local', title: 'Related', link: 'portal/related/related.html', order: 7}
+				tools={type: 'menu.item.local', title: 'tools', link: 'gms/tools'}
+					mapserver={type:'menu.item.local', title: 'Mapserver', link: 'gms', order: 1}
+					geographic-blast={type:'menu.item.local', title: 'Geographic BLAST', link: 'gms/geographic-blast', order: 2}
+					tools={type:'menu.item.local', title: 'GIS Tools', link: 'tools/tools.html', order: 3}
+				browse={type: 'menu.item.local', title: 'browse', link: 'genomes'}
+					genomes={type: 'menu.item.local', title: 'Prokaryotic Genomes', link: 'genomes', order: 1}
+					virus={type: 'menu.item.local', title: 'Phage Genomes', link: 'virus', order: 2}
+					metagenomes={type: 'menu.item.local', title: 'Metagenomes', link: 'metagenomes', order: 3}
+					marker_genes={type: 'menu.item.local', title: 'Marker Genes', link: 'marker_genes', order: 4}
+					sites={type: 'menu.item.local', title: 'Sampling Sites', link: 'sites', order: 5}
+				footer={type: 'menu.item.local', title: 'Footer Menu', link: '#' }
+					home={type: 'menu.item.local', title: 'home', link: ''}
+					contact={type: 'menu.item.local', title: 'contact', link: 'portal/contact.html'}
+					disclaimer={type: 'menu.item.local', title: 'disclaimer', link: 'portal/disclaimer.html'}
+					copyright={type: 'menu.item.local', title: 'copyright', link: 'portal/copyright.html'}
+
+
+etc={type:'sys.etc'}
+	host.config={type:'config', siteUrl:'http://localhost:8080/megx.net'}
+	passwd={type:'usr.container'}
+		jveljanovski={ type: 'usr.info', password: 'd00eb4753f735d3e86792609da365e4e', role: 10}
+		rkottman={ type: 'usr.info', password: 'f935abd40c732dddaf5e64d0e1af4cd3', role: 10}
+		pjonoski={ type: 'usr.info', password: '8fbe18a18042fa8ba9ade46ce26964a4', role: 10}
+		jveljan.gmail.com={ type: 'megx.external.user', role: 10}
+	types={type:'typeDescRoot'}
+		sys.public={type:'typeDesc', renderer: 'org.chon.cms.core.model.renderers.VTplNodeRenderer', contentNode: 'org.chon.cms.core.model.types.ContentNode'}
+			default.properties={type: 'config', template: 'pages/home.html'}
+		html={type:'typeDesc', bubbleToParent: true, renderer: 'org.chon.cms.core.model.renderers.VTplNodeRenderer', contentNode: 'org.chon.cms.core.model.types.EvalVelocityHtmlContentNode'}
+			default.properties={type: 'config', template: 'pages/view.html'}
+		category={type:'typeDesc', bubbleToParent: true, renderer: 'org.chon.cms.core.model.renderers.VTplNodeRenderer', contentNode: 'org.chon.cms.core.model.types.CategoryContentNode'}
+			default.properties={type: 'config', template: 'pages/category.html'}
+		nt:file={type:'typeDesc', renderer: 'org.chon.cms.model.renderers.FileNodeRenderer', contentNode: 'org.chon.cms.core.model.types.FileContentNode'}
+			default.properties={type: 'config'}
+			
+		menu.item.category={type:'typeDesc'}
+		menu.item.local={type:'typeDesc'}
+		menu.item.external={type:'typeDesc'}
+		
+		unknown={type:'typeDesc'}
+		
+		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
+		megx.module.login.registration={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.RegisterPageNode'}
+		megx.error.page={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.ExceptionPageNode'}
+var={type:'sys.var'}
+	log={type:'folder'}
+	stats={type:'folder'}
+	cache={type:'folder'}
+tmp={type:'sys.tmp'}
+	upload={type:'folder'}
