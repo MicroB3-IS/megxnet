@@ -1,6 +1,6 @@
 package net.megx.megdb;
 
-
+ 
 import org.junit.Test;
 
 public class PubMapArticleInsertNewTest extends PubMapServiceTestBase {
