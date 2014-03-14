@@ -29,8 +29,8 @@ import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
+import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
-import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -38,10 +38,7 @@ import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
-import net.megx.ws.mg.traits.rest.mappers.DownloadJobsToClient;
-import net.megx.ws.mg.traits.rest.mappers.FunctionTableToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
-import net.megx.ws.mg.traits.rest.mappers.PublicJobDetailsToClient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -124,14 +121,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<PublicJobDetailsToClient> getAllFinishedJobs(
+	public List<MGTraitsPublicJobDetails> getAllPublicJobs(
 			@Context HttpServletRequest request) {
 		try {
-			List<PublicJobDetailsToClient> result = new ArrayList<PublicJobDetailsToClient>();
-			for (MGTraitsPublicJobDetails currJobDetail : service
-					.getAllFinishedJobs()) {
-				result.add(new PublicJobDetailsToClient(currJobDetail));
-			}
+			List<MGTraitsPublicJobDetails> result = service
+					.getAllPublicJobs();
 			return result;
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
@@ -153,14 +147,13 @@ public class MGTraitsAPI extends BaseRestService {
 	@Path("all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllFinishedJobsAsJSON(@Context HttpServletRequest request) {
+	public String getAllPublicJobsAsJSON(@Context HttpServletRequest request) {
 		try {
-			List<PublicJobDetailsToClient> result = new ArrayList<PublicJobDetailsToClient>();
-			for (MGTraitsPublicJobDetails currJobDetail : service
-					.getAllFinishedJobs()) {
-				result.add(new PublicJobDetailsToClient(currJobDetail));
-			}
-			return toJSON(new Result<List<PublicJobDetailsToClient>>(result));
+			List<MGTraitsPublicJobDetails> result = service
+					.getAllPublicJobs();
+
+			return toJSON(new Result<List<MGTraitsPublicJobDetails>>(result));
+
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,
@@ -177,22 +170,23 @@ public class MGTraitsAPI extends BaseRestService {
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@Path("all")
 	@POST
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<DownloadJobsToClient> downloadJobs(@Context HttpServletRequest request, @FormParam("traitIds") final String traitIds) {
+	public List<MGTraitsDownloadJobs> downloadJobs(
+			@Context HttpServletRequest request,
+			@FormParam("traitIds") final String traitIds) {
 		try {
-			List<String> ids = new ArrayList<String>(Arrays.asList(traitIds.split(",")));
+			List<String> ids = new ArrayList<String>(Arrays.asList(traitIds
+					.split(",")));
 			List<Integer> intIds = new ArrayList<Integer>();
 			for (String strId : ids) {
 				intIds.add(Integer.valueOf(strId));
 			}
-			List<DownloadJobsToClient> result = new ArrayList<DownloadJobsToClient>();
-			for (MGTraitsDownloadJobs currJobDetail : service.downloadJobs(intIds)) {
-				result.add(new DownloadJobsToClient(currJobDetail));
-			}
+			List<MGTraitsDownloadJobs> result = service.downloadJobs(intIds);
+
 			return result;
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
@@ -254,12 +248,31 @@ public class MGTraitsAPI extends BaseRestService {
 	@Path(SAMPLE_PATH_MATCHER + "/function-table")
 	@GET
 	@Produces("text/csv")
-	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public FunctionTableToClient getFunctionTable(@PathParam("id") int id,
+	public Response getFunctionTable(@PathParam("id") int id,
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return (new FunctionTableToClient(service.getFunctionTable(id)));
+			List<MGTraitsFunctional> result = service.getFunctionTable(id);
+			final List<String> header = new ArrayList<String>(result.size() + 1);
+			final List<String> row = new ArrayList<String>(result.size() + 1);
+			header.add("Sites");
+			row.add(result.get(0).getSampleLabel());
+			for (MGTraitsFunctional currTax : result) {
+				header.add(currTax.getKey());
+				row.add(currTax.getValue());
+			}
+			ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
+				@Override
+				public void write(OutputStream out) throws IOException {
+					PrintWriter writer = new PrintWriter(out);
+					writer.println(StringUtils.join(header, ' '));
+					writer.println(StringUtils.join(row, ' '));
+					writer.flush();
+					out.flush();
+				}
+			});
+			rb.type("text/csv");
+			return rb.build();
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -278,7 +291,7 @@ public class MGTraitsAPI extends BaseRestService {
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return (toJSON(new Result<MGTraitsPfam>(
+			return (toJSON(new Result<List<MGTraitsFunctional>>(
 					service.getFunctionTable(id))));
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
@@ -541,10 +554,8 @@ public class MGTraitsAPI extends BaseRestService {
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			List<MGTraitsTaxonomy> result = service
-					.getTaxonomyContent(id);
-			final List<String> header = new ArrayList<String>(
-					result.size() + 1);
+			List<MGTraitsTaxonomy> result = service.getTaxonomyContent(id);
+			final List<String> header = new ArrayList<String>(result.size() + 1);
 			final List<String> row = new ArrayList<String>(result.size() + 1);
 			header.add("Sites");
 			row.add(result.get(0).getSampleLabel());

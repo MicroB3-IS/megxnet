@@ -6,8 +6,8 @@ import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
+import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
-import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -20,7 +20,7 @@ public interface MGTraitsMapper {
 
 	public MGTraitsResult getSimpleTraits(@Param("id") int id);
 
-	public MGTraitsPfam getFunctionTable(@Param("id") int id);
+	public List<MGTraitsFunctional> getFunctionTable(@Param("id") int id);
 
 	public MGTraitsAA getAminoAcidContent(@Param("id") int id);
 
