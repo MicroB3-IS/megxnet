@@ -58,7 +58,12 @@
 		</sub>
 	#else
 	   #if($this.path != "login")
-		  <h6 class="FR"><a href="$ctx.siteUrl/login?redirectURL=$req.getServletRequset().getRequestURI().substring($req.getServletRequset().getContextPath().length())?$req.getServletRequset().getQueryString()">log in</a> </h6>
+	   	  #if( $req.getServletRequset().getQueryString() )
+	   	  	#set( $queryString = "?${req.getServletRequset().getQueryString()}")
+   	  	  #else
+   	  	  	#set( $queryString = "")
+  	  	  #end
+		  <h6 class="FR"><a href="$ctx.siteUrl/login?redirectURL=$req.getServletRequset().getRequestURI().substring($req.getServletRequset().getContextPath().length())$queryString">log in</a> </h6>
 	   #end
 	#end 
 </article>
