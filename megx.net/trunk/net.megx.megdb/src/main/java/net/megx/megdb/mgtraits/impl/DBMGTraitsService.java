@@ -11,8 +11,8 @@ import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
+import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
-import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -46,19 +46,19 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public MGTraitsPfam getFunctionTable(final int id)
+	public List<MGTraitsFunctional> getFunctionTable(final int id)
 			throws DBGeneralFailureException, DBNoRecordsException {
 
-		MGTraitsPfam result = doInSession(
-				new DBTask<MGTraitsMapper, MGTraitsPfam>() {
+		List<MGTraitsFunctional> result = doInSession(
+				new DBTask<MGTraitsMapper, List<MGTraitsFunctional>>() {
 					@Override
-					public MGTraitsPfam execute(MGTraitsMapper mapper)
+					public List<MGTraitsFunctional> execute(MGTraitsMapper mapper)
 							throws Exception {
 						return mapper.getFunctionTable(id);
 					}
 				}, MGTraitsMapper.class);
 
-		if (result == null) {
+		if (result.size() == 0) {
 			throw new DBNoRecordsException("Query returned zero results");
 		} else {
 			return result;
@@ -169,7 +169,7 @@ public class DBMGTraitsService extends BaseMegdbService implements
 	}
 
 	@Override
-	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
+	public List<MGTraitsPublicJobDetails> getAllPublicJobs()
 			throws DBGeneralFailureException, DBNoRecordsException {
 
 		List<MGTraitsPublicJobDetails> result = doInSession(
@@ -240,7 +240,7 @@ public class DBMGTraitsService extends BaseMegdbService implements
 					}
 				}, MGTraitsMapper.class);
 
-		if (result == null) {
+		if (result.size() == 0) {
 			throw new DBNoRecordsException("Query returned zero results");
 		} else {
 			return result;

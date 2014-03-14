@@ -8,8 +8,8 @@ import net.megx.model.mgtraits.MGTraitsAA;
 import net.megx.model.mgtraits.MGTraitsCodon;
 import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
+import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
-import net.megx.model.mgtraits.MGTraitsPfam;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -19,7 +19,7 @@ public interface MGTraitsService {
 	public MGTraitsResult getSimpleTraits(int id)
 			throws DBGeneralFailureException, DBNoRecordsException;
 
-	public MGTraitsPfam getFunctionTable(int id)
+	public List<MGTraitsFunctional> getFunctionTable(int id)
 			throws DBGeneralFailureException, DBNoRecordsException;
 
 	public MGTraitsAA getAminoAcidContent(int id)
@@ -37,7 +37,7 @@ public interface MGTraitsService {
 	public String insertJob(String customer, String mgUrl, String sampleLabel,
 			String sampleEnvironment) throws DBGeneralFailureException;
 
-	public List<MGTraitsPublicJobDetails> getAllFinishedJobs()
+	public List<MGTraitsPublicJobDetails> getAllPublicJobs()
 			throws DBGeneralFailureException, DBNoRecordsException;
 	
 	public List<MGTraitsDownloadJobs> downloadJobs(List<Integer> traitIds)

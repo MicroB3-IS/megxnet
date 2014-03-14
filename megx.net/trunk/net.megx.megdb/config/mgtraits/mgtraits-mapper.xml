@@ -182,6 +182,13 @@
         <result column="id" property="id" />
     </resultMap>
     
+    <resultMap type="MGTraitsFunctional" id="mg_traits_functional">
+        <result column="sample_label" property="sampleLabel" />
+        <result column="key" property="key" />
+        <result column="value" property="value" />
+        <result column="id" property="id" />
+    </resultMap>
+    
     <select id="getSimpleTraits" parameterType="int"
         resultMap="mg_traits_result">
         SELECT *
@@ -190,10 +197,15 @@
     </select>
     
     <select id="getFunctionTable" parameterType="int"
-        resultMap="mg_traits_pfam">
-        SELECT *
-        FROM mg_traits.mg_traits_pfam
+        resultMap="mg_traits_functional">
+        <![CDATA[
+        SELECT
+        sample_label,
+        (each(functional)).key as key,
+        (each(functional)).value as value, id
+        FROM mg_traits.mg_traits_functional
         WHERE id=#{id}
+        ]]>
     </select>
     
     <select id="getAminoAcidContent" parameterType="int"

@@ -45,8 +45,7 @@ $(document).ready(function () {
 							data[3].value, data[4].value, data[5].value,
 							data[6].value, data[7].value, data[8].value,
 							data[9].value] : []
-					}
-				],
+				}],
 				lang : {
 					noData : 'No data aviable for Taxonomic Content'
 				},
