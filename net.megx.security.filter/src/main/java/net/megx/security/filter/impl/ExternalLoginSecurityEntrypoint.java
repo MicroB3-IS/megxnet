@@ -266,7 +266,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			clearAttribute(request, ATTR_OAUTH_SERVICE);
 			clearAttribute(request, ATTR_OAUTH_REQ_TOKEN);
 			OAuthService oAuthService = new ServiceBuilder().
-					provider(TwitterApi.class).
+					provider(TwitterApi.SSL.class).
 					apiKey(	config.get(CFG_APP_KEY)).
 					apiSecret(config.get(CFG_APP_SECRET)).
 					callback(getCallbackUrl(request)).
@@ -281,40 +281,44 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 		@Override
 		public void processLoginCallback(HttpServletRequest request,
-				HttpServletResponse response) {
-			OAuthService oAuthService = getFromSession(request, ATTR_OAUTH_SERVICE);
-			if(oAuthService != null){
-				Token requestToken = getFromSession(request, ATTR_OAUTH_REQ_TOKEN);
-				if(requestToken != null){
-					Token accessToken = oAuthService.getAccessToken(requestToken, new Verifier(request.getParameter("oauth_verifier")));
-					OAuthRequest oaRequest = new OAuthRequest(Verb.GET, config.get(CFG_USER_INFO_URL));
-					oAuthService.signRequest(accessToken, oaRequest);
-					Response resp = oaRequest.send();
-					String resultJson = resp.getBody();
-					if(log.isDebugEnabled())
-						log.debug("Received user: " + resultJson);
-					try {
-						JSONObject result = new JSONObject(resultJson);
-						request.setAttribute("logname", ""+result.optInt("id"));
-						request.setAttribute("externalId", ""+result.optInt("id"));
-						String firstName = null;
-						String lastName = null;
-						String fullName = result.optString("name");
-						if(fullName != null){
-							Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
-							if(matcher.find()){
-								firstName = matcher.group(1);
-								lastName = matcher.group(2);
-								lastName = lastName != null ? lastName.trim() : "";
+				HttpServletResponse response) throws SecurityException {
+			if(request.getParameter("denied") != null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			} else{
+				OAuthService oAuthService = getFromSession(request, ATTR_OAUTH_SERVICE);
+				if(oAuthService != null){
+					Token requestToken = getFromSession(request, ATTR_OAUTH_REQ_TOKEN);
+					if(requestToken != null){
+						Token accessToken = oAuthService.getAccessToken(requestToken, new Verifier(request.getParameter("oauth_verifier")));
+						OAuthRequest oaRequest = new OAuthRequest(Verb.GET, config.get(CFG_USER_INFO_URL));
+						oAuthService.signRequest(accessToken, oaRequest);
+						Response resp = oaRequest.send();
+						String resultJson = resp.getBody();
+						if(log.isDebugEnabled())
+							log.debug("Received user: " + resultJson);
+						try {
+							JSONObject result = new JSONObject(resultJson);
+							request.setAttribute("logname", ""+result.optInt("id"));
+							request.setAttribute("externalId", ""+result.optInt("id"));
+							String firstName = null;
+							String lastName = null;
+							String fullName = result.optString("name");
+							if(fullName != null){
+								Matcher matcher = FULL_NAME_PATTERN.matcher(fullName);
+								if(matcher.find()){
+									firstName = matcher.group(1);
+									lastName = matcher.group(2);
+									lastName = lastName != null ? lastName.trim() : "";
+								}
+							}else{
+								firstName = result.optString("screen_name");
+								lastName = "";
 							}
-						}else{
-							firstName = result.optString("screen_name");
-							lastName = "";
+							request.setAttribute("firstName", firstName);
+							request.setAttribute("lastName", lastName);
+						} catch (JSONException e) {
+							log.error("JSON RESPONSE PARSE FAILED: ", e);
 						}
-						request.setAttribute("firstName", firstName);
-						request.setAttribute("lastName", lastName);
-					} catch (JSONException e) {
-						log.error("JSON RESPONSE PARSE FAILED: ", e);
 					}
 				}
 			}

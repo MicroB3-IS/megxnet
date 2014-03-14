@@ -194,9 +194,33 @@ Copyright 2011 Max Planck Institute for Marine Microbiology
 
 	<insert id="addUser" parameterType="User">
 		insert into auth.users
-			(logname,first_name,initials,last_name,	description, join_date, pass, disabled, email, lastlogin, provider, external_id, external)
+			(logname,
+			 first_name,
+			 <if test="initials != null">initials,</if>
+			 last_name,
+			 <if test="description != null">description,</if>
+			 join_date,
+			 pass,
+			 disabled,
+			 email
+			 <if test="lastlogin != null">,lastlogin</if> 
+			 <if test="provider != null">,provider</if>
+			 <if test="externalId != null">,external_id</if>
+			 <if test="external != null">,external</if>)
 			values
-			(#{login},#{firstName},#{initials},#{lastName},#{description},#{joinedOn},#{password},#{disabled}, #{email}, #{lastlogin}, #{provider}, #{externalId}, #{external})
+			(#{login},
+			 #{firstName},
+			 <if test="initials != null">#{initials},</if>
+			 #{lastName},
+			 <if test="description != null">#{description},</if>
+			 #{joinedOn},
+			 #{password},
+			 #{disabled},
+			 #{email}
+			 <if test="lastlogin != null">,#{lastlogin}</if>
+			 <if test="provider != null">,#{provider}</if>
+			 <if test="externalId != null">,#{externalId}</if>
+			 <if test="external != null">,#{external}</if>)
 	</insert>
 	
 	<insert id="createVerification" parameterType="UserVerification">
