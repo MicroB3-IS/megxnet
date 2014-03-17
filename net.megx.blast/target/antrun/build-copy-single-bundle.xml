@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="copy-single-bundle"  >
+<target name="copy-single-bundle">
+  <copy todir="C:\Documents and Settings\d.bogdanovski/megx.net-work.dir/plugins" file="D:\MegxNet\MegxNet\net.megx.blast\target/net.megx.blast-0.0.1-SNAPSHOT.jar" overwrite="true"/>
+</target>
+</project>
