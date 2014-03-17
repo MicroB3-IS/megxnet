@@ -1,0 +1,11 @@
+#%RAML 0.8
+---
+
+- oauth_1_0:
+        description: |
+            OAuth 1.0 is supported for all API requests, OAuth 2.0 will come.
+        type: OAuth 1.0
+        settings:
+          requestTokenUri: https://api.dropbox.com/1/oauth/request_token
+          authorizationUri: https://www.dropbox.com/1/oauth/authorize
+          tokenCredentialsUri: https://api.dropbox.com/1/oauth/access_token
