@@ -1,0 +1,167 @@
+#%RAML
+---
+
+# blast services
+# so base URI is http://mb3is.megx.net/ws/{version}/megx-blast here
+
+/{megx-blast.version}:
+  uriParameters:  
+    megx-blast.version:
+      description: The version of the MG-Traits module
+      example: v1.0.0
+      default: v1.0.0
+      type: string
+      required: true
+      pattern: "^v[0-9].[0-9].[0-9]$"
+
+
+  /jobs:
+        post:
+            description: | 
+              Creates a job to run a BLAST analysis.
+              The post body must include the _db_name_ against which to compare the sequence. 
+              And must include the _name_ of the sample.
+              
+              When you create a new BLAST job through the API, our server
+              will immediately respond with details about the job and output
+              files being created. You should store the job and outputs IDs
+              to track the analysis.
+
+              # insert on table megx_blast.blast_jobs
+            body:
+              application/json: 
+                schema: 
+                example: |
+                  {
+                    "run_name" : "label1"
+                    "db_name": "https://example.org/test-data/mg-traits-test2.fasta"
+                    "sequence": "acgtacgtacgtactg"
+                  }
+                  {
+                    "run_name" : "label1"
+                    "db_name": "https://example.org/test-data/mg-traits-test2.fasta"
+                    "sequence": ">16116
+                                  acgtacgtacgtactg"
+                  }
+            responses:
+              201:
+                headers:
+                  Location:
+                    description: The location of the newly created job resource. There the client can get information about job status.
+                    type: string
+                    required: true
+                    example: http://mb3is.megx.net/ws/{version}/megx-blast/{megx-blast.version}/jobs/{blast.job.id}
+        
+    /{blast.job.id}:
+      uriParameters:
+        blast.job.id:
+        displayName: BLAST job id
+        type: integer
+        ## TODO beter define job is
+          
+      get:
+          description: | 
+            Gets details of the BLAST job.
+            #Table: mg_traits_jobs
+          responses:
+          #TODO check response codes again
+            200: 
+              description: Data about the running job.
+              body:
+                application/json:
+
+            201: 
+              description: Data about the finished job. Includes additional Location header to retrieve the results. 
+
+              headers:
+                Location:
+                  description: The location of the job results IF job is finished
+                  type: string
+                  required: no
+                  example: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/{mg.sample.name}
+            204:
+              description: job does not exist
+  /dbs:
+        get:
+            description: |
+                Retrieves a list of available blast databases
+            responses:
+                200:
+                    description: |
+                        Succesfully retrieved resource
+        
+
+  /results:
+
+    /unknown/{blast.job.id}:
+        get:
+            description: |
+                Retrieve list of result files
+            responses:
+                200:
+                    description: |
+                        Succesfully retrieved resource
+      /network:
+          get:
+            description: |
+              Retrieve resource
+            responses:
+              200:
+                description: |
+                  Succesfully retrieved resource
+                body:
+                  application/json:
+
+                  application/xml: #check for graphml mime type
+      /neighbours:
+          get:
+            description: |
+              Retrieve resource
+            responses:
+              200:
+                description: |
+                  Succesfully retrieved resource
+                body:
+                  text/csv:
+
+                    example:  | 
+                      id,degee
+                      bla,1
+                      blub,2
+                      blab,3
+
+          
+      /raw:
+        get:
+          description: |
+            Retrieve resource
+          responses:
+            200:
+              description: |
+                Succesfully retrieved resource
+        
+
+    /geographic/{blast.job.id}:
+
+      /raw:
+        get:
+            description: |
+                Retrieve list of result files
+            responses:
+                200:
+                    description: |
+                        Succesfully retrieved resource
+      /map:
+        get:
+          description: |
+            Retrieve resource
+          responses:
+            200:
+              description: |
+                Succesfully retrieved resource
+        
+
+        
+
+              
+
