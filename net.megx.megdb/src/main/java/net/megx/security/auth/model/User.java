@@ -9,7 +9,7 @@ public class User{
 	private String firstName;
 	private String lastName;
 	private String initials;
-	private String description;
+	private String description = "";
 	private Date joinedOn;
 	private String password;
 	private boolean disabled;
