@@ -71,6 +71,9 @@
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsPublicJobDetails" alias="MGTraitsPublicJobDetails" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsDownloadJobs" alias="MGTraitsDownloadJobs" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsFunctional" alias="MGTraitsFunctional" />
+		
+		<!-- Blast -->
+		<typeAlias type="net.megx.model.blast.BlastJob" alias="BlastJob"/>
 	</typeAliases>
 
 	<environments default="main">
@@ -121,6 +124,9 @@
 		
 		<!-- MGTraits mapper -->
 		<mapper resource="mgtraits/mgtraits-mapper.xml"/>
+		
+		<!-- Blast mapper -->
+		<mapper resource="blast/blast-mapper.xml"/>
 	</mappers>
 	
 </configuration>

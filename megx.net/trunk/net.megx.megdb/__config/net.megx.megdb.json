@@ -64,6 +64,10 @@
 		{
 			name: 'net.megx.megdb.mgtraits.MGTraitsService',
 			class: 'net.megx.megdb.mgtraits.impl.DBMGTraitsService'
+		},
+		{
+			name: 'net.megx.megdb.blast.BlastService',
+			class: 'net.megx.megdb.blast.impl.DBBlastService'
 		}
 	]
 }
