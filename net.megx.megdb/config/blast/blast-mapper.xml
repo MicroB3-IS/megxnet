@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.blast.mappers.BlastMapper">
+
+	<resultMap type="BlastJob" id="blast_job">
+		<result column="id" property="id" />
+		<result column="label" property="label" />
+		<result column="customer" property="customer" />
+		<result column="num_neighbors" property="numNeighbors" />
+		<result column="tool_label" property="toolLabel" />
+		<result column="tool_ver" property="toolVer" />
+		<result column="program_name" property="programName" />
+		<result column="biodb_label" property="biodbLabel" />
+		<result column="biodb_version" property="biodbVersion" />
+		<result column="raw_fasta" property="rawFasta" />
+		<result column="evalue" property="evalue" />
+		<result column="gap_open" property="gapOpen" />
+		<result column="gap_extend" property="gapExtend" />
+		<result column="x_dropoff" property="xDropoff" />
+		<result column="gi_defline" property="giDefine" />
+		<result column="nuc_mismatch" property="nucMismatch" />
+		<result column="nuc_match" property="nucMatch" />
+		<result column="num_desc" property="numDesc" />
+		<result column="num_align" property="numAlign" />
+		<result column="ext_threshold" property="extThreshold" />
+		<result column="gap_align" property="gapAlign" />
+		<result column="genetic_code" property="geneticCode" />
+		<result column="db_gen_code" property="dbGenCode" />
+		<result column="num_processors" property="numProcessors" />
+		<result column="believe_seq_file" property="believeSeqFile" />
+		<result column="matrix" property="matrix" />
+		<result column="word_size" property="wordSize" />
+		<result column="effective_db" property="effectiveDb" />
+		<result column="kept_hits" property="keptHits" />
+		<result column="effective_space" property="effectiveSpace" />
+		<result column="query_strand" property="queryStrand" />
+		<result column="x_dropoff_ungap" property="xDropoffUngap" />
+		<result column="x_dropoff_gap" property="xDropoffGap" />
+		<result column="multi_hits_win_size" property="multi_hits_win_size" />
+		<result column="concat_queries" property="concatQueries" />
+		<result column="legacy_engine" property="legacyEngine" />
+		<result column="composition_stat" property="compositionStat" />
+		<result column="local_optimum" property="localOptimum" />
+		<result column="result" property="result" />
+		<result column="result_raw" property="resultRaw" />
+		<result column="filter" property="filter" />
+		<result column="time_submitted" property="timeSubmitted"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="time_finished" property="timeFinished"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="make_public" property="makePublic" />
+		<result column="keep_data" property="keepData" />
+		<result column="time_started" property="timeStarted" jdbcType="TIMESTAMP"
+			javaType="java.sql.Timestamp" />
+		<result column="cluster_node" property="clusterNode" />
+		<result column="job_id" property="job_id" />
+		<result column="return_code" property="returnCode" />
+		<result column="error_message" property="errorMessage" />
+		<result column="total_run_time" property="totalRunTime" />
+		<result column="time_protocol" property="timeProtocol" />
+		<result column="query_id" property="queryId" />
+		<result column="query_seq" property="querySeq" />
+	</resultMap>
+
+
+	<insert id="insertBlastJob" parameterType="BlastJob">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT
+			currval('megx_blast.blast_jobs_id_seq')
+		</selectKey>
+		INSERT INTO megx_blast.blast_jobs
+		(label, customer, num_neighbors,
+		tool_label, tool_ver, program_name,
+		biodb_label, biodb_version,
+		raw_fasta)
+		VALUES (#{label}, #{customer},
+		#{numNeighbors},
+		#{toolLabel},#{toolVer},
+		#{programName},
+		#{biodbLabel},#{biodbVersion},#{rawFasta})
+	</insert>
+
+</mapper>
