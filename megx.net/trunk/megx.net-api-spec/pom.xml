@@ -30,11 +30,35 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<groupId>org.scribe</groupId>
+			<artifactId>scribe</artifactId>
+			<version>1.3.5</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Notes You should place rest-assured before JUnit in your pom.xml dependency 
+			declaration in order to make sure that the correct version of Hamcrest is 
+			used. REST Assured includes JsonPath and XmlPath as transitive dependencies -->
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>2.3.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>2.3.0</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -44,6 +68,8 @@
 				<artifactId>raml-jaxrs-maven-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<configuration>
+					<skip>true</skip>
+
 					<!-- Use sourcePaths if you want to provide a single RAML file or a 
 						list of RAML files -->
 					<sourcePaths>
@@ -71,7 +97,22 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.17</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
 
 
 		<pluginManagement>
