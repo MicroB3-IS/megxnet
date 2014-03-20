@@ -148,6 +148,7 @@
                     
                     <execution>
                         <id>copy-megx-product-bundles</id>
+                        <!-- Can only be done after packaging off eclipse-repsoitory in package phase-->
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>run</goal>
