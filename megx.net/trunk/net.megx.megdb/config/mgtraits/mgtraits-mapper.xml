@@ -83,6 +83,11 @@
         <result column="error_message" property="errorMessage" />
         <result column="total_run_time" property="totalRunTime" />
         <result column="time_protocol" property="timeProtocol" />
+        <result column="sample_description" property="sampleDescription"/>
+        <result column="sample_name" property="sampleName"/>
+        <result column="sample_latitude" property="sampleLatitude"/>
+        <result column="sample_longitude" property="sampleLongitude"/>
+        <result column="sample_env_ontology" property="sampleEnvOntology"/>
         <result column="id" property="id" />
     </resultMap>
 
@@ -261,9 +266,12 @@
             SELECT currval('mg_traits.mg_traits_jobs_id_seq')
         </selectKey>
         INSERT INTO mg_traits.mg_traits_jobs(customer, mg_url,
-        sample_label,sample_environment)
+        sample_label,sample_environment,sample_latitude,sample_longitude,
+        sample_name,sample_description,sample_env_ontology)
         VALUES (#{customer}, #{mgUrl},
-        #{sampleLabel}, #{sampleEnvironment})
+        #{sampleLabel}, #{sampleEnvironment}, #{sampleLatitude}
+        , #{sampleLongitude}, #{sampleName}, #{sampleDescription}
+        , #{sampleEnvOntology})
     </insert>
 
     <select id="getSuccesfulJob" parameterType="int"

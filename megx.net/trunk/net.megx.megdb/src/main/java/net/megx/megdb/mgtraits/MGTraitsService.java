@@ -35,7 +35,8 @@ public interface MGTraitsService {
 			throws DBGeneralFailureException, DBNoRecordsException;
 
 	public String insertJob(String customer, String mgUrl, String sampleLabel,
-			String sampleEnvironment) throws DBGeneralFailureException;
+			String sampleEnvironment,double sampleLatitude,double sampleLongitude,String sampleName,
+			String sampleDescription,String sampleEnvOntology) throws DBGeneralFailureException;
 
 	public List<MGTraitsPublicJobDetails> getAllPublicJobs()
 			throws DBGeneralFailureException, DBNoRecordsException;

@@ -25,6 +25,13 @@ public class MGTraitsJobDetails {
 	private String errorMessage;
 	private Double totalRunTime;
 	private String[] timeProtocol;
+	private String sampleDescription;
+	private String sampleName;
+	private double sampleLatitude;
+	private double sampleLongitude;
+	private String sampleEnvOntology;
+	
+	
 
 	private int id;
 	private String formatedTimeSubmitted = "";
@@ -176,6 +183,46 @@ public class MGTraitsJobDetails {
 		this.id = id;
 	}
 
+	public String getSampleDescription() {
+		return sampleDescription;
+	}
+
+	public void setSampleDescription(String sampleDescription) {
+		this.sampleDescription = sampleDescription;
+	}
+
+	public String getSampleName() {
+		return sampleName;
+	}
+
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
+	}
+
+	public double getSampleLatitude() {
+		return sampleLatitude;
+	}
+
+	public void setSampleLatitude(double sampleLatitude) {
+		this.sampleLatitude = sampleLatitude;
+	}
+
+	public double getSampleLongitude() {
+		return sampleLongitude;
+	}
+
+	public void setSampleLongitude(double sampleLongitude) {
+		this.sampleLongitude = sampleLongitude;
+	}
+
+	public String getSampleEnvOntology() {
+		return sampleEnvOntology;
+	}
+
+	public void setSampleEnvOntology(String sampleEnvOntology) {
+		this.sampleEnvOntology = sampleEnvOntology;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -186,6 +233,18 @@ public class MGTraitsJobDetails {
 				+ ((customer == null) ? 0 : customer.hashCode());
 		result = prime * result
 				+ ((errorMessage == null) ? 0 : errorMessage.hashCode());
+		result = prime
+				* result
+				+ ((formatedTimeFinished == null) ? 0 : formatedTimeFinished
+						.hashCode());
+		result = prime
+				* result
+				+ ((formatedTimeStarted == null) ? 0 : formatedTimeStarted
+						.hashCode());
+		result = prime
+				* result
+				+ ((formatedTimeSubmitted == null) ? 0 : formatedTimeSubmitted
+						.hashCode());
 		result = prime * result + id;
 		result = prime * result + jobId;
 		result = prime * result
@@ -196,10 +255,25 @@ public class MGTraitsJobDetails {
 		result = prime * result + returnCode;
 		result = prime
 				* result
+				+ ((sampleDescription == null) ? 0 : sampleDescription
+						.hashCode());
+		result = prime
+				* result
+				+ ((sampleEnvOntology == null) ? 0 : sampleEnvOntology
+						.hashCode());
+		result = prime
+				* result
 				+ ((sampleEnvironment == null) ? 0 : sampleEnvironment
 						.hashCode());
 		result = prime * result
 				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(sampleLatitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(sampleLongitude);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((sampleName == null) ? 0 : sampleName.hashCode());
 		result = prime * result
 				+ ((timeFinished == null) ? 0 : timeFinished.hashCode());
 		result = prime * result + Arrays.hashCode(timeProtocol);
@@ -236,6 +310,21 @@ public class MGTraitsJobDetails {
 				return false;
 		} else if (!errorMessage.equals(other.errorMessage))
 			return false;
+		if (formatedTimeFinished == null) {
+			if (other.formatedTimeFinished != null)
+				return false;
+		} else if (!formatedTimeFinished.equals(other.formatedTimeFinished))
+			return false;
+		if (formatedTimeStarted == null) {
+			if (other.formatedTimeStarted != null)
+				return false;
+		} else if (!formatedTimeStarted.equals(other.formatedTimeStarted))
+			return false;
+		if (formatedTimeSubmitted == null) {
+			if (other.formatedTimeSubmitted != null)
+				return false;
+		} else if (!formatedTimeSubmitted.equals(other.formatedTimeSubmitted))
+			return false;
 		if (id != other.id)
 			return false;
 		if (jobId != other.jobId)
@@ -257,6 +346,16 @@ public class MGTraitsJobDetails {
 			return false;
 		if (returnCode != other.returnCode)
 			return false;
+		if (sampleDescription == null) {
+			if (other.sampleDescription != null)
+				return false;
+		} else if (!sampleDescription.equals(other.sampleDescription))
+			return false;
+		if (sampleEnvOntology == null) {
+			if (other.sampleEnvOntology != null)
+				return false;
+		} else if (!sampleEnvOntology.equals(other.sampleEnvOntology))
+			return false;
 		if (sampleEnvironment == null) {
 			if (other.sampleEnvironment != null)
 				return false;
@@ -266,6 +365,17 @@ public class MGTraitsJobDetails {
 			if (other.sampleLabel != null)
 				return false;
 		} else if (!sampleLabel.equals(other.sampleLabel))
+			return false;
+		if (Double.doubleToLongBits(sampleLatitude) != Double
+				.doubleToLongBits(other.sampleLatitude))
+			return false;
+		if (Double.doubleToLongBits(sampleLongitude) != Double
+				.doubleToLongBits(other.sampleLongitude))
+			return false;
+		if (sampleName == null) {
+			if (other.sampleName != null)
+				return false;
+		} else if (!sampleName.equals(other.sampleName))
 			return false;
 		if (timeFinished == null) {
 			if (other.timeFinished != null)
@@ -302,8 +412,15 @@ public class MGTraitsJobDetails {
 				+ timeStarted + ", clusterNode=" + clusterNode + ", jobId="
 				+ jobId + ", returnCode=" + returnCode + ", errorMessage="
 				+ errorMessage + ", totalRunTime=" + totalRunTime
-				+ ", timeProtocol=" + Arrays.toString(timeProtocol) + ", id="
-				+ id + "]";
+				+ ", timeProtocol=" + Arrays.toString(timeProtocol)
+				+ ", sampleDescription=" + sampleDescription + ", sampleName="
+				+ sampleName + ", sampleLatitude=" + sampleLatitude
+				+ ", sampleLongitude=" + sampleLongitude
+				+ ", sampleEnvOntology=" + sampleEnvOntology + ", id=" + id
+				+ ", formatedTimeSubmitted=" + formatedTimeSubmitted
+				+ ", formatedTimeFinished=" + formatedTimeFinished
+				+ ", formatedTimeStarted=" + formatedTimeStarted + "]";
 	}
 
+	
 }
