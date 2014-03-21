@@ -1,26 +1,31 @@
-package net.megx.model.mgtraits;
+package net.megx.ws.mg.traits.rest.mappers;
 
-public class MGTraitsDownloadJobs {
+import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 
-	private int id;
-	private String sampleLabel;
+public class DownloadJobsToClient {
+
+	private String id;
 	private String sampleName;
 	private String sampleEnvironment;
 
-	public int getId() {
+	public DownloadJobsToClient(MGTraitsDownloadJobs downloadJobs)
+			throws IllegalStateException {
+		super();
+		if (downloadJobs.getSampleLabel() == null || downloadJobs.getId() <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + downloadJobs.getId() + "-"
+				+ downloadJobs.getSampleLabel();
+		this.sampleName = downloadJobs.getSampleName();
+		this.sampleEnvironment = downloadJobs.getSampleEnvironment();
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getSampleLabel() {
-		return sampleLabel;
-	}
-
-	public void setSampleLabel(String sampleLabel) {
-		this.sampleLabel = sampleLabel;
 	}
 
 	public String getSampleName() {
@@ -43,13 +48,11 @@ public class MGTraitsDownloadJobs {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime
 				* result
 				+ ((sampleEnvironment == null) ? 0 : sampleEnvironment
 						.hashCode());
-		result = prime * result
-				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
 		result = prime * result
 				+ ((sampleName == null) ? 0 : sampleName.hashCode());
 		return result;
@@ -63,18 +66,16 @@ public class MGTraitsDownloadJobs {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MGTraitsDownloadJobs other = (MGTraitsDownloadJobs) obj;
-		if (id != other.id)
+		DownloadJobsToClient other = (DownloadJobsToClient) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (sampleEnvironment == null) {
 			if (other.sampleEnvironment != null)
 				return false;
 		} else if (!sampleEnvironment.equals(other.sampleEnvironment))
-			return false;
-		if (sampleLabel == null) {
-			if (other.sampleLabel != null)
-				return false;
-		} else if (!sampleLabel.equals(other.sampleLabel))
 			return false;
 		if (sampleName == null) {
 			if (other.sampleName != null)
@@ -86,8 +87,7 @@ public class MGTraitsDownloadJobs {
 
 	@Override
 	public String toString() {
-		return "MGTraitsDownloadJobs [id=" + id + ", sampleLabel="
-				+ sampleLabel + ", sampleName=" + sampleName
+		return "DownloadJobsToClient [id=" + id + ", sampleName=" + sampleName
 				+ ", sampleEnvironment=" + sampleEnvironment + "]";
 	}
 

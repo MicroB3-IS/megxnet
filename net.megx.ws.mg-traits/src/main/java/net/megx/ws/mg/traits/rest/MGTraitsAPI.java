@@ -38,6 +38,7 @@ import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
+import net.megx.ws.mg.traits.rest.mappers.DownloadJobsToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
 
 import org.apache.commons.lang.StringUtils;
@@ -175,7 +176,7 @@ public class MGTraitsAPI extends BaseRestService {
 	@POST
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<MGTraitsDownloadJobs> downloadJobs(
+	public List<DownloadJobsToClient> downloadJobs(
 			@Context HttpServletRequest request,
 			@FormParam("traitIds") final String traitIds) {
 		try {
@@ -185,9 +186,14 @@ public class MGTraitsAPI extends BaseRestService {
 			for (String strId : ids) {
 				intIds.add(Integer.valueOf(strId));
 			}
-			List<MGTraitsDownloadJobs> result = service.downloadJobs(intIds);
-
-			return result;
+			List<MGTraitsDownloadJobs> jobs = service.downloadJobs(intIds);
+			List<DownloadJobsToClient> jobsToClient = new ArrayList<DownloadJobsToClient>();
+			
+			for(MGTraitsDownloadJobs j : jobs) {
+				jobsToClient.add( new DownloadJobsToClient(j));
+			}
+			return jobsToClient;
+			
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,
@@ -245,7 +251,7 @@ public class MGTraitsAPI extends BaseRestService {
 		}
 	}
 
-	@Path(SAMPLE_PATH_MATCHER + "/function-table")
+	@Path(SAMPLE_PATH_MATCHER + "/functional-content")
 	@GET
 	@Produces("text/csv")
 	public Response getFunctionTable(@PathParam("id") int id,
@@ -284,7 +290,7 @@ public class MGTraitsAPI extends BaseRestService {
 		}
 	}
 
-	@Path(SAMPLE_PATH_MATCHER + "/function-table")
+	@Path(SAMPLE_PATH_MATCHER + "/functional-content")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getFunctionTableAsJSON(@PathParam("id") int id,

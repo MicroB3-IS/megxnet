@@ -93,10 +93,9 @@
 
     <resultMap type="MGTraitsPublicJobDetails" id="mg_traits_public_job_details">
         <result column="id" property="id" />
-        <result column="customer" property="customer" />
         <result column="sample_label" property="sampleLabel" />
+        <result column="sample_name" property="sampleName" />
         <result column="sample_environment" property="sampleEnvironment" />
-        <result column="mg_url" property="mgUrl" />
         <result column="time_submitted" property="timeSubmitted"
             jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
         <result column="gc_content" property="gcContent" />
@@ -110,7 +109,9 @@
     </resultMap>
     
     <resultMap type="MGTraitsDownloadJobs" id="mg_traits_download_jobs">
+        <result column="id" property="id" />
         <result column="sample_label" property="sampleLabel" />
+        <result column="sample_name" property="sampleName" />
         <result column="sample_environment" property="sampleEnvironment" />
     </resultMap>
 
@@ -294,8 +295,8 @@
 
     <select id="getAllPublicJobs" resultMap="mg_traits_public_job_details">
         <![CDATA[
-        SELECT id, customer, mg_traits.mg_traits_jobs.sample_label, 
-	       	   mg_url, sample_environment, time_submitted,
+        SELECT id, mg_traits.mg_traits_jobs.sample_label, 
+	       	   sample_name, sample_environment, time_submitted,
                gc_content, gc_variance, num_genes, total_mb, num_reads,
                ab_ratio, perc_tf, perc_classified
           FROM mg_traits.mg_traits_jobs 
@@ -308,7 +309,7 @@
     </select>
     
     <select id="downloadJobs" resultMap="mg_traits_download_jobs" parameterType="int">
-	    SELECT sample_label, sample_environment
+	    SELECT id, sample_label, sample_name, sample_environment
 	    FROM mg_traits.mg_traits_jobs
 	    WHERE mg_traits.mg_traits_jobs.id IN
 	    <foreach item="item" index="index" collection="traitIds" open="(" separator="," close=")">

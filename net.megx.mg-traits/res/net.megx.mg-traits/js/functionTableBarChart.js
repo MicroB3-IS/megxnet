@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	if(currentMetagenomeId){
-	$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" + currentMetagenomeId + "-j/function-table", function( functionTableResponse ) {
+	$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" + currentMetagenomeId + "-j/functional-content", function( functionTableResponse ) {
 		var data = [];
 		if(functionTableResponse){
 			$.each(functionTableResponse.data, function (i, currFunction) {
