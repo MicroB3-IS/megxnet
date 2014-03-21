@@ -24,25 +24,28 @@ $(document).ready(function() {
     	 	},
     	 	sWidth: '80px',
     	 	bSortable: false
-    	 },{
-            mData: 'sampleLabel',
+    	}, {
+             mData: 'sampleLabel',
+             sClass: 'left data-pad'
+        }, {
+            mData: 'sampleName',
             sClass: 'left data-pad'
         }, {
             mData: 'sampleEnvironment',
             sClass: 'left data-pad',
-            sWidth: '140px'
+            sWidth: '120px'
         }, {
             mData: 'size',
             sClass: 'left data-pad',
-            sWidth: '140px'
+            sWidth: '120px'
         }, {
             mData: 'numberOfSequences',
             sClass: 'left data-pad',
-            sWidth: '140px'
+            sWidth: '120px'
         }, {
             mData: 'id',
             sClass: 'center',
-            sWidth: '140px',
+            sWidth: '120px',
             mRender: function(id){
     	 		var viewUrl = ctx.siteUrl + '/mg-traits/sampleDetails?id=' + id;
     			return '<a href=' + viewUrl + ' class=\'viewSampleClass\'>View more</a>';
@@ -62,6 +65,7 @@ $(document).ready(function() {
             	rowsToAdd.push({
  	                'id': allTraits.data[i].id,
  	                'sampleLabel': allTraits.data[i].sampleLabel,
+ 	                'sampleName': allTraits.data[i].sampleName,
  	                'sampleEnvironment': allTraits.data[i].sampleEnvironment,
  	                'size': allTraits.data[i].totalMB,
  	                'numberOfSequences': allTraits.data[i].numReads  

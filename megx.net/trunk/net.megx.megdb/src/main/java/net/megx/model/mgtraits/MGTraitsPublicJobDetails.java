@@ -7,10 +7,9 @@ import java.text.SimpleDateFormat;
 public class MGTraitsPublicJobDetails {
 
 	private int id;
-	private String customer;
 	private String sampleLabel;
+	private String sampleName;
 	private String sampleEnvironment;
-	private String mgUrl;
 	private Timestamp timeSubmitted;
 	private Double gcContent;
 	private Double gcVariance;
@@ -31,14 +30,6 @@ public class MGTraitsPublicJobDetails {
 		this.id = id;
 	}
 
-	public String getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(String customer) {
-		this.customer = customer;
-	}
-
 	public String getSampleLabel() {
 		return sampleLabel;
 	}
@@ -47,20 +38,20 @@ public class MGTraitsPublicJobDetails {
 		this.sampleLabel = sampleLabel;
 	}
 
+	public String getSampleName() {
+		return sampleName;
+	}
+
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
+	}
+
 	public String getSampleEnvironment() {
 		return sampleEnvironment;
 	}
 
 	public void setSampleEnvironment(String sampleEnvironment) {
 		this.sampleEnvironment = sampleEnvironment;
-	}
-
-	public String getMgUrl() {
-		return mgUrl;
-	}
-
-	public void setMgUrl(String mgUrl) {
-		this.mgUrl = mgUrl;
 	}
 
 	public String getTimeSubmitted() {
@@ -144,14 +135,15 @@ public class MGTraitsPublicJobDetails {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((ABRatio == null) ? 0 : ABRatio.hashCode());
-		result = prime * result
-				+ ((customer == null) ? 0 : customer.hashCode());
+		result = prime
+				* result
+				+ ((formatedTimeSubmitted == null) ? 0 : formatedTimeSubmitted
+						.hashCode());
 		result = prime * result
 				+ ((gcContent == null) ? 0 : gcContent.hashCode());
 		result = prime * result
 				+ ((gcVariance == null) ? 0 : gcVariance.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((mgUrl == null) ? 0 : mgUrl.hashCode());
 		result = prime * result
 				+ ((numGenes == null) ? 0 : numGenes.hashCode());
 		result = prime * result
@@ -165,6 +157,8 @@ public class MGTraitsPublicJobDetails {
 						.hashCode());
 		result = prime * result
 				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
+		result = prime * result
+				+ ((sampleName == null) ? 0 : sampleName.hashCode());
 		result = prime * result
 				+ ((timeSubmitted == null) ? 0 : timeSubmitted.hashCode());
 		result = prime * result + ((totalMB == null) ? 0 : totalMB.hashCode());
@@ -185,10 +179,10 @@ public class MGTraitsPublicJobDetails {
 				return false;
 		} else if (!ABRatio.equals(other.ABRatio))
 			return false;
-		if (customer == null) {
-			if (other.customer != null)
+		if (formatedTimeSubmitted == null) {
+			if (other.formatedTimeSubmitted != null)
 				return false;
-		} else if (!customer.equals(other.customer))
+		} else if (!formatedTimeSubmitted.equals(other.formatedTimeSubmitted))
 			return false;
 		if (gcContent == null) {
 			if (other.gcContent != null)
@@ -201,11 +195,6 @@ public class MGTraitsPublicJobDetails {
 		} else if (!gcVariance.equals(other.gcVariance))
 			return false;
 		if (id != other.id)
-			return false;
-		if (mgUrl == null) {
-			if (other.mgUrl != null)
-				return false;
-		} else if (!mgUrl.equals(other.mgUrl))
 			return false;
 		if (numGenes == null) {
 			if (other.numGenes != null)
@@ -237,6 +226,11 @@ public class MGTraitsPublicJobDetails {
 				return false;
 		} else if (!sampleLabel.equals(other.sampleLabel))
 			return false;
+		if (sampleName == null) {
+			if (other.sampleName != null)
+				return false;
+		} else if (!sampleName.equals(other.sampleName))
+			return false;
 		if (timeSubmitted == null) {
 			if (other.timeSubmitted != null)
 				return false;
@@ -252,14 +246,15 @@ public class MGTraitsPublicJobDetails {
 
 	@Override
 	public String toString() {
-		return "MGTraitsPublicJobDetails [id=" + id + ", customer=" + customer
-				+ ", sampleLabel=" + sampleLabel + ", sampleEnvironment="
-				+ sampleEnvironment + ", mgUrl=" + mgUrl + ", timeSubmitted="
-				+ timeSubmitted + ", gcContent=" + gcContent + ", gcVariance="
-				+ gcVariance + ", numGenes=" + numGenes + ", totalMB="
-				+ totalMB + ", numReads=" + numReads + ", ABRatio=" + ABRatio
-				+ ", percTf=" + percTf + ", percClassified=" + percClassified
-				+ "]";
+		return "MGTraitsPublicJobDetails [id=" + id + ", sampleLabel="
+				+ sampleLabel + ", sampleName=" + sampleName
+				+ ", sampleEnvironment=" + sampleEnvironment
+				+ ", timeSubmitted=" + timeSubmitted + ", gcContent="
+				+ gcContent + ", gcVariance=" + gcVariance + ", numGenes="
+				+ numGenes + ", totalMB=" + totalMB + ", numReads=" + numReads
+				+ ", ABRatio=" + ABRatio + ", percTf=" + percTf
+				+ ", percClassified=" + percClassified
+				+ ", formatedTimeSubmitted=" + formatedTimeSubmitted + "]";
 	}
 
 }
