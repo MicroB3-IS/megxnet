@@ -475,11 +475,17 @@ public class MGTraitsAPI extends BaseRestService {
 			@FormParam("mg_url") final String mgUrl,
 			@FormParam("sample_label") final String sampleLabel,
 			@FormParam("sample_environment") String sampleEnvironment,
+			@FormParam("sample_latitude") double sampleLatitude,
+			@FormParam("sample_longitude") double sampleLongitude,
+			@FormParam("sample_name") String sampleName,
+			@FormParam("sample_description") String sampleDescription,
+			@FormParam("sample_env_ontology") String sampleEnvOntology,
 			@Context HttpServletRequest request) {
 		try {
 			final String publicSampleLabel;
 			publicSampleLabel = service.insertJob(customer, mgUrl, sampleLabel,
-					sampleEnvironment);
+					sampleEnvironment,sampleLatitude,sampleLongitude,sampleName,
+					sampleDescription,sampleEnvOntology);
 			ResponseBuilder rb = Response
 					.ok()
 					.header("Location",

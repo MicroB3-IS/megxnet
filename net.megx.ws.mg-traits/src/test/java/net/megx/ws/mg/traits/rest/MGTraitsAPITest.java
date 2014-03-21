@@ -114,6 +114,11 @@ public class MGTraitsAPITest {
 		request.addBodyParameter("mg_url", p.getProperty("POST_JOB_MG_URL"));
 		request.addBodyParameter("sample_label", p.getProperty("POST_JOB_SAMPLE_LABEL"));
 		request.addBodyParameter("sample_environment", p.getProperty("POST_JOB_SAMPLE_ENVIRONMENT"));
+		request.addBodyParameter("sample_latitude", p.getProperty("POST_JOB_SAMPLE_LATITUDE"));
+		request.addBodyParameter("sample_longitude", p.getProperty("POST_JOB_SAMPLE_LONGITUDE"));
+		request.addBodyParameter("sample_name", p.getProperty("POST_JOB_SAMPLE_NAME"));
+		request.addBodyParameter("sample_description", p.getProperty("POST_JOB_SAMPLE_DESCRIPTION"));
+		request.addBodyParameter("sample_env_ontology", p.getProperty("POST_JOB_SAMPLE_ENV_ONTOLOGY"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(response.getCode(), 201);

@@ -147,7 +147,9 @@ public class DBMGTraitsService extends BaseMegdbService implements
 
 	@Override
 	public String insertJob(final String customer, final String mgUrl,
-			final String sampleLabel, final String sampleEnvironment)
+			final String sampleLabel, final String sampleEnvironment,final double sampleLatitude,
+			final double sampleLongitude, final String sampleName, final String sampleDescription,
+			final String sampleEnvOntology)
 			throws DBGeneralFailureException {
 
 		String publicSampleLable = doInTransaction(
@@ -160,6 +162,11 @@ public class DBMGTraitsService extends BaseMegdbService implements
 						job.setMgUrl(mgUrl);
 						job.setSampleLabel(sampleLabel);
 						job.setSampleEnvironment(sampleEnvironment);
+						job.setSampleLatitude(sampleLatitude);
+						job.setSampleLongitude(sampleLongitude);
+						job.setSampleName(sampleName);
+						job.setSampleDescription(sampleDescription);
+						job.setSampleEnvOntology(sampleEnvOntology);
 						mapper.insertMGTraitsJob(job);
 						return job.getPublicSampleLabel();
 					}
