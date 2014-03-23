@@ -1,6 +1,7 @@
 package net.megx.security.filter.ui;
 
 import java.io.BufferedReader;
+
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -27,6 +28,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.StatusType;
 
 import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
@@ -96,24 +99,45 @@ public class RegistrationManager {
 			@FormParam("initials") String initials,
 			@FormParam("pass") String password) throws JSONException {
 
-		JSONObject result = new JSONObject();
 		String remoteIP = request.getRemoteAddr();
 
-		if (logname == null || password == null || email == null) {
-			result.put("error", true);
-			result.put("reason", "incomplete-parameters");
-			result.put("message",
-					"Please provide username, email, and password.");
-			return result.toString();
+		boolean error = false;
+
+		if (logname == null || logname == "") {
+			error = true;
+		}
+
+		if (password == null || password == "") {
+			error = true;
+		}
+
+		if (email == null || email == "") {
+			error = true;
+		}
+
+		if (error) {
+			throw new WebApplicationException(errorResponse(
+					"incomplete-parameters",
+					"Please provide username, email, and password.",
+					Response.Status.CONFLICT));
 		}
 
 		// TODO: maybe even challenge not test here, because depends if it is
 		// activated at all
-		if (challenge == null || response == null || remoteIP == null) {
-			result.put("error", true);
-			result.put("reason", "verification-params-error");
-			result.put("message", "Incorrect parameters for verification.");
-			return result.toString();
+		if (challenge == null || challenge == "") {
+			error = true;
+		}
+		if (response == null || response == "") {
+			error = true;
+		}
+		if (remoteIP == null || remoteIP == "") {
+			error = true;
+		}
+		if (error) {
+			throw new WebApplicationException(errorResponse(
+					"verification-params-error",
+					"Wrong Captcha input. Please repeat.",
+					Response.Status.INTERNAL_SERVER_ERROR));
 		}
 
 		// TODO: maybe not here
@@ -121,39 +145,31 @@ public class RegistrationManager {
 
 		// checks if user email or user logname already exists
 		try {
-			PaginatedResult<User> usersByEmail = userService.getUsersByEmail(
-					email, 0, 2);
-			if (usersByEmail.getTotalCount() > 0) {
-				result.put("error", true);
-				result.put("reason", "duplicate-email");
-				result.put("message", "A user with this email already exist.");
-				throw new WebApplicationException(
-						Response.Status.INTERNAL_SERVER_ERROR);
-//				return result.toString();
-			}
-
 			User existing = userService.getUserByUserId(logname);
 			if (existing != null) {
-				result.put("error", true);
-				result.put("reason", "duplicate-username");
-				result.put("message",
-						"A user with this username already exist.");
-				return result.toString();
+				throw new WebApplicationException(
+						errorResponse(
+								"duplicate-username",
+								"A user with username "
+										+ logname
+										+ " already exists. Please choose a another username.",
+								Response.Status.CONFLICT));
 			}
 		} catch (Exception e) {
-			result.put("error", true);
-			result.put("reason", "query-exception");
-			result.put("message",
-					"An error occured during checking the submitted user data. Please try again.");
-			return result.toString();
+			throw new WebApplicationException(
+					errorResponse(
+							"query-exception",
+							"An error occured during checking the submitted user data. Please try again.",
+							Response.Status.INTERNAL_SERVER_ERROR));
 		}
 
 		// now checking captcha
-		if (!verify(challenge, response, remoteIP, privateKey)) {
-			result.put("error", true);
-			result.put("reason", "verification-failed");
-			result.put("message", "Incorrect verification.");
-			return result.toString();
+		if ( !verify(challenge, response, remoteIP, privateKey) ) {
+			throw new WebApplicationException(
+					errorResponse(
+							"verification-failed",
+							"Wrong Captcha input. Please repeat.",
+							Response.Status.INTERNAL_SERVER_ERROR));
 		}
 
 		User user = new User();
@@ -176,22 +192,44 @@ public class RegistrationManager {
 		// now sending activation email
 		try {
 
-			UserVerification verification = userService.addPendingUser(user);
-			
-			//sendActivationMail(request, verification, user);
+			User verification = userService.addUser(user);
 
-			result.put("error", false);
-			result.put("message", "success");
-		
+			// sendActivationMail(request, verification, user);
+
 		} catch (Exception e) {
 			log.error(e);
-			result.put("error", true);
-			result.put("reason", "user-add-failed");
-			result.put("message", e.getMessage());
-			
+			throw new WebApplicationException(
+					errorResponse(
+							"user-add-failed",
+							"Could register you. Please try registering again.",
+							Response.Status.INTERNAL_SERVER_ERROR));
 		}
 
-		return result.toString();
+		return Response.noContent().status(Response.Status.ACCEPTED).toString();
+	}
+
+	private Response errorResponse(String reason, String message,
+			StatusType status) {
+		
+		JSONObject result = new JSONObject();
+		ResponseBuilder builder = Response.noContent();
+		builder.status(status);
+
+		try {
+			result.put("error", true);
+			result.put("reason", reason);
+			result.put("message", message);
+			
+			builder.entity(result.toString(2));
+			log.error(result.toString(2));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			log.error("Error creating json", e);
+			builder.status(Response.Status.INTERNAL_SERVER_ERROR);
+		}
+		
+		return builder.build();
+
 	}
 
 	private boolean verify(String challenge, String response, String remoteIP,
@@ -238,6 +276,9 @@ public class RegistrationManager {
 			}
 		} catch (Exception e) {
 			log.error("Failed to contact verifier: ", e);
+			// in case we can not use google captcha, we are not stopping the
+			// client from registering
+			return true;
 		}
 
 		return false;
