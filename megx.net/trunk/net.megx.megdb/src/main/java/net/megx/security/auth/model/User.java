@@ -18,7 +18,7 @@ public class User {
 	private Date lastlogin;
 	private boolean external;
 	private String provider = "";
-	private String externalId;
+	private String externalId = "";
 	
 	private List<Role> roles;
 	
