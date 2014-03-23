@@ -176,7 +176,7 @@
 			   'pass': 'Please enter the password.'
 			};
 			
-			for(var sel in required){
+			for (var sel in required){
 				if(required.hasOwnProperty(sel)){
 					var val = $.trim($("input[name='"+sel+"']").val() || '');
 					if(val == ''){
@@ -252,7 +252,7 @@
 	     	   	}
 			}
 			
-			if(!valid){
+			if (!valid) {
 				return;
 			}
 			
@@ -275,7 +275,7 @@
 							N.notify('There was a problem when verifying the captcha. Please try again.');
 							loadReCaptcha();
 						}else if(data.reason == 'incomplete-parameters'){
-							N.notify('Some of the required values for registration are missing. Please fill the form correctly and try again.');
+							N.notify(data.message);
 						}else if (data.reason == 'verification-failed'){
 							N.notify('Incorrect captcha. Please enter the words correctly.');
 							loadReCaptcha();

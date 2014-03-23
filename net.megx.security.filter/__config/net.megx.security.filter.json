@@ -100,7 +100,7 @@
 				dbgSkipActivation: false,
 				dgbActivateAccount: false,
 				activationMail: {
-					subject: 'Account Activation on Megx.net',
+					subject: 'megx.net account activation',
 					template: 'security-filter/activation-mail.vm',
 					activationEndpoint: 'register/activate'
 				}
