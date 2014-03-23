@@ -245,8 +245,8 @@
 			}
 			
 			if(initials != ''){
-				if(initials.length < 2 || initials.length > 5){
-	     		   	N.notify("The length of the initials string must be between 2 and 5 characters long.");
+				if(initials.length < 1 || initials.length > 5){
+	     		   	N.notify("The length of the initials string must be between 1 and 5 characters long.");
 	     		   	$("input[name='initials']").addClass('invalid');
 	     		   	return false;
 	     	   	}
@@ -277,13 +277,14 @@
 				},
 				 statusCode: {
 					200: function() {
-					  alert( "Thanks :) You have successfully registered." );
-					  document.location.href = '/login
+					  N.clear();
+					  N.notify( "Thanks :) You have successfully registered." );
+					  window.location = '$ctx.siteUrl/login';
 					}
 				},
 				
-				error: function(){
-					N.notify('We are sorry, but your registration could not be processed at this moment. Please try again later or contact the administrator.');
+				error: function(jqXHR){
+					N.notify(jqXHR.responseText());
 				}
 			});
 			//Recaptcha.destroy();
@@ -339,7 +340,8 @@
 
 		<div>
 			<input type="button" value="Register" class="register-action"
-				id="btn-register"> <input type="button" value="Cancel"
+				id="btn-register"> 
+			<input type="button" value="Cancel"
 				class="register-action" id="btn-cancel">
 		</div>
 	</form>

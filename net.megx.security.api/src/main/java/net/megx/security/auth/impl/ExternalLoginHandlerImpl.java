@@ -34,6 +34,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 	@Override
 	public Authentication createAuthentication(HttpServletRequest request)
 			throws SecurityException, ServletException, IOException {
+		
 		String provider = (String) request.getAttribute("provider");
 		String logname = (String) request.getAttribute("logname");
 		String firstName = (String)request.getAttribute("firstName");
@@ -49,8 +50,8 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 				return null; // refusing to create authentication...
 			}
 			logname = email;
-		}else{
-			logname = getLogname(logname, provider);
+		} else{
+	logname = getLogname(logname, provider);
 		}
 		User user = null;
 		try {
@@ -61,13 +62,13 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			//user = userService.getUserByUserId(logname);
 			user = userService.getExternalUser(provider, externalId);
 			Date lastLogin = null;
-			if(user == null){
+			if( user == null ) {
 				log.debug("This user was not registered. Registering now...");
 				user = getNewUser(logname, email, firstName, lastName, provider, externalId);
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
 				lastLogin = user.getLastlogin();
-			}else{
+			} else {
 				lastLogin = user.getLastlogin();
 				user.setLastlogin(new Date());
 				user.setPassword(null);
@@ -95,8 +96,9 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		user.setLogin(logname);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		if(email == null)
+		if (email == null) {
 			email = "na@na.na"; // FIXME: this is a bit odd, but not all open id providers return an email...
+		}
 		user.setEmail(email);
 		user.setPassword("default");
 		user.setExternal(true);

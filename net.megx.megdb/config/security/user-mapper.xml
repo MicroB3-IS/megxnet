@@ -232,7 +232,23 @@
 		#{password},
 		#{email},
 		#{firstName},
-		#{initials},
+		<choose>
+			<when test="provider != null">
+				#{externalId},
+			</when>
+			<otherwise>
+				DEFAULT,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="initials != null">
+				#{initials},
+			</when>
+			<otherwise>
+				DEFAULT,
+			</otherwise>
+		</choose>
+		
 		#{lastName},
 		#{description},
 		#{joinedOn},
