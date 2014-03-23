@@ -222,15 +222,12 @@
 		description,
 		join_date,
 		disabled,
-		lastlogin,
-		<if test="provider != null">
 			provider,
-		</if>
 		external_id,
 		external)
-		
+
 		VALUES (
-		
+
 		#{login},
 		#{password},
 		#{email},
@@ -239,14 +236,23 @@
 		#{lastName},
 		#{description},
 		#{joinedOn},
-		
 		#{disabled},
-		
-		#{lastlogin},
-		<if test="provider != null">
-			#{provider},
-		</if>
-		#{externalId},
+		<choose>
+			<when test="provider != null">
+				#{externalId},
+			</when>
+			<otherwise>
+				DEFAULT,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="externalId != null">
+				#{externalId},
+			</when>
+			<otherwise>
+				DEFAULT,
+			</otherwise>
+		</choose>
 		#{external}
 		)
 	</insert>

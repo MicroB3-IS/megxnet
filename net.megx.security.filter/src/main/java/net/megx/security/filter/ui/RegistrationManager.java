@@ -201,7 +201,7 @@ public class RegistrationManager {
 			throw new WebApplicationException(
 					errorResponse(
 							"user-add-failed",
-							"Could register you. Please try registering again.",
+							"Couldn't register you. Please try registering again.",
 							Response.Status.INTERNAL_SERVER_ERROR));
 		}
 
