@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class User{
+public class User {
+	
 	private String login;
 	private String firstName;
 	private String lastName;
@@ -16,7 +17,7 @@ public class User{
 	private String email;
 	private Date lastlogin;
 	private boolean external;
-	private String provider;
+	private String provider = "";
 	private String externalId;
 	
 	private List<Role> roles;
@@ -31,25 +32,28 @@ public class User{
 		return login;
 	}
 	public void setLogin(String login) {
-		this.login = login;
+		if (login == null) {
+			throw new IllegalArgumentException("login might not be null");
+		}
+		this.login = login.trim();
 	}
 	public String getFirstName() {
 		return firstName;
 	}
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = (firstName == null) ? "" : firstName.trim() ;
 	}
 	public String getLastName() {
 		return lastName;
 	}
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = (lastName == null) ? "" : lastName.trim();
 	}
 	public String getInitials() {
 		return initials;
 	}
 	public void setInitials(String initials) {
-		this.initials = initials;
+		this.initials = (initials == null) ? "" : initials.trim();
 	}
 	public String getDescription() {
 		return description;
@@ -155,6 +159,7 @@ public class User{
 		copy.provider = provider;
 		copy.externalId = externalId;
 		List<Role> rolesCopy = null;
+		
 		if(roles != null){
 			rolesCopy = new ArrayList<Role>(roles.size());
 			rolesCopy.addAll(roles);
