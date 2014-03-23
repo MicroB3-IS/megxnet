@@ -1,123 +1,128 @@
 <style>
-	.registration-wrapper{
-		padding: 15px;
-	}
-	.registraton-field-label{
-		width: 150px;
-	}
-	.input-wrapper{
-		margin: 5px;
-	}
-	
-	.register-action{
-		float: left;
-		width: 90px;
-		margin: 10px;
-	}
-	.required{
-		color: #800;
-	}
-	.notification-entry{
-		padding: 10px;
-		/*background: #AAA;*/
-		color: #A00;
-	}
-	.invalid{
-		background: #FDD;
-	}
-@media(max-width: 980px){
-	article.header-right{
+.registration-wrapper {
+	padding: 15px;
+}
+
+.registraton-field-label {
+	width: 150px;
+}
+
+.input-wrapper {
+	margin: 5px;
+}
+
+.register-action {
+	float: left;
+	width: 90px;
+	margin: 10px;
+}
+
+.required {
+	color: #800;
+}
+
+.notification-entry {
+	padding: 10px;
+	/*background: #AAA;*/
+	color: #A00;
+}
+
+.invalid {
+	background: #FDD;
+}
+
+@media ( max-width : 980px) {
+	article.header-right {
 		width: auto;
 	}
-	div.input-wrapper{
+	div.input-wrapper {
 		margin: 0px;
 	}
-	.registration-wrapper{
+	.registration-wrapper {
 		width: auto;
 	}
-	input[type='text'], input[type='password']{
+	input[type='text'],input[type='password'] {
 		width: 80%;
 	}
-	#wrapper{
+	#wrapper {
 		box-shadow: none;
 		width: 100%;
 	}
-	header nav ul{
+	header nav ul {
 		display: none;
 	}
-	div.headerBorder{
+	div.headerBorder {
 		display: none;
 	}
-	header nav{
+	header nav {
 		width: 100%;
 	}
-	.copy, .footNav, footer{
+	.copy,.footNav,footer {
 		width: auto;
-		display: inline-block;	
+		display: inline-block;
 	}
-	footer{
+	footer {
 		background-image: none;
 	}
-	header{
+	header {
 		width: auto;
 	}
-	header, body{
+	header,body {
 		min-width: 100%;
 	}
-	body{
-		width: 100%;
-	}	
-}	
-@media (max-width: 655px){
-	form{
+	body {
 		width: 100%;
 	}
-	header, body{
+}
+
+@media ( max-width : 655px) {
+	form {
+		width: 100%;
+	}
+	header,body {
 		min-width: 100%;
 	}
-	body{
+	body {
 		width: 100%;
 	}
-	header{
+	header {
 		width: auto;
 	}
-	.copy, .footNav{
+	.copy,.footNav {
 		width: 100%;
 	}
-	div.headerBorder{
+	div.headerBorder {
 		display: none;
 	}
 }
-@media (max-width: 535px){
-	footer section ul{
+
+@media ( max-width : 535px) {
+	footer section ul {
 		width: 98%;
 		float: none;
 	}
-	footer section ul li, footer section.footNav ul{
+	footer section ul li,footer section.footNav ul {
 		width: 98%;
 		display: inline-block;
 		float: none;
 		text-align: center;
 	}
-	
-	article.header-right{ /* login button*/
+	article.header-right { /* login button*/
 		float: none;
 		display: none;
 	}
-	#recaptcha_widget_wrapper{
+	#recaptcha_widget_wrapper {
 		margin-left: 0px;
 		padding-left: 0px;
-		
 	}
-	#recaptcha_area{
-		
-		
+	#recaptcha_area {
 		margin-left: -17px;
 		padding-left: 0px;
 	}
 }
 </style>
-<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+<script type="text/javascript"
+	src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -259,6 +264,7 @@
 			$.ajax({
 				url:'$ctx.siteUrl/ws/register',
 				type: 'POST',
+				dataType: 'json',
 				data: {
 					logname: $('input[name=logname]').val(),
 					firstName: $('input[name=firstName]').val(),
@@ -269,23 +275,13 @@
 					response: Recaptcha.get_response(),
 					pass: pass
 				},
-				success: function(data){
-					if(data.error){
-						if(data.reason == 'verification-params-error'){
-							N.notify('There was a problem when verifying the captcha. Please try again.');
-							loadReCaptcha();
-						}else if(data.reason == 'incomplete-parameters'){
-							N.notify(data.message);
-						}else if (data.reason == 'verification-failed'){
-							N.notify('Incorrect captcha. Please enter the words correctly.');
-							loadReCaptcha();
-						}else{
-							N.notify(data.message);
-						}
-					}else{
-						$('#register-form').submit();
+				 statusCode: {
+					200: function() {
+					  alert( "Thanks :) You have successfully registered." );
+					  document.location.href = '/login
 					}
 				},
+				
 				error: function(){
 					N.notify('We are sorry, but your registration could not be processed at this moment. Please try again later or contact the administrator.');
 				}
@@ -301,50 +297,50 @@
 
 <div class="registration-wrapper">
 	<p>Please fill in the following form to create your own account.</p>
-	<p>Fields with <span class="required">*</span> are required.</p>
-	<div class="notifications">
-		
-	</div>
-	<form id="register-form" method="post" action="$ctx.siteUrl/register/doRegistration">
+	<p>
+		Fields with <span class="required">*</span> are required.
+	</p>
+	<div class="notifications"></div>
+	<form id="register-form" method="post"
+		action="$ctx.siteUrl/register/doRegistration">
 		<div class="input-wrapper">
-			<label class="registraton-field-label">Username:<span class="required">*</span></label>
-			<input type="text" name="logname">
+			<label class="registraton-field-label">Username:<span
+				class="required">*</span></label> <input type="text" name="logname">
 		</div>
 		<div class="input-wrapper">
-			<label class="registraton-field-label">e-mail:<span class="required">*</span></label>
-			<input type="text" name="email">
+			<label class="registraton-field-label">e-mail:<span
+				class="required">*</span></label> <input type="text" name="email">
 		</div>
-		
+
 		<div class="input-wrapper">
-			<label class="registraton-field-label">Password:<span class="required">*</span></label>
-			<input type="password" name="pass">
-			<label class="registraton-field-label">Repeat Password:<span class="required">*</span></label>
-			<input type="password" name="rePass">
+			<label class="registraton-field-label">Password:<span
+				class="required">*</span></label> <input type="password" name="pass">
+			<label class="registraton-field-label">Repeat Password:<span
+				class="required">*</span></label> <input type="password" name="rePass">
 		</div>
-		
+
 		<div class="input-wrapper">
-			<label class="registraton-field-label">First Name:</label>
-			<input type="text" name="firstName">
+			<label class="registraton-field-label">First Name:</label> <input
+				type="text" name="firstName">
 		</div>
-		
+
 		<div class="input-wrapper">
-			<label class="registraton-field-label">Last Name:</label>
-			<input type="text" name="lastName">
+			<label class="registraton-field-label">Last Name:</label> <input
+				type="text" name="lastName">
 		</div>
-		
+
 		<div class="input-wrapper">
-			<label class="registraton-field-label">Initials:</label>
-			<input type="text" name="initials">
+			<label class="registraton-field-label">Initials:</label> <input
+				type="text" name="initials">
 		</div>
-		
-		<div id="recaptcha_widget_wrapper">
-		
-		</div>
-		
-		
+
+		<div id="recaptcha_widget_wrapper"></div>
+
+
 		<div>
-			<input type="button" value="Register" class="register-action" id="btn-register">
-			<input type="button" value="Cancel" class="register-action" id="btn-cancel">
+			<input type="button" value="Register" class="register-action"
+				id="btn-register"> <input type="button" value="Cancel"
+				class="register-action" id="btn-cancel">
 		</div>
 	</form>
 </div>
