@@ -31,20 +31,6 @@ public class Activator extends ResTplConfiguredActivator {
 	
 	private ContentModel contentModel;
 	
-//	@Override
-//	public void start(BundleContext context) throws Exception {
-//		try{
-//			super.start(context);
-//			JSONObject cfg = getConfig();
-//			Map<String, Object> contextParams = new HashMap<String, Object>();
-//			contextParams.put("JCRApplicationInstance", getJCRApp());
-//			Filter filter = new  SecurityFilter(context, cfg, contextParams);
-//			WebUtils.registerFilter(context, filter, "/.*", null, 1, null);
-//		}catch (Exception e) {
-//			log.error("Failed to start security filter",e);
-//		}
-//	}
-
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
@@ -79,8 +65,10 @@ public class Activator extends ResTplConfiguredActivator {
 				
 				ResourcesManager rm = new ResourcesManager(wrService);
 				UsersManager um = new UsersManager(userService, contentModel);
+				
 				RegistrationManager regm = new RegistrationManager(userService, secretProvider, 
 						getRegistrationConfig(), app.getTemplate());
+				
 				RolesManager rolesManager = new RolesManager(userService);
 				
 				
@@ -92,6 +80,7 @@ public class Activator extends ResTplConfiguredActivator {
 				
 				RegistrationExtension registrationExtension = new RegistrationExtension(userService, 
 						getRegistrationConfig().optLong("verificationTTL", 24*60*60*1000));
+				
 				app.regExtension("registration", registrationExtension);
 				
 				OAuthEchoVerifyCredentials verifyCredentialsService = new OAuthEchoVerifyCredentials();

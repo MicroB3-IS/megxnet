@@ -14,7 +14,7 @@ import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.chon.web.api.ServerInfo;
 
-public class RegisterPageNode extends TemplatePageNode{
+public class RegisterPageNode extends TemplatePageNode {
 
 	public RegisterPageNode(ContentModel model, Node node, IContentNode typeDesc) {
 		super(model, node, typeDesc);
@@ -26,15 +26,9 @@ public class RegisterPageNode extends TemplatePageNode{
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		//HttpServletRequest request = req.getServletRequset();
-		
-		
 		params.put("email", req.getServletRequset().getParameter("email"));
-		
-		//String challenge = request.getParameter("challenge");
-		
-		
-		
+
+		//TODO: dangerous hard-coded path to the base template
 		VTplNodeRenderer.render("base.html", "security-filter/confirm-registration.html", this, req, resp, serverInfo, params);
 	}
 

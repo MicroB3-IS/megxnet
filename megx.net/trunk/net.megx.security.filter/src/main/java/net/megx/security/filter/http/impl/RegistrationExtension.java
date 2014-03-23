@@ -16,7 +16,7 @@ import org.chon.web.api.Request;
 import org.chon.web.api.Response;
 import org.chon.web.mpac.Action;
 
-public class RegistrationExtension implements Extension{
+public class RegistrationExtension implements Extension {
 
 	private UserService userService;
 	private long verificationTTL;
@@ -46,7 +46,7 @@ public class RegistrationExtension implements Extension{
 	}
 
 	
-	public class RegistrationTemplate{
+	public class RegistrationTemplate {
 		private HttpServletRequest request;
 		
 		private String error;
