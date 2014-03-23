@@ -100,14 +100,20 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		request.setAttribute("provider", provider);
 		log.debug("Processing callback...");
 		ExternalLoginProvider loginProvider = getProvider(provider);
-		if(log.isDebugEnabled())
+		
+		if(log.isDebugEnabled()) {
 			log.debug("Using login provider: " + loginProvider);
+		}
+		
 		loginProvider.processLoginCallback(request, response);
+		
 		log.debug("Processed with the provider. Passing down to the login handler...");
 		Authentication authentication = externalLoginHandler
 				.createAuthentication(request);
+		
 		if(log.isDebugEnabled())
 			log.debug("Authentication created: " + authentication);
+		
 		if(authentication != null){
 			saveAuthentication(authentication, request);
 			log.debug("Authentication saved to security context.");
@@ -166,7 +172,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			ExternalLoginProvider externalLoginProvider) {
 		Map<String, String> cfgMap = new HashMap<String, String>();
 		JSONObject providersCfg = config.optJSONObject("providers");
-		providersCfg = providersCfg != null ? providersCfg : new JSONObject();
+		providersCfg = (providersCfg != null) ? providersCfg : new JSONObject();
 		
 		JSONObject cfg = providersCfg.optJSONObject(providerName);
 		
@@ -271,10 +277,15 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					apiSecret(config.get(CFG_APP_SECRET)).
 					callback(getCallbackUrl(request)).
 					build();
+			
 			putInSession(request, ATTR_OAUTH_SERVICE, oAuthService);
+			
 			Token requestToken = oAuthService.getRequestToken();
+			
 			putInSession(request, ATTR_OAUTH_REQ_TOKEN, requestToken);
+			
 			String authorizationUrl = oAuthService.getAuthorizationUrl(requestToken);
+			
 			response.sendRedirect(authorizationUrl);
 			throw new StopFilterException();
 		}
@@ -293,13 +304,21 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 						OAuthRequest oaRequest = new OAuthRequest(Verb.GET, config.get(CFG_USER_INFO_URL));
 						oAuthService.signRequest(accessToken, oaRequest);
 						Response resp = oaRequest.send();
+						
+						if ( !resp.isSuccessful() ) {
+							throw new SecurityException("Twitter authentication eroor", resp.getCode());
+						}
+						
 						String resultJson = resp.getBody();
-						if(log.isDebugEnabled())
-							log.debug("Received user: " + resultJson);
+						if(log.isDebugEnabled()) {
+							log.debug("Repsonse code: " + resp.getCode());
+							log.debug("Twitter auth result: " + resultJson);
+							
+						}
 						try {
 							JSONObject result = new JSONObject(resultJson);
-							request.setAttribute("logname", ""+result.optInt("id"));
-							request.setAttribute("externalId", ""+result.optInt("id"));
+							request.setAttribute("logname", "" + result.optInt("id"));
+							request.setAttribute("externalId", "" + result.optInt("id"));
 							String firstName = null;
 							String lastName = null;
 							String fullName = result.optString("name");
@@ -317,7 +336,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 							request.setAttribute("firstName", firstName);
 							request.setAttribute("lastName", lastName);
 						} catch (JSONException e) {
-							log.error("JSON RESPONSE PARSE FAILED: ", e);
+							log.error("Failed to parse json: ", e);
 						}
 					}
 				}

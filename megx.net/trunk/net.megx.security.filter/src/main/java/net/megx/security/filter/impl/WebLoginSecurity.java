@@ -18,7 +18,7 @@ import net.megx.utils.OSGIUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class WebLoginSecurity extends BaseSecurityEntrypoint{
+public class WebLoginSecurity extends BaseSecurityEntrypoint {
 
 	private Log log = LogFactory.getLog(getClass());
 	

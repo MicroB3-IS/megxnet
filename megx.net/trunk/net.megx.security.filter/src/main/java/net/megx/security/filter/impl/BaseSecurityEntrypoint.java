@@ -12,7 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.osgi.framework.BundleContext;
 
-public abstract class BaseSecurityEntrypoint implements SecurityFilterEntrypoint{
+public abstract class BaseSecurityEntrypoint implements SecurityFilterEntrypoint {
 
 	protected BundleContext context;
 	protected JSONObject config;
