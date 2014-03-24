@@ -22,6 +22,10 @@ public class User {
 	
 	private List<Role> roles;
 	
+	
+	public User() {
+		super();
+	}
 	public User copy(){
 		User copy = new User();
 		copy.description = description;
