@@ -31,8 +31,9 @@
 	  });
 	  $.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" +currentMetagenomeId+ "-someLabel/simple-traits",
 		        function(simpleTrait){
+		  
 		  			if(simpleTrait !== null){
-		        	$( "#sampleName" ).text( simpleTrait.data.sampleLabel );
+		        	$( "#sampleName" ).text( simpleTrait.data.sampleName );
 		        	$( "#gcContent" ).text( simpleTrait.data.gcContent );
 		        	$( "#gcVariance" ).text( simpleTrait.data.gcVariance );
 		        	$( "#numOfReads" ).text( simpleTrait.data.numReads );
@@ -41,6 +42,11 @@
 		        	$( "#abRatio" ).text( simpleTrait.data.ABRatio );
 		        	$( "#tf" ).text( simpleTrait.data.percTf );
 		        	$( "#classified" ).text( simpleTrait.data.percClassified );
+		        	$( "#sampleDescription" ).text( simpleTrait.data.sampleDescription );
+		        	$( "#latitude" ).text( simpleTrait.data.sampleLatitude );
+		        	$( "#longitude" ).text( simpleTrait.data.sampleLongitude );
+		        	$( "#environment" ).text( simpleTrait.data.sampleEnvironment );
+		        	$( "#environmentalOntology" ).text( simpleTrait.data.sampleEnvOntology );
 		  			}
 		        });
   });
@@ -61,7 +67,8 @@
 	
 	<table id="simpleTrait">
 		<tr>
-			<td>Sample name: <label id="sampleName"></label></td>
+			<td>Sample name:<label id="sampleName"></label></td>
+			<td>Sample description: <label id="sampleDescription"></label></td>
 		</tr>
 		<tr>
 			<td>Latitude: <label id="latitude"></label></td>
@@ -69,7 +76,7 @@
 			<td>Environment: <label id="environment"></label></td>
 		</tr>
 		<tr>
-			<td>Site description: <label id="siteDescription"></label></td>
+			<td>Environmental ontology: <label id="environmentalOntology"></label></td>
 			<td>GC content: <label id="gcContent"></label></td>
 			<td>GC variance: <label id="gcVariance"></label></td>
 		</tr>
