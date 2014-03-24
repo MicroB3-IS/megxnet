@@ -97,6 +97,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 		user.setLogin(logname);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
+		user.setInitials("");
 		if (email == null) {
 			email = "na@na.na"; // FIXME: this is a bit odd, but not all open id providers return an email...
 		}
