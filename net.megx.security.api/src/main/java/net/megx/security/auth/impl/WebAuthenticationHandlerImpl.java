@@ -17,6 +17,7 @@ import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.auth.web.WebLoginHandler;
 import net.megx.security.auth.web.WebUtils;
+import net.megx.utils.PasswordHash;
 
 public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
 		implements WebLoginHandler {
@@ -50,8 +51,9 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
 					String password = request.getParameter(passwordField);
 					if (username != null && password != null) {
 						try {
+							String hashedPassword = PasswordHash.createHash(password.trim());
 							User user = userService.getUser(username.trim(),
-									password.trim());
+									hashedPassword);
 							if (user == null) {
 								throw new InvalidCredentialsException(
 										"Invalid username or password.");
