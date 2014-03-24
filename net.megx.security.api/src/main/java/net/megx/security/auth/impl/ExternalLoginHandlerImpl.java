@@ -51,7 +51,7 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			}
 			logname = email;
 		} else{
-	logname = getLogname(logname, provider);
+			logname = getLogname(logname, provider);
 		}
 		User user = null;
 		try {
@@ -63,8 +63,9 @@ public class ExternalLoginHandlerImpl extends BaseAuthenticationHandler implemen
 			user = userService.getExternalUser(provider, externalId);
 			Date lastLogin = null;
 			if( user == null ) {
-				log.debug("This user was not registered. Registering now...");
+				
 				user = getNewUser(logname, email, firstName, lastName, provider, externalId);
+				log.debug("Registering user: " + user.toString());
 				userService.addUser(user);
 				log.debug("Successfully added: " + user);
 				lastLogin = user.getLastlogin();
