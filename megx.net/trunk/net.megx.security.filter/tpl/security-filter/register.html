@@ -283,8 +283,9 @@
 					}
 				},
 				
-				error: function(jqXHR){
-					N.notify(jqXHR.responseText());
+				error: function(xhr, textStatus, errorThrown) {
+					N.notify(xhr.responseText);
+					N.notify( "Something went wrong." );
 				}
 			});
 			//Recaptcha.destroy();
