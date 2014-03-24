@@ -222,7 +222,7 @@
 		description,
 		join_date,
 		disabled,
-			provider,
+		provider,
 		external_id,
 		external)
 
@@ -231,10 +231,9 @@
 		#{login},
 		#{password},
 		#{email},
-		#{firstName},
 		<choose>
-			<when test="provider != null">
-				#{externalId},
+			<when test="firstName != null">
+				#{firstName},
 			</when>
 			<otherwise>
 				DEFAULT,
@@ -248,14 +247,20 @@
 				DEFAULT,
 			</otherwise>
 		</choose>
-		
-		#{lastName},
+		<choose>
+			<when test="lastName != null">
+				#{lastName},
+			</when>
+			<otherwise>
+				DEFAULT,
+			</otherwise>
+		</choose>
 		#{description},
 		#{joinedOn},
 		#{disabled},
 		<choose>
 			<when test="provider != null">
-				#{externalId},
+				#{provider},
 			</when>
 			<otherwise>
 				DEFAULT,
