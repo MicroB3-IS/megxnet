@@ -67,7 +67,7 @@
           #TODO check response codes again
             200: 
               description: Data about the running job.
-              body:
+              body: 
                 application/json:
 
             201: 
@@ -75,10 +75,15 @@
 
               headers:
                 Location:
-                  description: The location of the job results IF job is finished
+                  description: |
+                      The location of the job results IF job is finished. 
+                      E.g. ws/{version}/megx-blast/{blast.version}/results/{blast.type}/{blast.job.id}/
+                      note that {blast.type} depends on the initial job request and can be either network or geographic-blast
                   type: string
                   required: no
-                  example: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/{mg.sample.name}
+                  example: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/results/{blast.type}/{blast.job.id}/
+
+
             204:
               description: job does not exist
   /dbs:
@@ -101,26 +106,30 @@
                 200:
                     description: |
                         Succesfully retrieved resource
-      /network:
+                        Example url: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/results/unknown/{blast.job.id}/
+      /network/{hit.id}:
           get:
             description: |
               Retrieve resource
+              Example url: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/results/unknown/{blast.job.id}/network/{hit.id}
             responses:
               200:
                 description: |
-                  Succesfully retrieved resource
+                  Successfully retrieved resource
                 body:
-                  application/json:
+                  application/json: # json maybe later NOT now
 
                   application/xml: #check for graphml mime type
-      /neighbours:
+      /neighbours/{hit.id}:
           get:
             description: |
               Retrieve resource
+              exmaple 
             responses:
               200:
                 description: |
-                  Succesfully retrieved resource
+                  Successfully retrieved resource
+                  Example url: http://mb3is.megx.net/ws/{version}/megx-blast/{blast.version}/results/unknown/{blast.job.id}/neighbours/{hit.id}
                 body:
                   text/csv:
 
