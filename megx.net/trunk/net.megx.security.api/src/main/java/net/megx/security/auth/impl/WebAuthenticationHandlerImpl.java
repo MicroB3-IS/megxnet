@@ -69,7 +69,8 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
 							userService.updateUser(user);
 							authentication = new AuthenticationImpl(user);
 							request.getSession().setAttribute("userLastLogin",
-									lastLogin);
+									lastLogin);	
+							context.storeLastRequestedURL(getSiteHomeUrl(request));
 							checkRedirectUrl(request, context);
 						} catch (SecurityException e) {
 							throw e;
@@ -111,7 +112,9 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
 
 	protected void checkRedirectUrl(HttpServletRequest request,
 			SecurityContext context) {
+		
 		String savedRequestPath = context.getLastRequestedURL().trim();
+		
 		if (savedRequestPath != null) {
 			if (savedRequestPath.matches(loginEndpointUrl)
 					|| savedRequestPath.matches(logoutEndpointUrl)
