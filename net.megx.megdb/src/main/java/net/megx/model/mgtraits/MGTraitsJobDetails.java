@@ -27,8 +27,8 @@ public class MGTraitsJobDetails {
 	private String[] timeProtocol;
 	private String sampleDescription;
 	private String sampleName;
-	private double sampleLatitude;
-	private double sampleLongitude;
+	private Double sampleLatitude;
+	private Double sampleLongitude;
 	private String sampleEnvOntology;
 	
 	
