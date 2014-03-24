@@ -241,8 +241,6 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			request.getSession().removeAttribute(attributeName);
 		}
 		protected String getCallbackUrl(HttpServletRequest request){
-			//String baseUrl = WebUtils.getFullContextURL(request);
-			//return baseUrl + "/callback?provider="+provider;
 			return getCallbackUrl(request, false);
 		}
 		protected String getCallbackUrl(HttpServletRequest request, boolean fromCallback){
@@ -306,7 +304,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 						Response resp = oaRequest.send();
 						
 						if ( !resp.isSuccessful() ) {
-							throw new SecurityException("Twitter authentication eroor", resp.getCode());
+							throw new SecurityException("Twitter authentication error", resp.getCode());
 						}
 						
 						String resultJson = resp.getBody();
@@ -329,7 +327,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 									lastName = matcher.group(2);
 									lastName = lastName != null ? lastName.trim() : "";
 								}
-							}else{
+							} else {
 								firstName = result.optString("screen_name");
 								lastName = "";
 							}
