@@ -40,6 +40,8 @@ import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
 import net.megx.ws.mg.traits.rest.mappers.DownloadJobsToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
+import net.megx.ws.mg.traits.rest.mappers.PublicJobDetailsToClient;
+import net.megx.ws.mg.traits.rest.mappers.SimpleTraitsToClient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -122,12 +124,17 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<MGTraitsPublicJobDetails> getAllPublicJobs(
+	public List<PublicJobDetailsToClient> getAllPublicJobs(
 			@Context HttpServletRequest request) {
 		try {
-			List<MGTraitsPublicJobDetails> result = service
-					.getAllPublicJobs();
-			return result;
+			List<MGTraitsPublicJobDetails> result = service.getAllPublicJobs();
+			List<PublicJobDetailsToClient> jobsToClient = new ArrayList<PublicJobDetailsToClient>();
+
+			for (MGTraitsPublicJobDetails j : result) {
+				jobsToClient.add(new PublicJobDetailsToClient(j));
+			}
+
+			return jobsToClient;
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,
@@ -150,8 +157,7 @@ public class MGTraitsAPI extends BaseRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllPublicJobsAsJSON(@Context HttpServletRequest request) {
 		try {
-			List<MGTraitsPublicJobDetails> result = service
-					.getAllPublicJobs();
+			List<MGTraitsPublicJobDetails> result = service.getAllPublicJobs();
 
 			return toJSON(new Result<List<MGTraitsPublicJobDetails>>(result));
 
@@ -188,12 +194,12 @@ public class MGTraitsAPI extends BaseRestService {
 			}
 			List<MGTraitsDownloadJobs> jobs = service.downloadJobs(intIds);
 			List<DownloadJobsToClient> jobsToClient = new ArrayList<DownloadJobsToClient>();
-			
-			for(MGTraitsDownloadJobs j : jobs) {
-				jobsToClient.add( new DownloadJobsToClient(j));
+
+			for (MGTraitsDownloadJobs j : jobs) {
+				jobsToClient.add(new DownloadJobsToClient(j));
 			}
 			return jobsToClient;
-			
+
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve all finished jobs");
 			throw new WebApplicationException(e,
@@ -215,11 +221,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public MGTraitsResult getSimpleTraits(@PathParam("id") int id,
+	public SimpleTraitsToClient getSimpleTraits(@PathParam("id") int id,
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return service.getSimpleTraits(id);
+			return new SimpleTraitsToClient(service.getSimpleTraits(id));
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -490,8 +496,8 @@ public class MGTraitsAPI extends BaseRestService {
 		try {
 			final String publicSampleLabel;
 			publicSampleLabel = service.insertJob(customer, mgUrl, sampleLabel,
-					sampleEnvironment,sampleLatitude,sampleLongitude,sampleName,
-					sampleDescription,sampleEnvOntology);
+					sampleEnvironment, sampleLatitude, sampleLongitude,
+					sampleName, sampleDescription, sampleEnvOntology);
 			ResponseBuilder rb = Response
 					.ok()
 					.header("Location",

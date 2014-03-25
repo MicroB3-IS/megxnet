@@ -7,20 +7,23 @@ public class DownloadJobsToClient {
 	private String id;
 	private String sampleName;
 	private String sampleEnvironment;
+	private int intId;
+	private String sampleLabel;
 
 	public DownloadJobsToClient(MGTraitsDownloadJobs downloadJobs)
 			throws IllegalStateException {
 		super();
-		if (downloadJobs.getSampleLabel() == null || downloadJobs.getId() <= 0) {
-			throw new IllegalStateException("No proper sample id available");
-		}
-		this.id = "mg" + downloadJobs.getId() + "-"
-				+ downloadJobs.getSampleLabel();
 		this.sampleName = downloadJobs.getSampleName();
 		this.sampleEnvironment = downloadJobs.getSampleEnvironment();
+		this.intId = downloadJobs.getId();
+		this.sampleLabel = downloadJobs.getSampleLabel();
 	}
 
 	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
 		return id;
 	}
 

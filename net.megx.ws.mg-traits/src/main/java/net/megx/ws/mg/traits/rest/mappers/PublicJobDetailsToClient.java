@@ -1,15 +1,14 @@
-package net.megx.model.mgtraits;
+package net.megx.ws.mg.traits.rest.mappers;
 
-public class MGTraitsResult {
+import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 
-	private int id;
-	private String sampleName;
+public class PublicJobDetailsToClient {
+
+	private String id;
 	private String sampleLabel;
-	private String sampleDescription;
+	private String sampleName;
 	private String sampleEnvironment;
-	private Double sampleLatitude;
-	private Double sampleLongitude;
-	private String sampleEnvOntology;
+	private String timeSubmitted;
 	private Double gcContent;
 	private Double gcVariance;
 	private Double numGenes;
@@ -18,21 +17,35 @@ public class MGTraitsResult {
 	private Double ABRatio;
 	private Double percTf;
 	private Double percClassified;
+	private int intId;
 
-	public int getId() {
+	public PublicJobDetailsToClient(MGTraitsPublicJobDetails jobDetails) {
+		super();
+		this.sampleLabel = jobDetails.getSampleLabel();
+		this.sampleName = jobDetails.getSampleName();
+		this.sampleEnvironment = jobDetails.getSampleEnvironment();
+		this.timeSubmitted = jobDetails.getTimeSubmitted();
+		this.gcContent = jobDetails.getGcContent();
+		this.gcVariance = jobDetails.getGcVariance();
+		this.numGenes = jobDetails.getNumGenes();
+		this.totalMB = jobDetails.getTotalMB();
+		this.numReads = jobDetails.getNumReads();
+		this.ABRatio = jobDetails.getABRatio();
+		this.percTf = jobDetails.getPercTf();
+		this.percClassified = jobDetails.getPercClassified();
+		this.intId = jobDetails.getId();
+	}
+
+	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getSampleName() {
-		return sampleName;
-	}
-
-	public void setSampleName(String sampleName) {
-		this.sampleName = sampleName;
 	}
 
 	public String getSampleLabel() {
@@ -43,12 +56,12 @@ public class MGTraitsResult {
 		this.sampleLabel = sampleLabel;
 	}
 
-	public String getSampleDescription() {
-		return sampleDescription;
+	public String getSampleName() {
+		return sampleName;
 	}
 
-	public void setSampleDescription(String sampleDescription) {
-		this.sampleDescription = sampleDescription;
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
 	}
 
 	public String getSampleEnvironment() {
@@ -59,28 +72,12 @@ public class MGTraitsResult {
 		this.sampleEnvironment = sampleEnvironment;
 	}
 
-	public Double getSampleLatitude() {
-		return sampleLatitude;
+	public String getTimeSubmitted() {
+		return timeSubmitted;
 	}
 
-	public void setSampleLatitude(Double sampleLatitude) {
-		this.sampleLatitude = sampleLatitude;
-	}
-
-	public Double getSampleLongitude() {
-		return sampleLongitude;
-	}
-
-	public void setSampleLongitude(Double sampleLongitude) {
-		this.sampleLongitude = sampleLongitude;
-	}
-
-	public String getSampleEnvOntology() {
-		return sampleEnvOntology;
-	}
-
-	public void setSampleEnvOntology(String sampleEnvOntology) {
-		this.sampleEnvOntology = sampleEnvOntology;
+	public void setTimeSubmitted(String timeSubmitted) {
+		this.timeSubmitted = timeSubmitted;
 	}
 
 	public Double getGcContent() {
@@ -156,7 +153,8 @@ public class MGTraitsResult {
 				+ ((gcContent == null) ? 0 : gcContent.hashCode());
 		result = prime * result
 				+ ((gcVariance == null) ? 0 : gcVariance.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + intId;
 		result = prime * result
 				+ ((numGenes == null) ? 0 : numGenes.hashCode());
 		result = prime * result
@@ -166,24 +164,14 @@ public class MGTraitsResult {
 		result = prime * result + ((percTf == null) ? 0 : percTf.hashCode());
 		result = prime
 				* result
-				+ ((sampleDescription == null) ? 0 : sampleDescription
-						.hashCode());
-		result = prime
-				* result
-				+ ((sampleEnvOntology == null) ? 0 : sampleEnvOntology
-						.hashCode());
-		result = prime
-				* result
 				+ ((sampleEnvironment == null) ? 0 : sampleEnvironment
 						.hashCode());
 		result = prime * result
 				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
 		result = prime * result
-				+ ((sampleLatitude == null) ? 0 : sampleLatitude.hashCode());
-		result = prime * result
-				+ ((sampleLongitude == null) ? 0 : sampleLongitude.hashCode());
-		result = prime * result
 				+ ((sampleName == null) ? 0 : sampleName.hashCode());
+		result = prime * result
+				+ ((timeSubmitted == null) ? 0 : timeSubmitted.hashCode());
 		result = prime * result + ((totalMB == null) ? 0 : totalMB.hashCode());
 		return result;
 	}
@@ -196,7 +184,7 @@ public class MGTraitsResult {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MGTraitsResult other = (MGTraitsResult) obj;
+		PublicJobDetailsToClient other = (PublicJobDetailsToClient) obj;
 		if (ABRatio == null) {
 			if (other.ABRatio != null)
 				return false;
@@ -212,7 +200,12 @@ public class MGTraitsResult {
 				return false;
 		} else if (!gcVariance.equals(other.gcVariance))
 			return false;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (intId != other.intId)
 			return false;
 		if (numGenes == null) {
 			if (other.numGenes != null)
@@ -234,16 +227,6 @@ public class MGTraitsResult {
 				return false;
 		} else if (!percTf.equals(other.percTf))
 			return false;
-		if (sampleDescription == null) {
-			if (other.sampleDescription != null)
-				return false;
-		} else if (!sampleDescription.equals(other.sampleDescription))
-			return false;
-		if (sampleEnvOntology == null) {
-			if (other.sampleEnvOntology != null)
-				return false;
-		} else if (!sampleEnvOntology.equals(other.sampleEnvOntology))
-			return false;
 		if (sampleEnvironment == null) {
 			if (other.sampleEnvironment != null)
 				return false;
@@ -254,20 +237,15 @@ public class MGTraitsResult {
 				return false;
 		} else if (!sampleLabel.equals(other.sampleLabel))
 			return false;
-		if (sampleLatitude == null) {
-			if (other.sampleLatitude != null)
-				return false;
-		} else if (!sampleLatitude.equals(other.sampleLatitude))
-			return false;
-		if (sampleLongitude == null) {
-			if (other.sampleLongitude != null)
-				return false;
-		} else if (!sampleLongitude.equals(other.sampleLongitude))
-			return false;
 		if (sampleName == null) {
 			if (other.sampleName != null)
 				return false;
 		} else if (!sampleName.equals(other.sampleName))
+			return false;
+		if (timeSubmitted == null) {
+			if (other.timeSubmitted != null)
+				return false;
+		} else if (!timeSubmitted.equals(other.timeSubmitted))
 			return false;
 		if (totalMB == null) {
 			if (other.totalMB != null)
@@ -279,12 +257,10 @@ public class MGTraitsResult {
 
 	@Override
 	public String toString() {
-		return "MGTraitsResult [id=" + id + ", sampleName=" + sampleName
-				+ ", sampleLabel=" + sampleLabel + ", sampleDescription="
-				+ sampleDescription + ", sampleEnvironment="
-				+ sampleEnvironment + ", sampleLatitude=" + sampleLatitude
-				+ ", sampleLongitude=" + sampleLongitude
-				+ ", sampleEnvOntology=" + sampleEnvOntology + ", gcContent="
+		return "PublicJobDetailsToClient [id=" + id + ", sampleLabel="
+				+ sampleLabel + ", sampleName=" + sampleName
+				+ ", sampleEnvironment=" + sampleEnvironment
+				+ ", timeSubmitted=" + timeSubmitted + ", gcContent="
 				+ gcContent + ", gcVariance=" + gcVariance + ", numGenes="
 				+ numGenes + ", totalMB=" + totalMB + ", numReads=" + numReads
 				+ ", ABRatio=" + ABRatio + ", percTf=" + percTf
