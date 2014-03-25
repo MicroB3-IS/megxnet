@@ -5,15 +5,28 @@ import java.util.Arrays;
 import net.megx.model.mgtraits.MGTraitsPfam;
 
 public class FunctionTableToClient {
+	private String id;
 	private String sampleLabel;
 	private String pfam;
-	private int id;
-	
-	public FunctionTableToClient(MGTraitsPfam pfam){
+	private int intId;
+
+	public FunctionTableToClient(MGTraitsPfam pfam) {
 		super();
 		this.sampleLabel = pfam.getSampleLabel();
 		this.pfam = Arrays.toString(pfam.getPfam());
-		this.id = pfam.getId();
+		this.intId = pfam.getId();
+	}
+
+	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getSampleLabel() {
@@ -32,19 +45,11 @@ public class FunctionTableToClient {
 		this.pfam = pfam;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((pfam == null) ? 0 : pfam.hashCode());
 		result = prime * result
 				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
@@ -60,7 +65,10 @@ public class FunctionTableToClient {
 		if (getClass() != obj.getClass())
 			return false;
 		FunctionTableToClient other = (FunctionTableToClient) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (pfam == null) {
 			if (other.pfam != null)
@@ -77,7 +85,8 @@ public class FunctionTableToClient {
 
 	@Override
 	public String toString() {
-		return "FunctionTableToClient [sampleLabel=" + sampleLabel + ", pfam="
-				+ pfam + ", id=" + id + "]";
+		return "FunctionTableToClient [id=" + id + ", sampleLabel="
+				+ sampleLabel + ", pfam=" + pfam + "]";
 	}
+
 }

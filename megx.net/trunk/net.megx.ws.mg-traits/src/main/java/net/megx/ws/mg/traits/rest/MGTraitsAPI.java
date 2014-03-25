@@ -40,6 +40,9 @@ import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
 import net.megx.ws.mg.traits.rest.mappers.DownloadJobsToClient;
 import net.megx.ws.mg.traits.rest.mappers.JobDetailsToClient;
+import net.megx.ws.mg.traits.rest.mappers.MGTraitsAAToClient;
+import net.megx.ws.mg.traits.rest.mappers.MGTraitsCodonToClient;
+import net.megx.ws.mg.traits.rest.mappers.MGTraitsDNORatioToClient;
 import net.megx.ws.mg.traits.rest.mappers.PublicJobDetailsToClient;
 import net.megx.ws.mg.traits.rest.mappers.SimpleTraitsToClient;
 
@@ -320,11 +323,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public MGTraitsAA getAminoAcidContent(@PathParam("id") int id,
+	public MGTraitsAAToClient getAminoAcidContent(@PathParam("id") int id,
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return service.getAminoAcidContent(id);
+			return new MGTraitsAAToClient(service.getAminoAcidContent(id));
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -360,11 +363,13 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public MGTraitsDNORatio getDiNucleotideOddsRatio(@PathParam("id") int id,
+	public MGTraitsDNORatioToClient getDiNucleotideOddsRatio(
+			@PathParam("id") int id,
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return service.getDiNucleotideOddsRatio(id);
+			return new MGTraitsDNORatioToClient(
+					service.getDiNucleotideOddsRatio(id));
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -528,11 +533,11 @@ public class MGTraitsAPI extends BaseRestService {
 	@GET
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public MGTraitsCodon getCodonUsage(@PathParam("id") int id,
+	public MGTraitsCodonToClient getCodonUsage(@PathParam("id") int id,
 			@PathParam("sample_name") String sampleName,
 			@Context HttpServletRequest request) {
 		try {
-			return service.getCodonUsage(id);
+			return new MGTraitsCodonToClient(service.getCodonUsage(id));
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
