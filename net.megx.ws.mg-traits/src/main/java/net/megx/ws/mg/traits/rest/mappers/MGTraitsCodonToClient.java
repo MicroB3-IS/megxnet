@@ -1,9 +1,11 @@
-package net.megx.model.mgtraits;
+package net.megx.ws.mg.traits.rest.mappers;
 
-public class MGTraitsCodon {
+import net.megx.model.mgtraits.MGTraitsCodon;
 
-	private int id;
-	private String sample_label;
+public class MGTraitsCodonToClient {
+
+	private String id;
+	private String sampleLabel;
 	private double gca;
 	private double gcc;
 	private double gcg;
@@ -65,21 +67,93 @@ public class MGTraitsCodon {
 	private double tgg;
 	private double tac;
 	private double tat;
+	private int intId;
 
-	public int getId() {
+	public MGTraitsCodonToClient(MGTraitsCodon codon) {
+		super();
+		this.sampleLabel = codon.getSample_label();
+		this.gca = codon.getGca();
+		this.gcc = codon.getGcc();
+		this.gcg = codon.getGcg();
+		this.gct = codon.getGct();
+		this.tgc = codon.getTgc();
+		this.tgt = codon.getTgt();
+		this.gac = codon.getGac();
+		this.gat = codon.getGat();
+		this.gaa = codon.getGaa();
+		this.gag = codon.getGag();
+		this.ttc = codon.getTtc();
+		this.ttt = codon.getTtt();
+		this.gga = codon.getGga();
+		this.ggc = codon.getGgc();
+		this.ggg = codon.getGgg();
+		this.ggt = codon.getGgt();
+		this.cac = codon.getCac();
+		this.cat = codon.getCat();
+		this.ata = codon.getAta();
+		this.atc = codon.getAtc();
+		this.att = codon.getAtt();
+		this.aaa = codon.getAaa();
+		this.aag = codon.getAag();
+		this.cta = codon.getCta();
+		this.ctc = codon.getCtc();
+		this.ctg = codon.getCtg();
+		this.ctt = codon.getCtt();
+		this.tta = codon.getTta();
+		this.ttg = codon.getTtg();
+		this.atg = codon.getAtg();
+		this.aac = codon.getAac();
+		this.aat = codon.getAat();
+		this.cca = codon.getCca();
+		this.ccc = codon.getCcc();
+		this.ccg = codon.getCcg();
+		this.cct = codon.getCct();
+		this.caa = codon.getCaa();
+		this.cag = codon.getCag();
+		this.aga = codon.getAga();
+		this.agg = codon.getAgg();
+		this.cga = codon.getCga();
+		this.cgc = codon.getCgc();
+		this.cgg = codon.getCgg();
+		this.cgt = codon.getCgt();
+		this.agc = codon.getAgc();
+		this.agt = codon.getAgt();
+		this.tca = codon.getTca();
+		this.tcc = codon.getTcc();
+		this.tcg = codon.getTcg();
+		this.tct = codon.getTct();
+		this.aca = codon.getAca();
+		this.acc = codon.getAcc();
+		this.acg = codon.getAcg();
+		this.act = codon.getAct();
+		this.gta = codon.getGta();
+		this.gtc = codon.getGtc();
+		this.gtg = codon.getGtg();
+		this.gtt = codon.getGtt();
+		this.tgg = codon.getTgg();
+		this.tac = codon.getTac();
+		this.tat = codon.getTat();
+		this.intId = codon.getId();
+	}
+
+	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getSample_label() {
-		return sample_label;
+	public String getSampleLabel() {
+		return sampleLabel;
 	}
 
-	public void setSample_label(String sample_label) {
-		this.sample_label = sample_label;
+	public void setSampleLabel(String sampleLabel) {
+		this.sampleLabel = sampleLabel;
 	}
 
 	public double getGca() {
@@ -671,9 +745,9 @@ public class MGTraitsCodon {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(gtt);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
-				+ ((sample_label == null) ? 0 : sample_label.hashCode());
+				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
 		temp = Double.doubleToLongBits(tac);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(tat);
@@ -711,7 +785,7 @@ public class MGTraitsCodon {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MGTraitsCodon other = (MGTraitsCodon) obj;
+		MGTraitsCodonToClient other = (MGTraitsCodonToClient) obj;
 		if (Double.doubleToLongBits(aaa) != Double.doubleToLongBits(other.aaa))
 			return false;
 		if (Double.doubleToLongBits(aac) != Double.doubleToLongBits(other.aac))
@@ -808,12 +882,15 @@ public class MGTraitsCodon {
 			return false;
 		if (Double.doubleToLongBits(gtt) != Double.doubleToLongBits(other.gtt))
 			return false;
-		if (id != other.id)
-			return false;
-		if (sample_label == null) {
-			if (other.sample_label != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!sample_label.equals(other.sample_label))
+		} else if (!id.equals(other.id))
+			return false;
+		if (sampleLabel == null) {
+			if (other.sampleLabel != null)
+				return false;
+		} else if (!sampleLabel.equals(other.sampleLabel))
 			return false;
 		if (Double.doubleToLongBits(tac) != Double.doubleToLongBits(other.tac))
 			return false;
@@ -846,24 +923,25 @@ public class MGTraitsCodon {
 
 	@Override
 	public String toString() {
-		return "MGTraitsCodon [id=" + id + ", sample_label=" + sample_label
-				+ ", gca=" + gca + ", gcc=" + gcc + ", gcg=" + gcg + ", gct="
-				+ gct + ", tgc=" + tgc + ", tgt=" + tgt + ", gac=" + gac
-				+ ", gat=" + gat + ", gaa=" + gaa + ", gag=" + gag + ", ttc="
-				+ ttc + ", ttt=" + ttt + ", gga=" + gga + ", ggc=" + ggc
-				+ ", ggg=" + ggg + ", ggt=" + ggt + ", cac=" + cac + ", cat="
-				+ cat + ", ata=" + ata + ", atc=" + atc + ", att=" + att
-				+ ", aaa=" + aaa + ", aag=" + aag + ", cta=" + cta + ", ctc="
-				+ ctc + ", ctg=" + ctg + ", ctt=" + ctt + ", tta=" + tta
-				+ ", ttg=" + ttg + ", atg=" + atg + ", aac=" + aac + ", aat="
-				+ aat + ", cca=" + cca + ", ccc=" + ccc + ", ccg=" + ccg
-				+ ", cct=" + cct + ", caa=" + caa + ", cag=" + cag + ", aga="
-				+ aga + ", agg=" + agg + ", cga=" + cga + ", cgc=" + cgc
-				+ ", cgg=" + cgg + ", cgt=" + cgt + ", agc=" + agc + ", agt="
-				+ agt + ", tca=" + tca + ", tcc=" + tcc + ", tcg=" + tcg
-				+ ", tct=" + tct + ", aca=" + aca + ", acc=" + acc + ", acg="
-				+ acg + ", act=" + act + ", gta=" + gta + ", gtc=" + gtc
-				+ ", gtg=" + gtg + ", gtt=" + gtt + ", tgg=" + tgg + ", tac="
-				+ tac + ", tat=" + tat + "]";
+		return "MGTraitsCodonToClient [id=" + id + ", sampleLabel="
+				+ sampleLabel + ", gca=" + gca + ", gcc=" + gcc + ", gcg="
+				+ gcg + ", gct=" + gct + ", tgc=" + tgc + ", tgt=" + tgt
+				+ ", gac=" + gac + ", gat=" + gat + ", gaa=" + gaa + ", gag="
+				+ gag + ", ttc=" + ttc + ", ttt=" + ttt + ", gga=" + gga
+				+ ", ggc=" + ggc + ", ggg=" + ggg + ", ggt=" + ggt + ", cac="
+				+ cac + ", cat=" + cat + ", ata=" + ata + ", atc=" + atc
+				+ ", att=" + att + ", aaa=" + aaa + ", aag=" + aag + ", cta="
+				+ cta + ", ctc=" + ctc + ", ctg=" + ctg + ", ctt=" + ctt
+				+ ", tta=" + tta + ", ttg=" + ttg + ", atg=" + atg + ", aac="
+				+ aac + ", aat=" + aat + ", cca=" + cca + ", ccc=" + ccc
+				+ ", ccg=" + ccg + ", cct=" + cct + ", caa=" + caa + ", cag="
+				+ cag + ", aga=" + aga + ", agg=" + agg + ", cga=" + cga
+				+ ", cgc=" + cgc + ", cgg=" + cgg + ", cgt=" + cgt + ", agc="
+				+ agc + ", agt=" + agt + ", tca=" + tca + ", tcc=" + tcc
+				+ ", tcg=" + tcg + ", tct=" + tct + ", aca=" + aca + ", acc="
+				+ acc + ", acg=" + acg + ", act=" + act + ", gta=" + gta
+				+ ", gtc=" + gtc + ", gtg=" + gtg + ", gtt=" + gtt + ", tgg="
+				+ tgg + ", tac=" + tac + ", tat=" + tat + "]";
 	}
+
 }
