@@ -1,8 +1,10 @@
-package net.megx.model.mgtraits;
+package net.megx.ws.mg.traits.rest.mappers;
 
-public class MGTraitsResult {
+import net.megx.model.mgtraits.MGTraitsResult;
 
-	private int id;
+public class SimpleTraitsToClient {
+
+	private String id;
 	private String sampleName;
 	private String sampleLabel;
 	private String sampleDescription;
@@ -18,12 +20,37 @@ public class MGTraitsResult {
 	private Double ABRatio;
 	private Double percTf;
 	private Double percClassified;
+	private int intId;
 
-	public int getId() {
+	public SimpleTraitsToClient(MGTraitsResult traitsResult) {
+		super();
+		this.sampleName = traitsResult.getSampleName();
+		this.sampleLabel = traitsResult.getSampleLabel();
+		this.sampleDescription = traitsResult.getSampleDescription();
+		this.sampleEnvironment = traitsResult.getSampleEnvironment();
+		this.sampleLatitude = traitsResult.getSampleLatitude();
+		this.sampleLongitude = traitsResult.getSampleLongitude();
+		this.sampleEnvOntology = traitsResult.getSampleEnvOntology();
+		this.gcContent = traitsResult.getGcContent();
+		this.gcVariance = traitsResult.getGcContent();
+		this.numGenes = traitsResult.getNumGenes();
+		this.totalMB = traitsResult.getTotalMB();
+		this.numReads = traitsResult.getNumReads();
+		this.ABRatio = traitsResult.getABRatio();
+		this.percTf = traitsResult.getPercTf();
+		this.percClassified = traitsResult.getPercClassified();
+		this.intId = traitsResult.getId();
+	}
+
+	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -33,14 +60,6 @@ public class MGTraitsResult {
 
 	public void setSampleName(String sampleName) {
 		this.sampleName = sampleName;
-	}
-
-	public String getSampleLabel() {
-		return sampleLabel;
-	}
-
-	public void setSampleLabel(String sampleLabel) {
-		this.sampleLabel = sampleLabel;
 	}
 
 	public String getSampleDescription() {
@@ -156,7 +175,7 @@ public class MGTraitsResult {
 				+ ((gcContent == null) ? 0 : gcContent.hashCode());
 		result = prime * result
 				+ ((gcVariance == null) ? 0 : gcVariance.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((numGenes == null) ? 0 : numGenes.hashCode());
 		result = prime * result
@@ -177,8 +196,6 @@ public class MGTraitsResult {
 				+ ((sampleEnvironment == null) ? 0 : sampleEnvironment
 						.hashCode());
 		result = prime * result
-				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
-		result = prime * result
 				+ ((sampleLatitude == null) ? 0 : sampleLatitude.hashCode());
 		result = prime * result
 				+ ((sampleLongitude == null) ? 0 : sampleLongitude.hashCode());
@@ -196,7 +213,7 @@ public class MGTraitsResult {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MGTraitsResult other = (MGTraitsResult) obj;
+		SimpleTraitsToClient other = (SimpleTraitsToClient) obj;
 		if (ABRatio == null) {
 			if (other.ABRatio != null)
 				return false;
@@ -212,7 +229,10 @@ public class MGTraitsResult {
 				return false;
 		} else if (!gcVariance.equals(other.gcVariance))
 			return false;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (numGenes == null) {
 			if (other.numGenes != null)
@@ -249,11 +269,6 @@ public class MGTraitsResult {
 				return false;
 		} else if (!sampleEnvironment.equals(other.sampleEnvironment))
 			return false;
-		if (sampleLabel == null) {
-			if (other.sampleLabel != null)
-				return false;
-		} else if (!sampleLabel.equals(other.sampleLabel))
-			return false;
 		if (sampleLatitude == null) {
 			if (other.sampleLatitude != null)
 				return false;
@@ -279,16 +294,16 @@ public class MGTraitsResult {
 
 	@Override
 	public String toString() {
-		return "MGTraitsResult [id=" + id + ", sampleName=" + sampleName
-				+ ", sampleLabel=" + sampleLabel + ", sampleDescription="
-				+ sampleDescription + ", sampleEnvironment="
-				+ sampleEnvironment + ", sampleLatitude=" + sampleLatitude
-				+ ", sampleLongitude=" + sampleLongitude
-				+ ", sampleEnvOntology=" + sampleEnvOntology + ", gcContent="
-				+ gcContent + ", gcVariance=" + gcVariance + ", numGenes="
-				+ numGenes + ", totalMB=" + totalMB + ", numReads=" + numReads
-				+ ", ABRatio=" + ABRatio + ", percTf=" + percTf
-				+ ", percClassified=" + percClassified + "]";
+		return "SimpleTraitsToClient [id=" + id + ", sampleName=" + sampleName
+				+ ", sampleDescription=" + sampleDescription
+				+ ", sampleEnvironment=" + sampleEnvironment
+				+ ", sampleLatitude=" + sampleLatitude + ", sampleLongitude="
+				+ sampleLongitude + ", sampleEnvOntology=" + sampleEnvOntology
+				+ ", gcContent=" + gcContent + ", gcVariance=" + gcVariance
+				+ ", numGenes=" + numGenes + ", totalMB=" + totalMB
+				+ ", numReads=" + numReads + ", ABRatio=" + ABRatio
+				+ ", percTf=" + percTf + ", percClassified=" + percClassified
+				+ "]";
 	}
 
 }

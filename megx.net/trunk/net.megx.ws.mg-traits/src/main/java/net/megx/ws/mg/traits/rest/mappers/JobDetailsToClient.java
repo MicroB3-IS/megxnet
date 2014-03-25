@@ -3,31 +3,44 @@ package net.megx.ws.mg.traits.rest.mappers;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
 
 public class JobDetailsToClient {
-	private String sample_label;
+	private String id;
+	private String sampleLabel;
 	private String environment;
-	private String time_submitted;
-	private String time_finished;
-	private int return_code;
-	private String error_message;
-	private int id;
-	
-	public JobDetailsToClient(MGTraitsJobDetails jobDetails){
+	private String timeSubmitted;
+	private String timeFinished;
+	private int returnCode;
+	private String errorMessage;
+	private int intId;
+
+	public JobDetailsToClient(MGTraitsJobDetails jobDetails) {
 		super();
-		this.sample_label = jobDetails.getSampleLabel();
+		this.sampleLabel = jobDetails.getSampleLabel();
 		this.environment = jobDetails.getSampleEnvironment();
-		this.time_submitted = jobDetails.getTimeSubmitted();
-		this.time_finished = jobDetails.getTimeFinished();
-		this.return_code = jobDetails.getReturnCode();
-		this.error_message = jobDetails.getErrorMessage();
-		this.id = jobDetails.getId();
+		this.timeSubmitted = jobDetails.getTimeSubmitted();
+		this.timeFinished = jobDetails.getTimeFinished();
+		this.returnCode = jobDetails.getReturnCode();
+		this.errorMessage = jobDetails.getErrorMessage();
+		this.intId = jobDetails.getId();
 	}
 
-	public String getSample_label() {
-		return sample_label;
+	public String getId() {
+		if (sampleLabel == null || intId <= 0) {
+			throw new IllegalStateException("No proper sample id available");
+		}
+		this.id = "mg" + intId + "-" + sampleLabel;
+		return id;
 	}
 
-	public void setSample_label(String sample_label) {
-		this.sample_label = sample_label;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getSampleLabel() {
+		return sampleLabel;
+	}
+
+	public void setSampleLabel(String sampleLabel) {
+		this.sampleLabel = sampleLabel;
 	}
 
 	public String getEnvironment() {
@@ -38,44 +51,36 @@ public class JobDetailsToClient {
 		this.environment = environment;
 	}
 
-	public String getTime_submitted() {
-		return time_submitted;
+	public String getTimeSubmitted() {
+		return timeSubmitted;
 	}
 
-	public void setTime_submitted(String time_submitted) {
-		this.time_submitted = time_submitted;
+	public void setTimeSubmitted(String timeSubmitted) {
+		this.timeSubmitted = timeSubmitted;
 	}
 
-	public String getTime_finished() {
-		return time_finished;
+	public String getTimeFinished() {
+		return timeFinished;
 	}
 
-	public void setTime_finished(String time_finished) {
-		this.time_finished = time_finished;
+	public void setTimeFinished(String timeFinished) {
+		this.timeFinished = timeFinished;
 	}
 
-	public int getReturn_code() {
-		return return_code;
+	public int getReturnCode() {
+		return returnCode;
 	}
 
-	public void setReturn_code(int return_code) {
-		this.return_code = return_code;
+	public void setReturnCode(int returnCode) {
+		this.returnCode = returnCode;
 	}
 
-	public String getError_message() {
-		return error_message;
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 
-	public void setError_message(String error_message) {
-		this.error_message = error_message;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 	@Override
@@ -85,15 +90,15 @@ public class JobDetailsToClient {
 		result = prime * result
 				+ ((environment == null) ? 0 : environment.hashCode());
 		result = prime * result
-				+ ((error_message == null) ? 0 : error_message.hashCode());
-		result = prime * result + id;
-		result = prime * result + return_code;
+				+ ((errorMessage == null) ? 0 : errorMessage.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + returnCode;
 		result = prime * result
-				+ ((sample_label == null) ? 0 : sample_label.hashCode());
+				+ ((sampleLabel == null) ? 0 : sampleLabel.hashCode());
 		result = prime * result
-				+ ((time_finished == null) ? 0 : time_finished.hashCode());
+				+ ((timeFinished == null) ? 0 : timeFinished.hashCode());
 		result = prime * result
-				+ ((time_submitted == null) ? 0 : time_submitted.hashCode());
+				+ ((timeSubmitted == null) ? 0 : timeSubmitted.hashCode());
 		return result;
 	}
 
@@ -111,40 +116,43 @@ public class JobDetailsToClient {
 				return false;
 		} else if (!environment.equals(other.environment))
 			return false;
-		if (error_message == null) {
-			if (other.error_message != null)
+		if (errorMessage == null) {
+			if (other.errorMessage != null)
 				return false;
-		} else if (!error_message.equals(other.error_message))
+		} else if (!errorMessage.equals(other.errorMessage))
 			return false;
-		if (id != other.id)
-			return false;
-		if (return_code != other.return_code)
-			return false;
-		if (sample_label == null) {
-			if (other.sample_label != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!sample_label.equals(other.sample_label))
+		} else if (!id.equals(other.id))
 			return false;
-		if (time_finished == null) {
-			if (other.time_finished != null)
-				return false;
-		} else if (!time_finished.equals(other.time_finished))
+		if (returnCode != other.returnCode)
 			return false;
-		if (time_submitted == null) {
-			if (other.time_submitted != null)
+		if (sampleLabel == null) {
+			if (other.sampleLabel != null)
 				return false;
-		} else if (!time_submitted.equals(other.time_submitted))
+		} else if (!sampleLabel.equals(other.sampleLabel))
+			return false;
+		if (timeFinished == null) {
+			if (other.timeFinished != null)
+				return false;
+		} else if (!timeFinished.equals(other.timeFinished))
+			return false;
+		if (timeSubmitted == null) {
+			if (other.timeSubmitted != null)
+				return false;
+		} else if (!timeSubmitted.equals(other.timeSubmitted))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "JobDetailsToClient [sample_label=" + sample_label
-				+ ", environment=" + environment + ", time_submitted="
-				+ time_submitted + ", time_finished=" + time_finished
-				+ ", return_code=" + return_code + ", error_message="
-				+ error_message + ", id=" + id + "]";
+		return "JobDetailsToClient [id=" + id + ", sampleLabel=" + sampleLabel
+				+ ", environment=" + environment + ", timeSubmitted="
+				+ timeSubmitted + ", timeFinished=" + timeFinished
+				+ ", returnCode=" + returnCode + ", errorMessage="
+				+ errorMessage + "]";
 	}
 
 }
