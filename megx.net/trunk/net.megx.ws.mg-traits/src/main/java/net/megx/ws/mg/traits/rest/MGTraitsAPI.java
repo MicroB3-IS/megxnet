@@ -270,8 +270,8 @@ public class MGTraitsAPI extends BaseRestService {
 			List<MGTraitsFunctional> result = service.getFunctionTable(id);
 			final List<String> header = new ArrayList<String>(result.size() + 1);
 			final List<String> row = new ArrayList<String>(result.size() + 1);
-			header.add("Sites");
-			row.add(result.get(0).getSampleLabel());
+			header.add("Id");
+			row.add("mg" + result.get(0).getId() + "-" + result.get(0).getSampleLabel());
 			for (MGTraitsFunctional currTax : result) {
 				header.add(currTax.getKey());
 				row.add(currTax.getValue());
@@ -280,8 +280,8 @@ public class MGTraitsAPI extends BaseRestService {
 				@Override
 				public void write(OutputStream out) throws IOException {
 					PrintWriter writer = new PrintWriter(out);
-					writer.println(StringUtils.join(header, ' '));
-					writer.println(StringUtils.join(row, ' '));
+					writer.println(StringUtils.join(header, ','));
+					writer.println(StringUtils.join(row, ','));
 					writer.flush();
 					out.flush();
 				}
@@ -580,8 +580,8 @@ public class MGTraitsAPI extends BaseRestService {
 			List<MGTraitsTaxonomy> result = service.getTaxonomyContent(id);
 			final List<String> header = new ArrayList<String>(result.size() + 1);
 			final List<String> row = new ArrayList<String>(result.size() + 1);
-			header.add("Sites");
-			row.add(result.get(0).getSampleLabel());
+			header.add("Id");
+			row.add("mg" + result.get(0).getId() + "-" + result.get(0).getSampleLabel());
 			for (MGTraitsTaxonomy currTax : result) {
 				header.add(currTax.getKey());
 				row.add(currTax.getValue());
@@ -590,8 +590,8 @@ public class MGTraitsAPI extends BaseRestService {
 				@Override
 				public void write(OutputStream out) throws IOException {
 					PrintWriter writer = new PrintWriter(out);
-					writer.println(StringUtils.join(header, ' '));
-					writer.println(StringUtils.join(row, ' '));
+					writer.println(StringUtils.join(header, ','));
+					writer.println(StringUtils.join(row, ','));
 					writer.flush();
 					out.flush();
 				}
