@@ -9,44 +9,44 @@ import java.sql.SQLException;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
-public class ArrayTypeMapper implements TypeHandler {
-	
-	public Object valueOf(String s) {
-		throw new UnsupportedOperationException("Not implemented");
-	}
+public class ArrayTypeMapper implements TypeHandler<Object> {
 
-	@Override
-	public Object getResult(ResultSet getter, String arg1) throws SQLException {
-		Array array = getter.getArray("pfam");
-		if (array != null) {
-			Integer[] a = (Integer[])array.getArray();
-			return a;
-		} else {
-			return null;
-		}
-	}
+    public Object valueOf(String s) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
-	@Override
-	public Object getResult(ResultSet getter, int arg1) throws SQLException {
-		Array array = getter.getArray("pfam");
-		if (array != null) {
-			return array.getArray();
-		} else {
-			return null;
-		}
-	}
+    @Override
+    public Object getResult(ResultSet getter, String arg1) throws SQLException {
+        Array array = getter.getArray("pfam");
+        if (array != null) {
+            Integer[] a = (Integer[]) array.getArray();
+            return a;
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public Object getResult(CallableStatement arg0, int arg1)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Object getResult(ResultSet getter, int arg1) throws SQLException {
+        Array array = getter.getArray("pfam");
+        if (array != null) {
+            return array.getArray();
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public void setParameter(PreparedStatement arg0, int arg1, Object arg2,
-			JdbcType arg3) throws SQLException {
-		// TODO Auto-generated method stub
+    @Override
+    public Object getResult(CallableStatement arg0, int arg1)
+            throws SQLException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Not implemented");
 
-	}
+    }
+
+    @Override
+    public void setParameter(PreparedStatement arg0, int arg1, Object arg2,
+            JdbcType arg3) throws SQLException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 }

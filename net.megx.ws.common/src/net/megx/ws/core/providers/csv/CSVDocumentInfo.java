@@ -14,11 +14,9 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.util.List;
-
 
 /**
  * CSV Document representation holding the data and the additional info needed
@@ -29,106 +27,116 @@ import java.util.List;
  */
 public class CSVDocumentInfo {
 
-	private ColumnNameFormat format = ColumnNameFormat.NONE;
+    private ColumnNameFormat format = ColumnNameFormat.NONE;
 
-	/**
-	 * Constructs new CSV Document representation object
-	 * @param separator separator character
-	 * @param quoteChar quote character
-	 * @param lineEnd EOL 
-	 * @param writeHeaderColumns boolean indicating if the header columns should be serialized as first row in the CSV document
-	 * @param data {@link List} of POJO beans containing the actual data for the rows
-	 * @param columnsMapping mappings for column-to-property in the exact order. This list should be sorted.
-	 */
-	public CSVDocumentInfo(char separator, char quoteChar, String lineEnd,
-			boolean writeHeaderColumns, List<?> data,
-			List<PropertyMapping> columnsMapping, ColumnNameFormat format) {
-		super();
-		this.separator = separator;
-		this.quoteChar = quoteChar;
-		this.lineEnd = lineEnd;
-		this.writeHeaderColumns = writeHeaderColumns;
-		this.data = data;
-		this.columnsMapping = columnsMapping;
-		this.format = format;
-	}
+    /**
+     * Constructs new CSV Document representation object
+     * 
+     * @param separator
+     *            separator character
+     * @param quoteChar
+     *            quote character
+     * @param lineEnd
+     *            EOL
+     * @param writeHeaderColumns
+     *            boolean indicating if the header columns should be serialized
+     *            as first row in the CSV document
+     * @param data
+     *            {@link List} of POJO beans containing the actual data for the
+     *            rows
+     * @param columnsMapping
+     *            mappings for column-to-property in the exact order. This list
+     *            should be sorted.
+     */
+    public CSVDocumentInfo(char separator, char quoteChar, String lineEnd,
+            boolean writeHeaderColumns, List<?> data,
+            List<PropertyMapping> columnsMapping, ColumnNameFormat format) {
+        super();
+        this.separator = separator;
+        this.quoteChar = quoteChar;
+        this.lineEnd = lineEnd;
+        this.writeHeaderColumns = writeHeaderColumns;
+        this.data = data;
+        this.columnsMapping = columnsMapping;
+        this.format = format;
+    }
 
-	/**
-	 * Default separator character
-	 */
-	public static final char DEFAULT_SEPARATOR_CHAR = ',';
-	
-	/**
-	 * Default quote character
-	 */
-	public static final char DEFAULT_QUOTE_CHAR = '"';
-	
-	/**
-	 * Default EOL - End Of Line
-	 */
-	public static final String DEFAULT_LINE_END = "\r\n";
+    /**
+     * Default separator character
+     */
+    public static final char DEFAULT_SEPARATOR_CHAR = ',';
 
-	private char separator = DEFAULT_SEPARATOR_CHAR;
-	private char quoteChar = DEFAULT_QUOTE_CHAR;
-	private String lineEnd = DEFAULT_LINE_END;
-	private boolean writeHeaderColumns = false;
+    /**
+     * Default quote character
+     */
+    public static final char DEFAULT_QUOTE_CHAR = '"';
 
-	private List<?> data;
-	private List<PropertyMapping> columnsMapping;
+    /**
+     * Default EOL - End Of Line
+     */
+    public static final String DEFAULT_LINE_END = "\r\n";
 
-	public List<PropertyMapping> getColumnsMapping() {
-		return columnsMapping;
-	}
+    private char separator = DEFAULT_SEPARATOR_CHAR;
+    private char quoteChar = DEFAULT_QUOTE_CHAR;
+    private String lineEnd = DEFAULT_LINE_END;
+    private boolean writeHeaderColumns = false;
 
-	public void setColumnsMapping(List<PropertyMapping> columnsMapping) {
-		this.columnsMapping = columnsMapping;
-	}
+    private List<?> data;
+    private List<PropertyMapping> columnsMapping;
 
-	public boolean isWriteHeaderColumns() {
-		return writeHeaderColumns;
-	}
+    public List<PropertyMapping> getColumnsMapping() {
+        return columnsMapping;
+    }
 
-	public void setWriteHeaderColumns(boolean writeHeaderColumns) {
-		this.writeHeaderColumns = writeHeaderColumns;
-	}
+    public void setColumnsMapping(List<PropertyMapping> columnsMapping) {
+        this.columnsMapping = columnsMapping;
+    }
 
-	public char getSeparator() {
-		return separator;
-	}
+    public boolean isWriteHeaderColumns() {
+        return writeHeaderColumns;
+    }
 
-	public void setSeparator(char separator) {
-		this.separator = separator;
-	}
+    public void setWriteHeaderColumns(boolean writeHeaderColumns) {
+        this.writeHeaderColumns = writeHeaderColumns;
+    }
 
-	public char getQuoteChar() {
-		return quoteChar;
-	}
+    public char getSeparator() {
+        return separator;
+    }
 
-	public void setQuoteChar(char quoteChar) {
-		this.quoteChar = quoteChar;
-	}
+    public void setSeparator(char separator) {
+        this.separator = separator;
+    }
 
-	public String getLineEnd() {
-		return lineEnd;
-	}
+    public char getQuoteChar() {
+        return quoteChar;
+    }
 
-	public void setLineEnd(String lineEnd) {
-		this.lineEnd = lineEnd;
-	}
+    public void setQuoteChar(char quoteChar) {
+        this.quoteChar = quoteChar;
+    }
 
-	public List<?> getData() {
-		return data;
-	}
+    public String getLineEnd() {
+        return lineEnd;
+    }
 
-	public void setData(List<?> data) {
-		this.data = data;
-	}
+    public void setLineEnd(String lineEnd) {
+        this.lineEnd = lineEnd;
+    }
 
-	public ColumnNameFormat getFormat() {
-		return format;
-	}
+    public List<?> getData() {
+        return data;
+    }
 
-	public void setFormat(ColumnNameFormat format) {
-		this.format = format;
-	}
+    public void setData(List<?> data) {
+        this.data = data;
+    }
+
+    public ColumnNameFormat getFormat() {
+        return format;
+    }
+
+    public void setFormat(ColumnNameFormat format) {
+        this.format = format;
+    }
 }

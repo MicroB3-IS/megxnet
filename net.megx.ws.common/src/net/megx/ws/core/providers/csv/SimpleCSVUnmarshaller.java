@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.io.InputStream;
@@ -27,23 +26,23 @@ import au.com.bytecode.opencsv.bean.CsvToBean;
 
 import net.megx.ws.core.providers.csv.CSVUnmarshaller;
 
-public class SimpleCSVUnmarshaller implements CSVUnmarshaller<Object>{
+public class SimpleCSVUnmarshaller implements CSVUnmarshaller<Object> {
 
-	private String [] columnsMapping;
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Object unmarshall(Class type, InputStream stream)
-			throws Exception {
-		ColumnPositionMappingStrategy<?> strategy = new ColumnPositionMappingStrategy();
-		strategy.setType(type);
-		strategy.setColumnMapping(columnsMapping);
-		CsvToBean csvToBean = new CsvToBean();
-		List<Object> retVal = csvToBean.parse(strategy, new CSVReader(new InputStreamReader(stream)));
-		return retVal;
-	}
+    private String[] columnsMapping;
 
-	public SimpleCSVUnmarshaller(String [] columnsMapping) {
-		this.columnsMapping = columnsMapping;
-	}
-	
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public Object unmarshall(Class type, InputStream stream) throws Exception {
+        ColumnPositionMappingStrategy<?> strategy = new ColumnPositionMappingStrategy();
+        strategy.setType(type);
+        strategy.setColumnMapping(columnsMapping);
+        CsvToBean csvToBean = new CsvToBean();
+        List<Object> retVal = csvToBean.parse(strategy, new CSVReader(
+                new InputStreamReader(stream)));
+        return retVal;
+    }
+
+    public SimpleCSVUnmarshaller(String[] columnsMapping) {
+        this.columnsMapping = columnsMapping;
+    }
+
 }

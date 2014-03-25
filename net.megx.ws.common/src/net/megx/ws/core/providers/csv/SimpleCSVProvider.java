@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.lang.annotation.Annotation;
@@ -31,90 +30,94 @@ import net.megx.ws.core.CustomMediaType;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
 import net.megx.ws.core.utils.ReflectionUtils;
 
-public class SimpleCSVProvider extends AbstractCSVProvider{
+public class SimpleCSVProvider extends AbstractCSVProvider {
 
-	@Override
-	protected CSVMarshaller<?> getMarshaller() throws Exception {
-		return new SimpleCSVMarshaller();
-	}
+    @Override
+    protected CSVMarshaller<?> getMarshaller() throws Exception {
+        return new SimpleCSVMarshaller();
+    }
 
-	@Override
-	protected CSVDocumentInfo getCSVOutputDocument(Object t, Class<?> type,
-			Type genericType, Annotation[] annotations, MediaType mediaType,
-			MultivaluedMap<String, Object> httpHeaders) throws Exception {
-		if(t instanceof CSVDocumentInfo){
-			return (CSVDocumentInfo)t;
-		}else{
-			boolean writeHeaderColumns = false;
-			char separator = CSVDocumentInfo.DEFAULT_SEPARATOR_CHAR;
-			char quoteChar = CSVDocumentInfo.DEFAULT_QUOTE_CHAR;
-			String lineEnd = CSVDocumentInfo.DEFAULT_LINE_END;
-			String [] columns = null;
-			CSVDocument documentAnnot = null;
-			
-			
-			documentAnnot = getDocumentAnnotation(type, annotations, genericType);
-			ColumnNameFormat format = ColumnNameFormat.NONE;
-			if(documentAnnot != null){
-				separator = documentAnnot.separator();
-				lineEnd = documentAnnot.newLineSeparator();
-				columns = documentAnnot.columnsOrder();
-				writeHeaderColumns = documentAnnot.preserveHeaderColumns();
-				format = documentAnnot.columnNameFormat();
-			}
-			
-			return CSVDocumentBuilder.getInstance().createDocument(
-					writeHeaderColumns, separator, quoteChar, lineEnd,
-					ReflectionUtils.getEnclosedType(type, genericType),
-					columns, t, format);
-		}
-		
-	}
+    @Override
+    protected CSVDocumentInfo getCSVOutputDocument(Object t, Class<?> type,
+            Type genericType, Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, Object> httpHeaders) throws Exception {
+        if (t instanceof CSVDocumentInfo) {
+            return (CSVDocumentInfo) t;
+        } else {
+            boolean writeHeaderColumns = false;
+            char separator = CSVDocumentInfo.DEFAULT_SEPARATOR_CHAR;
+            char quoteChar = CSVDocumentInfo.DEFAULT_QUOTE_CHAR;
+            String lineEnd = CSVDocumentInfo.DEFAULT_LINE_END;
+            String[] columns = null;
+            CSVDocument documentAnnot = null;
 
-	@Override
-	protected CSVUnmarshaller<?> getUnmarshaller(Class<?> forType,
-			Annotation[] annotations, Type genericType) throws Exception {
-		CSVDocument documentAnnot = getDocumentAnnotation(forType, annotations, genericType);
-		String [] columns = null;
-		if(documentAnnot != null){
-			columns = documentAnnot.columnsOrder();
-		}else{
-			List<PropertyMapping> beanDefaultMapping = CSVDocumentBuilder.getInstance().getDefaultSortedMapping(forType);
-			columns = new String[beanDefaultMapping.size()];
-			int i = 0;
-			for(PropertyMapping m: beanDefaultMapping){
-				columns[i] = m.getDescriptor().getName();
-				i++;
-			}
-		}
-		return new SimpleCSVUnmarshaller(columns);
-	}
-	
-	protected CSVDocument getDocumentAnnotation(Class<?> type,
-			Annotation[] annotations, Type genericType) {
-		CSVDocument documentAnnot = null;
-		type = ReflectionUtils.getEnclosedType(type, genericType);
-		for(Annotation annotation: annotations){
-			if(annotation instanceof CSVDocument){
-				documentAnnot = (CSVDocument)annotation;
-				break;
-			}
-		}
-		
-		if(documentAnnot == null){
-			documentAnnot = type.getAnnotation(CSVDocument.class);
-		}
-		
-		return documentAnnot;
-	}
-	
-	@Provider
-	@Produces(CustomMediaType.APPLICATION_CSV)
-	@Consumes(CustomMediaType.APPLICATION_CSV)
-	public static class SimpleCSVProvider_App_CSV extends SimpleCSVProvider{ }
-	
-	@Provider
-	@Produces(CustomMediaType.TEXT_CSV)
-	@Consumes(CustomMediaType.TEXT_CSV)
-	public static class SimpleCSVProvider_Text_CSV extends SimpleCSVProvider{ }
+            documentAnnot = getDocumentAnnotation(type, annotations,
+                    genericType);
+            ColumnNameFormat format = ColumnNameFormat.NONE;
+            if (documentAnnot != null) {
+                separator = documentAnnot.separator();
+                lineEnd = documentAnnot.newLineSeparator();
+                columns = documentAnnot.columnsOrder();
+                writeHeaderColumns = documentAnnot.preserveHeaderColumns();
+                format = documentAnnot.columnNameFormat();
+            }
+
+            return CSVDocumentBuilder.getInstance().createDocument(
+                    writeHeaderColumns, separator, quoteChar, lineEnd,
+                    ReflectionUtils.getEnclosedType(type, genericType),
+                    columns, t, format);
+        }
+
+    }
+
+    @Override
+    protected CSVUnmarshaller<?> getUnmarshaller(Class<?> forType,
+            Annotation[] annotations, Type genericType) throws Exception {
+        CSVDocument documentAnnot = getDocumentAnnotation(forType, annotations,
+                genericType);
+        String[] columns = null;
+        if (documentAnnot != null) {
+            columns = documentAnnot.columnsOrder();
+        } else {
+            List<PropertyMapping> beanDefaultMapping = CSVDocumentBuilder
+                    .getInstance().getDefaultSortedMapping(forType);
+            columns = new String[beanDefaultMapping.size()];
+            int i = 0;
+            for (PropertyMapping m : beanDefaultMapping) {
+                columns[i] = m.getDescriptor().getName();
+                i++;
+            }
+        }
+        return new SimpleCSVUnmarshaller(columns);
+    }
+
+    protected CSVDocument getDocumentAnnotation(Class<?> type,
+            Annotation[] annotations, Type genericType) {
+        CSVDocument documentAnnot = null;
+        type = ReflectionUtils.getEnclosedType(type, genericType);
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof CSVDocument) {
+                documentAnnot = (CSVDocument) annotation;
+                break;
+            }
+        }
+
+        if (documentAnnot == null) {
+            documentAnnot = type.getAnnotation(CSVDocument.class);
+        }
+
+        return documentAnnot;
+    }
+
+    @Provider
+    @Produces(CustomMediaType.APPLICATION_CSV)
+    @Consumes(CustomMediaType.APPLICATION_CSV)
+    public static class SimpleCSVProvider_App_CSV extends SimpleCSVProvider {
+    }
+
+    @Provider
+    @Produces(CustomMediaType.TEXT_CSV)
+    @Consumes(CustomMediaType.TEXT_CSV)
+    public static class SimpleCSVProvider_Text_CSV extends SimpleCSVProvider {
+    }
 }

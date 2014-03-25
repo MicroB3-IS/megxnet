@@ -31,7 +31,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.StatusType;
 
-import net.megx.security.auth.model.PaginatedResult;
 import net.megx.security.auth.model.Role;
 import net.megx.security.auth.model.User;
 import net.megx.security.auth.model.UserVerification;
@@ -51,327 +50,355 @@ import org.apache.http.message.BasicNameValuePair;
 import org.chon.core.velocity.VTemplate;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.omg.PortableInterceptor.SUCCESSFUL;
+
+import com.google.gson.JsonObject;
 
 @Path("/register")
 public class RegistrationManager {
 
-	private UserService userService;
-	@SuppressWarnings("unused")
-	private KeySecretProvider secretProvider;
-	private JSONObject config;
+    private UserService userService;
+    @SuppressWarnings("unused")
+    private KeySecretProvider secretProvider;
+    private JSONObject config;
 
-	private Log log = LogFactory.getLog(getClass());
+    private Log log = LogFactory.getLog(getClass());
 
-	// TODO rename to activationMailTemplate
-	private VTemplate vTemplate;
+    // TODO rename to activationMailTemplate
+    private VTemplate vTemplate;
 
-	public RegistrationManager(UserService userService,
-			KeySecretProvider secretProvider, JSONObject config,
-			VTemplate vTemplate) {
-		super();
-		this.userService = userService;
-		this.secretProvider = secretProvider;
-		this.config = config;
-		this.vTemplate = vTemplate;
-	}
+    public RegistrationManager(UserService userService,
+            KeySecretProvider secretProvider, JSONObject config,
+            VTemplate vTemplate) {
+        super();
+        this.userService = userService;
+        this.secretProvider = secretProvider;
+        this.config = config;
+        this.vTemplate = vTemplate;
+    }
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	public void setSecretProvider(KeySecretProvider secretProvider) {
-		this.secretProvider = secretProvider;
-	}
+    public void setSecretProvider(KeySecretProvider secretProvider) {
+        this.secretProvider = secretProvider;
+    }
 
-	public void setConfig(JSONObject config) {
-		this.config = config;
-	}
+    public void setConfig(JSONObject config) {
+        this.config = config;
+    }
 
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public String register(@Context HttpServletRequest request,
-			@FormParam("challenge") String challenge,
-			@FormParam("response") String response,
-			@FormParam("logname") String logname,
-			@FormParam("firstName") String firstName,
-			@FormParam("lastName") String lastName,
-			@FormParam("email") String email,
-			@FormParam("initials") String initials,
-			@FormParam("pass") String password) throws JSONException {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public String register(@Context HttpServletRequest request,
+            @FormParam("challenge") String challenge,
+            @FormParam("response") String response,
+            @FormParam("logname") String logname,
+            @FormParam("firstName") String firstName,
+            @FormParam("lastName") String lastName,
+            @FormParam("email") String email,
+            @FormParam("initials") String initials,
+            @FormParam("pass") String password) throws JSONException {
 
-		String remoteIP = request.getRemoteAddr();
+        String remoteIP = request.getRemoteAddr();
 
-		boolean error = false;
+        boolean error = false;
 
-		if (logname == null || logname == "") {
-			error = true;
-		}
+        if (logname == null || logname == "") {
+            error = true;
+        }
 
-		if (password == null || password == "") {
-			error = true;
-		}
+        if (password == null || password == "") {
+            error = true;
+        }
 
-		if (email == null || email == "") {
-			error = true;
-		}
+        if (email == null || email == "") {
+            error = true;
+        }
 
-		if (error) {
-			throw new WebApplicationException(errorResponse(
-					"incomplete-parameters",
-					"Please provide username, email, and password.",
-					Response.Status.CONFLICT));
-		}
+        if (error) {
+            throw new WebApplicationException(errorResponse(
+                    "incomplete-parameters",
+                    "Please provide username, email, and password.",
+                    Response.Status.CONFLICT));
+        }
 
-		// TODO: maybe even challenge not test here, because depends if it is
-		// activated at all
-		if (challenge == null || challenge == "") {
-			error = true;
-		}
-		if (response == null || response == "") {
-			error = true;
-		}
-		if (remoteIP == null || remoteIP == "") {
-			error = true;
-		}
-		if (error) {
-			throw new WebApplicationException(errorResponse(
-					"verification-params-error",
-					"Wrong Captcha input. Please repeat.",
-					Response.Status.INTERNAL_SERVER_ERROR));
-		}
+        // TODO: maybe even challenge not test here, because depends if it is
+        // activated at all
+        if (challenge == null || challenge == "") {
+            error = true;
+        }
+        if (response == null || response == "") {
+            error = true;
+        }
+        if (remoteIP == null || remoteIP == "") {
+            error = true;
+        }
+        if (error) {
+            throw new WebApplicationException(errorResponse(
+                    "verification-params-error",
+                    "Wrong Captcha input. Please repeat.",
+                    Response.Status.INTERNAL_SERVER_ERROR));
+        }
 
-		// TODO: maybe not here
-		String privateKey = getCaptchaConfig().optString("privateKey");
+        // checks if user email or user logname already exists
+        User existing = null;
+        try {
+            existing = userService.getUserByUserId(logname);
+            
+        } catch (Exception e) {
+            throw new WebApplicationException(
+                    errorResponse(
+                            "query-exception",
+                            "An error occured during checking the submitted user data. Please try again.",
+                            Response.Status.INTERNAL_SERVER_ERROR));
+        }
+        
+        if (existing != null) {
+            throw new WebApplicationException(
+                    errorResponse(
+                            "duplicate-username",
+                            "A user with username "
+                                    + logname
+                                    + " already exists. Please choose a another username.",
+                            Response.Status.CONFLICT));
+        }
 
-		// checks if user email or user logname already exists
-		try {
-			User existing = userService.getUserByUserId(logname);
-			if (existing != null) {
-				throw new WebApplicationException(
-						errorResponse(
-								"duplicate-username",
-								"A user with username "
-										+ logname
-										+ " already exists. Please choose a another username.",
-								Response.Status.CONFLICT));
-			}
-		} catch (Exception e) {
-			throw new WebApplicationException(
-					errorResponse(
-							"query-exception",
-							"An error occured during checking the submitted user data. Please try again.",
-							Response.Status.INTERNAL_SERVER_ERROR));
-		}
+        // now checking captcha
+        if (!verify(challenge, response, remoteIP)) {
+            throw new WebApplicationException(errorResponse(
+                    "verification-failed",
+                    "Wrong Captcha input. Please repeat.",
+                    Response.Status.INTERNAL_SERVER_ERROR));
+        }
 
-		// now checking captcha
-		if ( !verify(challenge, response, remoteIP, privateKey) ) {
-			throw new WebApplicationException(
-					errorResponse(
-							"verification-failed",
-							"Wrong Captcha input. Please repeat.",
-							Response.Status.INTERNAL_SERVER_ERROR));
-		}
+        User user = new User();
+        user.setLogin(logname);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setExternal(false);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setInitials(initials);
+        user.setJoinedOn(new Date());
 
-		User user = new User();
-		user.setLogin(logname);
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setExternal(false);
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setInitials(initials);
-		user.setJoinedOn(new Date());
+        Role role = new Role();
+        role.setLabel("user");
+        List<Role> roles = new ArrayList<Role>(1);
+        roles.add(role);
 
-		Role role = new Role();
-		role.setLabel("user");
-		List<Role> roles = new ArrayList<Role>(1);
-		roles.add(role);
+        user.setRoles(roles);
 
-		user.setRoles(roles);
+        // now sending activation email
+        try {
 
-		// now sending activation email
-		try {
+            User verification = userService.addUser(user);
 
-			User verification = userService.addUser(user);
+            // sendActivationMail(request, verification, user);
 
-			// sendActivationMail(request, verification, user);
+        } catch (Exception e) {
+            log.error(e);
+            throw new WebApplicationException(errorResponse("user-add-failed",
+                    "Couldn't register you. Please try registering again.",
+                    Response.Status.INTERNAL_SERVER_ERROR));
+        }
+        JSONObject suscessMsg = new JSONObject();
+        suscessMsg.put("message", "registered");
+        return suscessMsg.toString();
+    }
 
-		} catch (Exception e) {
-			log.error(e);
-			throw new WebApplicationException(
-					errorResponse(
-							"user-add-failed",
-							"Couldn't register you. Please try registering again.",
-							Response.Status.INTERNAL_SERVER_ERROR));
-		}
+    private Response errorResponse(String reason, String message,
+            StatusType status) {
 
-		return Response.noContent().status(Response.Status.ACCEPTED).toString();
-	}
+        JSONObject result = new JSONObject();
+        ResponseBuilder builder = Response.noContent();
+        builder.status(status);
 
-	private Response errorResponse(String reason, String message,
-			StatusType status) {
-		
-		JSONObject result = new JSONObject();
-		ResponseBuilder builder = Response.noContent();
-		builder.status(status);
+        try {
+            result.put("error", true);
+            result.put("reason", reason);
+            result.put("message", message);
 
-		try {
-			result.put("error", true);
-			result.put("reason", reason);
-			result.put("message", message);
-			
-			builder.entity(result.toString(2));
-			log.error(result.toString(2));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			log.error("Error creating json", e);
-			builder.status(Response.Status.INTERNAL_SERVER_ERROR);
-		}
-		
-		return builder.build();
+            builder.entity(result.toString(2));
+            log.error(result.toString(2));
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            log.error("Error creating json", e);
+            builder.status(Response.Status.INTERNAL_SERVER_ERROR);
+        }
 
-	}
+        return builder.build();
 
-	private boolean verify(String challenge, String response, String remoteIP,
-			String privateKey) {
+    }
 
-		if (getCaptchaConfig().optBoolean("dgbSkipCaptchaValidation", false)) {
-			return true;
-		}
+    /**
+     * Verifies the google reCAPTCHA and returns true on successful verification
+     * and if any problem occurred in order not to degrade user experience
+     * 
+     * @param challenge
+     *            reCAPTCHA challenge
+     * @param response
+     *            user asnwer
+     * @param remoteIP
+     *            user's ip
+     * @return true on correct verification or technical problem. False if user
+     *         supplied wrong response
+     */
+    private boolean verify(String challenge, String response, String remoteIP) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Verifying captcha -> Challenge: [" + challenge
-					+ "], response=[" + response + "], remoteIP=[" + remoteIP
-					+ "], privateKey=[" + privateKey + "]");
-		}
+        // TODO: maybe not here
+        JSONObject captchaConfig = config.optJSONObject("reCaptcha");
 
-		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(getCaptchaConfig().optString("verifyUrl"));
+        if (captchaConfig == null) {
+            log.error("Could read reCAPTACH configuration");
+            return true;
+        }
+        String privateKey = captchaConfig.optString("privateKey");
+        
+        if (captchaConfig.optBoolean("dgbSkipCaptchaValidation", false)) {
+            log.debug("Skipping validation as of configuration.");
+            return true;
+        }
 
-		List<NameValuePair> params = new ArrayList<NameValuePair>(4);
-		params.add(new BasicNameValuePair("privatekey", privateKey));
-		params.add(new BasicNameValuePair("remoteip", remoteIP));
-		params.add(new BasicNameValuePair("challenge", challenge));
-		params.add(new BasicNameValuePair("response", response));
+        if (log.isDebugEnabled()) {
+            log.debug("Verifying captcha -> Challenge: [" + challenge
+                    + "], response=[" + response + "], remoteIP=[" + remoteIP
+                    + "], privateKey=[" + privateKey + "]");
+        }
 
-		try {
-			post.setEntity(new UrlEncodedFormEntity(params));
-		} catch (UnsupportedEncodingException e1) {
-			log.error(e1);
-			return false;
-		}
+        HttpClient client = new DefaultHttpClient();
+        
+        HttpPost post = new HttpPost(captchaConfig.optString("verifyUrl"));
 
-		try {
-			HttpResponse httpResponse = client.execute(post);
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					httpResponse.getEntity().getContent()));
-			String line = br.readLine().trim();
-			if (line != null && "true".equals(line.toLowerCase())) {
-				return true;
-			} else {
-				// read the second line for failure reason
-				log.debug("Verification has failed.");
-				line = br.readLine();
-				log.debug("Reason: " + line);
-			}
-		} catch (Exception e) {
-			log.error("Failed to contact verifier: ", e);
-			// in case we can not use google captcha, we are not stopping the
-			// client from registering
-			return true;
-		}
+        List<NameValuePair> params = new ArrayList<NameValuePair>(4);
+        params.add(new BasicNameValuePair("privatekey", privateKey));
+        params.add(new BasicNameValuePair("remoteip", remoteIP));
+        params.add(new BasicNameValuePair("challenge", challenge));
+        params.add(new BasicNameValuePair("response", response));
 
-		return false;
-	}
+        try {
+            post.setEntity(new UrlEncodedFormEntity(params));
+        } catch (UnsupportedEncodingException e1) {
+            log.error(e1);
+            return false;
+        }
 
-	protected void sendActivationMail(HttpServletRequest request,
-			UserVerification verification, User user) throws Exception {
+        HttpResponse httpResponse = null;
+        try {
+            httpResponse = client.execute(post);
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    httpResponse.getEntity().getContent()));
 
-		final JSONObject mailConfig = config.optJSONObject("mail");
+            String line = br.readLine().trim().toLowerCase();
+            // check according to
+            // https://developers.google.com/recaptcha/docs/verify
+            if (line != null && "true".equals(line)) {
+                return true;
+            } else if (line != null && "false".equals(line)) {
+                // read the second line for failure reason
+                log.debug("reCAPTCHA verification failed.");
+                line = br.readLine();
+                log.debug("Reason: " + line);
+                return false;
+            } else {
+                log.error("Failed to reach:" + post.getURI().toString());
+                log.error("Request:" + post.toString());
+                log.error("Response:" + httpResponse.toString());
+            }
+        } catch (Exception e) {
+            log.error("Failed to reach:" + post.getURI().toString());
+            log.error("Request:" + post.toString());
+            log.error("Response:" + httpResponse.toString());
+            // in case we can not use google captcha, we are not stopping the
+            // client from registering
+            return true;
+        }
+        // again we should have already returned correctly and in doubt, let the
+        // user go
+        return true;
+    }
 
-		if (mailConfig == null) {
-			throw new Exception("Mail not configured.");
-		}
-		JSONObject options = mailConfig.optJSONObject("options");
-		if (options == null) {
-			throw new Exception("Mail options not configured.");
-		}
+    protected void sendActivationMail(HttpServletRequest request,
+            UserVerification verification, User user) throws Exception {
 
-		String[] names = JSONObject.getNames(options);
-		Properties properties = new Properties();
-		for (String key : names) {
-			properties.put(key, options.optString(key));
-		}
+        final JSONObject mailConfig = config.optJSONObject("mail");
 
-		JSONObject activationEMail = mailConfig.optJSONObject("activationMail");
-		if (activationEMail == null) {
-			throw new Exception("Activation mail is not configured.");
-		}
+        if (mailConfig == null) {
+            throw new Exception("Mail not configured.");
+        }
+        JSONObject options = mailConfig.optJSONObject("options");
+        if (options == null) {
+            throw new Exception("Mail options not configured.");
+        }
 
-		boolean debugSkipValidationEmail = mailConfig.optBoolean(
-				"dbgSkipActivation", false);
-		if (debugSkipValidationEmail) {
-			if (mailConfig.optBoolean("dgbActivateAccount", false)) {
-				userService.commitPending(user,
-						verification.getVerificationValue(),
-						config.optLong("verificationTTL", 86400000));
-				log.debug(" :: DEBUG > Account activated.");
-			} else {
-				log.debug(" :: DEBUG > Activation URL: "
-						+ getActivationURL(request, verification,
-								activationEMail));
-			}
-			return;
-		}
+        String[] names = JSONObject.getNames(options);
+        Properties properties = new Properties();
+        for (String key : names) {
+            properties.put(key, options.optString(key));
+        }
 
-		Session session = Session.getInstance(properties, new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(mailConfig.optString("user"),
-						mailConfig.optString("password"));
-			}
-		});
-		Message message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(mailConfig.optString("address")));
-		message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(user.getEmail()));
+        JSONObject activationEMail = mailConfig.optJSONObject("activationMail");
+        if (activationEMail == null) {
+            throw new Exception("Activation mail is not configured.");
+        }
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("verificationCode", verification.getVerificationValue());
-		params.put("username", user.getLogin());
-		params.put("firstName", user.getFirstName());
-		params.put("lastName", user.getLastName());
-		params.put("activationURL",
-				getActivationURL(request, verification, activationEMail));
+        boolean debugSkipValidationEmail = mailConfig.optBoolean(
+                "dbgSkipActivation", false);
+        if (debugSkipValidationEmail) {
+            if (mailConfig.optBoolean("dgbActivateAccount", false)) {
+                userService.commitPending(user,
+                        verification.getVerificationValue(),
+                        config.optLong("verificationTTL", 86400000));
+                log.debug(" :: DEBUG > Account activated.");
+            } else {
+                log.debug(" :: DEBUG > Activation URL: "
+                        + getActivationURL(request, verification,
+                                activationEMail));
+            }
+            return;
+        }
 
-		String subject = vTemplate.formatStr(
-				activationEMail.optString("subject"), params,
-				"::activation-mail:subject");
-		String body = vTemplate.format(activationEMail.optString("template"),
-				params, params);
-		message.setSubject(subject);
-		message.setText(body);
-		Transport.send(message);
-	}
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(mailConfig.optString("user"),
+                        mailConfig.optString("password"));
+            }
+        });
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(mailConfig.optString("address")));
+        message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(user.getEmail()));
 
-	private JSONObject getCaptchaConfig() {
-		JSONObject captchaConfig = config.optJSONObject("reCaptcha");
-		if (captchaConfig == null) {
-			captchaConfig = new JSONObject();
-		}
-		return captchaConfig;
-	}
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("verificationCode", verification.getVerificationValue());
+        params.put("username", user.getLogin());
+        params.put("firstName", user.getFirstName());
+        params.put("lastName", user.getLastName());
+        params.put("activationURL",
+                getActivationURL(request, verification, activationEMail));
 
-	protected String getActivationURL(HttpServletRequest request,
-			UserVerification verification, JSONObject activationEmailConfig)
-			throws URISyntaxException {
+        String subject = vTemplate.formatStr(
+                activationEMail.optString("subject"), params,
+                "::activation-mail:subject");
+        String body = vTemplate.format(activationEMail.optString("template"),
+                params, params);
+        message.setSubject(subject);
+        message.setText(body);
+        Transport.send(message);
+    }
 
-		String activationURL = WebUtils.getAppURL(request);
-		String endpoint = activationEmailConfig.optString("activationEndpoint",
-				"register/activate");
+    protected String getActivationURL(HttpServletRequest request,
+            UserVerification verification, JSONObject activationEmailConfig)
+            throws URISyntaxException {
 
-		return activationURL + endpoint + "?verification="
-				+ verification.getVerificationValue();
-	}
+        String activationURL = WebUtils.getAppURL(request);
+        String endpoint = activationEmailConfig.optString("activationEndpoint",
+                "register/activate");
+
+        return activationURL + endpoint + "?verification="
+                + verification.getVerificationValue();
+    }
 
 }
