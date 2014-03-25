@@ -6,6 +6,5 @@ package net.megx.ws.core.providers.csv;
  * @author Jovica
  */
 public enum ColumnNameFormat {
-	NONE,
-	FROM_CAMEL_CASE
+    NONE, FROM_CAMEL_CASE
 }

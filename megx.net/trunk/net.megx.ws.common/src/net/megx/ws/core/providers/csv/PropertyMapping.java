@@ -14,54 +14,59 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.beans.PropertyDescriptor;
 
 public class PropertyMapping {
-	private String mappedName;
-	private PropertyDescriptor descriptor;
-	public PropertyMapping(String mappedName,
-			PropertyDescriptor descriptor) {
-		super();
-		this.mappedName = mappedName;
-		this.descriptor = descriptor;
-	}
-	public String getMappedName() {
-		return mappedName;
-	}
-	public void setMappedName(String mappedName) {
-		this.mappedName = mappedName;
-	}
-	public PropertyDescriptor getDescriptor() {
-		return descriptor;
-	}
-	public void setDescriptor(PropertyDescriptor descriptor) {
-		this.descriptor = descriptor;
-	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((mappedName == null) ? 0 : mappedName.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PropertyMapping other = (PropertyMapping) obj;
-		if (mappedName == null) {
-			if (other.mappedName != null)
-				return false;
-		} else if (!mappedName.equals(other.mappedName))
-			return false;
-		return true;
-	}
+    private String mappedName;
+    private PropertyDescriptor descriptor;
+
+    public PropertyMapping(String mappedName, PropertyDescriptor descriptor) {
+        super();
+        this.mappedName = mappedName;
+        this.descriptor = descriptor;
+    }
+
+    public String getMappedName() {
+        return mappedName;
+    }
+
+    public void setMappedName(String mappedName) {
+        this.mappedName = mappedName;
+    }
+
+    public PropertyDescriptor getDescriptor() {
+        return descriptor;
+    }
+
+    public void setDescriptor(PropertyDescriptor descriptor) {
+        this.descriptor = descriptor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((mappedName == null) ? 0 : mappedName.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PropertyMapping other = (PropertyMapping) obj;
+        if (mappedName == null) {
+            if (other.mappedName != null)
+                return false;
+        } else if (!mappedName.equals(other.mappedName))
+            return false;
+        return true;
+    }
 }

@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.io.OutputStream;
@@ -24,46 +23,49 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo>{
+public class SimpleCSVMarshaller implements CSVMarshaller<CSVDocumentInfo> {
 
-	public void marshall(CSVDocumentInfo t, Class<?> type, OutputStream stream)
-			throws Exception {
-		CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(stream), t.getSeparator(), t.getQuoteChar(), t.getLineEnd());
-		if(t.isWriteHeaderColumns()){
-			csvWriter.writeNext(getHeaderColumns(t.getColumnsMapping(), t));
-		}
-		
-		List<?> data = t.getData();
-		for(Object bean: data){
-			csvWriter.writeNext(getBeanAsRow(bean, t.getColumnsMapping()));
-		}
-		csvWriter.flush();
-		csvWriter.close();
-	}
-	
-	private String [] getBeanAsRow(Object bean, List<PropertyMapping> mappings) throws Exception{
-		String [] row  = new String [mappings.size()];
-		int i = 0;
-		for(PropertyMapping m: mappings){
-			Method getter = m.getDescriptor().getReadMethod();
-			if(getter != null){
-				Object value = getter.invoke(bean);
-				if(value != null)
-					row[i] = value.toString();
-			}
-			i++;
-		}
-		return row;
-	}
-	
-	
-	private String [] getHeaderColumns(List<PropertyMapping> mappings, CSVDocumentInfo info) throws Exception {
-		String [] headers = new String [mappings.size()];
-		int i = 0;
-		for(PropertyMapping m: mappings){
-			headers[i] = ColumNameFormatUtils.formatStr(m.getMappedName(), info.getFormat());
-			i++;
-		}
-		return headers;
-	}
+    public void marshall(CSVDocumentInfo t, Class<?> type, OutputStream stream)
+            throws Exception {
+        CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(stream),
+                t.getSeparator(), t.getQuoteChar(), t.getLineEnd());
+        if (t.isWriteHeaderColumns()) {
+            csvWriter.writeNext(getHeaderColumns(t.getColumnsMapping(), t));
+        }
+
+        List<?> data = t.getData();
+        for (Object bean : data) {
+            csvWriter.writeNext(getBeanAsRow(bean, t.getColumnsMapping()));
+        }
+        csvWriter.flush();
+        csvWriter.close();
+    }
+
+    private String[] getBeanAsRow(Object bean, List<PropertyMapping> mappings)
+            throws Exception {
+        String[] row = new String[mappings.size()];
+        int i = 0;
+        for (PropertyMapping m : mappings) {
+            Method getter = m.getDescriptor().getReadMethod();
+            if (getter != null) {
+                Object value = getter.invoke(bean);
+                if (value != null)
+                    row[i] = value.toString();
+            }
+            i++;
+        }
+        return row;
+    }
+
+    private String[] getHeaderColumns(List<PropertyMapping> mappings,
+            CSVDocumentInfo info) throws Exception {
+        String[] headers = new String[mappings.size()];
+        int i = 0;
+        for (PropertyMapping m : mappings) {
+            headers[i] = ColumNameFormatUtils.formatStr(m.getMappedName(),
+                    info.getFormat());
+            i++;
+        }
+        return headers;
+    }
 }

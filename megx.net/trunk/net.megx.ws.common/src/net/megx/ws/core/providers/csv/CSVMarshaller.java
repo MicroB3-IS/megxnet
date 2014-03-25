@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.io.OutputStream;
@@ -23,16 +22,22 @@ import java.io.OutputStream;
  * Comma Separated Values document marshaller.
  * 
  * @author Pavle Jonoski
- *
- * @param <T> type of object used as context for marshalling
+ * 
+ * @param <T>
+ *            type of object used as context for marshalling
  */
 public interface CSVMarshaller<T> {
-	/**
-	 * Marshalls context to output stream as CSV document.
-	 * @param t - object used as context for marshalling
-	 * @param type - context type
-	 * @param stream - the stream to marshall to
-	 * @throws Exception
-	 */
-	public void marshall(T t, Class<?> type, OutputStream stream) throws Exception;
+    /**
+     * Marshalls context to output stream as CSV document.
+     * 
+     * @param t
+     *            - object used as context for marshalling
+     * @param type
+     *            - context type
+     * @param stream
+     *            - the stream to marshall to
+     * @throws Exception
+     */
+    public void marshall(T t, Class<?> type, OutputStream stream)
+            throws Exception;
 }

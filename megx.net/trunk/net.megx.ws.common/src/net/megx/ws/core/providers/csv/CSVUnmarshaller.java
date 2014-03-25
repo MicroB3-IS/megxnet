@@ -14,24 +14,29 @@
  *  limitations under the License.
  */
 
-
 package net.megx.ws.core.providers.csv;
 
 import java.io.InputStream;
 
 /**
- * Unmarshaller from Comma Separated Values document {@link InputStream} to Object of specified type.
+ * Unmarshaller from Comma Separated Values document {@link InputStream} to
+ * Object of specified type.
+ * 
  * @author Pavle Jonoski
- *
- * @param <T> type of object to create
+ * 
+ * @param <T>
+ *            type of object to create
  */
 public interface CSVUnmarshaller<T> {
-	/**
-	 * Unmarshalls CVS {@link InputStream} to context type object
-	 * @param type - type of object to create
-	 * @param stream - CVS stream
-	 * @return created context object
-	 * @throws Exception
-	 */
-	public T unmarshall(Class<?> type, InputStream stream) throws Exception;
+    /**
+     * Unmarshalls CVS {@link InputStream} to context type object
+     * 
+     * @param type
+     *            - type of object to create
+     * @param stream
+     *            - CVS stream
+     * @return created context object
+     * @throws Exception
+     */
+    public T unmarshall(Class<?> type, InputStream stream) throws Exception;
 }
