@@ -7,8 +7,10 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -19,6 +21,7 @@ import javax.ws.rs.core.StreamingOutput;
 
 import net.megx.megdb.blast.BlastService;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
+import net.megx.model.blast.BlastHits;
 import net.megx.ws.core.BaseRestService;
 
 import com.google.gson.GsonBuilder;
@@ -69,6 +72,26 @@ public class BlastServiceAPI extends BaseRestService {
 					}).status(201);
 			rb.type("text/csv");
 			return rb.build();
+		} catch (DBGeneralFailureException e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (Exception e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GET
+	@Path("results/unknown/{jid : \\d+}/network/{hitId : \\d+}")
+	@Produces(MediaType.APPLICATION_XML)
+	public String getSubnetGraphml(@PathParam("jid") int jid,
+			@PathParam("hitId") String hitId,
+			@Context HttpServletRequest request) {
+		String subnetGraphml;
+		try {
+			BlastHits blastHits = service.getSubnetGraphml(jid, hitId);
+			subnetGraphml = blastHits.getSubnetGraphml();
+			return subnetGraphml;
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);

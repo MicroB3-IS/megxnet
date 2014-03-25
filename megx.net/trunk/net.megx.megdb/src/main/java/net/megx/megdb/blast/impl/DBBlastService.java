@@ -4,6 +4,8 @@ import net.megx.megdb.BaseMegdbService;
 import net.megx.megdb.blast.BlastService;
 import net.megx.megdb.blast.mappers.BlastMapper;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
+import net.megx.megdb.exceptions.DBNoRecordsException;
+import net.megx.model.blast.BlastHits;
 import net.megx.model.blast.BlastJob;
 
 import org.apache.commons.logging.Log;
@@ -39,6 +41,23 @@ public class DBBlastService extends BaseMegdbService implements BlastService {
 		}, BlastMapper.class);
 
 		return blastJobId;
+	}
+
+	@Override
+	public BlastHits getSubnetGraphml(final int jid, final String hitId)
+			throws DBGeneralFailureException, DBNoRecordsException {
+		BlastHits result = doInSession(new DBTask<BlastMapper, BlastHits>() {
+			@Override
+			public BlastHits execute(BlastMapper mapper) throws Exception {
+				return mapper.getSubnetGraphml(jid, hitId);
+			}
+		}, BlastMapper.class);
+
+		if (result == null) {
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {
+			return result;
+		}
 	}
 
 }

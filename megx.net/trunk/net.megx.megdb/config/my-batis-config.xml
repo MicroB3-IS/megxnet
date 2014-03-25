@@ -74,6 +74,7 @@
 		
 		<!-- Blast -->
 		<typeAlias type="net.megx.model.blast.BlastJob" alias="BlastJob"/>
+		<typeAlias type="net.megx.model.blast.BlastHits" alias="BlastHits"/>
 	</typeAliases>
 
 	<environments default="main">
