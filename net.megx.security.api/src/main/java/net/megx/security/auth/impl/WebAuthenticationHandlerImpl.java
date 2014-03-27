@@ -65,7 +65,8 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
                                         "Login with external account.");
                             }
                             Date lastLogin = user.getLastlogin();
-                            // user.setPassword(null);
+                            //TODO: check for more robust and secure solution e.g. by not storing password in User objetc at all                            
+user.setPassword(null);
                             user.setLastlogin(new Date());
                             if (lastLogin == null) {
                                 lastLogin = user.getLastlogin();
