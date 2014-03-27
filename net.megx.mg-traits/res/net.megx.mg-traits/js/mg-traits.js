@@ -56,24 +56,33 @@ $(document).ready(function() {
 	var oTable = tbl.dataTable(cfg);
 	
 	$.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/all",
-        function(allTraits){
-        	var nbRorwsToAdd = allTraits.data.length;
-        	var rowsToAdd = [];
-        	
-            for(var i = 0; i < allTraits.data.length; i++) {
-            	
-            	rowsToAdd.push({
- 	                'id': allTraits.data[i].id,
- 	                'sampleLabel': allTraits.data[i].sampleLabel,
- 	                'sampleName': allTraits.data[i].sampleName,
- 	                'sampleEnvironment': allTraits.data[i].sampleEnvironment,
- 	                'size': allTraits.data[i].totalMB,
- 	                'numberOfSequences': allTraits.data[i].numReads  
- 	            });
-            }    	 
-	    	if(rowsToAdd.length === nbRorwsToAdd){
-	    		oTable.dataTable().fnAddData(rowsToAdd);
-	    	}    
+        function(allTraits, textStatus, jqXHR ){
+		
+			if(allTraits != null){
+				
+				var nbRorwsToAdd = allTraits.data.length;
+	        	var rowsToAdd = [];
+	        	
+	            for(var i = 0; i < allTraits.data.length; i++) {
+	            	
+	            	rowsToAdd.push({
+	 	                'id': allTraits.data[i].id,
+	 	                'sampleLabel': allTraits.data[i].sampleLabel,
+	 	                'sampleName': allTraits.data[i].sampleName,
+	 	                'sampleEnvironment': allTraits.data[i].sampleEnvironment,
+	 	                'size': allTraits.data[i].totalMB,
+	 	                'numberOfSequences': allTraits.data[i].numReads  
+	 	            });
+	            }    	 
+		    	if(rowsToAdd.length === nbRorwsToAdd){
+		    		oTable.dataTable().fnAddData(rowsToAdd);
+		    	} 
+				
+			}else{
+				$("#errorMessage").show();
+	        	$(".downloadAllTraits").hide();
+			}
+        	   
         }).error(function() {
         	$("#errorMessage").show();
         	$(".downloadAllTraits").hide();
