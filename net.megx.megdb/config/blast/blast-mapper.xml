@@ -55,7 +55,7 @@
 		<result column="time_started" property="timeStarted" jdbcType="TIMESTAMP"
 			javaType="java.sql.Timestamp" />
 		<result column="cluster_node" property="clusterNode" />
-		<result column="job_id" property="job_id" />
+		<result column="job_id" property="jobId" />
 		<result column="return_code" property="returnCode" />
 		<result column="error_message" property="errorMessage" />
 		<result column="total_run_time" property="totalRunTime" />
@@ -63,39 +63,48 @@
 		<result column="query_id" property="queryId" />
 		<result column="query_seq" property="querySeq" />
 	</resultMap>
-	
+
 	<resultMap type="BlastHits" id="blast_hits">
-	 <result column="jid" property="jid" />  
-	 <result column="hit" property="hit" /> 
-	 <result column="db" property="db" /> 
-	 <result column="hit_id" property="hitId" /> 
-	 <result column="hit_def" property="hitDef" />  
-	 <result column="hit_acc" property="hitAcc" />  
-	 <result column="hit_length" property="hitLength" /> 
-	 <result column="hsp_num" property="hspNum" /> 
-	 <result column="hsp_length" property="hspLength" /> 
-	 <result column="hsp_evalue" property="hspEvalue" /> 
-	 <result column="hsp_bit_score" property="hspBitScore" />  
-	 <result column="hsp_q_from" property="hspQFrom" /> 
-	 <result column="hsp_q_to" property="hspQTo" /> 
-	 <result column="hsp_h_from" property="hspHFrom" /> 
-	 <result column="hsp_h_to" property="hspHTo" /> 
-	 <result column="hsp_q_frame" property="hspQFrame" />  
-	 <result column="hsp_h_frame" property="hspHFrame" /> 
-	 <result column="hsp_identical" property="hspIdentical" /> 
-	 <result column="hsp_conserved" property="hspConserved" /> 
-	 <result column="hsp_q_string" property="hspQString" /> 
-	 <result column="hsp_h_string" property="hspHString" />  
-	 <result column="hsp_homology_string" property="hspHomologyString" /> 
-	 <result column="subnet_graphml" property="subnetGraphml" /> 
-	 <result column="subnet_json" property="subnetJson" /> 
-	 <result column="hit_neighborhood" property="hitNeighborhood" /> 
-	 <result column="kegg_url_args" property="keggUrlArgs" />  
-	 <result column="hit_bits" property="hitBits" /> 
-	 <result column="hit_significance" property="hitSignificance" /> 
-	 <result column="hit_hsp_num" property="hitHspNum" /> 
+		<result column="jid" property="jid" />
+		<result column="hit" property="hit" />
+		<result column="db" property="db" />
+		<result column="hit_id" property="hitId" />
+		<result column="hit_def" property="hitDef" />
+		<result column="hit_acc" property="hitAcc" />
+		<result column="hit_length" property="hitLength" />
+		<result column="hsp_num" property="hspNum" />
+		<result column="hsp_length" property="hspLength" />
+		<result column="hsp_evalue" property="hspEvalue" />
+		<result column="hsp_bit_score" property="hspBitScore" />
+		<result column="hsp_q_from" property="hspQFrom" />
+		<result column="hsp_q_to" property="hspQTo" />
+		<result column="hsp_h_from" property="hspHFrom" />
+		<result column="hsp_h_to" property="hspHTo" />
+		<result column="hsp_q_frame" property="hspQFrame" />
+		<result column="hsp_h_frame" property="hspHFrame" />
+		<result column="hsp_identical" property="hspIdentical" />
+		<result column="hsp_conserved" property="hspConserved" />
+		<result column="hsp_q_string" property="hspQString" />
+		<result column="hsp_h_string" property="hspHString" />
+		<result column="hsp_homology_string" property="hspHomologyString" />
+		<result column="subnet_graphml" property="subnetGraphml" />
+		<result column="subnet_json" property="subnetJson" />
+		<result column="hit_neighborhood" property="hitNeighborhood" />
+		<result column="kegg_url_args" property="keggUrlArgs" />
+		<result column="hit_bits" property="hitBits" />
+		<result column="hit_significance" property="hitSignificance" />
+		<result column="hit_hsp_num" property="hitHspNum" />
 	</resultMap>
 
+	<resultMap type="BlastHitsNeighbours" id="blast_hits_neighbours">
+		<result column="key" property="key" />
+		<result column="value" property="value" />
+		<result column="hit_id" property="hitId" />
+	</resultMap>
+
+	<resultMap type="BlastHitsDb" id="blast_hits_db">
+		<result column="db" property="db" />
+	</resultMap>
 
 	<insert id="insertBlastJob" parameterType="BlastJob">
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
@@ -113,13 +122,56 @@
 		#{programName},
 		#{biodbLabel},#{biodbVersion},#{rawFasta})
 	</insert>
-	
-	<select id="getSubnetGraphml" 
-        resultMap="blast_hits">
-        SELECT subnet_graphml
-        FROM  megx_blast.blast_hits
-        WHERE jid =#{jid} and hit_id =#{hitId};
-       
+
+	<select id="getSubnetGraphml" resultMap="blast_hits">
+		SELECT subnet_graphml
+		FROM megx_blast.blast_hits
+		WHERE jid =#{jid} and hit_id =#{hitId};
+	</select>
+
+	<select id="getBlastJobDetails" resultMap="blast_job"
+		parameterType="int">
+		SELECT id, label, time_submitted, time_finished,
+		return_code,
+		error_message
+		FROM
+		megx_blast.blast_jobs
+		WHERE id
+		=#{blastJobId};
+	</select>
+
+	<select id="getSuccesfulBlastJob" parameterType="int" resultMap="blast_job">
+		SELECT id, label, time_submitted, time_finished, return_code,
+		error_message
+		FROM
+		megx_blast.blast_jobs
+		WHERE return_code
+		= 0 and
+		id =
+		#{id};
+	</select>
+
+	<select id="getNeighbours" resultMap="blast_hits_neighbours"
+		parameterType="int">
+    <![CDATA[
+		 SELECT 
+		 	hit_id, 
+		 	(each(hit_neighborhood)).key as key,
+		 	(each(hit_neighborhood)).value as value
+         FROM megx_blast.blast_hits
+         WHERE jid =#{jid} and hit_id =#{hitId};
+     	 ]]>
+	</select>
+
+	<select id="getResultRaw" resultMap="blast_job" parameterType="int">
+		SELECT result_raw
+		FROM megx_blast.blast_jobs
+		WHERE id =#{id};
+	</select>
+
+	<select id="getDatabases" resultMap="blast_hits_db">
+		SELECT db FROM
+		megx_blast.blast_hits;
 	</select>
 
 </mapper>
