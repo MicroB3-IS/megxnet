@@ -65,7 +65,7 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 			sqlSession.commit();
 		} catch (PersistenceException pe) {
-			throw new SQLException(pe.getCause());
+		    //throw new SQLException(pe.getCause());
 		} finally {
 			sqlSession.close();
 		}

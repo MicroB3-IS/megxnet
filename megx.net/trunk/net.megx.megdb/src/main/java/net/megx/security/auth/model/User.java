@@ -154,9 +154,7 @@ public class User {
 	}
 	
 	public void setPassword(String password) {
-		if (password == null) {
-			throw new IllegalArgumentException("Password might not be null");
-		}
+	      
 		this.password = password;
 	}
 	public void setProvider(String provider) {
