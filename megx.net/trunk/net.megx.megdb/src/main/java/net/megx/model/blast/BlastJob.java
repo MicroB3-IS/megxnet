@@ -1,13 +1,15 @@
 package net.megx.model.blast;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.postgresql.util.PGInterval;
 
 public class BlastJob {
 
-	private double id;
+	private int id;
 	private String label;
 	private String customer;
 	private int numNeighbors;
@@ -55,18 +57,22 @@ public class BlastJob {
 	private Timestamp timeStarted;
 	private String clusterNode;
 	private int jobId;
-	private int returnCode;
+	private int returnCode = -1;
 	private String errorMessage;
 	private double totalRunTime;
 	private String[] timeProtocol;
 	private String queryId;
 	private String querySeq;
+	
+	private String formatedTimeSubmitted = "";
+	private String formatedTimeFinished = "";
+	private String formatedTimeStarted = "";
 
-	public double getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(double id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -390,16 +396,24 @@ public class BlastJob {
 		this.filter = filter;
 	}
 
-	public Timestamp getTimeSubmitted() {
-		return timeSubmitted;
+	public String getTimeSubmitted() {
+		if (this.timeSubmitted != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeSubmitted = df.format(this.timeSubmitted);
+		}
+		return formatedTimeSubmitted;
 	}
 
 	public void setTimeSubmitted(Timestamp timeSubmitted) {
 		this.timeSubmitted = timeSubmitted;
 	}
 
-	public Timestamp getTimeFinished() {
-		return timeFinished;
+	public String getTimeFinished() {
+		if (this.timeFinished != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeFinished = df.format(this.timeFinished);
+		}
+		return formatedTimeFinished;
 	}
 
 	public void setTimeFinished(Timestamp timeFinished) {
@@ -422,8 +436,12 @@ public class BlastJob {
 		this.keepData = keepData;
 	}
 
-	public Timestamp getTimeStarted() {
-		return timeStarted;
+	public String getTimeStarted() {
+		if (this.timeStarted != null) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+			formatedTimeStarted = df.format(this.timeStarted);
+		}
+		return formatedTimeStarted;
 	}
 
 	public void setTimeStarted(Timestamp timeStarted) {
@@ -527,8 +545,7 @@ public class BlastJob {
 		result = prime * result + gapOpen;
 		result = prime * result + geneticCode;
 		result = prime * result + (giDefine ? 1231 : 1237);
-		temp = Double.doubleToLongBits(id);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + id;
 		result = prime * result + jobId;
 		result = prime * result
 				+ ((keepData == null) ? 0 : keepData.hashCode());
@@ -648,7 +665,7 @@ public class BlastJob {
 			return false;
 		if (giDefine != other.giDefine)
 			return false;
-		if (Double.doubleToLongBits(id) != Double.doubleToLongBits(other.id))
+		if (id != other.id)
 			return false;
 		if (jobId != other.jobId)
 			return false;
