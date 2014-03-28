@@ -35,6 +35,9 @@ div.dataTables_info{
 .downloadSample{
 	font-size: 20px;
 }
+.textBold{
+	font-weight: bold;
+}
 #simpleTrait
 {
 font-family:"Trebuchet MS", Arial;
