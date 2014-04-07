@@ -6,7 +6,7 @@ import com.jayway.restassured.RestAssured;
 
 /**
  * JUnit Rule to set-up the remote HTTP Server configuration against which the
- * tests run as for RESTAss.
+ * tests run as for RESTAssured.
  * 
  * TODO: get configuration from the environment
  * 
@@ -18,9 +18,9 @@ public class TestServer extends ExternalResource {
 	@Override
 	public void before() {
 		// TODO Auto-generated method stub
-		RestAssured.baseURI = "http://mb3is.megx.net";
-		RestAssured.port = 80;
-		RestAssured.basePath = "/";
+		RestAssured.baseURI = "${mvn.test.server}";
+		RestAssured.port = ${mvn.test.port};
+		RestAssured.basePath = "${mvn.test.base.path}";
 		// RestAssured.rootPath = "x.y.z";
 	}
 
