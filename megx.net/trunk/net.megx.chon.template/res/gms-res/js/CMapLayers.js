@@ -59,8 +59,8 @@ CMapLayers.prototype = {
 			maxResolution : "auto"
 		});
 		
-		layers.osdRegistry = new OpenLayers.Layer.WMS("osdRegistry", gms_wms_url, {
-			layers : 'osdRegistry',
+		layers.osdRegistry = new OpenLayers.Layer.WMS("osd_registry", gms_wms_url, {
+			layers : 'osd_registry',
 			format : 'image/png',
 			transparent : "true"
 		}, {

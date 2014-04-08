@@ -1,5 +1,57 @@
 <nav>
-$ext.fragments.menu
+  <ul>
+    <li><a href="$ctx.siteUrl">home</a>
+      <ul>
+        #foreach($m in $ext.menu.home.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/tools/About-Genes-Mapserver-3.0">tools</a>
+      <ul>
+        #foreach($m in $ext.menu.tools.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+
+<li><a href="$ctx.siteUrl/esa/download.html">Earth Sampling Application</a></li>
+<li><a href="$ctx.siteUrl/osd-registry">OSD Registry</a></li>
+
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/$ext.list.browse_items[0].path">browse</a>
+      <ul class="menu-list">
+        #foreach($m in  $ext.list.browse_items)
+        <li><a href="$ctx.siteUrl/$m.path">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/portal/edutainment.html">edutainment</a>
+      <ul class="menu-list">
+        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer</a></li>
+      </ul>
+    </li>
+    <li><a href="$ctx.siteUrl/portal/toolbox.html">portal</a>
+      <ul>
+        <li><a href="$ctx.siteUrl/portal/toolbox.html"><b>Overview</b></a></li>
+        <li><span>Maintained</span></li>
+        <li><a href="http://www.jcoast.net">JCoast</a></li>
+        <li><a href="http://www.megx.net/michanthi/michanthi.html">MicHanThi</a></li>
+        <li><a href="http://www.megx.net/metabar/login.htm">MetaBar</a></li>
+        <li><a href="http://www.mpi-bremen.de/en/MADA.html">MADA</a></li>
+        <li><a href="http://www.megx.net/ribalign/index.html">Ribalign</a></li>
+        <li><a href="http://soma.arb-silva.de">TaxSOM</a></li>
+        <li><a href="http://www.megx.net/CDinFusion/">CDinFusion</a></li>
+        <li><a href="http://www.megx.net/FastaValidator/index.html">FastaValidator</a></li>
+        <li><span>Unmaintained</span></li>
+        <li><a href="http://www.megx.net/metalook/index.php">MetaLook</a></li>
+        <li><a href="http://www.megx.net/metamine/">MetaMine</a></li>
+        <li><a href="http://www.megx.net/tetra/index.html">TETRA</a></li>
+      </ul>
+    </li>
+    <!--li><a href="$ctx.siteUrl/portal/news/news.html">news</a></li>
+    <li><a href="$ctx.siteUrl/portal/faq.html">faq</a></li-->
+    <li><a href="$ctx.siteUrl/portal/contact.html">contact</a></li>
+  </ul>
 </nav>
 <div class="clear"></div>
 <noscript><h3 style="color:#990000;">To get the full functionality, please, activate JavaScript in your browser!</h3></noscript>
