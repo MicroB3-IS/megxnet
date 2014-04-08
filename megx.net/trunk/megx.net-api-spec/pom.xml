@@ -18,8 +18,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mvn.test.server>http://localhost</mvn.test.server>
-        <mvn.test.port>80</mvn.test.port>
-        <mvn.test.base.path>/</mvn.test.base.path>
+        <mvn.test.port>8080</mvn.test.port>
+        <mvn.test.base.path>/megx.net</mvn.test.base.path>
     </properties>
 
     <dependencies>
