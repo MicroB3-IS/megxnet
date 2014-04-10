@@ -66,7 +66,7 @@ Biojs.MegxMapWidget = Biojs
     opt : {
       target : 'megxMapWidget',
       layerSet : 'osd-registry',
-      gmsBaseURL : 'http://mb3is.megx.net/wms',
+      gmsBaseURL : ctx.siteUrl + '/wms',
       log : true
     },
 
