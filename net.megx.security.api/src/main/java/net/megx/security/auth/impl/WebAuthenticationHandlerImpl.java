@@ -54,7 +54,7 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
                         log.debug("username=" + username +"=");
                         log.debug("password=" + password +"=");
                         try {
-                            User user = userService.getUser(username.trim(),password);
+                            User user = userService.getUser(username.trim(),password.trim());
                             
                             if (user == null) {
                                 throw new InvalidCredentialsException(
