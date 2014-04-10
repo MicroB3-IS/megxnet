@@ -32,7 +32,7 @@ public class NotificationHandlerIT {
 	public void setup() {
 		this.request = client.newRequestBuilder().method(Request.METHOD.GET);
 		try {
-			endPointProperties.load(NotificationHandlerTest.class.getClassLoader().getResourceAsStream("endpoints.properties"));
+			//endPointProperties.load(NotificationHandlerTest.class.getClassLoader().getResourceAsStream("endpoints.properties"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
