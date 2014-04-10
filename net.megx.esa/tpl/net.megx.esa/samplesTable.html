@@ -146,7 +146,7 @@ $ext.dataTable.renderServerSide(
 	 }, {
 	 	mData: 'id',
 	 	sClass: 'center',
-	 	sWidth: '130px',
+	 	sWidth: '100px',
 	 	mRender: function(id){
 	 		var viewUrl = '$ctx.siteUrl/osd-app/sampleDetails?sampleId=' + id;
 			return '<a href=' + viewUrl + ' class=\'viewSampleClass\'>View more</a>';
@@ -160,5 +160,5 @@ $ext.dataTable.renderServerSide(
 
 <iframe name="csvDownloadTarget" style="display: none;"></iframe>
 
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesTableCustomization.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesDownload.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesTableCustomization.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesDownload.js"></script>

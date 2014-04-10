@@ -60,6 +60,8 @@ $(document).ready(function(){
 	      }
 	});
 	
+	$('.ui-dialog').css('z-index', '10000');
+	
 	$("#customizeTableLnk").click(function(){
 		$("#columnsDialog").dialog("open");
 		return false;
