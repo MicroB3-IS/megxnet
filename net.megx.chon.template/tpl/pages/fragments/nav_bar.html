@@ -1,6 +1,6 @@
 <nav>
   <ul>
-    <li><a href="$ctx.siteUrl">home</a>
+    <li><a href="$ctx.siteUrl/">home</a>
       <ul>
         #foreach($m in $ext.menu.home.childs)
         <li><a href="$m.fullLink">$m.title</a></li>
@@ -13,7 +13,7 @@
         <li><a href="$m.fullLink">$m.title</a></li>
         #end
 
-<li><a href="$ctx.siteUrl/esa/download.html">Earth Sampling Application</a></li>
+<li><a href="$ctx.siteUrl/osd-app/samples">OSD Sampling Application</a></li>
 <li><a href="$ctx.siteUrl/osd-registry">OSD Registry</a></li>
 
       </ul>
@@ -23,6 +23,7 @@
         #foreach($m in  $ext.list.browse_items)
         <li><a href="$ctx.siteUrl/$m.path">$m.title</a></li>
         #end
+        <li><a href="$ctx.siteUrl//mg-traits/samples">Metagenomic Traits</a></li>
       </ul>
     </li>
     <li><a href="$ctx.siteUrl/portal/edutainment.html">edutainment</a>
@@ -48,8 +49,6 @@
         <li><a href="http://www.megx.net/tetra/index.html">TETRA</a></li>
       </ul>
     </li>
-    <!--li><a href="$ctx.siteUrl/portal/news/news.html">news</a></li>
-    <li><a href="$ctx.siteUrl/portal/faq.html">faq</a></li-->
     <li><a href="$ctx.siteUrl/portal/contact.html">contact</a></li>
   </ul>
 </nav>
