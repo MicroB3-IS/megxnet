@@ -1,0 +1,100 @@
+.selectAllSamplesLnk{
+	margin-left: 45px;
+	color: #0000ff !important;
+	font-size: 14px;
+}
+.deselectAllSamplesLnk{
+	margin-left: 45px;
+	color: #0000ff !important;
+	display: none;
+	font-size: 14px;
+}
+p.columnEditingNote{
+	color: red;
+	width: 290px;
+	margin-bottom: 30px;
+}
+.downloadSelected{
+	margin-right: 20px;
+	color: #0000ff !important;
+	font-size: 14px;
+}
+div.dataTables_info{
+	width: 42% !important;
+}
+div.sampleImages{
+	color: red;
+	font-size: 20px;
+	height: 132px;
+	overflow: auto;
+	height: 150px;
+	text-align: center;
+	vertical-align: bottom;
+	width: 550px;
+	white-space: nowrap;
+}
+.sampleData{
+	padding: 10px;
+}
+table.sampleData td.label{
+	white-space: nowrap;
+}
+td.label{
+	padding-right: 20px;
+}
+#sampleDetails{
+	margin: 20px;
+	width: 900px;
+}
+#sampleDetails td{
+	margin: 20px;
+}
+img.sampleImage{
+	width: 150px;
+	height: 113px;
+	padding: 1px;
+	border-radius: 4px;
+	border: 2px solid #5e5e5e;
+}
+a.gallery{
+	padding: 10px;
+}
+img.noImageClass{
+	width: 150px;
+	padding: 11px;
+	border-radius: 4px;
+	border: 2px solid #5e5e5e;
+}
+.downloadSample{
+	font-size: 20px;
+}
+td.sampledOcean{
+	padding-left: 15px;
+}
+div.sampledOceansContainer{
+	min-height: 180px; 
+	max-height: 180px;
+	overflow: hidden; 
+}
+div.sampledOceansContainer:hover{
+	border: 1px solid;
+	border-radius: 4px;
+	border-color: rgb(170, 170, 170);
+	overflow-y: auto;
+}
+div.recentObservationsContainer{
+	min-height: 180px; 
+	max-height: 180px;
+	overflow: hidden;
+}
+div.recentObservationsContainer:hover{
+	overflow-y: auto;
+}
+h2.tch{
+	margin-left: 0.5em;
+}
+p.tcp{
+	margin-left: 1.5em;
+    margin-right: 1.5em;
+    font-size: 1.1em;
+}
