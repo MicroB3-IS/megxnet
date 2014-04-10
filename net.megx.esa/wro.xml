@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <groups xmlns="http://www.isdc.ro/wro">
-  <group name='esa.min'>
-    <js>/res/net.megx.esa/js/esa.js</js>
-  </group>
+
   <group name='sampleObservations.min'>
     <js>/res/net.megx.esa/js/sampleObservations.js</js>
   </group>
