@@ -3,7 +3,7 @@ $(document).ready(function () {
     var samplesTable = $(".megx_dataTable");
     var SAMPLE_DOWNLOAD_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/downloadSamples';
     
-    $('input.downloadSample').live('change', function () {
+    $('input.downloadSample').on('change', function () {
         var parentRow = $(this).parent().parent();
         var nbRows = samplesTable.dataTable().fnGetNodes();
         $(parentRow).toggleClass('row_selected');
