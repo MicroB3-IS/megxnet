@@ -13,7 +13,7 @@ $(document).ready(function() {
 					required: true
 				},
 				institution: {
-					required: true
+	 				required: true
 				},
 				institutionAddress: {
 					required: true
@@ -136,7 +136,7 @@ $(document).ready(function() {
 		loadParticipantData(participantID, populateFormData);
 	}
 	
-	$('a.deleteParticipantClass').live('click', function(){
+	$('a.deleteParticipantClass').on('click', function(){
 		var recordID = $(this).attr("id");
 		$("#deleteDialog").data("id", recordID).dialog('open');
 		return false;
@@ -177,7 +177,7 @@ $(document).ready(function() {
 	      }
 	});
 	
-	$('a.viewParticipantClass').live('click', function(){
+	$('a.viewParticipantClass').on('click', function(){
 		var recordID = $(this).attr("name");
 		$('.MapBox div').each(function(){
 			if($(this).css("z-index")){
