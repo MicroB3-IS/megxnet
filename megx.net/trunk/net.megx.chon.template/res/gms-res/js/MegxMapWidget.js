@@ -22,8 +22,10 @@ MegxMapWidget.prototype = {
         });
 
         this.LAYERSET = {
-            'esa' : [ 'satellite_mod', 'esa' ],
-            'ena' : [ 'boundaries', 'woa05_temperature', 'ena_samples' ]
+    		'osd-app' : [ 'boundaries', 'osd_app' ],
+            'ena' : [ 'woa05_temperature', 'boundaries', 'ena_samples' ],
+            'osd-registry' : [ 'boundaries', 'osd_registry' ],
+            'gms' : ['boundaries', 'phages','genomes', 'metagenomes']
         };
 
         this.infoPanel = '#layersAccordion';
