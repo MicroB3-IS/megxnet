@@ -97,6 +97,7 @@ Biojs.MegxMapWidget = Biojs
 
       this.LAYERSET = {
         // order is bottom to top layer from left to right
+		'osd-app-smp-details' : [ 'boundaries' ],	  
         'osd-app' : [ 'boundaries', 'osd_app' ],
         'ena' : [ 'woa05_temperature', 'boundaries', 'ena_samples' ],
         'osd-registry' : [ 'boundaries', 'osd_registry' ],
@@ -207,17 +208,17 @@ Biojs.MegxMapWidget = Biojs
       
       
       var layoutHtml = [
-        '<table style="width: 99%; margin-top:5px; margin-bottom:5px;">',
+        '<table style="width: 100%">',
         '<tr>',
         '<td colspan="2">',
         '<button id="manipulateLayers" style="margin-left: 12px; margin-bottom: 10px;">Add layers to the map</button>',
         '</td>',
         '</tr>',
         '<tr>',
-        '<td id="layersAccordion" style="width: 35%; padding-left:5px;">',
+        '<td id="layersAccordion" style="max-width: 135px">',
         '</td>',
         '<td class="mapPlaceholder" style="width: 65%">',
-        '<div id="megxMap" style="width: 600px; height: 400px"></div>',
+        '<div id="megxMap" style="width: 550px; height: 410px"></div>',
         '</td>',
         '</tr>',
         '<tr>',
