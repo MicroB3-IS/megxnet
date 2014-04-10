@@ -1,34 +1,168 @@
-<link href="$ctx.siteUrl/gms-res/gms.css" rel="stylesheet" type="text/css">
-<link href="$ctx.siteUrl/net.megx.esa/css/esa.css" rel="stylesheet" type="text/css">
 
-<script src="$ctx.siteUrl/js/OpenLayers.js" type="text/javascript"></script>
+<link href="$ctx.siteUrl/net.megx.esa/css/esa.css" rel="stylesheet"
+  type="text/css"
+>
+<link rel="stylesheet" href="$ctx.siteUrl/js/theme/default/style.css"
+  type="text/css"
+/>
 
-<script src="$ctx.siteUrl/gms-res/js/CMapLayers.js" type="text/javascript"></script>
-<script src="$ctx.siteUrl/gms-res/js/CMap.js" type="text/javascript"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/atmosphere-min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/esa.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleObservations.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampledOceans.js"></script>
+
+<!-- for map -->
+<script
+  src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+  type="text/javascript"
+></script>
+<script src="http://openlayers.org/api/2.13.1/OpenLayers.js"
+  type="text/javascript"
+></script>
+<script src="$ctx.siteUrl/gms-res/js/MegxMapWidgetLayers.js"
+  type="text/javascript"
+></script>
+<link rel="stylesheet"
+  href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"
+>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"
+  type="text/javascript"
+></script>
+<script src="https://www.ebi.ac.uk/Tools/biojs/registry/src/Biojs.js"
+  type="text/javascript"
+></script>
+<script src="$ctx.siteUrl/gms-res/js/megxmap/megxmap-0.9.js"
+  type="text/javascript"
+></script>
+
+<!-- for data tables -->
+<script src="/net.megx.ui.table/js/json2.js" type="text/javascript"></script>
+<script src="/net.megx.ui.table/js/jquery.dataTables.js"
+  type="text/javascript"
+></script>
+<script src="/net.megx.ui.table/js/table.utils.js"
+  type="text/javascript"
+></script>
+
+
+
+<!-- ESA specific -->
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.esa/js/atmosphere-min.js"
+></script>
+
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.esa/js/sampleObservations.js"
+></script>
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.esa/js/sampledOceans.js"
+></script>
+
+
 
 <div style="padding: 15px">
-	<h3>Map of samples</h3>
-	<div>
-		<table>
-			<tr>
-				<td style="width: 625px; height: 410px;">
-					#parse("net.megx.esa/samplesMap.html")	
-				</td>
-				<td style="width: 340px; height: 410px;">
-					#parse("net.megx.esa/sampleStats.html")		
-				</td> 
-			</tr>
-		</table>
-	</div>
-	
-	<h3>Table representation</h3>
-	<div>
-		#parse("net.megx.esa/samplesTable.html")
-	</div>
+  <h3>Map of samples</h3>
+  <div>
+    <table>
+      <tr>
+        <td style="width: 625px; height: 410px;">
+          <div id="megxMapWidget"></div>
+        </td>
+        <td style="width: 340px; height: 410px;">
+          #parse("net.megx.esa/sampleStats.html")</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>Table representation</h3>
+  <div>#parse("net.megx.esa/samplesTable.html")</div>
 </div>
 
 
+<script type="text/javascript">
+  $(document)
+    .ready(
+      function() {
+        var megxMapWidget = new Biojs.MegxMapWidget({
+          target : 'megxMapWidget',
+          layerSet : 'osd-app',
+          gmsBaseURL : 'http://mb3is.megx.net/wms',
+          log : false
+        });
+        
+        //Atmosphere framework specific variables
+        var socket = atmosphere;
+        var request = {
+          url : ctx.siteUrl + '/topic/notifications/esa',
+          contentType : "application/json",
+          logLevel : 'debug',
+          transport : 'websocket',
+          fallbackTransport : 'long-polling',
+          enableXDR : true,
+          timeout : 60000
+        };
+
+        //Define event handlers
+        request.onOpen = function( response ) {
+          console.log('Atmosphere connected using ' + response.transport);
+        };
+
+        request.onMessage = function( response ) {
+          var message = response.responseBody.split('|')[1];
+          var rowsToAdd = [];
+          try {
+            var json = atmosphere.util.parseJSON(message);
+            var table = $(".megx_dataTable");
+            for ( i = 0; i < json.length; i++ ) {
+              rowsToAdd.push({
+                'id' : json[i].id,
+                'label' : json[i].label,
+                'collectorId' : json[i].collectorId,
+                'taken' : json[i].taken,
+                'biome' : json[i].biome,
+                'weatherCondition' : json[i].weatherCondition,
+                'feature' : json[i].feature,
+                'airTemperature' : json[i].airTemperature,
+                'lat' : json[i].lat,
+                'lon' : json[i].lon,
+                'barcode' : json[i].barcode,
+                'elevation' : json[i].elevation,
+                'collection' : json[i].collection,
+                'permit' : json[i].permit,
+                'material' : json[i].material,
+                'secchiDepth' : json[i].secchiDepth,
+                'samplingDepth' : json[i].samplingDepth,
+                'waterDepth' : json[i].waterDepth,
+                'sampleSize' : json[i].sampleSize,
+                'waterTemperature' : json[i].waterTemperature,
+                'conductivity' : json[i].conductivity,
+                'windSpeed' : json[i].windSpeed,
+                'salinity' : json[i].salinity,
+                'comment' : json[i].comment,
+                'accuracy' : json[i].accuracy,
+                'phosphate' : json[i].phosphate,
+                'nitrate' : json[i].nitrate,
+                'nitrite' : json[i].nitrite,
+                'ph' : json[i].ph,
+                'id' : json[i].id
+              });
+            }
+
+            //Add the newly created rows to the table
+            table.dataTable().fnAddData(rowsToAdd);
+
+        
+          } catch (e) {
+            console.log('This does not look like a valid JSON: ', message.data);
+            return;
+          }
+
+          console.log('Server pushed down this data:', json);
+
+        };
+
+        request.onError = function( response ) {
+          console
+            .log('Sorry, but there is some problem with your socket or the server is down');
+        };
+
+        //Subscribe to AtmosphereServlet
+        var subSocket = socket.subscribe(request);
+      });
+</script>
