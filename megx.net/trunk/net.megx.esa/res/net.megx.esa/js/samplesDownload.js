@@ -3,19 +3,19 @@ $(document).ready(function () {
     var samplesTable = $(".megx_dataTable");
     var SAMPLE_DOWNLOAD_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/downloadSamples';
     
-    $('input.downloadSample').on('change', function () {
-        var parentRow = $(this).parent().parent();
-        var nbRows = samplesTable.dataTable().fnGetNodes();
-        $(parentRow).toggleClass('row_selected');
-        var nbSelectedRows = $(nbRows).filter('tr.row_selected').length;
+    $(document).on('click', '.downloadSample', function(){
+    	 var parentRow = $(this).parent().parent();
+         var nbRows = samplesTable.dataTable().fnGetNodes();
+         $(parentRow).toggleClass('row_selected');
+         var nbSelectedRows = $(nbRows).filter('tr.row_selected').length;
 
-        if (nbSelectedRows === $(nbRows).length) {
-            $('a.deselectAllSamplesLnk').show();
-            $('a.selectAllSamplesLnk').hide();
-        } else {
-            $('a.deselectAllSamplesLnk').hide();
-            $('a.selectAllSamplesLnk').show();
-        }
+         if (nbSelectedRows === $(nbRows).length) {
+             $('a.deselectAllSamplesLnk').show();
+             $('a.selectAllSamplesLnk').hide();
+         } else {
+             $('a.deselectAllSamplesLnk').hide();
+             $('a.selectAllSamplesLnk').show();
+         }
     });
 
     $('div.dataTables_length').append('<a class="selectAllSamplesLnk" href="#">Select all</a>');
@@ -26,9 +26,9 @@ $(document).ready(function () {
         var allRows = samplesTable.dataTable().fnGetNodes();
         $.each(allRows, function (i, row) {
             var selectChb = $(row).find('input.downloadSample');
-            if (!$(selectChb).attr('checked')) {
-                $(row).toggleClass('row_selected');
-                $(selectChb).attr('checked', 'checked');
+            if (!$(selectChb).prop('checked')) {
+                $(row).addClass('row_selected');
+                $(selectChb).prop('checked', true);
             }
         });
         $(this).hide();
@@ -40,9 +40,9 @@ $(document).ready(function () {
         var allRows = samplesTable.dataTable().fnGetNodes();
         $.each(allRows, function (i, row) {
             var selectChb = $(row).find('input.downloadSample');
-            if ($(selectChb).attr('checked')) {
-                $(row).toggleClass('row_selected');
-                $(selectChb).removeAttr('checked');
+            if ($(selectChb).prop('checked')) {
+                $(row).removeClass('row_selected');
+                $(selectChb).prop('checked', false);
             }
         });
         $(this).hide();
@@ -64,6 +64,8 @@ $(document).ready(function () {
         }
     });
 
+    $('.ui-dialog').css('z-index', '10000');
+    
     $('a.downloadSelected').click(function () {
         var allRows = samplesTable.dataTable().fnGetNodes();
         var selectedRows = $(allRows).filter('tr.row_selected');

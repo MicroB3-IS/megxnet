@@ -1,7 +1,7 @@
 //Absract widget
 MegxMapWidget = function(layerSetName, config) {
 
-    this.gmsBaseURL = 'http://mb3is.megx.net/wms';
+    this.gmsBaseURL = ctx.siteUrl + '/wms';
 
     this.init(layerSetName, config, this.gmsBaseURL);
 }
@@ -31,7 +31,7 @@ MegxMapWidget.prototype = {
         this.initMap(this.map);
 
         this.layers = new MegxMapWidgetLayers({
-            gms_wms_url : 'http://mb3is.megx.net/wms',
+            gms_wms_url : ctx.siteUrl + '/wms',
             sam_genomes : 'genome',
             sam_metagenomes : 'metagenome',
             sam_phages : 'phage',
@@ -47,15 +47,15 @@ MegxMapWidget.prototype = {
         if (layerset) {
             for ( var i = 0; i < layerset.length; i++ ) {
                 var addMap = this.map.addLayer(this.layers.get(layerset[i]));
-                if(addMap){
+//                if(addMap){
                 	this.addLayerPanel(layerset[i]);
                     this.displayedLayers[layerset[i]] = true;
                     //As per ticket https://colab.mpi-bremen.de/its/browse/MB3_IS-159, display legend data for the topmost layer only
                     this.redrawLegend(layerset[layerset.length - 1]);
                     this.log.message('Added layer ' + layerset[i] + ' to map');
-                } else{
-                	this.log.error('An error occured while adding layer ' + layerset[i] + ' to map!');
-                }
+//                } else{
+//                	this.log.error('An error occured while adding layer ' + layerset[i] + ' to map!');
+//                }
             }
         }
         this.createWMSFeatureInfo(this.layers.get('ena_samples'), this.map);
@@ -101,27 +101,27 @@ MegxMapWidget.prototype = {
     renderWidget : function(layoutParent) {
         var layoutParentSelector = '#' + layoutParent;
         var layoutHtml = [
-                '<table style="width: 99%; margin-top:10px; margin-bottom:10px;">',
+                '<table style="width: 100%">',
                 	'<tr>',
                 		'<td colspan="2">',
-                			'<button id="manipulateLayers" style="margin-left: 12px; margin-bottom: 10px;">Add layers to the map</button>',
+                			'<button id="manipulateLayers" style=" margin-bottom: 15px;">Add layers to the map</button>',
                 		'</td>',
                 	'</tr>',
                 	'<tr>',
-                		'<td id="layersAccordion" style="width: 30%; padding-left:10px;">',
+                		'<td id="layersAccordion" style="width: 20%">',
             			'</td>', 
             			'<td class="mapPlaceholder">',
-            				'<div id="megxMap" style="width: 800px; height: 400px"></div>',
+            				'<div id="megxMap" style="width: 585px; height: 410px"></div>',
         				'</td>',
     				'</tr>',
     				'<tr>',
-    					'<td colspan="2" style="padding-left: 16%;">',
+    					'<td colspan="2" style="padding-left: 18%;">',
     						'<div id="messagesPlaceholder" style="border: 1px solid; border-color: grey; border-radius: 5px; max-height: 120px; overflow-y: auto;">',
     						'</div>',
     					'</td>',
     				'</tr>',
     				'<tr>',
-    					'<td colspan="2" style="padding-left: 16%;">',
+    					'<td colspan="2" style="padding-left: 18%;">',
     						'<legend>',
     							'<h6>',
     								'Legend',
