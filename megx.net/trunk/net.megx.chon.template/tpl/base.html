@@ -49,9 +49,13 @@
 <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.js"></script>
 <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
 
+<!-- 
 #foreach($script in $ctx.get('head:scripts'))
 <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
-#end #if ( $ext.settings ) #parse('settings/account/check_profile.html')
+#end 
+ -->
+
+#if ( $ext.settings ) #parse('settings/account/check_profile.html')
 #end
 
 </head>
