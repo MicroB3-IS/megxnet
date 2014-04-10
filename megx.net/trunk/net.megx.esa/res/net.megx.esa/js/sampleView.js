@@ -4,16 +4,14 @@ $(document).ready(function(){
 	var SAMPLE_ORIGINAL_PHOTOS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/content/photo/original/';
 	var NO_IMAGE_ICON_URL = ctx.siteUrl + '/net.megx.esa/img/no_photo.png';
 	
-	var map = new CMap({
-		el: "sampleMap",
-		gmsURL: ctx.siteUrl + "/wms",
-		layers: ["satellite", "esa"]
+	var map = new Biojs.MegxMapWidget({
+		target : 'megxMapWidgetDet',
+		layerSet : 'osd-app-smp-details',
+		gmsBaseURL : ctx.siteUrl + '/wms',
+		log : false
 	});
 	
-	//Draw map of samples
-	map.hideAll();
-	map.showLayer("satellite");
-	map.removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
+	map._removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
 	
 	var ajaxCall = function(httpVerb, url, data, successHandler, errorHandler){
 		$.ajax({
@@ -92,7 +90,7 @@ $(document).ready(function(){
 	
 	var populateMap = function(data){
 		var markers = new OpenLayers.Layer.Markers( "Markers" );
-	    map.addLayer(markers);
+	    map._addLayer(markers);
 
 	    var size = new OpenLayers.Size(21,25);
 	    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
