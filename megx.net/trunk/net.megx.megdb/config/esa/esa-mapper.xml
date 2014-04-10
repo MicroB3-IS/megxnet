@@ -129,13 +129,13 @@
 	</sql>
 	
 	<select id="getSample" resultMap="esa_sample_map">
-	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, st_y(geom) as lat, st_x(geom) as lon
 	    FROM esa.samples 
 	    WHERE esa.samples.id=#{id}
 	</select>
 	
 	<select id="downloadSamples" resultMap="esa_sample_map" parameterType="String">
-	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, st_y(geom) as lat, st_x(geom) as lon
 	    FROM esa.samples
 	    WHERE esa.samples.id IN
 	    <foreach collection="sampleIds" item="sampleId" index="index" open="(" close=")" separator=",">
@@ -196,13 +196,13 @@
 	</select>
 	
 	<select id="getSamples" parameterType="String" resultMap="esa_sample_map">
-	    SELECT <include refid="esa_sample_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    SELECT <include refid="esa_sample_columns_no_geom"/>, st_y(geom) as lat, st_x(geom) as lon
 	    FROM esa.samples
 	    WHERE collector_id=#{collectorId}
 	</select>
 	
 	<select id="getAllSamples" resultMap="esa_sample_row_map">
-	    SELECT <include refid="esa_sample_row_columns_no_geom"/>, y(geom) as lat, x(geom) as lon
+	    SELECT <include refid="esa_sample_row_columns_no_geom"/>, st_y(geom) as lat, st_x(geom) as lon
 	    FROM esa.samples
 	</select>
 	
