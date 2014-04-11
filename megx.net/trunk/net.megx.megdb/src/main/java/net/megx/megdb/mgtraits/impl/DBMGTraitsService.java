@@ -13,6 +13,7 @@ import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
+import net.megx.model.mgtraits.MGTraitsPCA;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -250,6 +251,21 @@ public class DBMGTraitsService extends BaseMegdbService implements
 		if (result.size() == 0) {
 			throw new DBNoRecordsException("Query returned zero results");
 		} else {
+			return result;
+		}
+	}
+	
+	public List<MGTraitsPCA> getTraitsPca() throws DBGeneralFailureException, DBNoRecordsException {
+		List<MGTraitsPCA> result = doInSession(new DBTask<MGTraitsMapper, List<MGTraitsPCA>>() {
+			@Override
+			public List<MGTraitsPCA> execute(MGTraitsMapper mapper)
+					throws Exception {
+				return mapper.getTraitsPca();
+			}
+		}, MGTraitsMapper.class);
+		if(result.size() == 0){
+			throw new DBNoRecordsException("Query returned zero results");
+		}else{
 			return result;
 		}
 	}

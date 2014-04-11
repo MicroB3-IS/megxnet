@@ -10,6 +10,7 @@ import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
+import net.megx.model.mgtraits.MGTraitsPCA;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -35,12 +36,14 @@ public interface MGTraitsService {
 			throws DBGeneralFailureException, DBNoRecordsException;
 
 	public String insertJob(String customer, String mgUrl, String sampleLabel,
-			String sampleEnvironment,double sampleLatitude,double sampleLongitude,String sampleName,
-			String sampleDescription,String sampleEnvOntology) throws DBGeneralFailureException;
+			String sampleEnvironment, double sampleLatitude,
+			double sampleLongitude, String sampleName,
+			String sampleDescription, String sampleEnvOntology)
+			throws DBGeneralFailureException;
 
 	public List<MGTraitsPublicJobDetails> getAllPublicJobs()
 			throws DBGeneralFailureException, DBNoRecordsException;
-	
+
 	public List<MGTraitsDownloadJobs> downloadJobs(List<Integer> traitIds)
 			throws DBGeneralFailureException, DBNoRecordsException;
 
@@ -49,4 +52,7 @@ public interface MGTraitsService {
 
 	public List<MGTraitsTaxonomy> getTaxonomyContent(int id)
 			throws DBGeneralFailureException, DBNoRecordsException;
+
+	public List<MGTraitsPCA> getTraitsPca() throws DBGeneralFailureException,
+			DBNoRecordsException;
 }

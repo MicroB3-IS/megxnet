@@ -48,7 +48,7 @@ www={type:'sys.public'}
 	mg-traits={type:'html',template:'net.megx.mg-traits/index.html', title:'Metagenome Traits Database'}
 		samples={type:'html', template:'net.megx.mg-traits/index.html', title:'Simple Traits'}
 		sampleDetails={type:'html', template:'net.megx.mg-traits/metagenomeDetails.html', title:'Metagenome description'}
-	
+		traits-summary={type:'html', template:'net.megx.mg-traits/traitsScatterplot.html', title:'Traits Summary'}
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}

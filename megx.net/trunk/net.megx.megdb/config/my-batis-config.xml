@@ -71,6 +71,7 @@
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsPublicJobDetails" alias="MGTraitsPublicJobDetails" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsDownloadJobs" alias="MGTraitsDownloadJobs" />
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsFunctional" alias="MGTraitsFunctional" />
+		<typeAlias type="net.megx.model.mgtraits.MGTraitsPCA" alias="MGTraitsPCA" />
 		
 		<!-- Blast -->
 		<typeAlias type="net.megx.model.blast.BlastJob" alias="BlastJob"/>
