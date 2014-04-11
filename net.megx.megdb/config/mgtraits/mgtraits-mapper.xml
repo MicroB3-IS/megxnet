@@ -201,6 +201,16 @@
 		<result column="id" property="id" />
 	</resultMap>
 
+	<resultMap type="MGTraitsPCA" id="mg_traits_pca">
+		<result column="id" property="id" />
+		<result column="trait" property="trait" />
+		<result column="x" property="x" />
+		<result column="y" property="y" />
+		<result column="pca_id" property="pcaId" />
+		<result column="sample_name" property="sampleName" />
+		<result column="sample_environment" property="sampleEnvironment" />
+	</resultMap>
+
 	<select id="getSimpleTraits" parameterType="int" resultMap="mg_traits_result">
 		SELECT id, sample_name, mg_traits.mg_traits_results.sample_label,
 		sample_description, sample_latitude,
@@ -338,6 +348,16 @@
 			separator="," close=")">
 			#{item}
 		</foreach>
+	</select>
+
+	<select id="getTraitsPca" resultMap="mg_traits_pca">
+		SELECT
+		id,x,y,trait,pca_id,sample_name,sample_environment FROM
+		mg_traits.mg_traits_jobs
+		inner join
+		mg_traits.mg_traits_pca
+
+		using (id)
 	</select>
 
 </mapper>

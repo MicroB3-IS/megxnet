@@ -31,6 +31,7 @@ import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
+import net.megx.model.mgtraits.MGTraitsPCA;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -271,7 +272,8 @@ public class MGTraitsAPI extends BaseRestService {
 			final List<String> header = new ArrayList<String>(result.size() + 1);
 			final List<String> row = new ArrayList<String>(result.size() + 1);
 			header.add("Id");
-			row.add("mg" + result.get(0).getId() + "-" + result.get(0).getSampleLabel());
+			row.add("mg" + result.get(0).getId() + "-"
+					+ result.get(0).getSampleLabel());
 			for (MGTraitsFunctional currTax : result) {
 				header.add(currTax.getKey());
 				row.add(currTax.getValue());
@@ -581,7 +583,8 @@ public class MGTraitsAPI extends BaseRestService {
 			final List<String> header = new ArrayList<String>(result.size() + 1);
 			final List<String> row = new ArrayList<String>(result.size() + 1);
 			header.add("Id");
-			row.add("mg" + result.get(0).getId() + "-" + result.get(0).getSampleLabel());
+			row.add("mg" + result.get(0).getId() + "-"
+					+ result.get(0).getSampleLabel());
 			for (MGTraitsTaxonomy currTax : result) {
 				header.add(currTax.getKey());
 				row.add(currTax.getValue());
@@ -628,4 +631,22 @@ public class MGTraitsAPI extends BaseRestService {
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@Path("traits-summary")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTraitsPca(@Context HttpServletRequest request) {
+		try {
+			return toJSON(new Result<List<MGTraitsPCA>>(service.getTraitsPca()));
+		} catch (DBGeneralFailureException e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+		} catch (Exception e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

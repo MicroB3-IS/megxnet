@@ -8,6 +8,7 @@ import net.megx.model.mgtraits.MGTraitsDNORatio;
 import net.megx.model.mgtraits.MGTraitsDownloadJobs;
 import net.megx.model.mgtraits.MGTraitsFunctional;
 import net.megx.model.mgtraits.MGTraitsJobDetails;
+import net.megx.model.mgtraits.MGTraitsPCA;
 import net.megx.model.mgtraits.MGTraitsPublicJobDetails;
 import net.megx.model.mgtraits.MGTraitsResult;
 import net.megx.model.mgtraits.MGTraitsTaxonomy;
@@ -37,5 +38,7 @@ public interface MGTraitsMapper {
 	public MGTraitsCodon getCodonUsage(@Param("id") int id);
 
 	public List<MGTraitsTaxonomy> getTaxonomyContent(@Param("id") int id);
+	
+	public List<MGTraitsPCA> getTraitsPca();
 
 }
