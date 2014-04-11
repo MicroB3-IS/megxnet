@@ -215,7 +215,7 @@ Biojs.MegxMapWidget = Biojs
         '</td>',
         '</tr>',
         '<tr>',
-        '<td id="layersAccordion" style="max-width: 135px">',
+        '<td id="layersAccordion" style="max-width: 145px; min-width: 145px">',
         '</td>',
         '<td class="mapPlaceholder" style="width: 65%">',
         '<div id="megxMap" style="width: 550px; height: 410px"></div>',
