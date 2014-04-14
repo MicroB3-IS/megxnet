@@ -6,26 +6,28 @@ $(document).ready(function(){
 		
 		if(traitPCA){
 			$.each(traitPCA.data, function(i, curr){	
-				if(allEnv[curr.sampleEnvironment]){
-					allEnv[curr.sampleEnvironment].data.push({
-						'x' : curr.x,
-						'y' : curr.y,
-						'id' : curr.id
-					});
-					
-				} else{
-					allEnv[curr.sampleEnvironment] = {
-							'name': curr.sampleEnvironment,
-							'color' : '#'+Math.floor(Math.random()*16777215).toString(16),
-							'marker': {
-			                    'symbol': 'circle'
-			                },
-							'data' : [{
-								'x' : curr.x,
-								'y' : curr.y,
-								'id' : curr.id
-							}]
-					};
+				if(curr.trait === 'taxonomic-table'){
+					if(allEnv[curr.sampleEnvironment]){
+						allEnv[curr.sampleEnvironment].data.push({
+							'x' : curr.x,
+							'y' : curr.y,
+							'id' : curr.id
+						});
+						
+					} else{
+						allEnv[curr.sampleEnvironment] = {
+								'name': curr.sampleEnvironment,
+								'color' : '#'+Math.floor(Math.random()*16777215).toString(16),
+								'marker': {
+				                    'symbol': 'circle'
+				                },
+								'data' : [{
+									'x' : curr.x,
+									'y' : curr.y,
+									'id' : curr.id
+								}]
+						};
+					}
 				}
 			});	
 			
@@ -40,7 +42,7 @@ $(document).ready(function(){
 			return all;
 		}
 		
-			$('#traitsScatterplotContainer').highcharts({
+			$('#traitsScatterplotTaxonomic').highcharts({
 	            chart: {
 	                type: 'scatter',
 	                zoomType: 'xy',
@@ -52,7 +54,7 @@ $(document).ready(function(){
 	                }
 	            },
 	            title: {
-	                text: 'PCA Data Table'
+	                text: 'Taxonomic Table'
 	            },
 	            legend: {
 	            	title : {
