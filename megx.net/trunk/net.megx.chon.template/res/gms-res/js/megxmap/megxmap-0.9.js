@@ -443,7 +443,6 @@ Biojs.MegxMapWidget = Biojs
       map.addControl(navContr);
       map.addControl(new OpenLayers.Control.ScaleLine());
       map.addControl(new OpenLayers.Control.MousePosition());
-      map.addControl(new OpenLayers.Control.KeyboardDefaults());
       var panZoomContr = new OpenLayers.Control.PanZoomBar();
       panZoomContr.setMap(map);
       map.addControl(panZoomContr);

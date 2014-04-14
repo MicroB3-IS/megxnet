@@ -11,7 +11,7 @@ $(document).ready(function(){
 		log : false
 	});
 	
-	map._removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
+//	map._removeControl(OpenLayers.Control.KeyboardDefaults.prototype.CLASS_NAME);
 	
 	var ajaxCall = function(httpVerb, url, data, successHandler, errorHandler){
 		$.ajax({
