@@ -352,12 +352,13 @@
 
 	<select id="getTraitsPca" resultMap="mg_traits_pca">
 		SELECT
-		id,x,y,trait,pca_id,sample_name,sample_environment FROM
-		mg_traits.mg_traits_jobs
-		inner join
+		id,x,y,trait,pca_id,sample_name,sample_environment
+		FROM
 		mg_traits.mg_traits_pca
-
+		inner join
+		mg_traits.mg_traits_jobs
 		using (id)
+		WHERE pca_id = (select max(pca_id)from mg_traits.mg_traits_pca )
 	</select>
 
 </mapper>
