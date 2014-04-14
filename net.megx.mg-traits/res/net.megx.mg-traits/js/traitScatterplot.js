@@ -30,7 +30,7 @@ $(document).ready(function(){
 			});	
 			
 		}
-
+		
 		var getEnvData = function(){
 			var all = [];
 			for(var env in allEnv){
@@ -73,6 +73,7 @@ $(document).ready(function(){
 	            plotOptions: {
 	                series: {
 	                    cursor: 'pointer',
+	                    turboThreshold: 0,
 	                    point: {
 	                        events: {
 	                        	click: function(event) {
