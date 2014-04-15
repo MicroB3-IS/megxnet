@@ -6,7 +6,7 @@ $(document).ready(function () {
   var megxMapWidget = new Biojs.MegxMapWidget({
     target : 'megxMapWidget',
     layerSet : 'osd-app',
-    gmsBaseURL : 'http://mb3is.megx.net/wms',
+    gmsBaseURL : ctx.siteUrl + '/wms',
     log : false
   });
 });
