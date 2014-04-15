@@ -1,13 +1,13 @@
-<script src="$ctx.siteUrl/gms-res/js/Biojs.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var megxMapWidget = new Biojs.MegxMapWidget({
-			target : 'megxMapWidget',
-			layerSet : 'osd-app',
-			gmsBaseURL : ctx.siteUrl + '/wms',
-			log : false
-		});
-	});
-</script>
-
 <div id="megxMapWidget"></div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  //the only required parameter is the layerSet to be rendered
+  var megxMapWidget = new Biojs.MegxMapWidget({
+    target : 'megxMapWidget',
+    layerSet : 'osd-app',
+    gmsBaseURL : 'http://mb3is.megx.net/wms',
+    log : false
+  });
+});
+</script>
