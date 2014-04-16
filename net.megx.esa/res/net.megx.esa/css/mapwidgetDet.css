@@ -137,3 +137,11 @@
 	overflow: auto;
 	width: 100%;
 }
+
+#errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 330px;
+	
+}
