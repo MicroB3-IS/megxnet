@@ -26,5 +26,7 @@ public interface BlastMapper {
 	public List<BlastHitsDb> getDatabases();
 
 	public BlastJob getResultRaw(@Param("id") int id);
+	
+	public BlastJob getGeographicRaw(@Param("id") int id);
 
 }

@@ -174,4 +174,11 @@
 		megx_blast.blast_hits;
 	</select>
 
+	<select id="getGeographicRaw" resultMap="blast_job"
+		parameterType="int">
+		SELECT id,raw_fasta,job_id FROM
+		megx_blast.blast_jobs
+		where id=#{id};
+	</select>
+
 </mapper>

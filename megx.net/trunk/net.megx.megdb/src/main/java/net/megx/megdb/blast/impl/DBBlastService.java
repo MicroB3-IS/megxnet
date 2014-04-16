@@ -150,4 +150,20 @@ public class DBBlastService extends BaseMegdbService implements BlastService {
 			return result;
 		}
 	}
+
+	@Override
+	public BlastJob getGeographicRaw(final int id)
+			throws DBGeneralFailureException, DBNoRecordsException {
+		BlastJob result = doInSession(new DBTask<BlastMapper, BlastJob>() {
+			@Override
+			public BlastJob execute(BlastMapper mapper) throws Exception {
+				return mapper.getGeographicRaw(id);
+			}
+		}, BlastMapper.class);
+		if (result == null) {
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {
+			return result;
+		}
+	}
 }

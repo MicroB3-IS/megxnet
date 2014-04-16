@@ -29,6 +29,7 @@ import net.megx.model.blast.BlastHitsDb;
 import net.megx.model.blast.BlastHitsNeighbours;
 import net.megx.model.blast.BlastJob;
 import net.megx.ws.blast.rest.mappers.BlastJobDetailsToClient;
+import net.megx.ws.blast.rest.mappers.BlastJobRawToClient;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.providers.csv.ColumnNameFormat;
 import net.megx.ws.core.providers.csv.annotations.CSVDocument;
@@ -106,6 +107,8 @@ public class BlastServiceAPI extends BaseRestService {
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -235,6 +238,8 @@ public class BlastServiceAPI extends BaseRestService {
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -251,6 +256,8 @@ public class BlastServiceAPI extends BaseRestService {
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
@@ -270,6 +277,27 @@ public class BlastServiceAPI extends BaseRestService {
 		} catch (DBGeneralFailureException e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+		} catch (Exception e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GET
+	@Path("geographic/{id : \\d+}/raw")
+	@Produces("text/csv")
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
+	public BlastJobRawToClient getGeographicRaw(@PathParam("id") int id,
+			@Context HttpServletRequest request) {
+		try {
+			return new BlastJobRawToClient(service.getGeographicRaw(id));
+		} catch (DBGeneralFailureException e) {
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
