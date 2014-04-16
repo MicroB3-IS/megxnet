@@ -209,6 +209,7 @@ Biojs.MegxMapWidget = Biojs
       
       var layoutHtml = [
         '<div id="megxMap"></div>',
+        '<div id="errorMsg">No layer selected. Please select a layer.</div>',
         '<div id="layersAccordion">',
         '<div id="newLayer"><button id="manipulateLayers">Add layers to the map</button> Add a new layer to the map</div>',
         '</div>',
@@ -302,6 +303,9 @@ Biojs.MegxMapWidget = Biojs
         self._removeLayer(layerToRemove);
         self._removeLayerPanel(layerToRemove);
         self._log.message('Layer ' + layerToRemove + ' removed from map');
+        if(self.map.layers.length == 0){
+        	$("#errorMsg").show();
+        }
       });
     },
 
@@ -337,7 +341,7 @@ Biojs.MegxMapWidget = Biojs
 
       var newLayerOrder = this._getNewLayerOrder();
       this._redrawLegend(newLayerOrder[0]);
-
+      $("#errorMsg").hide();
     },
 
     /**

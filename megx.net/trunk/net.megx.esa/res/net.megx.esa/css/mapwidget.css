@@ -113,3 +113,11 @@
 #newLayer .ui-state-default {
 	padding: 1px;
 }
+
+#errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 330px;
+	
+}
