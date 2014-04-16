@@ -35,4 +35,7 @@ public interface BlastService {
 	public BlastJob getResultRaw(int id) throws DBGeneralFailureException,
 			DBNoRecordsException;
 
+	public BlastJob getGeographicRaw(int id) throws DBGeneralFailureException,
+			DBNoRecordsException;
+
 }
