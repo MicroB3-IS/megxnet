@@ -14,25 +14,10 @@
 
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/sampleView.js"></script>
 
-<div id="sampleTable">
-	<table id="sampleDetails">
-		<tr>
-			<td style="width: 65%;">
-				<table style="width: 100%;">
-					<tr style="max-height: 132px;">
-						<td>
-							<div class="sampleImages"></div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div id="megxMapWidgetDet"></div>
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td style="padding-left: 10px; width: 35%; position: relative;">
-				<table class="sampleData">
+<div id="sampleTableDetContainer">
+<div id="megxMapWidgetDet"></div>
+<div id="sampleTableData">
+<table class="sampleData">
 					<tr>
 						<td class="label">Observer:</td>
 						<td class="observer"></td>
@@ -137,15 +122,21 @@
 						<td class="label">Nationality:</td>
 						<td class="nationality"></td>
 					</tr>
-					<tr>
-						<td colspan="2" style="text-align: center; padding-top: 10px;">
-							<a href="#" class="downloadSample" >Download data</a>
-						</td>
-					</tr>
 				</table>	
 			</td>
 		</tr>
 	</table>
+</div>
+<div id="sampleTableDataDownload">
+<a href="#" class="downloadSample" >Download data</a>
+</div>
+</div>
+
+<div id="sampleImagesContainer">  
+<div id="sampleImagesHeader" class=" ui-state-default ui-corner-top">Uploaded images</div>
+<div id="sampleImagesContent">
+<div class="sampleImages"></div>
+</div>
 </div>
 
 <input type="hidden" class="sid" />

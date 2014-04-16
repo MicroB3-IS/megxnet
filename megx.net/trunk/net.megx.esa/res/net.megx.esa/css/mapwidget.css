@@ -54,7 +54,6 @@
 	float: right;
 	margin-top: 20px;
 	margin-right: 10px;
-	margin-bottom: 50px;
 }
 
 #sampledOceansContainer {
@@ -89,15 +88,28 @@
   border: 1px solid #CCC;
   border-top: 0px;
   border-radius: 0 0 5px 5px;
-  padding: 20px;
+  padding: 10px;
 }
+
+#recentObservations tr:first-child{
+  border-bottom: 1px dashed #CCC;
+}
+
+#recentObservations tr td table tr:first-child{
+  border: 0px;
+}
+
 
 #osdAppTable {
 	width:100%;
 	overflow:auto;
-	
 }
 
 .mx-layer-description{
 	font-size: 11px;
+}
+
+
+#newLayer .ui-state-default {
+	padding: 1px;
 }
