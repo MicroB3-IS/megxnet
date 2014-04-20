@@ -32,7 +32,10 @@ public class SecurityContextContainer implements SecurityContext{
 
 	@Override
 	public void storeLastRequestedURL(String url) {
-		lastRequest = url;
+	    if (url == null) {
+	        return;
+	    }
+		lastRequest = url.trim();
 	}
 
 	@Override
