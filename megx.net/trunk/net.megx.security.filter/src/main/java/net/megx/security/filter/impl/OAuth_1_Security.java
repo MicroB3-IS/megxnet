@@ -32,6 +32,11 @@ public class OAuth_1_Security extends BaseSecurityEntrypoint{
 	public void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
+	    
+	    if (log.isDebugEnabled()) {
+            log.debug("EntryPoint OAuth_1_Security active.");
+        }
+	    
 		if(oAuthServices != null){
 			// case url match request token URL: handle request token, then stop
 			// case url match authorization URL: handle authroization, then stop

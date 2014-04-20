@@ -11,28 +11,36 @@ import net.megx.security.auth.SecurityException;
 import net.megx.security.auth.web.WebContextUtils;
 import net.megx.security.filter.StopFilterException;
 
-public class RedirectToURLEntryPoint extends BaseSecurityEntrypoint{
-	
-	@Override
-	public void doFilter(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException,
-			SecurityException, StopFilterException {
-		
-		SecurityContext context = WebContextUtils.getSecurityContext(request);
-		if(context == null){
-			log.debug("Creating new security context...");
-			context = WebContextUtils.newSecurityContext(request);
-		}
-		
-		if(request.getParameter("redirectURL") != null){
-			context.storeLastRequestedURL(request.getParameter("redirectURL"));
-		}
-	}
+public class RedirectToURLEntryPoint extends BaseSecurityEntrypoint {
 
-	@Override
-	protected void doInitialize() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void doFilter(HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException,
+            SecurityException, StopFilterException {
+
+        if (log.isDebugEnabled()) {
+            log.debug("RedirectToURLEntryPoint active.");
+        }
+        SecurityContext context = WebContextUtils.getSecurityContext(request);
+        if (context == null) {
+            log.debug("Creating new security context...");
+            context = WebContextUtils.newSecurityContext(request);
+        }
+
+        if (request.getParameter("redirectURL") != null) {
+
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Storing %s in SecurityContext",
+                        request.getParameter("redirectURL")));
+            }
+            context.storeLastRequestedURL(request.getParameter("redirectURL"));
+        }
+    }
+
+    @Override
+    protected void doInitialize() {
+        // TODO Auto-generated method stub
+
+    }
 
 }

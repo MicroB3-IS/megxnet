@@ -1,204 +1,234 @@
 <style>
-
-	.login-form-panel{
-		margin: 5px;
-		padding: 15px;
-		width: 250px;
-		color: rgb(153,153,153);
-	}
-	.login-label{
-		font-size: 16px;
-		color: rgb(14,78,150);
-	}
-	.alternative-login-wrapper{
-		float: right;
-		width: 500px;
-		color: rgb(153,153,153);
-	}
-	.megx-login-wrapper{
-		float: left;
-		width: 450px;
-	}
-	.alt-login-action{
-		padding: 2px;
-		margin: 3px;
-		/*border: solid 1px #AAA;*/
-		cursor: pointer;
-	}
-	
-	.secuirty-text-input{
-		width: 250px;
-	}
-	.secuirty-action-button{
-		width: 150px;
-		float: right;
-	}
-	
-	.alert{
-		color: #A00;
-		border: solid 1px #800;
-		padding: 15px;
-		margin: 10px;
-	}
-	.login-footer{
-		clear: both;
-		padding: 15px;
-	}
-	.register-wrapper{
-		font-size: 12px;
-	}
-@media(max-width: 980px){
-	#wrapper{
-		box-shadow: none;
-	}
-	header nav ul{
-		display: none;
-	}
-	div.headerBorder{
-		display: none;
-	}
-	header nav{
-		width: 100%;
-	}
-	.alternative-login-wrapper{
-		margin-left: 15px;
-		margin-top:10px;
-		float: left;
-		width: auto;
-	}
-	.copy, .footNav, footer{
-		width: auto;
-		display: inline-block;	
-	}
-	footer{
-		background-image: none;
-	}	
-}	
-@media (max-width: 655px){
-	#wrapper{
-		width: auto;
-	}
-	div.login-wrapper, form{
-		width: 100%;
-	}
-	header, body{
-		min-width: 100%;
-	}
-	body{
-		width: 100%;
-	}
-	header{
-		width: auto;
-	}
-	.megx-login-wrapper{
-		display: inline-block;
-		width: 300px;
-		float: left;
-	}
-	.alternative-login-wrapper{
-		float: left;
-		margin-left: 15px;
-		margin-top:10px;
-		width: auto;
-	}
-	.login-wrapper, .copy, .footNav{
-		width: 100%;
-	}
+.login-form-panel {
+  margin: 5px;
+  padding: 15px;
+  width: 250px;
+  color: rgb(153, 153, 153);
 }
-@media (max-width: 535px){
-	.alternative-login-wrapper{
-		float: left;
-		margin-left: 15px;
-		margin-top:10px;
-	}
-	
-	footer section ul{
-		width: 98%;
-		float: none;
-	}
-	footer section ul li, footer section.footNav ul{
-		width: 98%;
-		display: inline-block;
-		float: none;
-		text-align: center;
-	}
-	
+
+.login-label {
+  font-size: 16px;
+  color: rgb(14, 78, 150);
+}
+
+.alternative-login-wrapper {
+  float: right;
+  width: 500px;
+  color: rgb(153, 153, 153);
+}
+
+.megx-login-wrapper {
+  float: left;
+  width: 450px;
+}
+
+.alt-login-action {
+  padding: 2px;
+  margin: 3px;
+  /*border: solid 1px #AAA;*/
+  cursor: pointer;
+}
+
+.secuirty-text-input {
+  width: 250px;
+}
+
+.secuirty-action-button {
+  width: 150px;
+  float: right;
+}
+
+.alert {
+  color: #A00;
+  border: solid 1px #800;
+  padding: 15px;
+  margin: 10px;
+}
+
+.login-footer {
+  clear: both;
+  padding: 15px;
+}
+
+.register-wrapper {
+  font-size: 12px;
+}
+
+@media ( max-width : 980px) {
+  #wrapper {
+    box-shadow: none;
+  }
+  header nav ul {
+    display: none;
+  }
+  div.headerBorder {
+    display: none;
+  }
+  header nav {
+    width: 100%;
+  }
+  .alternative-login-wrapper {
+    margin-left: 15px;
+    margin-top: 10px;
+    float: left;
+    width: auto;
+  }
+  .copy,.footNav,footer {
+    width: auto;
+    display: inline-block;
+  }
+  footer {
+    background-image: none;
+  }
+}
+
+@media ( max-width : 655px) {
+  #wrapper {
+    width: auto;
+  }
+  div.login-wrapper,form {
+    width: 100%;
+  }
+  header,body {
+    min-width: 100%;
+  }
+  body {
+    width: 100%;
+  }
+  header {
+    width: auto;
+  }
+  .megx-login-wrapper {
+    display: inline-block;
+    width: 300px;
+    float: left;
+  }
+  .alternative-login-wrapper {
+    float: left;
+    margin-left: 15px;
+    margin-top: 10px;
+    width: auto;
+  }
+  .login-wrapper,.copy,.footNav {
+    width: 100%;
+  }
+}
+
+@media ( max-width : 535px) {
+  .alternative-login-wrapper {
+    float: left;
+    margin-left: 15px;
+    margin-top: 10px;
+  }
+  footer section ul {
+    width: 98%;
+    float: none;
+  }
+  footer section ul li,footer section.footNav ul {
+    width: 98%;
+    display: inline-block;
+    float: none;
+    text-align: center;
+  }
 }
 </style>
 <div class="login-wrapper">
-	#set ($securityContext = $req.servletRequset.session.getAttribute("net.megx.security.SECURITY_CONTEXT") )
-			
-	#if($securityContext)
-		#set ($exc = $securityContext.pullLastException())
-		#if($exc)
-			
-			#if ($exc.class.simpleName == 'InvalidCredentialsException')
-				<div class="alert">
-				Invalid Credentials: $exc.message
-				</div>
-			#elseif($exc.class.simpleName == 'ServletException')
-				<div class="alert">
-				An error has occurred: $exc.message
-				</div>
-			#end
-		#end
-	#end
-	
-	#if($req.user)
-        You're already logged in. Please wait while being redirected to the home page...
-        <script type="text/javascript">
-			  window.location = '$ctx.siteUrl/';
-		</script>
-    #else
-	<div class="megx-login-wrapper">
-	
-		<form action="$ctx.siteUrl/j_security_check" method="post">
-			
-			
-			<div class="login-form-panel ui-corner-all">
-				Login with your Megx credentials:
-				<div>
-					<div class="login-label">Username:</div>
-					<input type="text" name="j_username" class="secuirty-text-input">
-				</div>
-				<div>
-					<div class="login-label">Password:</div>
-					<input type="password" name="j_password" class="secuirty-text-input">
-				</div>
-				<div style="text-align: right; width: 100%; padding: 15px;">
-					<input type="submit" value="Login" class="secuirty-action-button">
-				</div>
-			</div>
-		</form>
-	</div>
-	<div class="alternative-login-wrapper">
-		You can also:
-		<div class="alt-login-action">
-			<img alt="Login with Google" src="$ctx.siteUrl/security/images/login-google.png">
-			<input type="hidden" name="provider" value="google.com">
-		</div>
-		<div class="alt-login-action">
-			<img alt="Login with Facebook" src="$ctx.siteUrl/security/images/login-facebook.gif">
-			<input type="hidden" name="provider" value="facebook.com">
-		</div>
-		<div class="alt-login-action">
-			<img alt="Login with Twitter" src="$ctx.siteUrl/security/images/login-twitter.png">
-			<input type="hidden" name="provider" value="twitter.com">
-		</div>
-	</div>
-	<div class="login-footer">
-		<div class="register-wrapper">
-			You don't have an account yet? 
-			<a href="$ctx.siteUrl/register">Create an account on megx.net</a>
-		</div>
-	</div>
-	#end
+  #set ($securityContext =
+  $req.servletRequset.session.getAttribute("net.megx.security.SECURITY_CONTEXT")
+  ) #if($securityContext) #set ($exc =
+  $securityContext.pullLastException()) #if($exc) #if
+  ($exc.class.simpleName == 'InvalidCredentialsException')
+  <div class="alert">Invalid Credentials: $exc.message</div>
+  #elseif($exc.class.simpleName == 'ServletException')
+  <div class="alert">An error has occurred: $exc.message</div>
+  #end #end #end #if($req.user) You're already logged in. Please wait
+  while being redirected to the home page...
+  <script type="text/javascript">
+      window.location = '$ctx.siteUrl/';
+    </script>
+  #else
+  <div class="megx-login-wrapper">
+
+    <form action="$ctx.siteUrl/j_security_check" method="post">
+
+
+      <div class="login-form-panel ui-corner-all">
+        Login with your Megx credentials:
+        <div>
+          <div class="login-label">Username:</div>
+          <input type="text" name="j_username"
+            class="secuirty-text-input"
+          >
+        </div>
+        <div>
+          <div class="login-label">Password:</div>
+          <input type="password" name="j_password"
+            class="secuirty-text-input"
+          > <input id="mx-redirect-field" type="hidden"
+            name="redirectURL"
+          >
+
+        </div>
+        <div style="text-align: right; width: 100%; padding: 15px;">
+          <input id='mx-standard-login-btn' type="submit" value="Login"
+            class="secuirty-action-button"
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="alternative-login-wrapper">
+    You can also:
+    <div class="alt-login-action">
+      <img alt="Login with Google"
+        src="$ctx.siteUrl/security/images/login-google.png"
+      > <input type="hidden" name="provider" value="google.com">
+    </div>
+    <div class="alt-login-action">
+      <img alt="Login with Facebook"
+        src="$ctx.siteUrl/security/images/login-facebook.gif"
+      > <input type="hidden" name="provider" value="facebook.com">
+    </div>
+    <div class="alt-login-action">
+      <img alt="Login with Twitter"
+        src="$ctx.siteUrl/security/images/login-twitter.png"
+      > <input type="hidden" name="provider" value="twitter.com">
+    </div>
+  </div>
+  <div class="login-footer">
+    <div class="register-wrapper">
+      You don't have an account yet? <a href="$ctx.siteUrl/register">Create
+        an account on megx.net</a>
+    </div>
+  </div>
+  #end
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('.alt-login-action').click(function(){
-			var provider = $('input[type=hidden]',this).val();
-			window.location='$ctx.siteUrl/external/login?provider='+provider;
-		});
-	});
+  $.extend({
+    getUrlVars : function() {
+      var vars = [], hash;
+      var hashes = window.location.href.slice(
+        window.location.href.indexOf('?') + 1).split('&');
+      for ( var i = 0; i < hashes.length; i++ ) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+      }
+      return vars;
+    },
+    getUrlVar : function( name ) {
+      return $.getUrlVars()[name];
+    }
+  });
+  $(document).ready(function() {
+    $('.alt-login-action').click(function() {
+      var provider = $('input[type=hidden]', this).val();
+      window.location = '$ctx.siteUrl/external/login?provider=' + provider;
+    });
+    
+    $('#mx-redirect-field').attr("value", $.getUrlVar("redirectURL"));
+    
+    
+    //$('#mx-test').text("DONE loading" + $.getUrlVar("redirectURL") + $('#mx-redirect-field').attr("id"));
+  });
 </script>
