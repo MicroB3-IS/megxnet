@@ -34,11 +34,19 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
     @Override
     public Authentication createAuthentication(HttpServletRequest request)
             throws SecurityException, ServletException {
+
         SecurityContext context = WebContextUtils.getSecurityContext(request);
+
         if (context == null) {
             context = WebContextUtils.newSecurityContext(request);
             WebContextUtils.replaceSecurityContext(context, request, true);
         }
+
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Got request from requestURL %s",
+                    request.getParameter("redirectURL")));
+        }
+
         Authentication authentication = context.getAuthentication();
         try {
             if (getRequestPath(request).equals(loginEndpointUrl)) { // try
@@ -49,13 +57,13 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
                     String password = request.getParameter(passwordField);
                     log.debug("username=" + username);
                     log.debug("password=" + password);
-                    
+
                     if (username != null && password != null) {
-                        log.debug("username=" + username +"=");
-                        log.debug("password=" + password +"=");
+                        log.debug("username=" + username + "=");
                         try {
-                            User user = userService.getUser(username.trim(),password.trim());
-                            
+                            User user = userService.getUser(username.trim(),
+                                    password.trim());
+
                             if (user == null) {
                                 throw new InvalidCredentialsException(
                                         "Invalid username or password.");
@@ -65,8 +73,10 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
                                         "Login with external account.");
                             }
                             Date lastLogin = user.getLastlogin();
-                            //TODO: check for more robust and secure solution e.g. by not storing password in User objetc at all                            
-user.setPassword(null);
+                            // TODO: check for more robust and secure solution
+                            // e.g. by not storing password in User objetc at
+                            // all
+                            user.setPassword(null);
                             user.setLastlogin(new Date());
                             if (lastLogin == null) {
                                 lastLogin = user.getLastlogin();
@@ -75,7 +85,7 @@ user.setPassword(null);
                             authentication = new AuthenticationImpl(user);
                             request.getSession().setAttribute("userLastLogin",
                                     lastLogin);
-                            context.storeLastRequestedURL(getSiteHomeUrl(request));
+                            // context.storeLastRequestedURL(getSiteHomeUrl(request));
                             checkRedirectUrl(request, context);
                         } catch (SecurityException e) {
                             throw e;
@@ -118,19 +128,27 @@ user.setPassword(null);
     protected void checkRedirectUrl(HttpServletRequest request,
             SecurityContext context) {
 
-        String savedRequestPath = context.getLastRequestedURL().trim();
+        String savedRequestPath = context.getLastRequestedURL();
 
-        if (savedRequestPath != null) {
-            if (savedRequestPath.matches(loginEndpointUrl)
-                    || savedRequestPath.matches(logoutEndpointUrl)
-                    || savedRequestPath.compareTo("") == 0) {
-                // context.storeLastRequestedURL(null);
-                context.storeLastRequestedURL(getSiteHomeUrl(request));
-            }
-        } else {
-            context.storeLastRequestedURL(getSiteHomeUrl(request));
+        if (log.isDebugEnabled()) {
+            log.debug(String.format(
+                    "I have stored %s and could use from requestURL %s",
+                    savedRequestPath, request.getParameter("redirectURL")));
         }
+
+        // in these casees just enable redirect to home page
+        if (savedRequestPath == null
+                || savedRequestPath.matches(loginEndpointUrl)
+                || savedRequestPath.matches(logoutEndpointUrl)
+                || savedRequestPath.compareTo("") == 0) {
+            // context.storeLastRequestedURL(null);
+            context.storeLastRequestedURL(getSiteHomeUrl(request));
+            return;
+        }
+        // otherwise just need to keep it as is
     }
+
+  
 
     protected String getSiteHomeUrl(HttpServletRequest request) {
         return "/"; // empty, directly under root
