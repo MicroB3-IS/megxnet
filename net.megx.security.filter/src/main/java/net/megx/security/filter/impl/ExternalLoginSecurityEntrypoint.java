@@ -75,6 +75,11 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
 		String requestPath;
+		
+		 if (log.isDebugEnabled()) {
+	            log.debug(" ExternalLoginSecurityEntrypoint active.");
+	        }
+		
 		try {
 			requestPath = WebUtils.getRequestPath(request, false);
 		} catch (URISyntaxException e) {
