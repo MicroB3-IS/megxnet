@@ -92,6 +92,7 @@
 		<result column="modified" property="taken"/>
 		<result column="collector_id" property="observer"/>
 		<result column="label" property="sampleName"/>
+		<result column="geo_region_label" property="geoRegion"/>
 	</resultMap>
 	
 	<resultMap type="ESASampleLocationCount" id="esa_sample_location_count">
@@ -143,8 +144,7 @@
 	    </foreach>
 	</select>
 	
-	<!-- new query including country, Ocean or Sea Name -->
-	<select id="getLatestObservationTeaser" resultMap="esa_observations_teaser" parameterType="int">
+	<select id="getLatestObservations" resultMap="esa_sample_observations" parameterType="int">
 	    SELECT s.collector_id,
 		       s.modified,
 		       s.label,
@@ -155,19 +155,6 @@
 		FROM esa.observations AS s
 		ORDER BY s.modified DESC LIMIT #{nbObservations}
 	</select>	
-	
-	<!-- @deprecated, should be replaced by getLatestObservationTeaser -->
-	<select id="getLatestObservations" resultMap="esa_sample_observations" parameterType="int">
-	    SELECT s.collector_id,
-		       s.modified,
-		       s.label,
-		       COALESCE (
-		                   (SELECT i.uuid
-		                    FROM esa.sample_images AS i
-		                    WHERE i.sid=s.id LIMIT 1) ) AS uuid
-		FROM esa.samples AS s
-		ORDER BY s.modified DESC LIMIT #{nbObservations}
-	</select>
 	
 	<select id="getSamplesLocationAndCount" resultMap="esa_sample_location_count">
 	    SELECT label, count

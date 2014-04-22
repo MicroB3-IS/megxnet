@@ -8,6 +8,7 @@ public class SampleObservation {
 	private String observer;
 	private Date taken;
 	private String sampleName;
+	private String geoRegion;
 	
 	public String getThumbnailId() {
 		return thumbnailId;
@@ -30,19 +31,27 @@ public class SampleObservation {
 	public String getSampleName() {
 		return sampleName;
 	}
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
+	}
+	public String getGeoRegion() {
+		return geoRegion;
+	}
+	public void setGeoRegion(String geoRegion) {
+		this.geoRegion = geoRegion;
+	}
 	@Override
 	public String toString() {
 		return "SampleObservation [thumbnailId=" + thumbnailId + ", observer="
 				+ observer + ", taken=" + taken + ", sampleName=" + sampleName
-				+ "]";
-	}
-	public void setSampleName(String sampleName) {
-		this.sampleName = sampleName;
+				+ ", geoRegion=" + geoRegion + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((geoRegion == null) ? 0 : geoRegion.hashCode());
 		result = prime * result
 				+ ((observer == null) ? 0 : observer.hashCode());
 		result = prime * result
@@ -61,6 +70,11 @@ public class SampleObservation {
 		if (getClass() != obj.getClass())
 			return false;
 		SampleObservation other = (SampleObservation) obj;
+		if (geoRegion == null) {
+			if (other.geoRegion != null)
+				return false;
+		} else if (!geoRegion.equals(other.geoRegion))
+			return false;
 		if (observer == null) {
 			if (other.observer != null)
 				return false;
@@ -83,4 +97,6 @@ public class SampleObservation {
 			return false;
 		return true;
 	}
+	
+	
 }
