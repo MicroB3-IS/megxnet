@@ -44,7 +44,7 @@ $(document).ready(function(){
 		                    					'<td>Sample Label: ', observation.sampleName ,'</td>',
 	                    					'</tr>',
 	                    					'<tr>',
-	                    						'<td>Ocean: Atlantic ocean </td>',
+	                    						'<td>Ocean:' , observation.geoRegion ,'</td>',
                     						'</tr>',
 	                    					'<tr>',
 		                    					'<td>Date: ', observation.taken, '</td>',
