@@ -41,7 +41,7 @@ $(document).ready(function(){
     	                    					'<td>Observer: ', observation.observer, '</td>',
 	                    					'</tr>',
 	                    					'<tr>',
-		                    					'<td>Sample name:', observation.sampleName ,'</td>',
+		                    					'<td>Sample Label: ', observation.sampleName ,'</td>',
 	                    					'</tr>',
 	                    					'<tr>',
 	                    						'<td>Ocean: Atlantic ocean </td>',
