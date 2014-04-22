@@ -143,6 +143,20 @@
 	    </foreach>
 	</select>
 	
+	<!-- new query including country, Ocean or Sea Name -->
+	<select id="getLatestObservationTeaser" resultMap="esa_observations_teaser" parameterType="int">
+	    SELECT s.collector_id,
+		       s.modified,
+		       s.label,
+		       s.geo_region_label,
+		       (SELECT i.uuid
+		          FROM esa.sample_images AS i
+		         WHERE i.sid=s.id LIMIT 1) AS uuid
+		FROM esa.observations AS s
+		ORDER BY s.modified DESC LIMIT #{nbObservations}
+	</select>	
+	
+	<!-- @deprecated, should be replaced by getLatestObservationTeaser -->
 	<select id="getLatestObservations" resultMap="esa_sample_observations" parameterType="int">
 	    SELECT s.collector_id,
 		       s.modified,
