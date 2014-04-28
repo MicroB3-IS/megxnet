@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: My Plugin
+Bundle-Name: megx-blast
 Bundle-SymbolicName: net.megx.ws.blast
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.ws.blast.Activator
