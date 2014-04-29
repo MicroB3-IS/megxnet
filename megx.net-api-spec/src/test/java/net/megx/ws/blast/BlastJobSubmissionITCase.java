@@ -34,9 +34,9 @@ public class BlastJobSubmissionITCase {
 		formParams.put("biodbVersion", "24-02-2014_aa");
 		formParams
 				.put("rawFasta",
-						">333"
+						">666"
 								+ "\n"
-								+ "LCLYTHIGRNIYYGSYLYSETWNTGIMLLLITMATAFMGYVLPWGQMSFWGATVITNLFSAIPYIGTNLV"
+								+ "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
 								+ "\n"
 								+ "EWIWGGFSVDKATLNRFFAFHFILPFTMVALAGVHLTFLHETGSNNPLGLTSDSDKIPFHPYYTIKDFLG"
 								+ "\n"
@@ -46,6 +46,12 @@ public class BlastJobSubmissionITCase {
 				.formParameters(formParams).when().post("/ws/v1/megx-blast/v1.0.0/jobs").then()
 				.statusCode(201).log();
 
+	}
+	
+	@Test
+	@Category(IntegrationTest.class)
+	public void retrieveMegxBlastJobData() {
+		given().get("/ws/v1/megx-blast/v1.0.0/job/3");
 	}
 
 }
