@@ -275,11 +275,14 @@ public class BlastServiceAPI extends BaseRestService {
 			raw = blastJob.getResultRaw();
 			return raw;
 		} catch (DBGeneralFailureException e) {
+			log.error("Db general error for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
+			log.error("No DB no record: for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
+			log.error("Db exception for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -294,11 +297,14 @@ public class BlastServiceAPI extends BaseRestService {
 		try {
 			return new BlastJobRawToClient(service.getGeographicRaw(id));
 		} catch (DBGeneralFailureException e) {
+			log.error("Db general error for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
+			log.error("No DB no record: for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
+			log.error("Db exception for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
