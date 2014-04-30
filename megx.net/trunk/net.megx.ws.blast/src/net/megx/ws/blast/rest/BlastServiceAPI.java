@@ -61,12 +61,13 @@ public class BlastServiceAPI extends BaseRestService {
 			@FormParam("biodbLabel") final String biodbLabel,
 			@FormParam("biodbVersion") final String biodbVersion,
 			@FormParam("rawFasta") final String rawFasta,
+			@FormParam("evalue") final double evalue,
 			@Context HttpServletRequest request) {
 		try {
 			final String blastJobId;
 			blastJobId = service.insertBlastJob(label, customer, numNeighbors,
 					toolLabel, toolVer, programName, biodbLabel, biodbVersion,
-					rawFasta);
+					rawFasta, evalue);
 			ResponseBuilder rb = Response
 					.ok()
 					.header("Location",

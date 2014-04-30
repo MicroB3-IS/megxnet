@@ -115,12 +115,12 @@
 		(label, customer, num_neighbors,
 		tool_label, tool_ver, program_name,
 		biodb_label, biodb_version,
-		raw_fasta)
+		raw_fasta, evalue)
 		VALUES (#{label}, #{customer},
 		#{numNeighbors},
 		#{toolLabel},#{toolVer},
 		#{programName},
-		#{biodbLabel},#{biodbVersion},#{rawFasta})
+		#{biodbLabel},#{biodbVersion},#{rawFasta},#{evalue})
 	</insert>
 
 	<select id="getSubnetGraphml" resultMap="blast_hits">

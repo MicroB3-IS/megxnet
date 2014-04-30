@@ -24,7 +24,7 @@ public class DBBlastService extends BaseMegdbService implements BlastService {
 			final int numNeighbors, final String toolLabel,
 			final String toolVer, final String programName,
 			final String biodbLabel, final String biodbVersion,
-			final String rawFasta) throws DBGeneralFailureException {
+			final String rawFasta, final double evalue) throws DBGeneralFailureException {
 
 		String blastJobId = doInTransaction(new DBTask<BlastMapper, String>() {
 			@Override
@@ -39,6 +39,7 @@ public class DBBlastService extends BaseMegdbService implements BlastService {
 				job.setBiodbLabel(biodbLabel);
 				job.setBiodbVersion(biodbVersion);
 				job.setRawFasta(rawFasta);
+				job.setEvalue(evalue);
 				mapper.insertBlastJob(job);
 				return String.valueOf(job.getId());
 			}
