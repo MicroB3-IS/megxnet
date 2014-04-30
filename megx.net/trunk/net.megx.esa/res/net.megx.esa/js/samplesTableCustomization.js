@@ -31,16 +31,16 @@ $(document).ready(function(){
 		}
 	};
 	
-	$.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
-	    var showScientist = $('#filterScientist').is(':checked');
-	    var showCitizen = $('#filterCitizen').is(':checked');
-	    
-	    return showCitizen;
-	});
-	
-	$('input.filterRows').change(function(){
-		samplesTable.dataTable().fnDraw();
-	});
+//	$.fn.dataTableExt.afnFiltering.push(function (oSettings, aData, iDataIndex) {
+//	    var showScientist = $('#filterScientist').is(':checked');
+//	    var showCitizen = $('#filterCitizen').is(':checked');
+//	    
+//	    return showCitizen;
+//	});
+//	
+//	$('input.filterRows').change(function(){
+//		samplesTable.dataTable().fnDraw();
+//	});
 	
 	$("#columnsDialog").dialog({
 		  resizable: false,
