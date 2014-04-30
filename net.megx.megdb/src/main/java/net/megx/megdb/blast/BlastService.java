@@ -15,7 +15,7 @@ public interface BlastService {
 			final int numNeighbors, final String toolLabel,
 			final String toolVer, final String programName,
 			final String biodbLabel, final String biodbVersion,
-			final String rawFasta) throws DBGeneralFailureException;
+			final String rawFasta, final double evalue) throws DBGeneralFailureException;
 
 	public BlastHits getSubnetGraphml(int jid, String hitId)
 			throws DBGeneralFailureException, DBNoRecordsException;
