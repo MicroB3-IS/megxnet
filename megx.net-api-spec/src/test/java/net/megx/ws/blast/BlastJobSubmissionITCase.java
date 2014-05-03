@@ -51,7 +51,7 @@ public class BlastJobSubmissionITCase {
 	@Test
 	@Category(IntegrationTest.class)
 	public void retrieveMegxBlastJobData() {
-		given().get("/ws/v1/megx-blast/v1.0.0/job/3");
+		given().get("/ws/v1/megx-blast/v1.0.0/jobs/3").then().statusCode(200).log();
 	}
 
 }
