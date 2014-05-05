@@ -21,6 +21,7 @@ public class TestServer extends ExternalResource {
 		RestAssured.baseURI = "${mvn.test.server}";
 		RestAssured.port = ${mvn.test.port};
 		RestAssured.basePath = "${mvn.test.base.path}";
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		// RestAssured.rootPath = "x.y.z";
 	}
 
