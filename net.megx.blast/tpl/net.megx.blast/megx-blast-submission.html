@@ -1,4 +1,6 @@
 <section>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.blast/js/blast.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.blast/js/csvjson.min.js"></script>
 
   <script type="text/javascript">
             var fileSelected = false;
@@ -29,7 +31,6 @@
   <hr style="clear: both;">
   <div id="content">
     <form method="POST" name="geoblast_form"
-      action="$ctx.siteUrl/gms/geographic-blast/submit"
       class="blastRadioButton" id="geoblast_form_id"
       onsubmit="return validateForm();">
       <fieldset title="Step 1">
@@ -40,7 +41,7 @@
             <img src="$ctx.siteUrl/gms-res/images/earth_01.gif"
               alt="Globus" />
           </div>
-          <textarea style="font-family: monospace" name="seq"
+          <textarea style="font-family: monospace" id="raw_fasta" name="seq"
             class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
           <button type="button" id="blast_button" value="Clear"
             onclick="document.geoblast_form.elements['seq'].value=''">Clear</button>
@@ -95,16 +96,17 @@
             <img src="$ctx.siteUrl/gms-res/images/earth_03.gif"
               alt="Globus" />
           </div>
-          E-value-cutoff <input type="text" name="evalue_cutoff"
+          E-value-cutoff <input type="text" id="eValue" name="evalue_cutoff"
             size="10" maxlength="10" value="5E-10" /> <input
             type="hidden" id="msid" name="msid"
             value="556abbade8e942d3bb78ce8716c73dc0">
           <hr style="clear: both; margin-bottom: 2px;">
         </div>
+         <button type="button" class="blastButton orange" id="blast"
+          value="BLAST">BLAST</button>
       </fieldset>
       <div class="finish">
-        <button type="submit" class="blastButton orange" id="BLAST"
-          value="BLAST">BLAST</button>
+       
         <!-- clear for buttons -->
       </div>
       <hr style="clear: both;">

@@ -1,8 +1,8 @@
 www={type:'sys.public'}
 	gms={type: 'html', template: 'pages/gms.html', title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type: 'html', template: 'pages/geographic-blast.html'}
-			submit={type: 'megx.module.blast', title: 'Submit Blast'}
-			job={type: 'megx.module.blast', title: 'Blast Results'}
+			job={type:'html', template:'net.megx.blast/running.html', title: 'Running'}
+			result={type:'html', template:'net.megx.blast/result.html', title: 'Blast Results'}
 		geographic-pfam={type:'html', template:'net.megx.geo.pfam/index.html', title:'Geographic PFAM'}
 
 		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
