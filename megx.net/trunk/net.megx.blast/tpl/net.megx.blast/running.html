@@ -1,26 +1,27 @@
+#set( $jobId = $req.get("id") )
 <script type="text/javascript">
 <!--
 $(function() {
 	
-	checkBlastJob = function(id, callback) {
-		$.getJSON("$ctx.siteUrl/ws/blast/getJobStatus", {jobId: id}, callback);
-	}
-	
 	function loop() {
-		checkBlastJob('$jobId', function(resp) {
-			if(resp.status == 'running') {
-				setTimeout(loop, 2000);
-			} else {
-				if(resp.status == 'completed' ) {
-					//$('#jobStatus').html('Job Done, redirecting to results.');
-					document.location.href = '$ctx.siteUrl/gms/geographic-blast/job?id=$jobId';
-					
-				} else {
-					//TODO: 
-					$('#blast_ct').html("Unexpected job status: " + resp.status);
-				}
-			}
-		});
+		$.get('$ctx.siteUrl/ws/v1/megx-blast/v1.0.0/jobs/' + $jobId ,
+		        function(data, textStatus, jqXHR ){
+				
+					if(data != null){
+						if(jqXHR.status == 202) {
+							setTimeout(loop, 2000);
+						} else {
+							if(jqXHR.status == 303 || jqXHR.status == 200 ) {
+								//$('#jobStatus').html('Job Done, redirecting to results.');
+								document.location.href = '$ctx.siteUrl/gms/geographic-blast/result?id=' + $jobId;
+								
+							} else {
+								//TODO: 
+								$('#blast_ct').html("Unexpected job status: " + jqXHR.status);
+							}
+						} 
+					} 
+		        });
 	}
 	loop();
 });
