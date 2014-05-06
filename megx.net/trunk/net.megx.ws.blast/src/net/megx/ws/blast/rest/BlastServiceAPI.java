@@ -53,7 +53,6 @@ public class BlastServiceAPI extends BaseRestService {
 	@Produces("text/csv")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response postBlastJob(@FormParam("label") final String label,
-			@FormParam("customer") final String customer,
 			@FormParam("numNeighbors") final int numNeighbors,
 			@FormParam("toolLabel") final String toolLabel,
 			@FormParam("toolVer") final String toolVer,
@@ -63,7 +62,16 @@ public class BlastServiceAPI extends BaseRestService {
 			@FormParam("rawFasta") final String rawFasta,
 			@FormParam("evalue") final double evalue,
 			@Context HttpServletRequest request) {
+		
+		String customer = "";
+		
 		try {
+			if(request.getUserPrincipal() != null) {
+				customer = request.getUserPrincipal().getName();
+			}else {
+				customer = "megx";
+			}
+			
 			final String blastJobId;
 			blastJobId = service.insertBlastJob(label, customer, numNeighbors,
 					toolLabel, toolVer, programName, biodbLabel, biodbVersion,
