@@ -11,14 +11,13 @@ $(document).ready(function() {
 		        },
 		      async: false,
 			  data: { 
-				  label : 'test',
-			      customer : 'megx',
-			      numNeighbors : 3,
+				  label : 'test_label',
+			      numNeighbors : $( "#numNeighbors" ).val(),
 			      toolLabel : 'blast+',
 			      toolVer : '2.2.28',
 			      programName : 'blastp',
 			      biodbLabel : $('input:radio[name=blastDb]:checked').val(),
-			      biodbVersion : 'aa',
+			      biodbVersion : '24-02-2014_aa',
 			      rawFasta : $( '#raw_fasta' ).val(),
 			      evalue : $( '#eValue' ).val()
 			      },
