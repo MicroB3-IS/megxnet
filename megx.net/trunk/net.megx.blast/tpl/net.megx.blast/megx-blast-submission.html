@@ -39,8 +39,9 @@
             <img src="$ctx.siteUrl/net.megx.blast/img/earth_01.gif" alt="Globus" />
           </div>
           <textarea style="font-family: monospace" id="raw_fasta" name="raw_fasta" class="seq">#include('pages/geo-blast.seq.def.data.html')</textarea>
-          <button type="button" id="blast_button" value="Clear" onclick="document.geoblast_form.elements['raw_fasta'].value=''">Clear</button>
-          <p>Or choose a FASTA File: <input type="file" name="fasta" size="50" id="fasta" onchange="onFileSelect()"/></p>
+          <button type="button" id="clear_button" value="Clear" onclick="document.geoblast_form.elements['raw_fasta'].value=''">Clear</button>
+          <label for="fasta">Or choose a FASTA File:</label>
+          <input type="file" name="fasta" size="50" id="fasta" onchange="onFileSelect()"/>
           <p>Note: Only one sequence no longer than 5000 characters per search possible.</p>
           <hr style="clear: both;">
         </div>
@@ -53,8 +54,7 @@
             <img src="$ctx.siteUrl/net.megx.blast/img/earth_02.gif" alt="Globus" />
           </div>
           <p>
-            <em>Click on the database name to learn about its
-              content.</em>
+            <em>Click on the database name to learn about its content.</em>
           </p>
           <label>
           	  <a class="about" href="$ctx.siteUrl/portal/content/content.html#prokes">Prokaryotic Genomes</a> (blastp)
@@ -69,16 +69,16 @@
                <input type="radio" name="blastDb" value="silva_ssu" /> 
            </label> 
            <label>
-           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#lsu">23S/28S rRNA</a> (blastn) 
-           	<input type="radio" name="blastDb" value="silva_lsu" />
+	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#lsu">23S/28S rRNA</a> (blastn) 
+	           	<input type="radio" name="blastDb" value="silva_lsu" />
            </label> 
            <label>
-           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Marine Phage Genomes</a> (blastp) 
-           	<input type="radio" name="blastDb" value="marine_phages" /> 
+	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Marine Phage Genomes</a> (blastp) 
+	           	<input type="radio" name="blastDb" value="marine_phages" /> 
            </label>
            <label>
-           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Known Unknown</a> (blastp) 
-           	<input type="radio" name="blastDb" value="unknowns" /> 
+	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Known Unknown</a> (blastp) 
+	           	<input type="radio" name="blastDb" id="unknowns" value="unknowns" /> 
            </label>
            
           <hr style="clear: both;">
@@ -91,12 +91,17 @@
 	          <div class="globus">
 	            <img src="$ctx.siteUrl/net.megx.blast/img/earth_03.gif" alt="Globus" />
 	          </div>
-	          E-value-cutoff <input type="text" id="eValue" size="10" maxlength="10" value="0.00001" />
-	          NumNeighbors <select id="numNeighbors" >
-				  <option value="1">1</option>
-				  <option value="2">2</option>
-				  <option value="3">3</option>
-			  </select>
+	          <label for="eValue">E-value-cutoff</label>
+	          <input type="text" id="eValue" size="10" maxlength="10" value="0.00001" />
+	         
+	          <div id="numberNeighbors" style="display: none;">
+		          <label for="numNeighbors">Number of Neighbors</label>
+		          <select id="numNeighbors">
+					  <option value="1">1</option>
+					  <option value="2">2</option>
+					  <option value="3">3</option>
+				  </select>
+			  </div>
 	        <hr style="clear: both; margin-bottom: 2px;">
         </div>
         
