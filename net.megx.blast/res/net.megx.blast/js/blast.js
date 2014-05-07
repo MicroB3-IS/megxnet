@@ -29,4 +29,16 @@ $(document).ready(function() {
 		});	  		
 	});
 	
+	$('input:radio[name=blastDb]').click(function(){
+		
+		if(document.getElementById('unknowns').checked){
+			$('#numberNeighbors').show();
+			
+		}else {
+			$('#numberNeighbors').hide();
+			$('#numNeighbors').val('1')
+		}
+		
+	});
+	
 });

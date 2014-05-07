@@ -606,6 +606,7 @@ hr {
 textarea.seq {
 	width: 600px;
 	height: 175px;
+	resize: none;
 }
 
 a#save-to-megx {
