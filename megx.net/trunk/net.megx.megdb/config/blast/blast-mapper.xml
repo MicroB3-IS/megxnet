@@ -106,6 +106,14 @@
 		<result column="db" property="db" />
 	</resultMap>
 
+	<resultMap type="MatchingSequences" id="blast_hits_matching_sequences">
+		<result column="hsp_evalue" property="hspEvalue" />
+		<result column="hsp_bit_score" property="hspBitScore" />
+		<result column="query_id" property="queryId" />
+		<result column="hit_id" property="hitId" />
+		<result column="hit_neighborhood" property="hitNeighborhoodCount" />
+	</resultMap>
+
 	<insert id="insertBlastJob" parameterType="BlastJob">
 		<selectKey keyProperty="id" resultType="int" order="AFTER">
 			SELECT
@@ -181,4 +189,14 @@
 		where id=#{id};
 	</select>
 
+	<select id="getMatchingSequences" resultMap="blast_hits_matching_sequences">
+		SELECT hsp_evalue, hsp_bit_score, query_id, hit_id, (SELECT COUNT
+		(hit_neighborhood) as hit_neighborhood
+		FROM megx_blast.blast_hits)
+		FROM megx_blast.blast_jobs
+		INNER JOIN
+		megx_blast.blast_hits
+		ON
+		megx_blast.blast_jobs.id = megx_blast.blast_hits.jid
+	</select>
 </mapper>

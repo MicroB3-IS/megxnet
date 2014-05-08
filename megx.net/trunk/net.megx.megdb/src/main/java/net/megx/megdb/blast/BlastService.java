@@ -8,6 +8,7 @@ import net.megx.model.blast.BlastHits;
 import net.megx.model.blast.BlastHitsDb;
 import net.megx.model.blast.BlastHitsNeighbours;
 import net.megx.model.blast.BlastJob;
+import net.megx.model.blast.MatchingSequences;
 
 public interface BlastService {
 
@@ -15,7 +16,8 @@ public interface BlastService {
 			final int numNeighbors, final String toolLabel,
 			final String toolVer, final String programName,
 			final String biodbLabel, final String biodbVersion,
-			final String rawFasta, final double evalue) throws DBGeneralFailureException;
+			final String rawFasta, final double evalue)
+			throws DBGeneralFailureException;
 
 	public BlastHits getSubnetGraphml(int jid, String hitId)
 			throws DBGeneralFailureException, DBNoRecordsException;
@@ -37,5 +39,8 @@ public interface BlastService {
 
 	public BlastJob getGeographicRaw(int id) throws DBGeneralFailureException,
 			DBNoRecordsException;
+
+	public List<MatchingSequences> getMatchingSequences()
+			throws DBGeneralFailureException, DBNoRecordsException;
 
 }
