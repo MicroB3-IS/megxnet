@@ -11,6 +11,7 @@ import net.megx.model.blast.BlastHits;
 import net.megx.model.blast.BlastHitsDb;
 import net.megx.model.blast.BlastHitsNeighbours;
 import net.megx.model.blast.BlastJob;
+import net.megx.model.blast.MatchingSequences;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -166,5 +167,25 @@ public class DBBlastService extends BaseMegdbService implements BlastService {
 		} else {
 			return result;
 		}
+	}
+
+	@Override
+	public List<MatchingSequences> getMatchingSequences()
+			throws DBGeneralFailureException, DBNoRecordsException {
+		List<MatchingSequences> result = doInSession(new DBTask<BlastMapper, List<MatchingSequences>>() {
+
+			@Override
+			public List<MatchingSequences> execute(BlastMapper mapper)
+					throws Exception {
+				return mapper.getMatchingSequences();
+			}
+			
+		}, BlastMapper.class);
+		if(result.size() == 0){
+			throw new DBNoRecordsException("Query returned zero results");
+		}else{
+			return result;
+		}
+		
 	}
 }

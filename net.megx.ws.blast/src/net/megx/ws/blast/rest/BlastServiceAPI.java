@@ -28,6 +28,7 @@ import net.megx.model.blast.BlastHits;
 import net.megx.model.blast.BlastHitsDb;
 import net.megx.model.blast.BlastHitsNeighbours;
 import net.megx.model.blast.BlastJob;
+import net.megx.model.blast.MatchingSequences;
 import net.megx.ws.blast.rest.mappers.BlastJobDetailsToClient;
 import net.megx.ws.blast.rest.mappers.BlastJobRawToClient;
 import net.megx.ws.core.BaseRestService;
@@ -62,16 +63,16 @@ public class BlastServiceAPI extends BaseRestService {
 			@FormParam("rawFasta") final String rawFasta,
 			@FormParam("evalue") final double evalue,
 			@Context HttpServletRequest request) {
-		
+
 		String customer = "";
-		
+
 		try {
-			if(request.getUserPrincipal() != null) {
+			if (request.getUserPrincipal() != null) {
 				customer = request.getUserPrincipal().getName();
-			}else {
+			} else {
 				customer = "megx";
 			}
-			
+
 			final String blastJobId;
 			blastJobId = service.insertBlastJob(label, customer, numNeighbors,
 					toolLabel, toolVer, programName, biodbLabel, biodbVersion,
@@ -318,4 +319,33 @@ public class BlastServiceAPI extends BaseRestService {
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+	/*
+	 * Initial version service for displaying matching-sequence table on result
+	 * page !
+	 */
+	
+	@GET
+	@Path("matching-sequences")
+	@Produces("text/csv")
+	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
+	public List<MatchingSequences> getMatchingSequences(
+			@Context HttpServletRequest request) {
+		try {
+			return service.getMatchingSequences();
+		} catch (DBGeneralFailureException e) {
+			log.error("Db general error " + "\n" + e);
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		} catch (DBNoRecordsException e) {
+			log.error("No DB no record:"  + "\n" + e);
+			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+		} catch (Exception e) {
+			log.error("Db exception "  + "\n" + e);
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

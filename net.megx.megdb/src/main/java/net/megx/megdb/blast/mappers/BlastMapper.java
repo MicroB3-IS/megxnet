@@ -8,6 +8,7 @@ import net.megx.model.blast.BlastHits;
 import net.megx.model.blast.BlastHitsDb;
 import net.megx.model.blast.BlastHitsNeighbours;
 import net.megx.model.blast.BlastJob;
+import net.megx.model.blast.MatchingSequences;
 
 public interface BlastMapper {
 
@@ -26,7 +27,9 @@ public interface BlastMapper {
 	public List<BlastHitsDb> getDatabases();
 
 	public BlastJob getResultRaw(@Param("id") int id);
-	
+
 	public BlastJob getGeographicRaw(@Param("id") int id);
+
+	public List<MatchingSequences> getMatchingSequences();
 
 }

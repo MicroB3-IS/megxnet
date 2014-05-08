@@ -78,6 +78,7 @@
 		<typeAlias type="net.megx.model.blast.BlastHits" alias="BlastHits"/>
 		<typeAlias  type="net.megx.model.blast.BlastHitsNeighbours"  alias="BlastHitsNeighbours"/>
 		<typeAlias  type="net.megx.model.blast.BlastHitsDb"  alias="BlastHitsDb"/>
+		<typeAlias type="net.megx.model.blast.MatchingSequences" alias="MatchingSequences" />
 	</typeAliases>
 
 	<environments default="main">
