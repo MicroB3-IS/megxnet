@@ -1,0 +1,50 @@
+textarea.seq {
+	width: 600px;
+	height: 175px;
+}
+.blastButton {
+	margin-left: 5px;
+	width: 103px;
+}
+#clear_button {
+	margin-left: 7px;
+}
+form.blastRadioButton input[type=radio] {
+	float: left;
+	padding: 0em;
+	margin: 0em;
+	border: .1em solid #e7e7e7;
+	color: #999;
+	width: 24px;
+	height: 24px;
+}
+#geoblast_form_id .wiz_ct {
+	height: 350px;
+}
+.globus {
+	float: right;
+	vertical-align: top;
+}
+form button.organge:hover,form button.organge:focus {
+	color: #ffffff !important;
+}
+#jobSummary
+{
+font-family:"Trebuchet MS", Arial;
+width:100%;
+border-collapse:collapse;
+}
+#jobSummary td, #jobSummary th 
+{
+font-size:1em;
+padding:3px 7px 2px 7px;
+}
+.errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 234px;
+}
+.textBold{
+	font-weight: bold;
+}

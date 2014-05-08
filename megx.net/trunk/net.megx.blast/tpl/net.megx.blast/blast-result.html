@@ -1,0 +1,22 @@
+<link href="$ctx.siteUrl/net.megx.ui.table/css/data.table.css" rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/net.megx.blast/css/blast.css" rel="stylesheet" type="text/css">
+
+<script src="$ctx.siteUrl/net.megx.ui.table/js/json2.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/net.megx.ui.table/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.blast/js/csvjson.min.js"></script>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.blast/js/matchingSequences.js"></script>
+
+
+<div style="padding: 15px">
+	<h3>Job Summary</h3>
+	<div>
+		#parse("net.megx.blast/jobSummary.html")
+	</div>
+	<h3>Matching Sequences</h3>
+	<div>
+		#parse("net.megx.blast/matchingSequences.html")
+	</div>
+</div>
