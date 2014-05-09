@@ -268,11 +268,10 @@ table.woaTableData {
 	vertical-align: top;
 }
 .blastButton {
-	margin-left: 5px;
-	width: 105px;
-}
-#clear_button{
-	margin-left: 7px;
+	margin-left: 120px;
+	margin-top: 198px;
+	width: 103px;
+	height: 32px;
 }
 .blast-loading {
 	text-align: center;
@@ -300,5 +299,5 @@ table.woaTableData {
 .finish {
 	display: block;
 	text-align: right; 
-	width: 850px;
+	width: 115px;
 }
