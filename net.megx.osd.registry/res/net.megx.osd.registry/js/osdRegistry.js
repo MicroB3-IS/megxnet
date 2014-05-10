@@ -177,7 +177,7 @@ $(document).ready(function() {
 	      }
 	});
 	
-	$('a.viewParticipantClass').on('click', function(){
+	$('tbody').on('click', 'a.viewParticipantClass', function(){
 		var recordID = $(this).attr("name");
 		$('.MapBox div').each(function(){
 			if($(this).css("z-index")){
