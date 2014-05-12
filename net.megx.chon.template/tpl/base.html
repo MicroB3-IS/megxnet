@@ -40,20 +40,23 @@
 
 <!-- include jQuery -->
 <script type="text/javascript"
-  src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"
 ></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+
 <script type="text/javascript"
-  src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"
+  src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.js"
 ></script>
 
 <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.js"></script>
 <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
 
 
+<!-- 
 #foreach($script in $ctx.get('head:scripts'))
 <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
 #end 
-
+ -->
 
 #if ( $ext.settings ) #parse('settings/account/check_profile.html')
 #end
@@ -61,6 +64,7 @@
 </head>
 
 <body>
+
   <div id="wrapper">
     <header> #if ( $ext.settings )
       #parse('settings/header.html') #else #parse('header.html') #end </header>
