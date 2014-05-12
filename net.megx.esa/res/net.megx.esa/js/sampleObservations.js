@@ -30,6 +30,7 @@ $(document).ready(function(){
     var renderObservation = function(observation){
     	observation = observation || {};
     	var imgSrc = observation.thumbnailId ? SAMPLE_THUMBNAILS_URL + observation.thumbnailId : NO_IMAGE_ICON_URL;
+    	var viewUrl = ctx.siteUrl + '/osd-app/sampleDetails?sampleId=' + observation.id;
     	var htmlToRender = ['<table style="width: 100%;">',
     	                    	'<tr style="width: 100%;">',
     	                    		'<td style="width: 35%;">',
@@ -48,6 +49,12 @@ $(document).ready(function(){
                     						'</tr>',
 	                    					'<tr>',
 		                    					'<td>Date: ', observation.taken, '</td>',
+	                    					'</tr>',
+	                    					'<tr>',
+		                    					'<td>', 
+		                    					 	'<a href=', viewUrl ,' class=\'viewSampleClass\'>View more</a>',
+		                    					'</td>',
+		                    					
 	                    					'</tr>',
                     					'</table>',
                 					'</td>',
