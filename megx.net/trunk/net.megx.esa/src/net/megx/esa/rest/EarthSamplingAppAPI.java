@@ -58,7 +58,7 @@ import com.google.gson.JsonParseException;
  * @author borce.jadrovski
  *
  */
-@Path("v1/esa/v1.0.0")
+@Path("v1/esa/v1.0.0/[^c].*")
 public class EarthSamplingAppAPI extends BaseRestService{
 	
 	private EarthSamplingAppService service;
