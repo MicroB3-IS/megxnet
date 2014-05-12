@@ -136,7 +136,7 @@ $(document).ready(function() {
 		loadParticipantData(participantID, populateFormData);
 	}
 	
-	$('a.deleteParticipantClass').on('click', function(){
+	$('tbody').on('click', 'a.deleteParticipantClass', function(){
 		var recordID = $(this).attr("id");
 		$("#deleteDialog").data("id", recordID).dialog('open');
 		return false;
@@ -162,7 +162,7 @@ $(document).ready(function() {
 	$("#deleteDialog").dialog({
 		  resizable: false,
 	      autoOpen: false,
-		  height: 150,
+		  height: 160,
 		  width: 320,
 	      modal: true,
 	      title: "Confirm delete",
