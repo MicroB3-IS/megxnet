@@ -66,7 +66,7 @@ Biojs.MegxMapWidget = Biojs
     opt : {
       target : 'megxMapWidget',
       layerSet : 'osd-registry',
-      gmsBaseURL : ctx.siteUrl + '/wms',
+      gmsBaseURL : 'http://mb3is.megx.met/wms',
       log : false
     },
 
@@ -119,7 +119,7 @@ Biojs.MegxMapWidget = Biojs
 
       var layerset = this.LAYERSET[this.opt.layerSet.toLowerCase()];
 
-      this._log.message('layerset' + layerset);
+      this._log.message('layerset:' + layerset);
 
       if ( layerset ) {
         for ( var i = 0; i < layerset.length; i++ ) {
@@ -144,7 +144,7 @@ Biojs.MegxMapWidget = Biojs
           + this.opt.layerSet.toLowerCase());
         return;
       }
-      this._createWMSFeatureInfo(this.layers.get('metagenomes'), this.map);
+      this._createWMSFeatureInfo(this.layers.get(layerset[layerset.length -1]), this.map);
       this._accordifyLayerPanel();
 
       // map.setBaseLayer(this.layers.get('satellite_mod'));
@@ -167,7 +167,7 @@ Biojs.MegxMapWidget = Biojs
     _createWMSFeatureInfo : function( layer, map ) {
       var self = this;
 
-      self._log.error('feature info called');
+      self._log.message('feature info for layer ' + layer.name + ' url=' + this.opt.gmsBaseURL);
 
       /*
        * vendorParams : { RRNAS : sam_rrna, GENOMES : sam_genomes, PHAGES :
@@ -175,8 +175,8 @@ Biojs.MegxMapWidget = Biojs
        */
 
       var featureInfo = new OpenLayers.Control.WMSGetFeatureInfo({
-        url : 'http://mb3is.megx.net/wms',
-        queryVisible : true,
+        url : this.opt.gmsBaseURL,
+        queryVisible : false,
         infoFormat : 'text/html',
         layers : [ layer ],
         title : 'Identify features by clicking',
@@ -184,10 +184,11 @@ Biojs.MegxMapWidget = Biojs
         // format: new OpenLayers.Format.WMSGetFeatureInfo(),
         eventListeners : {
           getfeatureinfo : function( event ) {
+            self._log.error('feature info for event ' + event.xy + event.text);
             var lonlat = map.getLonLatFromPixel(event.xy);
             self.map.addPopup(new OpenLayers.Popup.FramedCloud("chicken",
               lonlat, null, event.text ? event.text : 'No data at '
-                + event.text + ': ' + lonlat + event.features + event.xy, null,
+                + layer.toString() + ': ' + lonlat + event.features + event.xy, null,
               true));
           }
         }
