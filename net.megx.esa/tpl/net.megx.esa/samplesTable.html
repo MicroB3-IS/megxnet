@@ -25,6 +25,9 @@
 
 <div id="noSamplesSelected"><span>Please select some samples for download first.</span></div>
 
+
+
+
 $ext.dataTable.renderServerSide(
 	$columnNames, 
 	$url,
@@ -153,6 +156,8 @@ $ext.dataTable.renderServerSide(
 	 	}
 	 }]
 }")
+
+
 
 <form id="sf" action="$ctx.siteUrl/ws/v1/esa/v1.0.0/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
 	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
