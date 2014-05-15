@@ -102,24 +102,38 @@
 	</resultMap>
 
 	<sql id="esa_sample_columns_all">
-		id,taken, modified, collector_id, label, raw_data,
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if
-				test="barcode != null and projectId != null and userName != null and shipName != null and boatManufacturer != null and boatModel != null and boatLength != null and homeport != null and nationality != null and 
-			elevation != null and biome != null and feature != null and collection != null and
-			 permit != null and samplingDepth != null and waterDepth != null and weatherCondition != null and airTemperature != null and
-			 waterTemperature != null and conductivity != null and windSpeed != null and salinity != null and comment != null
-			 and accuracy != null and phosphate != null and nitrate != null and nitrite != null and ph != null and secchiDepth != null">
-				barcode,project_id,user_name,ship_name,boat_manufacturer,boat_model,boat_length,homeport,nationality,elevation,biome,
-				feature,collection,permit,sampling_depth,water_depth,weather_condition,air_temperature,water_temperature,conductivity,
-				wind_speed,salinity,comment,accuracy,phosphate,nitrate,nitrite,ph,secchi_depth,
-			</if>
-		</trim>
-		sample_size,
-		geom,
-		material
+		id,taken,modified,collector_id, label, raw_data,
+		<if test="barcode != null">barcode,</if>
+		<if test="projectId != null">project_id,</if>
+		<if test="userName != null">user_name,</if>
+		<if test="shipName != null">ship_name,</if>
+		<if test="boatManufacturer != null">boat_manufacturer,</if>
+		<if test="boatModel != null">boat_model,</if>
+		<if test="boatLength != null">boat_length,</if>
+		<if test="homeport != null">homeport,</if>
+		<if test="nationality != null">nationality,</if>
+		<if test="elevation != null">elevation,</if>
+		<if test="biome != null">biome,</if>
+		<if test="feature != null">feature,</if>
+		<if test="collection != null">collection,</if>
+		<if test="permit != null">permit,</if>
+		<if test="samplingDepth != null">sampling_depth,</if>
+		<if test="waterDepth != null">water_depth,</if>
+		<if test="weatherCondition != null">weather_condition,</if>
+		<if test="airTemperature != null">air_temperature,</if>
+		<if test="waterTemperature != null">water_temperature,</if>
+		<if test="conductivity != null">conductivity,</if>
+		<if test="windSpeed != null">wind_speed,</if>
+		<if test="salinity != null">salinity,</if>
+		<if test="comment != null">comment,</if>
+		<if test="accuracy != null">accuracy,</if>
+		<if test="phosphate != null">phosphate,</if>
+		<if test="nitrate != null">nitrate,</if>
+		<if test="nitrite != null">nitrite,</if>
+		<if test="ph != null">ph,</if>
+		<if test="secchiDepth != null">secchi_depth,</if>
+		sample_size,geom,material
 	</sql>
-
 
 	<sql id="esa_sample_columns_no_geom">
 		id,taken, modified, collector_id, label, raw_data, barcode,
@@ -267,37 +281,48 @@
 		, st_y(geom) as lat, st_x(geom) as lon
 		FROM esa.samples
 	</select>
-
+	
 	<insert id="addSample" parameterType="ESASample">
-
-		INSERT INTO esa.samples(
-		<include refid="esa_sample_columns_all" />
-		)
-		VALUES
-		(#{id}, #{taken}, #{modified}, #{collectorId}, #{label},
-		#{rawData},
+		INSERT INTO esa.samples
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if
-				test="barcode != null and projectId != null and userName != null and shipName != null and boatManufacturer != null 
-			and boatModel != null and boatLength != null and homeport != null and nationality != null and elevation != null 
-			and biome != null and feature != null and collection != null and permit != null and samplingDepth != null 
-			and waterDepth != null and weatherCondition != null and airTemperature != null and waterTemperature != null
-			and conductivity != null and windSpeed != null and salinity != null and comment != null and accuracy != null
-			and phosphate != null and nitrate != null and nitrite != null and ph != null and secchiDepth != null">
-				#{barcode},#{projectId},#{userName},#{shipName},#{boatManufacturer},
-				#{boatModel},#{boatLength},
-				#{homeport},#{nationality},#{elevation},#{biome},#{feature},#{collection},
-				#{permit},#{samplingDepth},#{waterDepth},#{weatherCondition},
-				#{airTemperature},#{waterTemperature},#{conductivity},
-				#{windSpeed},
-				#{salinity},#{comment},
-				#{accuracy},#{phosphate},#{nitrate},#{nitrite}, #{ph},
-				#{secchiDepth},
-			</if>
+			<include refid="esa_sample_columns_all" />
 		</trim>
-		#{sampleSize},
-		ST_PointFromText('POINT(${lon} ${lat})',4326),
-		#{material})
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{id}, #{taken}, #{modified}, #{collectorId}, #{label},#{rawData},
+			<if test="barcode != null">#{barcode},</if>
+			<if test="projectId != null">#{projectId},</if>
+			<if test="userName != null">#{userName},</if>
+			<if test="shipName != null">#{shipName},</if>
+			<if test="boatManufacturer != null">#{boatManufacturer},</if>
+			<if test="boatModel != null">#{boatModel},</if>
+			<if test="boatLength != null">#{boatLength},</if>
+			<if test="homeport != null">#{homeport},</if>
+			<if test="nationality != null">#{nationality},</if>
+			<if test="elevation != null">#{elevation},</if>
+			<if test="biome != null">#{biome},</if>
+			<if test="feature != null">#{feature},</if>
+			<if test="collection != null">#{collection},</if>
+			<if test="permit != null">#{permit},</if>
+			<if test="samplingDepth != null">#{samplingDepth},</if>
+			<if test="waterDepth != null">#{waterDepth},</if>
+			<if test="weatherCondition != null">#{weatherCondition},</if>
+			<if test="airTemperature != null">#{airTemperature},</if>
+			<if test="waterTemperature != null">#{waterTemperature},</if>
+			<if test="conductivity != null">#{conductivity},</if>
+			<if test="windSpeed != null">#{windSpeed},</if>
+			<if test="salinity != null">#{salinity},</if>
+			<if test="comment != null">#{comment},</if>
+			<if test="accuracy != null">#{accuracy},</if>
+			<if test="phosphate != null">#{phosphate},</if>
+			<if test="nitrate != null">#{nitrate},</if>
+			<if test="nitrite != null">#{nitrite},</if>
+			<if test="ph != null">#{ph},</if>
+			<if test="secchiDepth != null">#{secchiDepth},</if>
+			#{sampleSize},
+			ST_PointFromText('POINT(${lon} ${lat})',4326),
+			#{material}
+		</trim>
 	</insert>
 
 	<delete id="removeSample" parameterType="int">
