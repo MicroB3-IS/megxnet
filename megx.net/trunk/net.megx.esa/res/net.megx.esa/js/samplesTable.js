@@ -46,7 +46,11 @@ $(document).ready(function() {
 		 	bVisible: false
 		 }, {
 		 	mData: 'airTemperature',
-		 	sClass: 'right data-pad'
+		 	sClass: 'right data-pad',
+		  mRender: function(id){
+       
+        return id || 'hallo';
+      }
 		 }, {
 		 	mData: 'lat',
 		 	sClass: 'right data-pad',
@@ -160,7 +164,7 @@ $(document).ready(function() {
 	 	                'biome': samples.data[i].biome,
 	 	                'weatherCondition': samples.data[i].weatherCondition,
 	 	                'feature': samples.data[i].feature,
-	 		 	        'airTemperature': samples.data[i].airTemperature,
+	 		 	        'airTemperature': samples.data[i].airTemperature || 'hallo',
 	 	     			'lat': samples.data[i].lat,
 	 	     			'lon': samples.data[i].lon,
 	 	     			'barcode': samples.data[i].barcode,
