@@ -66,7 +66,7 @@ $(document).ready(function(){
 	var renderText = function(text, measurementSymbol){
 		text = text || '';
 		measurementSymbol = measurementSymbol || '';
-		return text !== '' ? text + '&nbsp;' + measurementSymbol : '/';
+		return text !== '' ? text + '&nbsp;' + measurementSymbol : '-';
 	}
 	
 	handleError = function(img){

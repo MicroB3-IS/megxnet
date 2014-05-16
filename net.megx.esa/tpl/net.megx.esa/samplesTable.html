@@ -63,7 +63,10 @@ $ext.dataTable.renderServerSide(
 	 	bVisible: false
 	 }, {
 	 	mData: 'airTemperature',
-	 	sClass: 'right data-pad'
+	 	sClass: 'right data-pad',
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'lat',
 	 	sClass: 'right data-pad',
@@ -79,7 +82,10 @@ $ext.dataTable.renderServerSide(
 	 }, {
 	 	mData: 'elevation',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'collection',
 	 	sClass: 'left data-pad',
@@ -95,57 +101,96 @@ $ext.dataTable.renderServerSide(
 	 }, {
 	 	mData: 'secchiDepth',
 	 	sClass: 'center data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'samplingDepth',
-	 	sClass: 'right data-pad'
+	 	sClass: 'right data-pad',
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'waterDepth',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'sampleSize',
 	 	sClass: 'right data-pad',
 	 	bVisible: false
 	 }, {
 	 	mData: 'waterTemperature',
-	 	sClass: 'right data-pad'
+	 	sClass: 'right data-pad',
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'conductivity',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'windSpeed',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'salinity',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'comment',
 	 	sClass: 'left data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'accuracy',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'phosphate',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'nitrate',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'nitrite',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'ph',
 	 	sClass: 'right data-pad',
-	 	bVisible: false
+	 	bVisible: false,
+    mRender: function(id){
+                return id || '-';
+            },
 	 }, {
 	 	mData: 'id',
 	 	sClass: 'center',

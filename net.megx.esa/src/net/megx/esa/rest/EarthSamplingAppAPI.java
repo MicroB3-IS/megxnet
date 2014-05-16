@@ -51,6 +51,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
@@ -113,12 +114,28 @@ public class EarthSamplingAppAPI extends BaseRestService {
                 .registerTypeAdapter(Sample.class, new SampleDeserializer())
                 .registerTypeAdapter(Double.class,
                         new JsonSerializer<Double>() {
-
                             @Override
                             public JsonElement serialize(Double num, Type type,
                                     JsonSerializationContext context) {
 
-                                return new JsonPrimitive(num.toString());
+                                if (num != null && ! num.isNaN()) {
+                                    return new JsonPrimitive(num.toString());
+                                }
+                                return new JsonPrimitive(""); 
+
+                            }
+                        })
+                                        .registerTypeAdapter(Double.class,
+                        new JsonSerializer<Double>() {
+                            @Override
+                            public JsonElement serialize(Double num, Type type,
+                                    JsonSerializationContext context) {
+
+                                if (num != null && ! num.isNaN() ) {
+                                    return new JsonPrimitive(num.toString());
+                                }
+                                return new JsonPrimitive(""); 
+
                             }
                         }).serializeNulls().setPrettyPrinting()
                 .serializeSpecialFloatingPointValues().create();
