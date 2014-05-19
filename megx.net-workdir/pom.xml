@@ -15,7 +15,7 @@
     <packaging>eclipse-repository</packaging>
 
     <name>megx.net-workdir</name>
-
+<!--
     <repositories>
       <repository>
 	<id>indigo</id>
@@ -23,7 +23,7 @@
 	<url>http://download.eclipse.org/releases/indigo</url>
       </repository>
     </repositories>
-
+-->
     <properties>
         <mvn.jcr.source.url>https://dl.dropboxusercontent.com/s/82u7stspa8ec9ja/</mvn.jcr.source.url>
         <mvn.jcr.source.file>repository-20131015.tar.gz?token_hash=AAEDQM3_tOEi8wNKml7-QsHrj8mKD5Ke3-A0REXONuhTUg&amp;dl=1</mvn.jcr.source.file>
