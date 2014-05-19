@@ -40,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.GsonBuilder;
 
 @Path("v1/megx-blast/v1.0.0")
+//@Path("intern/megx-blast/")
 public class BlastServiceAPI extends BaseRestService {
 
 	private BlastService service;

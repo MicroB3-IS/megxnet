@@ -1,0 +1,93 @@
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"></script>
+
+<!DOCTYPE html>
+<html>
+<!--
+  Created using jsbin.com
+  Source can be edited via http://jsbin.com/rucaju/8/edit
+-->
+<head lang="en">
+<meta name="description" content="OSD Registry check-in" />
+<meta charset="UTF-8">
+
+<title>Test optional env</title>
+
+  
+  <link type="text/css" href="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/css/alpaca.css" rel="stylesheet" />
+
+
+<link type="text/css"
+      href="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/css/jquery-ui-1.10.4.custom.css"
+    rel="stylesheet" />
+
+<!-- js section -->
+<!-- jQuery -->
+<script type="text/javascript"
+        src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery.tmpl-1.0.0pre.js"></script>
+<!-- jQuery UI Support -->
+<script type="text/javascript"
+        src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery-ui-1.10.4.custom.min.js"></script>
+<!-- Alpaca -->
+<script type="text/javascript" src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/alpaca.js"></script>
+<!--
+  <script type="text/javascript" src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/gcdj-widget.js"></script>
+-->
+
+
+<style id="jsbin-css">
+.mx-env-param {
+  
+  background-color: green
+}
+
+.mx-site {
+  
+  background-color: blue
+}
+
+.mx-sample {
+  
+  background-color: orange
+}
+</style>
+</head>
+<body>
+    <div id="osd-sample-form"></div>
+<script>
+/********   CONFIGURATION  ********/
+
+var targetContainerId = "osd-sample-form";
+var checkListFormAction = "TheAction";
+   
+var schemaLocation = "https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/data/osd_schema.json";
+var optionsLocation = "https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/data/osd_options.json";
+
+// add extra validation if you like
+function submitCheckListForm(form){
+    return true;
+}
+  
+/********   END CONFIGURATION  *****/
+
+var inputBundle = {
+    "optionsSource": optionsLocation,
+    "schemaSource": schemaLocation,
+    //create means no inital validation
+    "view": "VIEW_JQUERYUI_CREATE",
+  "isDynamicCreation": true
+}; 
+
+function renderForm() {
+    $("#"+targetContainerId).alpaca(inputBundle);
+}
+
+$(document).ready(function() {
+    Alpaca.defaultUI = "jquery-ui";
+    Alpaca.logLevel = Alpaca.DEBUG;
+    renderForm();
+});
+</script>
+</body>
+</html>

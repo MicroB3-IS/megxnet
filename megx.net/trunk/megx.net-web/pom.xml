@@ -218,7 +218,7 @@
             <!-- Location of container installation: basically
                  CATALINA.HOME -->
             <home>${mvn.tomcat.home}</home>
-            <timeout>200000</timeout>
+            <timeout>300000</timeout>
             <log>${mvn.work.dir.path}/container.log</log>
           </container>
           <configuration>
