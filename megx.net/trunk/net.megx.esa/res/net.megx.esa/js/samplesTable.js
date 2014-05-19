@@ -47,10 +47,9 @@ $(document).ready(function() {
 		 }, {
 		 	mData: 'airTemperature',
 		 	sClass: 'right data-pad',
-		  mRender: function(id){
-       
-        return id || 'hallo';
-      }
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'lat',
 		 	sClass: 'right data-pad',
@@ -58,7 +57,7 @@ $(document).ready(function() {
 		 }, {
 		 	mData: 'lon',
 		 	sClass: 'right data-pad',
-		 	bVisible: false,
+		 	bVisible: false
 		 }, {
 		 	mData: 'barcode',
 		 	sClass: 'right data-pad',
@@ -66,7 +65,10 @@ $(document).ready(function() {
 		 }, {
 		 	mData: 'elevation',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'collection',
 		 	sClass: 'left data-pad',
@@ -82,57 +84,96 @@ $(document).ready(function() {
 		 }, {
 		 	mData: 'secchiDepth',
 		 	sClass: 'center data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'samplingDepth',
-		 	sClass: 'right data-pad'
+		 	sClass: 'right data-pad',
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'waterDepth',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'sampleSize',
 		 	sClass: 'right data-pad',
 		 	bVisible: false
 		 }, {
 		 	mData: 'waterTemperature',
-		 	sClass: 'right data-pad'
+		 	sClass: 'right data-pad',
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'conductivity',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'windSpeed',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'salinity',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'comment',
 		 	sClass: 'left data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'accuracy',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'phosphate',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'nitrate',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'nitrite',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'ph',
 		 	sClass: 'right data-pad',
-		 	bVisible: false
+		 	bVisible: false,
+		 	mRender: function(id){
+                return id || '-';
+            }
 		 }, {
 		 	mData: 'id',
 		 	sClass: 'center',
@@ -195,11 +236,11 @@ $(document).ready(function() {
 				
 			}else{
 				$("#errorMessage").show();
-	        	$(".downloadAllTraits").hide();
+	        	$("#customizeTableLnk").hide();
 			}
         	   
         }).error(function() {
         	$("#errorMessage").show();
-        	$(".downloadAllTraits").hide();
+        	$("#customizeTableLnk").hide();
         });
 });
