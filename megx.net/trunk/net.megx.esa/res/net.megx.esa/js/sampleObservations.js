@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	var NB_OBSERVATIONS = 2;
+	var NB_OBSERVATIONS = 10;
 	var OBSERVATIONS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/observations/';
 	var SAMPLE_THUMBNAILS_URL = ctx.siteUrl + '/ws/v1/esa/v1.0.0/content/photo/thumbnail/';
 	var NO_IMAGE_ICON_URL = ctx.siteUrl + '/net.megx.esa/img/no_photo.png';
@@ -31,35 +31,19 @@ $(document).ready(function(){
     	observation = observation || {};
     	var imgSrc = observation.thumbnailId ? SAMPLE_THUMBNAILS_URL + observation.thumbnailId : NO_IMAGE_ICON_URL;
     	var viewUrl = ctx.siteUrl + '/osd-app/sampleDetails?sampleId=' + observation.id;
-    	var htmlToRender = ['<table style="width: 100%;">',
-    	                    	'<tr style="width: 100%;">',
-    	                    		'<td style="width: 35%;">',
-    	                    			'<img src="', imgSrc ,'" + style="width: 100px; padding-left: 3px; padding-top: 7px; border-radius: 4px;" onError="handleError(this);" />',
-    	                    		'</td>',
-    	                    		'<td>',
-    	                    			'<table style="width: 100%;"',
-    	                    				'<tr>',
-    	                    					'<td>Observer: ', observation.observer, '</td>',
-	                    					'</tr>',
-	                    					'<tr>',
-		                    					'<td>Sample Label: ', observation.sampleName ,'</td>',
-	                    					'</tr>',
-	                    					'<tr>',
-	                    						'<td>Ocean:' , observation.geoRegion ,'</td>',
-                    						'</tr>',
-	                    					'<tr>',
-		                    					'<td>Date: ', observation.taken, '</td>',
-	                    					'</tr>',
-	                    					'<tr>',
-		                    					'<td>', 
-		                    					 	'<a href=', viewUrl ,' class=\'viewSampleClass\'>View more</a>',
-		                    					'</td>',
-		                    					
-	                    					'</tr>',
-                    					'</table>',
-                					'</td>',
-	                    		'</tr>',
-                    		'</table>'
+    	var htmlToRender = ['<div id="recentObservation">',
+    	                    '<div id="recentObservationImage">',
+    	                    '<img src="', imgSrc ,'" + style="width: 80px; padding-left: 3px; padding-top: 7px; border-radius: 4px;" onError="handleError(this);" />',
+    	                    '</div>',
+    	                    '<div id="recentObservationDescription">',
+    	                    '<div id="recentObservationDetails"><strong>Observer:</strong> ', observation.observer, '</div>',
+    	                    '<div id="recentObservationDetails"><strong>Sample Label:</strong> ', observation.sampleName ,'</div>',
+    	                    '<div id="recentObservationDetails"><strong>Ocean:</strong> ' , observation.geoRegion ,'</div>',
+    	                    '<div id="recentObservationDetails"><strong>Date:</strong> ', observation.taken, '</div>',
+    	                    '<div id="recentObservationDetails"><a href=', viewUrl ,' class=\'viewSampleClass\'>View more</a></div>',
+    	                    
+    	                    '</div>',
+    	                    '</div>'
     	                    ].join('');
     	
     	$('#recentObservations').append(htmlToRender);

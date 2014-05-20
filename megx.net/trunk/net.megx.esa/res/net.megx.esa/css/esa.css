@@ -104,3 +104,59 @@ p.tcp{
 	color: #FF0000; 
 	margin-left: 234px;
 }
+
+#sampleStats {
+	margin-bottom: 10px;
+	width: 910px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: auto;
+}
+
+.recentObservationsContent {
+  border: 1px solid #CCC;
+  border-top: 0px;
+  border-radius: 0 0 5px 5px;
+  padding: 10px;
+  overflow: auto;
+}
+#recentObservations {
+width: 3000px;
+overflow-x: hidden;
+}
+
+#recentObservation {
+	width: 300px;
+	float: left;
+}
+#recentObservationImage {
+	width: 80px;
+	float: left;
+}
+#recentObservationDescription {
+	width: 200px;
+	float: left;
+	margin-left: 10px;
+	
+}
+#recentObservationDetails {
+	float: left;
+	width: 99%;
+}
+#recentObservationsContainer {
+	margin-bottom: 10px;
+}
+
+#sampledOceansContainer {
+	width: 49%;
+	float: right;
+	margin-top: 20px;
+	margin-right: 10px;
+}
+
+.sampledOceansContent {
+  border: 1px solid #CCC;
+  border-top: 0px;
+  border-radius: 0 0 5px 5px;
+  padding: 20px;
+}
