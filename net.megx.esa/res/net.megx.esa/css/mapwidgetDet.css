@@ -41,17 +41,17 @@
 }
 
 #sampleStats {
-	width: 49%;
-	float: right;
-	margin-top: 20px;
-	margin-right: 10px;
-}
-
-#sampledOceansContainer {
 	margin-bottom: 10px;
 	width: 910px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#sampledOceansContainer {
+	width: 49%;
+	float: right;
+	margin-top: 20px;
+	margin-right: 10px;
 }
 
 .ui-state-default {
