@@ -134,7 +134,9 @@
 		<if test="nitrite != null">nitrite,</if>
 		<if test="ph != null">ph,</if>
 		<if test="secchiDepth != null">secchi_depth,</if>
-		sample_size,geom,material,app_version,fun
+		<if test="appVersion != null">app_version,</if>
+		<if test="fun != null">fun,</if>
+		sample_size,geom,material
 	</sql>
 
 	<sql id="esa_sample_columns_no_geom">
@@ -321,9 +323,11 @@
 			<if test="nitrite != null">#{nitrite},</if>
 			<if test="ph != null">#{ph},</if>
 			<if test="secchiDepth != null">#{secchiDepth},</if>
+			<if test="appVersion != null">#{appVersion},</if>
+			<if test="fun != null">#{fun},</if>
 			#{sampleSize},
 			ST_PointFromText('POINT(${lon} ${lat})',4326),
-			#{material},#{appVersion},#{fun}
+			#{material}
 		</trim>
 	</insert>
 
