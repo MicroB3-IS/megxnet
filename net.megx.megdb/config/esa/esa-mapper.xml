@@ -34,6 +34,8 @@
 		<result column="wind_speed" property="windSpeed" />
 		<result column="salinity" property="salinity" />
 		<result column="comment" property="comment" />
+		<result column="fun" property="fun"/>
+		<result column="app_version" property="appVersion"/>
 		<result column="lat" property="lat" />
 		<result column="lon" property="lon" />
 		<result column="accuracy" property="accuracy" />
@@ -132,7 +134,7 @@
 		<if test="nitrite != null">nitrite,</if>
 		<if test="ph != null">ph,</if>
 		<if test="secchiDepth != null">secchi_depth,</if>
-		sample_size,geom,material
+		sample_size,geom,material,app_version,fun
 	</sql>
 
 	<sql id="esa_sample_columns_no_geom">
@@ -321,7 +323,7 @@
 			<if test="secchiDepth != null">#{secchiDepth},</if>
 			#{sampleSize},
 			ST_PointFromText('POINT(${lon} ${lat})',4326),
-			#{material}
+			#{material},#{appVersion},#{fun}
 		</trim>
 	</insert>
 
