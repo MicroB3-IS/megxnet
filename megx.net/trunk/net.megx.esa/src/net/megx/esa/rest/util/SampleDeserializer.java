@@ -103,6 +103,8 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		sample.setWeatherCondition(getString("weatherCondition", jo));
 		sample.setConductivity(getString("conductivity", jo));
 		sample.setComment(getString("comment", jo));
+		sample.setAppVersion(getString("appVersion", jo));
+		sample.setFun(Boolean.valueOf(getString("fun", jo)));
 		
 		sample.setAccuracy(parseDouble(getString("accuracy", jo)));
 		sample.setAirTemperature(parseDouble(getString("airTemperature", jo)));
