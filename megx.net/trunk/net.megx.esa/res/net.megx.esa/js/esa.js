@@ -7,6 +7,7 @@ $(document).ready(function () {
         logLevel: 'debug',
         transport: 'websocket',
         fallbackTransport: 'long-polling',
+        reconnectInterval: 5000,
         enableXDR: true,
         timeout: 60000
     };
@@ -15,7 +16,11 @@ $(document).ready(function () {
     request.onOpen = function (response) {
         console.log('Atmosphere connected using ' + response.transport);
     };
-
+    
+    request.onClose = function (response) {
+    	console.log('Atmosphere connection gets closed ');
+    };
+    
     request.onMessage = function (response) {
         var message = response.responseBody.split('|')[1];
         var rowsToAdd = [];
@@ -71,7 +76,23 @@ $(document).ready(function () {
     };
 
     request.onError = function (response) {
-        console.log('Sorry, but there is some problem with your socket or the server is down');
+        console.log('Sorry, but there is some problem with your socket or the server is down' + response.error);
+    };
+    
+    request.onTransportFailure = function(errorMsg, request){
+    	console.log('Fallback is ' + request.fallbackTransport);
+    };
+    
+    request.onClientTimeout = function(request){
+    	console.log('Client closed the connection after a timeout. Reconnecting in ' + request.reconnectInterval);
+    };
+    
+    request.onReconnect = function (response){
+    	console.log('Connection lost. Trying to reconnect ' + request.reconnectInterval);
+    };
+    
+    request.onReopen = function(response){
+    	console.log('Atmosphere re-connected using ' + response.transport + ' trying to reconnect ' + request.reconnectInterval);
     };
 
     //Subscribe to AtmosphereServlet
