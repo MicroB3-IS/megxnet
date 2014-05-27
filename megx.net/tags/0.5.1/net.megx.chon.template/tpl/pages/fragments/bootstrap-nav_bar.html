@@ -1,0 +1,66 @@
+<nav class="navbar navbar-default" role="navigation">
+  
+<ul class="nav navbar-nav navbar-right">
+
+    <li class="dropdown">
+      <a href="$ctx.siteUrl" class="dropdown-toggle" data-toggle="dropdown">home</a>
+      <ul class="dropdown-menu">
+        #foreach($m in $ext.menu.home.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+
+
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown">tools</a>
+      <ul class="dropdown-menu">
+        #foreach($m in $ext.menu.tools.childs)
+        <li><a href="$m.fullLink">$m.title</a></li>
+        #end
+        <li><a href="$ctx.siteUrl/esa/download.html">OSD App</a></li>
+        <li><a href="$ctx.siteUrl/osd">OSD Registry</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a href="$ctx.siteUrl/$ext.list.browse_items[0].path" class="dropdown-toggle" data-toggle="dropdown">browse</a>
+      <ul class="dropdown-menu menu-list">
+        #foreach($m in  $ext.list.browse_items)
+        <li><a href="$ctx.siteUrl/$m.path">$m.title</a></li>
+        #end
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a href="$ctx.siteUrl/portal/edutainment.html" class="dropdown-toggle" data-toggle="dropdown">edutainment</a>
+      <ul class="dropdown-menu">
+        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer</a></li>
+      </ul>
+    </li>
+    
+    <li class="dropdown">
+	  <a href="$ctx.siteUrl/portal/toolbox.html" class="dropdown-toggle" data-toggle="dropdown">portal</a>
+      <ul class="dropdown-menu">
+        <li><a href="$ctx.siteUrl/portal/toolbox.html"><b>Overview</b></a></li>
+        <li><span>Maintained</span></li>
+        <li><a href="http://www.jcoast.net" target="_blank">JCoast</a></li>
+        <li><a href="#">MicHanThi</a></li>
+        <li><a href="#">MetaBar</a></li>
+        <li><a href="#">MADA</a></li>
+        <li><a href="#">Ribalign</a></li>
+        <li><a href="http://soma.arb-silva.de" target="_blank">TaxSOM</a></li>
+        <li><span>Unmaintained</span></li>
+        <li><a href="#">MetaLook</a></li>
+        <li><a href="#">MetaMine</a></li>
+        <li><a href="#">Tetra</a></li>
+      </ul>
+    </li>
+    
+    <li><a href="$ctx.siteUrl/portal/faq.html">faq</a></li>
+    <li><a href="$ctx.siteUrl/portal/contact.html">contact</a></li>
+  </ul>
+</nav>
+
+<div class="clear"></div>
+<noscript><h3 style="color:#990000;">To get the full functionality, please, activate JavaScript in your browser!</h3></noscript>
