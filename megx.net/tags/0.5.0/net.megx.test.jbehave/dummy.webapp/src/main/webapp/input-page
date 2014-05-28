@@ -1,0 +1,18 @@
+<html>
+<body>
+<h2>Data Input Page</h2>
+
+<input type="button" id="saveButton" value="Save"
+       onclick="rest/participant/new/anne">
+       
+<p id=responseMessage></p>
+</body>
+</html>
+
+
+
+
+
+
+
+

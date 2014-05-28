@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.osdregistry.mappers.OSDRegistryMapper">
+    <resultMap type="OSDParticipant" id="osd_participant_map">
+        <result column="id" property="id" />
+        <result column="osd_id" property="osdID" />
+        <result column="site_name" property="siteName" />
+        <result column="site_lat" property="siteLat" />
+        <result column="site_long" property="siteLong" />
+        <result column="institution" property="institution" />
+        <result column="institution_lat" property="institutionLat" />
+        <result column="institution_long" property="institutionLong" />
+        <result column="institution_address" property="institutionAddress" />
+        <result column="institution_web_address" property="institutionWebAddress" />
+        <result column="site_coordinator" property="siteCoordinator" />
+        <result column="coordinator_email" property="coordinatorEmail" />
+        <result column="country" property="country" />
+    </resultMap>
+
+    <sql id="osd_participant_columns_all">
+        id, osd_id, site_name, site_lat, site_long, institution, institution_lat,
+        institution_long, institution_address, institution_web_address,
+        site_coordinator, coordinator_email, country
+    </sql>
+
+    <select id="getOSDParticipants" resultMap="osd_participant_map">
+        SELECT
+        <include refid="osd_participant_columns_all" />
+        FROM web_r8.osd_participants
+    </select>
+
+    <insert id="storeOSDParticipant" parameterType="OSDParticipant">
+        INSERT INTO osdregistry.osd_participants(
+        <include refid="osd_participant_columns_all" />
+        )
+        VALUES
+        (#{id}, #{osdID}, #{siteName}, #{siteLat}, #{siteLong}, #{institution},
+        #{institutionLat}, #{institutionLong}, #{institutionAddress},
+        #{institutionWebAddress}, #{siteCoordinator},
+        #{coordinatorEmail}, #{country})
+    </insert>
+
+    <select id="getOSDParticipant" resultMap="osd_participant_map">
+        SELECT
+        <include refid="osd_participant_columns_all" />
+        FROM web_r8.osd_participants
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateOSDParticipant" parameterType="map">
+        UPDATE osdregistry.osd_participants
+        SET osd_id=#{osdID},
+        site_name=#{siteName},
+        site_lat=#{siteLat},
+        site_long=#{siteLong},
+        institution=#{institution},
+        institution_lat=#{institutionLat},
+        institution_long=#{institutionLong},
+        institution_address=#{institutionAddress},
+        institution_web_address=#{institutionWebAddress},
+        site_coordinator=#{siteCoordinator},
+        coordinator_email=#{coordinatorEmail},
+        country=#{country}
+        WHERE
+        id=#{id}
+    </update>
+
+    <delete id="deleteOSDParticipant" parameterType="String">
+        DELETE FROM osdregistry.osd_participants
+        WHERE id=#{id}
+    </delete>
+
+</mapper>
