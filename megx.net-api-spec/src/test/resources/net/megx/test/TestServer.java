@@ -15,6 +15,8 @@ import com.jayway.restassured.RestAssured;
  */
 public class TestServer extends ExternalResource {
 
+    private final String WS_PREFIX = "/ws/v1";
+    
 	@Override
 	public void before() {
 		// TODO Auto-generated method stub
@@ -25,4 +27,10 @@ public class TestServer extends ExternalResource {
 		// RestAssured.rootPath = "x.y.z";
 	}
 
+	
+	
+	public String getWSPrefix() {
+	    return WS_PREFIX;
+	}
+	
 }
