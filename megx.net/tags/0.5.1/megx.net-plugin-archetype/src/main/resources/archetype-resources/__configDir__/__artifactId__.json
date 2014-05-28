@@ -1,4 +1,0 @@
-{
-  path: '$resources/${artifactId}',
-  exampleProperty: 'Example Value',
-}
