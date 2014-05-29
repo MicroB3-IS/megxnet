@@ -58,27 +58,27 @@
           <p>
             <em>Click on the database name to learn about its content.</em>
           </p>
-          <label>
-          	  <a class="about" href="$ctx.siteUrl/portal/content/content.html#prokes">Prokaryotic Genomes</a> (blastp)
-	          <input type="radio" name="blastDb" value="genomes" checked="checked" />
+          <label for="genomes">
+          	  <a class="about" href="$ctx.siteUrl/portal/content/content.html#prokes"><span>Prokaryotic Genomes</span></a> (blastp)
+	          <input type="radio" name="blastDb" id="genomes" value="genomes" checked="checked" />
           </label> 
-          <label>
+          <label for="gos">
 	          <a class="about" href="$ctx.siteUrl/portal/content/content.html#gos">Global Ocean Sampling Metagenomes</a> (blastn) 
-	          <input type="radio" name="blastDb" value="gos" /> 
+	          <input type="radio" name="blastDb" id="gos" value="gos" /> 
       	  </label> 
-           <label>
+           <label for="silva_ssu">
                <a class="about" href="$ctx.siteUrl/portal/content/content.html#ssu">16S/18S rRNA</a> (blastn) 
-               <input type="radio" name="blastDb" value="silva_ssu" /> 
+               <input type="radio" name="blastDb" id="silva_ssu" value="silva_ssu" /> 
            </label> 
-           <label>
+           <label for="silva_lsu">
 	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#lsu">23S/28S rRNA</a> (blastn) 
-	           	<input type="radio" name="blastDb" value="silva_lsu" />
+	           	<input type="radio" name="blastDb" id="silva_lsu" value="silva_lsu" />
            </label> 
-           <label>
+           <label for="marine_phages">
 	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Marine Phage Genomes</a> (blastp) 
-	           	<input type="radio" name="blastDb" value="marine_phages" /> 
+	           	<input type="radio" name="blastDb" id="marine_phages" value="marine_phages" /> 
            </label>
-           <label>
+           <label for="unknowns">
 	           	<a class="about" href="$ctx.siteUrl/portal/content/content.html#phg_gen">Known Unknown</a> (blastp) 
 	           	<input type="radio" name="blastDb" id="unknowns" value="unknowns" /> 
            </label>

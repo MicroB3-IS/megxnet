@@ -1,5 +1,23 @@
 $(document).ready(function() {
 	
+	var programName;
+		
+	$('input:radio[name=blastDb]').click(function(event){
+		
+		var programNameTmp = $('label[for=' + event.target.id + ']').text().trim();
+		programName = programNameTmp.substring(programNameTmp.length - 7, programNameTmp.length-1).trim();
+		
+		if(event.target.id == 'unknowns'){
+			$('#numberNeighbors').show();
+			
+		}else {
+			$('#numberNeighbors').hide();
+			$('#numNeighbors').val('1')
+		}
+		
+	});
+	
+	
 	$('#blast').click(function(){
 	
 		$.ajax({
@@ -15,7 +33,7 @@ $(document).ready(function() {
 			      numNeighbors : $( "#numNeighbors" ).val(),
 			      toolLabel : 'blast+',
 			      toolVer : '2.2.28',
-			      programName : 'blastp',
+			      programName : programName,
 			      biodbLabel : $('input:radio[name=blastDb]:checked').val(),
 			      biodbVersion : '24-02-2014_aa',
 			      rawFasta : $( '#raw_fasta' ).val(),
@@ -27,18 +45,6 @@ $(document).ready(function() {
 		    	
 		      }
 		});	  		
-	});
-	
-	$('input:radio[name=blastDb]').click(function(){
-		
-		if(document.getElementById('unknowns').checked){
-			$('#numberNeighbors').show();
-			
-		}else {
-			$('#numberNeighbors').hide();
-			$('#numNeighbors').val('1')
-		}
-		
 	});
 	
 });
