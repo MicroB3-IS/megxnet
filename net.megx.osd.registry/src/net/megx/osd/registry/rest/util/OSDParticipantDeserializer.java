@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.UUID;
 
 import net.megx.model.osdregistry.OSDParticipant;
-
+ 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

@@ -71,5 +71,9 @@
         DELETE FROM osdregistry.osd_participants
         WHERE id=#{id}
     </delete>
+    
+    <insert id="saveSample" parameterType="String">
+         select integrate_sample_submission(#{json});
+    </insert>
 
 </mapper>
