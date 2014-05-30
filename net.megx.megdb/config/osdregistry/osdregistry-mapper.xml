@@ -73,7 +73,7 @@
     </delete>
     
     <insert id="saveSample" parameterType="String">
-         select integrate_sample_submission(#{json});
+         select osdregistry.integrate_sample_submission(#{json});
     </insert>
 
 </mapper>
