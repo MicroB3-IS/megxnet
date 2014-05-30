@@ -59,6 +59,8 @@ Biojs.MegxMapWidget = Biojs
   .extend({
     /** @lends Biojs.MegxMapWidget# */
 
+	currentZoomLevel: 0,
+	
     constructor : function( options ) {
       this._init(options);
     },
@@ -347,6 +349,7 @@ Biojs.MegxMapWidget = Biojs
 
       var newLayerOrder = this._getNewLayerOrder();
       this._redrawLegend(newLayerOrder[0]);
+      this.map.zoomTo(this.currentZoomLevel);
       $("#errorMsg").hide();
     },
 
@@ -513,10 +516,10 @@ Biojs.MegxMapWidget = Biojs
      * 
      */
     _removeLayer : function( layer ) {
-      var currentZoomLevel = this.map.getZoom();
+      this.currentZoomLevel = this.map.getZoom();
       this.displayedLayers[layer] = false;
       this.map.removeLayer(this.layers.get(layer));
-      this.map.zoomTo(currentZoomLevel);
+      this.map.zoomTo(this.currentZoomLevel);
     },
 
     /**
@@ -568,7 +571,7 @@ Biojs.MegxMapWidget = Biojs
      * 
      */
     _reorder : function( arr ) {
-      var currentZoomLevel = this.map.getZoom();
+      this.currentZoomLevel = this.map.getZoom();
 
       this._log.message('Reordering layers as per new layer order...');
 
@@ -581,7 +584,7 @@ Biojs.MegxMapWidget = Biojs
       for ( var i = arr.length - 1; i >= 0; i-- ) {
         this.map.addLayer(this.layers.get(arr[i]));
       }
-      this.map.zoomTo(currentZoomLevel);
+      this.map.zoomTo(this.currentZoomLevel);
 
       this._log.message('Redrawing legend...');
       this._redrawLegend(arr[0]);
