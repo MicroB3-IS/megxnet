@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     var traitsTable = $("#simpleTraitsTableId");
     
-    $('input.downloadTrait').live('change', function () {
+	$(document).on('click', '.downloadTrait', function(){
         var parentRow = $(this).parent().parent();
         var nbRows = traitsTable.dataTable().fnGetNodes();
         $(parentRow).toggleClass('row_selected');
@@ -25,9 +25,9 @@ $(document).ready(function () {
         var allRows = traitsTable.dataTable().fnGetNodes();
         $.each(allRows, function (i, row) {
             var selectChb = $(row).find('input.downloadTrait');
-            if (!$(selectChb).attr('checked')) {
-                $(row).toggleClass('row_selected');
-                $(selectChb).attr('checked', 'checked');
+            if (!$(selectChb).prop('checked')) {
+                $(row).addClass('row_selected');
+                $(selectChb).prop('checked', true);
             }
         });
         $(this).hide();
@@ -39,9 +39,9 @@ $(document).ready(function () {
         var allRows = traitsTable.dataTable().fnGetNodes();
         $.each(allRows, function (i, row) {
             var selectChb = $(row).find('input.downloadTrait');
-            if ($(selectChb).attr('checked')) {
-                $(row).toggleClass('row_selected');
-                $(selectChb).removeAttr('checked');
+            if ($(selectChb).prop('checked')) {
+                $(row).removeClass('row_selected');
+                $(selectChb).prop('checked', false);
             }
         });
         $(this).hide();
