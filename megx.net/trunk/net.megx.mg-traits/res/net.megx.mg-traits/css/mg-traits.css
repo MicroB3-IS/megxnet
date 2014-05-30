@@ -49,3 +49,10 @@ border-collapse:collapse;
 font-size:1em;
 padding:3px 7px 2px 7px;
 }
+
+p.introText {
+    font-size: 15px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
