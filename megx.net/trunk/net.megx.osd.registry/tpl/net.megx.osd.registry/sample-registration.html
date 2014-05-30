@@ -31,17 +31,22 @@
 ></script>
 
 <style id="jsbin-css">
+
+
 .mx-env-param {
+  
   background-color: green
 }
-
 .mx-site {
-  background-color: #0066FF
+  
+  background-color: blue 
 }
 
 .mx-sample {
+  
   background-color: orange
 }
+
 </style>
 </head>
 <body>
@@ -82,35 +87,42 @@
       }
 
       /********   END CONFIGURATION  *****/
+var inputBundle = {
+    "optionsSource": optionsLocation,
+    "schemaSource": schemaLocation,
+    //create means no inital validation
+    "view": "VIEW_JQUERYUI_CREATE",
+    "isDynamicCreation": true, 
+    "postRender": function(field) {
+       var form = field.form; 
+       if (form) {
+         form.refreshValidationState(false);
+         form.registerSubmitHandler(function(e, form) {
+             // validate the entire form (top control + all children)
+             form.validate(true);
+             // draw the validation state (top control + all children)
+           form.refreshValidationState(true);
+         // now display something
+         if (form.isFormValid()) { 
+           var json = form.getValue();
+           console.log("json=" + JSON.stringify(json));   
+          alert("Your submission looks good!" );
+         } else {
+           alert("There are problems with the form.  Please make any necessary corrections.");
+         }
+         var formJson = JSON.stringify(field.getValue());
+         console.log("json=" + formJson); 
+        $('<input/>').attr('name', 'json').attr('value', formJson).appendTo('#osd-form');
+        
+           
+         //e.stopPropagation();
+         return true;
+      });
+   }     
+   
+  }
+}; 
 
-      var inputBundle = {
-        "optionsSource" : optionsLocation,
-        "schemaSource" : schemaLocation,
-        //create means no inital validation
-        "view" : "VIEW_JQUERYUI_CREATE",
-        "isDynamicCreation" : true,
-        "postRender" : function( field ) {
-
-          field.on("invalidated",
-            function( e ) {
-              console.log('Field invalidated=' + field.getValue() + ' and event '
-                + e);
-
-            });
-          field.on("validated",
-            function( e ) {
-              console.log('Field validated=' + field.getValue() + ' and event '
-                + e);
-
-            });
-          console.log(field.getTitle());
-
-          console.log(field);
-          //renderedField.clear();
-          //renderedField.reload();
-          console.log(field.getTitle());
-        }
-      };
 
       function renderForm() {
         $("#" + targetContainerId).alpaca(inputBundle);
