@@ -151,9 +151,8 @@ public class OSDRegistryOAuthImpl implements OSDRegistryAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public Response saveOSDSample(@FormParam("json") String sample) {
         
-        System.out.println(sample);
         try {
-
+            osdRegistryService.saveSample(sample);
             return Response.status(201).entity("sample saved").build();
         } catch (Exception e) {
             throw new WebApplicationException(500);

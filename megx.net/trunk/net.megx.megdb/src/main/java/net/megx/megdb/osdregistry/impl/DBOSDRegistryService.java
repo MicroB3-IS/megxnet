@@ -93,4 +93,17 @@ public class DBOSDRegistryService extends BaseMegdbService implements OSDRegistr
 		
 	}
 
+	@Override
+	public void saveSample(final String json) throws Exception {
+		log.debug("Saving  Test Sample Submission");
+		doInTransaction(new DBTask<OSDRegistryMapper, Object>(){
+			@Override
+			public Object execute(OSDRegistryMapper mapper) throws Exception{
+				mapper.saveSample(json);
+				return null;
+			}
+		}, OSDRegistryMapper.class);
+		
+	}
+
 }

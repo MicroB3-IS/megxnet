@@ -15,4 +15,6 @@ public interface OSDRegistryService {
 	public OSDParticipant getParticipant(String id) throws Exception;
 	
 	public void deleteOSDParticipant(String id) throws Exception;
+	
+	public void saveSample(final String json) throws Exception;
 }

@@ -15,4 +15,6 @@ public interface OSDRegistryMapper {
 	public void updateOSDParticipant(OSDParticipant participant);
 	
 	public void deleteOSDParticipant(String id);
+	
+	public void saveSample(String json);
 }
