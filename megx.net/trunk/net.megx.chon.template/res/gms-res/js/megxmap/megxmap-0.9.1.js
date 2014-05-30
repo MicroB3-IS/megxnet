@@ -343,6 +343,8 @@ Biojs.MegxMapWidget = Biojs
 
       var newLayerOrder = this._getNewLayerOrder();
       this._redrawLegend(newLayerOrder[0]);
+      var markerLyr = this.map.getLayersByName('Markers')[0];
+      this.map.raiseLayer(markerLyr, this.map.layers.length);
       this.map.zoomTo(this.currentZoomLevel);
       $("#errorMsg").hide();
     },
@@ -578,6 +580,9 @@ Biojs.MegxMapWidget = Biojs
       for ( var i = arr.length - 1; i >= 0; i-- ) {
         this.map.addLayer(this.layers.get(arr[i]));
       }
+      var markerLyr = this.map.getLayersByName('Markers')[0];
+      this.map.raiseLayer(markerLyr, this.map.layers.length);
+      
       this.map.zoomTo(this.currentZoomLevel);
 
       this._log.message('Redrawing legend...');
