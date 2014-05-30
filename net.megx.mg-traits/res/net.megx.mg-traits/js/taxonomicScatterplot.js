@@ -9,7 +9,7 @@ $(document).ready(function(){
 				if(curr.trait === 'taxonomic-table'){
 					if(allEnv[curr.sampleEnvironment]){
 						allEnv[curr.sampleEnvironment].data.push({
-							'x' : curr.x,
+							'x' : parseFloat(curr.x).toFixed(2),
 							'y' : curr.y,
 							'id' : curr.id
 						});
@@ -22,7 +22,7 @@ $(document).ready(function(){
 				                    'symbol': 'circle'
 				                },
 								'data' : [{
-									'x' : curr.x,
+									'x' : parseFloat(curr.x).toFixed(2),
 									'y' : curr.y,
 									'id' : curr.id
 								}]
@@ -43,15 +43,12 @@ $(document).ready(function(){
 		}
 		
 			$('#traitsScatterplotTaxonomic').highcharts({
-	            chart: {
+				chart: {
 	                type: 'scatter',
 	                zoomType: 'xy',
-	                resetZoomButton: {
-	                    position: {
-	                        x: 0,
-	                        y: -30
-	                    }
-	                }
+	                width: 950,
+	                marginLeft: 50
+	                
 	            },
 	            title: {
 	                text: 'Taxonomic Table'
@@ -64,13 +61,49 @@ $(document).ready(function(){
 	                layout: 'vertical',
 	                align: 'right',
 	                verticalAlign:'top',
-	                width: 200,
+	                width: 150,
 	                itemWidth: 90,
-	                y: 100,
-	                x: 0
+	                y:30,
+	                float: true,
+	                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+	                borderWidth: 1
 	            },
 	            credits: {
 	                enabled: false
+	            },
+	            xAxis: {
+	                title: {
+	                    enabled: false,
+	                    text: ''
+	                },
+	                startOnTick: true,
+	                endOnTick: true,
+	                showLastLabel: true,
+	                tickPositioner: function () {
+	                    var maxDeviation = Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin));
+	                    var halfMaxDeviation = maxDeviation / 2;
+	                    return [parseFloat(-maxDeviation).toFixed(2), parseFloat(-halfMaxDeviation).toFixed(2), 0, parseFloat(halfMaxDeviation).toFixed(2), parseFloat(maxDeviation).toFixed(2)];
+	                },
+	                gridLineWidth: 0,
+	                lineWidth: 1,
+	                crossing: 0,
+	                opposite: true
+	            },
+	            yAxis: {
+	                title: {
+	                    enabled: false,
+	                    text: ''
+	                },
+	                startOnTick: true,
+	                endOnTick: true,
+	                tickPositioner: function () {
+	                    var maxDeviation = Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin));
+	                    var halfMaxDeviation = maxDeviation / 2;
+	                    return [parseFloat(-maxDeviation).toFixed(2), parseFloat(-halfMaxDeviation).toFixed(2), 0, parseFloat(halfMaxDeviation).toFixed(2), parseFloat(maxDeviation).toFixed(2)];
+	                },
+	                gridLineWidth: 0,
+	                lineWidth: 1,
+	                crossing: 0
 	            },
 	            plotOptions: {
 	                series: {
@@ -85,6 +118,9 @@ $(document).ready(function(){
 	                        }
 	                    }
 	                }
+	            },
+	            tooltip: {
+	            	  valueDecimals: 2
 	            },
 	            series: getEnvData(),	           
 	            lang: {
