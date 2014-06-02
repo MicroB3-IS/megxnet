@@ -30,6 +30,9 @@
   src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.js"
 ></script>
 
+    <script type="text/javascript"
+          src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
+
 <style id="jsbin-css">
 
 
@@ -93,34 +96,58 @@ var inputBundle = {
     //create means no inital validation
     "view": "VIEW_JQUERYUI_CREATE",
     "isDynamicCreation": true, 
-    "postRender": function(field) {
-       var form = field.form; 
-       if (form) {
-         form.refreshValidationState(false);
-         form.registerSubmitHandler(function(e, form) {
-             // validate the entire form (top control + all children)
-             form.validate(true);
-             // draw the validation state (top control + all children)
-           form.refreshValidationState(true);
-         // now display something
-         if (form.isFormValid()) { 
-           var json = form.getValue();
-           console.log("json=" + JSON.stringify(json));   
-          alert("Your submission looks good!" );
-         } else {
-           alert("There are problems with the form.  Please make any necessary corrections.");
-         }
-         var formJson = JSON.stringify(field.getValue());
-         console.log("json=" + formJson); 
-        $('<input/>').attr('name', 'json').attr('value', formJson).appendTo('#osd-form');
-        
-           
-         //e.stopPropagation();
-         return true;
-      });
-   }     
-   
-  }
+ "postRender": function (field) {
+        var form = field.form;
+
+        var pangaeaCSV = function (doc) {
+            var delim = "\t";
+            var pig_val = null;
+            var flowcyto_val = null;
+            var ph_val = null;
+            var env = doc.environment;
+
+            var header = "lat\tlon\tdepth\tdate_time\ttemperature\tsalinity\tchlorophyll\tflow-cytometrie\tph";
+
+
+            if (env.pigment_concentration.hasOwnProperty('measurement')) {
+                pig_val = doc.environment.pigment_concentration.measurement.value;
+            }
+            if (env.picoplankton_flow_cytometry.hasOwnProperty('measurement')) {
+                flowcyto_val = JSON.stringify(env.picoplankton_flow_cytometry.measurement);
+
+            }
+            if (env.ph.hasOwnProperty('measurement')) {
+
+                ph_val = env.ph.measurement.value;
+            }
+
+            return header + "\n" + doc.sampling_site.latitude + delim + doc.sampling_site.longitude + delim + doc.sample.depth + delim + doc.sample.date_time + delim + doc.environment.temperature + delim + doc.environment.salinity + delim + pig_val + delim + flowcyto_val + delim + ph_val;
+        };
+
+
+        if (form) {
+            form.refreshValidationState(false);
+            form.registerSubmitHandler(function (e, form) {
+                // validate the entire form (top control + all children)
+                form.validate(true);
+                // draw the validation state (top control + all children)   
+                form.refreshValidationState(true);
+                // now display something 
+                if (form.isFormValid()) {
+
+                    var json = form.getValue();
+                    console.log("json=" + JSON.stringify(json));
+                    alert("test");
+                    alert("The form looks good! \n\n" + "Pangaea Data\n\n" + pangaeaCSV(json) + "\n\nPlease copy and save text before closing  this dialog for submission");
+                } else {
+                    alert("There are problems with the form.  Please make the any necessary corrections.");
+                }
+                e.stopPropagation();
+                return false;
+            });
+        }
+
+    }
 }; 
 
 
