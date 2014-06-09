@@ -1,6 +1,7 @@
 package net.megx.esa.rest;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -46,12 +48,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
@@ -76,8 +81,14 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
     private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
+    private Properties p = new Properties();
+    private InputStream in = null;
+    private ConfigurationBuilder cb = null;
+    private TwitterFactory tf = null;
+    private Twitter twitter = null;
+    
     public EarthSamplingAppAPI(EarthSamplingAppService service,
-            BroadcasterProxy broadcasterProxy) {
+            BroadcasterProxy broadcasterProxy) throws IOException  {
         this.service = service;
         this.broadcasterProxy = broadcasterProxy;
         this.imageResizer = new ImageResizer();
@@ -139,6 +150,19 @@ public class EarthSamplingAppAPI extends BaseRestService {
                             }
                         }).serializeNulls().setPrettyPrinting()
                 .serializeSpecialFloatingPointValues().create();
+        
+        in = getClass().getClassLoader().getResourceAsStream("properties/twitter.properties");
+		p.load(in);
+        this.cb = new ConfigurationBuilder();
+        this.cb.setDebugEnabled(true)
+		  .setUseSSL(true)
+		  .setOAuthConsumerKey(p.getProperty("consumerKey"))
+		  .setOAuthConsumerSecret(p.getProperty("consumerSecret"))
+		  .setOAuthAccessToken(p.getProperty("accessToken"))
+		  .setOAuthAccessTokenSecret(p.getProperty("accessTokenSecret"))
+		  .setRestBaseURL(p.getProperty("restBaseURL"));
+        this.tf = new TwitterFactory(cb.build());
+        this.twitter = tf.getInstance();
     }
 
     /**
@@ -329,6 +353,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
             String sampleCreator = request.getUserPrincipal().getName();
             for (Sample sample : samples) {
                 if (validateSample(sample)) {
+                	this.twitter.updateStatus("New OSD observation at " + sample.getLat() + ", " + sample.getLon() + " on " + sample.getTaken() + ". See https://mb3is.megx.net/osd-app/samples ");
                     sample.setUserName(sampleCreator);
                     samplesToSave.add(sample);
                 } else {
