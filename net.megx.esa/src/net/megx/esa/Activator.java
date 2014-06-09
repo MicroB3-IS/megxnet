@@ -1,5 +1,7 @@
 package net.megx.esa;
 
+import java.io.IOException;
+
 import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.EarthSamplingAppAPI;
 import net.megx.esa.rest.EarthSamplingPhotoApi;
@@ -37,8 +39,16 @@ public class Activator extends ResTplConfiguredActivator {
 											BroadcasterProxy broadcasterProxy) {
 										log.debug("BroadcasterProxy service received...");
 										
-										EarthSamplingAppAPI api = new EarthSamplingAppAPI(
-												service, broadcasterProxy);
+										EarthSamplingAppAPI api = null;
+										try {
+											api = new EarthSamplingAppAPI(
+													service, broadcasterProxy);
+										} catch (IOException e) {
+											log.debug("twitter.properties can not be found!");
+											e.printStackTrace();
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 										
 										EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(service);
 										
