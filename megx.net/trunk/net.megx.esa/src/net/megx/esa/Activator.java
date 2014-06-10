@@ -1,7 +1,5 @@
 package net.megx.esa;
 
-import java.io.IOException;
-
 import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.EarthSamplingAppAPI;
 import net.megx.esa.rest.EarthSamplingPhotoApi;
@@ -39,29 +37,27 @@ public class Activator extends ResTplConfiguredActivator {
 											BroadcasterProxy broadcasterProxy) {
 										log.debug("BroadcasterProxy service received...");
 										
-										EarthSamplingAppAPI api = null;
 										try {
-											api = new EarthSamplingAppAPI(
+											EarthSamplingAppAPI api = new EarthSamplingAppAPI(
 													service, broadcasterProxy);
-										} catch (IOException e) {
-											log.debug("twitter.properties can not be found!");
-											e.printStackTrace();
+										
+										
+											EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(service);
+											
+											RegUtils.reg(getBundleContext(),
+													EarthSamplingAppAPI.class
+															.getName(), api, null);
+											
+											RegUtils.reg(getBundleContext(),
+													EarthSamplingPhotoApi.class
+															.getName(), photoApi, null);
+											
+											log.debug("Earth Sampling App API started.");
+											log.debug("Earth Sampling Photo API started.");
+									
 										} catch (Exception e) {
-											e.printStackTrace();
+											log.debug("Failed to startup ESA Services:", e);
 										}
-										
-										EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(service);
-										
-										RegUtils.reg(getBundleContext(),
-												EarthSamplingAppAPI.class
-														.getName(), api, null);
-										
-										RegUtils.reg(getBundleContext(),
-												EarthSamplingPhotoApi.class
-														.getName(), photoApi, null);
-										
-										log.debug("Earth Sampling App API started.");
-										log.debug("Earth Sampling Photo API started.");
 									}
 
 								});
