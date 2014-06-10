@@ -88,7 +88,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private Twitter twitter = null;
     
     public EarthSamplingAppAPI(EarthSamplingAppService service,
-            BroadcasterProxy broadcasterProxy) throws IOException  {
+            BroadcasterProxy broadcasterProxy) throws Exception  {
         this.service = service;
         this.broadcasterProxy = broadcasterProxy;
         this.imageResizer = new ImageResizer();
@@ -151,8 +151,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
                         }).serializeNulls().setPrettyPrinting()
                 .serializeSpecialFloatingPointValues().create();
         
-        in = getClass().getClassLoader().getResourceAsStream("properties/twitter.properties");
-		p.load(in);
+        this.in = getClass().getClassLoader().getResourceAsStream("properties/twitter.properties");
+		this.p.load(in);
         this.cb = new ConfigurationBuilder();
         this.cb.setDebugEnabled(true)
 		  .setUseSSL(true)
