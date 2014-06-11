@@ -6,67 +6,66 @@
   href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css"
   rel="stylesheet" type="text/css"
 >
-<link
-  href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-jqueryui-1.1.3.min.css"
-  rel="stylesheet" type="text/css"
->
+
+<!-- TODO: maybe delete -->
 <script type="text/javascript"
   src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"
 ></script>
 
 
 <script type="text/javascript"
-  src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery-1.10.2.js"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-1.10.2.js"
 ></script>
 <script type="text/javascript"
-  src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery.tmpl-1.0.0pre.js"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.tmpl-1.0.0pre.js"
 ></script>
 <!-- jQuery UI Support -->
 <script type="text/javascript"
-  src="https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/jquery-ui-1.10.4.custom.min.js"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-ui-1.10.4.custom.min.js"
 ></script>
 <!-- Alpaca -->
 <script type="text/javascript"
   src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.js"
 ></script>
 
-    <script type="text/javascript"
-          src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript"
+  src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"
+></script>
 
 <style id="jsbin-css">
-
-
 .mx-env-param {
-  
   background-color: green
 }
+
 .mx-site {
-  
-  background-color: blue 
+  background-color: RoyalBlue
 }
 
 .mx-sample {
-  
   background-color: orange
 }
-
 </style>
 </head>
 <body>
 
-  <h1>Register your OSD sample(s)</h1>
+  <h1>Register your OSD June 2014 sample(s)</h1>
   <div style="padding: 20px 20px 20px 20px">
     <p>On this page you will be able to register your OSD summer
       solstice 2014 sample(s) from June 20, 2014 on.</p>
   </div>
-  <h3>The web form</h3>
   <div style="padding: 20px 20px 20px 20px">
-    <p>We want you to give you an impression about what little it
-      takes to register an OSD 2014 sample for sequencing, bioarchiving,
-      and data deposition. Therefore below, you see the current status
-      of the sample registration form we are preparing for you.
-      Please note, that web form is currently under heavy development
-      and will be ready soon for you.</p>
+    Please consider the following before you start filling out
+      the form:
+    <ul>
+    <li>Please provide all information in English.</li>
+      <li>Please enter all decimal values with <b>point</b>
+        notation.
+      </li>
+      <li>Geographic Coordinates are in decimal degrees.</li>
+      <li>We will ask data you already gave during site registration. This is just to allow cross-checking.</li>
+
+    </ul>
+    
 
     <p>
       Please have a look and <a href="mailto:megx@mpi-bremen.de"> if
@@ -74,15 +73,16 @@
         you contact us.</a>
     </p>
   </div>
+
   <div id="osd-sample-form"></div>
+
   <script>
       /********   CONFIGURATION  ********/
 
       var targetContainerId = "osd-sample-form";
-      var checkListFormAction = "TheAction";
 
-      var schemaLocation = "https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/data/osd_schema.json";
-      var optionsLocation = "https://dl.dropboxusercontent.com/u/1611524/gcdj_widget/gcdj-osd-widget/js/data/osd_options.json";
+      var schemaLocation = "$ctx.siteUrl/net.megx.osd.registry/js/osd_schema.json";
+      var optionsLocation = "$ctx.siteUrl/net.megx.osd.registry/js/osd_options.json";
 
       // add extra validation if you like
       function submitCheckListForm( form ) {
@@ -90,66 +90,44 @@
       }
 
       /********   END CONFIGURATION  *****/
-var inputBundle = {
-    "optionsSource": optionsLocation,
-    "schemaSource": schemaLocation,
-    //create means no inital validation
-    "view": "VIEW_JQUERYUI_CREATE",
-    "isDynamicCreation": true, 
- "postRender": function (field) {
-        var form = field.form;
+      var inputBundle = {
+        "optionsSource" : optionsLocation,
+        "schemaSource" : schemaLocation,
+        //create means no inital validation
+        "view" : "VIEW_JQUERYUI_CREATE",
+        "isDynamicCreation" : true,
+        "postRender" : function( field ) {
+          var form = field.form;
 
-        var pangaeaCSV = function (doc) {
-            var delim = "\t";
-            var pig_val = null;
-            var flowcyto_val = null;
-            var ph_val = null;
-            var env = doc.environment;
-
-            var header = "lat\tlon\tdepth\tdate_time\ttemperature\tsalinity\tchlorophyll\tflow-cytometrie\tph";
-
-
-            if (env.pigment_concentration.hasOwnProperty('measurement')) {
-                pig_val = doc.environment.pigment_concentration.measurement.value;
-            }
-            if (env.picoplankton_flow_cytometry.hasOwnProperty('measurement')) {
-                flowcyto_val = JSON.stringify(env.picoplankton_flow_cytometry.measurement);
-
-            }
-            if (env.ph.hasOwnProperty('measurement')) {
-
-                ph_val = env.ph.measurement.value;
-            }
-
-            return header + "\n" + doc.sampling_site.latitude + delim + doc.sampling_site.longitude + delim + doc.sample.depth + delim + doc.sample.date_time + delim + doc.environment.temperature + delim + doc.environment.salinity + delim + pig_val + delim + flowcyto_val + delim + ph_val;
-        };
-
-
-        if (form) {
+          if ( form ) {
             form.refreshValidationState(false);
-            form.registerSubmitHandler(function (e, form) {
+
+            form
+              .registerSubmitHandler(function( e, form ) {
                 // validate the entire form (top control + all children)
                 form.validate(true);
                 // draw the validation state (top control + all children)   
                 form.refreshValidationState(true);
-                // now display something 
-                if (form.isFormValid()) {
 
-                    var json = form.getValue();
-                    console.log("json=" + JSON.stringify(json));
-                    alert("test");
-                    alert("The form looks good! \n\n" + "Pangaea Data\n\n" + pangaeaCSV(json) + "\n\nPlease copy and save text before closing  this dialog for submission");
+                // now display something 
+                if ( form.isFormValid() ) {
+                  alert("test");
+                  var json = form.getValue();
+                  console.log("json=" + JSON.stringify(json));
+                  var formJson = JSON.stringify(field.getValue());
+                  console.log("json=" + formJson);
+                  $('<input/>').attr('name', 'json').attr('value', formJson)
+                    .appendTo('#osd-form');
                 } else {
-                    alert("There are problems with the form.  Please make the any necessary corrections.");
+                  alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
                 }
                 e.stopPropagation();
-                return false;
-            });
+                return true;
+              });
+          }
+
         }
-
-    }
-}; 
-
+      };
 
       function renderForm() {
         $("#" + targetContainerId).alpaca(inputBundle);
@@ -157,7 +135,7 @@ var inputBundle = {
 
       $(document).ready(function() {
         Alpaca.defaultUI = "jquery-ui";
-        Alpaca.logLevel = Alpaca.ERROR;
+        Alpaca.logLevel = Alpaca.DEBUG;
         renderForm();
       });
     </script>
