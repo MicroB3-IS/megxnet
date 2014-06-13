@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Export-Package: net.megx.twitter.service
+Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",org.chon.cms.
+ model;bundle-version="1.0.0",org.chon.core.utils;bundle-version="1.1.
+ 0",org.chon.web;bundle-version="1.0.2"
+Bundle-Vendor: megx.net
+Bundle-ClassPath: .,lib/twitter4j.jar
+Bundle-Version: 0.0.1.201406131323
+Bundle-Name: net.megx.twitter
+Bundle-Activator: net.megx.twitter.Activator
+Bundle-ManifestVersion: 2
+Import-Package: net.megx.utils,org.apache.commons.logging;version="1.1
+ .1",org.osgi.framework;version="1.3.0"
+Bundle-SymbolicName: net.megx.twitter
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+
