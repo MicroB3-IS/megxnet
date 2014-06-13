@@ -1,0 +1,1028 @@
+
+<meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, user-scalable=no"
+>
+
+<title>OSD Citizen Sciene Input</title>
+<script type="text/javascript" charset="utf-8" src="libs/cordova.js"></script>
+
+
+<link rel="stylesheet"
+  href="$ctx.siteUrl/net.megx.esa/jquery.mobile-1.4.custom.min.css"
+/>
+<link rel="stylesheet"
+  href="$ctx.siteUrl/net.megx.esa/jquery.mobile.icons.min.css"
+/>
+<link rel="stylesheet"
+  href="$ctx.siteUrl/net.megx.esa/jquery.mobile.structure-1.4.0.min.css"
+/>
+
+<link rel="stylesheet" href="$ctx.siteUrl/net.megx.esa/css/esa.css" />
+
+
+<script src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-1.10.2.js"></script>
+<script src="esa/libs/jqm/jquery.mobile-1.4.0.min.js"></script>
+<script src="esa/libs/autocomplete/jqm.autoComplete-1.5.0-min.js"></script>
+<script src="esa/libs/jsOAuth-1.3.6.js"></script>
+
+<!-- 
+<script type="text/javascript" charset="utf-8" src="libs/cordova-dbg/cordova-dbg.js"></script>
+<link rel="stylesheet" href="libs/cordova-dbg/css/dbg.css" />
+ -->
+<!-- 
+<link rel="stylesheet" href="esa/libs/mobiscroll/mobiscroll-2.1-beta.custom.min.css" />
+<script src="esa/libs/mobiscroll/mobiscroll-2.1-beta.custom.min.js"></script>
+ -->
+
+<!-- Our main application file -->
+<script src="esa/js/esa.js"></script>
+<script src="esa/js/app.js"></script>
+
+<script type="text/javascript">
+  
+</script>
+
+<style type="text/css">
+</style>
+
+<!-- alpaca form stuff -->
+
+<link
+  href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css"
+  rel="stylesheet" type="text/css"
+>
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-1.10.2.js"
+></script>
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.tmpl-1.0.0pre.js"
+></script>
+<!-- jQuery UI Support -->
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-ui-1.10.4.custom.min.js"
+></script>
+<!-- Alpaca -->
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.js"
+></script>
+
+
+<script>
+      /********   CONFIGURATION  ********/
+
+      var targetContainerId = "osd-sample-form";
+
+      var schemaLocation = "$ctx.siteUrl/net.megx.esa/data/esa_schema.json";
+      var optionsLocation = "$ctx.siteUrl/net.megx.esa/data/esa_options.json";
+
+      // add extra validation if you like
+      function submitCheckListForm( form ) {
+        return true;
+      }
+
+      /********   END CONFIGURATION  *****/
+      var inputBundle = {
+        "optionsSource" : optionsLocation,
+        "schemaSource" : schemaLocation,
+        //create means no inital validation
+        "view" : "VIEW_JQUERYUI_CREATE",
+        "isDynamicCreation" : true,
+        "postRender" : function( field ) {
+          var form = field.form;
+
+          if ( form ) {
+            form.refreshValidationState(false);
+
+            form
+              .registerSubmitHandler(function( e, form ) {
+                // validate the entire form (top control + all children)
+                form.validate(true);
+                // draw the validation state (top control + all children)   
+                form.refreshValidationState(true);
+
+                // now display something 
+                if ( form.isFormValid() ) {
+                  alert("test");
+                  var json = form.getValue();
+                  console.log("json=" + JSON.stringify(json));
+                  var formJson = JSON.stringify(field.getValue());
+                  console.log("json=" + formJson);
+                  $('<input/>').attr('name', 'json').attr('value', formJson)
+                    .appendTo('#osd-form');
+                } else {
+                  alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
+                }
+                e.stopPropagation();
+                return true;
+              });
+          }
+
+        }
+      };
+
+      function renderForm() {
+        $("#" + targetContainerId).alpaca(inputBundle);
+      }
+
+      $(document).ready(function() {
+        Alpaca.defaultUI = "jquery-ui";
+        Alpaca.logLevel = Alpaca.ERROR;
+        renderForm();
+      });
+    </script>
+
+  <div id="osd-sample-form"></div>
+
+
+
+<div data-role="page" id="take-sample-page-1" data-iscroll="enable"
+  data-theme="b" class="opacityBackground"
+>
+  <div data-role="header" data-theme="a">New Sample (1/4)</div>
+
+  <div class="clearable-notification ui-content">
+    <div class="app-notification page-app-notification"></div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="time"
+      >Please give the time and date of the moment you took your
+        sample. All fields marked with a red star are mandatory and must
+        be filled in to sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="time"><span class="requiredInput">*</span>Time:
+        <span class="info-icon" style="display: inline-block;"> </span>
+      </label> <input type="text" class="sampleData mandatory" name="time"
+        id="time"
+      />
+
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="lat"
+      >Please enter the latitude of the place you took your
+        sample.(Usually done by the GPS automatically). All fields
+        marked with a red star are mandatory and must be filled in to
+        sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="lat"><span class="requiredInput">*</span>Latitude:
+        <span class="info-icon" style="display: inline-block;"> </span>
+      </label> <input type="number" class="numeric mandatory" name="lat"
+        id="lat" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="lon"
+      >Please enter the longitude of the place you took your
+        sample.(Usually done by the GPS automatically). All fields
+        marked with a red star are mandatory and must be filled in to
+        sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="lon"><span class="requiredInput">*</span>Longitude:
+        <span class="info-icon" style="display: inline-block;"> </span>
+      </label> <input type="number" class="numeric mandatory" name="lon"
+        id="lon" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="accuracy"
+      >Give an estimation of how precise GPS measurement is in meters
+        or feet depending on the measurement system you chose. All
+        fields marked with a red star are mandatory and must be filled
+        in to sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="accuracy"><span class="requiredInput">*</span>GPS
+        accuracy <span class="lengthPlaceholder"></span>: <span
+        class="info-icon" style="display: inline-block;"
+      > </span> </label> <input type="number" class="numeric mandatory"
+        name="accuracy" id="accuracy" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="sampling-depths"
+      >Please enter the water depth you took your sample from. All
+        fields marked with a red star are mandatory and must be filled
+        in to sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="sampling-depths"><span class="requiredInput">*</span>Sampling
+        depths <span class="lengthPlaceholder"></span>: <span
+        class="info-icon" style="display: inline-block;"
+      > </span> </label> <input type="number" class="numeric mandatory"
+        class="numeric" name="sampling-depths" id="sampling-depths"
+        value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <!-- div data-role="controlgroup" data-type="horizontal"-->
+      <input type="button" data-theme="b" data-inline="true"
+        value="Get GPS Location" class="take-gps-location"
+      > <input type="button" data-theme="b" data-inline="true"
+        value="Show on Map" id="show-map"
+      >
+      <!--  /div -->
+    </div>
+
+    <div class="bufferZone"></div>
+
+  </div>
+
+  <div class="ui-navbar ui-bar-a footer-fix">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <a
+          class="go-to-main-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+        >Back</a>
+      </div>
+      <div class="ui-block-b">
+        <a
+          class="save-button next-button ui-btn ui-icon-arrow-r ui-shadow ui-corner-all ui-btn-icon-right"
+          id="page-2"
+        >Next</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div data-role="page" id="take-sample-page-2" data-iscroll="enable"
+  data-theme="b" class="opacityBackground"
+>
+  <div data-role="header" data-theme="a">New Sample (2/4)</div>
+
+  <div class="clearable-notification ui-content">
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="sample-label"
+      >Please enter a name you want to give your sample. All fields
+        marked with a red star are mandatory and must be filled in to
+        sucessfully upload sample data to the server.</div>
+      <div class="clear"></div>
+      <label for="sample-label"><span class="requiredInput">*</span>Sample
+        name <span class="info-icon" style="display: inline-block;">
+      </span> </label> <input type="text" class="sampleData mandatory"
+        name="sample-label" id="sample-label" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="weather-condition"
+      >Please choose one of the weather conditions which suit the best
+        during the time of sampling.</div>
+      <div class="clear"></div>
+      <label for="weather-condition">Weather condition: <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <select id="weather-condition" name="weather-condition"
+        class="sampleDropdown"
+      ></select>
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="air-temperature"
+      >Please enter the air temperature occurred during the time of
+        sampling.</div>
+      <div class="clear"></div>
+      <label for="air-temperature">Air temperature <span
+        class="temperaturePlaceholder"
+      ></span>: <span class="info-icon" style="display: inline-block;">
+      </span>
+      </label> <input type="number" class="numeric" name="air-temperature"
+        id="air-temperature" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="water-temperature"
+      >Please enter the water temperature you measured during sampling.
+      </div>
+      <div class="clear"></div>
+      <label for="water-temperature">Water temperature <span
+        class="temperaturePlaceholder"
+      ></span>: <span class="info-icon" style="display: inline-block;">
+      </span>
+      </label> <input type="number" class="numeric" name="water-temperature"
+        id="water-temperature" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="wind-speed"
+      >Please enter the wind speed which occurred during the time of
+        sampling.</div>
+      <div class="clear"></div>
+      <label for="wind-speed">Wind speed <span
+        class="speedPlaceholder"
+      ></span>: <span class="info-icon" style="display: inline-block;">
+      </span>
+      </label> <input type="number" class="numeric" name="wind-speed"
+        id="wind-speed" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      Photos(<span id="photos-taken">0</span>):<br />
+      <div data-role="controlgroup">
+        <a id="take-image"
+          class="ui-btn ui-icon-camera ui-shadow ui-corner-all ui-btn-icon-left"
+        >Take photo</a> <a id="view-gallery"
+          class="ui-btn ui-icon-plus ui-shadow ui-corner-all ui-btn-icon-left"
+        >From galery</a> <a id="photos-gallery"
+          class="ui-btn ui-icon-grid ui-shadow ui-corner-all ui-btn-icon-left"
+        >Preview photos</a>
+      </div>
+
+    </div>
+
+    <!--
+			<div class="ui-field-contain">
+				<label for="water-depth">Water depth  (m):</label>
+				<input type="number" class="numeric" value="" name="water-depth" id="water-depth" />
+			</div>
+			-->
+
+    <div class="bufferZone"></div>
+
+  </div>
+
+  <div class="ui-navbar ui-bar-a footer-fix">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <a
+          class="previous-page save-button ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+        >Back</a>
+      </div>
+      <div class="ui-block-b">
+        <a
+          class="save-button next-button ui-btn ui-icon-arrow-r ui-shadow ui-corner-all ui-btn-icon-right"
+          id="page-3"
+        >Next</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="take-sample-page-3" data-iscroll="enable"
+  data-theme="b" class="opacityBackground"
+>
+  <div data-role="header" data-theme="a">New Sample (3/4)</div>
+
+  <div class="clearable-notification ui-content">
+    <div class="app-notification page-app-notification"></div>
+    <input type="hidden" id="sample-uuid" />
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="salinity"
+      >Please enter the measured salinity of your sample in psu.</div>
+      <div class="clear"></div>
+      <label for="salinity">Salinity (psu): <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <input type="number" class="numeric" name="salinity"
+        id="salinity" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="phosphate"
+      >Please enter the amount of Phosphate you measured in your
+        sample.</div>
+      <div class="clear"></div>
+      <label for="phosphate">Phosphate (mg/l): <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <input type="number" class="numeric" name="phosphate"
+        id="phosphate" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="nitrate"
+      >Please enter the amount of Nitrate you measured in your sample.
+      </div>
+      <div class="clear"></div>
+      <label for="nitrate">Nitrate (mg/l): <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <input type="number" class="numeric" name="nitrate" id="nitrate"
+        value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="nitrite"
+      >Please enter the amount of Nitrite you measured in your sample.
+      </div>
+      <div class="clear"></div>
+      <label for="nitrite">Nitrite (mg/l): <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <input type="number" class="numeric" name="nitrite" id="nitrite"
+        value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="ph"
+      >Please enter the pH value you measured in your sample.</div>
+      <div class="clear"></div>
+      <label for="ph">pH: <span class="info-icon"
+        style="display: inline-block;"
+      > </span>
+      </label> <input type="number" class="numeric" name="ph" id="ph" value="" />
+    </div>
+
+    <div class="bufferZone"></div>
+  </div>
+
+  <div class="ui-navbar ui-bar-a footer-fix">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <a
+          class="save-button previous-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+        >Back</a>
+      </div>
+      <div class="ui-block-b">
+        <a
+          class="save-button next-button ui-btn ui-icon-arrow-r ui-shadow ui-corner-all ui-btn-icon-right"
+        >Next</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="take-sample-page-4" data-iscroll="enable"
+  data-theme="b" class="opacityBackground"
+>
+  <div data-role="header" data-theme="a">New Sample (4/4)</div>
+
+  <div class="clearable-notification ui-content">
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="biome"
+      >Please choose one of the given biomes which suits best to the
+        environment you took your sample from.</div>
+      <div class="clear"></div>
+      <label for="biome">Biome: <span class="info-icon"
+        style="display: inline-block;"
+      > </span>
+      </label> <select id="biome" name="biome" class="sampleDropdown"></select>
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="secchi-depth"
+      >Please enter your measured secchi depth.</div>
+      <div class="clear"></div>
+      <label for="secchi-depth">Secchi depth <span
+        class="lengthPlaceholder"
+      ></span>: <span class="info-icon" style="display: inline-block;">
+      </span>
+      </label> <input type="number" class="numeric" value="" name="secchi-depth"
+        id="secchi-depth"
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="comment"
+      >Please enter anything you think might be a helpful or
+        interesting observation you made on your sampling trip. e.g. a
+        big algae bloom or some trouble with the measurement which might
+        influence the result.</div>
+      <div class="clear"></div>
+      <label for="comment">Comment: <span class="info-icon"
+        style="display: inline-block;"
+      > </span>
+      </label>
+      <textarea name="comment" id="comment" value=""></textarea>
+    </div>
+
+    <div class="ui-field-contain">
+      <div style="display: none;"
+        class="ui-bar ui-bar-c  ui-corner-all field-description"
+        description-for="just-for-fun"
+      >Please confirm that you made real observations by un-checking
+        this box. By default your observation will be qualified as
+        testing and made just for fun, only un-checking will lead to
+        permanent storage of your data.</div>
+      <div class="clear"></div>
+      <label for="just-for-fun">Just for fun: <span
+        class="info-icon" style="display: inline-block;"
+      > </span>
+      </label> <input type="checkbox" data-role="flipswitch" name="just-for-fun"
+        id="just-for-fun" data-on-text="Yes" data-off-text="No"
+        checked="checked"
+      >
+    </div>
+
+    <!--
+			
+			<div class="ui-field-contain">
+			    <label for="conductivity">Conductivity:</label>
+			    <input type="text" class="sampleData" name="conductivity" id="conductivity" value=""  />
+			</div>
+			-->
+
+    <div class="bufferZone"></div>
+
+  </div>
+
+  <div class="ui-navbar ui-bar-a footer-fix">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <a
+          class="save-button previous-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+        >Back</a>
+      </div>
+      <div class="ui-block-b">
+        <a id="submit-sample"
+          class="ui-btn ui-icon-check ui-shadow ui-corner-all ui-btn-icon-right"
+        >Done</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="map_canvas_container" data-role="page">
+  <div data-role="header" class="map-page-header">
+    <div class="ui-grid-b">
+      <div class="ui-block-a">
+        <a data-role="button" data-icon="arrow-l" data-iconpos="left"
+          class="back-to-first-page ui-btn ui-icon-arrow-l ui-btn-icon-left"
+        >Back</a>
+      </div>
+      <div class="ui-block-b"></div>
+      <div class="ui-block-c"></div>
+    </div>
+  </div>
+  <div class="ui-content" data-theme="b" style="padding: 0px;">
+    <div id="map_canvas" style="width: 100%;"></div>
+  </div>
+</div>
+
+<div data-role="page" id="preferences" data-theme="a">
+  <div data-role="header" data-theme="b">
+    <h1>Personal</h1>
+  </div>
+
+  <div class="ui-content">
+
+    <div class="ui-field-contain">
+      <label for="project">Project:</label> <select id="project"
+        name="project"
+      ></select>
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="first-name"><span class="requiredInput">*</span>First
+        name:</label> <input type="text" name="first-name" id="first-name"
+        value="" required="required"
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="last-name"><span class="requiredInput">*</span>Last
+        name:</label> <input type="text" name="last-name" id="last-name"
+        value="" required="required"
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="ship-name">Ship name:</label> <input type="text"
+        name="ship-name" id="ship-name" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="boat-manufacturer">Boat manufacturer:</label> <input
+        type="text" name="boat-manufacturer" id="boat-manufacturer"
+        value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="boat-model">Model:</label> <input type="text"
+        name="boat-model" id="boat-model" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="boat-length">Length [m]:</label> <input type="number"
+        name="boat-length" id="boat-length" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="homeport">Homeport:</label> <input type="text"
+        name="homeport" id="homeport" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="nationality">Nationality:</label> <input type="text"
+        name="nationality" id="nationality" value=""
+      />
+    </div>
+
+    <div class="ui-field-contain">
+      <label for="measurementSystem">Measurement system:</label> <select
+        id="measurementSystem" name="measurementSystem"
+      >
+        <option value="metric">Metric units</option>
+        <option value="imperial">Imperial units</option>
+      </select>
+    </div>
+
+    <div class="ui-field-contain">
+      <a id="accessTokenBtn" class="ui-btn ui-shadow ui-corner-all "></a>
+    </div>
+
+    <div class="bufferZone"></div>
+
+  </div>
+
+  <div class="ui-navbar ui-bar-a footer-fix">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <a
+          class="save-config ui-btn ui-icon-check ui-shadow ui-corner-all ui-btn-icon-left"
+        >Save</a>
+      </div>
+      <div class="ui-block-b">
+        <a
+          class="back-to-main-page ui-btn ui-icon-delete ui-shadow ui-corner-all ui-btn-icon-right"
+        >Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="debug-console">
+  <div data-role="header" class="debugger-header">
+    <div class="ui-grid-b">
+      <div class="ui-block-a">
+        <select name="show-log" class="debugger-output-switch"
+          data-role="flipswitch"
+        >
+          <option value="console">Show Log</option>
+          <option value="log">Show Console</option>
+        </select>
+      </div>
+      <div class="ui-block-b"></div>
+      <div class="ui-block-c">
+        <a data-role="button"
+          class="back-to-main-page ui-btn ui-icon-check ui-btn-icon-left"
+          data-icon="check" data-iconpos="left"
+        >Back</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui-content">
+    <div class="debugger-console">
+      <input type="text" class="debugger-input">
+      <div data-role="controlgroup" data-type="horizontal">
+        <input type="button" value="run" class="debugger-run"> <input
+          type="button" value="clear" class="debugger-clear"
+        >
+      </div>
+      <div class="debugger-output"></div>
+    </div>
+    <div class="debugger-log" style="display: none;">
+      <div data-role="controlgroup" data-type="horizontal">
+        <input type="button" value="clear" class="debugger-clear-log">
+      </div>
+      <div class="debugger-log-output"></div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" data-theme="d" id="samples-taken">
+  <div data-role="header" data-theme="a" class="debugger-header">
+    <h1>Samples</h1>
+  </div>
+  <div class="ui-content">
+    <a href="#" rel="http://mb3is.megx.net/osd-app/samples"
+      id="samplesOnServerButton"
+      class="aboutLink ui-btn ui-icon-home ui-btn-icon-left"
+    >Show all Samples on OSD App Server</a>
+    <div class="samples-list"></div>
+  </div>
+
+  <div class="bufferZone"></div>
+
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+          <a
+            class="back-to-main-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" data-theme="d" id="errors">
+  <div data-role="header" data-theme="a">
+    <h1>List of errors</h1>
+  </div>
+  <div class="ui-content">
+    <div class="errors-list"></div>
+  </div>
+
+  <div class="bufferZone"></div>
+
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+          <a
+            class="back-to-main-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" data-theme="d" id="photos-gallery-page">
+  <div data-role="header" data-theme="a">
+    <h1>Sample Photos</h1>
+  </div>
+  <div class="ui-content">
+    <div class="photos-gallery-wrapper"></div>
+  </div>
+
+  <div class="bufferZone"></div>
+
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+          <a
+            class="back-to-second-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" data-theme="b" id="single-photo-display"
+  style="overflow-x: auto;"
+>
+  <input type="hidden" id="current-photo-displayed"> <input
+    type="hidden" id="current-photo-zoom"
+  >
+  <div style="margin: 0px; padding: 0px; overflow: auto;"
+    class="photo-gallery-main ui-content"
+  ></div>
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a">
+          <a
+            class="back-to-photo-gallery ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+        <div class="ui-block-b">
+          <a
+            class="delete-photo ui-btn ui-icon-delete ui-shadow ui-corner-all ui-btn-icon-right"
+          >Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-role="page" id="about-page" data-theme="a">
+  <div data-role="header" data-theme="b">
+    <h1>About</h1>
+  </div>
+
+  <div class="ui-content">
+    <p>Ocean Sampling Day (OSD) Citizen Edition of Earth Sampling
+      Application (ESA)</p>
+    <p>Version: 1.5</p>
+
+    <p>
+      OSD Edition of ESA is designed by <a href="#" class="aboutLink"
+        rel="http://www.interworks.com.mk/pages/en/index.html"
+      >InterWorks</a>, a software development company that provides a wide
+      range of services, more about InterWorks can be found on the
+      company’s website <a href="#" class="aboutLink"
+        rel="http://www.interworks.com.mk"
+      >http://www.interworks.com.mk.</a> Special credit goes to Max Plank
+      Institute for Marine Microbiology, for their ideas, requirements
+      and testing of the application. More information can be found at
+      http://www.mpi-bremen.de. Application logo is created by David
+      Evan Todd, <a href="#" class="aboutLink"
+        rel="http://www.detodd.com"
+      >http://www.detodd.com</a>. Button design and background picture was
+      done by Julia Schnetzer.
+    </p>
+  </div>
+
+  <div class="bufferZone"></div>
+
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+          <a
+            class="back-to-main-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div data-role="page" id="help-page" data-theme="a">
+  <div data-role="header" data-theme="b">
+    <h1>Help</h1>
+  </div>
+
+  <div class="ui-content">
+    <h2>Welcome to the Ocean Sampling Day App!</h2>
+    <p>
+      The OSD App is specially designed for people who like to
+      participate in the <a href="#" class="aboutLink"
+        rel="http://www.oceansamplingday.org/"
+      >Ocean Sampling Day</a> event which will take place on summer
+      solstice June 21st, 2014. With this App you can enter your
+      measured data, observations and photos of the oceans and seas
+      directly into your phone and send it to the <a href="#"
+        class="aboutLink" rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server</a> to make it publicly available for everyone.
+    </p>
+    <h2>Screens and Buttons</h2>
+    <h3>Personal</h3>
+    <p>
+      In the 'Personal' area you can save your personal information.
+      This information will be stored on your phone and transferred
+      together with your collected data to the <a href="#"
+        class="aboutLink" rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a> You can change this information whenever and as
+      often as you like, just don't forget to click the <b>'Save'</b>
+      button at the bottom of the screen. If you participate in the
+      Ocean Sampling Day please choose <b>Micro B3</b> as the project.
+      The Project, First name and Last name are mandatory fields.
+      Remember, that the name you enter here will be displayed with the
+      data you upload on the <a href="#" class="aboutLink"
+        rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a>
+    </p>
+    <h3>New Sample</h3>
+    <p>
+      When you hit <b>'New Sample'</b> a blank new sample form will
+      open. Here you can enter all your data. Mandatory fields are
+      marked with red stars.To save your entries you have to go to the
+      last page and hit the <b>'Done'</b> button. Then the sample data
+      will be saved locally on your phone and can be displayed and
+      further edited using the <b>'Show Samples'</b> option.
+    </p>
+    <h3>Show Samples</h3>
+    <p>
+      Here you can view a list of all your data you have entered so far.
+      Green samples are already uploaded to the <a href="#"
+        class="aboutLink" rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a> Yellow samples are not uploaded yet. Red samples
+      indicate that mandatory information is missing and has to be added
+      before you can upload the data. Mandatory fields are marked with
+      red stars.
+    </p>
+    <h3>Upload Sample</h3>
+    <p>
+      When you hit the <b>'Upload Sample'</b> button all your collected
+      data will be uploaded to the <a href="#" class="aboutLink"
+        rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a> The data cannot be uploaded if mandatory
+      information is missing. Mandatory fields are marked with red
+      stars.<br /> Please note that photos are not uploaded. When you
+      are in the field your internet connection might be unstable and
+      you might have low bandwidth which makes upload of large photos
+      rather difficult. Therefore, we separated <b>'Upload Sample'</b>
+      from <b>'Upload Photos'</b> . Now you can upload your collected
+      data directly and later on, when you have a better internet
+      connection you can upload your photos hitting the <b>'Upload
+        Photos'</b> button.
+    </p>
+    <h3>Upload Photos</h3>
+    <p>
+      By hitting <b>'Upload Photos'</b> both the sample data and the
+      photos you took will be uploaded to the <a href="#"
+        class="aboutLink" rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a>
+    </p>
+    <h2>FAQ</h2>
+    <h3>When I upload data, why Do I have to have an account and
+      log-in to megx.net?</h3>
+    <p>
+      Currently, <a href="#" class="aboutLink"
+        rel="http://mb3is.megx.net/"
+      >megx.net</a> is hosting the <a href="#" class="aboutLink"
+        rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a> Most importantly, it is your data and we would
+      like to correctly link the data to you. We also need you to log-in
+      in order to maintain security and data quality and avoid misuse of
+      our services. However, for your convenience you can also log-in to
+      megx.net using your Facebook, Google, Twitter or OpenID account
+      avoiding to create yet another account.
+    </p>
+    <h3>What happens with my data I send to you?</h3>
+    <p>
+      The data will be stored in our database and made publicly
+      available to everyone via our <a href="#" class="aboutLink"
+        rel="http://mb3is.megx.net/osd-app/samples"
+      >OSD App Server.</a>
+    </p>
+    <h3>Where can I get more information on how to sample for the
+      OSD?</h3>
+    <p>
+      You can find further information on the OSD webpage <a href="#"
+        class="aboutLink" rel="http://www.my-osd.org"
+      >http://www.my-osd.org.</a> It hosts tutorials and detailed
+      information about the sampling process.
+    </p>
+    <h3>My GPS does not work! How can I get the geographic
+      coordinates of my sampling point?</h3>
+    <p>Currently, please use an external such map application as
+      e.g. Google Maps. There, you can approximate your geographic
+      location of your data collection with the mouse and do a right
+      click. A little popup menu will appear, select 'What's here?' and
+      the coordinates will appear in the Google search box on top of the
+      website. The first number is the Latitude and the second the
+      Longitude. You can then enter these latitude and longitude values
+      in your OSD App.</p>
+    <h3>What kind of photo should I take?</h3>
+    <p>
+      Any photo which gives a good impression about the location is
+      valuable. You may want to take a photo of your sampling spot or of
+      your kids taking the sample.... However you like<img
+        src="esa/images/smile.png"
+      />
+    </p>
+  </div>
+
+  <div class="bufferZone"></div>
+
+  <div class="ui-footer-fixed">
+    <div class="ui-navbar ui-bar-a">
+      <div class="ui-grid-a">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+          <a
+            class="back-to-main-page ui-btn ui-icon-arrow-l ui-shadow ui-corner-all ui-btn-icon-left"
+          >Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

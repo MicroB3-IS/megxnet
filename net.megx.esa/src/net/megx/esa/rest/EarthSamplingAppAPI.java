@@ -4,13 +4,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -77,8 +82,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
     private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
- 
-    
     public EarthSamplingAppAPI(EarthSamplingAppService service,
             BroadcasterProxy broadcasterProxy) {
         this.service = service;
@@ -122,23 +125,23 @@ public class EarthSamplingAppAPI extends BaseRestService {
                             public JsonElement serialize(Double num, Type type,
                                     JsonSerializationContext context) {
 
-                                if (num != null && ! num.isNaN()) {
+                                if (num != null && !num.isNaN()) {
                                     return new JsonPrimitive(num.toString());
                                 }
-                                return new JsonPrimitive(""); 
+                                return new JsonPrimitive("");
 
                             }
                         })
-                                        .registerTypeAdapter(Double.class,
+                .registerTypeAdapter(Double.class,
                         new JsonSerializer<Double>() {
                             @Override
                             public JsonElement serialize(Double num, Type type,
                                     JsonSerializationContext context) {
 
-                                if (num != null && ! num.isNaN() ) {
+                                if (num != null && !num.isNaN()) {
                                     return new JsonPrimitive(num.toString());
                                 }
-                                return new JsonPrimitive(""); 
+                                return new JsonPrimitive("");
 
                             }
                         }).serializeNulls().setPrettyPrinting()
@@ -256,9 +259,15 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @Produces(MediaType.APPLICATION_JSON)
     public String getRenzo() {
 
+        int idx = 1;
+        Random random = new Random();
+        SampleRow row = null;
         List<SampleRow> samples;
         try {
             samples = service.getAllSamples();
+            idx = random.nextInt(samples.size());
+            row = samples.get(idx);
+            tweet(row.getLon(), row.getLat(), row.getTaken());
             return gson.toJson(samples);
         } catch (Exception e) {
             return gson.toJson("error");
@@ -334,7 +343,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
             String sampleCreator = request.getUserPrincipal().getName();
             for (Sample sample : samples) {
                 if (validateSample(sample)) {
-                	twitterService.updateTwitterStatus("New OSD observation at " + sample.getLat() + ", " + sample.getLon() + " on " + sample.getTaken() + ". See https://mb3is.megx.net/osd-app/samples ");
+
                     sample.setUserName(sampleCreator);
                     samplesToSave.add(sample);
                 } else {
@@ -355,9 +364,12 @@ public class EarthSamplingAppAPI extends BaseRestService {
                     result);
 
             // Broadcast JSON string with saved samples to subscribed clients
+            // and tweet about it
             for (Sample sample : samplesToSave) {
                 if (savedSamples.contains(sample.getId())) {
                     samplesToBroadcast.add(sample);
+                    this.tweet(sample.getLon(), sample.getLat(),
+                            sample.getTaken());
                 }
             }
             this.broadcasterProxy.broadcastMessage("/topic/notifications/esa",
@@ -367,6 +379,29 @@ public class EarthSamplingAppAPI extends BaseRestService {
         } catch (Exception e) {
             return toJSON(handleException(e));
         }
+    }
+
+    private void tweet(Double longitude, Double latitude, Date date) {
+        String link = "https://mb3is.megx.net/osd-app/samples";
+
+        DecimalFormat fmt = new DecimalFormat("0.00");
+
+        String lat = fmt.format(latitude);
+        String lon = fmt.format(longitude);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateTaken = dateFormat.format(date);
+
+        String[] greetings = { "Hurray", "Awesome", "Fantastic", "Super", ":)",
+                "Incredibale" };
+
+        Random random = new Random();
+        int idx = random.nextInt(greetings.length);
+
+        String tweet = greetings[idx] + "! New observation reached us from "
+                + lat + ", " + lon + " at " + dateTaken + ". See " + link
+                + " @Micro_B3 #osd2014";
+        this.twitterService.geoTweet(tweet, latitude, longitude);
     }
 
     private boolean validateSample(Sample sample) {
