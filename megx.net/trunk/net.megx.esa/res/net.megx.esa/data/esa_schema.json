@@ -1,0 +1,213 @@
+﻿{
+    "title": "OSD Citizen Science Observation Input Form  (v0.1)",
+    "description": "Please fill as many data as you have :).",
+    "definitions": {
+        "choice": {
+            "description": "Is parameter measured, to be measured (in future), not to be measured, or not determined if it will be measured?",
+            "type": "String",
+            "required": true,
+            "enum": [
+                "measured",
+                "to be measured",
+                "will not be measured",
+                "not determined"
+            ],
+            "default": "not determined"
+        },
+        "first_name": {
+            "type": "string",
+            "title": "First Name",
+            "required": true
+        },
+        "last_name": {
+            "type": "string",
+            "title": "Last Name",
+            "required": true
+        },
+        "institute": {
+            "type": "string",
+            "title": "Institute",
+            "description": "Please use the full, official name of your institute in English (preferably the one used for site registration).",
+            "required": true,
+            "pattern": "^([^1234506789;\\\\()$%!@^*/=])([^1234506789;\\\\()$%!@^*/=])[^;$%\\\\!@^*\\]\\[=]+$"
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "title": "e-mail",
+            "required": true
+        },
+        "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Please choose an SI conforming unit of measurement.",
+            "required": true
+        },
+        "value": {
+            "title": "Value",
+            "required": true,
+            "type": "number"
+        },
+        "measurement": {
+            "title": "Measurement",
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/value"
+                },
+                "unit": {
+                    "$ref": "#/definitions/unit"
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "readonly": true,
+            "required": true,
+            "default": "0.1"
+        },
+        "date": {
+            "title": "Date",
+            "description": "Date when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+            "format": "date",
+            "required": true
+            
+            
+        }, 
+        "time": {
+            "title": "Time",
+            "description": "Time when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+            "format": "time",
+            "required": true
+            
+            
+        },
+        "latitude": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90,
+            "required": true,
+            "description": "Latitude (N/S) in decimal degrees of the location where the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+            "title": "Latitude"
+        },
+        "longitude": {
+            "minimum": -180,
+            "maximum": 180,
+            "required": true,
+            "type": "number",
+            "description": "Longitude (W/E) in decimal degrees of the location where the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+            "title": "Longitude"
+        },
+        "gps_accuracy": {
+            "title" : "GPS Accuracy",
+            "Description": "",
+            "type": "number",
+            "minimum": 0.1
+        },
+        
+        "depth": {
+            "title": "Sampling Depth",
+            "description": "The distance below the surface of the water at which a measurement was made or a sample was collected.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 12000,
+            "required": true
+            
+            
+            
+        },
+        "sample_name" : {
+            "title" : "Sample name",
+            "description": "",
+            "type": "string"
+        },
+        "weather_condition" : {
+            "title" : "Weather condition",
+            "description": "",
+            "type": "string"
+        },
+        "air_temperature": {
+            "title": "Air Temperature",
+            "required": true,
+            "type": "number",
+            "description": "Temperature of the air  in degress Celsius"
+             
+        },
+        "water_temperature": {
+            "title": "Water temperature",
+            "required": true,
+            "type": "number",
+            "description": "Temperature of water in degress Celsius"
+             
+        },
+        "wind_speed": {
+            "title": "Wind Speed",
+            "required": true,
+            "type": "number",
+            "description": ""
+             
+        },
+        "salinity": {
+            "required": true,
+            "type": "number",
+            "description": "Salinity of water at the time of taking the sample in PSU.",
+            "title": "Salinity",
+            "minimum": 0,
+            "maximum": 100
+        },
+        "phosphate": {
+            "description": "Phosphate concentration parameters in the water column",
+            "title": "Phosphate",
+            "type": "number"
+        },
+        "nitrate": {
+            "description": "Nitrate concentration parameters in the water column",
+            "title": "Nitrate",
+            "type": "number",
+            "minimum": 0,
+            "required": false
+        },
+        "nitrite": {
+            "description": "Nitrite concentration parameters in the water column",
+            "title": "Nitrite",
+            "minimum": 0,
+            "required": false,
+            "type": "number"
+        },
+        "ph": {
+            "description": "Alkalinity, acidity and pH of the water column",
+            "title": "pH",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 12
+        },
+        "biome": {
+            "minLength": 1,
+            "required": true,
+            "type": "string",
+            "description": "Descriptor of the broad ecological context of a sample.",
+            "title": "Biome"
+        },
+        "secchi_depth": {
+            "required": true,
+            "type": "number",
+            "minimum": 0.1,
+            "description": "Descriptor of the broad ecological context of a sample.",
+            "title": "Secchi depth"
+        },
+        "comment": {
+            "required": false,
+            "type": "string",
+            "description": "Report any deviation.",
+            "title": "Comment"
+        },
+        "test": {
+            "title": "Just for fun"
+        }
+       
+       
+    }
+}
