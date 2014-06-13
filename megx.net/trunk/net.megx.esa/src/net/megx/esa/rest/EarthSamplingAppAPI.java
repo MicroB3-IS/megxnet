@@ -1,7 +1,6 @@
 package net.megx.esa.rest;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
@@ -12,7 +11,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -39,6 +37,7 @@ import net.megx.model.esa.SampleLocationCount;
 import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
+import net.megx.twitter.service.TwitterService;
 import net.megx.ui.table.json.TableDataResponse;
 
 import org.apache.commons.codec.binary.Base64;
@@ -47,10 +46,6 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,6 +69,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private EarthSamplingAppService service;
     private BroadcasterProxy broadcasterProxy;
     private ImageResizer imageResizer;
+    private TwitterService twitterService;
 
     private static final int THUMBNAIL_WIDTH = 240;
     private static final int THUMBNAIL_HEIGHT = 240;
@@ -81,17 +77,14 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
     private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    private Properties p = new Properties();
-    private InputStream in = null;
-    private ConfigurationBuilder cb = null;
-    private TwitterFactory tf = null;
-    private Twitter twitter = null;
+ 
     
     public EarthSamplingAppAPI(EarthSamplingAppService service,
-            BroadcasterProxy broadcasterProxy) throws Exception  {
+            BroadcasterProxy broadcasterProxy) {
         this.service = service;
         this.broadcasterProxy = broadcasterProxy;
         this.imageResizer = new ImageResizer();
+        this.twitterService = new TwitterService();
         gson = new GsonBuilder()
                 .registerTypeAdapter(SamplePhoto.class,
                         new JsonDeserializer<SamplePhoto>() {
@@ -150,19 +143,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
                             }
                         }).serializeNulls().setPrettyPrinting()
                 .serializeSpecialFloatingPointValues().create();
-        
-        this.in = getClass().getClassLoader().getResourceAsStream("properties/twitter.properties");
-		this.p.load(in);
-        this.cb = new ConfigurationBuilder();
-        this.cb.setDebugEnabled(true)
-		  .setUseSSL(true)
-		  .setOAuthConsumerKey(p.getProperty("consumerKey"))
-		  .setOAuthConsumerSecret(p.getProperty("consumerSecret"))
-		  .setOAuthAccessToken(p.getProperty("accessToken"))
-		  .setOAuthAccessTokenSecret(p.getProperty("accessTokenSecret"))
-		  .setRestBaseURL(p.getProperty("restBaseURL"));
-        this.tf = new TwitterFactory(cb.build());
-        this.twitter = tf.getInstance();
+
     }
 
     /**
@@ -353,7 +334,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
             String sampleCreator = request.getUserPrincipal().getName();
             for (Sample sample : samples) {
                 if (validateSample(sample)) {
-                	this.twitter.updateStatus("New OSD observation at " + sample.getLat() + ", " + sample.getLon() + " on " + sample.getTaken() + ". See https://mb3is.megx.net/osd-app/samples ");
+                	twitterService.updateTwitterStatus("New OSD observation at " + sample.getLat() + ", " + sample.getLon() + " on " + sample.getTaken() + ". See https://mb3is.megx.net/osd-app/samples ");
                     sample.setUserName(sampleCreator);
                     samplesToSave.add(sample);
                 } else {
