@@ -36,28 +36,25 @@ public class Activator extends ResTplConfiguredActivator {
 									public void serviceAvailable(String name,
 											BroadcasterProxy broadcasterProxy) {
 										log.debug("BroadcasterProxy service received...");
-										
-										try {
-											EarthSamplingAppAPI api = new EarthSamplingAppAPI(
-													service, broadcasterProxy);
-										
-										
-											EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(service);
-											
-											RegUtils.reg(getBundleContext(),
-													EarthSamplingAppAPI.class
-															.getName(), api, null);
-											
-											RegUtils.reg(getBundleContext(),
-													EarthSamplingPhotoApi.class
-															.getName(), photoApi, null);
-											
-											log.debug("Earth Sampling App API started.");
-											log.debug("Earth Sampling Photo API started.");
-									
-										} catch (Exception e) {
-											log.debug("Failed to startup ESA Services:", e);
-										}
+
+										EarthSamplingAppAPI api = new EarthSamplingAppAPI(
+												service, broadcasterProxy);
+
+										EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(
+												service);
+
+										RegUtils.reg(getBundleContext(),
+												EarthSamplingAppAPI.class
+														.getName(), api, null);
+
+										RegUtils.reg(getBundleContext(),
+												EarthSamplingPhotoApi.class
+														.getName(), photoApi,
+												null);
+
+										log.debug("Earth Sampling App API started.");
+										log.debug("Earth Sampling Photo API started.");
+
 									}
 
 								});
