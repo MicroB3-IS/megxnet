@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <prerequisites>
@@ -64,7 +63,7 @@
         <mvn.db.port>5432</mvn.db.port>
         <mvn.db.name>megdb_r8</mvn.db.name>
         <mvn.db.user>${user.name}</mvn.db.user>
-        <mvn.db.password />
+        <mvn.db.password/>
         <!-- security filters -->
         <credentials.file>security-filter.properties</credentials.file>
 
@@ -133,7 +132,8 @@
             <module>net.megx.was.webdav</module>
             <module>net.megx.ws.oauth.echo.example</module>
         -->
-    </modules>
+    <module>net.megx.twitter</module>
+  </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -256,9 +256,7 @@
                             </goals>
                             <configuration>
                                 <target name="copy-single-bundle">
-                                    <copy todir="${mvn.work.dir.plugin.path}"
-                                        file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-                                        overwrite="true" />
+                                    <copy todir="${mvn.work.dir.plugin.path}" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" overwrite="true"/>
                                 </target>
                             </configuration>
                         </execution>
@@ -341,7 +339,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -360,7 +358,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -379,7 +377,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -413,7 +411,7 @@
                                 <database>${mvn.db.name}</database>
                                 <host>${mvn.db.host}</host>
                                 <user>${mvn.db.user}</user>
-                                <password />
+                                <password/>
                                 <schemas>core,cv</schemas>
                             </configuration>
                         </plugin>
