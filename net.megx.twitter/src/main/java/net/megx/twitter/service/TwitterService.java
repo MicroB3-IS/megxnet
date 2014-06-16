@@ -33,6 +33,8 @@ public class TwitterService {
         } catch (IOException e) {
             log.error("Could not load twitter properties from Classpath at "
                     + propFilePath, e);
+        } catch (NullPointerException e) {
+            log.error("No file at " + propFilePath, e);
         }
 
         //in this case it is good to use dangerous auto-boxing and allow null, cause twitter4j api needs null then
