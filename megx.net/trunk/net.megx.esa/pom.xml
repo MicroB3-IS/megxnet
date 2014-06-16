@@ -18,34 +18,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <rules combine.children="append">
-                        <requireFilesExist
-                            combine.children="append">
-                            <message>file properties/twitter.properties
-                                must exist</message>
-                            <files>
-                                <file>properties/twitter.propertie</file>
-                            </files>
-                        </requireFilesExist>
-                    </rules>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>enforce-work-dir</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-
-
-            <plugin>
                 <groupId>ro.isdc.wro4j</groupId>
                 <artifactId>wro4j-maven-plugin</artifactId>
                 <configuration>

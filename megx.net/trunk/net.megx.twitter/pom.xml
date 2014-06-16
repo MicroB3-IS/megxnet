@@ -13,9 +13,39 @@
     <packaging>eclipse-plugin</packaging>
 
     <name>net.megx.twitter</name>
+    
+    <properties>
+    <!-- default in mvn project local properties dir -->
+    <twitter.properties.file>properties/twitter.properties</twitter.properties.file>
+    </properties>
 
     <build>
         <plugins>
+         <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <configuration>
+                    <rules combine.children="append">
+                        <requireFilesExist
+                            combine.children="append">
+                            <message>file properties/twitter.properties
+                                must exist</message>
+                            <files>
+                                <file>${twitter.properties.file}</file>
+                            </files>
+                        </requireFilesExist>
+                    </rules>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enforce-work-dir</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <!-- main configuration is in parent pom -->
                 <groupId>org.apache.maven.plugins</groupId>
