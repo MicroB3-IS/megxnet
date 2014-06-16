@@ -13,58 +13,58 @@ import org.chon.cms.core.ResTplConfiguredActivator;
 import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
-	protected Log log = LogFactory.getLog(getClass());
+    protected Log log = LogFactory.getLog(getClass());
 
-	@Override
-	protected void registerExtensions(JCRApplication app) {
-		log.debug("ESA Starting up...");
-		OSGIUtils.requestService(EarthSamplingAppService.class.getName(),
-				getBundleContext(),
-				new OSGIUtils.OnServiceAvailable<EarthSamplingAppService>() {
-					@Override
-					public void serviceAvailable(String name,
-							final EarthSamplingAppService service) {
-						log.debug("EarthSamplingApp service received...");
+    @Override
+    protected void registerExtensions(JCRApplication app) {
+        log.debug("ESA Starting up...");
+        OSGIUtils.requestService(EarthSamplingAppService.class.getName(),
+                getBundleContext(),
+                new OSGIUtils.OnServiceAvailable<EarthSamplingAppService>() {
+                    @Override
+                    public void serviceAvailable(String name,
+                            final EarthSamplingAppService service) {
+                        log.debug("EarthSamplingApp service received...");
 
-						log.debug("Requesting BroadcasterProxy service now...");
-						OSGIUtils.requestService(
-								BroadcasterProxy.class.getName(),
-								getBundleContext(),
-								new OSGIUtils.OnServiceAvailable<BroadcasterProxy>() {
+                        log.debug("Requesting BroadcasterProxy service now...");
+                        OSGIUtils.requestService(
+                                BroadcasterProxy.class.getName(),
+                                getBundleContext(),
+                                new OSGIUtils.OnServiceAvailable<BroadcasterProxy>() {
 
-									@Override
-									public void serviceAvailable(String name,
-											BroadcasterProxy broadcasterProxy) {
-										log.debug("BroadcasterProxy service received...");
+                                    @Override
+                                    public void serviceAvailable(String name,
+                                            BroadcasterProxy broadcasterProxy) {
+                                        log.debug("BroadcasterProxy service received...");
 
-										EarthSamplingAppAPI api = new EarthSamplingAppAPI(
-												service, broadcasterProxy);
+                                        EarthSamplingAppAPI api = new EarthSamplingAppAPI(
+                                                service, broadcasterProxy);
 
-										EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(
-												service);
+                                        EarthSamplingPhotoApi photoApi = new EarthSamplingPhotoApi(
+                                                service);
 
-										RegUtils.reg(getBundleContext(),
-												EarthSamplingAppAPI.class
-														.getName(), api, null);
+                                        RegUtils.reg(getBundleContext(),
+                                                EarthSamplingAppAPI.class
+                                                        .getName(), api, null);
 
-										RegUtils.reg(getBundleContext(),
-												EarthSamplingPhotoApi.class
-														.getName(), photoApi,
-												null);
+                                        RegUtils.reg(getBundleContext(),
+                                                EarthSamplingPhotoApi.class
+                                                        .getName(), photoApi,
+                                                null);
 
-										log.debug("Earth Sampling App API started.");
-										log.debug("Earth Sampling Photo API started.");
+                                        log.debug("Earth Sampling App API started.");
+                                        log.debug("Earth Sampling Photo API started.");
 
-									}
+                                    }
 
-								});
-					}
+                                });
+                    }
 
-				});
-	}
+                });
+    }
 
-	@Override
-	protected String getName() {
-		return "net.megx.esa";
-	}
+    @Override
+    protected String getName() {
+        return "net.megx.esa";
+    }
 }
