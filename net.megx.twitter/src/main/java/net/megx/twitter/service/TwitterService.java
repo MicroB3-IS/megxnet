@@ -16,7 +16,6 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterService {
 
-    private ConfigurationBuilder cb = null;
     private Twitter twitter = null;
 
     protected Log log = LogFactory.getLog(getClass());
@@ -37,18 +36,17 @@ public class TwitterService {
             log.error("No file at " + propFilePath, e);
         }
 
-        //in this case it is good to use dangerous auto-boxing and allow null, cause twitter4j api needs null then
-        Integer port;
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+
         try {
-            port = Integer.parseInt(props.getProperty("httpProxyPort"));
+            int port = Integer.parseInt(props.getProperty("httpProxyPort"));
+            cb.setHttpProxyPort(port);
         } catch (NumberFormatException e) {
-            log.error("Could not parse proxy port number", e);
-            //twitter4j needs null
-            port = null;
+            log.error("Proxy port not set: Could not parse proxy port number", e);
         }
 
-        this.cb = new ConfigurationBuilder();
-        this.cb.setDebugEnabled(true)
+        
+        cb.setDebugEnabled(true)
                 .setUseSSL(true)
                 .setOAuthConsumerKey(props.getProperty("appKey"))
                 .setOAuthConsumerSecret(props.getProperty("appSecret"))
@@ -58,8 +56,8 @@ public class TwitterService {
                 .setRestBaseURL(
                         props.getProperty("restBaseURL",
                                 "https://api.twitter.com/1.1/"))
-                .setHttpProxyHost(props.getProperty("httpProxyHost", null))
-                .setHttpProxyPort(port);
+                .setHttpProxyHost(props.getProperty("httpProxyHost", null));
+                
 
         TwitterFactory tf = new TwitterFactory(cb.build());
         this.twitter = tf.getInstance();
