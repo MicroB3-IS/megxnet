@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import net.megx.twitter.BaseTwitterService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,13 +16,13 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TwitterService {
+public class TwitterServiceImpl implements BaseTwitterService {
 
     private Twitter twitter = null;
 
     protected Log log = LogFactory.getLog(getClass());
 
-    public TwitterService() {
+    public TwitterServiceImpl() {
 
         String propFilePath = "properties/twitter.properties";
 
@@ -52,7 +54,6 @@ public class TwitterService {
         }
 
         cb.setDebugEnabled(true)
-                .setUseSSL(true)
                 .setOAuthConsumerKey(props.getProperty("appKey"))
                 .setOAuthConsumerSecret(props.getProperty("appSecret"))
                 .setOAuthAccessToken(props.getProperty("accessToken"))
