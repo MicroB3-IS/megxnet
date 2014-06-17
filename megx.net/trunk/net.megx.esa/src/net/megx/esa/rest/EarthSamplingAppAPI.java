@@ -42,7 +42,7 @@ import net.megx.model.esa.SampleLocationCount;
 import net.megx.model.esa.SampleObservation;
 import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
-import net.megx.twitter.service.TwitterService;
+import net.megx.twitter.BaseTwitterService;
 import net.megx.ui.table.json.TableDataResponse;
 
 import org.apache.commons.codec.binary.Base64;
@@ -74,7 +74,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private EarthSamplingAppService service;
     private BroadcasterProxy broadcasterProxy;
     private ImageResizer imageResizer;
-    private TwitterService twitterService;
+    private BaseTwitterService twitterService;
 
     private static final int THUMBNAIL_WIDTH = 240;
     private static final int THUMBNAIL_HEIGHT = 240;
@@ -83,11 +83,11 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
     public EarthSamplingAppAPI(EarthSamplingAppService service,
-            BroadcasterProxy broadcasterProxy) {
+            BroadcasterProxy broadcasterProxy, BaseTwitterService twitterService) {
         this.service = service;
         this.broadcasterProxy = broadcasterProxy;
         this.imageResizer = new ImageResizer();
-        this.twitterService = new TwitterService();
+        this.twitterService = twitterService;
         gson = new GsonBuilder()
                 .registerTypeAdapter(SamplePhoto.class,
                         new JsonDeserializer<SamplePhoto>() {
@@ -393,7 +393,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         String dateTaken = dateFormat.format(date);
 
         String[] greetings = { "Hurray", "Awesome", "Fantastic", "Super", ":)",
-                "Incredibale" };
+                "Incredible" };
 
         Random random = new Random();
         int idx = random.nextInt(greetings.length);
