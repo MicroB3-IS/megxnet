@@ -38,14 +38,19 @@ public class TwitterService {
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
-        try {
-            int port = Integer.parseInt(props.getProperty("httpProxyPort"));
-            cb.setHttpProxyPort(port);
-        } catch (NumberFormatException e) {
-            log.error("Proxy port not set: Could not parse proxy port number", e);
+        String proxyPort = props.getProperty("httpProxyPort");
+        if (proxyPort != null) {
+            try {
+
+                int port = Integer.parseInt(proxyPort);
+                cb.setHttpProxyPort(port);
+            } catch (NumberFormatException e) {
+                log.error(
+                        "Proxy port not set: Could not parse proxy port number",
+                        e);
+            }
         }
 
-        
         cb.setDebugEnabled(true)
                 .setUseSSL(true)
                 .setOAuthConsumerKey(props.getProperty("appKey"))
@@ -57,7 +62,6 @@ public class TwitterService {
                         props.getProperty("restBaseURL",
                                 "https://api.twitter.com/1.1/"))
                 .setHttpProxyHost(props.getProperty("httpProxyHost", null));
-                
 
         TwitterFactory tf = new TwitterFactory(cb.build());
         this.twitter = tf.getInstance();
