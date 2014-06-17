@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
-import org.osgi.framework.BundleContext;
+import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
 
@@ -16,31 +16,19 @@ public class Activator extends ResTplConfiguredActivator {
 	protected String getName() {
 		return "net.megx.twitter";
 	}
-
+	
 	@Override
-	public void start(BundleContext context) throws Exception {
-
-		log.debug("Twitter Services starting.");
-
-		try {
-
-			TwitterServiceImpl service = new TwitterServiceImpl();
-
-			context.registerService(BaseTwitterService.class.getName(),
-					service, null);
-
-			log.info("Twitter Services start success.");
-
-		} catch (Exception e) {
-			log.error(e);
-		}
-		super.start(context);
-	}
-
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-	}
+	protected void onAppAdded(org.osgi.framework.BundleContext context, JCRApplication app) {
+		super.onAppAdded(context, app);
+		
+		TwitterServiceImpl twitterService = new TwitterServiceImpl();
+		
+		log.debug((String.format(
+				"Registering service instance %s of class (%s) as (%s)",
+				twitterService.toString(), TwitterServiceImpl.class.getName(), BaseTwitterService.class.getName())));
+		
+		RegUtils.reg(getBundleContext(), BaseTwitterService.class.getName(), twitterService, null);
+	};
 
 	@Override
 	protected void registerExtensions(JCRApplication arg0) {
