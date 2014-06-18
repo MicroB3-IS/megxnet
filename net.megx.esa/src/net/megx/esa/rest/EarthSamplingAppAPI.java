@@ -181,6 +181,9 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
     }
 
+    
+    
+    //TODO why a post? and not a get? and sampleIDs as form param?
     @POST
     @Path("downloadSamples.csv")
     public Response downloadSamples(
@@ -314,6 +317,23 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
     }
 
+    @Path("observation")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public String storeSingleSample() {
+        //TODO method stub for my-osd web form see issue:
+        
+        //Sample sample = new Sample();
+        
+       // just do the same twiter, broadcasting and saving as in 
+        
+        // @Path("samples")      public String storeSamples(@FormParam("samples") String samplesJson,
+        
+        // below
+        
+        return "";
+    }
+    
     /**
      * Stores samples in the database. These samples are being transferred from
      * the user's device.
