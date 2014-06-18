@@ -6,9 +6,11 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -82,8 +84,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
     private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
-    public EarthSamplingAppAPI(EarthSamplingAppService service,
-            BroadcasterProxy broadcasterProxy, BaseTwitterService twitterService) {
+    public EarthSamplingAppAPI( EarthSamplingAppService service,
+            BroadcasterProxy broadcasterProxy, BaseTwitterService twitterService ) {
         this.service = service;
         this.broadcasterProxy = broadcasterProxy;
         this.imageResizer = new ImageResizer();
@@ -93,9 +95,9 @@ public class EarthSamplingAppAPI extends BaseRestService {
                         new JsonDeserializer<SamplePhoto>() {
 
                             @Override
-                            public SamplePhoto deserialize(JsonElement el,
+                            public SamplePhoto deserialize( JsonElement el,
                                     Type type,
-                                    JsonDeserializationContext context)
+                                    JsonDeserializationContext context )
                                     throws JsonParseException {
                                 SamplePhoto sp = new SamplePhoto();
                                 JsonObject jo = el.getAsJsonObject();
@@ -122,8 +124,9 @@ public class EarthSamplingAppAPI extends BaseRestService {
                 .registerTypeAdapter(Double.class,
                         new JsonSerializer<Double>() {
                             @Override
-                            public JsonElement serialize(Double num, Type type,
-                                    JsonSerializationContext context) {
+                            public JsonElement
+                                    serialize( Double num, Type type,
+                                            JsonSerializationContext context ) {
 
                                 if (num != null && !num.isNaN()) {
                                     return new JsonPrimitive(num.toString());
@@ -135,8 +138,9 @@ public class EarthSamplingAppAPI extends BaseRestService {
                 .registerTypeAdapter(Double.class,
                         new JsonSerializer<Double>() {
                             @Override
-                            public JsonElement serialize(Double num, Type type,
-                                    JsonSerializationContext context) {
+                            public JsonElement
+                                    serialize( Double num, Type type,
+                                            JsonSerializationContext context ) {
 
                                 if (num != null && !num.isNaN()) {
                                     return new JsonPrimitive(num.toString());
@@ -181,17 +185,15 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
     }
 
-    
-    
-    //TODO why a post? and not a get? and sampleIDs as form param?
+    // TODO why a post? and not a get? and sampleIDs as form param?
     @POST
     @Path("downloadSamples.csv")
     public Response downloadSamples(
-            @FormParam("sampleIds") final String sampleIds) {
+            @FormParam("sampleIds") final String sampleIds ) {
         ResponseBuilder rb = Response.ok().entity(new StreamingOutput() {
 
             @Override
-            public void write(OutputStream out) throws IOException,
+            public void write( OutputStream out ) throws IOException,
                     WebApplicationException {
 
                 try {
@@ -247,7 +249,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @GET
     @Path("sample")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getSample(@QueryParam("sampleId") String sampleId) {
+    public String getSample( @QueryParam("sampleId") String sampleId ) {
         Sample sample;
         try {
             sample = service.getSample(sampleId);
@@ -287,7 +289,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @Path("observations/{nbObservations}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getObservations(
-            @PathParam("nbObservations") int nbObservations) {
+            @PathParam("nbObservations") int nbObservations ) {
         List<SampleObservation> observations = new ArrayList<SampleObservation>();
         try {
             observations = service.getLatestObservations(nbObservations);
@@ -306,7 +308,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
      */
     @GET
     @Path("samples/{creator}")
-    public String getSamplesForCollector(@PathParam("creator") String creator) {
+    public String getSamplesForCollector( @PathParam("creator") String creator ) {
         List<Sample> samples;
         try {
             samples = service.getSamples(creator);
@@ -321,19 +323,68 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public String storeSingleSample() {
-        //TODO method stub for my-osd web form see issue:
-        
-        //Sample sample = new Sample();
-        
-       // just do the same twiter, broadcasting and saving as in 
-        
-        // @Path("samples")      public String storeSamples(@FormParam("samples") String samplesJson,
-        
+        // TODO method stub for my-osd web form see issue:
+
+        // Sample sample = new Sample();
+
+        // just do the same twiter, broadcasting and saving as in
+
+        // @Path("samples") public String storeSamples(@FormParam("samples")
+        // String samplesJson,
+
         // below
-        
+
         return "";
     }
-    
+
+    // just for spec, delete after migrating this to storeSingleSample
+    private Sample createSingleSample(
+            @FormParam("air_temperature") String airTemperature,
+            @FormParam("biome") String biome,
+            @FormParam("comment") String comment,
+            @FormParam("date_taken") String dateTaken,
+            @FormParam("depth") Double depth, @FormParam("fun") String fun,
+            @FormParam("gps_accuracy") String gpsAccuracy,
+
+            @FormParam("json") String json,
+            @FormParam("latitude") String latitude,
+            @FormParam("longitude") String longitude,
+            @FormParam("nitrate") String nitrate,
+            @FormParam("nitrite") String nitrite,
+            @FormParam("origin") String origin, @FormParam("ph") String ph,
+            @FormParam("phosphate") String phosphate,
+            @FormParam("salinity") String salinity,
+            @FormParam("sample_name") String sampleName,
+            @FormParam("secchi_depth") String secchiDepth,
+            @FormParam("submit") String submit,
+            @FormParam("time_taken") String timeTaken,
+            @FormParam("version") String version,
+            @FormParam("water_temperature") String waterTemperature,
+            @FormParam("weather_condition") String weatherCondition,
+            @FormParam("wind_speed") String windSpeed ) {
+
+        Sample sample = new Sample();
+
+        Date d = null;
+        try {
+            d = new SimpleDateFormat("yy-mm-dd hh:mm").parse(dateTaken + " "
+                    + timeTaken);
+            // d.se Calendar.HOUR_OF_DAY;
+            // d.setMinutes(33)
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            // this is a real !
+
+            e.printStackTrace();
+        }
+
+        sample.setTaken(d);
+        sample.setSamplingDepth(depth);
+
+        sample.setRawData(json);
+        return sample;
+    }
+
     /**
      * Stores samples in the database. These samples are being transferred from
      * the user's device.
@@ -347,8 +398,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @Path("samples")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String storeSamples(@FormParam("samples") String samplesJson,
-            @Context HttpServletRequest request) {
+    public String storeSamples( @FormParam("samples") String samplesJson,
+            @Context HttpServletRequest request ) {
         try {
             if (samplesJson == null) {
                 return toJSON(new Result<String>(true, "Samples not provided",
@@ -401,7 +452,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
     }
 
-    private void tweet(Double longitude, Double latitude, Date date) {
+    private void tweet( Double longitude, Double latitude, Date date ) {
         String link = "https://mb3is.megx.net/osd-app/samples";
 
         DecimalFormat fmt = new DecimalFormat("0.00");
@@ -424,7 +475,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         this.twitterService.geoTweet(tweet, latitude, longitude);
     }
 
-    private boolean validateSample(Sample sample) {
+    private boolean validateSample( Sample sample ) {
         if (sample.getLat() == null || sample.getLon() == null) {
             return false;
         }
@@ -446,7 +497,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
     @Path("photos")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @POST
-    public void storePhotos(@Context HttpServletRequest request)
+    public void storePhotos( @Context HttpServletRequest request )
             throws WebApplicationException, IOException {
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -568,7 +619,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main( String[] args ) {
         String sampleJSON = "[{\"id\":1,\"collectorId\":\"username\",\"projectId\":\"Micro B3\",\"userName\":\" \","
                 + "\"shipName\":\"\",\"nationality\":\"\","
                 + "\"photos\":[{\"uuid\":\"random-uuid-photo-identificator\",\"bytes\":\"base64-encoded-string-of-the-image-data-optional\"}]"
@@ -577,8 +628,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
                 new JsonDeserializer<SamplePhoto>() {
 
                     @Override
-                    public SamplePhoto deserialize(JsonElement el, Type type,
-                            JsonDeserializationContext context)
+                    public SamplePhoto deserialize( JsonElement el, Type type,
+                            JsonDeserializationContext context )
                             throws JsonParseException {
                         SamplePhoto sp = new SamplePhoto();
                         JsonObject jo = el.getAsJsonObject();
