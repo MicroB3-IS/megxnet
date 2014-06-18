@@ -1,4 +1,4 @@
-﻿{
+﻿{ 
     "title": "OSD Citizen Science Observation Input Form  (v0.1)",
     "description": "Please fill as many data as you have :).",
     "definitions": {
@@ -69,7 +69,13 @@
             "required": true,
             "default": "0.1"
         },
-        "date": {
+        "origin": {
+            "type": "string",
+            "readonly": true,
+            "required": true,
+            "default": "esa-web-form"
+        },
+        "date_taken": {
             "title": "Date",
             "description": "Date when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
             "format": "date",
@@ -77,11 +83,11 @@
             
             
         }, 
-        "time": {
+        "time_taken": {
             "title": "Time",
             "description": "Time when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
-            "format": "time",
-            "required": true
+            "format":"time",
+            "required":true
             
             
         },
@@ -103,9 +109,10 @@
         },
         "gps_accuracy": {
             "title" : "GPS Accuracy",
-            "Description": "",
+            "description": "",
             "type": "number",
-            "minimum": 0.1
+            "minimum": 0.1,
+            "required": true
         },
         
         "depth": {
@@ -122,30 +129,32 @@
         "sample_name" : {
             "title" : "Sample name",
             "description": "",
-            "type": "string"
+            "type": "string",
+            "required": true
         },
         "weather_condition" : {
             "title" : "Weather condition",
             "description": "",
-            "type": "string"
+            "type": "string",
+            "enum": ["Clear night","Sunny day","Partly cloudy","Sunny intervals","Dust","Mist","Fog","Cloudy","Overcast","Drizzle","Light rain","Heavy rain","Sleet shower","Sleet","Hail shower","Hail","Light snow","Heavy snow","Thunder shower","Thunder","Tropical storm","Haze","No data"]
         },
         "air_temperature": {
             "title": "Air Temperature",
-            "required": true,
+            "required": false,
             "type": "number",
             "description": "Temperature of the air  in degress Celsius"
              
         },
         "water_temperature": {
             "title": "Water temperature",
-            "required": true,
+            "required": false,
             "type": "number",
             "description": "Temperature of water in degress Celsius"
              
         },
         "wind_speed": {
             "title": "Wind Speed",
-            "required": true,
+            "required": false,
             "type": "number",
             "description": ""
              
@@ -167,13 +176,11 @@
             "description": "Nitrate concentration parameters in the water column",
             "title": "Nitrate",
             "type": "number",
-            "minimum": 0,
             "required": false
         },
         "nitrite": {
             "description": "Nitrite concentration parameters in the water column",
             "title": "Nitrite",
-            "minimum": 0,
             "required": false,
             "type": "number"
         },
@@ -181,18 +188,20 @@
             "description": "Alkalinity, acidity and pH of the water column",
             "title": "pH",
             "type": "number",
+            "required": false,
             "minimum": 1,
             "maximum": 12
         },
         "biome": {
-            "minLength": 1,
             "required": true,
             "type": "string",
+            
             "description": "Descriptor of the broad ecological context of a sample.",
-            "title": "Biome"
+            "title": "Biome",
+            "enum": [ "Coastal sea area","Estuary","Inland sea","Intertidal area","Lake","Open sea","River" ]
         },
         "secchi_depth": {
-            "required": true,
+            "required": false,
             "type": "number",
             "minimum": 0.1,
             "description": "Descriptor of the broad ecological context of a sample.",
@@ -204,8 +213,11 @@
             "description": "Report any deviation.",
             "title": "Comment"
         },
-        "test": {
-            "title": "Just for fun"
+        "fun": {
+            "title": "Just for fun",
+            "Description": "",
+            "type": "boolean",
+            "required": true
         }
        
        
