@@ -43,6 +43,22 @@ public class DBEarthSamplingAppService extends BaseMegdbService implements Earth
 		}, ESAMapper.class);
 	}
 	
+	
+	@Override
+	public String storeSingleSample(final Sample sample) throws Exception{
+		
+		return doInTransaction(new DBTask<ESAMapper, String>(){
+			@Override
+			public String execute(ESAMapper mapper) throws Exception{
+				String savedSample = "";
+					mapper.addSample(sample);
+					savedSample=sample.getId();
+					
+				return savedSample;
+			}
+		}, ESAMapper.class);
+	}
+	
 	@Override
 	public Map<String, String> getConfigurationForCitizen(final String category) throws Exception{
 		

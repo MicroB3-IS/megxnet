@@ -17,6 +17,7 @@ public interface EarthSamplingAppService {
 	public List<SampleLocationCount> getSamplesLocationAndCount() throws Exception;
 	
 	public List<String> storeSamples(List<Sample> samples) throws Exception;
+	public String storeSingleSample(final Sample sample) throws Exception;
 	public List<String> storePhotos(List<SamplePhoto> photos) throws Exception;
 	public List<SamplePhoto> getSamplePhotos(String sampleId) throws Exception;
 	public SamplePhoto getSamplePhoto(String imageId, boolean originalPhoto) throws Exception;
