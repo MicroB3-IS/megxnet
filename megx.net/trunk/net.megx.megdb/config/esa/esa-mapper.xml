@@ -136,7 +136,8 @@
 		<if test="secchiDepth != null">secchi_depth,</if>
 		<if test="appVersion != null">app_version,</if>
 		<if test="fun != null">fun,</if>
-		sample_size,geom,material
+		<if test="material != null">material,</if>
+		sample_size,geom
 	</sql>
 
 	<sql id="esa_sample_columns_no_geom">
@@ -325,9 +326,9 @@
 			<if test="secchiDepth != null">#{secchiDepth},</if>
 			<if test="appVersion != null">#{appVersion},</if>
 			<if test="fun != null">#{fun},</if>
+			<if test="material != null">#{material},</if>
 			#{sampleSize},
-			ST_PointFromText('POINT(${lon} ${lat})',4326),
-			#{material}
+			ST_PointFromText('POINT(${lon} ${lat})',4326)
 		</trim>
 	</insert>
 
