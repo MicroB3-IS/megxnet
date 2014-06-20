@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -319,123 +321,159 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
 
     }
-    
+
     @Path("observation")
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	public String storeSingleSample(@FormParam("air_temperature") Double airTemperature,
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response storeSingleSample(
+            @FormParam("air_temperature") String airTemperature,
             @FormParam("biome") String biome,
             @FormParam("comment") String comment,
             @FormParam("date_taken") String dateTaken,
             @FormParam("depth") Double depth, @FormParam("fun") Boolean fun,
-            @FormParam("gps_accuracy") Double gpsAccuracy,
+            @FormParam("gps_accuracy") String gpsAccuracy,
             @FormParam("json") String json,
             @FormParam("latitude") Double latitude,
             @FormParam("longitude") Double longitude,
-            @FormParam("nitrate") Double nitrate,
-            @FormParam("nitrite") Double nitrite,
-            @FormParam("origin") String origin,
-            @FormParam("ph") Double ph,
-            @FormParam("phosphate") Double phosphate,
-            @FormParam("salinity") Double salinity,
+            @FormParam("nitrate") String nitrate,
+            @FormParam("nitrite") String nitrite,
+            @FormParam("origin") String origin, @FormParam("ph") String ph,
+            @FormParam("phosphate") String phosphate,
+            @FormParam("salinity") String salinity,
             @FormParam("sample_name") String sampleName,
-            @FormParam("secchi_depth") Double secchiDepth,
+            @FormParam("secchi_depth") String secchiDepth,
             @FormParam("submit") String submit,
             @FormParam("time_taken") String timeTaken,
             @FormParam("version") String version,
-            @FormParam("water_temperature") Double waterTemperature,
+            @FormParam("water_temperature") String waterTemperature,
             @FormParam("weather_condition") String weatherCondition,
-            @FormParam("wind_speed") Double windSpeed,
-			@Context HttpServletRequest request) {
-		try {
-			if (airTemperature == null) {
-				return toJSON(new Result<String>(true, "Samples not provided",
-						"bad-request"));
-			}
-			
-			Sample sample = new Sample();
-			Sample sampleToSave = new Sample();
-			Map<String, String> errorMap = new HashMap<String, String>();
-			String savedSample = "";
-			List<Sample> samplesToBroadcast = new ArrayList<Sample>();
-			Map<String, Object> result = new HashMap<String, Object>();
-			String sampleCreator = "";
-			Date taken = null;
-			Date modified = Calendar.getInstance().getTime();
-			
-			if(request.getUserPrincipal() != null) {
-				sampleCreator = request.getUserPrincipal().getName();
-			}else {
-				sampleCreator = "anonymous";
-			}
-			
-	        try {
-	        	taken = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(dateTaken + " "
-	                    + timeTaken);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        String id = UUID.randomUUID().toString();
-			
-			sample.setId(id);
-			sample.setAirTemperature(airTemperature);
-			sample.setBiome(biome);
-			sample.setComment(comment);
-			sample.setSamplingDepth(depth);
-			sample.setFun(fun);
-			sample.setAccuracy(gpsAccuracy);
-			sample.setRawData(json);
-			sample.setLat(latitude);
-			sample.setLon(longitude);
-			sample.setNitrate(nitrate);
-			sample.setNitrite(nitrite);
-			sample.setPh(ph);
-			sample.setPhosphate(phosphate);
-			sample.setSalinity(salinity);
-			sample.setLabel(sampleName);
-			sample.setSecchiDepth(secchiDepth);
-			sample.setAppVersion(version);
-			sample.setWaterTemperature(waterTemperature);
-			sample.setWeatherCondition(weatherCondition);
-			sample.setWindSpeed(windSpeed);
-	        sample.setTaken(taken);
-	        sample.setModified(modified);//test
-	        sample.setCollectorId(sampleCreator);
-	        
-			if (validateSample(sample)) {
+            @FormParam("wind_speed") String windSpeed,
+            @Context HttpServletRequest request ) {
 
-				sample.setUserName(sampleCreator);
-				sampleToSave = sample;
-			} else {
-				if (sample.getLabel() != null) {
-					errorMap.put(sample.getId(), "Sample " + sample.getLabel()
-							+ " is missing latitude or longitude");
-				} else {
-					errorMap.put(sample.getId(), "Sample " + sample.getId()
-							+ " is missing latitude, longitude or label.");
-				}
-			}
-			savedSample = service.storeSingleSample(sampleToSave);
-			result.put("saved", savedSample);
-			result.put("errors", errorMap);
-			Result<Map<String, Object>> resultToReturn = new Result<Map<String, Object>>(
-					result);
+        if (version == null) {
+            return Response
+                    .status(400)
+                    .entity(toJSON(new Result<String>(true,
+                            "Samples not provided", "bad-request"))).build();
+        }
 
-			// Broadcast JSON string with saved samples to subscribed clients
-			// and tweet about it
-			if (savedSample == sampleToSave.getId()) {
-				samplesToBroadcast.add(sampleToSave);
-				this.tweet(sample.getLon(), sample.getLat(), sample.getTaken());
-			}
-			this.broadcasterProxy.broadcastMessage("/topic/notifications/esa",
-					toJSON(samplesToBroadcast));
+        Sample sample = new Sample();
+        Sample sampleToSave = new Sample();
+        Map<String, String> errorMap = new HashMap<String, String>();
+        String savedSample = "";
+        List<Sample> samplesToBroadcast = new ArrayList<Sample>();
+        Map<String, Object> result = new HashMap<String, Object>();
+        String sampleCreator = "";
+        Date taken = null;
+        Date modified = Calendar.getInstance().getTime();
 
-			return toJSON(resultToReturn);
-		} catch (Exception e) {
-			return toJSON(handleException(e));
-		}
-	}
+        if (request.getUserPrincipal() != null) {
+            sampleCreator = request.getUserPrincipal().getName();
+        } else {
+            sampleCreator = "anonymous";
+        }
+
+        try {
+            taken = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(dateTaken
+                    + " " + timeTaken);
+        } catch (ParseException e) {
+            log.error("could not parse date", e);
+        }
+
+        String id = UUID.randomUUID().toString();
+
+        sample.setId(id);
+        if (airTemperature != null && !airTemperature.equals("")) {
+            sample.setAccuracy(Double.parseDouble(airTemperature));
+        }
+        sample.setBiome(biome);
+        sample.setComment(comment);
+        sample.setSamplingDepth(depth);
+        sample.setFun(fun);
+        if (gpsAccuracy != null && !gpsAccuracy.equals("")) {
+            sample.setAccuracy(Double.parseDouble(gpsAccuracy));
+        }
+        sample.setRawData(json);
+        sample.setLat(latitude);
+        sample.setLon(longitude);
+        if (nitrate != null && !nitrate.equals("")) {
+            sample.setNitrate(Double.parseDouble(nitrate));
+        }
+        if (nitrite != null && !nitrite.equals("")) {
+            sample.setNitrate(Double.parseDouble(nitrite));
+        }
+        if (ph != null && !ph.equals("")) {
+            sample.setNitrate(Double.parseDouble(ph));
+        }
+        if (phosphate != null && !phosphate.equals("")) {
+            sample.setNitrate(Double.parseDouble(phosphate));
+        }
+        if (salinity != null && !salinity.equals("")) {
+            sample.setNitrate(Double.parseDouble(salinity));
+        }
+        sample.setLabel(sampleName);
+        if (secchiDepth != null && !secchiDepth.equals("")) {
+            sample.setNitrate(Double.parseDouble(secchiDepth));
+        }
+        sample.setAppVersion(version);
+        if (waterTemperature != null && !waterTemperature.equals("")) {
+            sample.setNitrate(Double.parseDouble(waterTemperature));
+        }
+        sample.setWeatherCondition(weatherCondition);
+        if (windSpeed != null && !windSpeed.equals("")) {
+            sample.setNitrate(Double.parseDouble(windSpeed));
+        }
+        sample.setTaken(taken);
+        sample.setModified(modified);// test
+        sample.setCollectorId(sampleCreator);
+
+        if (validateSample(sample)) {
+
+            sample.setUserName(sampleCreator);
+            sampleToSave = sample;
+        } else {
+            if (sample.getLabel() != null) {
+                errorMap.put(sample.getId(), "Sample " + sample.getLabel()
+                        + " is missing latitude or longitude");
+            } else {
+                errorMap.put(sample.getId(), "Sample " + sample.getId()
+                        + " is missing latitude, longitude or label.");
+            }
+        }
+        try {
+            savedSample = service.storeSingleSample(sampleToSave);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            log.error("Could not save sample", e);
+        }
+        result.put("saved", savedSample);
+        result.put("errors", errorMap);
+        Result<Map<String, Object>> resultToReturn = new Result<Map<String, Object>>(
+                result);
+
+        // Broadcast JSON string with saved samples to subscribed clients
+        // and tweet about it
+        if (savedSample == sampleToSave.getId()) {
+            samplesToBroadcast.add(sampleToSave);
+            this.tweet(sample.getLon(), sample.getLat(), sample.getTaken());
+        }
+        this.broadcasterProxy.broadcastMessage("/topic/notifications/esa",
+                toJSON(samplesToBroadcast));
+
+        String url = "";
+        URI uri = null;
+        try {
+            url = "http://" + request.getServerName() + ":"
+                    + request.getServerPort() + request.getContextPath()
+                    + "/osd-app/samples";
+            uri = new URI(url);
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            log.error("Wrong URI" + url, e);
+        }
+        return Response.seeOther(uri).build();
+
+    }
 
     /**
      * Stores samples in the database. These samples are being transferred from
