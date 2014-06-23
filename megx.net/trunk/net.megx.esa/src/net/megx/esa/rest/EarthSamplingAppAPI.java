@@ -362,7 +362,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
         Map<String, String> errorMap = new HashMap<String, String>();
         String savedSample = "";
         List<Sample> samplesToBroadcast = new ArrayList<Sample>();
-        Map<String, Object> result = new HashMap<String, Object>();
         String sampleCreator = "";
         Date taken = null;
         Date modified = Calendar.getInstance().getTime();
@@ -446,11 +445,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
             // TODO Auto-generated catch block
             log.error("Could not save sample", e);
         }
-        result.put("saved", savedSample);
-        result.put("errors", errorMap);
-        Result<Map<String, Object>> resultToReturn = new Result<Map<String, Object>>(
-                result);
-
+       
         // Broadcast JSON string with saved samples to subscribed clients
         // and tweet about it
         if (savedSample == sampleToSave.getId()) {
@@ -472,7 +467,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
             log.error("Wrong URI" + url, e);
         }
         return Response.seeOther(uri).build();
-
     }
 
     /**

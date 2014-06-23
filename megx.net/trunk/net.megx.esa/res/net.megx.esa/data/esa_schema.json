@@ -200,7 +200,7 @@
             "type": "string",
             "description": "Descriptor of the broad ecological context of a sample.",
             "title": "Biome",
-            "enum": [ "none","Coastal sea area","Estuary","Inland sea","Intertidal area","Lake","Open sea","River" ]
+            "enum": [ "Coastal sea area","Estuary","Inland sea","Intertidal area","Lake","Open sea","River" ]
         },
         "secchi_depth": {
             "required": false,
