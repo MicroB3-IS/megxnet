@@ -384,7 +384,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
         sample.setId(id);
         if (airTemperature != null && !airTemperature.equals("")) {
-            sample.setAccuracy(Double.parseDouble(airTemperature));
+            sample.setAirTemperature(Double.parseDouble(airTemperature));
         }
         sample.setBiome(biome);
         sample.setComment(comment);
@@ -400,28 +400,28 @@ public class EarthSamplingAppAPI extends BaseRestService {
             sample.setNitrate(Double.parseDouble(nitrate));
         }
         if (nitrite != null && !nitrite.equals("")) {
-            sample.setNitrate(Double.parseDouble(nitrite));
+            sample.setNitrite(Double.parseDouble(nitrite));
         }
         if (ph != null && !ph.equals("")) {
-            sample.setNitrate(Double.parseDouble(ph));
+            sample.setPh(Double.parseDouble(ph));
         }
         if (phosphate != null && !phosphate.equals("")) {
-            sample.setNitrate(Double.parseDouble(phosphate));
+            sample.setPhosphate(Double.parseDouble(phosphate));
         }
         if (salinity != null && !salinity.equals("")) {
-            sample.setNitrate(Double.parseDouble(salinity));
+            sample.setSalinity(Double.parseDouble(salinity));
         }
         sample.setLabel(sampleName);
         if (secchiDepth != null && !secchiDepth.equals("")) {
-            sample.setNitrate(Double.parseDouble(secchiDepth));
+            sample.setSecchiDepth(Double.parseDouble(secchiDepth));
         }
         sample.setAppVersion(version);
         if (waterTemperature != null && !waterTemperature.equals("")) {
-            sample.setNitrate(Double.parseDouble(waterTemperature));
+            sample.setWaterTemperature(Double.parseDouble(waterTemperature));
         }
         sample.setWeatherCondition(weatherCondition);
         if (windSpeed != null && !windSpeed.equals("")) {
-            sample.setNitrate(Double.parseDouble(windSpeed));
+            sample.setWindSpeed(Double.parseDouble(windSpeed));
         }
         sample.setTaken(taken);
         sample.setModified(modified);// test
