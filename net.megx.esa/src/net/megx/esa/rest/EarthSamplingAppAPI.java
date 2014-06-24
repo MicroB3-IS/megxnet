@@ -84,8 +84,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
     private static final int THUMBNAIL_WIDTH = 240;
     private static final int THUMBNAIL_HEIGHT = 240;
 
-    private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Username,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
-    private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
+    private static final String CSV_HEADER = "ID,Taken,Modified,Collector_ID,Label,Barcode,Project_ID,Ship_name,Boat_manufacturer,Boat_model,Boat_length,Homeport,Nationality,Elevation,Biome,Feature,Collection,Permit, Material, Secchi_depth, Sampling_depth,Water_depth,Sample_size,Weather_condition,Air_temperature,Water_temperature,Conductivity,Wind_speed,Salinity,Comment,Lat,Lon,Accuracy,Phosphate,Nitrate,Nitrite,pH,Number_photos";
+    private static final String CSV_ROW = "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s";
 
     public EarthSamplingAppAPI( EarthSamplingAppService service,
             BroadcasterProxy broadcasterProxy, BaseTwitterService twitterService ) {
@@ -210,7 +210,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
                                 sample.getTaken(), sample.getModified(),
                                 sample.getCollectorId(), sample.getLabel(),
                                 sample.getBarcode(), sample.getProjectId(),
-                                sample.getUserName(), sample.getShipName(),
+                                sample.getShipName(),
                                 sample.getBoatManufacturer(),
                                 sample.getBoatModel(), sample.getBoatLength(),
                                 sample.getHomeport(), sample.getNationality(),
