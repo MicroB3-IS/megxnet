@@ -56,18 +56,19 @@
   <div style="padding: 20px 20px 20px 20px">
     Please consider the following before you start filling out the form:
     <ul style="list-style-type: disc;">
+      <li>Please, have your filled-out OSD log-sheet at hand.</li>
       <li>Please provide all information in English.</li>
-      <li>Please enter all decimal values with <b>point</b>
+      <li>Please enter all decimal values using <b>point</b>
         notation.
       </li>
       <li>Geographic Coordinates are in <a
         href="http://en.wikipedia.org/wiki/Decimal_degrees"
         target="_blank"
       >decimal degrees.</a></li>
-      <li>We will ask data you already gave during site
-        registration. This is just to allow cross-checking.</li>
-      <li>The form is very similar to the log-sheet you have to
-        file out and sent with the samples.</li>
+      <li>We will ask you about data you already gave during site
+        registration. This allows data cross-checking.</li>
+      <li>The form is very similar to the OSD log-sheet you have to
+        fill out and sent with the samples.</li>
       <li>If you have questions about the data you are asked for.
         Please consult <a
         href="http://www.microb3.eu/sites/default/files/osd/OSD_Handbook_v2.0.pdf"
@@ -78,13 +79,6 @@
           breaks loose, you can email your questions to us. We are happy
           to help :)</a></li>
     </ul>
-
-
-    <p>
-      Please have a look and <a href="mailto:megx@mpi-bremen.de"> if
-        you have questions and feedback we would be more than happy if
-        you contact us.</a>
-    </p>
   </div>
 
   <div id="osd-sample-form"></div>
@@ -94,8 +88,8 @@
 
       var targetContainerId = "osd-sample-form";
 
-      var schemaLocation = "$ctx.siteUrl/net.megx.osd.registry/js/osd_schema.json";
-      var optionsLocation = "$ctx.siteUrl/net.megx.osd.registry/js/osd_options.json";
+      var schemaLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_schema.json";
+      var optionsLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_options.json";
 
       // add extra validation if you like
       function submitCheckListForm( form ) {
@@ -124,7 +118,7 @@
 
                 // now display something 
                 if ( form.isFormValid() ) {
-                  alert("test");
+                  
                   var json = form.getValue();
                   console.log("json=" + JSON.stringify(json));
                   var formJson = JSON.stringify(field.getValue());

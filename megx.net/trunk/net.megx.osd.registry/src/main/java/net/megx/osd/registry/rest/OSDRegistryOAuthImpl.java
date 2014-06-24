@@ -13,6 +13,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.megx.megdb.osdregistry.OSDRegistryService;
 import net.megx.model.osdregistry.OSDParticipant;
 import net.megx.osd.registry.rest.util.OSDParticipantDeserializer;
@@ -26,7 +29,8 @@ public class OSDRegistryOAuthImpl implements OSDRegistryAPI {
 
     private OSDRegistryService osdRegistryService;
     private Gson gson = new Gson();
-
+    private Log log = LogFactory.getLog(getClass());
+    
     public OSDRegistryOAuthImpl(OSDRegistryService osdRegistryService) {
         this.osdRegistryService = osdRegistryService;
         this.gson = new GsonBuilder()
@@ -131,7 +135,7 @@ public class OSDRegistryOAuthImpl implements OSDRegistryAPI {
     @Override
     @Path("getParticipant")
     @GET
-    // TODO chage queryparam to pathparam
+    // TODO change queryparam to pathparam
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String getParticipant(@QueryParam("id") String id) {
@@ -155,6 +159,7 @@ public class OSDRegistryOAuthImpl implements OSDRegistryAPI {
             osdRegistryService.saveSample(sample);
             return Response.status(201).entity("sample saved").build();
         } catch (Exception e) {
+            log.error("Could not save sample");
             throw new WebApplicationException(500);
         }
     }
