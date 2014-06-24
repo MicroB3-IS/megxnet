@@ -67,7 +67,7 @@
             "type": "string",
             "readonly": true,
             "required": true,
-            "default": "0.10"
+            "default": "3"
         },
         "contact": {
             "type": "object",
