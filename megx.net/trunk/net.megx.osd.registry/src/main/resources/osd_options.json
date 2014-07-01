@@ -55,15 +55,10 @@
             "fieldClass": "mx-site",
             "fields": {
                 "site_id": {
-                    "hideInitValidationError": true,
                     "validate": true
                 },
                 "site_name": {
-                    "hideInitValidationError": true,
                     "helper": "Example: Poseidon-E1-M3A Time Series Station"
-                },
-                "longitude": {
-                    "fieldClass": "mx-site"
                 },
                 "objective": {
                     "type": "textarea"
@@ -74,6 +69,10 @@
             "collapsed": true,
             "fieldClass": "mx-sample",
             "fields": {
+                "protocol_label": {
+                    "size" : 2,
+                    "type": "select"
+                },
                 "description": {
                     "fieldClass": "mx-sample",
                     "type": "textarea"
@@ -87,7 +86,7 @@
                 },
                 "filters": {
                     "toolbarSticky": true,
-                    "collapsed": true,
+                    "collapsed": false,
                     "hideInitValidationError": true,
                     "itemLabel": "Filter",
                     "fields": {
