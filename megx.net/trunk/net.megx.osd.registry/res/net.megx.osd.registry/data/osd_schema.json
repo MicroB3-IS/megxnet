@@ -67,7 +67,7 @@
             "type": "string",
             "readonly": true,
             "required": true,
-            "default": "4"
+            "default": "5"
         },
         "contact": {
             "type": "object",
@@ -208,15 +208,23 @@
                 },
                 "date": {
                     "title": "Date",
-                    "description": "Date when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                    "description": "Date when the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
                     "format": "date",
                     "required": true
                     
                     
                 }, 
-                "time": {
-                    "title": "Time",
-                    "description": "Time when the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                "start_time": {
+                    "title": "Time of start of sampling",
+                    "description": "Local time when the sampling event started. Each CTD cast, net tow, or bucket collection is a distinct event.",
+                    "format": "time",
+                    "required": true
+                    
+                    
+                },
+                "end_time": {
+                    "title": "Time of end of sampling",
+                    "description": "Local time when the sampling event ended. Each CTD cast, net tow, or bucket collection is a distinct event.",
                     "format": "time",
                     "required": true
                     
