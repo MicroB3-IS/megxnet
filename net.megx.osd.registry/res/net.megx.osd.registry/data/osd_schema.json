@@ -48,6 +48,18 @@
             "required": true,
             "type": "number"
         },
+        "latitude": {
+             "type": "string",
+             "required": "string",
+             "pattern": "^[+-]?[0-9.]+$",
+             "title": "Latitude"
+         },
+         "longitude": {
+              "required": true,
+              "type": "string",
+              "pattern": "^[+-]?[0-9.]+$",
+              "title": "Longitude"
+         },
         "measurement": {
             "title": "Measurement",
             "type": "object",
@@ -67,7 +79,7 @@
             "type": "string",
             "readonly": true,
             "required": true,
-            "default": "5"
+            "default": "6"
         },
         "contact": {
             "type": "object",
@@ -166,19 +178,35 @@
                     "description": "Refers to the site/station where data/sample collection is performed.",
                     "title": "Site Name"
                 },
-                "latitude": {
-                    "type": "string",
-                    "required": "string",
-                    "pattern": "^-?[0-9.]+$",
-                    "description": "Latitude (N/S) in decimal degrees of the location where the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
-                    "title": "Latitude"
+                "start_coordinates": {
+                   "title": "Start: Geographic Coordinates",
+                   "type": "object",
+                   "properties" : {
+                       "latitude" : {
+                          "$ref": "#/definitions/latitude",
+                          "description": "Latitude (N/S) in decimal degrees of the location where the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       },
+                       "longitude": {
+                           "$ref": "#/definitions/longitude",
+                           "description": "Longitude (W/E) in decimal degrees of the location where the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       }
+                   }
                 },
-                "longitude": {
-                    "required": true,
-                    "type": "number",
-                    "description": "Longitude (W/E) in decimal degrees of the location where the sampling event started and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
-                    "title": "Longitude"
+                "stop_coordinates": {
+                   "title": "Stop: Geographic Coordinates",
+                   "type": "object",
+                   "properties" : {
+                       "latitude" : {
+                           "description": "Latitude (N/S) in decimal degrees of the location where the sampling event ended and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                          "$ref": "#/definitions/latitude"
+                       },
+                       "longitude": {
+                           "$ref": "#/definitions/longitude",
+                           "description": "Longitude (W/E) in decimal degrees of the location where the sampling event ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       }
+                   }
                 },
+                
                 "marine_region": {
                     "pattern": "^[^;\\]]*$",
                     "required": false,
