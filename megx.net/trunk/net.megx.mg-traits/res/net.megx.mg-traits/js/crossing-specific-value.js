@@ -13,7 +13,6 @@
             otherAxis = chart[this.isXAxis ? 'yAxis' : 'xAxis'][0];
 			this.offset = otherAxis.toPixels(this.options.crossing, true);
             chart.axisOffset[this.side] = 10;
-            console.log(this.offset);
         }
         proceed.call(this);
         
