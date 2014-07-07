@@ -1,151 +1,137 @@
 <link
-  href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css"
-  rel="stylesheet" type="text/css"
->
+	href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css"
+	rel="stylesheet" type="text/css">
 <link
-  href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css"
-  rel="stylesheet" type="text/css"
->
-
-<!-- TODO: maybe delete -->
-<script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"
-></script>
-
-
-<script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-1.10.2.js"
-></script>
-<script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.tmpl-1.0.0pre.js"
-></script>
-<!-- jQuery UI Support -->
-<script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-ui-1.10.4.custom.min.js"
-></script>
-<!-- Alpaca -->
-<script type="text/javascript"
-  src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.js"
-></script>
-
-<script type="text/javascript"
-  src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"
-></script>
-
+	href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css"
+	rel="stylesheet" type="text/css">
 <style id="jsbin-css">
 .mx-env-param {
-  background-color: green
+	background-color: green
 }
 
 .mx-site {
-  background-color: RoyalBlue
+	background-color: RoyalBlue
 }
 
 .mx-sample {
-  background-color: orange
+	background-color: orange
 }
 </style>
-</head>
-<body>
 
-  <h1>OSD Sample and Metadata Registration</h1>
-  <div style="padding: 20px 20px 20px 20px">
-    <p>On this page you will be able to register your OSD summer
-      solstice 2014 sample(s) from June 20, 2014 on.</p>
-  </div>
-  <div style="padding: 20px 20px 20px 20px">
-    Please consider the following before you start filling out the form:
-    <ul style="list-style-type: disc;">
-      <li>Please, have your filled-out OSD log-sheet at hand.</li>
-      <li>Please provide all information in English.</li>
-      <li>Please enter all decimal values using <b>point</b>
-        notation.
-      </li>
-      <li>Almost each field has a descriptive text below. There you also find the respective unit of measurement we require (same as in OSD Handbook).</li>
-      <li>Geographic Coordinates are in <a
-        href="http://en.wikipedia.org/wiki/Decimal_degrees"
-        target="_blank"
-      >decimal degrees.</a></li>
-      <li>We will ask you about data you already gave during site
-        registration. This allows data cross-checking.</li>
-      <li>The form is very similar to the OSD log-sheet you have to
-        fill out and sent with the samples.</li>
-      <li>If you have questions about the data you are asked for.
-        Please consult <a
-        href="http://www.microb3.eu/sites/default/files/osd/OSD_Handbook_v2.0.pdf"
-        target="_blank"
-      >Ocean Sampling Day Handbook 2.0</a>
-      </li>
-      <li>Please, <a href="mailto:megx@mpi-bremen.de">if all
-          breaks loose, you can email your questions to us. We are happy
-          to help :)</a></li>
-    </ul>
-  </div>
+<!-- TODO: maybe delete -->
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"></script>
 
-  <div id="osd-sample-form"></div>
+<!-- <script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-1.10.2.js"
+></script> -->
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.tmpl-1.0.0pre.js"></script>
+<!-- jQuery UI Support -->
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.osd.registry/js/jquery-ui-1.10.4.custom.min.js"></script>
+<!-- Alpaca -->
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.js"></script>
 
-  <script>
-      /********   CONFIGURATION  ********/
+<script type="text/javascript"
+	src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
 
-      var targetContainerId = "osd-sample-form";
+<h1>OSD Sample and Metadata Registration</h1>
+<div style="padding: 20px 20px 20px 20px">
+	<p>On this page you will be able to register your OSD summer
+		solstice 2014 sample(s) from June 20, 2014 on.</p>
+</div>
+<div style="padding: 20px 20px 20px 20px">
+	Please consider the following before you start filling out the form:
+	<ul style="list-style-type: disc;">
+		<li>Please, have your filled-out OSD log-sheet at hand.</li>
+		<li>Please provide all information in English.</li>
+		<li>Please enter all decimal values using <b>point</b> notation.
+		</li>
+		<li>Almost each field has a descriptive text below. There you
+			also find the respective unit of measurement we require (same as in
+			OSD Handbook).</li>
+		<li>Geographic Coordinates are in <a
+			href="http://en.wikipedia.org/wiki/Decimal_degrees" target="_blank">decimal
+				degrees.</a></li>
+		<li>We will ask you about data you already gave during site
+			registration. This allows data cross-checking.</li>
+		<li>The form is very similar to the OSD log-sheet you have to
+			fill out and sent with the samples.</li>
+		<li>If you have questions about the data you are asked for.
+			Please consult <a
+			href="http://www.microb3.eu/sites/default/files/osd/OSD_Handbook_v2.0.pdf"
+			target="_blank">Ocean Sampling Day Handbook 2.0</a>
+		</li>
+		<li>Please, <a href="mailto:megx@mpi-bremen.de">if all breaks
+				loose, you can email your questions to us. We are happy to help :)</a></li>
+	</ul>
+</div>
 
-      var schemaLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_schema.json";
-      var optionsLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_options.json";
+<div id="osd-sample-form"></div>
 
-      // add extra validation if you like
-      function submitCheckListForm( form ) {
-        return true;
-      }
+<script>
+	/********   CONFIGURATION  ********/
 
-      /********   END CONFIGURATION  *****/
-      var inputBundle = {
-        "optionsSource" : optionsLocation,
-        "schemaSource" : schemaLocation,
-        //create means no inital validation
-        "view" : "VIEW_JQUERYUI_CREATE",
-        "isDynamicCreation" : true,
-        "postRender" : function( field ) {
-          var form = field.form;
+	var targetContainerId = "osd-sample-form";
 
-          if ( form ) {
-            form.refreshValidationState(false);
+	var schemaLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_schema.json";
+	var optionsLocation = "$ctx.siteUrl/net.megx.osd.registry/data/osd_options.json";
 
-            form
-              .registerSubmitHandler(function( e, form ) {
-                // validate the entire form (top control + all children)
-                form.validate(true);
-                // draw the validation state (top control + all children)   
-                form.refreshValidationState(true);
+	// add extra validation if you like
+	function submitCheckListForm(form) {
+		return true;
+	}
 
-                // now display something 
-                if ( form.isFormValid() ) {
-                  
-                  var json = form.getValue();
-                  console.log("json=" + JSON.stringify(json));
-                  var formJson = JSON.stringify(field.getValue());
-                  console.log("json=" + formJson);
-                  $('<input/>').attr('name', 'json').attr('value', formJson)
-                    .appendTo('#osd-form');
-                } else {
-                  alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
-                }
-                e.stopPropagation();
-                return true;
-              });
-          }
+	/********   END CONFIGURATION  *****/
+	var inputBundle = {
+		"optionsSource" : optionsLocation,
+		"schemaSource" : schemaLocation,
+		//create means no inital validation
+		"view" : "VIEW_JQUERYUI_CREATE",
+		"isDynamicCreation" : true,
+		"postRender" : function(field) {
+			var form = field.form;
 
-        }
-      };
+			if (form) {
+				form.refreshValidationState(false);
 
-      function renderForm() {
-        $("#" + targetContainerId).alpaca(inputBundle);
-      }
+				form
+						.registerSubmitHandler(function(e, form) {
+							// validate the entire form (top control + all children)
+							form.validate(true);
+							// draw the validation state (top control + all children)   
+							form.refreshValidationState(true);
 
-      $(document).ready(function() {
-        Alpaca.defaultUI = "jquery-ui";
-        Alpaca.logLevel = Alpaca.DEBUG;
-        renderForm();
-      });
-    </script>
-</body>
-</html>
+							// now display something 
+							if (form.isFormValid()) {
+
+								var json = form.getValue();
+								console.log("json=" + JSON.stringify(json));
+								var formJson = JSON.stringify(field.getValue());
+								console.log("json=" + formJson);
+								$('<input/>').attr('name', 'json').attr(
+										'value', formJson)
+										.appendTo('#osd-form');
+							} else {
+								alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
+							}
+							e.stopPropagation();
+							return true;
+						});
+			}
+
+		}
+	};
+
+	function renderForm() {
+		$("#" + targetContainerId).alpaca(inputBundle);
+	}
+
+	$(document).ready(function() {
+		Alpaca.defaultUI = "jquery-ui";
+		Alpaca.logLevel = Alpaca.DEBUG;
+		renderForm();
+	});
+</script>
