@@ -14,4 +14,13 @@
   <group name='sampleView.min'>
     <js>/res/net.megx.esa/js/sampleView.js</js>
   </group>
+   <group name='esa.min'>
+    <js>/res/net.megx.esa/js/esa.js</js>
+  </group>
+  <group name='samplesTable.min'>
+    <js>/res/net.megx.esa/js/samplesTable.js</js>
+  </group>
+  <group name='sampledOceans.min'>
+    <js>/res/net.megx.esa/js/sampledOceans.js</js>
+  </group>
 </groups>
