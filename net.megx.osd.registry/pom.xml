@@ -20,6 +20,18 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <configuration>
+                    <minimize>true</minimize>
+                    <cssDestinationFolder>res/net.megx.osd.registry/stylesheets</cssDestinationFolder>
+                    <jsDestinationFolder>res/net.megx.osd.registry/js</jsDestinationFolder>
+                    <contextFolder>${basedir}</contextFolder>
+                    <wroFile>wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
