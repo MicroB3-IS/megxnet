@@ -133,6 +133,7 @@
             <module>net.megx.ws.oauth.echo.example</module>
         -->
     <module>net.megx.twitter</module>
+    <module>net.megx.mailer</module>
   </modules>
 
     <dependencyManagement>
