@@ -424,7 +424,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         }
         sample.setTaken(taken);
         sample.setModified(modified);// test
-        sample.setCollectorId(sampleCreator);
+        sample.setCollectorId("anonymous");
 
         if (validateSample(sample)) {
 
