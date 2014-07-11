@@ -1,0 +1,69 @@
+
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
+<script type="text/javascript"
+  src="$ctx.siteUrl/net.megx.osd.registry/js/alpaca-full-1.1.3.min.js"
+></script>
+
+
+<script>
+      /********   CONFIGURATION  ********/
+
+      var targetContainerId = "contactForm";
+
+      var schemaLocation = "$ctx.siteUrl/net.megx.contact/data/contact-schema.json";
+      var optionsLocation = "$ctx.siteUrl/net.megx.contact/data/contact-options.json";
+//optionsLocation.renzo.test = 'hallo';
+      // add extra validation if you like
+      function submitCheckListForm( form ) {
+        return true;
+      }
+
+      /********   END CONFIGURATION  *****/
+      var inputBundle = {
+        "optionsSource" : optionsLocation,
+        "schemaSource" : schemaLocation,
+        //create means no inital validation
+        "view" : "VIEW_JQUERYUI_CREATE",
+        "isDynamicCreation" : true,
+        "postRender" : function( field ) {
+          var form = field.form;
+
+          if ( form ) {
+            form.refreshValidationState(false);
+
+            form
+              .registerSubmitHandler(function( e, form ) {
+                // validate the entire form (top control + all children)
+                form.validate(true);
+                // draw the validation state (top control + all children)   
+                form.refreshValidationState(true);
+
+                // now display something 
+                if ( form.isFormValid() ) {
+                  var json = form.getValue();
+                  var formJson = JSON.stringify(field.getValue());
+                  $('<input/>').attr('name', 'json').attr('value', formJson)
+                    .appendTo('#contact-form');
+                } else {
+                  alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
+                }
+                e.stopPropagation();
+                return true;
+              });
+          }
+
+        }
+      };
+
+      function renderForm() {
+        $("#" + targetContainerId).alpaca(inputBundle);
+      }
+
+      $(document).ready(function() {
+        Alpaca.defaultUI = "jquery-ui";
+        Alpaca.logLevel = Alpaca.ERROR;
+        renderForm();
+      });
+    </script>
+  <div id="contactForm"></div>
+  <h1>b</h1>
