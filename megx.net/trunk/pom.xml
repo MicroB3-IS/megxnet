@@ -134,6 +134,7 @@
         -->
     <module>net.megx.twitter</module>
     <module>net.megx.mailer</module>
+    <module>net.megx.contact</module>
   </modules>
 
     <dependencyManagement>

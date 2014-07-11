@@ -79,6 +79,9 @@
 		<typeAlias  type="net.megx.model.blast.BlastHitsNeighbours"  alias="BlastHitsNeighbours"/>
 		<typeAlias  type="net.megx.model.blast.BlastHitsDb"  alias="BlastHitsDb"/>
 		<typeAlias type="net.megx.model.blast.MatchingSequences" alias="MatchingSequences" />
+		
+		<!-- Contact -->
+		<typeAlias type="net.megx.model.contact.Contact" alias="Contact"/>
 	</typeAliases>
 
 	<environments default="main">
@@ -132,6 +135,9 @@
 		
 		<!-- Blast mapper -->
 		<mapper resource="blast/blast-mapper.xml"/>
+		
+		<!-- Contact mapper -->
+		<mapper resource="contact/contact-mapper.xml"/>
 	</mappers>
 	
 </configuration>
