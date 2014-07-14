@@ -52,6 +52,7 @@ www={type:'sys.public'}
 		samples={type:'html', template:'net.megx.mg-traits/metagenomicSamples.html', title:'Simple Traits'}
 		sampleDetails={type:'html', template:'net.megx.mg-traits/metagenomeDetails.html', title:'Metagenome description'}
 		traits-summary={type:'html', template:'net.megx.mg-traits/traitsScatterplot.html', title:'Traits Summary'}
+	contact={type:'html',template:'net.megx.contact/contact.html', title:'Contact'}
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}
@@ -83,7 +84,7 @@ usr={type:'sys.usr'}
 					sites={type: 'menu.item.local', title: 'Sampling Sites', link: 'sites', order: 5}
 				footer={type: 'menu.item.local', title: 'Footer Menu', link: '#' }
 					home={type: 'menu.item.local', title: 'home', link: ''}
-					contact={type: 'menu.item.local', title: 'contact', link: 'portal/contact.html'}
+					contact={type: 'menu.item.local', title: 'contact', link: 'contact'}
 					disclaimer={type: 'menu.item.local', title: 'disclaimer', link: 'portal/disclaimer.html'}
 					copyright={type: 'menu.item.local', title: 'copyright', link: 'portal/copyright.html'}
 

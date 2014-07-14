@@ -1,3 +1,31 @@
 {
-    
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "contact-form",
+            "method": "post",
+            "action": "http://localhost:8080/megx.net/ws/v1/contact/v1.0.0/mail"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {} 
+        }
+    },
+    "fields": {
+    	"name": {
+         	"size": 20,
+            "helper": "Please enter your name."
+        },
+        "email": {
+        	"helper": "Please enter your e-mail."
+        },
+        "comment": {
+        	"type": "textarea",
+            "rows": 5,
+            "cols": 40,
+            "helper": "Please enter your feedback."
+        }
+    }
 }
