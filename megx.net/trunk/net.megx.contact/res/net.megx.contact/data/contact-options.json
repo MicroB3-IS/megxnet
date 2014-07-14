@@ -6,7 +6,7 @@
         "attributes": {
             "id": "contact-form",
             "method": "post",
-            "action": "http://localhost:8080/megx.net/ws/v1/contact/v1.0.0/mail"
+            "action": "${mvn.site.url}/ws/v1/contact/v1.0.0/store-contact"
         },
         "buttons": {
             "submit": {},
