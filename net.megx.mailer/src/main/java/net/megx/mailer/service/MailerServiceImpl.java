@@ -1,64 +1,56 @@
 package net.megx.mailer.service;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import net.megx.mailer.BaseMailerService;
+
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import net.megx.mailer.BaseMailerService;
+
+import org.json.JSONObject;
+
 public class MailerServiceImpl implements BaseMailerService {
-	
-	
-	
-	
-	//Initial version still need to work on this
-	final String username = "";
-	final String password = "";
 
-	Properties props = new Properties();
-	Session session = null;
-	
-	public MailerServiceImpl(){
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-		 session = Session.getInstance(props,
-				  new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				  });
-		
-	}
-	
-	
+
 	@Override
-	public void sendMail() {
-		try {
-			 
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(""));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(""));
-			message.setSubject("Testing Subject");
-			message.setText(
-				"No spam to my email, please!");
- 
-			Transport.send(message);
- 
-			System.out.println("Done");
- 
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-		
-	}
+	public void sendMail(JSONObject config, String email, String name, String comment) throws Exception {
 
-	public static void main(String[] args) {
-		
-		MailerServiceImpl m = new MailerServiceImpl();
-		m.sendMail();
- 
-		
+		final JSONObject mailConfig = config.optJSONObject("mail");
+
+		if (mailConfig == null) {
+			throw new Exception("Mail not configured.");
+		}
+		JSONObject options = mailConfig.optJSONObject("options");
+		if (options == null) {
+			throw new Exception("Mail options not configured.");
+		}
+
+		String[] names = JSONObject.getNames(options);
+		Properties properties = new Properties();
+		for (String key : names) {
+			properties.put(key, options.optString(key));
+		}
+
+		Session session = Session.getInstance(properties, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(mailConfig.optString("user"),
+						mailConfig.optString("password"));
+			}
+		});
+
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(mailConfig.optString("address"), email));
+		message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse(mailConfig.optString("user")));
+		message.setSubject("Users Feedback");
+		message.setText(comment);
+
+		Transport.send(message);
+
 	}
 }

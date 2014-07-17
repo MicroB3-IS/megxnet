@@ -15,6 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONObject;
+
+import net.megx.mailer.BaseMailerService;
 import net.megx.megdb.contact.ContactService;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.model.contact.Contact;
@@ -24,9 +27,13 @@ import net.megx.ws.core.BaseRestService;
 public class ContactAPI extends BaseRestService {
 
 	private ContactService service;
+	private BaseMailerService mailerService;
+	private JSONObject config;
 
-	public ContactAPI(ContactService service) {
+	public ContactAPI(ContactService service, BaseMailerService mailerService, JSONObject config) {
 		this.service = service;
+		this.mailerService = mailerService;
+		this.config = config;
 
 	}
 
@@ -38,7 +45,6 @@ public class ContactAPI extends BaseRestService {
 			@FormParam("comment") String comment,
 			@Context HttpServletRequest request) {
 
-		String saveContact;
 		Date date = Calendar.getInstance().getTime();
 		Contact contact = new Contact();
 		contact.setEmail(email);
@@ -49,7 +55,8 @@ public class ContactAPI extends BaseRestService {
 		URI uri = null;
 
 		try {
-			saveContact = service.storeContact(contact);
+			service.storeContact(contact);
+			mailerService.sendMail(config, email, name, comment);
 			url = request.getScheme() + "://" + request.getServerName()
 					+ ":" + request.getServerPort()
 					+ request.getContextPath();

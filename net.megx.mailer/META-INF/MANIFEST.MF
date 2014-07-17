@@ -15,3 +15,4 @@ Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",
 Bundle-ClassPath: .,
  lib/java-mail-1.4.4.jar
 Bundle-Vendor: megx.net
+Export-Package: net.megx.mailer
