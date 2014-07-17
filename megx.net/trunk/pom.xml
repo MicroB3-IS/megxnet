@@ -66,6 +66,7 @@
         <mvn.db.password/>
         <!-- security filters -->
         <credentials.file>security-filter.properties</credentials.file>
+        <contact.credentials.file>contact.properties</contact.credentials.file>
 
     </properties>
 

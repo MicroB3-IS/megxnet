@@ -37,5 +37,4 @@ public class Activator extends ResTplConfiguredActivator {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
