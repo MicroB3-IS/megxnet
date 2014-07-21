@@ -1,11 +1,11 @@
-ContactWidget = function(cfg) {
+MegxFormWidget = function(cfg) {
 	
 	Alpaca.defaultUI = "jquery-ui";
     Alpaca.logLevel = Alpaca.ERROR;
     this.renderForm(cfg);
     
 }
-ContactWidget.prototype = {
+MegxFormWidget.prototype = {
 
     renderForm : function (cfg) {
     	
@@ -32,8 +32,8 @@ ContactWidget.prototype = {
                   if ( form.isFormValid() ) {
                     var json = form.getValue();
                     var formJson = JSON.stringify(field.getValue());
-                    $('<input/>').attr('name', 'json').attr('value', formJson)
-                      .appendTo('#contact-form');
+                   // $('<input/>').attr('name', 'json').attr('value', formJson)
+                   // .appendTo('#contact-form');
                   } else {
                     alert("There are problems with the form.  Please make necessary corrections as (hopefully) indicated.");
                   }
