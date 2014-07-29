@@ -1,38 +1,46 @@
 package net.megx.pubmap;
 
-import net.megx.pubmap.rest.PubMapRest;
+import net.megx.megdb.pubmap.PubMapService;
+import net.megx.pubmap.rest.PubmapAPI;
+import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRApplication;
 import org.chon.cms.core.ResTplConfiguredActivator;
-import org.osgi.framework.BundleContext;
+import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
 	
 	private static final Log log = LogFactory.getLog(Activator.class);
 	
-	@Override
-	protected void registerExtensions(JCRApplication app) {
-		log.debug("Start PubMap bundle");
-		BundleContext bundleContext = getBundleContext();
-		
-		registerRestServices(bundleContext);
-		//trackMVCService();
-		
-		PubMapExtension pubMapExt = new PubMapExtension(bundleContext);
-		log.debug("Registering pubmap extension.");
-		app.regExtension("pubmap", pubMapExt);
-	}
+    @Override
+    protected void registerExtensions(JCRApplication app) {
+        log.debug("MGTraitsAPI starting up");
+        OSGIUtils.requestService(PubMapService.class.getName(), 
+				getBundleContext(), 
+				new OSGIUtils.OnServiceAvailable<PubMapService>() {
 
-	private void registerRestServices(BundleContext bundleContext) {
-		bundleContext.registerService(PubMapRest.class.getName(), new PubMapRest(bundleContext, getConfig()), null);
-	}
+			@Override
+			public void serviceAvailable(String name,
+					PubMapService service) {
+				log.debug("MGTraitsService received...");
+				PubmapAPI api = new PubmapAPI(service);
+				RegUtils.reg(getBundleContext(), PubmapAPI.class.getName(), api, null);
+				log.debug("MGTraitsAPI started.");
+			}
+			
+		});
+    }
+
+	
 
 	@Override
 	protected String getName() {
 		return "net.megx.pubmap";
 	}
+
+	
 	
 
 }
