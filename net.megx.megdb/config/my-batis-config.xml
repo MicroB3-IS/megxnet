@@ -82,6 +82,9 @@
 		
 		<!-- Contact -->
 		<typeAlias type="net.megx.model.contact.Contact" alias="Contact"/>
+		
+		<!-- Pubmap -->
+		<typeAlias type="net.megx.model.pubmap.Article" alias="Article"/>
 	</typeAliases>
 
 	<environments default="main">
