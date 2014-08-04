@@ -6,7 +6,7 @@
         "attributes": {
             "id": "contact-form",
             "method": "post",
-            "action": "${mvn.site.url}/ws/v1/contact/v1.0.0/store-contact"
+            "action": "http://iwgate.poweredbyclear.com:9080/megx.net/ws/v1/contact/v1.0.0/store-contact"
         },
         "buttons": {
             "submit": {},

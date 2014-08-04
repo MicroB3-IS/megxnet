@@ -11,36 +11,32 @@ import org.chon.cms.core.ResTplConfiguredActivator;
 import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
-	
+
 	private static final Log log = LogFactory.getLog(Activator.class);
-	
-    @Override
-    protected void registerExtensions(JCRApplication app) {
-        log.debug("MGTraitsAPI starting up");
-        OSGIUtils.requestService(PubMapService.class.getName(), 
-				getBundleContext(), 
+
+	@Override
+	protected void registerExtensions(JCRApplication app) {
+		log.debug("PubMapService starting up");
+		OSGIUtils.requestService(PubMapService.class.getName(),
+				getBundleContext(),
 				new OSGIUtils.OnServiceAvailable<PubMapService>() {
 
-			@Override
-			public void serviceAvailable(String name,
-					PubMapService service) {
-				log.debug("MGTraitsService received...");
-				PubmapAPI api = new PubmapAPI(service);
-				RegUtils.reg(getBundleContext(), PubmapAPI.class.getName(), api, null);
-				log.debug("MGTraitsAPI started.");
-			}
-			
-		});
-    }
+					@Override
+					public void serviceAvailable(String name,
+							PubMapService service) {
+						log.debug("PubMapService received...");
+						PubmapAPI api = new PubmapAPI(service);
+						RegUtils.reg(getBundleContext(),
+								PubmapAPI.class.getName(), api, null);
+						log.debug("PubMapService started.");
+					}
 
-	
+				});
+	}
 
 	@Override
 	protected String getName() {
 		return "net.megx.pubmap";
 	}
-
-	
-	
 
 }

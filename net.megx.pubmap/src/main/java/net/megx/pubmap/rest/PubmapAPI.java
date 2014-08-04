@@ -1,7 +1,6 @@
 package net.megx.pubmap.rest;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -11,9 +10,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.pubmap.Article;
 import net.megx.ws.core.BaseRestService;
+import net.megx.ws.core.Result;
 
 @Path("v1/pubmap/v1.0.0")
 public class PubmapAPI extends BaseRestService {
@@ -27,42 +28,37 @@ public class PubmapAPI extends BaseRestService {
 	@Path("article")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String storeArticle(@FormParam("pmid") int pmid,
-			@FormParam("lon") Double lon,
-			@FormParam("lat") Double lat,
-			@FormParam("articleXml")final String articleXml,
-			@FormParam("megxBarJson") String megxBarJson,
+	public String storeArticle(@FormParam("article") String articleJson,
 			@Context HttpServletRequest request) {
-		
-			if (lon == null && lat == null) {
-				return toJSON(new Result<String>(true, "Longitude and latitude not provided",
+		try {
+			if (articleJson == null) {
+				return toJSON(new Result<String>(true, "article not provided",
 						"bad-request"));
 			}
-		Article article = new Article();
-		String savedArticle = null;
-        Date created = Calendar.getInstance().getTime();
-        String articleCreator;
-        if (request.getUserPrincipal() != null) {
-            articleCreator = request.getUserPrincipal().getName();
-        } else {
-        	articleCreator = "anonymous";
-        }
-        article.setPmid(pmid);
-        article.setCreated(created);
-        article.setLat(lat);
-        article.setLon(lon);
-        article.setArticleXML(articleXml);
-        article.setUserName(articleCreator);
-        article.setMegxBarJSON(megxBarJson);
-        
-        try{
-        	savedArticle = service.storeArticles(article);
-        } catch (Exception e) {
-            log.error("Could not save article", e);
-            return toJSON(handleException(e));
-        }
-        
-		return savedArticle;
+			Article article = gson.fromJson(articleJson, Article.class);
+			String articleCreator;
 
+			article.setArticleXML(article.getArticleXML()
+					.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
+			article.setCreated(Calendar.getInstance().getTime());
+
+			if (request.getUserPrincipal() != null) {
+				articleCreator = request.getUserPrincipal().getName();
+			} else {
+				articleCreator = "anonymous";
+			}
+			article.setUserName(articleCreator);
+
+			service.storeArticle(article);
+
+			return toJSON(article);
+		} catch (DBGeneralFailureException e) {
+			log.error("Could not store article:" + e);
+			return toJSON(handleException(e));
+		} catch (Exception e) {
+			log.error("Server error:" + e);
+			return toJSON(handleException(e));
+		}
 	}
+
 }
