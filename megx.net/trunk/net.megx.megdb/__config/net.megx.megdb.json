@@ -72,10 +72,6 @@
 		{
 			name: 'net.megx.megdb.contact.ContactService',
 			class: 'net.megx.megdb.contact.impl.DBContactService'
-		},
-		{
-			name: 'net.megx.megdb.pubmap.PubMapService',
-			class: 'net.megx.megdb.pubmap.impl.DBPubMapService'
 		}
 	]
 }

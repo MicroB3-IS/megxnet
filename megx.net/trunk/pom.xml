@@ -126,9 +126,10 @@
         <module>net.megx.broadcast</module>
         <module>net.megx.blast</module>
 
+        <module>net.megx.pubmap</module>
+        <module>net.megx.megxbar</module>
+        
         <!-- do not build for time being
-            <module>net.megx.pubmap</module>
-            <module>net.megx.megxbar</module>
             <module>net.megx.content.imp.exp</module>
             <module>net.megx.was.webdav</module>
             <module>net.megx.ws.oauth.echo.example</module>
