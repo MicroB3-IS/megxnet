@@ -93,6 +93,17 @@
 		var article = document.referrer;
 		$('#loginCheck').find('a').prop("href","$ctx.siteUrl/login?redirectURL=/bookmark&article="+article);
 	</script>
+	
+	<script type="text/javascript">
+		var anchors = document.getElementsByTagName('a');
+		for (var i = 0; i < anchors.length; i++) {
+			var anchor = anchors[i];
+			anchor.addEventListener('click', function(event) {
+			    history.replaceState(null, null, anchor.href);
+			}, false);
+		}
+	</script>
+	
 
 	#end 
 </body>
