@@ -7,8 +7,10 @@
 <link href="$ctx.siteUrl/net.megx.megxbar/css/bookmarklet.css" rel="stylesheet" type="text/css"> 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.megxbar/js/bookmarkletFunctions.js"></script>
-	
+
+
 </head>
 
 <body style="background-color: hsl(0, 0%, 97%); font-size: small; font-family: Helvetica Neue,Arial,Ubuntu,sanf-serif;">
@@ -25,14 +27,21 @@
 			    try {
 			        msg = JSON.parse(event.data);
 			        if (msg.type && msg.type == "setarticle") {
-			        	
-			        	$("#title").html(msg.article.title);
-						
-						var auths = msg.article.authors[0];
-						for(var i = 1; i < msg.article.authors.length; i++){
-							auths = auths + ", " + msg.article.authors[i];
-				        }
-						$("#auths").html(auths);
+		
+			            $("#title").html(msg.article.title);
+		
+			            var auths = msg.article.authors[0];
+			            for (var i = 1; i < msg.article.authors.length; i++) {
+			                auths = auths + ", " + msg.article.authors[i];
+			            }
+			            auths = auths + ".";
+			            $("#auths").html(auths);
+			            
+			        } else if (msg.type && msg.type == "noarticlefound") {
+			        	 $("#noArticleFound").html("No article information found.");
+			        	 $("#noArticleFound").show();
+			        	 $("#submitBookmark").hide();
+			        	 $("#bookmarkForm").hide();
 			        }
 			    } catch (e) { /*alert(e);*/ }
 			}
@@ -43,7 +52,7 @@
 			    window.attachEvent("onmessage", listener);
 			}
 		
-			 if (window != window.parent) {
+			if (window != window.parent) {
 			    window.parent.postMessage(JSON.stringify({
 			        type: "getarticle"
 			    }), "http://www.ncbi.nlm.nih.gov");
@@ -51,31 +60,32 @@
 	</script>
 
 	<div id="message"></div>
+	<div id="noArticleFound"></div>
 	<form id="bookmarkForm">
 		<table>
 			<tr>
-				<td ><h3 id="title"></h3></td>
+				<td align="center"><label id="title"></label></td>
 			</tr>
 			<tr>
-				<td><label id="auths"></label></td>
+				<td align="center" height="80"><label id="auths"></label></td>
 			</tr>
 			<tr>
-				<td></br><label>Geographic location of the study side:</label></td>
+				<td align="center" height="30"><label>Geographic location of the study side:</label></td>
 			</tr>
 			<tr>
 				<td>
-					<label for="longitude">Longitude:</label>
+					<label id="longitudeLabel" for="longitude">Longitude:</label>
 					<input type="text" id="longitude" name="longitude">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<label for="latitude">Latitude:</label>
+					<label id="latitudeLabel" for="latitude">Latitude:</label>
 					<input type="text" id="latitude" name="latitude">
 				</td>
 			</tr>
 			<tr>
-				<td style ="text-align: center;" ><span>(Please use the coordinates of the study side the article relates to and not the university.)</span></td>
+				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study side the article relates to and not the university.)</span></td>
 			</tr>
 		</table>
 	</form>
@@ -89,22 +99,7 @@
 			Login to megx.net</a>
 	</div>
 	
-	<script type="text/javascript">
-		var article = document.referrer;
-		$('#loginCheck').find('a').prop("href","$ctx.siteUrl/login?redirectURL=/bookmark&article="+article);
-	</script>
-	
-	<script type="text/javascript">
-		var anchors = document.getElementsByTagName('a');
-		for (var i = 0; i < anchors.length; i++) {
-			var anchor = anchors[i];
-			anchor.addEventListener('click', function(event) {
-			    history.replaceState(null, null, anchor.href);
-			}, false);
-		}
-	</script>
-	
-
 	#end 
+	
 </body>
 </html>
