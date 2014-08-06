@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Article {
 	
-	private int pmid;
+	private Integer pmid;
 	private Double lon;
 	private Double lat;
 	private String articleXML;
@@ -13,10 +13,10 @@ public class Article {
 	private Date created;
 	
 	
-	public int getPmid() {
+	public Integer getPmid() {
 		return pmid;
 	}
-	public void setPmid(int pmid) {
+	public void setPmid(Integer pmid) {
 		this.pmid = pmid;
 	}
 	public Double getLon() {

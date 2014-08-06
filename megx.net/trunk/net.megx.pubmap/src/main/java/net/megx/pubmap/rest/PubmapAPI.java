@@ -37,6 +37,7 @@ public class PubmapAPI extends BaseRestService {
 			}
 			Article article = gson.fromJson(articleJson, Article.class);
 			String articleCreator;
+			String status;
 
 			article.setArticleXML(article.getArticleXML()
 					.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " "));
@@ -48,10 +49,15 @@ public class PubmapAPI extends BaseRestService {
 				articleCreator = "anonymous";
 			}
 			article.setUserName(articleCreator);
+			
+			if(service.articleExists(article.getPmid())){
+				status = "Bookmark already exists on server.";
+			}else{
+				service.storeArticle(article);
+				status = "Bookmark successfully stored to server.";
+			}
 
-			service.storeArticle(article);
-
-			return toJSON(article);
+			return toJSON(status);
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not store article:" + e);
 			return toJSON(handleException(e));

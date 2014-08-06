@@ -24,4 +24,17 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
 	}
 
+	@Override
+	public Boolean articleExists(final Integer pmid) throws DBGeneralFailureException {
+		return doInTransaction(new DBTask<PubMapMapper, Boolean>() {
+
+			@Override
+			public Boolean execute(PubMapMapper mapper) throws Exception {
+				Boolean exist;
+				exist =  mapper.articleExists(pmid);
+				return exist;
+			}
+		}, PubMapMapper.class);
+	}
+
 }

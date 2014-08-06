@@ -1,13 +1,15 @@
 (function Megxbookmarklet() {
-	
-    
+
     //production
-    var iframeSrc = "https://mb3is.megx.net/bookmark";
-    var targetOrigin = "https://mb3is.megx.net";
+//    var iframeSrc = "https://mb3is.megx.net/bookmark";
+//    var targetOrigin = "https://mb3is.megx.net";
+    //iwgate
+    var iframeSrc = "http://iwgate.poweredbyclear.com:9080/megx.net/bookmark";
+    var targetOrigin = "http://iwgate.poweredbyclear.com:9080"
     //development
 //    var iframeSrc = "http://localhost:8080/megx.net/bookmark";
 //    var targetOrigin = "http://localhost:8080"
-    
+
     var iframeZIndex = 2147483640;
     var body, ifrm, closeButton, closeButtonDiv;
     var iframeHolder = (function() {
@@ -88,7 +90,6 @@
     function startIframe() {
         body = document.getElementsByTagName("BODY")[0];
         createIframe();
-        createCloseButton();
     }
     try {
         startIframe();
@@ -116,7 +117,7 @@
             if (msg.type && msg.type == "getarticle") {
 
                 if (document.getElementById("absid") != null) {
-                	
+
                     jQuery.get(document.URL + "?report=xml&format=text", function(data) {
 
                         var article = {};
