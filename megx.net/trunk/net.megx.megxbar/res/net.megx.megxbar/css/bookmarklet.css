@@ -26,6 +26,8 @@ input {
 	margin-left: 24px;
 }
 #submitBookmark {
+	border: 1px;
+	border-radius: 10px;
 	margin-left: 104px;
 	width: 85px;
 	background: hsl(208, 68%, 79%);
@@ -40,13 +42,17 @@ table,tr,th,td {
 	margin-top:30px;
 }
 #noArticleFound {
-	display: none; 
-	background-color: #B3CDF3; 
-	border: 1px solid #369de1; 
-	border-radius: 5px; 
+	display:none;
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url(../images/icons/info.png);
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 2px center;
+	margin-top:25%;
 	text-align: center;
-	margin-top: 50px;
-	height: 30px;
 }
 #auths {
 	text-decoration: underline;
