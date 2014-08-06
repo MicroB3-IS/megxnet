@@ -40,16 +40,17 @@ function insertBookmark() {
             "article": JSON.stringify(collectData())
         },
         dataType: 'json',
-        success: function(data) {
+        success: function(message) {
             $("#message")
-                .html(
-                    "<button class='close' type='button' onclick='emptyMessageDiv()'>×</button><p>Bookmark successfully stored to server.</p>");
-            $("#message").css("background-color", "#DFF0D8");
-            $("#message").css("border", "1px solid #D6E9C6");
-            $("#message").css("color", "#468847");
-            $("#message").css("border-radius", "15px");
-            $("#message").css("padding-left", "10px");
-            $("input[type=text]").val("");
+	            .html(
+	                "<button class='close' type='button' onclick='emptyMessageDiv()'>×</button><p>" + message + "</p>");
+	        $("#message").css("background-color", "#DFF0D8");
+	        $("#message").css("border", "1px solid #D6E9C6");
+	        $("#message").css("color", "#468847");
+	        $("#message").css("border-radius", "15px");
+	        $("#message").css("padding-left", "10px");
+	        $("input[type=text]").val("");
+            
         },
         error: function(a, b, c) {
             $("#message")

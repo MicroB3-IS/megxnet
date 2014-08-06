@@ -7,5 +7,8 @@ public interface PubMapService {
 
 	public String storeArticle(final Article article)
 			throws DBGeneralFailureException;
+	
+	public Boolean articleExists(final Integer pmid)
+			throws DBGeneralFailureException;
 
 }

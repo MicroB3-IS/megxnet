@@ -22,5 +22,9 @@
 		#{userName},to_json(#{megxBarJSON}),#{created},
 		ST_PointFromText('POINT(${lon} ${lat})',4326))
 	</insert>
+	
+	<select id="articleExists" parameterType="int" resultType="boolean">
+		SELECT EXISTS (SELECT true FROM pubmap.raw_pubmap WHERE pmid=#{pmid})
+	</select>
 
 </mapper>

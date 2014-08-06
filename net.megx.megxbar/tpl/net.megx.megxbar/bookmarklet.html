@@ -20,30 +20,27 @@
 	
 		<script>
 			var msg;
-			
 			var listener = function(event) {
 			    //if(event.origin !== "http://thearticle"){
 			    //return;
 			    //}
-			    
 			    try {
-			    	
 			        msg = JSON.parse(event.data);
 			        if (msg.type && msg.type == "setarticle") {
 			            $("#title").html(msg.article.title);
-			            
+		
 			            var auths = msg.article.authors[0];
 			            for (var i = 1; i < msg.article.authors.length; i++) {
 			                auths = auths + ", " + msg.article.authors[i];
 			            }
 			            auths = auths + ".";
 			            $("#auths").html(auths);
-			            
+		
 			        } else if (msg.type && msg.type == "noarticlefound") {
-			        	 $("#noArticleFound").html("No article information found.");
-			        	 $("#submitBookmark").hide();
-			        	 $("#bookmarkForm").hide();
-			        	 $("#noArticleFound").show();
+			            $("#noArticleFound").html("No article information found.");
+			            $("#submitBookmark").hide();
+			            $("#bookmarkForm").hide();
+			            $("#noArticleFound").show();
 			        }
 			    } catch (e) { /*alert(e);*/ }
 			}
