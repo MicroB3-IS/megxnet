@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MegxBar Bookmarklet</title>
+
+<link href="$ctx.siteUrl/net.megx.megxbar/css/bookmarklet.css" rel="stylesheet" type="text/css"> 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.megxbar/js/bookmarkletFunctions.js"></script>
+
+
+</head>
+
+<body style="background-color: hsl(0, 0%, 97%); font-size: small; font-family: Helvetica Neue,Arial,Ubuntu,sanf-serif;">
+
+	<img src="$ctx.siteUrl/images/logo.png" style="padding-left: 25px; padding-top: 15px; height: 99px;"/>
+	#if($req.user)
+	
+		<script>
+			var msg;
+			var listener = function(event) {
+			    //if(event.origin !== "http://thearticle"){
+			    //return;
+			    //}
+			    try {
+			        msg = JSON.parse(event.data);
+			        if (msg.type && msg.type == "setarticle") {
+			            $("#title").html(msg.article.title);
+		
+			            var auths = msg.article.authors[0];
+			            for (var i = 1; i < msg.article.authors.length; i++) {
+			                auths = auths + ", " + msg.article.authors[i];
+			            }
+			            auths = auths + ".";
+			            $("#auths").html(auths);
+		
+			        } else if (msg.type && msg.type == "noarticlefound") {
+			            $("#noArticleFound").html("No article information found.");
+			            $("#submitBookmark").hide();
+			            $("#bookmarkForm").hide();
+			            $("#noArticleFound").show();
+			        }
+			    } catch (e) { /*alert(e);*/ }
+			}
+		
+			if (window.addEventListener) {
+			    window.addEventListener("message", listener, false);
+			} else {
+			    window.attachEvent("onmessage", listener);
+			}
+		
+			if (window != window.parent) {
+			    window.parent.postMessage(JSON.stringify({
+			        type: "getarticle"
+			    }), "http://www.ncbi.nlm.nih.gov");
+			}
+	</script>
+
+	<div id="message"></div>
+	<div id="noArticleFound"></div>
+	<form id="bookmarkForm">
+		<table>
+			<tr>
+				<td align="center"><label id="title"></label></td>
+			</tr>
+			<tr>
+				<td align="center" height="80"><label id="auths"></label></td>
+			</tr>
+			<tr>
+				<td align="center" height="30"><label>Geographic location of the study side:</label></td>
+			</tr>
+			<tr>
+				<td>
+					<label id="longitudeLabel" for="longitude">Longitude:</label>
+					<input type="text" id="longitude" name="longitude">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label id="latitudeLabel" for="latitude">Latitude:</label>
+					<input type="text" id="latitude" name="latitude">
+				</td>
+			</tr>
+			<tr>
+				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study side the article relates to and not the university.)</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<input id="submitBookmark" type="button" value="Submit"> 
+	
+	#else
+	#* not logged in *#
+	
+	<div id="loginCheck" style="padding-left: 55px;">
+		<a href="$ctx.siteUrl/login?redirectURL=/bookmark" class="button">
+			Login to megx.net</a>
+	</div>
+	
+	#end 
+	
+</body>
+</html>
