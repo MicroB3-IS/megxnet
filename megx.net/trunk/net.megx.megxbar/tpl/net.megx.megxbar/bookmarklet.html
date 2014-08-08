@@ -37,10 +37,16 @@
 			            $("#auths").html(auths);
 		
 			        } else if (msg.type && msg.type == "noarticlefound") {
-			            $("#noArticleFound").html("No article information found.");
+			            $("#infoMessage").html("No article information found.");
 			            $("#submitBookmark").hide();
 			            $("#bookmarkForm").hide();
-			            $("#noArticleFound").show();
+			            $("#infoMessage").show();
+			            
+			        } else if (msg.type && msg.type == "wrongdomain") {
+			            $("#infoMessage").html("Wrong domain.");
+			            $("#submitBookmark").hide();
+			            $("#bookmarkForm").hide();
+			            $("#infoMessage").show();
 			        }
 			    } catch (e) { /*alert(e);*/ }
 			}
@@ -54,12 +60,12 @@
 			if (window != window.parent) {
 			    window.parent.postMessage(JSON.stringify({
 			        type: "getarticle"
-			    }), "http://www.ncbi.nlm.nih.gov");
+			    }), "*");
 			}
 	</script>
 
 	<div id="message"></div>
-	<div id="noArticleFound"></div>
+	<div id="infoMessage"></div>
 	<form id="bookmarkForm">
 		<table>
 			<tr>
@@ -95,10 +101,15 @@
 	#* not logged in *#
 	
 	<div id="loginCheck" style="padding-left: 55px;">
-		<a href="$ctx.siteUrl/login?redirectURL=/bookmark" class="button">
-			Login to megx.net</a>
+		<a href="#" onclick="login()" class="button">Login to megx.net</a>
 	</div>
-	
+	<script>
+		function login(){
+			var loginWindow = window.open("$ctx.siteUrl/login?redirectURL=/continue", "Login", "location=0, menubar=0, top=250, left=270, width=700, height=480");
+			
+		}
+	</script>  
+		
 	#end 
 	
 </body>
