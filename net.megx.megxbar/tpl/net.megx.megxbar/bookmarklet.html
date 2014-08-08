@@ -104,9 +104,15 @@
 		<a href="#" onclick="login()" class="button">Login to megx.net</a>
 	</div>
 	<script>
-		function login(){
-			var loginWindow = window.open("$ctx.siteUrl/login?redirectURL=/continue", "Login", "location=0, menubar=0, top=250, left=270, width=700, height=480");
-			
+		var loginWindow = null;
+	
+		function login() {
+	
+		    if (loginWindow == null || loginWindow.closed) {
+		        loginWindow = window.open("$ctx.siteUrl/login?redirectURL=/continue", "Login", "location=0, menubar=0, top=250, left=270, width=700, height=480");
+		    } else {
+		        loginWindow.focus();
+		    }
 		}
 	</script>  
 		
