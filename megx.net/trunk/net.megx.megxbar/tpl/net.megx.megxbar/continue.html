@@ -8,23 +8,38 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		
-		if(window.opener){
-			window.opener.document.location.href = "$ctx.siteUrl/bookmark";
-			}
-		
-		$("#continue").click(function(){
-			window.close();
-			
-		});
-	});
 	
+	    window.setInterval(function() {
+	        try {
+	            if (!window.opener || window.opener.closed === true) {
+	                window.close();
+	            }
+	        } catch (ex) {
+	            window.close();
+	        }
+	    }, 1000);
+	
+	    if (window.opener) {
+	        window.opener.document.location.href = "$ctx.siteUrl/bookmark";
+	    } else {
+	        window.close();
+	    }
+	
+	    $("#continue").click(function() {
+	        window.close();
+	
+	    });
+	});
 </script>
 
 </head>
 
 <body>
-	<div style="padding: 15px">
+	<div style="padding-left: 200px; padding-top: 15px; height: 99px;">
+	    <img src="/megx.net/images/logo.png">
+	</div>
+	<div style="padding-left: 290px; padding-top: 15px; height: 99px;">
+		<h3>You have successfully signed in.</h3>
 		<input type="button" id="continue" value="Continue"/>
 	</div>
 
