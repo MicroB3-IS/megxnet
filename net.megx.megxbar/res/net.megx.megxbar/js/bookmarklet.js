@@ -83,7 +83,7 @@
     }
 
     function closeOnClick() {
-        jQuery(iframeHolder.getIframe()).hide();
+        jQuery(iframeHolder.getIframe()).remove();
         return false;
     }
 
@@ -95,7 +95,6 @@
         startIframe();
     } catch (e) {}
 
-    //passing data
     var handleInternalMessage = function(data) {
         try {
             var msg = JSON.parse(data);
@@ -103,9 +102,9 @@
                 //alert("The bookmarklet is clicked, toggle iFrame visibility");
                 var ifr = iframeHolder.getIframe();
                 if (jQuery(ifr).is(':visible')) {
-                    jQuery(ifr).hide();
+                    jQuery(ifr).remove();
                 } else {
-                    jQuery(ifr).show();
+                    startIframe();
                 }
             }
         } catch (e) { /*alert(e);*/ }
@@ -115,40 +114,48 @@
         try {
             var msg = JSON.parse(data);
             if (msg.type && msg.type == "getarticle") {
+            	
+                if (document.domain == "www.ncbi.nlm.nih.gov") {
 
-                if (document.getElementById("absid") != null) {
+                    if (document.getElementById("absid") != null) {
 
-                    jQuery.get(document.URL + "?report=xml&format=text", function(data) {
+                        jQuery.get(document.URL + "?report=xml&format=text", function(data) {
 
-                        var article = {};
+                            var article = {};
 
-                        article.url = document.URL;
-                        article.pmid = document.getElementById("absid").value;
-                        article.title = document.getElementsByTagName("h1")[1].innerHTML;
+                            article.url = document.URL;
+                            article.pmid = document.getElementById("absid").value;
+                            article.title = document.getElementsByTagName("h1")[1].innerHTML;
 
-                        var authorsElement = document.getElementsByClassName("auths")[0];
-                        var authorsLinks = authorsElement.getElementsByTagName("a");
-                        var authorsList = [];
-                        for (var i = 0; i < authorsLinks.length; i++) {
-                            authorsList[i] = authorsLinks[i].innerHTML;
-                        }
-                        article.authors = authorsList;
+                            var authorsElement = document.getElementsByClassName("auths")[0];
+                            var authorsLinks = authorsElement.getElementsByTagName("a");
+                            var authorsList = [];
+                            for (var i = 0; i < authorsLinks.length; i++) {
+                                authorsList[i] = authorsLinks[i].innerHTML;
+                            }
+                            article.authors = authorsList;
 
-                        var tempXml = document.createElement("p");
-                        tempXml.innerHTML = data;
-                        var xml = tempXml.getElementsByTagName("pre")[0].innerHTML;
-                        article.xml = xml;
+                            var tempXml = document.createElement("p");
+                            tempXml.innerHTML = data;
+                            var xml = tempXml.getElementsByTagName("pre")[0].innerHTML;
+                            article.xml = xml;
 
+                            source.postMessage(JSON.stringify({
+                                type: "setarticle",
+                                article: article
+                            }), targetOrigin);
+
+                        }, false);
+
+                    } else {
                         source.postMessage(JSON.stringify({
-                            type: "setarticle",
-                            article: article
+                            type: "noarticlefound"
                         }), targetOrigin);
-
-                    }, false);
+                    }
 
                 } else {
                     source.postMessage(JSON.stringify({
-                        type: "noarticlefound"
+                        type: "wrongdomain"
                     }), targetOrigin);
                 }
             }

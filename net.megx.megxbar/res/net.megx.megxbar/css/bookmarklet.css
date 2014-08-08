@@ -1,5 +1,13 @@
-html {
-    border: 5px solid hsl(208, 68%, 79%);
+body {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	border: 5px solid;
+	border-color: hsl(208, 68%, 79%);
+	border-radius: 5px;
+	height: 100%;
+	overflow: hidden;
 }
 .button{
 	border: 2px solid hsl(212, 83%, 32%);
@@ -41,7 +49,7 @@ table,tr,th,td {
 	vertical-align: baseline;
 	margin-top:30px;
 }
-#noArticleFound {
+#infoMessage {
 	display:none;
 	color: #00529B;
 	background-color: #BDE5F8;
