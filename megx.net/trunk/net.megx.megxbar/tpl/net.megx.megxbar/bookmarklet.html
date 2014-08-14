@@ -16,7 +16,6 @@
 <body style="background-color: hsl(0, 0%, 97%); font-size: small; font-family: Helvetica Neue,Arial,Ubuntu,sanf-serif;">
 
 	<img src="$ctx.siteUrl/images/logo.png" style="padding-left: 25px; padding-top: 15px; height: 99px;"/>
-	#if($req.user)
 	
 		<script>
 			var msg;
@@ -38,14 +37,16 @@
 		
 			        } else if (msg.type && msg.type == "noarticlefound") {
 			            $("#infoMessage").html("No article information found.");
-			            $("#submitBookmark").hide();
+			            $("#submitBookmark").hide();			 
 			            $("#bookmarkForm").hide();
+			            $("#loginCheck").hide();
 			            $("#infoMessage").show();
 			            
 			        } else if (msg.type && msg.type == "wrongdomain") {
 			            $("#infoMessage").html("Wrong domain.");
 			            $("#submitBookmark").hide();
 			            $("#bookmarkForm").hide();
+			            $("#loginCheck").hide();
 			            $("#infoMessage").show();
 			        }
 			    } catch (e) { /*alert(e);*/ }
@@ -61,11 +62,13 @@
 			    window.parent.postMessage(JSON.stringify({
 			        type: "getarticle"
 			    }), "*");
-			}
+			}		
 	</script>
-
+	
 	<div id="message"></div>
 	<div id="infoMessage"></div>
+	
+	#if($req.user)
 	<form id="bookmarkForm">
 		<table>
 			<tr>
@@ -90,12 +93,13 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study side the article relates to and not the university.)</span></td>
+				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study site the article relates to and not the university.)</span></td>
 			</tr>
 		</table>
 	</form>
 	
 	<input id="submitBookmark" type="button" value="Save"> 
+	
 	
 	#else
 	#* not logged in *#

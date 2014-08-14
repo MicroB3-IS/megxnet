@@ -2,8 +2,24 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Continue to bookmarklet</title>
-
+<title>Continue to Megx Bookmarklet</title>
+<style>
+#continue {
+	border: 1px;
+	border-radius: 1px;
+	width: 85px;
+	background: hsl(208, 68%, 79%);
+}
+#continueDiv {
+	width: 450px;
+	border-radius: 4px;
+	background-color: #fff;
+	border: 1px solid #c6c6c6;
+	margin-left: 125px;
+	padding: 20px 0 0;
+	text-align: center;
+}
+</style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
 
 <script type="text/javascript">
@@ -35,13 +51,13 @@
 </head>
 
 <body>
-	<div style="padding-left: 200px; padding-top: 15px; height: 99px;">
-	    <img src="/megx.net/images/logo.png">
+	
+		<div style="padding-left: 200px; padding-top: 15px; height: 99px;">
+		    <img src="/megx.net/images/logo.png">
+		</div>
+	<div id="continueDiv">
+			<h3>You have successfully signed in.</h3>
+			<input type="button" id="continue" value="Continue"/>	
 	</div>
-	<div style="padding-left: 290px; padding-top: 15px; height: 99px;">
-		<h3>You have successfully signed in.</h3>
-		<input type="button" id="continue" value="Continue"/>
-	</div>
-
 </body>
 </html>
