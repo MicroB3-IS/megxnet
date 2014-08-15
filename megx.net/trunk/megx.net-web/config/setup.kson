@@ -48,6 +48,7 @@ www={type:'sys.public'}
 		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
 	bookmark={type:'html', template:'net.megx.megxbar/bookmarklet.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Bookmarklet'}
 	continue={type:'html', template:'net.megx.megxbar/continue.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Continue to bookmarklet'}
+	bookmark-help={type:'html', template:'net.megx.megxbar/bookmarkletHelp.html' , title:'Bookmarklet help page'}
 	megx-embrc-widget.html={type:'html', template:'pages/gms-test.html', title:'Megx EMBRC Widget'}
 	mg-traits={type:'html',template:'net.megx.mg-traits/index.html', title:'Metagenome Traits Database'}
 		samples={type:'html', template:'net.megx.mg-traits/metagenomicSamples.html', title:'Simple Traits'}
