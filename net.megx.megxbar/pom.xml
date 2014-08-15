@@ -23,6 +23,17 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-antrun-plugin</artifactId>
           </plugin>
+           <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <configuration>
+                    <minimize>true</minimize>
+                    <jsDestinationFolder>res/net.megx.megxbar/js</jsDestinationFolder>
+                    <contextFolder>${basedir}</contextFolder>
+                    <wroFile>wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+            </plugin>
       </plugins>
   </build>
 </project>
