@@ -33,7 +33,11 @@ The actual tests are organized in several packages:
 * `net.megx.test.webpage` for testing web pages
 * `net.megx.test.ws` for testing web services
 
-TODO names sub pages by symbolic module/component name
+<!--
+TODO name sub page packages by symbolic module/component name
+-->
+
+## Running tests
 
 The test scenarios are a combination of which MB3-IS instance/environment should be tested for what?
 
@@ -50,5 +54,18 @@ Profiles are
  * `avail-tests` 
  * `web-page-tests`
 
+Therefore, running
 
+
+    mvn -P avail-tests,production-test-env verify
+
+
+will execute all availability-test against the live server.
+
+
+## Writing Tests
+
+To get started just read existing code.
+
+* note that each test class needs a Rule which instantiates a TestServer
 
