@@ -43,7 +43,7 @@
 			            $("#infoMessage").show();
 			            
 			        } else if (msg.type && msg.type == "wrongdomain") {
-			            $("#infoMessage").html("Wrong domain.");
+			            $("#infoMessage").html("Megxbar can only retriev article information from pubmed webpages, please search for the articel you want to curated with geographic coordinates on pubmed. Then open megxbar again on the" + '<a href="http://www.ncbi.nlm.nih.gov/pubmed" target="_blank"> pubmed </a>' + " webpage of your articel. For further information please visit the" + '<a href="$ctx.siteUrl/bookmark-help" target="_blank"> help</a>' +" page");
 			            $("#submitBookmark").hide();
 			            $("#bookmarkForm").hide();
 			            $("#loginCheck").hide();
