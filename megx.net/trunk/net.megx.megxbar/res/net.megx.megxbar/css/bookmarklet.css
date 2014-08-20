@@ -78,3 +78,10 @@ table,tr,th,td {
     color:green;
     margin-left: 24px;
 }
+#logout{
+	border: 1px;
+	border-radius: 10px;
+	margin-left: 230px;
+	width: 70px;
+	background: hsl(208, 68%, 79%);
+}
