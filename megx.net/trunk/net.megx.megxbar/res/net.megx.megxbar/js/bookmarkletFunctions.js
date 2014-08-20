@@ -32,12 +32,14 @@ $(document).ready(function() {
 
 });
 function log(){	 
-	document.location.href = document.location.href;
-	   	log1();
-}
-function log1(){	 
 	 window.open("/megx.net/admin/logout.do",'_blank');
+	 refreshBookmarklet();
 }
+function refreshBookmarklet(){	 
+	document.location.href = document.location.href;
+	   	
+}
+
 
 function emptyMessageDiv() {
     $("#message").html("");
