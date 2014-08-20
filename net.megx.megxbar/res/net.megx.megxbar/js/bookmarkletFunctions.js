@@ -1,5 +1,10 @@
 $(document).ready(function() {
-
+	
+	
+		$('#logout').click(function(){
+			log();
+		});
+		
     $("#submitBookmark").click(function() {
         $("#bookmarkForm").validate({
             errorClass: "my-error-class",
@@ -26,6 +31,13 @@ $(document).ready(function() {
     });
 
 });
+function log(){	 
+	document.location.href = document.location.href;
+	   	log1();
+}
+function log1(){	 
+	 window.open("/megx.net/admin/logout.do",'_blank');
+}
 
 function emptyMessageDiv() {
     $("#message").html("");
