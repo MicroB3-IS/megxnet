@@ -23,20 +23,35 @@ body {
     left:4%;
 }
 #longitudeLabel, #latitudeLabel {
-	margin-left: 24px;
+	margin-left: 15px;
 }
-input[type=text] {
+
+#longitudeLabelDegrees, #latitudeLabelDegrees {
+	margin-left: 15px;
+}
+#decimal, #degrees {
+	margin-left: 15px;
+}
+.inputDecimal {
 	height: 22px;
-	width: 230px;
-	display: block;
+	width: 170px;
+	display: inline;
 	margin-bottom: 2px;
 	margin-top: 1px;
-	margin-left: 24px;
+	margin-left: 10px;
+}
+.inputDegrees {
+	height: 22px;
+	width: 48px;
+	display: inline;
+	margin-bottom: 2px;
+	margin-top: 1px;
+	margin-left: 10px;
 }
 #submitBookmark {
 	border: 1px;
 	border-radius: 10px;
-	margin-left: 104px;
+	margin-left: 112.5px;
 	width: 85px;
 	background: hsl(208, 68%, 79%);
 }
@@ -72,11 +87,16 @@ table,tr,th,td {
 }
 .my-error-class  {
     color:red;
-    margin-left: 24px;
+    margin-left: 15px;
 }
 .my-valid-class  {
     color:green;
-    margin-left: 24px;
+    margin-left: 15px;
+}
+.coordinatesErrorMsg {
+	display: none; 
+	color:red;
+	margin-left: 15px;;
 }
 #logout{
 	border: 1px;
