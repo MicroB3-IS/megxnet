@@ -38,14 +38,14 @@
 			        } else if (msg.type && msg.type == "noarticlefound") {
 			            $("#infoMessage").html("No article information found.");
 			            $("#submitBookmark").hide();			 
-			            $("#bookmarkForm").hide();
+			            $("#bookmarkFormDecimal, #bookmarkFormDegrees, #titleTable").hide();
 			            $("#loginCheck").hide();
 			            $("#infoMessage").show();
 			            
 			        } else if (msg.type && msg.type == "wrongdomain") {
 			            $("#infoMessage").html("Megxbar can only retriev article information from pubmed webpages, please search for the articel you want to curated with geographic coordinates on pubmed. Then open megxbar again on the " + '<a href="http://www.ncbi.nlm.nih.gov/pubmed" target="_blank">pubmed</a>' + " webpage of your articel. For further information please visit the " + '<a href="$ctx.siteUrl/bookmark-help" target="_blank">help</a>' +" page");
 			            $("#submitBookmark").hide();
-			            $("#bookmarkForm").hide();
+			            $("#bookmarkFormDecimal, #bookmarkFormDegrees, #titleTable").hide();
 			            $("#loginCheck").hide();
 			            $("#infoMessage").show();
 			        }
@@ -65,14 +65,14 @@
 			}		
 	</script>
 	
-	<div id="message"></div>
 	<div id="infoMessage"></div>
 	
 	#if($req.user)
 	
 	<input type="button" value="Logout" id="logout">
-	
-	<table>
+
+	<div id="message"></div>
+	<table id="titleTable">
 		<tr>
 			<td align="center"><label id="title"></label></td>
 		</tr>
@@ -141,7 +141,7 @@
 			</tr>
 		</table>
 	</form>
-	
+
 	<input id="submitBookmark" type="button" value="Save"> 
 	
 	
