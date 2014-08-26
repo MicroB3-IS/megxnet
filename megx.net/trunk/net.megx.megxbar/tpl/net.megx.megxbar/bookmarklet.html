@@ -72,27 +72,68 @@
 	
 	<input type="button" value="Logout" id="logout">
 	
-	<form id="bookmarkForm">
+	<table>
+		<tr>
+			<td align="center"><label id="title"></label></td>
+		</tr>
+		<tr>
+			<td align="center" height="80"><label id="auths"></label></td>
+		</tr>
+		<tr>
+			<td align="center" height="30"><label>Geographic location of the study side:</label></td>
+		</tr>
+		<tr>
+			<td>
+				<input type="radio" id="decimal" value="decimal" name="rb" checked>
+				<span class="caption">I have decimal degrees.</span>
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<input type="radio" id="degrees" value="degrees" name="rb" >
+				<span class="caption">I have degrees, minutes and seconds.</span>
+			</td>			
+		</tr>
+	</table>
+	
+	<form id="bookmarkFormDecimal">
 		<table>
 			<tr>
-				<td align="center"><label id="title"></label></td>
-			</tr>
-			<tr>
-				<td align="center" height="80"><label id="auths"></label></td>
-			</tr>
-			<tr>
-				<td align="center" height="30"><label>Geographic location of the study side:</label></td>
-			</tr>
-			<tr>
 				<td>
-					<label id="longitudeLabel" for="longitude">Longitude:</label>
-					<input type="text" id="longitude" name="longitude">
+					<label id="latitudeLabel" for="latitude">Latitude:</label>
+					<input class="inputDecimal" style="margin-left: 20px;" type="text" id="latitudeDec" name="latitudeDec">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<label id="latitudeLabel" for="latitude">Latitude:</label>
-					<input type="text" id="latitude" name="latitude">
+					<label id="longitudeLabel" for="longitude">Longitude:</label>
+					<input class="inputDecimal" type="text" id="longitudeDec" name="longitudeDec">
+				</td>
+			</tr>
+			<tr>
+				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study site the article relates to and not the location of the university. For further information please visit <a href="$ctx.siteUrl/bookmark-help" target="_blank">Help</a> section)</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<form style="display: none" id="bookmarkFormDegrees">
+		<table>
+			<tr>
+				<td>
+					<label id="latitudeLabelDegrees">Latitude:</label>
+					<input maxlength="4" class="inputDegrees" style="margin-left: 20px;" type="text" id="latitudeDeg" name="latitudeDeg">°
+					<input maxlength="2" class="inputDegrees" type="text" id="latitudeMin" name="latitudeMin">'
+					<input maxlength="6" class="inputDegrees" type="text" id="latitudeSec" name="latitudeSec">"
+					<span id="latitudeDegMsg" class="coordinatesErrorMsg"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label id="longitudeLabelDegrees">Longitude:</label>
+					<input maxlength="4" class="inputDegrees" type="text" id="longitudeDeg" name="longitudeDeg">°
+					<input maxlength="2" class="inputDegrees" type="text" id="longitudeMin" name="longitudeMin">'
+					<input maxlength="6" class="inputDegrees" type="text" id="longitudeSec" name="longitudeSec">"
+					<span id="longitudeDegMsg" class="coordinatesErrorMsg"></span>
 				</td>
 			</tr>
 			<tr>
