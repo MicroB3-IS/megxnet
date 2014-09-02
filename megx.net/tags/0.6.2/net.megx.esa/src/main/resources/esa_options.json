@@ -1,0 +1,50 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "osd-form",
+            "method": "post",
+            "action": "${mvn.site.url}/ws/v1/esa/v1.0.0/observation"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {} 
+        }
+    },
+    "fields": {
+        "version": {
+            "type": "hidden"
+        },
+        "date_taken": {
+            
+            "dateFormat": "yy-mm-dd",
+             
+            "datepicker": {
+                "dateFormat": "yy-mm-dd" 
+            }
+        },
+        "time_taken": {
+            "maskString": "99:99",
+            "timeFormat": "hh:mm",
+            "timeFormatRegex": "^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"
+        },
+        "gps_accuracy" : {
+            "allowOptionalEmpty": true
+        },
+        "weather_condition":{
+         "type": "select",
+          "data_source": "${mvn.site.url}/net.megx.esa/data/weather_options.json"  
+        },
+        "ph":{
+            "validate": false
+        },
+        "secchi_depth":{
+            "validate": false
+        },
+        "comment": {
+            "type": "textarea"
+        }
+    }
+}

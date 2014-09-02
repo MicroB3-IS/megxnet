@@ -1,0 +1,107 @@
+body {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	border: 5px solid;
+	border-color: hsl(208, 68%, 79%);
+	border-radius: 5px;
+	height: 100%;
+	overflow: hidden;
+}
+.button{
+	border: 2px solid hsl(212, 83%, 32%);
+	padding: 10px 40px; 
+	background: hsl(208, 68%, 79%);
+	border-radius: 3px;
+	text-decoration: none;
+	font-size:12px;
+}
+#loginCheck { 
+    position:absolute;
+    top:35%;
+    left:4%;
+}
+#longitudeLabel, #latitudeLabel {
+	margin-left: 15px;
+}
+
+#longitudeLabelDegrees, #latitudeLabelDegrees {
+	margin-left: 15px;
+}
+#decimal, #degrees {
+	margin-left: 15px;
+}
+.inputDecimal {
+	height: 22px;
+	width: 170px;
+	display: inline;
+	margin-bottom: 2px;
+	margin-top: 1px;
+	margin-left: 10px;
+}
+.inputDegrees {
+	height: 22px;
+	width: 48px;
+	display: inline;
+	margin-bottom: 2px;
+	margin-top: 1px;
+	margin-left: 10px;
+}
+#submitBookmark {
+	border: 1px;
+	border-radius: 10px;
+	margin-left: 112.5px;
+	width: 85px;
+	background: hsl(208, 68%, 79%);
+}
+table,tr,th,td {
+	border-spacing:5px;
+	margin: 2px;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	margin-top:30px;
+}
+#infoMessage {
+	display:none;
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url(../images/icons/info.png);
+	border: 1px solid;
+	margin: 10px 0px;
+	padding:15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 2px center;
+	margin-top:25%;
+	text-align: center;
+}
+#auths {
+	text-decoration: underline;
+	font-size: 11px;
+}
+#title {
+	font-size: 14px;
+	font-weight: bold;
+}
+.my-error-class  {
+    color:red;
+    margin-left: 15px;
+}
+.my-valid-class  {
+    color:green;
+    margin-left: 15px;
+}
+.coordinatesErrorMsg {
+	display: none; 
+	color:red;
+	margin-left: 15px;;
+}
+#logout{
+	border: 1px;
+	border-radius: 10px;
+	margin-left: 230px;
+	width: 70px;
+	background: hsl(208, 68%, 79%);
+}
