@@ -72,9 +72,9 @@ $(document).ready(function() {
             var longitude = dmsToDegrees(longitudeData);
 
             if (latitude != null && longitude != null) {
-                console.log("lat: " + latitude.toFixed(4) + " - lon: " + longitude.toFixed(4));
+                console.log("lat: " + latitude.toFixed(6) + " - lon: " + longitude.toFixed(6));
 
-                var data = collectData(latitude.toFixed(4), longitude.toFixed(4));
+                var data = collectData(latitude.toFixed(6), longitude.toFixed(6));
 
                 insertBookmark(data);
             }
