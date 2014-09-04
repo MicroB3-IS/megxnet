@@ -32,7 +32,7 @@
         "border": "0",
         "background": "transparent",
         "height": "100%",
-        "width": "350px",
+        "width": "365px",
         "top": "0",
         "right": "0",
         "overflow": "hidden"
@@ -42,7 +42,7 @@
         "position": "fixed",
         "top": "7px",
         "z-index": iframeZIndex + 1,
-        "right": "320px",
+        "right": "334px",
         "cursor": "pointer"
     };
 
