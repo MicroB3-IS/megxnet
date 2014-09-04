@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    var latitude;
+    var longitude;
+
     $('#logout').click(function() {
         logOut();
     });
@@ -16,6 +19,76 @@ $(document).ready(function() {
         }
     });
 
+    $.validator.addMethod("latDE", function(value, element, param) {
+        if (this.optional(element)) { //This is not a 'required' element and the input is empty
+            return true;
+        }
+        if (validateLat(value)) {
+            return true;
+        }
+        return false;
+    });
+
+    $.validator.addMethod("lonDE", function(value, element, param) {
+        if (this.optional(element)) { //This is not a 'required' element and the input is empty
+            return true;
+        }
+        if (validateLon(value)) {
+            return true;
+        }
+        return false;
+    });
+
+    $('#latitudeDeg, #latitudeMin, #latitudeSec').keyup(function() {
+
+        var latitudeData = {
+            degrees: $('#latitudeDeg').val(),
+            minutes: $('#latitudeMin').val(),
+            seconds: $('#latitudeSec').val(),
+            from: 0,
+            to: 90,
+            msgElement: "latitudeDegMsg"
+        };
+
+        if (latitudeData.degrees >= 90) {
+            $('#latitudeMin').val("");
+            $('#latitudeMin').prop('disabled', true);
+            $('#latitudeSec').val("");
+            $('#latitudeSec').prop('disabled', true);
+        } else {
+            $('#latitudeMin').prop('disabled', false);
+            $('#latitudeSec').prop('disabled', false);
+        }
+
+        latitude = dmsToDegrees(latitudeData);
+
+    });
+
+    $('#longitudeDeg, #longitudeMin, #longitudeSec').keyup(function() {
+
+        var longitudeData = {
+            degrees: $('#longitudeDeg').val(),
+            minutes: $('#longitudeMin').val(),
+            seconds: $('#longitudeSec').val(),
+            from: 0,
+            to: 180,
+            msgElement: "longitudeDegMsg"
+        };
+
+        if (longitudeData.degrees >= 180) {
+            $('#longitudeMin').val("");
+            $('#longitudeMin').prop('disabled', true);
+            $('#longitudeSec').val("");
+            $('#longitudeSec').prop('disabled', true);
+        } else {
+            $('#longitudeMin').prop('disabled', false);
+            $('#longitudeSec').prop('disabled', false);
+        }
+
+        longitude = dmsToDegrees(longitudeData);
+
+    });
+
     $("#submitBookmark").click(function() {
 
         if ($('#bookmarkFormDecimal').is(':visible')) {
@@ -26,11 +99,11 @@ $(document).ready(function() {
                 rules: {
                     latitudeDec: {
                         required: true,
-                        range: [-90, 90]
+                        latDE: true
                     },
                     longitudeDec: {
                         required: true,
-                        range: [-180, 180]
+                        lonDE: true
                     }
                 },
                 messages: {
@@ -41,53 +114,74 @@ $(document).ready(function() {
 
             if ($("#bookmarkFormDecimal").valid()) {
 
-                var lon = $('#longitudeDec').val();
                 var lat = $('#latitudeDec').val();
+                var lon = $('#longitudeDec').val();
 
-                var data = collectData(lon, lat);
+                if ($('#south').is(':checked')) {
+                    lat = '-' + $('#latitudeDec').val();
+                }
+                if ($('#west').is(':checked')) {
+                    lon = '-' + $('#longitudeDec').val();
+                }
+
+                console.log('Latitude: ' + parseFloat(lat).toFixed(6) + ' Longitude: ' + parseFloat(lon).toFixed(6));
+                var data = collectData(parseFloat(lon), parseFloat(lat));
 
                 insertBookmark(data);
             }
         } else {
 
-            var latitudeData = {
-                degrees: $('#latitudeDeg').val(),
-                minutes: $('#latitudeMin').val(),
-                seconds: $('#latitudeSec').val(),
-                from: -90,
-                to: 90,
-                msgElement: "latitudeDegMsg"
-            };
-
-            var longitudeData = {
-                degrees: $('#longitudeDeg').val(),
-                minutes: $('#longitudeMin').val(),
-                seconds: $('#longitudeSec').val(),
-                from: -180,
-                to: 180,
-                msgElement: "longitudeDegMsg"
-            };
-
-            var latitude = dmsToDegrees(latitudeData);
-            var longitude = dmsToDegrees(longitudeData);
-
             if (latitude != null && longitude != null) {
+
+                if ($('#degSouth').is(':checked')) {
+                    latitude *= -1;
+                }
+                if ($('#degWest').is(':checked')) {
+                    longitude *= -1;
+                }
+
                 console.log("lat: " + latitude.toFixed(6) + " - lon: " + longitude.toFixed(6));
 
                 var data = collectData(latitude.toFixed(6), longitude.toFixed(6));
 
                 insertBookmark(data);
+                latitude = null;
+                longitude = null;
+            } else {
+
+                if (latitude == null) {
+                    $('#latitudeDegMsg').text("Please first enter a valid latitude value.").show();
+                }
+                if (longitude == null) {
+                    $('#longitudeDegMsg').text("Please first enter a valid longitude value.").show();
+                }
             }
         }
     });
 
 });
 
+function validateLat(value) {
+
+    if (value >= 0 && value <= 90.0 && value.indexOf('-') < 0) {
+        return true;
+    }
+    return false;
+}
+
+function validateLon(value) {
+
+    if (value >= 0 && value <= 180.0 && value.indexOf('-') < 0) {
+        return true;
+    }
+    return false;
+}
+
 function dmsToDegrees(data) {
 
     var res = null;
 
-    var degreesPatt = /^-?\d+$/g;
+    var degreesPatt = /^\d+$/g;
     var minutesPatt = /^\d+$/g;
     var secondsPatt = /^\d{1,2}(\.\d{1,4})?$/g;
 
@@ -124,11 +218,7 @@ function dmsToDegrees(data) {
                     sec = parseFloat(data.seconds);
                 }
 
-                if (deg < 0) {
-                    res = deg - min / 60 - sec / 3600;
-                } else {
-                    res = deg + min / 60 + sec / 3600;
-                }
+                res = deg + min / 60 + sec / 3600;
 
             } else {
                 $('#' + data.msgElement).text("Seconds value must be 0 or greater and less than 60.").show();
