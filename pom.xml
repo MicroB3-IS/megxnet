@@ -137,6 +137,7 @@
     <module>net.megx.twitter</module>
     <module>net.megx.mailer</module>
     <module>net.megx.contact</module>
+    <module>net.megx.form-widget</module>
   </modules>
 
     <dependencyManagement>
