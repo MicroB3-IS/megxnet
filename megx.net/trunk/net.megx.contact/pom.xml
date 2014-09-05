@@ -95,17 +95,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			 <plugin>
-                <groupId>ro.isdc.wro4j</groupId>
-                <artifactId>wro4j-maven-plugin</artifactId>
-                <configuration>
-                    <minimize>true</minimize>
-                    <jsDestinationFolder>res/net.megx.contact/js</jsDestinationFolder>
-                    <contextFolder>${basedir}</contextFolder>
-                    <wroFile>wro.xml</wroFile>
-                    <ignoreMissingResources>false</ignoreMissingResources>
-                </configuration>
-            </plugin>
 			<plugin>
 				<!-- main configuration is in parent pom -->
 				<groupId>org.apache.maven.plugins</groupId>
