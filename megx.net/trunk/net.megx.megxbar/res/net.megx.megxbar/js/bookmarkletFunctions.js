@@ -107,8 +107,8 @@ $(document).ready(function() {
                     }
                 },
                 messages: {
-                    latitudeDec: "Please enter a valid latitude range.",
-                    longitudeDec: "Please enter a valid longitude range."
+                    latitudeDec: "Latitude value must be in range of 0 to 90.",
+                    longitudeDec: "Longitude value must be in range of 0 to 180."
                 }
             });
 
