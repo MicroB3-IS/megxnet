@@ -40,7 +40,7 @@ public class PubmapAPI extends BaseRestService {
 			String status;
 
 			article.setArticleXML(article.getArticleXML()
-					.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " "));
+					.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&nbsp;", " ").replaceAll("&amp;", "&"));
 			article.setCreated(Calendar.getInstance().getTime());
 
 			if (request.getUserPrincipal() != null) {
