@@ -1,4 +1,4 @@
-package net.megx.ws.esa.rest;
+package net.megx.esa.rest;
 
 import java.io.FileInputStream;
 import java.io.IOException;

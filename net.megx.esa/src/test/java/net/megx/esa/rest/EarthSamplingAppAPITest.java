@@ -1,4 +1,4 @@
-package net.megx.ws.esa.rest;
+package net.megx.esa.rest;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 import org.scribe.model.Response;
 
-public class EsaAPITests {
+public class EarthSamplingAppAPITest {
 	
 	Properties p = new Properties();
 	InputStream in = null;
@@ -83,7 +83,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_ALL_SAMPLES_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 		
 	}
 	
@@ -92,7 +92,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_ALL_SAMPLE_OCEANS_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_SAMPLE_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	@Test
@@ -108,7 +108,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_NUMBER_OF_OBSERVATIONS_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_SAMPLE_CREATOR_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ public class EsaAPITests {
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_CITIZEN_CONFIG_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	@Test
@@ -157,8 +157,7 @@ public class EsaAPITests {
 		request.addBodyParameter("wind_speed", p.getProperty("POST_WIND_SPEED"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		System.out.println(response.getCode());
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}
 	
 	/*@Test
@@ -167,7 +166,7 @@ public class EsaAPITests {
 		request.addBodyParameter("samples", defaultSample.toString());
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(response.getCode(), 200);
+		Assert.assertEquals(200, response.getCode());
 	}*/
 	
 	
