@@ -2,71 +2,32 @@ package net.megx.esa.rest;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Properties;
-
-import net.megx.model.esa.Sample;
+import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
-import org.scribe.model.Response;
 
 public class EarthSamplingAppAPITest {
 	
-	Properties p = new Properties();
-	InputStream in = null;
-	OAuthService service;
-	Token accessToken;
-	/*Date date = Calendar.getInstance().getTime();
+	private Properties p = new Properties();
+	private InputStream in = null;
+	private OAuthService service;
+	private Token accessToken;
+	private String uuid = UUID.randomUUID().toString();
 	
-	private Sample defaultSample;
-	
-	private Sample createNewSample(String id){
-		Sample sample = new Sample();
-		sample.setAccuracy(Double.valueOf(p.getProperty("POST_GPS_ACCURACY")));
-		sample.setAirTemperature(Double.valueOf(p.getProperty("POST_AIR_TEMPERATURE")));
-		sample.setAppVersion(p.getProperty("POST_VERSION"));
-		//sample.setBarcode(BARCODE);
-		//sample.setBiome(BIOME);
-		//sample.setCollection(COLLECTION);
-		//sample.setCollectorId(COLLECTOR_ID);
-		sample.setComment(p.getProperty("POST_COMMENT"));
-		//sample.setConductivity(CONDUCTIVITY);
-		//sample.setElevation(ELEVATION);
-		//sample.setFeature(FEATURE);
-		//sample.setLabel(LABEL);
-		sample.setLat(Double.valueOf(p.getProperty("POST_LATITUDE")));
-		sample.setLon(Double.valueOf(p.getProperty("POST_LONGITUDE")));
-		sample.setModified(date);
-		//sample.setNationality(NATIONALITY);
-		//sample.setPermit(PERMIT);
-		//sample.setProjectId(PROJECT_ID);
-		//sample.setRawData(RAW_DATA);
-		sample.setSalinity(Double.valueOf(p.getProperty("POST_SALINITY")));
-		//sample.setSampleSize(SAMPLE_SIZE);
-		sample.setSamplingDepth(Double.valueOf(p.getProperty("POST_DEPTH ")));
-		//sample.setShipName(SHIPNAME);
-		sample.setTaken(date);
-		//sample.setUserName(USERNAME);
-		sample.setWaterDepth(Double.valueOf(p.getProperty("POST_SECCHI_DEPTH ")));
-		sample.setWaterTemperature(Double.valueOf(p.getProperty("POST_WATER_TEMPERATURE")));
-		sample.setWeatherCondition(p.getProperty("POST_WEATHER_CONDITION"));	
-		sample.setWindSpeed(Double.valueOf(p.getProperty("POST_WIND_SPEED")));
-		sample.setAccuracy(Double.valueOf(p.getProperty("POST_GPS_ACCURACY")));
-		return sample;
-	}*/
+	String samples = "[{\"id\": " + uuid + ",\"collectorId\": \"dd ee\",\"projectId\": \"microB3\",\"userName\": \"dd ee\",\"shipName\": \"\",\"boatManufacturer\": \"\",\"boatModel\": \"\",\"boatLength\": \"\",\"homeport\": \"\",\"nationality\": \"\",\"photos\": [],\"label\": \"dd-1\",\"barcode\": \"\",\"material\": \"\",\"biome\": \"Coastal sea area\",\"feature\": \"\",\"collectionMethod\": \"\",\"permit\": \"No\",\"sampleSize\": \"\",\"conductivity\": \"\",\"samplingDepth\": \"2.00\",\"comment\": \"Comm\",\"fun\": true,\"appVersion\": \"1.6\",\"time\": \"2014-09-11T08:37:00Z\",\"weatherCondition\": \"Clear night\",\"airTemperature\": \"1.00\",\"waterTemperature\": \"2.00\",\"windSpeed\": \"2.00\",\"salinity\": \"1\",\"lat\": \"22\",\"lon\": \"23\",\"accuracy\": \"1.00\",\"elevation\": \"\",\"secchiDepth\": \"21.00\",\"waterDepth\": \"\",\"phosphate\": \"1\",\"nitrate\": \"1\",\"nitrite\": \"1\",\"ph\": \"1\",\"valid\": true,\"missingFields\": [],\"uploaded\": false,\"taken\": \"2014-09-11T08:37:00Z\",\"modified\": \"2014-09-11T08:40:21Z\"}]";
 	
 	@Before
 	public void setUp() throws Exception{
 		
-//	    defaultSample = createNewSample("1");
 		in = new FileInputStream("src/test/resources/accessToken.properties");
 		p.load(in);
 		service = new ServiceBuilder().provider(MegxApi.class)
@@ -160,14 +121,13 @@ public class EarthSamplingAppAPITest {
 		Assert.assertEquals(200, response.getCode());
 	}
 	
-	/*@Test
+	@Test
 	public void testPostSamples(){
 		OAuthRequest request = new OAuthRequest(Verb.POST, p.getProperty("POST_SAMPLES_URL"));
-		request.addBodyParameter("samples", defaultSample.toString());
+		request.addBodyParameter("samples", samples);
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(200, response.getCode());
-	}*/
-	
+	}
 	
 }
