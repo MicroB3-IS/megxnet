@@ -26,7 +26,7 @@ public class Activator extends ResTplConfiguredActivator {
                     public void serviceAvailable( String name,
                             OSDRegistryService service ) {
                         log.debug("OSDRegistryService service received...");
-                        OSDRegistryAPI api = new OSDRegistryOAuthImpl(service);
+                        OSDRegistryOAuthImpl api = new OSDRegistryOAuthImpl(service);
                         RegUtils.reg(getBundleContext(),
                                 OSDRegistryOAuthImpl.class.getName(), api, null);
                         log.debug("OSD Registry app started.");
