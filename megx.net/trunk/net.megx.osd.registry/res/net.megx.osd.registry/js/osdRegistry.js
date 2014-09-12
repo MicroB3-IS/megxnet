@@ -90,7 +90,7 @@ $(document).ready(function() {
 		ajaxCall(
 				"POST", 
 				url, 
-				JSON.stringify(retrieveFormData()),
+				{"participant":JSON.stringify(retrieveFormData())},
 				function(){
 					window.location.href = redirectUrl;
 				}
@@ -147,7 +147,7 @@ $(document).ready(function() {
 		var redirectUrl = ctx.siteUrl + "/osd-registry/list";
 		
 		ajaxCall(
-				"POST",
+				"DELETE",
 				url, 
 				{id:id}, 
 				function(){
