@@ -22,9 +22,9 @@ public class OSDRegistryOAuthImplTests {
 	private Token accessToken;
 	
 
-	String participant = "{\"osdID\": \"3\",\"siteName\": \"asda\",\"institution\": \"asdasdsad\",\"institutionAddress\": \"saddsa\",\"country\": \"adsdsa\",\"institutionWebAddress\": \"http://adsd.com\",\"siteCoordinator\": \"sadds\",\"coordinatorEmail\": \"asd@ads.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"2a5887dc-d329-4bab-adec-a8186c8bf7e22\"}";
-	String updatedParticipant = "{\"osdID\": \"3\",\"siteName\": \"SLAVE\",\"institution\": \"asdasdsad\",\"institutionAddress\": \"saddsa\",\"country\": \"adsdsa\",\"institutionWebAddress\": \"http://adsd.com\",\"siteCoordinator\": \"sadds\",\"coordinatorEmail\": \"asd@ads.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"\"}";
-	String id = "2a5887dc-d329-4bab-adec-a8186c8bf7e22";
+	String participant = "{\"osdID\": \"3\",\"siteName\": \"TestSite\",\"institution\": \"TestInstitution\",\"institutionAddress\": \"TestAddress\",\"country\": \"TestCountry\",\"institutionWebAddress\": \"http://test-web.com\",\"siteCoordinator\": \"test\",\"coordinatorEmail\": \"test@mail.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"2a5887dc-d329-4bab-adec-a8186c8bf7e22\"}";
+	//String updatedParticipant = "{\"osdID\": \"3\",\"siteName\": \"TestSite\",\"institution\": \"TestInstitution\",\"institutionAddress\": \"TestAddress\",\"country\": \"TestCountry\",\"institutionWebAddress\": \"http://test-web.com\",\"siteCoordinator\": \"test\",\"coordinatorEmail\": \"test@mail.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"\"}";
+	//String id = "2a5887dc-d329-4bab-adec-a8186c8bf7e22";
 	
 	@Before
 	public void setUp() throws Exception {
