@@ -1,7 +1,6 @@
 package net.megx.osd.registry;
 
 import net.megx.megdb.osdregistry.OSDRegistryService;
-import net.megx.osd.registry.rest.OSDRegistryAPI;
 import net.megx.osd.registry.rest.OSDRegistryOAuthImpl;
 import net.megx.utils.OSGIUtils;
 
