@@ -23,8 +23,8 @@ public class OSDRegistryOAuthImplTests {
 	
 
 	String participant = "{\"osdID\": \"3\",\"siteName\": \"TestSite\",\"institution\": \"TestInstitution\",\"institutionAddress\": \"TestAddress\",\"country\": \"TestCountry\",\"institutionWebAddress\": \"http://test-web.com\",\"siteCoordinator\": \"test\",\"coordinatorEmail\": \"test@mail.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"2a5887dc-d329-4bab-adec-a8186c8bf7e22\"}";
-	//String updatedParticipant = "{\"osdID\": \"3\",\"siteName\": \"TestSite\",\"institution\": \"TestInstitution\",\"institutionAddress\": \"TestAddress\",\"country\": \"TestCountry\",\"institutionWebAddress\": \"http://test-web.com\",\"siteCoordinator\": \"test\",\"coordinatorEmail\": \"test@mail.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"\"}";
-	//String id = "2a5887dc-d329-4bab-adec-a8186c8bf7e22";
+	String updatedParticipant = "{\"osdID\": \"3\",\"siteName\": \"UpdatedTestSite\",\"institution\": \"UpdatedTestInstitution\",\"institutionAddress\": \"TestAddress\",\"country\": \"TestCountry\",\"institutionWebAddress\": \"http://test-web.com\",\"siteCoordinator\": \"test\",\"coordinatorEmail\": \"test@mail.com\",\"siteLat\": \"3.3\",\"siteLong\": \"3.3\",\"institutionLat\": \"3.3\",\"institutionLong\": \"3.3\",\"id\": \"2a5887dc-d329-4bab-adec-a8186c8bf7e22\"}";
+	String id = "2a5887dc-d329-4bab-adec-a8186c8bf7e22";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class OSDRegistryOAuthImplTests {
 		Assert.assertEquals(200, response.getCode());
 	}
 	
-	/*@Test
+	@Test
 	public void testUpdateParticipant(){
 		OAuthRequest request = new OAuthRequest(Verb.POST, p.getProperty("UPDATE_PARTICIPANT_URL"));
 		request.addHeader("Content-Type", "application/json");
@@ -70,20 +70,20 @@ public class OSDRegistryOAuthImplTests {
 		Response response = request.send();
 		Assert.assertEquals(200, response.getCode());
 	}
-	
-	@Test
-	public void testDeleteParticipant(){
-		OAuthRequest request = new OAuthRequest(Verb.DELETE, p.getProperty("DELETE_PARTICIPANT_URL"));
-		request.addHeader("Content-Type", "application/json");
-		request.addBodyParameter("id", id);
-		service.signRequest(accessToken, request);
-		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
-	}*/
-	
+ 
 	@Test
 	public void testGetParticipant(){
 		OAuthRequest request = new OAuthRequest(Verb.GET, p.getProperty("GET_PARTICIPANT_URL"));
+		service.signRequest(accessToken, request);
+		Response response = request.send();
+		Assert.assertEquals(200, response.getCode());
+	}
+	
+	@Test
+	public void testDeleteParticipant(){
+		OAuthRequest request = new OAuthRequest(Verb.POST, p.getProperty("DELETE_PARTICIPANT_URL"));
+		request.addHeader("Content-Type", "application/json");
+		request.addBodyParameter("id", id);
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		Assert.assertEquals(200, response.getCode());

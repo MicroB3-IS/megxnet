@@ -3,7 +3,6 @@ package net.megx.osd.registry.rest;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,6 +28,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Path("v1/OSDRegistry/v1.0.0")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class OSDRegistryOAuthImpl extends BaseRestService {
 
 	private OSDRegistryService osdRegistryService;
@@ -51,7 +52,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 
 	@Path("participants")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllParticipants() {
 		List<OSDParticipant> osdParticipants;
 		try {
@@ -83,7 +83,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 
 	@Path("addParticipant")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public String saveOSDParticipant(@FormParam("participant") String participant) {
 		try {
 			OSDParticipant osdParticipant = gson.fromJson(participant,
@@ -111,7 +110,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 
 	@Path("updateParticipant")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	public String updateOSDParticipant(@FormParam("participant") String participant) {
 		try {
 			OSDParticipant osdParticipant = gson.fromJson(participant,
@@ -138,13 +136,9 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 	 */
 
 	@Path("deleteParticipant")
-	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
+	@POST
 	public String deleteOSDParticipant(@FormParam("id") String id) {
 		try {
-			if(id == null){
-			
-			}
 			osdRegistryService.deleteOSDParticipant(id);
 			return gson.toJson(id);
 		} catch (DBGeneralFailureException e) {
@@ -167,8 +161,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 
 	@Path("getParticipant")
 	@GET
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	public String getParticipant(@QueryParam("id") String id) {
 		try {
 			OSDParticipant participant = osdRegistryService.getParticipant(id);
