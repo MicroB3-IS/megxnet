@@ -147,7 +147,7 @@ $(document).ready(function() {
 		var redirectUrl = ctx.siteUrl + "/osd-registry/list";
 		
 		ajaxCall(
-				"DELETE",
+				"POST",
 				url, 
 				{id:id}, 
 				function(){
