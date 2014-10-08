@@ -138,6 +138,7 @@
     <module>net.megx.mailer</module>
     <module>net.megx.contact</module>
     <module>net.megx.form-widget</module>
+    <module>net.megx.mibig</module>
   </modules>
 
     <dependencyManagement>
