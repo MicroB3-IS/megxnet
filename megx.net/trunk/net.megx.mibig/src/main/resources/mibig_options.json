@@ -1,10 +1,12 @@
 {
+	"renderForm": true,
+    "toolbarSticky": true,
     "form": {
-        "toggleSubmitValidState": true,
+        "toggleSubmitValidState": false,
         "attributes": {
             "id": "mibig-form",
             "method": "post",
-            "action": "http://..."
+            "action": "${mvn.site.url}/ws/v1/mibig/v1.0.0/bgc-registration"
         },
         "buttons": {
             "submit": {},
