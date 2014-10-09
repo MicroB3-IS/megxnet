@@ -72,6 +72,10 @@
 		{
 			name: 'net.megx.megdb.contact.ContactService',
 			class: 'net.megx.megdb.contact.impl.DBContactService'
+		},
+		{
+			name: 'net.megx.megdb.mibig.MibigService',
+			class: 'net.megx.megdb.mibig.impl.DBMibgService'
 		}
 	]
 }
