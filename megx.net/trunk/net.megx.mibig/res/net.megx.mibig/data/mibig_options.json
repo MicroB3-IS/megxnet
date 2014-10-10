@@ -2,7 +2,7 @@
 	"renderForm": true,
     "toolbarSticky": true,
     "form": {
-        "toggleSubmitValidState": false,
+        "toggleSubmitValidState": true,
         "attributes": {
             "id": "mibig-form",
             "method": "post",
