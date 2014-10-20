@@ -101,17 +101,17 @@
 			<tr>
 				<td>
 					<label id="latitudeLabel" for="latitude">Latitude:</label>
-					<input type="radio" style="margin-left: 15px;" id="north" name="latitude" checked>N
-					<input type="radio" id="south" name="latitude" style="margin-left:9px">S
+					<input type="radio" style="margin-left: 15px;" id="north" name="latitude" checked>N+
+					<input type="radio" id="south" name="latitude" style="margin-left:9px">S-
 					<input class="inputDecimal" type="text" id="latitudeDec" name="latitudeDec" style="margin-left:6px">
 				</td>
 			</tr>
 			<tr>
 				<td height="35">
 					<label id="longitudeLabel" for="longitude">Longitude:</label>
-					<input type="radio" name="longitude" id="east" checked>W
-					<input type="radio" name="longitude" id="west">E
-					<input class="inputDecimal" style="margin-left: 6px;" type="text" id="longitudeDec" name="longitudeDec">
+					<input type="radio" name="longitude" id="east" checked>W-
+					<input type="radio" name="longitude" id="west" style="margin-left: 9px;">E+
+					<input class="inputDecimal" style="margin-left: 2px;" type="text" id="longitudeDec" name="longitudeDec">
 				</td>
 			</tr>
 			<tr>
@@ -125,8 +125,8 @@
 			<tr>
 				<td>
 					<label id="latitudeLabelDegrees">Latitude:</label>
-					<input type="radio" name="degLatitude" id="degNorth" style="margin-left:10px" checked>N
-					<input type="radio" name="degLatitude" id="degSouth" style="margin-left:9px">S
+					<input type="radio" name="degLatitude" id="degNorth" style="margin-left:10px" checked>N+
+					<input type="radio" name="degLatitude" id="degSouth" style="margin-left:1px">S-
 					<input maxlength="2" class="inputDegrees" style="margin-left: 7px;" type="text" id="latitudeDeg" name="latitudeDeg">°
 					<input maxlength="2" class="inputDegrees" type="text" id="latitudeMin" name="latitudeMin">'
 					<input maxlength="6" class="inputDegrees" type="text" id="latitudeSec" name="latitudeSec">"
@@ -136,9 +136,9 @@
 			<tr>
 				<td height="35">
 					<label id="longitudeLabelDegrees">Longitude:</label>
-					<input type="radio" name="degLongitude" id="degEast" style="margin-left:0px" checked>W
-					<input type="radio" name="degLongitude" id="degWest">E
-					<input maxlength="3" class="inputDegrees" type="text" id="longitudeDeg" name="longitudeDeg">°
+					<input type="radio" name="degLongitude" id="degEast" style="margin-left:0px" checked>W-
+					<input type="radio" name="degLongitude" id="degWest" style="margin-left: 1px">E+
+					<input maxlength="3" class="inputDegrees" type="text" id="longitudeDeg" name="longitudeDeg" style="margin-left: 2px;">°
 					<input maxlength="2" class="inputDegrees" type="text" id="longitudeMin" name="longitudeMin">'
 					<input maxlength="6" class="inputDegrees" type="text" id="longitudeSec" name="longitudeSec">"
 					<span id="longitudeDegMsg" class="coordinatesErrorMsg"></span>

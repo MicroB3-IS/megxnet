@@ -150,10 +150,10 @@ $(document).ready(function() {
             } else {
 
                 if (latitude == null) {
-                    $('#latitudeDegMsg').text("Please first enter a valid latitude value.").show();
+                    $('#latitudeDegMsg').text("Latitude value must be in the range of 0 to 90.").show();
                 }
                 if (longitude == null) {
-                    $('#longitudeDegMsg').text("Please first enter a valid longitude value.").show();
+                    $('#longitudeDegMsg').text("Longitude value must be in the range of 0 to 180.").show();
                 }
             }
         }
