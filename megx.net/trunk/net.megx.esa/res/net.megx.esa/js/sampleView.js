@@ -94,7 +94,7 @@ $(document).ready(function(){
 
 	    var size = new OpenLayers.Size(21,25);
 	    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-	    var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+	    var icon = new OpenLayers.Icon('/megx.net/net.megx.esa/img/marker.png',size,offset);
 	    var marker = new OpenLayers.Marker(new OpenLayers.LonLat(data.lon, data.lat),icon);
 	    markers.addMarker(marker);
 	};
