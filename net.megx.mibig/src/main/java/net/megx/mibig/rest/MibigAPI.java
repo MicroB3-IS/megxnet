@@ -41,6 +41,7 @@ public class MibigAPI extends BaseRestService {
 			mibig.setRaw(mibigJson);
 			mibig.setSubmitted(Calendar.getInstance().getTime());
 			mibig.setModified(Calendar.getInstance().getTime());
+			// set to version from json string
 			mibig.setVersion(1);
 
 			service.storeMibigSubmission(mibig);
