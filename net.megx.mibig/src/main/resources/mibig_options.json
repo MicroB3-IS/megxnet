@@ -1,5 +1,5 @@
 {
-	"renderForm": true,
+    "renderForm": true,
     "toolbarSticky": true,
     "form": {
         "toggleSubmitValidState": true,
@@ -14,6 +14,13 @@
         }
     },
     "fields": {
+        "personal": {
+            "fields": {
+                "submitter_name": {
+                    "type": "personalname"
+                }
+            }
+        },
         "general_params": {
             "fields": {
                 "biosyn_class": {
@@ -22,7 +29,20 @@
                     "multiple": true,
                     "size": 7
                 },
+                "loci": {
+                    "collapsed": true,
+                    "fields": {
+                        "nucl_acc": {
+                            "itemLabel": "Genomic locus",
+                            "toolbarSticky": true
+                        }
+                    }
+                },
                 "compounds": {
+                    "itemLabel": "Compound",
+                    "toolbarSticky": true,
+                    "type": "map",
+                    "collapsed": true,
                     "fields": {
                         "item": {
                             "fields": {
@@ -61,8 +81,11 @@
                     }
                 },
                 "genes": {
+                    "collapsed": true,
                     "fields": {
                         "gene": {
+                            "itemLabel": "Gene",
+                            "type": "map",
                             "toolbarSticky": true,
                             "fields": {
                                 "item": {
@@ -82,6 +105,19 @@
                                     }
                                 }
                             }
+                        },
+                        "operon": {
+                            "itemLabel": "Operon",
+                            "toolbarSticky": true,
+                            "fields": {
+                                "item": {
+                                    "fields": {
+                                        "operon_genes": {
+                                            "type": "tag"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -89,12 +125,17 @@
                     "dependencies": {
                         "biosyn_class": "NRP"
                     },
+                    "collapsed": true,
                     "fields": {
                         "nrps_genes": {
+                            "toolbarSticky": true,
+                            "itemLabel": "NRPS gene",
+                            "type": "map",
                             "fields": {
                                 "item": {
                                     "fields": {
                                         "nrps_module": {
+                                            "toolbarSticky": true,
                                             "fields": {
                                                 "item": {
                                                     "fields": {
@@ -119,6 +160,10 @@
                                                                     "dependencies": {
                                                                         "aa_type": "Multiple (promiscuous)"
                                                                     }
+                                                                },
+                                                                "epimerized": {
+                                                                    "type": "checkbox",
+                                                                    "rightLabel": "Epimerized to D-enantiomer by epimerization domain or epimerase."
                                                                 },
                                                                 "subcluster": {
                                                                     "type": "tag",
@@ -152,8 +197,9 @@
                             "type": "tag",
                             "dependencies": {
                                 "te_type": [
-                                    "Type I",
-                                    "Unknown"
+                                    "TypeI",
+                                    "Unknown",
+                                    "None"
                                 ]
                             }
                         }
@@ -163,16 +209,14 @@
                     "dependencies": {
                         "biosyn_class": "Polyketide"
                     },
+                    "collapsed": true,
                     "fields": {
-                        "starter_unit": {
-                            "dependencies": {
-                                "pks_subclass": [
-                                    "Enediyne type I",
-                                    "Type II",
-                                    "Type III",
-                                    "Other"
-                                ]
-                            }
+                        "starter_unit": {},
+                        "pks_subclass": {
+                            "type": "select",
+                            "multiple": true,
+                            "vertical": "true",
+                            "size": 7
                         },
                         "mod_pks_genes": {
                             "dependencies": {
@@ -184,10 +228,14 @@
                                     "Other"
                                 ]
                             },
+                            "toolbarSticky": true,
+                            "itemLabel": "PKS gene",
+                            "type": "map",
                             "fields": {
                                 "item": {
                                     "fields": {
                                         "pks_module": {
+                                            "toolbarSticky": true,
                                             "fields": {
                                                 "item": {
                                                     "fields": {
@@ -195,19 +243,32 @@
                                                             "vertical": "true",
                                                             "type": "select",
                                                             "multiple": true,
-                                                            "size": 5
+                                                            "size": 6
                                                         },
                                                         "at_substr_spec": {
                                                             "dependencies": {
-                                                                "pks_domains": "Acyltransferase"
+                                                                "pks_domains": [
+                                                                    "Ketoreductase",
+                                                                    "Dehydratase",
+                                                                    "Enoylreductase"
+                                                                ]
                                                             }
                                                         },
                                                         "evidence_at_spec": {
                                                             "dependencies": {
-                                                                "pks_domains": "Acyltransferase",
+                                                                "pks_domains": [
+                                                                    "Ketoreductase",
+                                                                    "Dehydratase",
+                                                                    "Enoylreductase"
+                                                                ],
                                                                 "at_substr_spec": [
                                                                     "Unknown"
                                                                 ]
+                                                            }
+                                                        },
+                                                        "multiple_spec": {
+                                                            "dependencies": {
+                                                                "at_substr_spec": "Multiple (promiscuous)"
                                                             }
                                                         },
                                                         "kr_stereochem": {
@@ -240,8 +301,7 @@
                             "dependencies": {
                                 "pks_subclass": [
                                     "Modular type I",
-                                    "Trans-AT type I",
-                                    "Hybrid NRPS-PKS"
+                                    "Trans-AT type I"
                                 ]
                             }
                         },
@@ -251,6 +311,11 @@
                             }
                         },
                         "iterative_subtype": {
+                            "dependencies": {
+                                "pks_subclass": "Iterative type I"
+                            }
+                        },
+                        "iter_cycl_type": {
                             "dependencies": {
                                 "pks_subclass": "Iterative type I"
                             }
@@ -267,7 +332,6 @@
                                     "Modular type I",
                                     "Trans-AT type I",
                                     "Iterative type I",
-                                    "Hybrid NRPS-PKS",
                                     "Enediyne type I",
                                     "Other"
                                 ]
@@ -299,8 +363,9 @@
                                     "Other"
                                 ],
                                 "te_type": [
-                                    "Type I",
-                                    "Unknown"
+                                    "TypeI",
+                                    "Unknown",
+                                    "None"
                                 ]
                             }
                         },
@@ -320,6 +385,7 @@
                     "dependencies": {
                         "biosyn_class": "RiPP"
                     },
+                    "collapsed": true,
                     "fields": {
                         "precursor_loci": {
                             "fields": {
@@ -341,6 +407,7 @@
                     "dependencies": {
                         "biosyn_class": "Terpene"
                     },
+                    "collapsed": true,
                     "fields": {
                         "terpene_synth_cycl": {
                             "type": "tag"
@@ -354,8 +421,11 @@
                     "dependencies": {
                         "biosyn_class": "Saccharide"
                     },
+                    "collapsed": true,
                     "fields": {
                         "gt_genes": {
+                            "toolbarSticky": true,
+                            "type": "map",
                             "fields": {
                                 "item": {
                                     "fields": {
@@ -387,14 +457,21 @@
                 "Alkaloid": {
                     "dependencies": {
                         "biosyn_class": "Alkaloid"
-                    }
+                    },
+                    "collapsed": true
                 },
                 "Other": {
                     "dependencies": {
                         "biosyn_class": "Other"
-                    }
+                    },
+                    "collapsed": true
                 }
             }
+        },
+        "comments": {
+            "type": "textarea",
+            "rows": 6,
+            "cols": 80
         }
     }
 }
