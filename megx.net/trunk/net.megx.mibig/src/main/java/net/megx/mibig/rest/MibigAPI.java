@@ -29,12 +29,12 @@ public class MibigAPI extends BaseRestService {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public String storeMibigSubmission(
-			@FormParam("mibigJson") String mibigJson,
+			@FormParam("json") String mibigJson,
 			@Context HttpServletRequest request) {
 		try {
 			if (mibigJson == null) {
 				return toJSON(new Result<String>(true,
-						"mibigJson not provided", "bad-request"));
+						"json not provided", "bad-request"));
 			}
 			MibigSubmission mibig = new MibigSubmission();
 
