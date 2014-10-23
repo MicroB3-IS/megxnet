@@ -3,8 +3,8 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.megx.model.mibig.MibigSubmission">
-	<resultMap type="MibigSubmission" id="pubmap_article">
+<mapper namespace="net.megx.megdb.mibig.mappers.MibigMapper">
+	<resultMap type="MibigSubmission" id="mibig_submission">
 		<result column="id" property="id" />
 		<result column="submitted" property="submitted" />
 		<result column="modified" property="modified" />
@@ -14,10 +14,8 @@
 
 	<insert id="storeMibigSubmission" parameterType="MibigSubmission">
 		INSERT INTO
-		mibig.submissions(submitted, modified, raw, v)
-		VALUES (#{submitted},
-		#{modified},
-		#{version},to_json(#{raw}))
+		mibig.submissions(raw, v)
+		VALUES (to_json(#{raw}, #{version}))
 	</insert>
 
 </mapper>
