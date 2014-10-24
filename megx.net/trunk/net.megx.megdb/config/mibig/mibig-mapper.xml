@@ -15,7 +15,7 @@
 	<insert id="storeMibigSubmission" parameterType="MibigSubmission">
 		INSERT INTO
 		mibig.submissions(raw, v)
-		VALUES (to_json(#{raw}, #{version}))
+		VALUES ( #{raw}::json , #{version} )
 	</insert>
 
 </mapper>
