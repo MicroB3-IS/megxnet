@@ -144,6 +144,8 @@
 		
 		<!-- Contact mapper -->
 		<mapper resource="contact/contact-mapper.xml"/>
+        
+        <mapper resource="mibig/mibig-mapper.xml"/>
 	</mappers>
 	
 </configuration>
