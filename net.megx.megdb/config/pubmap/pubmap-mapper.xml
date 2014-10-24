@@ -26,5 +26,10 @@
 	<select id="articleExists" parameterType="int" resultType="boolean">
 		SELECT EXISTS (SELECT true FROM pubmap.raw_pubmap WHERE pmid=#{pmid})
 	</select>
+	
+	<select id="getAllArticles" resultMap="pubmap_article">
+		SELECT *
+		FROM pubmap.raw_pubmap
+	</select>
 
 </mapper>
