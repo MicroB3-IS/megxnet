@@ -28,7 +28,9 @@ public class MibigAPI extends BaseRestService {
 
     @Context
     private UriInfo uriInfo;
-    
+    @Context
+    HttpServletRequest request;
+
     public MibigAPI( MibigService service ) {
         this.service = service;
     }
@@ -37,7 +39,9 @@ public class MibigAPI extends BaseRestService {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response storeMibigSubmission( @FormParam("json") String mibigJson,
-            @Context HttpServletRequest request ) {
+            @FormParam("version") String version ) {
+
+        int ver = 0;
 
         try {
             if (mibigJson == null) {
@@ -46,30 +50,47 @@ public class MibigAPI extends BaseRestService {
                         .entity(toJSON(new Result<String>(true,
                                 "json not provided", "bad-request"))).build();
             }
+            if (version == null) {
+                return Response
+                        .status(Status.BAD_REQUEST)
+                        .entity(toJSON(new Result<String>(
+                                true,
+                                "Version parameter not provided. Need a version parameter greater than 0",
+                                "bad-request"))).build();
+            } else {
+                ver = Integer.parseInt(version);
+            }
+
             MibigSubmission mibig = new MibigSubmission();
 
             mibig.setRaw(mibigJson);
             mibig.setSubmitted(Calendar.getInstance().getTime());
             mibig.setModified(Calendar.getInstance().getTime());
-            // set to version from json string
-            mibig.setVersion(1);
+            mibig.setVersion(ver);
 
             service.storeMibigSubmission(mibig);
-            
-            //String address = uriInfo.getAbsolutePathBuilder();
+
+            // String address = uriInfo.getAbsolutePathBuilder();
             URI u = uriInfo.getAbsolutePath();
-            URI location = UriBuilder.fromUri(u).replacePath(request.getContextPath() + "/mibig/bgc-submission" ).build();
-            
-            log.debug("uri absolute=" + u.toASCIIString() );
-            log.debug("context path=" + request.getContextPath() );
+            URI location = UriBuilder
+                    .fromUri(u)
+                    .replacePath(
+                            request.getContextPath() + "/mibig/bgc-submission")
+                    .build();
+
+            log.debug("uri absolute=" + u.toASCIIString());
+            log.debug("context path=" + request.getContextPath());
             log.debug("location=" + location.toString());
             return Response.seeOther(location).build();
         } catch (DBGeneralFailureException e) {
             log.error("Could not store Submission:" + e);
-            return Response.serverError().entity( toJSON( "Could not store Submission" ) ).build();
-        } catch (Exception e) {
-            log.error("Server error:" + e);
-            return Response.serverError().entity( toJSON("Server error") ).build();
+            return Response.serverError()
+                    .entity(toJSON("Could not store Submission")).build();
+        } catch (NumberFormatException e) {
+            // TODO: handle exception
+            return Response
+                    .status(Status.BAD_REQUEST)
+                    .entity( toJSON("Version parameter not a valid number: " + version) ).build();
         }
     }
 

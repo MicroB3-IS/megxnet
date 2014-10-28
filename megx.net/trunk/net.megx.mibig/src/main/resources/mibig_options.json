@@ -14,6 +14,9 @@
         }
     },
     "fields": {
+        "version": {
+            "type": "hidden"
+        },
         "personal": {
             "fields": {
                 "submitter_name": {
@@ -34,7 +37,17 @@
                     "fields": {
                         "nucl_acc": {
                             "itemLabel": "Genomic locus",
-                            "toolbarSticky": true
+                            "toolbarSticky": true,
+                            "fields": {
+                                "item": {
+                                    "fields": {
+                                        "mixs_compliant": {
+                                            "type": "checkbox",
+                                            "rightLabel": "MIxS-compliant"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -48,6 +61,53 @@
                             "fields": {
                                 "chem_synonyms": {
                                     "type": "tag"
+                                },
+                                "database_deposited": {
+                                    "type": "checkbox",
+                                    "rightLabel": "Deposited in a chemical database."
+                                },
+                                "databases_deposited": {
+                                    "type": "select",
+                                    "multiple": true,
+                                    "size": 4,
+                                    "dependencies": {
+                                        "database_deposited": true
+                                    }
+                                },
+                                "pubchem_id": {
+                                    "dependencies": {
+                                        "databases_deposited": "PubChem"
+                                    }
+                                },
+                                "chebi_id": {
+                                    "dependencies": {
+                                        "databases_deposited": "chEBI"
+                                    }
+                                },
+                                "chembl_id": {
+                                    "dependencies": {
+                                        "databases_deposited": "chEMBL"
+                                    }
+                                },
+                                "chemspider_id": {
+                                    "dependencies": {
+                                        "databases_deposited": "ChemSpider"
+                                    }
+                                },
+                                "chem_struct": {
+                                    "dependencies": {
+                                        "database_deposited": false
+                                    }
+                                },
+                                "molecular_formula": {
+                                    "dependencies": {
+                                        "database_deposited": false
+                                    }
+                                },
+                                "mol_mass": {
+                                    "dependencies": {
+                                        "database_deposited": false
+                                    }
                                 },
                                 "evidence_struct": {
                                     "type": "select",
@@ -472,6 +532,10 @@
             "type": "textarea",
             "rows": 6,
             "cols": 80
+        },
+        "embargo": {
+            "type": "checkbox",
+            "rightLabel": "Please embargo my gene cluster information, pending publication of the results."
         }
     }
 }
