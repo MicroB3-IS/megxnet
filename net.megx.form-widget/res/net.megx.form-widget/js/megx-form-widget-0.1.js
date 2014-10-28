@@ -37,7 +37,7 @@ MegxFormWidget.prototype = {
               if ( form.isFormValid() ) {
                 var json = form.getValue();
                 var formJson = JSON.stringify(field.getValue());
-                alert("formJson: " + formJson);
+                //alert("formJson: " + formJson);
                 $('<input/>').attr('name', 'json').attr('value', formJson).appendTo("#" + cfg.formId);
               } else {
                 alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
