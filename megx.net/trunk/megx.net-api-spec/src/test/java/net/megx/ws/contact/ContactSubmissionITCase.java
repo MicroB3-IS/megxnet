@@ -3,6 +3,7 @@ package net.megx.ws.contact;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import net.megx.test.TestServer;
 import net.megx.test.categories.IntegrationTest;
@@ -21,9 +22,6 @@ public class ContactSubmissionITCase {
 	@Rule
 	public TestServer ts = new TestServer();
 	private String wsPrefix = "";
-	private String email = "test@gmail.com";
-	private String name = "Test Name";
-	private String comment = "Test Comment";
 
 	@Before
 	public void setUp() {
@@ -34,11 +32,15 @@ public class ContactSubmissionITCase {
 	@Category({ IntegrationTest.class, RESTServiceTest.class })
 	public void successfulContactSubmission() throws IOException {
 
+		HashMap<String, String> parametersMap = new HashMap<String, String>();
+		parametersMap.put("email", "test@gmail.com");
+		parametersMap.put("name", "Test Name");
+		parametersMap.put("comment", "Test Comment");
+
 		given().filter(ResponseLoggingFilter.logResponseTo(System.out))
-				.contentType(ContentType.URLENC).formParam("email", email)
-				.formParam("name", name).formParam("comment", comment).when()
-				.post(this.wsPrefix + "/store-contact").then().statusCode(200)
-				.log();
+				.contentType(ContentType.URLENC).formParams(parametersMap)
+				.when().post(this.wsPrefix + "/store-contact").then()
+				.statusCode(200).log();
 
 	}
 }
