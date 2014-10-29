@@ -1,0 +1,15 @@
+{
+    "osdID": "TestIDUpdate",
+    "siteName": "TestSiteNameUpdate",
+    "institution": "TestInstituteNameUpdate",
+    "institutionAddress": "TestInstituteAdressUpdate",
+    "country": "TestCountryUpdate",
+    "institutionWebAddress": "http://www.TestInstituteWebAdressUpdate.com",
+    "siteCoordinator": "TestSiteCoordinatorUpdate",
+    "coordinatorEmail": "TestCoordinatorEmailUpdate@mail.com",
+    "siteLat": "57",
+    "siteLong": "58",
+    "institutionLat": "37",
+    "institutionLong": "38",
+    "id": "0a65e65b-996f-493a-8c40-9d6d03c42025"
+}
