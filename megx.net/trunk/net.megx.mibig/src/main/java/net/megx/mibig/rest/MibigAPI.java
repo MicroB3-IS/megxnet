@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -34,6 +35,13 @@ public class MibigAPI extends BaseRestService {
     public MibigAPI( MibigService service ) {
         this.service = service;
     }
+    
+    @Path("bgc-registration")
+    @GET
+    public String serviceInfo( ) {
+    	log.debug("getting a bgc submission service info request");
+    	return "bgc registration up and running";
+    }
 
     @Path("bgc-registration")
     @POST
@@ -42,7 +50,8 @@ public class MibigAPI extends BaseRestService {
             @FormParam("version") String version ) {
 
         int ver = 0;
-
+        log.debug("getting a bgc submission POST request=" + version);
+        
         try {
             if (mibigJson == null) {
                 return Response
