@@ -91,7 +91,7 @@ MegxFormWidget.prototype = {
         		"validateOnClick" : true,
         		"onClick" : function() {
 //        			alert("done clicked."); 
-        			postRender( $("#" + cfg.formId) )
+        			submitForm( $("#" + cfg.formId) )
         		}
         	},
         		
