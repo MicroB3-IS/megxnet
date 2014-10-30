@@ -1,11 +1,13 @@
-<link href="$ctx.siteUrl/net.megx.mibig/css/bgc-registration.css"
-  rel="stylesheet" type="text/css"
->
+
 <link
   href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/alpaca-1.1.3.css"
   rel="stylesheet" type="text/css"
 >
 
+
+<link href="$ctx.siteUrl/net.megx.mibig/css/bgc-registration.css"
+  rel="stylesheet" type="text/css"
+>
 
 <script type="text/javascript"
   src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.tmpl-1.0.0pre.js"
@@ -61,20 +63,7 @@
           wizard : {
             "renderWizard" : true,
             "statusBar" : true,
-            "buttons" : {
-              "next" : {
-                "validateOnClick" : true,
-                "onClick" : function() {
-                //alert("Fired next.onClick handler");
-                }
-              },
-              "prev" : {
-                "validateOnClick" : true,
-                "onClick" : function() {
-                //alert("Fired prev.onClick handler");
-                }
-              }
-            },
+           
             //"validation": true, //use wizard template instead to allow validation?
             "steps" : 3,
             "bindings" : {
