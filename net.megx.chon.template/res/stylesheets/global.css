@@ -452,7 +452,7 @@ tfoot tr td {
 /*===================================================================================================================================================== */
 /*=============================================================================================================================================== FORMS */
 form label {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	font-size: 1em;
 	text-align: left;
@@ -460,7 +460,7 @@ form label {
 }
 
 form input {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #999;
@@ -469,7 +469,7 @@ form input {
 }
 
 form select {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #999;
@@ -506,7 +506,7 @@ form.blastRadioButton input[type=radio] {
 }
 
 form textarea {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	margin: .5em 0em;
 	border: .1em solid #e7e7e7;
@@ -516,14 +516,14 @@ form textarea {
 }
 
 form input disabled,form input disabled:hover {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #666;
 }
 
 form input:hover {
-	display: block;
+	/* display: block; */
 	padding: .5em .5em;
 	border: .1em solid #e7e7e7;
 	color: #333;
