@@ -253,7 +253,7 @@
                             "type": "tag",
                             "dependencies": {
                                 "te_type": [
-                                    "TypeI",
+                                    "Type I",
                                     "Unknown",
                                     "None"
                                 ]

@@ -7,7 +7,7 @@
             "type": "string",
             "readonly": true,
             "required": true,
-            "default": "2"
+            "default": "3"
         },
         "personal": {
             "type": "object",
@@ -162,25 +162,23 @@
                                 "description": "E.g., '3081434'."
                             },
                             "chebi_id": {
-                                "type": "string",
+                                "type": "integer",
                                 "dependencies": "databases_deposited",
                                 "title": "ChEBI ID",
-                                "pattern": "^[CHEBI:0123456789]{1,}$",
                                 "required": true,
-                                "description": "E.g., 'CHEBI:42355'."
+                                "description": "Please insert the number only. E.g., '42355' for 'CHEBI:42355'."
                             },
                             "chembl_id": {
-                                "type": "string",
+                                "type": "integer",
                                 "dependencies": "databases_deposited",
                                 "title": "ChEMBL ID",
-                                "pattern": "^[CHEMBL0123456789]{1,}$",
                                 "required": true,
-                                "description": "E.g., 'CHEMBL273387'."
+                                "description": "Please insert the number only. E.g., '273387' for 'CHEMBL273387'."
                             },
                             "chemspider_id": {
                                 "type": "integer",
                                 "dependencies": "databases_deposited",
-                                "title": "ChEMBL ID",
+                                "title": "ChemSpider ID",
                                 "required": true,
                                 "description": "E.g., '12041'."
                             },
@@ -434,7 +432,6 @@
                             "items": {
                                 "type": "object",
                                 "title": "NRPS gene",
-                                "minItems": 1,
                                 "properties": {
                                     "_key": {
                                         "title": "NRPS-encoding gene",
@@ -764,7 +761,6 @@
                             "items": {
                                 "type": "object",
                                 "title": "Modular PKS gene",
-                                "minItems": 1,
                                 "properties": {
                                     "_key": {
                                         "title": "PKS-encoding gene:",
@@ -877,7 +873,7 @@
                                                     "enum": [
                                                         "None",
                                                         "Methylation",
-                                                        "Pyransynthase",
+                                                        "Pyran synthase",
                                                         "Michael branching",
                                                         "Beta-branching",
                                                         "Amination",
@@ -1054,7 +1050,6 @@
                                     "gene_id": {
                                         "title": "Gene ID:",
                                         "type": "string",
-                                        "minItems": 1,
                                         "description": "Enter locus tags, protein IDs or gene IDs (in this order of preference) that make up this operon, exactly as they are specified in the submitted GenBank/ENA/DDBJ entry, separated by commas."
                                     },
                                     "core_pept_aa": {
@@ -1262,7 +1257,7 @@
                                             "4,6-dideoxy-4-hydroxylamino-D-glucose",
                                             "6-deoxy-3-C-methyl-L-mannose",
                                             "6-methoxy-D-glucose",
-                                            "Chromose D (4-O-acetyl-ÃŽÂ²-D-oliose)",
+                                            "Chromose D (4-O-acetyl-beta-D-oliose)",
                                             "D-3-N-methyl-4-O-methyl-L-ristosamine",
                                             "D-angolosamine",
                                             "D-arabinose",
