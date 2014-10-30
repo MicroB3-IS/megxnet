@@ -5,12 +5,8 @@
         "toggleSubmitValidState": true,
         "attributes": {
             "id": "mibig-form",
-            "method": "post",
+            "method": "post", 
             "action": "${mvn.site.url}/ws/v1/mibig/v1.0.0/bgc-registration"
-        },
-        "buttons": {
-            "submit": {},
-            "reset": {}
         }
     },
     "fields": {
@@ -423,7 +419,7 @@
                                     "Other"
                                 ],
                                 "te_type": [
-                                    "TypeI",
+                                    "Type I",
                                     "Unknown",
                                     "None"
                                 ]
