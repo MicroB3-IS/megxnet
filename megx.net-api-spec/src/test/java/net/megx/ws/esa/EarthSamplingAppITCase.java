@@ -137,15 +137,32 @@ public class EarthSamplingAppITCase {
 		InputStream in = this.getClass().getClassLoader()
 				.getResourceAsStream("osd-app-samples.json");
 		String samplesJson = IOUtils.toString(in);
-		
+
 		RestAssured.authentication = this.authentication;
-		
-		given()
-				.filter(ResponseLoggingFilter.logResponseTo(System.out))
+
+		given().filter(ResponseLoggingFilter.logResponseTo(System.out))
 				.contentType(ContentType.JSON)
 				.formParam("samples", samplesJson).when()
 				.post(this.wsPrefix + "/samples").then().statusCode(200).log();
 
+	}
+
+	@Test
+	@Category({ IntegrationTest.class, RESTServiceTest.class })
+	public void retrieveConfigurationForCitizen() {
+		given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+				.contentType(ContentType.JSON)
+				.get(this.wsPrefix + "/citizenConfig").then().statusCode(200)
+				.log();
+	}
+
+	@Test
+	@Category({ IntegrationTest.class, RESTServiceTest.class })
+	public void retrieveConfigurationForScientist() {
+		given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+				.contentType(ContentType.JSON)
+				.get(this.wsPrefix + "/scientistConfig").then().statusCode(200)
+				.log();
 	}
 
 }
