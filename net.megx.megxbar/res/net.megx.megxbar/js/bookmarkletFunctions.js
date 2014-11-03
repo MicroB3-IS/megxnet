@@ -11,11 +11,18 @@ $(document).ready(function() {
 
         if ($('#decimal').is(':checked')) {
             $('#bookmarkFormDegrees').hide();
+            $('#bookmarkFormRegionName').hide();
             $('#bookmarkFormDecimal').fadeIn(250);
         }
         if ($('#degrees').is(':checked')) {
             $('#bookmarkFormDecimal').hide();
+            $('#bookmarkFormRegionName').hide();
             $('#bookmarkFormDegrees').fadeIn(250);
+        }
+        if ($('#regionName').is(':checked')) {
+            $('#bookmarkFormDecimal').hide();
+            $('#bookmarkFormDegrees').hide();
+            $('#bookmarkFormRegionName').fadeIn(250);
         }
     });
 
