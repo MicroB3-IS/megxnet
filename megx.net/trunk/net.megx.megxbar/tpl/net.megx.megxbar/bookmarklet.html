@@ -94,6 +94,12 @@
 				<span class="caption">I have degrees, minutes and seconds.</span>
 			</td>			
 		</tr>
+		<tr>
+			<td>
+				<input type="radio" id="regionName" value="regionName" name="rb" >
+				<span class="caption">I don't know the geographic coordinates.</span>
+			</td>			
+		</tr>
 	</table>
 	
 	<form id="bookmarkFormDecimal">
@@ -142,6 +148,29 @@
 					<input maxlength="2" class="inputDegrees" type="text" id="longitudeMin" name="longitudeMin">'
 					<input maxlength="6" class="inputDegrees" type="text" id="longitudeSec" name="longitudeSec">"
 					<span id="longitudeDegMsg" class="coordinatesErrorMsg"></span>
+				</td>
+			</tr>
+			<tr>
+				<td align="center"><span style ="font-style: italic;">(Please use the coordinates of the study site the article relates to and not the location of the university. For further information please visit <a href="$ctx.siteUrl/bookmark-help" target="_blank">Help</a> section)</span></td>
+			</tr>
+		</table>
+	</form>
+	
+	<form style="display: none" id="bookmarkFormRegionName">
+		<table>
+			<tr>
+				<td>
+					<label id="placeTypeLabel">Select Country/Sea:</label>
+					<select id="placeTypeSelect">
+					  <option value="country">Country</option>
+					  <option value="sea">Sea</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td height="35">
+					<label id="placeNameLabel">Enter Place Name:</label>
+					<input type="text" id="placeName" name="placeName">
 				</td>
 			</tr>
 			<tr>

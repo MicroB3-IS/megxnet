@@ -23,13 +23,33 @@ body {
     left:4%;
 }
 #longitudeLabel, #latitudeLabel {
-	margin-left: 19px;
+	margin-left: 13px;
+}
+
+#placeTypeLabel, #placeNameLabel {
+	margin-left: 13px;
+}
+
+#placeTypeSelect {
+	height: 22px;
+	width: 160px;
+	margin-left: 3px;
+	margin-bottom: 3px; 
+	margin-top: 1px;
+}
+
+#placeName {
+	height: 22px;
+	width: 160px;
+	margin-left: 10px;
+	margin-bottom: 3px; 
+	margin-top: 1px;
 }
 
 #longitudeLabelDegrees, #latitudeLabelDegrees {
 	margin-left: 2px;
 }
-#decimal, #degrees {
+#decimal, #degrees, #regionName {
 	margin-left: 15px;
 }
 .inputDecimal {
