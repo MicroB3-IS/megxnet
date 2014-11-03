@@ -22,6 +22,14 @@ body {
     top:35%;
     left:4%;
 }
+.geoNamesLogo {
+	width: 84px;
+	height: 24px;
+	position:absolute;
+    top:95.5%;
+    left:70%;
+}
+
 #longitudeLabel, #latitudeLabel {
 	margin-left: 13px;
 }
@@ -71,7 +79,7 @@ body {
 #submitBookmark {
 	border: 1px;
 	border-radius: 10px;
-	margin-left: 120px;
+	margin-left: 112px;
 	width: 85px;
 	background: hsl(208, 68%, 79%);
 }
@@ -121,8 +129,8 @@ table,tr,th,td {
 #logout{
 	border: 1px;
 	border-radius: 10px;
-	margin-left: 250px;
-	width: 70px;
+	margin-left: 225px;
+	width: 84px;
 	background: hsl(208, 68%, 79%);
 	font-size: 11px;
 }
