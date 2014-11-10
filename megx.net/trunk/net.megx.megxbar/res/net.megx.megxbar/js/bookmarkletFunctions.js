@@ -130,11 +130,8 @@ $(document).ready(function() {
                 if ($('#west').is(':checked')) {
                     lon = '-' + $('#longitudeDec').val();
                 }
-
-                console.log('Latitude: ' + parseFloat(lat).toFixed(6) + ' Longitude: ' + parseFloat(lon).toFixed(6));
-                var data = collectData(parseFloat(lon), parseFloat(lat));
-
-                insertBookmark(data);
+                
+                findNearby(parseFloat(lat), parseFloat(lon), findNearbyData);
             }
         } else {
 
@@ -147,11 +144,8 @@ $(document).ready(function() {
                     longitude *= -1;
                 }
 
-                console.log("lat: " + latitude.toFixed(6) + " - lon: " + longitude.toFixed(6));
-
-                var data = collectData(latitude.toFixed(6), longitude.toFixed(6));
-
-                insertBookmark(data);
+                findNearby(latitude.toFixed(6), longitude.toFixed(6), findNearbyData);
+                
                 latitude = null;
                 longitude = null;
             } else {
@@ -167,6 +161,42 @@ $(document).ready(function() {
     });
 
 });
+
+function findNearbyData(data, lat, lon) {
+
+    console.log('Latitude: ' + parseFloat(lat).toFixed(6) + ' Longitude: ' + parseFloat(lon).toFixed(6));
+    
+    var country = data.country || 'N/A';
+    var place = data.placeName || 'N/A';
+    
+    console.log(country, place);
+
+    var data = collectData(lat, lon, country, place);
+
+    insertBookmark(data);
+
+}
+
+function findNearby(lat, lon, callback) {
+
+    $.ajax({
+        type: "GET",
+        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/placename',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: {
+            "lat": lat,
+            "lon": lon
+        },
+        success: function(placeName) {
+            callback(placeName.data, lat, lon);
+        },
+        error: function(a, b, c) {
+            console.log(c);
+
+        }
+    });
+}
 
 function validateLat(value) {
 
@@ -291,7 +321,7 @@ function insertBookmark(data) {
     });
 }
 
-function collectData(lon, lat) {
+function collectData(lat, lon, country, place) {
 
     var megxbar = {
         title: msg.article.title,
@@ -305,6 +335,8 @@ function collectData(lon, lat) {
         url: msg.article.url,
         lon: lon,
         lat: lat,
+        country: country,
+        place: place,
         megxBarJSON: JSON.stringify(megxbar),
         articleXML: msg.article.xml
     };
