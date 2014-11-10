@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,7 +27,9 @@ import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.pubmap.Article;
+import net.megx.pubmap.external.beans.Geoname;
 import net.megx.pubmap.external.beans.Geonames;
+import net.megx.pubmap.internal.beans.Place;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 
@@ -114,15 +117,14 @@ public class PubmapAPI extends BaseRestService {
 	@Path("placename")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public void findNearby(@QueryParam("lat") String lat,
+	public String findNearby(@QueryParam("lat") String lat,
 			@QueryParam("lon") String lon, @Context HttpServletRequest request) {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		InputStream instream = null;
 		URI uri = null;
-		String country;
-		String placeName;
+		Place place = new Place();
 
 		try {
 			uri = new URIBuilder().setScheme("http")
@@ -147,16 +149,22 @@ public class PubmapAPI extends BaseRestService {
 
 					if (geonames.getGeonamesLst() != null) {
 
-						System.out.println("land");
-
+						List<Geoname> geonamesList = new ArrayList<Geoname>();
+						geonamesList = geonames.getGeonamesLst();
+						place.setPlaceName(geonamesList.get(geonamesList.size() - 1).getName());
+						place.setCountry(geonamesList.get(geonamesList.size() - 1).getCountryName());
+						
 					} else if (geonames.getOcean() != null) {
 
-						System.out.println("ocean");
-//						placeName = geonames.getOcean().getName();
+						place.setPlaceName(geonames.getOcean().getName());
 						
 					} else if (geonames.getAddress() != null) {
 
-						System.out.println("US address");
+						place.setPlaceName(geonames.getAddress().getPlacename());
+						
+					} else if (geonames.getCountryName() != null){
+						
+						place.setCountry(geonames.getCountryName());
 					}
 					EntityUtils.consume(entity);
 				}
@@ -167,24 +175,19 @@ public class PubmapAPI extends BaseRestService {
 
 		} catch (URISyntaxException e) {
 			log.error("Wrong URI" + uri, e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
+			return toJSON(handleException(e));
 		} catch (ClientProtocolException e) {
 			log.error("HTTPReq:ClientProtocolException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
+			return toJSON(handleException(e));
 		} catch (JAXBException e) {
 			log.error("JAXBException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
+			return toJSON(handleException(e));
 		} catch (IOException e) {
 			log.error("HTTPReq:IOException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (Throwable e) {
+			return toJSON(handleException(e));
+		} catch (Exception e) {
 			log.error("HTTPReq:Exception ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
+			return toJSON(handleException(e));
 		} finally {
 			try {
 				instream.close();
@@ -193,5 +196,6 @@ public class PubmapAPI extends BaseRestService {
 				log.error("HTTPReq:Exception closing response ", e);
 			}
 		}
+		return toJSON(new Result<Place>(place));
 	}
 }
