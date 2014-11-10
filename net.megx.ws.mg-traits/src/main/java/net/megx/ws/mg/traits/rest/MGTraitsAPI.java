@@ -58,6 +58,10 @@ public class MGTraitsAPI extends BaseRestService {
 
 	private static final String SAMPLE_LABEL = "sample_label";
 
+	/*
+	 * do not change the order of this header fields, if new fields get added in
+	 * future, add them at the end
+	 */
 	private static final String JOB_DETAILS_HEADER = SAMPLE_LABEL
 			+ ",environment"
 			+ ",time_submitted,time_finished,return_code,error_message";
