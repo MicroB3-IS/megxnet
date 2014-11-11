@@ -23,6 +23,7 @@ import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.pubmap.Article;
 import net.megx.pubmap.geonames.GeonamesService;
+import net.megx.pubmap.geonames.model.Place;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 
@@ -111,9 +112,13 @@ public class PubmapAPI extends BaseRestService {
 	public String findNearby(@QueryParam("lat") String lat,
 			@QueryParam("lon") String lon) {
 
+		Place place = new Place();
+
 		try {
 
-			return toJSON(geonamesService.getPlaceName(lat, lon));
+			place = geonamesService.getPlaceName(lat, lon);
+
+			return toJSON(new Result<Place>(place));
 
 		} catch (URISyntaxException e) {
 			log.error("Wrong URI", e);
