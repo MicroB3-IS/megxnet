@@ -1,10 +1,7 @@
 package net.megx.pubmap.rest;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,43 +16,37 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.model.pubmap.Article;
-import net.megx.pubmap.external.beans.Geoname;
-import net.megx.pubmap.external.beans.Geonames;
-import net.megx.pubmap.internal.beans.Place;
+import net.megx.pubmap.geonames.GeonamesService;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 @Path("v1/pubmap/v1.0.0")
 public class PubmapAPI extends BaseRestService {
 
-	private PubMapService service;
+	@Context
+	HttpServletRequest request;
 
-	public PubmapAPI(PubMapService service) {
+	private PubMapService service;
+	private GeonamesService geonamesService;
+
+	public PubmapAPI(PubMapService service, GeonamesService geonamesService) {
 		this.service = service;
+		this.geonamesService = geonamesService;
+
 	}
 
 	@Path("article")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String storeArticle(@FormParam("article") String articleJson,
-			@Context HttpServletRequest request) {
+	public String storeArticle(@FormParam("article") String articleJson) {
 		try {
 			if (articleJson == null) {
 				return toJSON(new Result<String>(true, "article not provided",
@@ -97,7 +88,7 @@ public class PubmapAPI extends BaseRestService {
 	@Path("all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllArticles(@Context HttpServletRequest request) {
+	public String getAllArticles() {
 		try {
 			return toJSON(new Result<List<Article>>(service.getAllArticles()));
 		} catch (DBGeneralFailureException e) {
@@ -118,63 +109,14 @@ public class PubmapAPI extends BaseRestService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findNearby(@QueryParam("lat") String lat,
-			@QueryParam("lon") String lon, @Context HttpServletRequest request) {
-
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		CloseableHttpResponse response = null;
-		InputStream instream = null;
-		URI uri = null;
-		Place place = new Place();
+			@QueryParam("lon") String lon) {
 
 		try {
-			uri = new URIBuilder().setScheme("http")
-					.setHost("api.geonames.org").setPath("/extendedFindNearby")
-					.setParameter("lat", lat).setParameter("lng", lon)
-					.setParameter("username", "megx").build();
 
-			HttpGet httpget = new HttpGet(uri);
-			response = httpclient.execute(httpget);
-			int status = response.getStatusLine().getStatusCode();
-
-			if (status >= 200 && status < 300) {
-
-				HttpEntity entity = response.getEntity();
-
-				if (entity != null) {
-					
-					instream = entity.getContent();
-					JAXBContext context = JAXBContext.newInstance(Geonames.class);
-					Unmarshaller um = context.createUnmarshaller();
-					Geonames geonames = (Geonames) um.unmarshal(instream);
-
-					if (geonames.getGeonamesLst() != null) {
-
-						List<Geoname> geonamesList = new ArrayList<Geoname>();
-						geonamesList = geonames.getGeonamesLst();
-						place.setPlaceName(geonamesList.get(geonamesList.size() - 1).getName());
-						place.setCountry(geonamesList.get(geonamesList.size() - 1).getCountryName());
-						
-					} else if (geonames.getOcean() != null) {
-
-						place.setPlaceName(geonames.getOcean().getName());
-						
-					} else if (geonames.getAddress() != null) {
-
-						place.setPlaceName(geonames.getAddress().getPlacename());
-						
-					} else if (geonames.getCountryName() != null){
-						
-						place.setCountry(geonames.getCountryName());
-					}
-					EntityUtils.consume(entity);
-				}
-			} else {
-				throw new ClientProtocolException(
-						"Unexpected response status: " + status);
-			}
+			return toJSON(geonamesService.getPlaceName(lat, lon));
 
 		} catch (URISyntaxException e) {
-			log.error("Wrong URI" + uri, e);
+			log.error("Wrong URI", e);
 			return toJSON(handleException(e));
 		} catch (ClientProtocolException e) {
 			log.error("HTTPReq:ClientProtocolException ", e);
@@ -186,16 +128,8 @@ public class PubmapAPI extends BaseRestService {
 			log.error("HTTPReq:IOException ", e);
 			return toJSON(handleException(e));
 		} catch (Exception e) {
-			log.error("HTTPReq:Exception ", e);
+			log.error("Server error: ", e);
 			return toJSON(handleException(e));
-		} finally {
-			try {
-				instream.close();
-				response.close();
-			} catch (IOException e) {
-				log.error("HTTPReq:Exception closing response ", e);
-			}
 		}
-		return toJSON(new Result<Place>(place));
 	}
 }
