@@ -122,19 +122,24 @@ public class PubmapAPI extends BaseRestService {
 
 		} catch (URISyntaxException e) {
 			log.error("Wrong URI", e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (ClientProtocolException e) {
 			log.error("HTTPReq:ClientProtocolException ", e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (JAXBException e) {
 			log.error("JAXBException ", e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (IOException e) {
 			log.error("HTTPReq:IOException ", e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (Exception e) {
 			log.error("Server error: ", e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
