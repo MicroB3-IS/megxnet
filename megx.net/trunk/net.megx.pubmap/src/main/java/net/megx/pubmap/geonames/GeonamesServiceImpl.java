@@ -75,9 +75,17 @@ public class GeonamesServiceImpl extends BaseRestService implements
 						place.setPlaceName(geonames.getOcean().getName());
 
 					} else if (geonames.getAddress() != null) {
-
-						place.setPlaceName(geonames.getAddress().getPlacename());
-
+						
+						place.setCountry(geonames.getAddress().getCountryCode());
+						
+						if(!geonames.getAddress().getPlacename().isEmpty()){
+							
+							place.setPlaceName(geonames.getAddress().getPlacename());
+							
+						} else {
+							place.setPlaceName(geonames.getAddress().getStreet());
+						}
+						
 					} else if (geonames.getCountryName() != null) {
 
 						place.setCountry(geonames.getCountryName());
