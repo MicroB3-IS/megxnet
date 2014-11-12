@@ -19,29 +19,29 @@ $(document).ready(function() {
         aoColumns: [{
             mData: 'title',
             sClass: 'left data-pad',
-            sWidth: '120px'
+            sWidth: '165px'
         }, {
             mData: 'authors',
             sClass: 'left data-pad',
-            sWidth: '120px'
+            sWidth: '145px'
         }, {
             mData: 'journal',
             sClass: 'left data-pad',
-            sWidth: '120px'
+            sWidth: '145px'
         }, {
             mData: 'date',
             sClass: 'left data-pad',
-            sWidth: '120px',
+            sWidth: '90px',
            
         }, {
             mData: 'country',
             sClass: 'left data-pad',
-            sWidth: '120px',
+            sWidth: '100px',
            
         }, {
             mData: 'place',
             sClass: 'left data-pad',
-            sWidth: '120px',
+            sWidth: '100px',
            
         }, { 
     	 	mData: 'id',
