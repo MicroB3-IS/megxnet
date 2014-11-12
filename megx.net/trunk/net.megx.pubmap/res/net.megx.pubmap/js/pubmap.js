@@ -33,6 +33,16 @@ $(document).ready(function() {
             sClass: 'left data-pad',
             sWidth: '120px',
            
+        }, {
+            mData: 'country',
+            sClass: 'left data-pad',
+            sWidth: '120px',
+           
+        }, {
+            mData: 'place',
+            sClass: 'left data-pad',
+            sWidth: '120px',
+           
         }, { 
     	 	mData: 'id',
     	 	sClass: 'center data-pad',
@@ -56,10 +66,16 @@ $(document).ready(function() {
 	        	var rowsToAdd = [];
 	        	
 	            for(var i = 0; i < allArticles.data.length; i++) {
+	            	
 	            	//parsing megxJson to get Title and Authors
 	            	var megxBarJSON = JSON.parse(allArticles.data[i].megxBarJSON);
 	            	var title = JSON.parse(megxBarJSON).title;
 	            	var authors = JSON.parse(megxBarJSON).authors;
+	            	
+	            	var date = allArticles.data[i].created;
+	            	var country = allArticles.data[i].country;
+	            	var place = allArticles.data[i].place;
+	            	var id = allArticles.data[i].pmid;
 	            	
 	            	//parsing xml to get the Journal Title
 	            	var articleXML = allArticles.data[i].articleXML,
@@ -73,8 +89,10 @@ $(document).ready(function() {
 	 	                'title': title || '',
 	 	                'authors': authors || '',
 	 	                'journal': $title.text() || '',
-	 	                'date': allArticles.data[i].created || '',
-	 	                'id' : allArticles.data[i].pmid
+	 	                'date': date || '',
+	 	                'country': country || '',
+	 	                'place': place || '',
+	 	                'id' : id
 	 	            });
 	            }    	 
 		    	if(rowsToAdd.length === nbRorwsToAdd){
