@@ -75,20 +75,27 @@ public class GeonamesServiceImpl extends BaseRestService implements
 						place.setPlaceName(geonames.getOcean().getName());
 
 					} else if (geonames.getAddress() != null) {
-						
+
 						place.setCountry(geonames.getAddress().getCountryCode());
-						
-						if(!geonames.getAddress().getPlacename().isEmpty()){
-							
-							place.setPlaceName(geonames.getAddress().getPlacename());
-							
+
+						if (!geonames.getAddress().getPlacename().isEmpty()) {
+
+							place.setPlaceName(geonames.getAddress()
+									.getPlacename());
+
 						} else {
-							place.setPlaceName(geonames.getAddress().getStreet());
+							place.setPlaceName(geonames.getAddress()
+									.getStreet());
 						}
-						
+
 					} else if (geonames.getCountryName() != null) {
 
 						place.setCountry(geonames.getCountryName());
+
+					} else if (geonames.getStatus() != null) {
+
+						throw new ClientProtocolException(
+								"Geonames service status message: " + geonames.getStatus().getMessage());
 
 					} else {
 						throw new ClientProtocolException(
@@ -100,7 +107,7 @@ public class GeonamesServiceImpl extends BaseRestService implements
 				throw new ClientProtocolException(
 						"Unexpected response status: " + status);
 			}
-
+			
 		} finally {
 			try {
 				instream.close();
@@ -111,5 +118,4 @@ public class GeonamesServiceImpl extends BaseRestService implements
 		}
 		return place;
 	}
-
 }
