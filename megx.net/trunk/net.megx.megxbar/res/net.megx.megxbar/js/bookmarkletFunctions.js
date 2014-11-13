@@ -311,11 +311,7 @@ function insertBookmark(data) {
             $("#message").css("border-radius", "15px");
             $("#message").css("padding-left", "10px");
             $("input[type=text]").val("");
-            
-            $('#latitudeMin').prop('disabled', false);
-            $('#latitudeSec').prop('disabled', false);
-            $('#longitudeMin').prop('disabled', false);
-            $('#longitudeSec').prop('disabled', false);
+            $("input[type=text]").prop('disabled', false);
 
         },
         error: function(a, b, c) {
