@@ -1,0 +1,17 @@
+<link href="$ctx.siteUrl/net.megx.pubmap/css/pubmap.css" rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/net.megx.ui.table/css/data.table.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.pubmap/js/pubmap.js"></script>
+
+<div style="padding: 15px">
+	<h3>Map of Articles</h3>
+	<div>
+		#parse("net.megx.pubmap/articlesMap.html")
+	</div>
+	
+	<h3>Table representation</h3>
+	
+	<div style="width: 930px; overflow-x: auto;">
+		#parse("net.megx.pubmap/articlesTable.html")
+	</div>
+</div>

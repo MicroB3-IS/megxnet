@@ -1,0 +1,4 @@
+{
+  path: '$resources/net.megx.mibig',
+  exampleProperty: 'Example Value',
+}

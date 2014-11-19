@@ -1,0 +1,16 @@
+{
+  path: '$resources/net.megx.contact',
+  contactCfg: {
+        mail: {
+            user: '${mail.user}',
+            password: '${mail.password}',
+            address: '${mail.address}',
+            options: {
+                'mail.smtp.auth': 'true',
+                'mail.smtp.starttls.enable': 'true',
+                'mail.smtp.host': 'smtp.gmail.com',
+                'mail.smtp.port': '587'
+            }
+        }
+    },
+}
