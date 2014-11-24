@@ -11,7 +11,7 @@ public class Article {
 	private String userName;
 	private String megxBarJSON;
 	private Date created;
-	private String country;
+	private String worldRegion;
 	private String place;
 
 	public Integer getPmid() {
@@ -70,12 +70,12 @@ public class Article {
 		this.created = created;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getWorldRegion() {
+		return worldRegion;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setWorldRegion(String worldRegion) {
+		this.worldRegion = worldRegion;
 	}
 
 	public String getPlace() {
@@ -91,7 +91,7 @@ public class Article {
 		return "Article [pmid=" + pmid + ", lon=" + lon + ", lat=" + lat
 				+ ", articleXML=" + articleXML + ", userName=" + userName
 				+ ", megxBarJSON=" + megxBarJSON + ", created=" + created
-				+ ", country=" + country + ", place=" + place + "]";
+				+ ", worldRegion=" + worldRegion + ", place=" + place + "]";
 	}
 
 	@Override
@@ -100,7 +100,6 @@ public class Article {
 		int result = 1;
 		result = prime * result
 				+ ((articleXML == null) ? 0 : articleXML.hashCode());
-		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
 		result = prime * result + ((lat == null) ? 0 : lat.hashCode());
 		result = prime * result + ((lon == null) ? 0 : lon.hashCode());
@@ -110,6 +109,8 @@ public class Article {
 		result = prime * result + ((pmid == null) ? 0 : pmid.hashCode());
 		result = prime * result
 				+ ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result
+				+ ((worldRegion == null) ? 0 : worldRegion.hashCode());
 		return result;
 	}
 
@@ -126,11 +127,6 @@ public class Article {
 			if (other.articleXML != null)
 				return false;
 		} else if (!articleXML.equals(other.articleXML))
-			return false;
-		if (country == null) {
-			if (other.country != null)
-				return false;
-		} else if (!country.equals(other.country))
 			return false;
 		if (created == null) {
 			if (other.created != null)
@@ -166,6 +162,11 @@ public class Article {
 			if (other.userName != null)
 				return false;
 		} else if (!userName.equals(other.userName))
+			return false;
+		if (worldRegion == null) {
+			if (other.worldRegion != null)
+				return false;
+		} else if (!worldRegion.equals(other.worldRegion))
 			return false;
 		return true;
 	}

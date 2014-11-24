@@ -8,6 +8,7 @@ import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.megdb.pubmap.mappers.PubMapMapper;
 import net.megx.model.pubmap.Article;
+import net.megx.model.pubmap.Ocean;
 
 public class DBPubMapService extends BaseMegdbService implements PubMapService {
 
@@ -55,6 +56,35 @@ public class DBPubMapService extends BaseMegdbService implements PubMapService {
 			throw new DBNoRecordsException("Query returned zero results");
 		} else {
 			return result;
+		}
+	}
+
+	@Override
+	public Boolean isOcean(final String worldRegion)
+			throws DBGeneralFailureException {
+		return doInTransaction(new DBTask<PubMapMapper, Boolean>() {
+
+			@Override
+			public Boolean execute(PubMapMapper mapper) throws Exception {
+				Boolean isOcean;
+				isOcean = mapper.isOcean(worldRegion);
+				return isOcean;
+			}
+		}, PubMapMapper.class);
+	}
+
+	public Ocean getOceanByName(final String oceanName)
+			throws DBGeneralFailureException, DBNoRecordsException {
+		Ocean ocean = doInSession(new DBTask<PubMapMapper, Ocean>() {
+			@Override
+			public Ocean execute(PubMapMapper mapper) throws Exception {
+				return mapper.getOceanByName(oceanName);
+			}
+		}, PubMapMapper.class);
+		if (ocean == null) {
+			throw new DBNoRecordsException("Query returned zero results");
+		} else {
+			return ocean;
 		}
 	}
 
