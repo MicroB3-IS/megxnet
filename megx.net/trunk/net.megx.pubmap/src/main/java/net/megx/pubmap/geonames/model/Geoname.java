@@ -4,9 +4,9 @@ public class Geoname {
 
 	private String toponymName;
 	private String name;
-	private double lat;
-	private double lng;
-	private int geonameId;
+	private String lat;
+	private String lng;
+	private String geonameId;
 	private String countryCode;
 	private String countryName;
 	private String fcl;
@@ -28,27 +28,27 @@ public class Geoname {
 		this.name = name;
 	}
 
-	public double getLat() {
+	public String getLat() {
 		return lat;
 	}
 
-	public void setLat(int lat) {
+	public void setLat(String lat) {
 		this.lat = lat;
 	}
 
-	public double getLng() {
+	public String getLng() {
 		return lng;
 	}
 
-	public void setLng(int lng) {
+	public void setLng(String lng) {
 		this.lng = lng;
 	}
 
-	public int getGeonameId() {
+	public String getGeonameId() {
 		return geonameId;
 	}
 
-	public void setGeonameId(int geonameId) {
+	public void setGeonameId(String geonameId) {
 		this.geonameId = geonameId;
 	}
 

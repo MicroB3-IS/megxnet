@@ -2,9 +2,26 @@ $(document).ready(function() {
 
     var latitude;
     var longitude;
+    var selectedType;
 
     $('#logout').click(function() {
         logOut();
+    });
+    
+    $('#placeTypeSelect').change(function() {
+    	
+    	var selected = $(':selected', this);
+        selectedType = selected.parent().attr('label');
+	    $('#placeTypeMsg').hide();
+	    
+	});
+    
+    $('#placeName').keyup(function() {
+    	
+    	if(placeName != ""){
+    		$('#placeNameMsg').hide();
+    	}
+    	
     });
 
     $('input:radio[name=rb]').click(function(event) {
@@ -98,6 +115,7 @@ $(document).ready(function() {
 
     $("#submitBookmark").click(function() {
 
+    	// I have decimal degrees option
         if ($('#bookmarkFormDecimal').is(':visible')) {
 
             $("#bookmarkFormDecimal").validate({
@@ -133,8 +151,10 @@ $(document).ready(function() {
                 
                 findNearby(parseFloat(lat), parseFloat(lon), findNearbyData);
             }
-        } else {
-
+            
+        // I have degrees, minutes and seconds option  
+        } else if ($('#bookmarkFormDegrees').is(':visible')) {
+        	
             if (latitude != null && longitude != null) {
 
                 if ($('#degSouth').is(':checked')) {
@@ -157,23 +177,95 @@ $(document).ready(function() {
                     $('#longitudeDegMsg').text("Longitude value must be in the range of 0 to 180.").show();
                 }
             }
+        // I don't know the geographic coordinates option
+        } else {
+        	
+        	var worldRegion = $('#placeTypeSelect').val();
+        	var placeName = $('#placeName').val();
+        	
+        	if (worldRegion != null){
+        		
+        		if(selectedType == "Ocean/Sea"){
+        			
+        			findCoordinates(placeName, worldRegion, findCoordinatesData);
+        			
+        		}else if(placeName != ""){
+    				
+            		findCoordinates(placeName, worldRegion, findCoordinatesData);
+            		
+            	} else {
+            		$('#placeNameMsg').text("Please enter place name.").show();
+            	}
+        	
+        	} else {
+        		$('#placeTypeMsg').text("Please select your option.").show();
+        		
+        	}
         }
     });
 
 });
 
-function findNearbyData(data, lat, lon) {
+function findCoordinatesData(data) {
 
-    console.log('Latitude: ' + parseFloat(lat).toFixed(6) + ' Longitude: ' + parseFloat(lon).toFixed(6));
-    
-    var country = data.country || 'N/A';
+    var worldRegion = data.worldRegion || 'N/A';
     var place = data.placeName || 'N/A';
+    var lat = data.lat || '';
+    var lon = data.lon || '';
     
-    console.log(country, place);
+    console.log("Country: ",worldRegion,"--- Place: ", place);
+    console.log("Lat: ",lat,"--- Lon: ", lon);
 
-    var data = collectData(lat, lon, country, place);
+    var dataToInsert = collectData(lat, lon, worldRegion, place);
 
-    insertBookmark(data);
+    insertBookmark(dataToInsert);
+
+}
+
+function findCoordinates(placeName, worldRegion, callback) {
+
+    $.ajax({
+        type: "GET",
+        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/coordinates',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: {
+            "q": placeName,
+            "worldRegion" : worldRegion
+        },
+        success: function(placeCoodrdinates) {
+        	emptyMessageDiv();
+            callback(placeCoodrdinates.data);
+        },
+        error: function(a, b, c) {
+            $("#message")
+                .html(
+                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
+            $("#message").css("background-color", "#F2DEDE");
+            $("#message").css("border", "1px solid #EED3D7");
+            $("#message").css("color", "#B94A48");
+            $("#message").css("border-radius", "15px");
+            $("#message").css("padding-left", "10px");
+
+        }
+    });
+}
+
+function findNearbyData(data) {
+
+    
+    
+    var worldRegion = data.worldRegion || 'N/A';
+    var place = data.placeName || 'N/A';
+    var lat = data.lat;
+    var lon  = data.lon;
+    
+    console.log("WorldRegion: ",worldRegion,"--- Place: ", place);
+    console.log('Latitude: ' + lat + ' Longitude: ' + lon);
+    
+    var dataToInsert = collectData(lat, lon, worldRegion, place);
+
+    insertBookmark(dataToInsert);
 
 }
 
@@ -190,7 +282,7 @@ function findNearby(lat, lon, callback) {
         },
         success: function(placeName) {
         	emptyMessageDiv();
-            callback(placeName.data, lat, lon);
+            callback(placeName.data);
         },
         error: function(a, b, c) {
             $("#message")
@@ -312,6 +404,7 @@ function insertBookmark(data) {
             $("#message").css("padding-left", "10px");
             $("input[type=text]").val("");
             $("input[type=text]").prop('disabled', false);
+            $('select').prop('selectedIndex',0);
 
         },
         error: function(a, b, c) {
@@ -330,7 +423,7 @@ function insertBookmark(data) {
     });
 }
 
-function collectData(lat, lon, country, place) {
+function collectData(lat, lon, worldRegion, place) {
 
     var megxbar = {
         title: msg.article.title,
@@ -344,7 +437,7 @@ function collectData(lat, lon, country, place) {
         url: msg.article.url,
         lon: lon,
         lat: lat,
-        country: country,
+        worldRegion: worldRegion,
         place: place,
         megxBarJSON: JSON.stringify(megxbar),
         articleXML: msg.article.xml

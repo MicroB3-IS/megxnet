@@ -85,6 +85,7 @@
 		
 		<!-- Pubmap -->
 		<typeAlias type="net.megx.model.pubmap.Article" alias="Article"/>
+		<typeAlias type="net.megx.model.pubmap.Ocean" alias="Ocean"/>
 		
 		<!-- MIBIG -->
 		<typeAlias type="net.megx.model.mibig.MibigSubmission" alias="MibigSubmission"/>

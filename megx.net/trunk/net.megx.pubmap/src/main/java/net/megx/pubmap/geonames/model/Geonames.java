@@ -22,6 +22,16 @@ public class Geonames {
 
 	private Status status;
 
+	private Integer totalResultsCount;
+
+	public Integer getTotalResultsCount() {
+		return totalResultsCount;
+	}
+
+	public void setTotalResultsCount(Integer totalResultsCount) {
+		this.totalResultsCount = totalResultsCount;
+	}
+
 	public Status getStatus() {
 		return status;
 	}

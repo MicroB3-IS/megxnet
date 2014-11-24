@@ -38,6 +38,8 @@ public class GeonamesServiceImpl extends BaseRestService implements
 		InputStream instream = null;
 		URI uri = null;
 		Place place = new Place();
+		place.setLat(lat);
+		place.setLon(lon);
 
 		try {
 			uri = new URIBuilder().setScheme("http")
@@ -67,16 +69,16 @@ public class GeonamesServiceImpl extends BaseRestService implements
 						geonamesList = geonames.getGeonamesLst();
 						place.setPlaceName(geonamesList.get(
 								geonamesList.size() - 1).getName());
-						place.setCountry(geonamesList.get(
+						place.setWorldRegion(geonamesList.get(
 								geonamesList.size() - 1).getCountryName());
 
 					} else if (geonames.getOcean() != null) {
 
-						place.setPlaceName(geonames.getOcean().getName());
+						place.setWorldRegion(geonames.getOcean().getName());
 
 					} else if (geonames.getAddress() != null) {
 
-						place.setCountry(geonames.getAddress().getCountryCode());
+						place.setWorldRegion(geonames.getAddress().getCountryCode());
 
 						if (!geonames.getAddress().getPlacename().isEmpty()) {
 
@@ -90,12 +92,13 @@ public class GeonamesServiceImpl extends BaseRestService implements
 
 					} else if (geonames.getCountryName() != null) {
 
-						place.setCountry(geonames.getCountryName());
+						place.setWorldRegion(geonames.getCountryName());
 
 					} else if (geonames.getStatus() != null) {
 
 						throw new ClientProtocolException(
-								"Geonames service status message: " + geonames.getStatus().getMessage());
+								"Geonames service status message: "
+										+ geonames.getStatus().getMessage());
 
 					} else {
 						throw new ClientProtocolException(
@@ -107,7 +110,102 @@ public class GeonamesServiceImpl extends BaseRestService implements
 				throw new ClientProtocolException(
 						"Unexpected response status: " + status);
 			}
-			
+
+		} finally {
+			try {
+				instream.close();
+				response.close();
+			} catch (IOException e) {
+				log.error("HTTPReq:Exception closing response ", e);
+			}
+		}
+		return place;
+	}
+
+	@Override
+	public Place getCoordinates(String placeName, String worldRegion)
+			throws ClientProtocolException, URISyntaxException, JAXBException,
+			IOException, Exception {
+
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		InputStream instream = null;
+		URI uri = null;
+		Place place = new Place();
+
+		try {
+			uri = new URIBuilder().setScheme("http")
+					.setHost("api.geonames.org").setPath("/search")
+					.setParameter("q", placeName).setParameter("fuzzy", "0.8")
+					.setParameter("username", "megx").build();
+
+			HttpGet httpget = new HttpGet(uri);
+			response = httpclient.execute(httpget);
+			int status = response.getStatusLine().getStatusCode();
+
+			if (status >= 200 && status < 300) {
+
+				HttpEntity entity = response.getEntity();
+
+				if (entity != null) {
+
+					instream = entity.getContent();
+					JAXBContext context = JAXBContext
+							.newInstance(Geonames.class);
+					Unmarshaller um = context.createUnmarshaller();
+					Geonames geonames = (Geonames) um.unmarshal(instream);
+
+					if (geonames.getTotalResultsCount() != null) {
+
+						if (geonames.getTotalResultsCount() > 0
+								&& geonames.getGeonamesLst() != null) {
+
+							List<Geoname> geonamesList = new ArrayList<Geoname>();
+							geonamesList = geonames.getGeonamesLst();
+							 for (Geoname geoname : geonamesList) {
+								 
+								 if(geoname.getCountryCode().equals(worldRegion)){
+									 
+									 place.setPlaceName(geoname.getName());
+									 place.setWorldRegion(geoname.getCountryName());
+									 place.setLat(geoname.getLat());
+									 place.setLon(geoname.getLng());
+									 
+								 }
+							}
+							 if(place.getPlaceName() == null){
+								 throw new ClientProtocolException(
+											"No results found for: " + placeName + " in region: " + worldRegion);
+							 }
+							 
+						} else if (geonames.getTotalResultsCount() == 0) {
+
+							throw new ClientProtocolException(
+									"No results found for: " + placeName);
+
+						} else {
+							throw new ClientProtocolException(
+									"Malformed XML document");
+						}
+
+					} else if (geonames.getStatus() != null) {
+
+						throw new ClientProtocolException(
+								"Geonames service status message: "
+										+ geonames.getStatus().getMessage());
+
+					} else {
+						throw new ClientProtocolException(
+								"Malformed XML document");
+					}
+
+					EntityUtils.consume(entity);
+				}
+			} else {
+				throw new ClientProtocolException(
+						"Unexpected response status: " + status);
+			}
+
 		} finally {
 			try {
 				instream.close();
