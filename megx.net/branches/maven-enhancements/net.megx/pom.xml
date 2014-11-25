@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
 
     <prerequisites>
@@ -30,7 +32,7 @@
         </repository>
     </repositories>
 
-    <!-- Properties are just defaults: need to be overwritten in profiles
+    <!-- Properties are just defaults: need to be overwritten in profiles 
         etc. -->
     <properties>
         <!-- maven plugin configuration properties -->
@@ -48,7 +50,7 @@
         <mvn.work.dir.plugin.path>
             ${mvn.work.dir.path}/plugins
         </mvn.work.dir.plugin.path>
-        <!-- If failed copy of bundle to plugins dir should fail the maven
+        <!-- If failed copy of bundle to plugins dir should fail the maven 
             build -->
         <mvn.ant.failonerror>true</mvn.ant.failonerror>
         <mvn.module.default.version>1.0.0.SNAPSHOT</mvn.module.default.version>
@@ -57,61 +59,90 @@
         <mvn.cargo.container.id>tomcat7x</mvn.cargo.container.id>
         <mvn.tomcat.home>${user.home}/tomcat</mvn.tomcat.home>
         <mvn.tomcat.port>8080</mvn.tomcat.port>
+        <!-- root context path is '/' all others have to be prefixed with 
+            '/' -->
+        <mvn.tomcat.context.path>/megx.net</mvn.tomcat.context.path>
+
+        <mvn.host.name>localhost</mvn.host.name>
+        <mvn.host.port>${mvn.tomcat.port}</mvn.host.port>
+        <mvn.site.url>http://${mvn.host.name}:${mvn.host.port}${mvn.tomcat.context.path}</mvn.site.url>
+
 
         <!-- megx.net database connection properties -->
         <mvn.db.host>localhost</mvn.db.host>
         <mvn.db.port>5432</mvn.db.port>
         <mvn.db.name>megdb_r8</mvn.db.name>
         <mvn.db.user>${user.name}</mvn.db.user>
-        <mvn.db.password/>
+        <mvn.db.password />
         <!-- security filters -->
         <credentials.file>security-filter.properties</credentials.file>
+        <contact.credentials.file>contact.properties</contact.credentials.file>
 
     </properties>
 
+    <!-- modules only include plugins -->
+    <modules>
+        <!-- build megx.net core bundle <module>net.megx.chon.core</module> -->
+        <!-- build megdb connection and data model -->
+        <module>../net.megx.megdb</module>
+        <!-- build megx.net web services related: TODO refactor => delete 
+            <module>net.megx.chon.services</module> -->
+        <!-- build megx.net web services related: TODO refactor => delete 
+            <module>net.megx.chon.services.ui</module> -->
+        <!-- build megx.net velocity templates -->
+        <module>../net.megx.chon.template</module>
+        <!-- build megx.net oauth and stuff -->
+        <module>../net.megx.security.api</module>
+        <!-- build megx.net oauth and stuff: api and filter are interdependent -->
+        <module>../net.megx.security.filter</module>
+        <!-- build megx.net apps manager -->
+        <module>../net.megx.apps-manager</module>
+        <module>../net.megx.user-settings</module>
 
         <!-- Storage Service bundle -->
-        <module>net.megx.storage</module>
+        <module>../net.megx.storage</module>
         <!-- REST Services -->
         <!-- Common services utilities -->
-        <module>net.megx.ws.common</module>
+        <module>../net.megx.ws.common</module>
         <!-- Genome Services -->
-        <module>net.megx.ws.genome-services</module>
+        <module>../net.megx.ws.genome-services</module>
         <!-- Mixs -->
-        <module>net.megx.ws.mixs</module>
+        <module>../net.megx.ws.mixs</module>
         <!-- SeqCD -->
-        <module>net.megx.ws.seqcd</module>
+        <module>../net.megx.ws.seqcd</module>
 
-        <module>net.megx.mapserver</module>
+        <module>../net.megx.mapserver</module>
 
-        <module>net.megx.ui.table</module>
-        <module>net.megx.ui.chart</module>
-        <module>net.megx.ws.wod</module>
-        <module>net.megx.ws.blast</module>
-        <module>net.megx.ws.browse</module>
-        <module>net.megx.prox</module>
-        <module>net.megx.geo.pfam</module>
-        <module>net.megx.osd.registry</module>
+        <module>../net.megx.ui.table</module>
+        <module>../net.megx.ui.chart</module>
+        <module>../net.megx.ws.wod</module>
+        <module>../net.megx.ws.blast</module>
+        <module>../net.megx.ws.browse</module>
+        <module>../net.megx.prox</module>
+        <module>../net.megx.geo.pfam</module>
+        <module>../net.megx.osd.registry</module>
 
         <!-- Earth Sampling App -->
-        <module>net.megx.esa</module>
+        <module>../net.megx.esa</module>
         <!-- MegxBar -->
 
-        <module>net.megx.mg-traits</module>
-        <module>net.megx.ws.mg-traits</module>
+        <module>../net.megx.mg-traits</module>
+        <module>../net.megx.ws.mg-traits</module>
         <!-- WebSocket broadcast module -->
-        <module>net.megx.broadcast</module>
-        <module>net.megx.blast</module>
+        <module>../net.megx.broadcast</module>
+        <module>../net.megx.blast</module>
 
-        <!-- do not build for time being
-            <module>net.megx.pubmap</module>
-            <module>net.megx.megxbar</module>
-            <module>net.megx.content.imp.exp</module>
-            <module>net.megx.was.webdav</module>
-            <module>net.megx.ws.oauth.echo.example</module>
-        -->
-    <module>net.megx.twitter</module>
-  </modules>
+        <module>../net.megx.pubmap</module>
+        <module>../net.megx.megxbar</module>
+
+        <!-- do not build for time being <module>net.megx.content.imp.exp</module> 
+            <module>net.megx.was.webdav</module> <module>net.megx.ws.oauth.echo.example</module> -->
+        <module>../net.megx.twitter</module>
+        <module>../net.megx.mailer</module>
+        <module>../net.megx.contact</module>
+        <module>../net.megx.form-widget</module>
+        <module>../net.megx.mibig</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -156,17 +187,12 @@
             </resource>
         </resources>
         <!-- configuring for inheritance -->
-        <!-- Plugin Management contains plugin elements in much the same
-            way, except
-            that rather than configuring plugin information for this particular
-            project
-            build, it is intended to configure project builds that inherit
-            from this
-            one. However, this only configures plugins that are actually
-            referenced within
-            the plugins element in the children. The children have every
-            right to override
-            pluginManagement definitions. https://maven.apache.org/pom.html#Plugin_Management -->
+        <!-- Plugin Management contains plugin elements in much the same 
+            way, except that rather than configuring plugin information for this particular 
+            project build, it is intended to configure project builds that inherit from 
+            this one. However, this only configures plugins that are actually referenced 
+            within the plugins element in the children. The children have every right 
+            to override pluginManagement definitions. https://maven.apache.org/pom.html#Plugin_Management -->
         <pluginManagement>
             <plugins>
                 <!-- Tycho for OSGI bundle creation -->
@@ -202,7 +228,7 @@
                     <artifactId>wagon-maven-plugin</artifactId>
                     <version>1.0-beta-4</version>
                 </plugin>
-                <!-- <plugin> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon</artifactId>
+                <!-- <plugin> <groupId>org.apache.maven.wagon</groupId> <artifactId>wagon</artifactId> 
                     <version>${wagon.version}</version> </plugin> -->
                 <!-- general maven plugin configuration -->
                 <plugin>
@@ -234,7 +260,9 @@
                             </goals>
                             <configuration>
                                 <target name="copy-single-bundle">
-                                    <copy todir="${mvn.work.dir.plugin.path}" file="${project.build.directory}/${project.artifactId}-${project.version}.jar" overwrite="true"/>
+                                    <copy todir="${mvn.work.dir.plugin.path}"
+                                        file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                        overwrite="true" />
                                 </target>
                             </configuration>
                         </execution>
@@ -265,35 +293,38 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.2</version>
+                    <version>1.3.1</version>
                     <configuration>
                         <rules>
                             <requireJavaVersion>
                                 <version>[1.6.0,)</version>
                             </requireJavaVersion>
-
-
                             <requireMavenVersion>
                                 <version>[3.0.3,)</version>
                             </requireMavenVersion>
                             <requireProperty>
                                 <property>project.version</property>
-                                <message>"Project version must be
-                                    specified."</message>
+                                <message>Project version must be specified.</message>
                                 <regex>.*(\d|-SNAPSHOT)$</regex>
-                                <regexMessage>"Project version must end
-                                    in a
-                                    number or
-                                    -SNAPSHOT."</regexMessage>
+                                <regexMessage>Project version must end in a number or -SNAPSHOT.</regexMessage>
                             </requireProperty>
+                            <evaluateBeanshell>
+                                <message><![CDATA[Only one of the three build profiles 'prod', 'default', and 'developer' must be active. To build for production use -P 'prod,!developer,!default']]></message>
+                                <condition><![CDATA[
+                                    int count = 0;
+                                    count += Boolean.valueOf("${profile.default.active}")   ? 1 : 0;
+                                    count += Boolean.valueOf("${profile.prod.active}")      ? 1 : 0;
+                                    count += Boolean.valueOf("${profile.developer.active}") ? 1 : 0;
+                                    count == 1;
+                                    ]]>
+                                </condition>
+                            </evaluateBeanshell>
                         </rules>
+                        <fail>true</fail>
                     </configuration>
-
-
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse
-                    m2e settings
-                    only. It has no influence on the Maven build itself. -->
+                <!--This plugin's configuration is used to store Eclipse 
+                    m2e settings only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -317,7 +348,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -336,7 +367,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -355,12 +386,22 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore/>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -369,9 +410,44 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-properties</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-phase-not-allowed</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <AlwaysFail>
+                                    <message>Execution of install is not allowed due to side-effects of the Tycho build.</message>
+                                </AlwaysFail>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>deploy-phase-not-allowed</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <AlwaysFail>
+                                    <message>Execution of deploy is not allowed due to side-effects of the Tycho build.</message>
+                                </AlwaysFail>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -389,7 +465,7 @@
                                 <database>${mvn.db.name}</database>
                                 <host>${mvn.db.host}</host>
                                 <user>${mvn.db.user}</user>
-                                <password/>
+                                <password />
                                 <schemas>core,cv</schemas>
                             </configuration>
                         </plugin>
@@ -417,6 +493,22 @@
                 <artifactId>tycho-maven-plugin</artifactId>
                 <version>${tycho.version}</version>
             </plugin>
+            <!-- prevent installation and deployment of the build artefacts -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -428,6 +520,9 @@
     <inceptionYear>2012</inceptionYear>
     <developers>
         <!-- in alphabetical order of last Name -->
+        <developer>
+            <name>Jan Gerken</name>
+        </developer>
         <developer>
             <name>Sebastian Gross</name>
         </developer>
@@ -457,103 +552,92 @@
 
     <profiles>
         <profile>
-            <id>osd-registry</id>
-            <modules>
-
-                <!-- build megdb connection and data model -->
-                <module>net.megx.megdb</module>
-                <!-- build megx.net velocity templates -->
-                <module>net.megx.chon.template</module>
-                <!-- build megx.net oauth and stuff -->
-                <module>net.megx.security.api</module>
-                <!-- build megx.net oauth and stuff: api and filter are interdependent -->
-                <module>net.megx.security.filter</module>
-                <module>net.megx.user-settings</module>
-                <!-- REST Services -->
-                <!-- Common services utilities -->
-                <module>net.megx.ws.common</module>
-                <module>net.megx.ui.table</module>
-                <module>net.megx.ui.chart</module>
-
-
-                <module>net.megx.osd.registry</module>
-
-            </modules>
-
+            <id>prod</id>
+            <properties>
+                <profile.prod.active>true</profile.prod.active>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <configuration>
+                            <rules combine.children="append">
+                                <requireFilesExist>
+                                    <message>${project.basedir}/../config/prod.properties must exist.</message>
+                                    <files>
+                                        <file>${project.basedir}/../config/prod.properties</file>
+                                    </files>
+                                </requireFilesExist>
+                            </rules>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
-            <id>all-modules</id>
+            <id>default</id>
+            <properties>
+                <profile.default.active>true</profile.default.active>
+            </properties>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
+                <file>
+                    <missing>../config/developer/${user.name}.properties</missing>
+                </file>
             </activation>
-            <!-- modules only include plugins -->
-            <modules>
-                <!-- build megx.net core bundle
-                    <module>net.megx.chon.core</module>
-                -->
-                <!-- build megdb connection and data model -->
-                <module>net.megx.megdb</module>
-                <!-- build megx.net web services related: TODO refactor => 
-                    delete
-                    <module>net.megx.chon.services</module>
-                -->
-                <!-- build megx.net web services related: TODO refactor => 
-                    delete
-                    <module>net.megx.chon.services.ui</module>
-                -->
-                <!-- build megx.net velocity templates -->
-                <module>net.megx.chon.template</module>
-                <!-- build megx.net oauth and stuff -->
-                <module>net.megx.security.api</module>
-                <!-- build megx.net oauth and stuff: api and filter are interdependent -->
-                <module>net.megx.security.filter</module>
-                <!-- build megx.net apps manager -->
-                <module>net.megx.apps-manager</module>
-                <module>net.megx.user-settings</module>
-
-                <!-- Storage Service bundle -->
-                <module>net.megx.storage</module>
-                <!-- REST Services -->
-                <!-- Common services utilities -->
-                <module>net.megx.ws.common</module>
-                <!-- Genome Services -->
-                <module>net.megx.ws.genome-services</module>
-                <!-- Mixs -->
-                <module>net.megx.ws.mixs</module>
-                <!-- SeqCD -->
-                <module>net.megx.ws.seqcd</module>
-
-                <module>net.megx.mapserver</module>
-
-                <module>net.megx.ui.table</module>
-                <module>net.megx.ui.chart</module>
-                <module>net.megx.ws.wod</module>
-                <module>net.megx.ws.blast</module>
-                <module>net.megx.ws.browse</module>
-                <module>net.megx.prox</module>
-                <module>net.megx.geo.pfam</module>
-                <module>net.megx.osd.registry</module>
-
-                <!-- Earth Sampling App -->
-                <module>net.megx.esa</module>
-                <!-- MegxBar -->
-
-                <module>net.megx.mg-traits</module>
-                <module>net.megx.ws.mg-traits</module>
-                <!-- WebSocket broadcast module -->
-                <module>net.megx.broadcast</module>
-                <module>net.megx.blast</module>
-
-                <!-- do not build for time being
-                    <module>net.megx.pubmap</module>
-                    <module>net.megx.megxbar</module>
-                    <module>net.megx.content.imp.exp</module>
-                    <module>net.megx.was.webdav</module>
-                    <module>net.megx.ws.oauth.echo.example</module>
-                -->
-            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <configuration>
+                            <rules combine.children="append">
+                                <requireFilesExist>
+                                    <message>${project.basedir}/../config/default.properties must exist.</message>
+                                    <files>
+                                        <file>${project.basedir}/../config/default.properties</file>
+                                    </files>
+                                </requireFilesExist>
+                            </rules>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
-
+        <profile>
+            <id>developer</id>
+            <properties>
+                <profile.developer.active>true</profile.developer.active>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <file>
+                    <exists>../config/developer/${user.name}.properties</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <configuration>
+                            <rules combine.children="append">
+                                <requireFilesExist>
+                                    <message>${project.basedir}/../config/developer/${user.name}.properties must exist.</message>
+                                    <files>
+                                        <file>${project.basedir}/../config/developer/${user.name}.properties</file>
+                                    </files>
+                                </requireFilesExist>
+                            </rules>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
 </project>

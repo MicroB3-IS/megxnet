@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>net.megx</groupId>
         <artifactId>parent-microb3-is</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../net.megx/pom.xml</relativePath>
     </parent>
 
     <artifactId>net.megx.esa</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
-
 
     <build>
         <plugins>
@@ -31,7 +32,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <executions> 
+                <executions>
                     <execution>
                         <id>copy-resources</id>
                         <!-- here the phase you need -->
@@ -47,7 +48,6 @@
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>**/*.json</include>
-
                                     </includes>
                                 </resource>
                             </resources>

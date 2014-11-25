@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <project
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.megx</groupId>
         <artifactId>parent-microb3-is</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../net.megx/pom.xml</relativePath>
     </parent>
 
     <groupId>net.megx</groupId>
@@ -15,15 +17,8 @@
     <packaging>eclipse-repository</packaging>
 
     <name>megx.net-workdir</name>
-<!--
-    <repositories>
-      <repository>
-	<id>indigo</id>
-	<layout>p2</layout>
-	<url>http://download.eclipse.org/releases/indigo</url>
-      </repository>
-    </repositories>
--->
+    <!-- <repositories> <repository> <id>indigo</id> <layout>p2</layout> 
+        <url>http://download.eclipse.org/releases/indigo</url> </repository> </repositories> -->
     <properties>
         <mvn.jcr.source.url>https://dl.dropboxusercontent.com/s/82u7stspa8ec9ja/</mvn.jcr.source.url>
         <mvn.jcr.source.file>repository-20131015.tar.gz?token_hash=AAEDQM3_tOEi8wNKml7-QsHrj8mKD5Ke3-A0REXONuhTUg&amp;dl=1</mvn.jcr.source.file>
@@ -76,8 +71,6 @@
                 </executions>
             </plugin>
 
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -98,7 +91,9 @@
                                 <mkdir dir="${mvn.work.dir.path}/plugins" />
                                 <mkdir dir="${mvn.work.dir.path}/dropins" />
 
-                                <untar src="${mvn.jcr.target.file}" dest="${mvn.work.dir.path}">
+                                <untar src="${mvn.jcr.target.file}"
+                                    dest="${mvn.work.dir.path}"
+                                >
                                     <patternset>
                                         <exclude name="**/.lock" />
                                     </patternset>
@@ -115,11 +110,11 @@
                         </goals>
                         <configuration>
                             <target name="copy-single-bundle"
-                                unless="mvn.ant.target.copy-single-bundle.skip"></target>
-
+                                unless="mvn.ant.target.copy-single-bundle.skip"
+                            ></target>
                         </configuration>
                     </execution>
-                    
+
                     <execution>
                         <id>clean-work-dir</id>
                         <phase>clean</phase>
@@ -129,7 +124,8 @@
                         <configuration>
                             <target name="clean-work-dir">
                                 <delete verbose="true"
-                                    includeemptydirs="true" quiet="true">
+                                    includeemptydirs="true" quiet="true"
+                                >
                                     <fileset
                                         dir="${mvn.work.dir.path}/config"
                                         includes="**" />
@@ -145,26 +141,24 @@
                             </target>
                         </configuration>
                     </execution>
-                    
+
                     <execution>
                         <id>copy-megx-product-bundles</id>
-                        <!-- Can only be done after packaging off eclipse-repsoitory in package phase-->
+                        <!-- Can only be done after packaging off eclipse-repsoitory 
+                            in package phase -->
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target name="copy-product-bundles">
-                                <!-- Note the combine.self! It prevents
-                                    merged
-                                    inheritance from parent
-                                    see https://maven.apache.org/pom.html#Plugins -->
+                                <!-- Note the combine.self! It prevents merged 
+                                    inheritance from parent see https://maven.apache.org/pom.html#Plugins -->
                                 <copy todir="${mvn.work.dir.path}/plugins">
                                     <fileset
                                         dir="${project.build.directory}/repository/plugins" />
                                     <firstmatchmapper>
-                                        <!-- copying and stripping of
-                                            the
+                                        <!-- copying and stripping of the 
                                             build identifier -->
                                         <regexpmapper
                                             from="^(.*_[0-9]+\.[0-9]+\.[0-9]+)\.jar$$"
@@ -182,7 +176,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>
