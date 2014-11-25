@@ -45,69 +45,30 @@
 
 
     <build>
-        <filters>
-            <filter>${credentials.file}</filter>
-        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.json</include>
+                </includes>
+                <targetPath>__config/</targetPath>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <configuration>
                     <rules combine.children="append">
-                        <requireProperty>
-                            <property>credentials.file</property>
-                            <message><![CDATA[Missing property: credentials.file ${config.doc.link.text}]]></message>
-                            <regex>.+$</regex>
-                        </requireProperty>
                         <requireFilesExist>
                             <files>
-                                <file>${credentials.file}</file>
+                                <file>src/main/resources/net.megx.security.filter.json</file>
                             </files>
-                            <message><![CDATA[Missing file: ${credentials.file} ! ${config.doc.link.text}]]></message>
+                            <message><![CDATA[Missing file: src/main/resources/net.megx.security.filter.json ! ${config.doc.link.text}]]></message>
                         </requireFilesExist>
                     </rules>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-to-config-folder</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${mvn.work.dir.path}/config</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${plugin.config.dir}</directory>
-                                    <includes>
-                                        <include>net.megx.security.filter.json</include>
-                                    </includes>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>replace-placeholders</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/__config</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>__config</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!-- main configuration is in parent pom -->
