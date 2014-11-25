@@ -304,9 +304,11 @@
                             </requireMavenVersion>
                             <requireProperty>
                                 <property>project.version</property>
-                                <message>Project version must be specified.</message>
+                                <message>Project version must be
+                                    specified.</message>
                                 <regex>.*(\d|-SNAPSHOT)$</regex>
-                                <regexMessage>Project version must end in a number or -SNAPSHOT.</regexMessage>
+                                <regexMessage>Project version must end
+                                    in a number or -SNAPSHOT.</regexMessage>
                             </requireProperty>
                             <evaluateBeanshell>
                                 <message><![CDATA[Only one of the three build profiles 'prod', 'default', and 'developer' must be active. To build for production use -P 'prod,!developer,!default']]></message>
@@ -427,7 +429,9 @@
                         <configuration>
                             <rules>
                                 <AlwaysFail>
-                                    <message>Execution of install is not allowed due to side-effects of the Tycho build.</message>
+                                    <message>Execution of install is not
+                                        allowed due to side-effects of
+                                        the Tycho build.</message>
                                 </AlwaysFail>
                             </rules>
                         </configuration>
@@ -441,7 +445,9 @@
                         <configuration>
                             <rules>
                                 <AlwaysFail>
-                                    <message>Execution of deploy is not allowed due to side-effects of the Tycho build.</message>
+                                    <message>Execution of deploy is not
+                                        allowed due to side-effects of
+                                        the Tycho build.</message>
                                 </AlwaysFail>
                             </rules>
                         </configuration>
@@ -560,6 +566,9 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
+                <filters>
+                    <filter>../config/prod.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -567,7 +576,8 @@
                         <configuration>
                             <rules combine.children="append">
                                 <requireFilesExist>
-                                    <message>${project.basedir}/../config/prod.properties must exist.</message>
+                                    <message>${project.basedir}/../config/prod.properties
+                                        must exist.</message>
                                     <files>
                                         <file>${project.basedir}/../config/prod.properties</file>
                                     </files>
@@ -590,6 +600,9 @@
                 </file>
             </activation>
             <build>
+                <filters>
+                    <filter>../config/default.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -597,7 +610,8 @@
                         <configuration>
                             <rules combine.children="append">
                                 <requireFilesExist>
-                                    <message>${project.basedir}/../config/default.properties must exist.</message>
+                                    <message>${project.basedir}/../config/default.properties
+                                        must exist.</message>
                                     <files>
                                         <file>${project.basedir}/../config/default.properties</file>
                                     </files>
@@ -620,6 +634,9 @@
                 </file>
             </activation>
             <build>
+                <filters>
+                    <filter>../config/developer/${user.name}.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -627,7 +644,8 @@
                         <configuration>
                             <rules combine.children="append">
                                 <requireFilesExist>
-                                    <message>${project.basedir}/../config/developer/${user.name}.properties must exist.</message>
+                                    <message>${project.basedir}/../config/developer/${user.name}.properties
+                                        must exist.</message>
                                     <files>
                                         <file>${project.basedir}/../config/developer/${user.name}.properties</file>
                                     </files>

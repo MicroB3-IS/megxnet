@@ -2,9 +2,9 @@
   path: '$resources/net.megx.contact',
   contactCfg: {
         mail: {
-            user: '${mail.user}',
-            password: '${mail.password}',
-            address: '${mail.address}',
+            user: '${net.megx.contact.mail.user}',
+            password: '${net.megx.contact.mail.password}',
+            address: '${net.megx.contact.mail.address}',
             options: {
                 'mail.smtp.auth': 'true',
                 'mail.smtp.starttls.enable': 'true',

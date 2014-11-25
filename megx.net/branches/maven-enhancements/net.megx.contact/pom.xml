@@ -24,25 +24,27 @@
     <name>net.megx.contact</name>
 
     <build>
-        <filters>
-            <filter>${contact.credentials.file}</filter>
-        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.json</include>
+                </includes>
+                <targetPath>__config/</targetPath>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <configuration>
                     <rules combine.children="append">
-                        <requireProperty>
-                            <property>contact.credentials.file</property>
-                            <message><![CDATA[Missing property: contact.credentials.file ${config.doc.link.text}]]></message>
-                            <regex>.+$</regex>
-                        </requireProperty>
                         <requireFilesExist>
                             <files>
-                                <file>${contact.credentials.file}</file>
+                                <file>src/main/resources/net.megx.contact.json</file>
                             </files>
-                            <message><![CDATA[Missing file: ${contact.credentials.file} ! ${config.doc.link.text}]]></message>
+                            <message><![CDATA[Missing file: src/main/resources/net.megx.contact.json ! ${config.doc.link.text}]]></message>
                         </requireFilesExist>
                     </rules>
                 </configuration>
@@ -65,22 +67,6 @@
                                     <includes>
                                         <include>net.megx.contact.json</include>
                                     </includes>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>replace-placeholders</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/__config</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>__config</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

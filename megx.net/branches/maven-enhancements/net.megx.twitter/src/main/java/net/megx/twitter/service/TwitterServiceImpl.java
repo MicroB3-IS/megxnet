@@ -41,7 +41,7 @@ public class TwitterServiceImpl implements BaseTwitterService {
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
         String proxyPort = props.getProperty("httpProxyPort");
-        if (proxyPort != null) {
+        if (proxyPort != null && !proxyPort.trim().isEmpty()) {
             try {
 
                 int port = Integer.parseInt(proxyPort);
@@ -53,6 +53,11 @@ public class TwitterServiceImpl implements BaseTwitterService {
             }
         }
 
+        String proxyHost = props.getProperty("httpProxyHost");
+        if (proxyHost != null && !proxyHost.trim().isEmpty()) {
+            cb.setHttpProxyHost(props.getProperty("httpProxyHost", null));
+        }
+
         cb.setDebugEnabled(true)
                 .setOAuthConsumerKey(props.getProperty("appKey"))
                 .setOAuthConsumerSecret(props.getProperty("appSecret"))
@@ -61,8 +66,7 @@ public class TwitterServiceImpl implements BaseTwitterService {
                         props.getProperty("accessTokenSecret"))
                 .setRestBaseURL(
                         props.getProperty("restBaseURL",
-                                "https://api.twitter.com/1.1/"))
-                .setHttpProxyHost(props.getProperty("httpProxyHost", null));
+                                "https://api.twitter.com/1.1/"));
 
         TwitterFactory tf = new TwitterFactory(cb.build());
         this.twitter = tf.getInstance();

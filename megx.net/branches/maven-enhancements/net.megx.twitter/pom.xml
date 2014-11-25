@@ -19,10 +19,20 @@
 
     <properties>
         <!-- default in mvn project local properties dir -->
-        <twitter.properties.file>properties/twitter.properties</twitter.properties.file>
+        <twitter.properties.file>src/main/resources/twitter.properties</twitter.properties.file>
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+                <targetPath>properties/</targetPath>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -45,5 +55,6 @@
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
         </plugins>
+
     </build>
 </project>
