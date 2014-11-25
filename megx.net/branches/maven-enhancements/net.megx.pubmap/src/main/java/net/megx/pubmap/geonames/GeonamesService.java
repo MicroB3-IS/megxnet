@@ -15,4 +15,8 @@ public interface GeonamesService {
 			throws ClientProtocolException, URISyntaxException, JAXBException,
 			IOException, Exception;
 
+	public Place getCoordinates(String placeName, String worldRegion)
+			throws ClientProtocolException, URISyntaxException, JAXBException,
+			IOException, Exception;
+
 }

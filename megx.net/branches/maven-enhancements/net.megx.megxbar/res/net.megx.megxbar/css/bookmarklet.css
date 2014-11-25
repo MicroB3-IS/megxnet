@@ -126,6 +126,11 @@ table,tr,th,td {
 	color:red;
 	margin-left: 2px;;
 }
+.placeNameErrorMsg , .placeTypeErrorMsg{
+	display: none; 
+	color:red;
+	margin-left: 13px;;
+}
 #logout{
 	border: 1px;
 	border-radius: 10px;

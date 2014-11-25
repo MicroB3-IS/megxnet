@@ -34,7 +34,7 @@ $(document).ready(function() {
             sWidth: '90px',
            
         }, {
-            mData: 'country',
+            mData: 'worldRegion',
             sClass: 'left data-pad',
             sWidth: '100px',
            
@@ -73,7 +73,7 @@ $(document).ready(function() {
 	            	var authors = JSON.parse(megxBarJSON).authors;
 	            	
 	            	var date = allArticles.data[i].created;
-	            	var country = allArticles.data[i].country;
+	            	var worldRegion = allArticles.data[i].worldRegion;
 	            	var place = allArticles.data[i].place;
 	            	var id = allArticles.data[i].pmid;
 	            	
@@ -90,7 +90,7 @@ $(document).ready(function() {
 	 	                'authors': authors || '',
 	 	                'journal': $title.text() || '',
 	 	                'date': date || '',
-	 	                'country': country || '',
+	 	                'worldRegion': worldRegion || '',
 	 	                'place': place || '',
 	 	                'id' : id
 	 	            });
