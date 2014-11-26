@@ -127,14 +127,18 @@
                         <requireFilesExist
                             combine.children="append"
                         >
-                            <message>File must exist in correct version
-                                for succesful lauch</message>
+                            <message><![CDATA[These files must exist in correct version
+                                for succesful launch:
+                                ${mvn.work.dir.path}
+                                ${mvn.work.dir.path}/repository
+                                ${mvn.work.dir.path}/plugins
+                                ${mvn.work.dir.path}/config
+                                ]]></message>
                             <files>
                                 <file>${mvn.work.dir.path}</file>
                                 <file>${mvn.work.dir.path}/repository</file>
                                 <file>${mvn.work.dir.path}/plugins</file>
                                 <file>${mvn.work.dir.path}/config</file>
-                                <file>${mvn.work.dir.path}/config/setup.kson</file>
                                 <!-- This is just an indicator if Chon plugins 
                                     were build from net.megx.product -->
                                 <file>${mvn.work.dir.path}/plugins/org.chon.cms.core_1.0.0.jar</file>
@@ -162,7 +166,7 @@
                         </requireProperty>
                     </rules>
                 </configuration>
-                <!-- standard war lifecycle does not have validate phase -->
+                
                 <executions>
                     <execution>
                         <id>enforce-work-dir</id>
@@ -170,6 +174,18 @@
                         <goals>
                             <goal>enforce</goal>
                         </goals>
+                        <configuration>
+                        <requireFilesExist
+                        >
+                            <message><![CDATA[These files must exist in correct version
+                                for succesful launch:
+                                ${mvn.work.dir.path}/config/setup.kson
+                                ]]></message>
+                            <files>
+                                <file>${mvn.work.dir.path}/config/setup.kson</file>
+                            </files>
+                        </requireFilesExist>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
