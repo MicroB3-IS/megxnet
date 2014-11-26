@@ -12,10 +12,31 @@
 		<result column="v" property="version" />
 	</resultMap>
 
+	<resultMap type="BgcDetailSubmission" id="bgc_detail_submission">
+		<result column="id" property="id" />
+		<result column="bgc_id" property="bgcId" />
+		<result column="submitted" property="submitted" />
+		<result column="modified" property="modified" />
+		<result column="raw" property="raw" />
+		<result column="v" property="version" />
+	</resultMap>
+
 	<insert id="storeMibigSubmission" parameterType="MibigSubmission">
 		INSERT INTO
 		mibig.submissions(raw, v)
 		VALUES ( #{raw}::json , #{version} )
+	</insert>
+
+	<insert id="storeGeneInfo" parameterType="BgcDetailSubmission">
+		INSERT INTO
+		mibig.gene_submissions(bgc_id, raw, v) 
+		VALUES (#{bgcId}, #{raw}::json, #{version})
+	</insert>
+
+	<insert id="storeNrpsInfo" parameterType="BgcDetailSubmission">
+		INSERT INTO
+		mibig.nrps_submissions(bgc_id, raw, v)
+		VALUES (#{bgcId}, #{raw}::json, #{version})
 	</insert>
 
 </mapper>
