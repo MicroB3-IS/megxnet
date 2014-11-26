@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
     
-  <parent>
+    <parent>
+        <groupId>net.megx</groupId>
+        <artifactId>parent-microb3-is</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../net.megx/pom.xml</relativePath>
+    </parent>
+  
     <groupId>net.megx</groupId>
-    <artifactId>parent-microb3-is</artifactId>
+    <artifactId>net.megx.ui.chart</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+    <packaging>eclipse-plugin</packaging>
   
-  
-  <groupId>net.megx</groupId>
-  <artifactId>net.megx.ui.chart</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
-  
-  <build>
+    <build>
       <plugins>
           <plugin>
               <!-- main configuration is in parent pom -->
@@ -24,5 +23,5 @@
               <artifactId>maven-antrun-plugin</artifactId>
           </plugin>
       </plugins>
-  </build>
+    </build>
 </project>
