@@ -1,76 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>net.megx</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <artifactId>parent-microb3-is</artifactId>
+        <relativePath>../net.megx/pom.xml</relativePath>
     </parent>
 
     <groupId>net.megx</groupId>
     <artifactId>net.megx.specbyexample.accepttest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-
     <build>
-
         <plugins>
-            <!--
-                <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <version>1.2.2</version>
-                <executions>
-                <execution>
-                <id>start-tomcat</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                <goal>start</goal>
-                </goals>
-                </execution>
-                <execution>
-                <id>stop-tomcat</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                <goal>stop</goal>
-                </goals>
-                </execution>
-                </executions>
-                <configuration>
-                <container>
-                <containerId>tomcat7x</containerId>
-                <zipUrlInstaller>
-                <url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url>
-                </zipUrlInstaller>
-                <output>${project.build.directory}/tomcat-logs/container.log</output>
-                <append>false</append>
-                <log>${project.build.directory}/tomcat-logs/cargo.log</log>
-                </container>
-
-                <configuration>
-                <type>standalone</type>
-                <home>${project.build.directory}/tomcat-home</home>
-                <properties>
-                <cargo.servlet.port>7077</cargo.servlet.port>
-                <cargo.logging>high</cargo.logging>
-                </properties>
-
-
-                <deployables>
-                <deployable>
-                <groupId>net.megx</groupId>
-                <artifactId>megx.net-web</artifactId>
-                <type>war</type>
-                </deployable>
-                </deployables>
-
-
-                </configuration>
-                </configuration>
-                </plugin>
-            -->
+            <!-- <plugin> <groupId>org.codehaus.cargo</groupId> <artifactId>cargo-maven2-plugin</artifactId> 
+                <version>1.2.2</version> <executions> <execution> <id>start-tomcat</id> <phase>pre-integration-test</phase> 
+                <goals> <goal>start</goal> </goals> </execution> <execution> <id>stop-tomcat</id> 
+                <phase>post-integration-test</phase> <goals> <goal>stop</goal> </goals> </execution> 
+                </executions> <configuration> <container> <containerId>tomcat7x</containerId> 
+                <zipUrlInstaller> <url>http://www.apache.org/dist/tomcat/tomcat-7/v7.0.41/bin/apache-tomcat-7.0.41.zip</url> 
+                </zipUrlInstaller> <output>${project.build.directory}/tomcat-logs/container.log</output> 
+                <append>false</append> <log>${project.build.directory}/tomcat-logs/cargo.log</log> 
+                </container> <configuration> <type>standalone</type> <home>${project.build.directory}/tomcat-home</home> 
+                <properties> <cargo.servlet.port>7077</cargo.servlet.port> <cargo.logging>high</cargo.logging> 
+                </properties> <deployables> <deployable> <groupId>net.megx</groupId> <artifactId>megx.net-web</artifactId> 
+                <type>war</type> </deployable> </deployables> </configuration> </configuration> 
+                </plugin> -->
             <plugin>
                 <!-- block unit tests execution -->
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -92,7 +51,6 @@
                         </goals>
                     </execution>
                 </executions>
-
                 <configuration>
                     <systemPropertyVariables>
                         <cucumber.options>--tags @anne</cucumber.options>
@@ -100,17 +58,10 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-
-
-
-
-
         </plugins>
-
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -135,9 +86,6 @@
             <version>2.32.0</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
-
 
 </project>

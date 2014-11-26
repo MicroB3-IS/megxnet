@@ -54,16 +54,16 @@
 				enabled: true,
 				providers:{
 					'twitter.com': {
-						'app.key': '${twitter.app.key}', 
-						'app.secret': '${twitter.app.secret}',
+						'app.key': '${net.megx.security.filter.twitter.app.key}', 
+						'app.secret': '${net.megx.security.filter.twitter.app.secret}',
 						'api.userInfoURL': 'https://api.twitter.com/1.1/account/verify_credentials.json'
 					},
 					'google.com':{
 						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
 					},
 					'facebook.com': {
-						'app.key': '${facebook.app.key}',
-						'app.secret': '${facebook.app.secret}',
+						'app.key': '${net.megx.security.filter.facebook.app.key}',
+						'app.secret': '${net.megx.security.filter.facebook.app.secret}',
 						'dialog.url': 'http://www.facebook.com/dialog/oauth',
 						'access.token.url': 'https://graph.facebook.com/oauth/access_token',
 						'user.info.url': 'https://graph.facebook.com/me'
@@ -82,15 +82,15 @@
 		],
 		registration:{
 			reCaptcha: {
-				publicKey: '${recaptcha.public.key}',
-				privateKey: '${recaptcha.private.key}',
+				publicKey: '${net.megx.security.filter.recaptcha.public.key}',
+				privateKey: '${net.megx.security.filter.recaptcha.private.key}',
 				verifyUrl: 'http://www.google.com/recaptcha/api/verify',
 				dgbSkipCaptchaValidation: false
 			},
 			mail:{
-				user: '${mail.user}',
-				password: '${mail.password}',
-				address: '${mail.address}',
+				user: '${net.megx.security.filter.mail.user}',
+				password: '${net.megx.security.filter.mail.password}',
+				address: '${net.megx.security.filter.mail.address}',
 				options: {
 					'mail.smtp.auth' : 'true',
 					'mail.smtp.starttls.enable': 'true',
