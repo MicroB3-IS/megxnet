@@ -180,6 +180,9 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<filters>
+			<filter>${profile.filter.file}</filter>
+		</filters>
 		<!-- configuring for inheritance -->
 		<!-- Plugin Management contains plugin elements in much the same way, except 
 			that rather than configuring plugin information for this particular project 
@@ -561,9 +564,6 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
-				<filters>
-					<filter>${profile.filter.file}</filter>
-				</filters>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -598,9 +598,6 @@
 				</file>
 			</activation>
 			<build>
-				<filters>
-					<filter>${profile.filter.file}</filter>
-				</filters>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -633,9 +630,6 @@
 				</file>
 			</activation>
 			<build>
-				<filters>
-					<filter>${profile.filter.file}</filter>
-				</filters>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
