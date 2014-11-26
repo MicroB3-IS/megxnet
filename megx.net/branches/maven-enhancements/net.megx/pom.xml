@@ -555,13 +555,14 @@
 			<id>prod</id>
 			<properties>
 				<profile.prod.active>true</profile.prod.active>
+				<profile.filter.file>${profile.filter.dir}/prod.properties</profile.filter.file>
 			</properties>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<filters>
-					<filter>../config/prod.properties</filter>
+					<filter>${profile.filter.file}</filter>
 				</filters>
 				<plugins>
 					<plugin>
@@ -570,10 +571,10 @@
 						<configuration>
 							<rules combine.children="append">
 								<requireFilesExist>
-									<message>${project.basedir}/../config/prod.properties
+									<message>${profile.filter.file}
 										must exist.</message>
 									<files>
-										<file>${project.basedir}/../config/prod.properties</file>
+										<file>${profile.filter.file}</file>
 									</files>
 								</requireFilesExist>
 							</rules>
@@ -598,7 +599,7 @@
 			</activation>
 			<build>
 				<filters>
-					<filter>${profile.filter.file}/default.properties</filter>
+					<filter>${profile.filter.file}</filter>
 				</filters>
 				<plugins>
 					<plugin>
