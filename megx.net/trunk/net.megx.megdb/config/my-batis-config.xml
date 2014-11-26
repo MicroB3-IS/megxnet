@@ -89,6 +89,7 @@
 		
 		<!-- MIBIG -->
 		<typeAlias type="net.megx.model.mibig.MibigSubmission" alias="MibigSubmission"/>
+		<typeAlias type="net.megx.model.mibig.BgcDetailSubmission" alias="BgcDetailSubmission"/>
 	</typeAliases>
 
 	<environments default="main">
