@@ -26,7 +26,7 @@ import net.megx.model.mibig.MibigSubmission;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
 
-@Path("v1/mibig/v1.0.0")
+@Path("v1/mibig")
 public class MibigAPI extends BaseRestService {
 
 	private MibigService service;
@@ -40,7 +40,7 @@ public class MibigAPI extends BaseRestService {
 		this.service = service;
 	}
 
-	@Path("bgc-registration")
+	@Path("v1.0.0/bgc-registration")
 	@GET
 	public Response serviceInfo() {
 		log.debug("getting a bgc submission service info request");
@@ -49,7 +49,73 @@ public class MibigAPI extends BaseRestService {
 				.entity("bgc registration up and running").build();
 	}
 
-	@Path("bgc-registration")
+
+	@Path("v1.0.0/bgc-registration")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response storeMibigSubmissionOnly(@FormParam("json") String mibigJson,
+			@FormParam("version") String version) {
+
+		int ver = 0;
+		log.debug("getting a bgc submission POST request=" + version);
+
+		try {
+			if (mibigJson == null) {
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"json not provided", "bad-request"))).build();
+			}
+			if (version == null) {
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(
+								true,
+								"Version parameter not provided. Need a version parameter greater than 0",
+								"bad-request"))).build();
+			} else {
+				ver = Integer.parseInt(version);
+			}
+
+			MibigSubmission mibig = new MibigSubmission();
+
+			mibig.setRaw(mibigJson);
+			mibig.setSubmitted(Calendar.getInstance().getTime());
+			mibig.setModified(Calendar.getInstance().getTime());
+			mibig.setVersion(ver);
+
+			service.storeMibigSubmission(mibig);
+
+			// String address = uriInfo.getAbsolutePathBuilder();
+			URI u = uriInfo.getAbsolutePath();
+			URI location = UriBuilder.fromUri(
+					"http://www.marnixmedema.nl/mibig/thankyou.html").build();
+
+			log.debug("uri absolute=" + u.toASCIIString());
+			log.debug("context path=" + request.getContextPath());
+			log.debug("location=" + location.toString());
+			return Response.seeOther(location)
+					.header("Access-Control-Allow-Origin", "*").build();
+		} catch (DBGeneralFailureException e) {
+			log.error("Could not store Submission:" + e);
+			return Response.serverError()
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON("Could not store Submission")).build();
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON("Version parameter not a valid number: "
+							+ version)).build();
+		}
+	}
+	
+	
+	
+	@Path("v2.0.0/bgc-registration")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response storeMibigSubmission(@FormParam("json") String mibigJson,
@@ -90,7 +156,7 @@ public class MibigAPI extends BaseRestService {
 			// String address = uriInfo.getAbsolutePathBuilder();
 			URI u = uriInfo.getAbsolutePath();
 			URI location = UriBuilder.fromUri(
-					"http://www.marnixmedema.nl/mibig/gene_form.html").build();
+					"http://www.marnixmedema.nl/mibig/genes_form.html").build();
 
 			log.debug("uri absolute=" + u.toASCIIString());
 			log.debug("context path=" + request.getContextPath());
@@ -112,7 +178,7 @@ public class MibigAPI extends BaseRestService {
 		}
 	}
 
-	@Path("bgc-detail-registration")
+	@Path("v2.0.0/bgc-detail-registration")
 	@OPTIONS
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response allowCORS() {
@@ -125,7 +191,7 @@ public class MibigAPI extends BaseRestService {
 						"content-Type,x-requested-with").build();
 	}
 
-	@Path("bgc-detail-registration")
+	@Path("v2.0.0/bgc-detail-registration")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response storeBgcDetailSubmission(@FormParam("data") String data,
