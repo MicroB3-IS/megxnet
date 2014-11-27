@@ -79,10 +79,10 @@ public class PubmapAPI extends BaseRestService {
 
 			return toJSON(status);
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not store article:" + e);
+			log.error("Could not store article in db: " + e);
 			return toJSON(handleException(e));
 		} catch (Exception e) {
-			log.error("Server error:" + e);
+			log.error("Server error while saving article: " + e);
 			return toJSON(handleException(e));
 		}
 	}
@@ -94,14 +94,14 @@ public class PubmapAPI extends BaseRestService {
 		try {
 			return toJSON(new Result<List<Article>>(service.getAllArticles()));
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not retrieve all Articles");
+			log.error("Could not retrieve all Articles from db");
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
 			log.error("No Articles exists");
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Server error:" + e);
+			log.error("Server error while getting all articles: " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -116,9 +116,7 @@ public class PubmapAPI extends BaseRestService {
 		Place place = new Place();
 
 		try {
-
 			place = geonamesService.getPlaceName(lat, lon);
-
 			return toJSON(new Result<Place>(place));
 
 		} catch (URISyntaxException e) {
@@ -188,7 +186,7 @@ public class PubmapAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not retrieve Ocean");
+			log.error("Could not retrieve Ocean from db");
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {

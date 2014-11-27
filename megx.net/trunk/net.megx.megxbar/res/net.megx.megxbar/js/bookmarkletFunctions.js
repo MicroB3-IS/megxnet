@@ -240,7 +240,7 @@ function findCoordinates(placeName, worldRegion, callback) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
@@ -287,7 +287,7 @@ function findNearby(lat, lon, callback) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
