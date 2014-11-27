@@ -90,7 +90,7 @@ public class MibigAPI extends BaseRestService {
 			// String address = uriInfo.getAbsolutePathBuilder();
 			URI u = uriInfo.getAbsolutePath();
 			URI location = UriBuilder.fromUri(
-					"http://www.marnixmedema.nl/mibig/thankyou.html").build();
+					"http://www.marnixmedema.nl/mibig/gene_form.html").build();
 
 			log.debug("uri absolute=" + u.toASCIIString());
 			log.debug("context path=" + request.getContextPath());
