@@ -35,7 +35,7 @@ public class MGTraitsJobSubmissionITCase {
 	@Category({ IntegrationTest.class, RESTServiceTest.class })
 	public void testNonOAuthJibSubmission() {
 		HashMap<String, String> parametersMap = new HashMap<String, String>();
-parametersMap.put("", value)
+		parametersMap.put("key", "value");
 		given().formParameters(parametersMap).expect().when()
 				.post(wsPrefix + "/jobs");
 	}
