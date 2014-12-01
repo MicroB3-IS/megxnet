@@ -24,12 +24,24 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
-            <!-- Commented out because of 'No valid model was found' exception 
-                <plugin> <groupId>ro.isdc.wro4j</groupId> <artifactId>wro4j-maven-plugin</artifactId> 
-                <executions> <execution> <phase>compile</phase> <goals> <goal>run</goal> 
-                </goals> </execution> </executions> <configuration> <jsDestinationFolder>/prox-app/js/</jsDestinationFolder> 
-                <wroFile>prox-app/wro.xml</wroFile> <ignoreMissingResources>false</ignoreMissingResources> 
-                </configuration> </plugin> -->
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsDestinationFolder>res/prox-app/js/</jsDestinationFolder>
+                    <wroFile>res/prox-app/wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                    <contextFolder>${basedir}/res/prox-app/</contextFolder>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
