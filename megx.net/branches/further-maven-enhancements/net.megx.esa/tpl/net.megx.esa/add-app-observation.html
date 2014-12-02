@@ -1,0 +1,91 @@
+<meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+<meta name="viewport"
+  content="width=device-width, initial-scale=1, user-scalable=no"
+>
+
+<title>OSD Citizen Science Input</title>
+
+<link rel="stylesheet" href="$ctx.siteUrl/net.megx.esa/css/esa.css" />
+<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
+
+<style id="jsbin-css">
+
+ul {
+  list-style-type:disk
+  
+}
+
+</style>
+
+<!-- alpaca form stuff -->
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
+<!-- <script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/jquery.tmpl-1.0.0pre.js"></script> -->
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.min.js"></script>
+
+  <h1>No smartphone? No problem!</h1>
+  <h3>Submit your OSD June 2014 observation here</h3>
+  <div style="padding: 10px 10px 10px 10px">
+    Please consider the following before you start filling out
+      the form:
+    <ul style="list-style-type:disc;">
+    <li>Please, <a href="$ctx.siteUrl/login?redirectURL=/osd-app/myosd-form"> login to this wep page</a></li>
+    <li>Please provide all information in English.</li>
+      <li>Please enter all decimal values with <b>point</b>
+        notation.
+      </li>
+      <li>Geographic Coordinates are in <a href="http://en.wikipedia.org/wiki/Decimal_degrees" target="_blank">decimal degrees.</a></li>
+      <li> More questions: Check out our <a href="#faq">little FAQ at the bottom of this page</a></li>
+    </ul>
+
+<a name="form"></a>
+  <div id="osd-sample-form"></div>
+<script>
+	var MegxFormWidget = new MegxFormWidget({
+		 target : "osd-sample-form",
+		 schemaLocation : ctx.siteUrl + "/net.megx.esa/data/esa_schema.json",
+		 optionsLocation : ctx.siteUrl + "/net.megx.esa/data/esa_options.json"
+	});
+    </script>
+
+<a name="faq">    
+<h3>FAQ</h3></a>
+    <h4>When I upload data, why might I want to register to megx.net?</h4>
+    <p>
+      Currently, <a href="$ctx.siteUrl/">megx.net</a> is hosting the <a href="$ctx.siteUrl/osd-app/samples"
+      >OSD App Server.</a> Most importantly, it is your data and we would
+      like to correctly link the data to you. We also would like you to log-in
+      in order to maintain security and data quality and avoid misuse of
+      our services. However, for your convenience you can also log-in to
+      megx.net using your Facebook, Google or Twitter account
+      avoiding to create and maintain yet another account.
+    </p>
+    <h4>What happens with my data I send to you?</h4>
+    <p>
+      The data will be stored in our database and made publicly
+      available to everyone via our <a href="$ctx.siteUrl/osd-app/samples"
+      >OSD App Server.</a>
+    </p>
+    <h4>Where can I get more information on how to sample for the
+      OSD?</h4>
+    <p>
+      You can find further information on the OSD webpage <a href="http://www.my-osd.org"
+      >http://www.my-osd.org.</a> It hosts tutorials and detailed
+      information about the sampling process.
+    </p>
+    <h4>My GPS does not work! How can I get the geographic
+      coordinates of my sampling point?</h4>
+    <p>Currently, please use an external such map application as
+      e.g. Google Maps. There, you can approximate your geographic
+      location of your data collection with the mouse and do a right
+      click. A little popup menu will appear, select 'What's here?' and
+      the coordinates will appear in the Google search box on top of the
+      website. The first number is the Latitude and the second the
+      Longitude. You can then enter these latitude and longitude values
+      in your OSD App.</p>
+    <p>
+      Please, <a href="mailto:megx@mpi-bremen.de">if all breaks loose, you can email your data to us.</a>
+      <a href="mailto:myosd-contact@microb3.eu">If you have questions and feedback we would be more than happy if
+        you contact us.</a>
+    </p>
+  </div>
+<p><a href="#form">Back to form</a></p>
