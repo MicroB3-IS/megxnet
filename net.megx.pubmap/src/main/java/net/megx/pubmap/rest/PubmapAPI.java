@@ -1,7 +1,5 @@
 package net.megx.pubmap.rest;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
 
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
@@ -27,8 +24,6 @@ import net.megx.pubmap.geonames.GeonamesService;
 import net.megx.pubmap.geonames.model.Place;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
-
-import org.apache.http.client.ClientProtocolException;
 
 @Path("v1/pubmap/v1.0.0")
 public class PubmapAPI extends BaseRestService {
@@ -116,25 +111,17 @@ public class PubmapAPI extends BaseRestService {
 		Place place = new Place();
 
 		try {
+
+			if (lat == null) {
+				throw new Exception("Latitude parameter not provided.");
+
+			} else if (lon == null) {
+				throw new Exception("Longitude parameter not provided.");
+			}
+
 			place = geonamesService.getPlaceName(lat, lon);
 			return toJSON(new Result<Place>(place));
 
-		} catch (URISyntaxException e) {
-			log.error("Wrong URI", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (ClientProtocolException e) {
-			log.error("HTTPReq:ClientProtocolException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (JAXBException e) {
-			log.error("JAXBException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (IOException e) {
-			log.error("HTTPReq:IOException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (Exception e) {
 			log.error("Server error: ", e);
 			throw new WebApplicationException(e,
@@ -153,6 +140,11 @@ public class PubmapAPI extends BaseRestService {
 
 		try {
 
+			if (worldRegion == null) {
+				throw new Exception("WorldRegion parameter not provided.");
+
+			}
+
 			if (service.isOcean(worldRegion)) {
 
 				ocean = service.getOceanByName(worldRegion);
@@ -161,30 +153,19 @@ public class PubmapAPI extends BaseRestService {
 				place.setLat(ocean.getLat().toString());
 				place.setLon(ocean.getLon().toString());
 
-				System.out.println("Okean: " + ocean.getOceanName());
-
 			} else {
-				place = geonamesService.getCoordinates(placeName, worldRegion);
+
+				if (placeName == null) {
+					throw new Exception("PlaceName parameter not provided.");
+
+				} else {
+					place = geonamesService.getCoordinates(placeName,
+							worldRegion);
+				}
 			}
 
 			return toJSON(new Result<Place>(place));
 
-		} catch (URISyntaxException e) {
-			log.error("Wrong URI", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (ClientProtocolException e) {
-			log.error("HTTPReq:ClientProtocolException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (JAXBException e) {
-			log.error("JAXBException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (IOException e) {
-			log.error("HTTPReq:IOException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not retrieve Ocean from db");
 			throw new WebApplicationException(e,
