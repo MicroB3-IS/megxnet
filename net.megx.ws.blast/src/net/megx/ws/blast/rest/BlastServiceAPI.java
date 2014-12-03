@@ -96,9 +96,11 @@ public class BlastServiceAPI extends BaseRestService {
 			rb.type("text/csv");
 			return rb.build();
 		} catch (DBGeneralFailureException e) {
+			log.error("Could not store jobs: " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (Exception e) {
+			log.error("Service error for storing jobs: " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -116,11 +118,14 @@ public class BlastServiceAPI extends BaseRestService {
 			subnetGraphml = blastHits.getSubnetGraphml();
 			return subnetGraphml;
 		} catch (DBGeneralFailureException e) {
+			log.error("Db general error where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
+			log.error("No DB record where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
+			log.error("Service error where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -179,10 +184,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB no record: for id=" + blastJobId + "\n" + e);
+			log.error("No DB record for id=" + blastJobId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Db exception for id=" + blastJobId + "\n" + e);
+			log.error("Service error for id=" + blastJobId + "\n" + e);
 			throw new WebApplicationException(
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -207,10 +212,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB no record: for id=" + id + "\n" + e);
+			log.error("No DB record for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Db exception for id=" + id + "\n" + e);
+			log.error("Service error for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -247,11 +252,14 @@ public class BlastServiceAPI extends BaseRestService {
 			rb.type("text/csv");
 			return rb.build();
 		} catch (DBGeneralFailureException e) {
+			log.error("Db general error where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
+			log.error("No DB record where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
+			log.error("Service error where job id=" + jid + " and hit id=" + hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -265,11 +273,14 @@ public class BlastServiceAPI extends BaseRestService {
 		try {
 			return service.getDatabases();
 		} catch (DBGeneralFailureException e) {
+			log.error("Db general error " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
+			log.error("No DB records " + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
+			log.error("Service error " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -290,10 +301,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB no record: for id=" + id + "\n" + e);
+			log.error("No DB record for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Db exception for id=" + id + "\n" + e);
+			log.error("Service error for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -312,10 +323,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB no record: for id=" + id + "\n" + e);
+			log.error("No DB record for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Db exception for id=" + id + "\n" + e);
+			log.error("Service error for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -340,10 +351,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB no record:"  + "\n" + e);
+			log.error("No DB record "  + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Db exception "  + "\n" + e);
+			log.error("Service error " + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
