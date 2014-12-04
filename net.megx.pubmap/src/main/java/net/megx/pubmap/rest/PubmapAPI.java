@@ -44,11 +44,15 @@ public class PubmapAPI extends BaseRestService {
 	@Path("article")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String storeArticle(@FormParam("article") String articleJson) {
+	public Response storeArticle(@FormParam("article") String articleJson) {
 		try {
-			if (articleJson == null) {
-				return toJSON(new Result<String>(true, "article not provided",
-						"bad-request"));
+			if (articleJson == null || articleJson.isEmpty()) {
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Article not provided.",
+								"bad-request"))).build();
 			}
 			Article article = gson.fromJson(articleJson, Article.class);
 			String articleCreator;
@@ -73,7 +77,10 @@ public class PubmapAPI extends BaseRestService {
 				status = "Bookmark successfully stored to server.";
 			}
 
-			return toJSON(status);
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON(status)).build();
+					
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not store article in db: " + e);
 			throw new WebApplicationException(e,
