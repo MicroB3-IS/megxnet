@@ -60,14 +60,14 @@ public class MibigAPI extends BaseRestService {
 		log.debug("getting a bgc submission POST request=" + version);
 
 		try {
-			if (mibigJson == null) {
+			if (mibigJson == null || mibigJson.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
 						.header("Access-Control-Allow-Origin", "*")
 						.entity(toJSON(new Result<String>(true,
 								"json not provided", "bad-request"))).build();
 			}
-			if (version == null) {
+			if (version == null || version.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
 						.header("Access-Control-Allow-Origin", "*")
@@ -125,14 +125,14 @@ public class MibigAPI extends BaseRestService {
 		log.debug("getting a bgc submission POST request=" + version);
 
 		try {
-			if (mibigJson == null) {
+			if (mibigJson == null || mibigJson.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
 						.header("Access-Control-Allow-Origin", "*")
 						.entity(toJSON(new Result<String>(true,
 								"json not provided", "bad-request"))).build();
 			}
-			if (version == null) {
+			if (version == null || version.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
 						.header("Access-Control-Allow-Origin", "*")
@@ -220,14 +220,14 @@ public class MibigAPI extends BaseRestService {
 		log.debug("getting a bgc submission POST version=" + version
 				+ "; bgc_id= " + bgcId + "; target=" + target + "; data=" + data);
 
-		if (data == null) {
+		if (data == null || data.isEmpty()) {
 			log.error("no json in @formparam data");
 			return r.status(Status.BAD_REQUEST)
 					.entity(toJSON(new Result<String>(true,
 							"json not provided", "bad-request"))).build();
 		}
 
-		if (target == null) {
+		if (target == null || target.isEmpty()) {
 			log.error("no target defined in @formparam target");
 			return r.status(Status.BAD_REQUEST)
 					.entity(toJSON(new Result<String>(true,
