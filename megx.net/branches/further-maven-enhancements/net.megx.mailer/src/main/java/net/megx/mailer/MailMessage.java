@@ -94,63 +94,87 @@ public class MailMessage {
     }
 
     /**
-     * Adds a recipient for the mail.
+     * Adds the recipients for the mail. {@code recipientList} can hold a single
+     * mail address (e.g. {@code contact@megx.net} or a comma-separated list of
+     * addresses (e.g. {@code contact@megx.net,help@megx.net}.
      * 
      * @param recipientAddress
-     *            the email address of the new recipient.
+     *            the email address(es) of the new recipient(s).
      * @throws AddressException
-     *             if the given {@code recipientAddress} is not a valid email
-     *             address.
+     *             if the given {@code recipientList} is not a valid email
+     *             address or list of email addresses.
      * @throws IllegalArgumentException
      *             if {@code recipientAddress} is {@code null} or empty.
      */
-    public void addRecipient(final String recipientAddress)
+    public void addRecipients(final String recipientList)
             throws AddressException {
-        if (recipientAddress == null || recipientAddress.trim().isEmpty()) {
+        if (recipientList == null || recipientList.trim().isEmpty()) {
             throw new IllegalArgumentException(
-                    "recipientAddress must not be null or empty.");
+                    "recipientList must not be null or empty.");
         }
-        this.bccRecipients.add(new InternetAddress(recipientAddress));
+
+        final InternetAddress[] recipientAddresses = InternetAddress
+                .parse(recipientList);
+
+        for (InternetAddress recipientAddress : recipientAddresses) {
+            this.recipients.add(recipientAddress);
+        }
     }
 
     /**
-     * Adds a cc-recipient for the mail.
+     * Adds the cc-recipients for the mail. {@code ccRecipientList} can hold a
+     * single mail address (e.g. {@code contact@megx.net} or a comma-separated
+     * list of addresses (e.g. {@code contact@megx.net,help@megx.net}.
      * 
-     * @param ccRecipientAddress
-     *            the email address of the new cc-recipient.
+     * @param ccRecipientList
+     *            the email address(es) of the new cc-recipient(s).
      * @throws AddressException
-     *             if the given {@code ccRecipientAddress} is not a valid email
-     *             address.
+     *             if the given {@code ccRecipientList} is not a valid email
+     *             address or list of email addresses.
      * @throws IllegalArgumentException
      *             if {@code ccRecipientAddress} is {@code null} or empty.
      */
-    public void addCCReceipient(final String ccRecipientAddress)
+    public void addCCReceipient(final String ccRecipientList)
             throws AddressException {
-        if (ccRecipientAddress == null || ccRecipientAddress.trim().isEmpty()) {
+        if (ccRecipientList == null || ccRecipientList.trim().isEmpty()) {
             throw new IllegalArgumentException(
-                    "ccRecipientAddress must not be null or empty.");
+                    "ccRecipientList must not be null or empty.");
         }
-        this.ccRecipients.add(new InternetAddress(ccRecipientAddress));
+        
+        final InternetAddress[] recipientAddresses = InternetAddress
+                .parse(ccRecipientList);
+
+        for (InternetAddress recipientAddress : recipientAddresses) {
+            this.ccRecipients.add(recipientAddress);
+        }
     }
 
     /**
-     * Adds a bcc-recipient for the mail.
+     * Adds the bcc-recipients for the mail. {@code bccRecipientList} can hold a
+     * single mail address (e.g. {@code contact@megx.net} or a comma-separated
+     * list of addresses (e.g. {@code contact@megx.net,help@megx.net}.
      * 
-     * @param bccRecipientAddress
-     *            the email address of the new bcc-recipient.
+     * @param bccRecipientList
+     *            the email address(es) of the new cc-recipient(s).
      * @throws AddressException
-     *             if the given {@code bccRecipientAddress} is not a valid email
-     *             address.
+     *             if the given {@code ccRecipientList} is not a valid email
+     *             address or list of email addresses.
      * @throws IllegalArgumentException
-     *             if {@code bccRecipientAddress} is {@code null} or empty.
+     *             if {@code ccRecipientAddress} is {@code null} or empty.
      */
-    public void addBCCRecipient(final String bccRecipientAddress)
+    public void addBCCRecipient(final String bccRecipientList)
             throws AddressException {
-        if (bccRecipientAddress == null || bccRecipientAddress.trim().isEmpty()) {
+        if (bccRecipientList == null || bccRecipientList.trim().isEmpty()) {
             throw new IllegalArgumentException(
-                    "bccRecipientAddress must not be null or empty.");
+                    "bccRecipientList must not be null or empty.");
         }
-        this.ccRecipients.add(new InternetAddress(bccRecipientAddress));
+        
+        final InternetAddress[] recipientAddresses = InternetAddress
+                .parse(bccRecipientList);
+
+        for (InternetAddress recipientAddress : recipientAddresses) {
+            this.bccRecipients.add(recipientAddress);
+        }
     }
 
     /**

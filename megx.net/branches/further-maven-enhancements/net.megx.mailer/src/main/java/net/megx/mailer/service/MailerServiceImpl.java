@@ -1,8 +1,6 @@
 package net.megx.mailer.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -15,8 +13,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
-import org.json.JSONObject;
-
 import net.megx.mailer.BaseMailerService;
 import net.megx.mailer.MailMessage;
 
@@ -27,19 +23,6 @@ import net.megx.mailer.MailMessage;
  * @author jgerken
  */
 public class MailerServiceImpl implements BaseMailerService {
-
-    /**
-     * Property key used for the user name.
-     */
-    private static final String PROPERTY_KEY_USERNAME = "mail.smtp.auth.username";
-    /**
-     * Property key used for the password.
-     */
-    private static final String PROPERTY_KEY_PASSWORD = "mail.smtp.auth.password";
-    /**
-     * Property key used for the authentication flag.
-     */
-    private static final String PROPERTY_KEY_USE_AUTH = "mail.smtp.auth";
 
     /**
      * Provides a password authentication used by the jaxax.mail API.
@@ -66,70 +49,88 @@ public class MailerServiceImpl implements BaseMailerService {
     private final Session session;
 
     /**
-     * Creates a new instance of the mailer service. The configuration is read
-     * from the classpath.
+     * Creates a new instance of the mailer service from the given
+     * configuration.
      * 
-     * @throws IOException
-     *             if an IO error occurs while reading the configuration.
-     * @see {@link #readConfiguration()}
+     * @param configuration
+     *            the configuration for the mailer service.
+     * 
+     * @throws IllegalArgumentException
+     *             if the given {@code configuration} do not contain all
+     *             required configurations.
+     * @see {@link #verifyConfiguration(Properties)}
      */
-    public MailerServiceImpl() throws IOException {
+    public MailerServiceImpl(final Properties configuration) throws IOException {
 
-        // read properties
-        final Properties mailingProperties = readConfiguration();
+        this.verifyConfiguration(configuration);
 
         // read credentials
-        final String username = mailingProperties
+        final String username = configuration
                 .getProperty(PROPERTY_KEY_USERNAME);
-        final String password = mailingProperties
+        final String password = configuration
                 .getProperty(PROPERTY_KEY_PASSWORD);
 
         // remove credentials from properties before passing them to other
         // objects
-        mailingProperties.remove(PROPERTY_KEY_USERNAME);
-        mailingProperties.remove(PROPERTY_KEY_PASSWORD);
+        configuration.remove(PROPERTY_KEY_USERNAME);
+        configuration.remove(PROPERTY_KEY_PASSWORD);
 
         // create session using credentials or not - depending on configuration
-        if (Boolean.parseBoolean(mailingProperties
+        if (Boolean.parseBoolean(configuration
                 .getProperty(PROPERTY_KEY_USE_AUTH))) {
-            session = Session.getInstance(mailingProperties,
+            session = Session.getInstance(configuration,
                     new PasswordAuthenticator(username, password));
         } else {
-            session = Session.getInstance(mailingProperties);
+            session = Session.getInstance(configuration);
         }
     }
 
-    /**
-     * Reads the configuration from {@code mailer.properties} which has to be
-     * present in the classpath.
-     * 
-     * @throws IOException
-     *             if an IO error occurs.
-     * @throws FileNotFoundException
-     *             if {@code mailer.properties} cannot be found in the
-     *             classpath.
-     */
-    private final Properties readConfiguration() throws IOException {
+    private void verifyConfiguration(final Properties mailingProperties) {
+        final StringBuilder errorMessage = new StringBuilder(
+                "MailerService configuration is incomplete.");
+        boolean error = false;
 
-        final Properties properties = new Properties();
-        InputStream inputStream = null;
-
-        try {
-            inputStream = this.getClass().getClassLoader()
-                    .getResourceAsStream("mailer.properties");
-
-            if (inputStream == null) {
-                throw new FileNotFoundException(
-                        "property file mailer.properties not found in the classpath");
-            }
-
-            properties.load(inputStream);
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
+        if (mailingProperties.getProperty(PROPERTY_KEY_HOST) == null
+                || mailingProperties.getProperty(PROPERTY_KEY_HOST).trim()
+                        .isEmpty()) {
+            errorMessage.append(" Missing configuration for host.");
+            error = true;
+        }
+        if (mailingProperties.getProperty(PROPERTY_KEY_PORT) == null
+                || mailingProperties.getProperty(PROPERTY_KEY_PORT).trim()
+                        .isEmpty()) {
+            errorMessage.append(" Missing configuration for port.");
+            error = true;
+        }
+        if (mailingProperties.getProperty(PROPERTY_KEY_USE_AUTH) == null
+                || mailingProperties.getProperty(PROPERTY_KEY_USE_AUTH).trim()
+                        .isEmpty()) {
+            errorMessage
+                    .append(" Missing configuration whether authentication is required or not (use auth).");
+            error = true;
+        } else {
+            if (Boolean.parseBoolean(mailingProperties
+                    .getProperty(PROPERTY_KEY_USE_AUTH))) {
+                if (mailingProperties.getProperty(PROPERTY_KEY_USERNAME) == null
+                        || mailingProperties.getProperty(PROPERTY_KEY_USERNAME)
+                                .trim().isEmpty()) {
+                    errorMessage
+                            .append(" Missing configuration for username (required for authentication).");
+                    error = true;
+                }
+                if (mailingProperties.getProperty(PROPERTY_KEY_PASSWORD) == null
+                        || mailingProperties.getProperty(PROPERTY_KEY_PASSWORD)
+                                .trim().isEmpty()) {
+                    errorMessage
+                            .append(" Missing configuration for password (required for authentication).");
+                    error = true;
+                }
             }
         }
-        return properties;
+
+        if (error) {
+            throw new IllegalArgumentException(errorMessage.toString());
+        }
     }
 
     /**
@@ -170,10 +171,4 @@ public class MailerServiceImpl implements BaseMailerService {
 
     }
 
-    @Override
-    public void sendMail(JSONObject config, String email, String name,
-            String comment) throws Exception {
-        throw new RuntimeException(
-                "No longer implemented. Will be removed soon. Use send(MailMessage) instead.");
-    }
 }
