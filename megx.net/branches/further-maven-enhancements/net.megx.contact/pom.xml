@@ -28,9 +28,17 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>*.json</include>
+                    <include>net.megx.contact.json</include>
                 </includes>
                 <targetPath>__config/</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.json</include>
+                </includes>
+                <targetPath>res/</targetPath>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
