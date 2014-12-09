@@ -89,6 +89,12 @@
 
 
         <plugins>
+            <!-- This plugin parses the properties file (i.e. default/developer/prod 
+                depending on the active profiel) and makes all properties of this file available 
+                in the pom as maven properites (like they had been declared in the <properties> </properties> 
+                section). This procedure is required for this module as many of these properties 
+                are used to configure the build in the pom (e.g. enforcing the presence of the configured 
+                directories.) -->
             <plugin>
                 <groupId>org.kuali.maven.plugins</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
