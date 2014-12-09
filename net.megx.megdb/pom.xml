@@ -16,16 +16,8 @@
     <artifactId>net.megx.megdb</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
-    
-    <name>net.megx.megdb</name>
 
-    <properties>
-        <mvn.db.host>localhost</mvn.db.host>
-        <mvn.db.port>5432</mvn.db.port>
-        <mvn.db.name>megdb_r8</mvn.db.name>
-        <mvn.db.user>megxuser</mvn.db.user>
-        <mvn.db.password></mvn.db.password>
-    </properties>
+    <name>net.megx.megdb</name>
 
     <dependencies>
         <dependency>
@@ -42,9 +34,23 @@
     <build>
         <resources>
             <resource>
-                <directory>__config</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>**/*.json</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <excludes>
+                    <exclude>**/mybatis-config.properties</exclude>
+                </excludes>
                 <targetPath>__config/</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/mybatis-config.properties</include>
+                </includes>
             </resource>
         </resources>
         <plugins>
@@ -52,18 +58,6 @@
                 <!-- main configuration is in parent pom -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <rules combine.children="append">
-                        <requireProperty>
-                            <property>mvn.db.user</property>
-                            <message>MegDb user name must be specified</message>
-                        </requireProperty>
-                    </rules>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -100,8 +94,8 @@
         </plugins>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse 
-                    m2e settings only. It has no influence on the Maven build itself. -->
+                <!--This plugin's configuration is used to store Eclipse m2e settings 
+                    only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>

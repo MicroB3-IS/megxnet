@@ -54,7 +54,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <cucumber.options>--tags @anne</cucumber.options>
-                        <base.url>${mvn.site.url}</base.url>
+                        <base.url>${megx.site.url}</base.url>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

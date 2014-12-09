@@ -28,9 +28,9 @@ public class TestServer extends ExternalResource {
 	@Override
 	public void before() {
 		// TODO Auto-generated method stub
-		RestAssured.baseURI = "${mvn.test.server}";
-		RestAssured.port = ${mvn.test.port};
-		RestAssured.basePath = "${mvn.test.base.path}";
+		RestAssured.baseURI = "${megx.test.server}";
+		RestAssured.port = ${megx.test.port};
+		RestAssured.basePath = "${megx.test.base.path}";
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		// RestAssured.rootPath = "x.y.z";
 		

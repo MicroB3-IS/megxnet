@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: net.megx.mailer
 Bundle-SymbolicName: net.megx.mailer
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.0.2.qualifier
 Bundle-Activator: net.megx.mailer.Activator
-Import-Package: javax.mail,
- org.apache.commons.logging;version="1.1.1",
+Import-Package: org.apache.commons.logging;version="1.1.1",
  org.osgi.framework;version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",
@@ -15,4 +14,10 @@ Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",
 Bundle-ClassPath: .,
  lib/java-mail-1.4.4.jar
 Bundle-Vendor: megx.net
-Export-Package: net.megx.mailer
+Export-Package: javax.mail;version="1.4.4";uses:="javax.activation,javax.mail.search,javax.mail.event",
+ javax.mail.internet;version="1.4.4",
+ net.megx.mailer;
+  uses:="org.chon.cms.core,
+   javax.mail.internet,
+   org.osgi.framework,
+   org.json"

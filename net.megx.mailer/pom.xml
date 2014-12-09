@@ -12,7 +12,7 @@
 
     <groupId>net.megx</groupId>
     <artifactId>net.megx.mailer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
 
     <name>net.megx.mailer</name>

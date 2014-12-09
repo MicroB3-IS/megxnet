@@ -2,9 +2,9 @@
 	path: '$resources/net.megx.megdb',
 	myBatisConfigFile: 'config/my-batis-config.xml',
 	dbConfig:{
-		url: 'jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.name}',
-		username: '${mvn.db.user}',
-		password:'${mvn.db.password}',
+		url: 'jdbc:postgresql://${megx.db.host}:${megx.db.port}/${megx.db.name}',
+		username: '${megx.db.user}',
+		password:'${megx.db.password}',
 		driver: 'org.postgresql.Driver'
 	}, 	
 	passwordHashing:{
