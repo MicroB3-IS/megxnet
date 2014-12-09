@@ -94,7 +94,7 @@ public class ContactAPI extends BaseRestService {
     private void sendMail(String email, String name, String comment)
             throws AddressException, MessagingException {
         final MailMessage message = new MailMessage(name
-                + "(megx.net contact form) <" + this.contactEmailSender + ">");
+                + " (megx.net contact form) <" + this.contactEmailSender + ">");
         message.setReplyToAddress(email);
         message.addRecipients(this.contactEmailRecipients);
         message.setSubject("User feedback");
