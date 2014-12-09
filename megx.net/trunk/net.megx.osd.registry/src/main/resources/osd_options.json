@@ -6,7 +6,7 @@
         "attributes": {
             "id": "osd-form",
             "method": "post",
-            "action": "${mvn.site.url}/ws/v1/OSDRegistry/v1.0.0/sample"
+            "action": "${megx.site.url}/ws/v1/OSDRegistry/v1.0.0/sample"
         },
         "buttons": {
             "submit": {},

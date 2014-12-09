@@ -20,19 +20,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <rules combine.children="append">
-                        <requireProperty>
-                            <property>mvn.site.url</property>
-                            <message><![CDATA[Missing property: mvn.site.url. Please define]]></message>
-                            <regex>.+$</regex>
-                        </requireProperty>
-                    </rules>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>

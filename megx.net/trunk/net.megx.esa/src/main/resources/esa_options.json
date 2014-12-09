@@ -6,7 +6,7 @@
         "attributes": {
             "id": "osd-form",
             "method": "post",
-            "action": "${mvn.site.url}/ws/v1/esa/v1.0.0/observation"
+            "action": "${megx.site.url}/ws/v1/esa/v1.0.0/observation"
         },
         "buttons": {
             "submit": {},
@@ -35,7 +35,7 @@
         },
         "weather_condition":{
          "type": "select",
-          "data_source": "${mvn.site.url}/net.megx.esa/data/weather_options.json"  
+          "data_source": "${megx.site.url}/net.megx.esa/data/weather_options.json"  
         },
         "ph":{
             "validate": false

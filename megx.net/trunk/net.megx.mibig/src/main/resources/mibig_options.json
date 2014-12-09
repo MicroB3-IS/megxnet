@@ -6,7 +6,7 @@
         "attributes": {
             "id": "mibig-form",
             "method": "post", 
-            "action": "${mvn.site.url}/ws/v1/mibig/v1.0.0/bgc-registration"
+            "action": "${megx.site.url}/ws/v1/mibig/v1.0.0/bgc-registration"
         }
     },
     "fields": {

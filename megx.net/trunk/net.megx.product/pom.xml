@@ -19,9 +19,6 @@
         <!-- just a local child property to skip an ant target the value 
             does not matter. ant skips it just by the presence of this property -->
         <mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
-        <mvn.work.dir.plugin.path>
-            ${mvn.work.dir.path}/plugins
-        </mvn.work.dir.plugin.path>
     </properties>
     <!-- <repositories> <repository> <id>indigo</id> <layout>p2</layout> 
         <url>http://download.eclipse.org/releases/indigo</url> </repository> </repositories> -->
@@ -60,7 +57,7 @@
                             <target name="copy-product-bundles">
                                 <!-- Note the combine.self! It prevents merged 
                                     inheritance from parent see https://maven.apache.org/pom.html#Plugins -->
-                                <copy todir="${mvn.work.dir.path}/plugins">
+                                <copy todir="${megx.work.dir.path}/plugins">
                                     <fileset
                                         dir="${project.build.directory}/repository/plugins" />
                                     <firstmatchmapper>

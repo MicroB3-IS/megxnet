@@ -13,12 +13,11 @@
     <properties>
         <config.doc.link>https://colab.mpi-bremen.de/wiki/x/boBy</config.doc.link>
         <config.doc.link.text>For more background see ${config.doc.link}</config.doc.link.text>
-        <plugin.config.dir>__config</plugin.config.dir>
     </properties>
 
     <groupId>net.megx</groupId>
     <artifactId>net.megx.contact</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
 
     <name>net.megx.contact</name>
@@ -29,9 +28,24 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>*.json</include>
+                    <include>net.megx.contact.json</include>
                 </includes>
                 <targetPath>__config/</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.json</include>
+                </includes>
+                <targetPath>res/</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
             </resource>
         </resources>
         <plugins>
@@ -48,31 +62,6 @@
                         </requireFilesExist>
                     </rules>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-to-config-folder</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${mvn.work.dir.path}/config</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${plugin.config.dir}</directory>
-                                    <includes>
-                                        <include>net.megx.contact.json</include>
-                                    </includes>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!-- main configuration is in parent pom -->
