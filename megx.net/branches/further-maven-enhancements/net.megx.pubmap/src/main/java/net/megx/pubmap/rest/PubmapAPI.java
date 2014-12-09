@@ -1,7 +1,5 @@
 package net.megx.pubmap.rest;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
+import javax.ws.rs.core.Response.Status;
 
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
@@ -27,8 +25,6 @@ import net.megx.pubmap.geonames.GeonamesService;
 import net.megx.pubmap.geonames.model.Place;
 import net.megx.ws.core.BaseRestService;
 import net.megx.ws.core.Result;
-
-import org.apache.http.client.ClientProtocolException;
 
 @Path("v1/pubmap/v1.0.0")
 public class PubmapAPI extends BaseRestService {
@@ -48,11 +44,15 @@ public class PubmapAPI extends BaseRestService {
 	@Path("article")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String storeArticle(@FormParam("article") String articleJson) {
+	public Response storeArticle(@FormParam("article") String articleJson) {
 		try {
-			if (articleJson == null) {
-				return toJSON(new Result<String>(true, "article not provided",
-						"bad-request"));
+			if (articleJson == null || articleJson.isEmpty()) {
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Article not provided.",
+								"bad-request"))).build();
 			}
 			Article article = gson.fromJson(articleJson, Article.class);
 			String articleCreator;
@@ -77,13 +77,18 @@ public class PubmapAPI extends BaseRestService {
 				status = "Bookmark successfully stored to server.";
 			}
 
-			return toJSON(status);
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON(status)).build();
+					
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not store article in db: " + e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (Exception e) {
 			log.error("Server error while saving article: " + e);
-			return toJSON(handleException(e));
+			throw new WebApplicationException(e,
+					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -94,11 +99,11 @@ public class PubmapAPI extends BaseRestService {
 		try {
 			return toJSON(new Result<List<Article>>(service.getAllArticles()));
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not retrieve all Articles from db");
+			log.error("Could not retrieve all Articles from db", e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No Articles exists");
+			log.error("No Articles exists", e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			log.error("Server error while getting all articles: " + e);
@@ -110,31 +115,77 @@ public class PubmapAPI extends BaseRestService {
 	@Path("placename")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String findNearby(@QueryParam("lat") String lat,
+	public Response findNearby(@QueryParam("lat") String lat,
 			@QueryParam("lon") String lon) {
 
 		Place place = new Place();
 
 		try {
-			place = geonamesService.getPlaceName(lat, lon);
-			return toJSON(new Result<Place>(place));
 
-		} catch (URISyntaxException e) {
-			log.error("Wrong URI", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (ClientProtocolException e) {
-			log.error("HTTPReq:ClientProtocolException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (JAXBException e) {
-			log.error("JAXBException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (IOException e) {
-			log.error("HTTPReq:IOException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
+			if (lat == null || lat.isEmpty()) {
+				log.error("Latitude parameter not provided.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Latitude parameter not provided.",
+								"bad-request"))).build();
+
+			} else if (!lat.matches("-?\\d{1,2}(\\.\\d+)?")) {
+				log.error("Latitude parameter is not valid number format.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(
+								true,
+								"Latitude parameter is not valid number format.",
+								"bad-request"))).build();
+
+			} else if (Double.valueOf(lat) < -90 || Double.valueOf(lat) > 90) {
+				log.error("Latitude value is out of range.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Latitude value is out of range.",
+								"bad-request"))).build();
+
+			} else if (lon == null || lon.isEmpty()) {
+				log.error("Longitude parameter not provided.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Longitude parameter not provided.",
+								"bad-request"))).build();
+
+			} else if (!lon.matches("-?\\d{1,3}(\\.\\d+)?")) {
+				log.error("Longitude parameter is not valid number format.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(
+								true,
+								"Longitude parameter is not valid number format.",
+								"bad-request"))).build();
+
+			} else if (Double.valueOf(lon) < -180 || Double.valueOf(lon) > 180) {
+				log.error("Longitude value is out of range.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"Longitude value is out of range.",
+								"bad-request"))).build();
+
+			}
+
+			place = geonamesService.getPlaceName(lat, lon);
+
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON(new Result<Place>(place))).build();
+
 		} catch (Exception e) {
 			log.error("Server error: ", e);
 			throw new WebApplicationException(e,
@@ -145,13 +196,24 @@ public class PubmapAPI extends BaseRestService {
 	@Path("coordinates")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String findCoordinates(@QueryParam("q") String placeName,
+	public Response findCoordinates(@QueryParam("q") String placeName,
 			@QueryParam("worldRegion") String worldRegion) {
 
 		Place place = new Place();
 		Ocean ocean = new Ocean();
 
 		try {
+
+			if (worldRegion == null || worldRegion.isEmpty()) {
+				log.error("WorldRegion parameter not provided.");
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.entity(toJSON(new Result<String>(true,
+								"WorldRegion parameter not provided.",
+								"bad-request"))).build();
+
+			}
 
 			if (service.isOcean(worldRegion)) {
 
@@ -161,36 +223,33 @@ public class PubmapAPI extends BaseRestService {
 				place.setLat(ocean.getLat().toString());
 				place.setLon(ocean.getLon().toString());
 
-				System.out.println("Okean: " + ocean.getOceanName());
-
 			} else {
-				place = geonamesService.getCoordinates(placeName, worldRegion);
+
+				if (placeName == null || placeName.isEmpty()) {
+					log.error("PlaceName parameter not provided.");
+					return Response
+							.status(Status.BAD_REQUEST)
+							.header("Access-Control-Allow-Origin", "*")
+							.entity(toJSON(new Result<String>(true,
+									"PlaceName parameter not provided.",
+									"bad-request"))).build();
+
+				} else {
+					place = geonamesService.getCoordinates(placeName,
+							worldRegion);
+				}
 			}
 
-			return toJSON(new Result<Place>(place));
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.entity(toJSON(new Result<Place>(place))).build();
 
-		} catch (URISyntaxException e) {
-			log.error("Wrong URI", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (ClientProtocolException e) {
-			log.error("HTTPReq:ClientProtocolException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (JAXBException e) {
-			log.error("JAXBException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
-		} catch (IOException e) {
-			log.error("HTTPReq:IOException ", e);
-			throw new WebApplicationException(e,
-					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not retrieve Ocean from db");
+			log.error("Could not retrieve Ocean from db", e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No Ocean exists");
+			log.error("No Ocean exists", e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
 			log.error("Server error: ", e);
