@@ -141,7 +141,7 @@ public class MailerServiceImpl implements BaseMailerService {
     @Override
     public void send(final MailMessage message) throws MessagingException {
 
-        Message mimeMessage = new MimeMessage(this.session);
+        final Message mimeMessage = new MimeMessage(this.session);
         mimeMessage.setSubject(message.getSubject());
         mimeMessage.setText(message.getMessageBody());
         mimeMessage.setFrom(message.getSenderAddress());
