@@ -22,6 +22,7 @@ www={type:'sys.public'}
 		activate={type:'html', template:'security-filter/activate.html', title:'Account Activation'}
 	pubmap={type:'html', template:'net.megx.pubmap/start.html', title:'Pubmap Start Page'}
 		list={type:'html', template:'net.megx.pubmap/list.html', title:'Pubmap Articles'}
+		curation={type:'html', template:'net.megx.pubmap/curation.html', title:'PubMap Curator'}
 	apps={type:'html', template: 'apps-manager/home.html', title:'Manage Your Applications'}
 	security={type:'unknown'}
 		admin={type:'html', template:'security-filter/admin/admin.html', title:'Security Administration'}
