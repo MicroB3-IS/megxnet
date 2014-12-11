@@ -1,0 +1,68 @@
+<link href="$ctx.siteUrl/net.megx.pubmap/css/pubmap.css" rel="stylesheet" type="text/css">
+
+<div style="padding: 15px">
+<h1>PubMap Curator</h1>
+
+<h2 style="color: #0e4e96;">How it works</h2>
+
+
+<table id="bookmarkletInsructions" style="width: 100%">
+	<tr>
+		<td style="width: 60%">
+			<h3>1. Drag the "PubMap Curator" button to your Bookmarks Bar</h3>
+			<a title="PubMap Curator" id="pubMapCurator" onclick="alert('Drag and drop this link to your bookmarks or follow the instructions below.'); return false;" href="">PubMap Curator</a><br>
+			<p id="showToolbarInstruction" class="stepsDescription">Can't see your Bookmarks Bar?</p>
+			<p id="toolbarInstruction" class="stepsDescription" style="display: none;">Make sure you enable the "Show Bookmarks Bar" option first.
+				<br>
+				It can be found under "View".
+			</p>
+		</td>
+		<td style="width: 40%">
+			<img style="padding-top: 60px; padding-left: 30px;" src="$ctx.siteUrl/net.megx.pubmap/images/drag-bookmark.png">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<h3>2. Find an article</h3>
+			<p class="stepsDescription">Search for article on the <a href="http://www.ncbi.nlm.nih.gov/pubmed/" target="_blanck">PubMed - NCBI</a> site.</p>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 60%">
+			<h3>3. Click the "PubMap Curator" bookmark</h3>
+			<p class="stepsDescription">Click the "PubMap Curator" bookmark you just created, and the article details will display on the right hand side of the page.</p>
+		</td>
+		<td style="width: 40%">
+			<img style="padding-top: 20px; padding-left: 30px;" src="$ctx.siteUrl/net.megx.pubmap/images/click-bookmark.png">
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 60%">
+			<h3>4. Review the details and Save</h3>
+			<p class="stepsDescription">If the details look ok, please next insert the Geographic location of the study side then click the "Save" button.</p>
+			<p class="stepsDescription">Any newly saved articles will appear in the <a href="$ctx.siteUrl/pubmap/list" target="_blanck">Pubmap Articles</a> site.</p>	
+		</td>
+		<td style="width: 40%">
+			<img style="padding-top: 40px; padding-left: 30px;" src="$ctx.siteUrl/net.megx.pubmap/images/submit-bookmark.png">
+		</td>
+	</tr>
+</table>	
+
+</div>
+
+<script>
+
+$(document).ready(function() {
+	
+	var megxHomeUrl = location.protocol + "//" + location.host + "$ctx.siteUrl";
+	var bookmarkletLink  = "javascript: (function(c) {    var d = document;    var h = d.getElementsByTagName(\"head\")[0];    var ss = h.getElementsByTagName(\"script\");    var t = false;    if (ss) {        for (var i = 0; i < ss.length; i++) {            if (ss[i].src && ss[i].src == c.src) {                t = true;                break;            }        }    }    if (t) {        window.postMessage(JSON.stringify({            type: \"bookmarkletclicked\"        }), d.URL.substring(0, d.URL.indexOf(d.domain)) + d.domain);    } else {        var scr = d.createElement(\"script\");        scr.src = c.src;        h.appendChild(scr);    }})({    src: \"" + megxHomeUrl + "/net.megx.megxbar/js/bookmarklet.min.js\"});";
+	
+	$("#pubMapCurator").attr("href", bookmarkletLink);
+	
+	$("#showToolbarInstruction").on( "click", function() {
+		$( "#toolbarInstruction" ).toggle();
+	});
+    
+});
+
+</script>
