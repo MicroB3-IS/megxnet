@@ -533,6 +533,8 @@
             <properties>
                 <profile.prod.active>true</profile.prod.active>
                 <profile.filter.file>${profile.filter.dir}/prod.properties</profile.filter.file>
+                <profile.config.dir>${project.basedir}/../config</profile.config.dir>
+                <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>                
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
@@ -562,6 +564,7 @@
             <properties>
                 <profile.default.active>true</profile.default.active>
                 <profile.config.dir>${project.basedir}/../config</profile.config.dir>
+                <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
                 <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
                 <profile.filter.file>${profile.filter.dir}/default.properties</profile.filter.file>
             </properties>
