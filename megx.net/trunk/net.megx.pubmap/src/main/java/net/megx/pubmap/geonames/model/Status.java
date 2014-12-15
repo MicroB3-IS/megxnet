@@ -7,30 +7,30 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Status {
 
-	@XmlAttribute(name = "message")
-	private String message;
-	@XmlAttribute(name = "value")
-	private String value;
+  @XmlAttribute(name = "message")
+  private String message;
+  @XmlAttribute(name = "value")
+  private String value;
 
-	public String getMessage() {
-		return message;
-	}
+  public String getMessage() {
+    return message;
+  }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-	public String getValue() {
-		return value;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	@Override
-	public String toString() {
-		return "Status [message=" + message + ", value=" + value + "]";
-	}
+  @Override
+  public String toString() {
+    return "Status [message=" + message + ", value=" + value + "]";
+  }
 
 }
