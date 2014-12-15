@@ -14,67 +14,61 @@ import org.chon.web.RegUtils;
 
 public class Activator extends ResTplConfiguredActivator {
 
-	private static final Log log = LogFactory.getLog(Activator.class);
+  private static final Log log = LogFactory.getLog(Activator.class);
 
-	@Override
-	protected void onAppAdded(org.osgi.framework.BundleContext context,
-			JCRApplication app) {
-		super.onAppAdded(context, app);
+  @Override
+  protected void onAppAdded(org.osgi.framework.BundleContext context,
+      JCRApplication app) {
+    super.onAppAdded(context, app);
 
-		GeonamesServiceImpl geonamesService = new GeonamesServiceImpl();
+    GeonamesServiceImpl geonamesService = new GeonamesServiceImpl();
 
-		log.debug((String.format(
-				"Registering service instance %s of class (%s) as (%s)",
-				geonamesService.toString(),
-				GeonamesServiceImpl.class.getName(),
-				GeonamesService.class.getName())));
+    log.debug((String.format(
+        "Registering service instance %s of class (%s) as (%s)",
+        geonamesService.toString(), GeonamesServiceImpl.class.getName(),
+        GeonamesService.class.getName())));
 
-		RegUtils.reg(getBundleContext(), GeonamesService.class.getName(),
-				geonamesService, null);
-	};
+    RegUtils.reg(getBundleContext(), GeonamesService.class.getName(),
+        geonamesService, null);
+  };
 
-	@Override
-	protected void registerExtensions(JCRApplication app) {
-		log.debug("PubMapService starting up");
-		OSGIUtils.requestService(PubMapService.class.getName(),
-				getBundleContext(),
-				new OSGIUtils.OnServiceAvailable<PubMapService>() {
+  @Override
+  protected void registerExtensions(JCRApplication app) {
+    log.debug("PubMapService starting up");
+    OSGIUtils.requestService(PubMapService.class.getName(), getBundleContext(),
+        new OSGIUtils.OnServiceAvailable<PubMapService>() {
 
-					@Override
-					public void serviceAvailable(String name,
-							final PubMapService service) {
-						log.debug("PubMapService received...");
+          @Override
+          public void serviceAvailable(String name, final PubMapService service) {
+            log.debug("PubMapService received...");
 
-						log.debug("Requesting GeonamesService service now...");
-						OSGIUtils.requestService(
-								GeonamesService.class.getName(),
-								getBundleContext(),
-								new OSGIUtils.OnServiceAvailable<GeonamesService>() {
+            log.debug("Requesting GeonamesService service now...");
+            OSGIUtils.requestService(GeonamesService.class.getName(),
+                getBundleContext(),
+                new OSGIUtils.OnServiceAvailable<GeonamesService>() {
 
-									@Override
-									public void serviceAvailable(String name,
-											GeonamesService geonamesService) {
-										log.debug("GeonamesService service received...");
+                  @Override
+                  public void serviceAvailable(String name,
+                      GeonamesService geonamesService) {
+                    log.debug("GeonamesService service received...");
 
-										PubmapAPI api = new PubmapAPI(service,
-												geonamesService);
-										RegUtils.reg(getBundleContext(),
-												PubmapAPI.class.getName(), api,
-												null);
+                    PubmapAPI api = new PubmapAPI(service, geonamesService);
+                    RegUtils.reg(getBundleContext(), PubmapAPI.class.getName(),
+                        api, null);
 
-										log.debug("PubMapService started.");
+                    log.debug("PubMapService started.");
 
-									}
+                  }
 
-								});
-					}
+                });
+          }
 
-				});
-	}
+        });
+  }
 
-	@Override
-	protected String getName() {
-		return "net.megx.pubmap";
-	}
+  @Override
+  protected String getName() {
+    return "net.megx.pubmap";
+  }
 
 }
