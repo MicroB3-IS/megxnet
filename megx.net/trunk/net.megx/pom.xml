@@ -561,6 +561,7 @@
             <id>default</id>
             <properties>
                 <profile.default.active>true</profile.default.active>
+                <profile.config.dir>${project.basedir}/../config</profile.config.dir>
                 <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
                 <profile.filter.file>${profile.filter.dir}/default.properties</profile.filter.file>
             </properties>
@@ -571,7 +572,7 @@
                 <file>
                     <!-- Do not use ${profile.filter.file} in this section. During 
                         profile activation only system properties are available but no maven properties. 
-                        Profile will silently always be activated. -->
+                        Profile will silently always be activated if file is missing. -->
                     <missing>../config/developer/${user.name}.properties</missing>
                 </file>
             </activation>
@@ -599,7 +600,10 @@
             <id>developer</id>
             <properties>
                 <profile.developer.active>true</profile.developer.active>
-                <profile.filter.file>${project.basedir}/../config/developer/${user.name}.properties</profile.filter.file>
+                <profile.config.dir>${project.basedir}/../config</profile.config.dir>
+                <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
+                <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
+                <profile.filter.file>${profile.config.dir}/developer/${user.name}.properties</profile.filter.file>
             </properties>
             <activation>
                 <activeByDefault>false</activeByDefault>
