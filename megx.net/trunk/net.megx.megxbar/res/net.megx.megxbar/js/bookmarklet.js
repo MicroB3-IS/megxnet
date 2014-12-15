@@ -1,11 +1,11 @@
 (function Megxbookmarklet() {
 
     //production
- //   var iframeSrc = "https://mb3is.megx.net/bookmark";
- //   var targetOrigin = "https://mb3is.megx.net";
+    var iframeSrc = "https://mb3is.megx.net/bookmark";
+    var targetOrigin = "https://mb3is.megx.net";
     //iwgate
-    var iframeSrc = "http://iwgate.poweredbyclear.com:9080/megx.net/bookmark";
-    var targetOrigin = "http://iwgate.poweredbyclear.com:9080"
+//    var iframeSrc = "http://iwgate.poweredbyclear.com:9080/megx.net/bookmark";
+//    var targetOrigin = "http://iwgate.poweredbyclear.com:9080"
     //development
 //   var iframeSrc = "http://localhost:8080/megx.net/bookmark";
 //   var targetOrigin = "http://localhost:8080"
