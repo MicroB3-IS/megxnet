@@ -11,6 +11,7 @@ public class Geoname {
   private String countryName;
   private String fcl;
   private String fcode;
+  private String score;
 
   public String getToponymName() {
     return toponymName;
@@ -84,12 +85,20 @@ public class Geoname {
     this.fcode = fcode;
   }
 
+  public String getScore() {
+    return score;
+  }
+
+  public void setScore(String score) {
+    this.score = score;
+  }
+
   @Override
   public String toString() {
     return "Geoname [toponymName=" + toponymName + ", name=" + name + ", lat="
         + lat + ", lng=" + lng + ", geonameId=" + geonameId + ", countryCode="
         + countryCode + ", countryName=" + countryName + ", fcl=" + fcl
-        + ", fcode=" + fcode + "]";
+        + ", fcode=" + fcode + ", score=" + score + "]";
   }
 
 }

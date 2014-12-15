@@ -167,7 +167,8 @@ public class GeonamesServiceImpl extends BaseRestService implements
     try {
       uri = new URIBuilder().setScheme("http").setHost("api.geonames.org")
           .setPath("/search").setParameter("q", placeName)
-          .setParameter("fuzzy", "0.8").setParameter("username", "megx")
+          .setParameter("fuzzy", "0.9").setParameter("username", "megx")
+          .setParameter("country", worldRegion).setParameter("style", "full")
           .build();
 
       HttpGet httpget = new HttpGet(uri);
@@ -192,9 +193,14 @@ public class GeonamesServiceImpl extends BaseRestService implements
 
               List<Geoname> geonamesList = new ArrayList<Geoname>();
               geonamesList = geonames.getGeonamesLst();
+
+              double tmpScore = 0;
+
               for (Geoname geoname : geonamesList) {
 
-                if (geoname.getCountryCode().equals(worldRegion)) {
+                if (Double.valueOf(geoname.getScore()) > tmpScore) {
+
+                  tmpScore = Double.valueOf(geoname.getScore());
 
                   place.setPlaceName(geoname.getName());
                   place.setWorldRegion(geoname.getCountryName());
