@@ -1,0 +1,73 @@
+## wod table
+
+#set($url = "$ctx.siteUrl/ws/wod05/table?lat=$lat&lon=$lon&depth=$depth&buffer=$buffer")
+#set($defaultContent = 'n/a')
+
+$ext.dataTable.renderServerSide(
+	["Year", "Month", "Temp", "Salinity", "Oxygen", "Phosphate", "Silicate", "Nitrate", "Nitrite", "pH", "chl", "alk"], 
+	$url,
+	false,
+	"{
+	 fnInitComplete: onTableRendered,
+	 aoColumns: [{ 
+	 	mData: 'year',
+	 	mRender: createCellRenderer('year'),
+	 	scType: 'x-axis',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'month',
+	 	mRender: createCellRenderer('month'),
+	 	scType: 'x-axis',
+	 	sDefaultContent: '$defaultContent' 
+	 }, {
+	 	mData: 'temperature',
+	 	mRender: createCellRenderer('temperature'),
+	 	scType: 'degrees Celsius',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'salinity',
+	 	mRender: createCellRenderer('salinity'),
+	 	scType: 'PSU',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'oxygen',
+	 	mRender: createCellRenderer('oxygen'),
+	 	scType: 'mL/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'phosphate',
+	 	mRender: createCellRenderer('phosphate'),
+	 	scType: 'micromole/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'silicate',
+	 	mRender: createCellRenderer('silicate'),
+	 	scType: 'micromole/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'nitrate',
+	 	mRender: createCellRenderer('nitrate'),
+	 	scType: 'micromole/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'nitrite',
+	 	mRender: createCellRenderer('nitrite'),
+	 	scType: 'micromole/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'ph',
+	 	mRender: createCellRenderer('ph'),
+	 	scType: 'dimensionless',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'chlorophyll',
+	 	mRender: createCellRenderer('chlorophyll'),
+	 	scType: 'microgram/L',
+	 	sDefaultContent: '$defaultContent'
+	 }, {
+	 	mData: 'alkalinity',
+	 	mRender: createCellRenderer('alkalinity'),
+	 	scType: 'mEq/L',
+	 	sDefaultContent: '$defaultContent'
+	 }]
+}")

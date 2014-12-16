@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.megx.megdb.blast.mappers.BlastMapper">
+
+	<resultMap type="BlastJob" id="blast_job">
+		<result column="id" property="id" />
+		<result column="label" property="label" />
+		<result column="customer" property="customer" />
+		<result column="num_neighbors" property="numNeighbors" />
+		<result column="tool_label" property="toolLabel" />
+		<result column="tool_ver" property="toolVer" />
+		<result column="program_name" property="programName" />
+		<result column="biodb_label" property="biodbLabel" />
+		<result column="biodb_version" property="biodbVersion" />
+		<result column="raw_fasta" property="rawFasta" />
+		<result column="evalue" property="evalue" />
+		<result column="gap_open" property="gapOpen" />
+		<result column="gap_extend" property="gapExtend" />
+		<result column="x_dropoff" property="xDropoff" />
+		<result column="gi_defline" property="giDefine" />
+		<result column="nuc_mismatch" property="nucMismatch" />
+		<result column="nuc_match" property="nucMatch" />
+		<result column="num_desc" property="numDesc" />
+		<result column="num_align" property="numAlign" />
+		<result column="ext_threshold" property="extThreshold" />
+		<result column="gap_align" property="gapAlign" />
+		<result column="genetic_code" property="geneticCode" />
+		<result column="db_gen_code" property="dbGenCode" />
+		<result column="num_processors" property="numProcessors" />
+		<result column="believe_seq_file" property="believeSeqFile" />
+		<result column="matrix" property="matrix" />
+		<result column="word_size" property="wordSize" />
+		<result column="effective_db" property="effectiveDb" />
+		<result column="kept_hits" property="keptHits" />
+		<result column="effective_space" property="effectiveSpace" />
+		<result column="query_strand" property="queryStrand" />
+		<result column="x_dropoff_ungap" property="xDropoffUngap" />
+		<result column="x_dropoff_gap" property="xDropoffGap" />
+		<result column="multi_hits_win_size" property="multi_hits_win_size" />
+		<result column="concat_queries" property="concatQueries" />
+		<result column="legacy_engine" property="legacyEngine" />
+		<result column="composition_stat" property="compositionStat" />
+		<result column="local_optimum" property="localOptimum" />
+		<result column="result" property="result" />
+		<result column="result_raw" property="resultRaw" />
+		<result column="filter" property="filter" />
+		<result column="time_submitted" property="timeSubmitted"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="time_finished" property="timeFinished"
+			jdbcType="TIMESTAMP" javaType="java.sql.Timestamp" />
+		<result column="make_public" property="makePublic" />
+		<result column="keep_data" property="keepData" />
+		<result column="time_started" property="timeStarted" jdbcType="TIMESTAMP"
+			javaType="java.sql.Timestamp" />
+		<result column="cluster_node" property="clusterNode" />
+		<result column="job_id" property="jobId" />
+		<result column="return_code" property="returnCode" />
+		<result column="error_message" property="errorMessage" />
+		<result column="total_run_time" property="totalRunTime" />
+		<result column="time_protocol" property="timeProtocol" />
+		<result column="query_id" property="queryId" />
+		<result column="query_seq" property="querySeq" />
+	</resultMap>
+
+	<resultMap type="BlastHits" id="blast_hits">
+		<result column="jid" property="jid" />
+		<result column="hit" property="hit" />
+		<result column="db" property="db" />
+		<result column="hit_id" property="hitId" />
+		<result column="hit_def" property="hitDef" />
+		<result column="hit_acc" property="hitAcc" />
+		<result column="hit_length" property="hitLength" />
+		<result column="hsp_num" property="hspNum" />
+		<result column="hsp_length" property="hspLength" />
+		<result column="hsp_evalue" property="hspEvalue" />
+		<result column="hsp_bit_score" property="hspBitScore" />
+		<result column="hsp_q_from" property="hspQFrom" />
+		<result column="hsp_q_to" property="hspQTo" />
+		<result column="hsp_h_from" property="hspHFrom" />
+		<result column="hsp_h_to" property="hspHTo" />
+		<result column="hsp_q_frame" property="hspQFrame" />
+		<result column="hsp_h_frame" property="hspHFrame" />
+		<result column="hsp_identical" property="hspIdentical" />
+		<result column="hsp_conserved" property="hspConserved" />
+		<result column="hsp_q_string" property="hspQString" />
+		<result column="hsp_h_string" property="hspHString" />
+		<result column="hsp_homology_string" property="hspHomologyString" />
+		<result column="subnet_graphml" property="subnetGraphml" />
+		<result column="subnet_json" property="subnetJson" />
+		<result column="hit_neighborhood" property="hitNeighborhood" />
+		<result column="kegg_url_args" property="keggUrlArgs" />
+		<result column="hit_bits" property="hitBits" />
+		<result column="hit_significance" property="hitSignificance" />
+		<result column="hit_hsp_num" property="hitHspNum" />
+	</resultMap>
+
+	<resultMap type="BlastHitsNeighbours" id="blast_hits_neighbours">
+		<result column="key" property="key" />
+		<result column="value" property="value" />
+		<result column="hit_id" property="hitId" />
+	</resultMap>
+
+	<resultMap type="BlastHitsDb" id="blast_hits_db">
+		<result column="db" property="db" />
+	</resultMap>
+
+	<resultMap type="MatchingSequences" id="blast_hits_matching_sequences">
+		<result column="hsp_evalue" property="hspEvalue" />
+		<result column="hsp_bit_score" property="hspBitScore" />
+		<result column="query_id" property="queryId" />
+		<result column="hit_id" property="hitId" />
+		<result column="hit_neighborhood" property="hitNeighborhoodCount" />
+	</resultMap>
+
+	<insert id="insertBlastJob" parameterType="BlastJob">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			SELECT
+			currval('megx_blast.blast_jobs_id_seq')
+		</selectKey>
+		INSERT INTO megx_blast.blast_jobs
+		(label, customer, num_neighbors,
+		tool_label, tool_ver, program_name,
+		biodb_label, biodb_version,
+		raw_fasta, evalue)
+		VALUES (#{label}, #{customer},
+		#{numNeighbors},
+		#{toolLabel},#{toolVer},
+		#{programName},
+		#{biodbLabel},#{biodbVersion},#{rawFasta},#{evalue})
+	</insert>
+
+	<select id="getSubnetGraphml" resultMap="blast_hits">
+		SELECT subnet_graphml
+		FROM megx_blast.blast_hits
+		WHERE jid =#{jid} and hit_id =#{hitId};
+	</select>
+
+	<select id="getBlastJobDetails" resultMap="blast_job"
+		parameterType="int">
+		SELECT id, label, time_submitted, time_finished,
+		return_code,
+		error_message
+		FROM
+		megx_blast.blast_jobs
+		WHERE id
+		=#{blastJobId};
+	</select>
+
+	<select id="getSuccesfulBlastJob" parameterType="int" resultMap="blast_job">
+		SELECT id, label, time_submitted, time_finished, return_code,
+		error_message
+		FROM
+		megx_blast.blast_jobs
+		WHERE return_code
+		= 0 and
+		id =
+		#{id};
+	</select>
+
+	<select id="getNeighbours" resultMap="blast_hits_neighbours"
+		parameterType="int">
+    <![CDATA[
+		 SELECT 
+		 	hit_id, 
+		 	(each(hit_neighborhood)).key as key,
+		 	(each(hit_neighborhood)).value as value
+         FROM megx_blast.blast_hits
+         WHERE jid =#{jid} and hit_id =#{hitId};
+     	 ]]>
+	</select>
+
+	<select id="getResultRaw" resultMap="blast_job" parameterType="int">
+		SELECT result_raw
+		FROM megx_blast.blast_jobs
+		WHERE id =#{id};
+	</select>
+
+	<select id="getDatabases" resultMap="blast_hits_db">
+		SELECT db FROM
+		megx_blast.blast_hits;
+	</select>
+
+	<select id="getGeographicRaw" resultMap="blast_job"
+		parameterType="int">
+		SELECT id,raw_fasta,job_id FROM
+		megx_blast.blast_jobs
+		where id=#{id};
+	</select>
+
+	<select id="getMatchingSequences" resultMap="blast_hits_matching_sequences">
+		SELECT hsp_evalue, hsp_bit_score, query_id, hit_id, (SELECT COUNT
+		(hit_neighborhood) as hit_neighborhood
+		FROM megx_blast.blast_hits)
+		FROM megx_blast.blast_jobs
+		INNER JOIN
+		megx_blast.blast_hits
+		ON
+		megx_blast.blast_jobs.id = megx_blast.blast_hits.jid
+	</select>
+</mapper>

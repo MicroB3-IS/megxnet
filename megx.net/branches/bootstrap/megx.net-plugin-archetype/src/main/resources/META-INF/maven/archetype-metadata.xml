@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+    name="net.megx-plugin-archetype"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <requiredProperties>
+        <requiredProperty key="groupId">
+            <defaultValue>net.megx</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="version">
+            <defaultValue>0.0.1</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="plugin_name">
+            <defaultValue>${artifactId}</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="symbolic_name">
+            <defaultValue>${artifactId}</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="chon_activator">
+            <defaultValue>ResTplConfiguredActivator</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="configDir">
+            <defaultValue>__config</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+
+    <fileSets>
+        <fileSet filtered="true" encoding="UTF-8" packaged="true">
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.java</include>
+            </includes>
+        </fileSet>
+
+        <fileSet filtered="true" filencoding="UTF-8" packaged="false">
+            <directory>__configDir__</directory>
+            <includes>
+                <include>*.json</include>
+            </includes>
+        </fileSet>
+
+        <fileSet encoding="UTF-8">
+            <directory>lib</directory>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory>META-INF</directory>
+            <includes>
+                <include>MANIFEST.MF</include>
+            </includes>
+        </fileSet>
+
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory>.settings</directory>
+            <includes>
+                <include>**/*.prefs</include>
+            </includes>
+        </fileSet>
+
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory></directory>
+            <includes>
+                <include>.classpath</include>
+                <include>build.properties</include>
+                <include>.project</include>
+            </includes>
+        </fileSet>
+
+
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory>tpl</directory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
+
+        <fileSet filtered="true" encoding="UTF-8">
+            <directory>res</directory>
+            <includes>
+                <include>**/**</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+</archetype-descriptor>

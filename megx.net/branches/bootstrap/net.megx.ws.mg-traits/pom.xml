@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>parent-microb3-is</artifactId>
+        <groupId>net.megx</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../net.megx/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>net.megx.ws.mg-traits</artifactId>
+
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>eclipse-plugin</packaging>
+
+    <name>net.megx.ws.mg-traits</name>
+
+<!-- These dependencies are not needed by Tycho as such
+   | However, they allow to only build this module and its dependencies using e.g.:
+   |
+   |    > mvn compile -pl net.megx.ws.mg-traits -am
+   -->
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>net.megx.megdb</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>net.megx.ws.common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- main configuration is in parent pom -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

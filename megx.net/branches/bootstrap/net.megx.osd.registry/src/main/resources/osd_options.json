@@ -1,0 +1,337 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "osd-form",
+            "method": "post",
+            "action": "${megx.site.url}/ws/v1/OSDRegistry/v1.0.0/sample"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {}
+        }
+    },
+    "fields": {
+        "version": {
+            "type": "hidden"
+        },
+        "contact": {
+            "hideInitValidationError": true,
+            "fields": {
+               "first_name": {
+                   "type": "personalname"
+               },
+               "last_name": {
+                   "type": "personalname"
+               }
+            }
+        },
+        "investigators": {
+            "toolbarSticky": true,
+            "collapsed": true,
+            "hideInitValidationError": true,
+            "itemLabel": "Contact",
+            "fields": {
+                "item": {
+                    "fields": {
+                        "email": {
+                            "label": "email",
+                            "helper": "Example: pjones@institute1.eu"
+                        },
+                        "first_name": {
+                           "type": "personalname"
+                        },
+                        "last_name": {
+                            "type": "personalname"
+                        }
+                    }
+                }
+            }
+        },
+        "sampling_site": {
+            "collapsed": true,
+            "fieldClass": "mx-site",
+            "fields": {
+                "site_id": {
+                    "validate": true
+                },
+                "site_name": {
+                    "helper": "Example: Poseidon-E1-M3A Time Series Station"
+                },
+                "objective": {
+                    "type": "textarea"
+                }
+            }
+        },
+        "sample": {
+            "collapsed": true,
+            "fieldClass": "mx-sample",
+            "fields": {
+                "protocol_label": {
+                    "size" : 2,
+                    "type": "select"
+                },
+                "description": {
+                    "fieldClass": "mx-sample",
+                    "type": "textarea"
+                },
+                "date": {
+                  "hideInitValidationError": true,
+                  "dateFormat": "yy-mm-dd"
+                },
+                "time": {
+                   "hideInitValidationError": true
+                },
+                "filters": {
+                    "toolbarSticky": true,
+                    "collapsed": false,
+                    "hideInitValidationError": true,
+                    "itemLabel": "Filter",
+                    "fields": {
+                        "item": {
+                            "fields": {
+                                "filtration_time": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "environment": {
+            "collapsed": true,
+            "fieldClass": "mx-env-param",
+            "fields": {
+                "salinity": {
+                    "hideInitValidationError": true
+                },
+                "phosphate": {
+                    "hideInitValidationError": true,
+                    "fields": {
+                        "measurement": {
+                            "dependencies": {
+                                "choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "ph": {
+                    "hideInitValidationError": true,
+                    "fields": {
+                        "measurement": {
+                            "dependencies": {
+                                "choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "nitrate": {
+                    "hideInitValidationError": true,
+                    "fields": {
+                        "nitrate-measurement": {
+                            "dependencies": {
+                                "nitrate-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "carbon_organic_particulate_poc": {
+                    "fields": {
+                        "carbon_organic_particulate_poc-measurement": {
+                            "dependencies": {
+                                "carbon_organic_particulate_poc-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "nitrite": {
+                    "fields": {
+                        "nitrite-measurement": {
+                            "dependencies": {
+                                "nitrite-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "carbon_organic_dissolved_doc": {
+                    "fields": {
+                        "carbon_organic_dissolved_doc-measurement": {
+                            "dependencies": {
+                                "carbon_organic_dissolved_doc-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "nano_microplankton": {
+                    "fields": {
+                        "nano_microplankton-measurement": {
+                            "dependencies": {
+                                "nano_microplankton-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "downward_par": {
+                    "fields": {
+                        "downward_par-measurement": {
+                            "dependencies": {
+                                "downward_par-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "conductivity": {
+                    "fields": {
+                        "conductivity-measurement": {
+                            "dependencies": {
+                                "conductivity-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "primary_production_isotope_uptake": {
+                    "fields": {
+                        "primary_production_isotope_uptake-measurement": {
+                            "dependencies": {
+                                "primary_production_isotope_uptake-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "primary_production_oxygen": {
+                    "fields": {
+                        "primary_production_oxygen-measurement": {
+                            "dependencies": {
+                                "primary_production_oxygen-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "dissolved_oxygen_concentration": {
+                    "fields": {
+                        "dissolved_oxygen_concentration-measurement": {
+                            "dependencies": {
+                                "dissolved_oxygen_concentration-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "nitrogen_organic_particulate_pon": {
+                    "fields": {
+                        "nitrogen_organic_particulate_pon-measurement": {
+                            "dependencies": {
+                                "nitrogen_organic_particulate_pon-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "meso_macroplankton": {
+                    "fields": {
+                        "meso_macroplankton-measurement": {
+                            "dependencies": {
+                                "meso_macroplankton-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "bacterial_production_isotope_uptake": {
+                    "fields": {
+                        "bacterial_production_isotope_uptake-measurement": {
+                            "dependencies": {
+                                "bacterial_production_isotope_uptake-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "nitrogen_organic_dissolved_don": {
+                    "fields": {
+                        "nitrogen_organic_dissolved_don-measurement": {
+                            "dependencies": {
+                                "nitrogen_organic_dissolved_don-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "ammonium": {
+                    "fields": {
+                        "ammonium-measurement": {
+                            "dependencies": {
+                                "ammonium-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "silicate": {
+                    "fields": {
+                        "silicate-measurement": {
+                            "dependencies": {
+                                "silicate-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "bacterial_production_respiration": {
+                    "fields": {
+                        "bacterial_production_respiration-measurement": {
+                            "dependencies": {
+                                "bacterial_production_respiration-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "turbidity": {
+                    "fields": {
+                        "turbidity-measurement": {
+                            "dependencies": {
+                                "turbidity-choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "fluorescence": {
+                    "fields": {
+                        "measurement": {
+                            "dependencies": {
+                                "choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "pigment_concentration": {
+                    "fields": {
+                        "measurement": {
+                            "dependencies": {
+                                "choice": "measured"
+                            }
+                        }
+                    }
+                },
+                "picoplankton_flow_cytometry": {
+                    "fields": {
+                        "measurement": {
+                            "dependencies": {
+                                "choice": "measured"
+                            },
+                            "toolbarSticky": true,
+                            "collapsed": true,
+                            "hideInitValidationError": true,
+                            "itemLabel": "Taxon",
+                            "fields": {
+                                "item": {
+                                    "fields": {
+                                        "taxon": {},
+                                        "value": {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "comment": {
+            "type": "textarea"
+        }
+    }
+}
