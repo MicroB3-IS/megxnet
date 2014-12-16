@@ -6,6 +6,8 @@ public class Place {
   private String placeName;
   private String lat;
   private String lon;
+  private boolean error;
+  private String errorMsg;
 
   public String getWorldRegion() {
     return worldRegion;
@@ -39,10 +41,27 @@ public class Place {
     this.lon = lon;
   }
 
+  public boolean isError() {
+    return error;
+  }
+
+  public void setError(boolean error) {
+    this.error = error;
+  }
+
+  public String getErrorMsg() {
+    return errorMsg;
+  }
+
+  public void setErrorMsg(String errorMsg) {
+    this.errorMsg = errorMsg;
+  }
+
   @Override
   public String toString() {
     return "Place [worldRegion=" + worldRegion + ", placeName=" + placeName
-        + ", lat=" + lat + ", lon=" + lon + "]";
+        + ", lat=" + lat + ", lon=" + lon + ", error=" + error + ", errorMsg="
+        + errorMsg + "]";
   }
 
 }

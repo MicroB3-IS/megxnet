@@ -163,6 +163,7 @@ public class GeonamesServiceImpl extends BaseRestService implements
     InputStream instream = null;
     URI uri = null;
     Place place = new Place();
+    place.setError(false);
 
     try {
       uri = new URIBuilder().setScheme("http").setHost("api.geonames.org")
@@ -209,15 +210,12 @@ public class GeonamesServiceImpl extends BaseRestService implements
 
                 }
               }
-              if (place.getPlaceName() == null) {
-                throw new ClientProtocolException("No results found for: "
-                    + placeName + " in region: " + worldRegion);
-              }
 
             } else if (geonames.getTotalResultsCount() == 0) {
 
-              throw new ClientProtocolException("No results found for: "
-                  + placeName);
+              place.setError(true);
+              place.setErrorMsg("No results found for " + placeName
+                  + " in region " + worldRegion);
 
             } else {
               throw new ClientProtocolException("Malformed XML document");
