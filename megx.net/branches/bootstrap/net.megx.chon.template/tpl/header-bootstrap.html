@@ -1,0 +1,12 @@
+<header>
+    <div class="container">
+        <a href="$ctx.siteUrl/">
+            #if($this.showOSDLogo == 'true')
+                <img id="logo" src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
+            #else
+                <img id="logo" src="$ctx.siteUrl/images/logo.png">
+            #end
+        </a>
+    </div>
+    #parse("pages/fragments/nav_bar-bootstrap.html")
+</header>
