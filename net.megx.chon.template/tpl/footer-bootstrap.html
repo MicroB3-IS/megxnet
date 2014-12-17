@@ -1,0 +1,29 @@
+<footer class="footer">
+    <div class="container">
+        <section class="footer-legal">
+            <nav>
+                <span>&copy 2014 megx.net (v0.5.0)</span>
+                <a href="$ctx.siteUrl/portal/disclaimer.html">privacy policy</a>
+                <a href="$ctx.siteUrl/portal/copyright.html">terms of use</a>
+            </nav>
+        </section>
+        <section class="footer-navigation">
+            <nav>
+                #foreach($m in $ext.menu.footer.childs)
+                    <a href="$m.fullLink">$m.title</a>
+                #end
+            </nav>
+        </section>
+        <section class="footer-social">
+            <a href="https://www.facebook.com/pages/Megxnet/451760948270922"><i class="social fa fa-facebook-square fa-3x social-facebook"></i></a>
+            <a href="https://twitter.com/megxnet"><i class="fa fa-twitter-square fa-3x social-twitter"></i></a>
+            <a href="$ctx.siteUrl/contact"><i class="fa fa-envelope-square fa-3x social-contact"></i></a>
+        </section>
+    </div>
+    <section class="footer-update">
+        #set($lastModified=$ext.utils.formatDate($this.jcrLastModified, 'yyyy-MM-dd'))
+        #if($lastModified)
+            <span class="FR">last update $lastModified</span>
+        #end
+    </section>
+</footer>

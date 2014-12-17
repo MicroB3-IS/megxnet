@@ -1,0 +1,25 @@
+<nav id="main-menu" class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+              </button>
+              <a id="logo-small" class="navbar-brand pull-right" href="$ctx.siteUrl/"> <img src="$ctx.siteUrl/images/icons/favicon.ico"></a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="$ctx.siteUrl">home</a>
+                <ul class="dropdown-menu">
+                    #foreach($m in $ext.menu.home.childs)
+                        <li>
+                            <a href="$m.fullLink">$m.title</a>
+                        </li> 
+                    #end
+                </ul></li>
+        </ul>
+    </div>
+</nav>
