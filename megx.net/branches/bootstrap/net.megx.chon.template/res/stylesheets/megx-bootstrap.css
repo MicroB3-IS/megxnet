@@ -3,7 +3,7 @@
 
 header {
     z-index: 10;
-    height: 178px;
+/*     height: 178px; */
 }
 
 .fixed-header {
@@ -39,9 +39,8 @@ nav#main-menu.navbar {
 
 nav#main-menu {
     width:100%;
-    background: #333;
     postion: relative;
-    height: 50px;
+/*     height: 50px; */
 }
 
 #main-menu.affix {
@@ -75,6 +74,10 @@ nav#main-menu {
     margin-left: 1rem;
 }
 
+.footer-social a:after {
+    content: none !important;
+}
+
 .footer section {
     vertical-align: middle;
 }
@@ -99,8 +102,33 @@ main {
     padding-top: 3rem;
 }
 
-/* BOOTSTRAP */
-.dropdown:hover .dropdown-menu {
-    display: block;
+/* GENERAL */
+a[href*="//"]:after, .dropdown-menu a[href*="//"]:after {
+    /* external link styles, use :before or :after if you want! */
+    content: " (external - TODO: icon)";
 }
 
+/* BOOTSTRAP */
+@media (min-width: 768px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-toggle .glyphicon {
+        top: 2px;
+        margin-left: 0.5em;
+    }
+    .dropdown-toggle .glyphicon:before{
+        content: '\e114';
+    }
+    .navbar-nav a {
+        margin: 0 10px;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .dropdown-toggle .glyphicon {
+        float: right !important;
+    }
+}
