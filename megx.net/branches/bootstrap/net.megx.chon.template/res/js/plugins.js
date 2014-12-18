@@ -21,14 +21,3 @@
     }
 }());
 
-//// Place any jQuery/helper plugins in here.
-//var $window = jQuery(window);
-//var header = jQuery('#main-menu');
-//$window.scroll(function(){
-//    if ($window.scrollTop() >= 148) {
-//       header.addClass('fixed-header');
-//    }
-//    else {
-//       header.removeClass('fixed-header');
-//    }
-//});
