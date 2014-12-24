@@ -8,6 +8,7 @@ import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.osdregistry.OSDRegistryService;
 import net.megx.megdb.osdregistry.mappers.OSDRegistryMapper;
 import net.megx.model.osdregistry.OSDParticipant;
+import net.megx.model.osdregistry.OSDParticipation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -117,5 +118,19 @@ public class DBOSDRegistryService extends BaseMegdbService implements
 		}, OSDRegistryMapper.class);
 
 	}
+
+  @Override
+  public void saveParticipation(final OSDParticipation participation)
+      throws DBGeneralFailureException {
+    log.debug("Saving participation");
+    doInTransaction(new DBTask<OSDRegistryMapper, Object>() {
+      @Override
+      public Object execute(OSDRegistryMapper mapper) throws Exception {
+        mapper.saveParticipation(participation);
+        return null;
+      }
+    }, OSDRegistryMapper.class);
+    
+  }
 
 }
