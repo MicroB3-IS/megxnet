@@ -1,0 +1,47 @@
+{
+    "title": "Expression of Interest in Ocean Sampling Day  (v0.1)",
+    "description": "Please briefly description your interest in Ocean Sampling Day. After you make your expression of interest in participating you will be contacted by the OSD Consortium. Eventually, if you chose to join OSD, you will need to formally register to participate.",
+    "type": "object",
+    "properties": {
+        "contactName": {
+            "title": "Contact Name:",
+            "type": "string",
+            "required": true
+        },
+        "contactEmail": {
+        	"title": "Contact Email:",
+        	"type": "string",
+        	"format": "email",
+        	"required": true
+         },
+         "contactAddress":{
+         	"title": "Contact Address:",
+        	"type": "string",
+        	"format": "textarea",
+        	"required": false
+         },
+         "ideas" :{
+         	"title": "Your ideas? How would you like to participate in Ocean Sampling Day?",
+        	"type": "string",
+        	"format": "textarea",
+        	"required": false
+         },
+         "contributedSamples": {
+         	"title": " How would your contributed samples be contextualized/unique?",
+        	"type": "string",
+        	"format": "textarea",
+        	"required": false
+         },
+         "funding": {
+         	"title": "  Do you have funding for participation?",
+        	"type": "string",
+        	"format": "textarea",
+        	"required": false
+         },
+        "participateDate": {
+            "title": " When would you like to participate?",
+            "description": "Report any deviation.",
+            "required": false
+        }
+    }
+}

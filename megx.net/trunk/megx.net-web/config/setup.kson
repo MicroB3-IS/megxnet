@@ -47,6 +47,7 @@ www={type:'sys.public'}
 		sample-registration={type:'html', template:'net.megx.osd.registry/sample-registration.html', title:'Sample Registration'}
 		list={type:'html', template:'net.megx.osd.registry/list.html', title:'OSD Participants'}
 		add={type:'html', template:'net.megx.osd.registry/add.html', title:'Add OSD institute'}
+		participation={type:'html', template:'net.megx.osd.registry/participation.html', title:'Expression of Interest in Ocean Sampling Day'}
 	bookmark={type:'html', template:'net.megx.megxbar/bookmarklet.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Bookmarklet'}
 	continue={type:'html', template:'net.megx.megxbar/continue.html', baseTemplate: 'net.megx.megxbar/bookmarkletTemplate.html', title:'Continue to bookmarklet'}
 	bookmark-help={type:'html', template:'net.megx.megxbar/bookmarkletHelp.html' , title:'Bookmarklet help page'}

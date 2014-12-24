@@ -1,0 +1,53 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "participation-form",
+            "method": "post",
+            "action": "http://localhost:8080/megx.net/ws/v1/OSDRegistry/v1.0.0/participation"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {}
+        }
+    },
+    "fields": {
+        "contactName": {
+            "size": 20,
+            "helper": "Please enter your name."
+        },
+        "contactEmail":{
+        	"helper" : "Please enter your email address"
+        },
+        "contactAddress":{
+        	"helper" : "Please enter your contact address"
+        },
+        "ideas":{
+        	"helper" : "Please enter your ideas about OSD",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "contributedSamples":{
+        	"helper" : "Please enter your opinion",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "funding":{
+        	"helper" : "Please enter do you have funding",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "participateDate":{
+        	"helper" : "Please enter date when you like to participate",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        	
+        }
+    }
+}
