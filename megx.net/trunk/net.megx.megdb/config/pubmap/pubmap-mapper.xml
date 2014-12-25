@@ -31,10 +31,6 @@
 		ST_PointFromText('POINT(${lon} ${lat})',4326),#{worldRegion},#{place})
 	</insert>
 	
-	<select id="articleExists" parameterType="int" resultType="boolean">
-		SELECT EXISTS (SELECT true FROM pubmap.raw_pubmap WHERE pmid=#{pmid})
-	</select>
-	
 	<select id="getAllArticles" resultMap="pubmap_article">
 		SELECT *
 		FROM pubmap.raw_pubmap
