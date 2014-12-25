@@ -8,8 +8,6 @@ import net.megx.model.pubmap.Ocean;
 public interface PubMapMapper {
 	public void storeArticle(Article article);
 	
-	public Boolean articleExists(Integer pmid);
-	
 	public List<Article> getAllArticles();
 	
 	public Boolean isOcean(String worldRegion);
