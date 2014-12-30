@@ -37,7 +37,7 @@
             "cols": 30
         },
         "funding":{
-        	"helper" : "Please enter do you have funding",
+        	"helper" : "Please enter if you have funding",
         	"type": "textarea",
             "rows": 4,
             "cols": 30
