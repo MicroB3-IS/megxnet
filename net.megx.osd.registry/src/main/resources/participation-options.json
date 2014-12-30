@@ -6,7 +6,7 @@
         "attributes": {
             "id": "participation-form",
             "method": "post",
-            "action": "http://localhost:8080/megx.net/ws/v1/OSDRegistry/v1.0.0/participation"
+            "action": "${net.megx.osd.registry.participation.action.url}"
         },
         "buttons": {
             "submit": {},

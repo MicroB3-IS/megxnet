@@ -1,18 +1,22 @@
 <style type="text/css">
-#errorMsg{
-	font-size:18px;
-	color:#FF0000;
-	margin-left:30px;
+#errorMsg {
+	font-size: 18px;
+	color: #FF0000;
+	margin-left: 30px;
 	margin-top: 30px;
 	display: none;
 }
 </style>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
-<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
+<script type="text/javascript"
+	src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
+<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css"
+	rel="stylesheet" type="text/css">
 
 
-<div id="errorMsg">You need to be logged in, in case you don't have user you can use this form  name and mail to create one.</div>
+<div id="errorMsg">You need to be logged in, in case you don't
+	have user you can use this form name and mail to create one.</div>
 <div id="participationForm" style="padding: 15px"></div>
 
 <script type="text/javascript">
@@ -59,7 +63,7 @@ var MegxFormWidget = new MegxFormWidget({
                             var json = form.getValue();
                             var formJson = JSON.stringify(field.getValue());
                             $('<input/>').attr('name', 'json').attr('value',
-                                formJson).appendTo("#participation-form");
+                                formJson).attr('type','hidden').appendTo("#participation-form");
                         } else {
                             alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
                             return false;
