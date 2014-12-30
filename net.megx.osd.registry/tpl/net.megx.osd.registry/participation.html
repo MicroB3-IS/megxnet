@@ -1,16 +1,91 @@
-<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+#errorMsg{
+	font-size:18px;
+	color:#FF0000;
+	margin-left:30px;
+	margin-top: 30px;
+	display: none;
+}
+</style>
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
+<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
 
 
+<div id="errorMsg">You need to be logged in, in case you don't have user you can use this form  name and mail to create one.</div>
 <div id="participationForm" style="padding: 15px"></div>
 
 <script type="text/javascript">
- var MegxFormWidget = new MegxFormWidget({
-	 target : "participationForm",
-	 schemaLocation : ctx.siteUrl + "/net.megx.osd.registry/data/participation-schema.json",
-	 optionsLocation : ctx.siteUrl + "/net.megx.osd.registry/data/participation-options.json",
-	 formId : "participation-form"
- });
+#if(($req.user && !$req.user.empty) && ($req.servletRequset.session.getAttribute("userEmail")))
+	user = '$req.user.name';
+	email = '$req.servletRequset.session.getAttribute("userEmail")';
+#else
+	user = null;
+    email = null;
+#end
+
+var MegxFormWidget = new MegxFormWidget({
+    target: "participationForm",
+    schemaLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-schema.json",
+    optionsLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-options.json",
+    formId: "participation-form",
+    postRender: function(field) {
+
+        var form = field.form;
+        var fieldSet = form.field[0];
+		
+        if (user != null && email != null) {
+
+            var contactName = field.childrenByPropertyId["contactName"];
+            contactName.setValue(user);
+            var contactEmail = field.childrenByPropertyId["contactEmail"];
+            contactEmail.setValue(email);
+
+            
+            var contactNameInput = fieldSet[1];
+            contactNameInput.readOnly = true;
+
+            var contactEmailInput = fieldSet[2];
+            contactEmailInput.readOnly = true;
+            
+            if (form) {
+
+                form.refreshValidationState(false);
+
+                form.registerSubmitHandler(function(e, form) {
+                        form.validate(true);
+                        form.refreshValidationState(true);
+                        if (form.isFormValid()) {
+                            var json = form.getValue();
+                            var formJson = JSON.stringify(field.getValue());
+                            $('<input/>').attr('name', 'json').attr('value',
+                                formJson).appendTo("#participation-form");
+                        } else {
+                            alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
+                            return false;
+                        }
+                        e.stopPropagation();
+                        return true;
+                    });
+            }
+
+        } else {
+        	$('#errorMsg').show();
+        	var userName = field.childrenByPropertyId["contactName"];
+        	var userMail = field.childrenByPropertyId["contactEmail"];
+        	
+        	form.registerSubmitHandler(function(e, form) {
+        		return false;
+        	});
+        	form.buttons.submit.click(function() {
+        	    if (confirm("Do you want to use your entered name and email to create megx.net user in order to submit participation?!") == true) {
+        	    	document.location.href = "$ctx.siteUrl/register?userName="+userName.getValue()+"&userMail="+userMail.getValue();
+        	    } 
+        	});
+           	
+        }
+
+    }
+});
  
 </script>

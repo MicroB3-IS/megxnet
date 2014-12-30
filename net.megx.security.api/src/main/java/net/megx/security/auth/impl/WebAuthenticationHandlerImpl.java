@@ -85,6 +85,8 @@ public class WebAuthenticationHandlerImpl extends BaseAuthenticationHandler
                             authentication = new AuthenticationImpl(user);
                             request.getSession().setAttribute("userLastLogin",
                                     lastLogin);
+                            request.getSession().setAttribute("userEmail",
+                                user.getEmail());
                             // context.storeLastRequestedURL(getSiteHomeUrl(request));
                             checkRedirectUrl(request, context);
                         } catch (SecurityException e) {
