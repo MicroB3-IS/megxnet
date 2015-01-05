@@ -201,6 +201,28 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
     }
   }
 
+  /**
+   * Save the participation form.
+   * 
+   * @param contactName
+   *          the participant name.
+   * @param contactEmail
+   *          the participant email.
+   * @param contactAddress
+   *          the participant address.
+   * @param ideas
+   *          the participant ideas about OSD.
+   * @param contributedSamples
+   *          the participant unique samples.
+   * @param funding
+   *          the participant funding.
+   * @param participateDate
+   *          the participant date.
+   * @param json
+   *          the whole participation form json.
+   * @throws WebApplicationException
+   *           if the given contactName,contactEmail or json are empty or null.
+   */
   @Path("participation")
   @POST
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
