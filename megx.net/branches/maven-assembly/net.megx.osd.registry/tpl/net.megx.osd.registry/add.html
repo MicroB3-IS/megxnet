@@ -1,0 +1,78 @@
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+  #if($req.id)
+  	participantID = '$req.id';
+  	isInEditMode = true;
+  #else
+  	isInEditMode = false;
+  #end
+</script>
+
+<form id="participantForm">
+	<table id="osdRegistryInputTable">
+		<tr>
+			<td class="label">OSD ID:</td>
+			<td class="input"><input type="text" name="osdID" id="osdID" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Site name:</td>
+			<td class="input"><input type="text" name="siteName" id="siteName" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Institute name:</td>
+			<td class="input"><input type="text" name="institution" id="institution" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Institute address:</td>
+			<td class="input"><input type="text" name="institutionAddress" id="institutionAddress" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Country:</td>
+			<td class="input"><input type="text" name="country" id="country" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Institute web address:</td>
+			<td class="input"><input type="text" name="institutionWebAddress" id="institutionWebAddress" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Site coordinator:</td>
+			<td class="input"><input type="text" name="siteCoordinator" id="siteCoordinator" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Coordinator email:</td>
+			<td class="input"><input type="text" name="coordinatorEmail" id="coordinatorEmail" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Site latitude:</td>
+			<td class="input"><input type="text" name="siteLat" id="siteLat" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Site longitude:</td>
+			<td class="input"><input type="text" name="siteLong" id="siteLong" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Institute latitude:</td>
+			<td class="input"><input type="text" name="institutionLat" id="institutionLat" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+		<tr>
+			<td class="label">Institute longitude:</td>
+			<td class="input"><input type="text" name="institutionLong" id="institutionLong" /></td>
+			<td class="errorLabelContainer"></td>
+		</tr>
+	</table>
+</form>
+
+<input type="button" value="Submit" id="submitOSDParticipant" />
