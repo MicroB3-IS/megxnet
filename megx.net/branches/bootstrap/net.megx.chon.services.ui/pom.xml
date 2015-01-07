@@ -15,13 +15,4 @@
     <artifactId>net.megx.chon.services.ui</artifactId>
     <packaging>eclipse-plugin</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <!-- main configuration is in parent pom -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

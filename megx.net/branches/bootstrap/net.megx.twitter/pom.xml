@@ -1,60 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
->
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>parent-microb3-is</artifactId>
-        <groupId>net.megx</groupId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../net.megx/pom.xml</relativePath>
-    </parent>
-
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>parent-microb3-is</artifactId>
     <groupId>net.megx</groupId>
-    <artifactId>net.megx.twitter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>eclipse-plugin</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../net.megx/pom.xml</relativePath>
+  </parent>
 
-    <name>net.megx.twitter</name>
+  <groupId>net.megx</groupId>
+  <artifactId>net.megx.twitter</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
 
-    <properties>
-        <!-- default in mvn project local properties dir -->
-        <twitter.properties.file>src/main/resources/twitter.properties</twitter.properties.file>
-    </properties>
+  <name>net.megx.twitter</name>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-                <targetPath>properties/</targetPath>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <rules combine.children="append">
-                        <requireFilesExist>
-                            <message>file properties/twitter.properties
-                                must exist</message>
-                            <files>
-                                <file>${twitter.properties.file}</file>
-                            </files>
-                        </requireFilesExist>
-                    </rules>
-                </configuration>
-            </plugin>
-            <plugin>
-                <!-- main configuration is in parent pom -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-        </plugins>
+  <properties>
+    <!-- default in mvn project local properties dir -->
+    <twitter.properties.file>src/main/resources/twitter.properties</twitter.properties.file>
+  </properties>
 
-    </build>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>*.properties</include>
+        </includes>
+        <targetPath>properties/</targetPath>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules combine.children="append">
+            <requireFilesExist>
+              <message>file properties/twitter.properties
+                must exist</message>
+              <files>
+                <file>${twitter.properties.file}</file>
+              </files>
+            </requireFilesExist>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

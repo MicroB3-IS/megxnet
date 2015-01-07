@@ -207,18 +207,35 @@ $(document).ready(function() {
 });
 
 function findCoordinatesData(data) {
+	
+	if (data.error) {
 
-    var worldRegion = data.worldRegion || 'N/A';
-    var place = data.placeName || 'N/A';
-    var lat = data.lat || '';
-    var lon = data.lon || '';
-    
-    console.log("Country: ",worldRegion,"--- Place: ", place);
-    console.log("Lat: ",lat,"--- Lon: ", lon);
+	    $("#message")
+	        .html(
+	            "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>" + data.errorMsg + "</p>");
+	    $("#message").css("background-color", "#F2DEDE");
+	    $("#message").css("border", "1px solid #EED3D7");
+	    $("#message").css("color", "#B94A48");
+	    $("#message").css("border-radius", "15px");
+	    $("#message").css("padding-left", "10px");
+	    $("input[type=text]").val("");
+	    
+	} else {
 
-    var dataToInsert = collectData(lat, lon, worldRegion, place);
+	    emptyMessageDiv();
+	    var worldRegion = data.worldRegion || 'N/A';
+	    var place = data.placeName || 'N/A';
+	    var lat = data.lat || '';
+	    var lon = data.lon || '';
 
-    insertBookmark(dataToInsert);
+	    console.log("Country: ", worldRegion, "--- Place: ", place);
+	    console.log("Lat: ", lat, "--- Lon: ", lon);
+
+	    var dataToInsert = collectData(lat, lon, worldRegion, place);
+
+	    insertBookmark(dataToInsert);
+
+	}
 
 }
 
@@ -253,8 +270,6 @@ function findCoordinates(placeName, worldRegion, callback) {
 
 function findNearbyData(data) {
 
-    
-    
     var worldRegion = data.worldRegion || 'N/A';
     var place = data.placeName || 'N/A';
     var lat = data.lat;

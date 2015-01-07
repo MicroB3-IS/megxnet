@@ -58,6 +58,7 @@
 		
 		<!-- OSDRegistry -->
 		<typeAlias type="net.megx.model.osdregistry.OSDParticipant" alias="OSDParticipant" />
+		<typeAlias type="net.megx.model.osdregistry.OSDParticipation" alias="OSDParticipation" />
 		
 		<!-- MGTraits -->
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsResult" alias="MGTraitsResult" />

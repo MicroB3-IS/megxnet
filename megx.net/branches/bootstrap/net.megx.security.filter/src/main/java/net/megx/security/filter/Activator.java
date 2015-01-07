@@ -18,6 +18,8 @@ import net.megx.security.filter.ui.RolesManager;
 import net.megx.security.filter.ui.UsersManager;
 import net.megx.utils.OSGIUtils;
 
+import net.megx.mailer.BaseMailerService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.chon.cms.core.JCRApplication;
@@ -62,12 +64,13 @@ public class Activator extends ResTplConfiguredActivator {
 				UserService userService = (UserService)services.get(UserService.class.getName());
 				WebResourcesService wrService = (WebResourcesService)services.get(WebResourcesService.class.getName());
 				KeySecretProvider secretProvider = (KeySecretProvider)services.get(KeySecretProvider.class.getName());
+        BaseMailerService mailerService = (BaseMailerService)services.get(BaseMailerService.class.getName());
 				
 				ResourcesManager rm = new ResourcesManager(wrService);
 				UsersManager um = new UsersManager(userService, contentModel);
 				
 				RegistrationManager regm = new RegistrationManager(userService, secretProvider, 
-						getRegistrationConfig(), app.getTemplate());
+						getRegistrationConfig(), app.getTemplate(), mailerService);
 				
 				RolesManager rolesManager = new RolesManager(userService);
 				
@@ -79,7 +82,7 @@ public class Activator extends ResTplConfiguredActivator {
 				getBundleContext().registerService(RolesManager.class.getName(), rolesManager, null);
 				
 				RegistrationExtension registrationExtension = new RegistrationExtension(userService, 
-						getRegistrationConfig().optLong("verificationTTL", 24*60*60*1000));
+						getRegistrationConfig(), app.getTemplate(), mailerService);
 				
 				app.regExtension("registration", registrationExtension);
 				
@@ -87,7 +90,7 @@ public class Activator extends ResTplConfiguredActivator {
 				getBundleContext().registerService(OAuthEchoVerifyCredentials.class.getName(), verifyCredentialsService, null);
 			}
 		}, 
-		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName());
+		WebResourcesService.class.getName(), UserService.class.getName(), KeySecretProvider.class.getName(), BaseMailerService.class.getName());
 		//WebUtils.registerServlet(getBundleContext(), new ErrorProducingServlet(), "/produceError", null, null);
 		app.regExtension("securityFilter", new SecurityFilterExtension(getConfig()));
 	}
