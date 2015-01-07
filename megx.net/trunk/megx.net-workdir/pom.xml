@@ -193,7 +193,7 @@
             </goals>
             <configuration>
               <appendAssemblyId>false</appendAssemblyId>
-              <finalName>${artifactId}_assembled_workdir</finalName>
+              <finalName>${project.artifactId}_assembled_workdir</finalName>
               <descriptors>
                 <descriptor>src/assembly/bin.xml</descriptor>
               </descriptors>
