@@ -74,12 +74,27 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="$ctx.siteUrl/js/plugins.js"></script>
         <script>
-            // make navbar sticky on-scroll
-            $('#main-menu').affix({
-                offset: {
-                  top: $('header').height() - $('#main-menu').height()
-                }
-            }); 
+            jQuery(document).ready(function(){
+                
+                main = jQuery('main');
+                mainMenu = jQuery('#main-menu');
+                mainOriginalPadding = parseInt(main.css("padding-top"));
+                
+                // fix padding of main element depending on whether the navbar is fixed or not
+                mainMenu.on('affixed.bs.affix', function() {
+                   main.css("padding-top", mainMenu.height() + mainOriginalPadding);
+                });
+                mainMenu.on('affix-top.bs.affix', function() {
+                    main.css("padding-top", mainOriginalPadding);
+                });
+
+                // make navbar sticky on-scroll
+                mainMenu.affix({
+                   offset: {
+                     top: jQuery('header').height() - mainMenu.height()
+                   }
+                }); 
+            });
         </script>
         <!-- google analytics -->
         <script>

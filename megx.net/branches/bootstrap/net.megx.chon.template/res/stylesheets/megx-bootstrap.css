@@ -4,15 +4,6 @@
 
 header {
     z-index: 10;
-    /*     height: 178px; */
-}
-
-.fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
 }
 
 nav#main-menu.navbar {
@@ -20,7 +11,6 @@ nav#main-menu.navbar {
 }
 
 #main-menu.affix-top img {
-    /*     display: none; */
     visibility: hidden;
 }
 
@@ -29,7 +19,6 @@ nav#main-menu.navbar {
 }
 
 #main-menu.affix img {
-    /*     display: block; */
     visibility: visible;
 }
 
@@ -41,8 +30,6 @@ nav#main-menu.navbar {
 
 nav#main-menu {
     width: 100%;
-    postion: relative;
-    /*     height: 50px; */
 }
 
 #main-menu.affix {
@@ -50,6 +37,10 @@ nav#main-menu {
     top: 0;
     width: 100%;
     z-index: 10;
+}
+
+.navbar {
+    margin-bottom: 0px;
 }
 
 .navbar-menu-title {
