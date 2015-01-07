@@ -70,12 +70,8 @@ public class PubmapAPI extends BaseRestService {
       }
       article.setUserName(articleCreator);
 
-      if (service.articleExists(article.getPmid())) {
-        status = "Bookmark already exists on server.";
-      } else {
-        service.storeArticle(article);
-        status = "Bookmark successfully stored to server.";
-      }
+      service.storeArticle(article);
+      status = "Bookmark successfully stored to server.";
 
       return Response.status(Status.OK)
           .header("Access-Control-Allow-Origin", "*").entity(toJSON(status))

@@ -88,21 +88,18 @@
 				dgbSkipCaptchaValidation: false
 			},
 			mail:{
-				user: '${net.megx.security.filter.mail.user}',
-				password: '${net.megx.security.filter.mail.password}',
 				address: '${net.megx.security.filter.mail.address}',
-				options: {
-					'mail.smtp.auth' : 'true',
-					'mail.smtp.starttls.enable': 'true',
-					'mail.smtp.host': 'smtp.gmail.com',
-					'mail.smtp.port': '587'
-				},
 				dbgSkipActivation: false,
 				dgbActivateAccount: false,
 				activationMail: {
 					subject: 'megx.net account activation',
 					template: 'security-filter/activation-mail.vm',
 					activationEndpoint: 'register/activate'
+				},
+				registrationInfoMail: {
+					recipient: '${net.megx.security.filter.mail.registration.info.address}',
+					subject: 'megx.net new registration',
+					template: 'security-filter/registration-info-mail.vm'
 				}
 			},
 			verificationTTL: 86400000
