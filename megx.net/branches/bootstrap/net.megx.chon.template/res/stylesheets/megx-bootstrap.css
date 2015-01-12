@@ -106,9 +106,16 @@ main {
 }
 
 /* GENERAL */
-a[href*="//"]:after, .dropdown-menu a[href*="//"]:after {
+a[href*="//"]:before, .dropdown-menu a[href*="//"]:before {
     /* external link styles, use :before or :after if you want! */
-    content: " (external - TODO: icon)";
+    content: "\f08e";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-right: .5em;
 }
 
 /* BOOTSTRAP */
