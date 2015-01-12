@@ -1,0 +1,132 @@
+#set($url = "$ctx.siteUrl/gpfam-res/data/PF00012.json")
+<link rel="stylesheet" href="$ctx.siteUrl/net.megx.ui.table/css/data.table.css" type="text/css"
+  media="screen" />
+<script src="$ctx.siteUrl/net.megx.ui.table/js/json2.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/net.megx.ui.table/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/highcharts/js/highcharts.js"></script> 
+
+<script>
+function onTableRendered(oSettings, json) {
+ renderCharts(oSettings, json.data);
+}
+</script>
+  
+
+
+
+<div id="chart_ct"></div>
+
+
+$ext.dataTable.renderServerSide(
+	['Location', 'Sampling site', 'Number of hits'], 
+	$url,
+	false,
+	"{
+	 fnInitComplete: onTableRendered,
+	 aoColumns: [{ 
+	 	mData: 'latlon'
+	 }, {
+	 	mData: 'label',
+	 	sctype: 'x-axis'
+	 }, {
+	 	mData: 'num_hits',
+	 	sctype: 'hits'
+	 }]
+}")
+
+
+<script type="text/javascript">
+function sortResults(d, prop, asc) {
+    d = d.sort(function(a, b) {
+        if (asc) return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0);
+        else return (b[prop] > a[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0);
+    });
+    return d;
+}
+function renderCharts(oSettings, data) {
+	// first combine columns by units
+	var groups = {};
+	oSettings.aoColumns.map(function(c) {
+		if(!groups[c.scType]) groups[c.scType]=[];
+		groups[c.scType].push(c.mData);
+	});
+	
+	//get (column) data for property
+	data=sortResults(data, 'label', true);
+
+		var lab = [];
+		var dat = [];
+		for(var i=0; i<data.length; i++) {
+			var row = data[i];
+			var x = row["label"];
+			var y = parseFloat(row["num_hits"]);
+			lab.push(x);
+			dat.push(y);
+		}
+
+	
+	
+	//We have all data transformed now, we can create the chart
+	
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chart_ct',
+            type: 'column',
+            zoomType: 'xy',
+            width: 915
+            
+           
+        },
+        credits: {
+        	enabled: false	
+        },
+        title: {
+            text: false
+        },
+
+        xAxis: {
+        	categories: lab,
+            title: {
+                enabled: true,
+                text: 'Sampling sites'
+            },
+            type: 'text',
+            labels: {
+                rotation: -90,
+                align: 'center',
+               x: 3,
+               y: 20,
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+        	title: {
+                enabled: true,
+                text: 'Raw number of hits'
+            },
+            type: 'text',
+            labels: {
+                rotation:0,
+                y: 0,
+                style: {
+                    fontSize: '8px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+          legend: {
+            enabled: false
+        },
+         series: [{
+        	name: "Num_hits",
+        	data: dat
+         }]
+         
+    });	
+}
+</script>	
+<script src="$ctx.siteUrl/highcharts/js/highcharts.js"></script> 

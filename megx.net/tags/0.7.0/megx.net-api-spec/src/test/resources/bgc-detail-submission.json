@@ -1,0 +1,9 @@
+{
+    "data": [
+        [0, "CAN89631.1", "PKS", "Neither", "AT,T", "None", "Malonyl-CoA", "N/A", "Structure-based inference", "N/A", "N/A", false],
+        [1, "CAN89632.1", "NRPS", "Neither", "C,A,T", "Methylation", "N/A", "Alanine", "Structure-based inference", "N/A", "Dual", false],
+        [2, "CAN89633.1", "PKS", "Neither", "KS,AT,DH,KR,ER,T", "None", "Methylmalonyl-CoA", "N/A", "Structure-based inference", "B-group", "N/A", false],
+        [3, "CAN89634.1", "NRPS", "Neither", "C,A,T", "Other", "N/A", "Ornithine", "Activity assay", "N/A", "LCL", false],
+        [null, null, null, null, null, null, null, null, null, "", "", null]
+    ]
+}
