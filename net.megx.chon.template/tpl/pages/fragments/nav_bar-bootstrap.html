@@ -1,8 +1,8 @@
-<nav id="main-menu" class="navbar navbar-inverse" role="navigation">
+<nav id="main-menu" class="navbar navbar-default" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse" data-target="#main-menu-navbar" aria-controls="navbar" aria-expanded="false">
+              <button type="button" class="navbar-toggle pull-left" data-toggle="offcanvas" data-target="#main-menu-navbar" data-placement="left" aria-controls="navbar" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-menu-title">MENU</span>
                     <span class="icon-bar"></span>
@@ -11,13 +11,14 @@
               </button>
               <a id="logo-small" class="navbar-brand pull-right" href="$ctx.siteUrl/"> <img src="$ctx.siteUrl/images/icons/favicon.ico"></a>
         </div>
-        <div id="main-menu-navbar" class="navbar-collapse collapse " aria-expanded="false" style="height: 1px;">
+        <div id="main-menu-navbar" class="navbar-offcanvas offcanvas navbar-default" aria-expanded="false">
+            <a class="navmenu-brand" href="$ctx.siteUrl/"> <img src="$ctx.siteUrl/images/logo.png"></a>
             <ul class="nav navbar-nav">
                 <li>
                     <a href="$ctx.siteUrl">Home</a>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">Info<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">Info</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/portal/about/about.html">About</a></li>
                         <li><a href="$ctx.siteUrl/portal/tutorial.html">Tutorials</a></li>
@@ -29,40 +30,40 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">OSD<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">OSD</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/osd-registry">OSD Overview</a></li>
                         <li><a href="http://www.my-osd.org">Citizen Science</span></a></li>
-                        <li><a href="$ctx.siteUrl/osd-app">OSD Sampling App</a></li>
-                        <li><a href="$ctx.siteUrl/osd-registry/list">OSD Sites</a></li>
-                        <li><a href="$ctx.siteUrl/osd-app/samples">OSD Live</a></li>
+                        <li><a href="$ctx.siteUrl/osd-app/">OSD Sampling App</a></li>
+                        <li><a href="$ctx.siteUrl/osd-registry/list/">OSD Sites</a></li>
+                        <li><a href="$ctx.siteUrl/osd-app/samples/">OSD Live</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">Tools<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">Tools</a>
                     <ul class="dropdown-menu">
-                        <li><a href="$ctx.siteUrl/gms">Mapserver</a></li>
+                        <li><a href="$ctx.siteUrl/gms/">Mapserver</a></li>
                         <!-- 
-                        <li><a href="$ctx.siteUrl/gms/geographic-blast">Geographic BLAST</a></li>
+                        <li><a href="$ctx.siteUrl/gms/geographic-blast/">Geographic BLAST</a></li>
                          -->
                         <li><a href="$ctx.siteUrl/tools/tools.html">GIS Tools</a></li>
-                        <li><a href="$ctx.siteUrl/osd-app/samples">OSD Sampling App</a></li>
-                        <li><a href="$ctx.siteUrl/osd-registry">OSD Registry</a></li>
+                        <li><a href="$ctx.siteUrl/osd-app/samples/">OSD Sampling App</a></li>
+                        <li><a href="$ctx.siteUrl/osd-registry/">OSD Registry</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">Browse<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">Browse</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/genomes.html">Prokaryotic Genomes</a></li>
                         <li><a href="$ctx.siteUrl/genomes/viruses/phages.html">Phage Genomes</a></li>
                         <li><a href="$ctx.siteUrl/metagenomes.html">Metagenomes</a></li>
                         <li><a href="$ctx.siteUrl/marker_genes/rrna.html">Marker Genes</a></li>
                         <li><a href="$ctx.siteUrl/sites/sites.html">Sampling Sites</a></li>
-                        <li><a href="$ctx.siteUrl/mg-traits">Metagenomic Trait DB</a></li>
+                        <li><a href="$ctx.siteUrl/mg-traits/">Metagenomic Trait DB</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">Edutainment<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">Edutainment</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/portal/edutainment.html">Overview</a></li>
                         <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer (english)</a></li>
@@ -70,7 +71,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">Portal<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown">Portal</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/portal/toolbox.html">Overview</a></li>
                         <li class="divider"></li>
@@ -91,7 +92,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="$ctx.siteUrl/contact">Contact</a>
+                    <a href="$ctx.siteUrl/contact/">Contact</a>
                 </li>
             </ul>
         </div>
