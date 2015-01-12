@@ -22,6 +22,8 @@
 
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 
         <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/bootstrap-theme.min.css">
         <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/megx-bootstrap.css">
@@ -66,12 +68,13 @@
                 To get the full functionality, please, activate JavaScript in your browser!
             </h3>
         </noscript>
-        <main class="container">
+        <main id="main-content" class="container">
             ${BODY}
         </main>
         #parse('footer-bootstrap.html')
     
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
         <script src="$ctx.siteUrl/js/plugins.js"></script>
         <script>
             jQuery(document).ready(function(){
@@ -94,6 +97,9 @@
                      top: jQuery('header').height() - mainMenu.height()
                    }
                 }); 
+                
+                // set active menu item
+                jQuery('#main-menu-navbar > ul > li:has(a[href|="$ctx.base"])').addClass("active")
             });
         </script>
         <!-- google analytics -->

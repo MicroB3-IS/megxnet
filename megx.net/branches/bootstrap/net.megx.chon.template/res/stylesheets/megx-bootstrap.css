@@ -10,7 +10,7 @@ nav#main-menu.navbar {
     border-radius: 0px;
 }
 
-#main-menu.affix-top img {
+#main-menu.affix-top #logo-small {
     visibility: hidden;
 }
 
@@ -44,7 +44,7 @@ nav#main-menu {
 }
 
 .navbar-menu-title {
-    color: #fff;
+    color: #777;
     font-size: 0.6em;
 }
 
@@ -75,7 +75,7 @@ nav#main-menu {
     margin-left: 1rem;
 }
 
-.footer-social a:after {
+.footer-social a:before, .footer-social a:after{
     content: none !important;
 }
 
@@ -105,17 +105,33 @@ main {
     padding-top: 3rem;
 }
 
-/* GENERAL */
-a[href*="//"]:before, .dropdown-menu a[href*="//"]:before {
-    /* external link styles, use :before or :after if you want! */
+a[href*="//"]:before {
+    /* external link styles*/
     content: "\f08e";
+    padding-right: .5em;
+}
+
+.dropdown-toggle:after {
+    padding-left: .5em;
+}
+
+.fa-after:after,
+.fa-before:before,
+a[href*="//"]:before {
+    display: inline-block;
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    padding-right: .5em;
+    -moz-osx-font-smoothing: grayscale
+}
+
+@media (max-width: 767px) {
+    .dropdown-toggle:after {
+        content: '\f054';
+        float: right;
+    }
 }
 
 /* BOOTSTRAP */
@@ -123,22 +139,27 @@ a[href*="//"]:before, .dropdown-menu a[href*="//"]:before {
     .dropdown:hover .dropdown-menu {
         display: block;
     }
-    .dropdown-toggle .glyphicon {
+    .dropdown-toggles {
         top: 2px;
-        margin-left: 0.5em;
     }
-    .dropdown-toggle .glyphicon:before {
-        content: '\e114';
+    .dropdown-toggle:after{
+        content: '\f078';
     }
     .navbar-nav a {
         margin: 0 10px;
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
+    
+    .navbar-nav li.active a {
+        margin: 0 10px;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
 }
 
 @media ( max-width : 767px) {
-    .dropdown-toggle .glyphicon {
+    .dropdown-toggle .fa {
         float: right !important;
     }
     .navbar-toggle {
