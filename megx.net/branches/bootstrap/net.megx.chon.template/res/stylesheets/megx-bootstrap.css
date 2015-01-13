@@ -102,7 +102,8 @@ nav#main-menu {
 }
 
 main {
-    padding-top: 3rem;
+    padding-top: 3em;
+    padding-bottom: 3em;
 }
 
 a[href*="//"]:before {
