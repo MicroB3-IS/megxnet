@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: net.megx.contact
 Bundle-SymbolicName: net.megx.contact
-Bundle-Version: 0.0.2.qualifier
+Bundle-Version: 0.0.3.qualifier
 Bundle-Activator: net.megx.contact.Activator
 Import-Package: javax.servlet;version="2.5.0",
  javax.servlet.http;version="2.5.0",
