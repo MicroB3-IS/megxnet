@@ -86,14 +86,14 @@
 
     <!-- Earth Sampling App -->
     <module>../net.megx.esa</module>
-    <!-- MegxBar -->
 
     <module>../net.megx.mg-traits</module>
     <module>../net.megx.ws.mg-traits</module>
     <!-- WebSocket broadcast module -->
     <module>../net.megx.broadcast</module>
     <module>../net.megx.blast</module>
-
+	
+    <!-- MegxBar -->
     <module>../net.megx.pubmap</module>
     <module>../net.megx.megxbar</module>
 
@@ -104,7 +104,7 @@
     <module>../net.megx.contact</module>
     <module>../net.megx.form-widget</module>
     <module>../net.megx.mibig</module>
-
+	<module>../net.megx.datatable-widget</module>
 
     <!-- assembly module -->
     <module>../megx.net-workdir</module>
@@ -163,6 +163,11 @@
         <groupId>net.megx</groupId>
         <artifactId>net.megx.contact</artifactId>
         <version>0.0.2-SNAPSHOT</version>
+      </dependency>
+       <dependency>
+        <groupId>net.megx</groupId>
+        <artifactId>net.megx.datatable-widget</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>net.megx</groupId>
