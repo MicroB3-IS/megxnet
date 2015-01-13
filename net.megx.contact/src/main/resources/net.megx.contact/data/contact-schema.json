@@ -1,6 +1,5 @@
 { 
-    "title": "Contact Form  (v0.1)",
-    "description": "Your feedback is welcome!",
+    "title": "Contact Form  (v0.0.3)",
     "type": "object",
     "properties": {
         "name" : {
@@ -16,7 +15,6 @@
         },
         "comment": {
         	"title": "Comment:",
-            "description": "Report any deviation.",
             "type": "textarea",
             "required": true
         }
