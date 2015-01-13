@@ -17,7 +17,7 @@
 
     <groupId>net.megx</groupId>
     <artifactId>net.megx.contact</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
 
     <name>net.megx.contact</name>

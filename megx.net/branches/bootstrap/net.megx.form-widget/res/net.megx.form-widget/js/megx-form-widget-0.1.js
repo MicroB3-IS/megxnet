@@ -1,6 +1,5 @@
 MegxFormWidget = function(cfg) {
 
-    Alpaca.defaultUI = "jquery-ui";
     Alpaca.logLevel = Alpaca.ERROR;
     this.renderForm(cfg);
 
@@ -44,12 +43,9 @@ MegxFormWidget.prototype = {
             "optionsSource": cfg.optionsLocation,
             "schemaSource": cfg.schemaLocation,
             "view": {
-
-                "parent": "VIEW_JQUERYUI_CREATE",
+                "parent": "bootstrap-create",
                 "displayReadonly": true,
-
             },
-
             "isDynamicCreation": true
         };
 
