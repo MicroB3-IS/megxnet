@@ -1,29 +1,53 @@
 <footer class="footer">
     <div class="container">
-        <section class="footer-legal">
-            <nav>
-                <span>&copy 2014 megx.net (v0.5.0)</span>
-                <a href="$ctx.siteUrl/portal/disclaimer.html">privacy policy</a>
-                <a href="$ctx.siteUrl/portal/copyright.html">terms of use</a>
-            </nav>
+        <section class="col-md-5">
+            <h3>megx.net</h3>
+            <p>The megx.net portal for Marine Ecological GenomiX is a web
+                site for specialized georeferenced databases and tools for the
+                analysis of marine bacterial, archaeal, and phage genomes and
+                metagenomes.</p>
         </section>
-        <section class="footer-navigation">
-            <nav>
-                #foreach($m in $ext.menu.footer.childs)
-                    <a href="$m.fullLink">$m.title</a>
-                #end
-            </nav>
+        <section class="col-md-3">
+            <h3>Links</h3>
+            <ul>
+                <li><a href="http://www.microb3.eu">Micro B3</a></li>
+                <li><a href="http://www.microb3.eu/osd">Ocean Sampling
+                        Day</a></li>
+                <li><a href="http://www.microb3.eu/myosd">MyOSD - OSD
+                        Citizen Science</a></li>
+            </ul>
         </section>
-        <section class="footer-social">
-            <a href="https://www.facebook.com/pages/Megxnet/451760948270922"><i class="social fa fa-facebook-square fa-3x social-facebook"></i></a>
-            <a href="https://twitter.com/megxnet"><i class="fa fa-twitter-square fa-3x social-twitter"></i></a>
-            <a href="$ctx.siteUrl/contact"><i class="fa fa-envelope-square fa-3x social-contact"></i></a>
+        <section class="col-md-2">
+            <h3>Legal</h3>
+            <ul>
+                <li><a href="$ctx.siteUrl/portal/disclaimer.html">privacy
+                        policy</a></li>
+                <li><a href="$ctx.siteUrl/portal/copyright.html">terms
+                        of use</a></li>
+                <li><a href="$ctx.siteUrl/portal/disclaimer.html">disclaimer</a></li>
+                <li><a href="$ctx.siteUrl/portal/copyright.html">copyright</a></li>
+            </ul>
+        </section>
+        <section class="col-md-2">
+            <h3>Contact us</h3>
+            <p class="footer-social">
+                <a href="https://www.facebook.com/pages/Megxnet/451760948270922"><i
+                    class="social fa fa-facebook-square fa-3x social-facebook"></i></a>
+                <a href="https://twitter.com/megxnet"><i
+                    class="fa fa-twitter-square fa-3x social-twitter"></i></a> <a
+                    href="$ctx.siteUrl/contact"><i
+                    class="fa fa-envelope-square fa-3x social-contact"></i></a>
+            </p>
         </section>
     </div>
-    <section class="footer-update">
-        #set($lastModified=$ext.utils.formatDate($this.jcrLastModified, 'yyyy-MM-dd'))
-        #if($lastModified)
-            <span class="FR">last update $lastModified</span>
-        #end
-    </section>
+    <div class="footer-copyright">
+        <div class="container">
+            <section>
+                <span>&copy 2014 megx.net (v0.5.0)</span>
+                #set($lastModified=$ext.utils.formatDate($this.jcrLastModified,
+                'yyyy-MM-dd')) #if($lastModified) <span class="last-update">last
+                    update $lastModified</span> #end
+            </section>
+        </div>
+    </div>
 </footer>
