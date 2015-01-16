@@ -13,3 +13,4 @@ Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",
  org.chon.web;bundle-version="1.0.2"
 Bundle-ClassPath: .
 Bundle-Vendor: megx.net
+Export-Package: net.megx.form.widget.model
