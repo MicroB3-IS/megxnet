@@ -8,33 +8,68 @@ MegxFormWidget = function(cfg) {
 MegxFormWidget.prototype = {
 
     submitForm: function(field) {
-        var form = field.form;
+    	
+    	var form = field.form;
+        var url = form.attributes.action;
+        var ajaxMethod = form.attributes.method;
 
         if (form) {
+
             form.refreshValidationState(false);
+            
+            form.registerSubmitHandler(function(e, form) {
+                return false;
+            });
 
-            form
-                .registerSubmitHandler(function(e, form) {
-                    // validate the entire form (top control + all children)
-                    form.validate(true);
-                    // draw the validation state (top control + all
-                    // children)
-                    form.refreshValidationState(true);
+            form.buttons.submit.click(function() {
 
-                    // now display something
-                    if (form.isFormValid()) {
-                        var json = form.getValue();
-                        var formJson = JSON.stringify(field.getValue());
-                        // alert("formJson: " + formJson);
-                        $('<input/>').attr('name', 'json').attr('value',
-                            formJson).attr('type', 'hidden').appendTo("#" + cfg.formId);
-                    } else {
-                        alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
-                        return false;
-                    }
-                    e.stopPropagation();
-                    return true;
-                });
+                form.validate(true);
+                form.refreshValidationState(true);
+
+                if (form.isFormValid()) {
+
+                    var data = field.getValue();
+                    data.json = JSON.stringify(field.getValue());
+                    $.ajax({
+                        type: ajaxMethod,
+                        url: url,
+                        data: data,
+                        success: function(data, textStatus, jqXHR) {
+                        	
+                        	if(data.redirectUrl && data.redirectUrl != null){
+                        		document.location.href = data.redirectUrl;
+                        	} else if(!data.redirectUrl || data.redirectUrl == null) {
+                        		
+                        		if(data.message && data.message != null){
+                        			alert(data.message);
+                        			document.location.href = "$ctx.siteUrl";
+                        		} else{
+                        			alert("Your submission wah successfull. Thanks!");
+                            		document.location.href = "$ctx.siteUrl";
+                        		}
+                        	}
+                        },
+                        error: function(data, textStatus, jqXHR) {
+                        	
+                        	var responseMsg = data.responseJSON;
+                        	
+                        	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                        		document.location.href = responseMsg.redirectUrl;
+                        	} else if(!responseMsg.redirectUrl || responseMsg.redirectUrl == null) {
+                        		
+                        		if(responseMsg.message && responseMsg.message != null){
+                        			alert(responseMsg.message);
+                        		} else{
+                        			alert("Server error, please try again later.");
+                        		}
+                        	}
+                        }
+                    });
+                } else {
+                    alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
+                    return false;
+                }
+            });
         }
     },
 
@@ -54,36 +89,68 @@ MegxFormWidget.prototype = {
         };
 
         var postRender = function(field) {
+
             var form = field.form;
+            var url = form.attributes.action;
+            var ajaxMethod = form.attributes.method;
 
             if (form) {
+
                 form.refreshValidationState(false);
+                
+                form.registerSubmitHandler(function(e, form) {
+                    return false;
+                });
 
-                form
-                    .registerSubmitHandler(function(e, form) {
-                        // validate the entire form (top control + all
-                        // children)
-                        form.validate(true);
-                        // draw the validation state (top control + all
-                        // children)
-                        form.refreshValidationState(true);
+                form.buttons.submit.click(function() {
 
-                        // now display something
-                        if (form.isFormValid()) {
-                            var json = form.getValue();
-                            var formJson = JSON.stringify(field
-                                .getValue());
-                            // alert("formJson: " + formJson);
-                            $('<input/>').attr('name', 'json').attr(
-                                'value', formJson).attr('type', 'hidden').appendTo(
-                                "#" + cfg.formId);
-                        } else {
-                            alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
-                            return false;
-                        }
-                        e.stopPropagation();
-                        return true;
-                    });
+                    form.validate(true);
+                    form.refreshValidationState(true);
+
+                    if (form.isFormValid()) {
+
+                        var data = field.getValue();
+                        data.json = JSON.stringify(field.getValue());
+                        $.ajax({
+                            type: ajaxMethod,
+                            url: url,
+                            data: data,
+                            success: function(data, textStatus, jqXHR) {
+                            	
+                            	if(data.redirectUrl && data.redirectUrl != null){
+                            		document.location.href = data.redirectUrl;
+                            	} else if(!data.redirectUrl || data.redirectUrl == null) {
+                            		
+                            		if(data.message && data.message != null){
+                            			alert(data.message);
+                            			document.location.href = "$ctx.siteUrl";
+                            		} else{
+                            			alert("Your submission wah successfull. Thanks!");
+                                		document.location.href = "$ctx.siteUrl";
+                            		}
+                            	}
+                            },
+                            error: function(data, textStatus, jqXHR) {
+                            	
+                            	var responseMsg = data.responseJSON;
+                            	
+                            	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                            		document.location.href = responseMsg.redirectUrl;
+                            	} else if(!responseMsg.redirectUrl || responseMsg.redirectUrl == null) {
+                            		
+                            		if(responseMsg.message && responseMsg.message != null){
+                            			alert(responseMsg.message);
+                            		} else{
+                            			alert("Server error, please try again later.");
+                            		}
+                            	}
+                            }
+                        });
+                    } else {
+                        alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
+                        return false;
+                    }
+                });
             }
         };
 
