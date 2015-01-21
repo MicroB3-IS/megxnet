@@ -15,18 +15,13 @@ MegxFormWidget.prototype = {
 
         if (form) {
 
-            form.refreshValidationState(false);
-            
             form.registerSubmitHandler(function(e, form) {
                 return false;
             });
 
             form.buttons.submit.click(function() {
 
-                form.validate(true);
-                form.refreshValidationState(true);
-
-                if (form.isFormValid()) {
+            	if (field.isValid(true)) {
 
                     var data = field.getValue();
                     data.json = JSON.stringify(field.getValue());
@@ -42,10 +37,10 @@ MegxFormWidget.prototype = {
                         		
                         		if(data.message && data.message != null){
                         			alert(data.message);
-                        			document.location.href = "$ctx.siteUrl";
+                        			document.location.href = ctx.siteUrl;
                         		} else{
                         			alert("Your submission wah successfull. Thanks!");
-                            		document.location.href = "$ctx.siteUrl";
+                            		document.location.href = ctx.siteUrl;
                         		}
                         	}
                         },
@@ -65,9 +60,6 @@ MegxFormWidget.prototype = {
                         	}
                         }
                     });
-                } else {
-                    alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
-                    return false;
                 }
             });
         }
@@ -95,19 +87,14 @@ MegxFormWidget.prototype = {
             var ajaxMethod = form.attributes.method;
 
             if (form) {
-
-                form.refreshValidationState(false);
-                
+            	
                 form.registerSubmitHandler(function(e, form) {
                     return false;
                 });
 
                 form.buttons.submit.click(function() {
 
-                    form.validate(true);
-                    form.refreshValidationState(true);
-
-                    if (form.isFormValid()) {
+                    if (field.isValid(true)) {
 
                         var data = field.getValue();
                         data.json = JSON.stringify(field.getValue());
@@ -118,15 +105,16 @@ MegxFormWidget.prototype = {
                             success: function(data, textStatus, jqXHR) {
                             	
                             	if(data.redirectUrl && data.redirectUrl != null){
+                            		alert("Your submission wah successfull. Thanks!");
                             		document.location.href = data.redirectUrl;
                             	} else if(!data.redirectUrl || data.redirectUrl == null) {
                             		
                             		if(data.message && data.message != null){
                             			alert(data.message);
-                            			document.location.href = "$ctx.siteUrl";
+                            			document.location.href = ctx.siteUrl;
                             		} else{
                             			alert("Your submission wah successfull. Thanks!");
-                                		document.location.href = "$ctx.siteUrl";
+                                		document.location.href = ctx.siteUrl;
                             		}
                             	}
                             },
@@ -139,16 +127,13 @@ MegxFormWidget.prototype = {
                             	} else if(!responseMsg.redirectUrl || responseMsg.redirectUrl == null) {
                             		
                             		if(responseMsg.message && responseMsg.message != null){
-                            			alert(responseMsg.message);
+                            			$('#errorMsg').text(responseMsg.message).show();
                             		} else{
-                            			alert("Server error, please try again later.");
+                            			$('#errorMsg').text("Server error, please try again later.").show();
                             		}
                             	}
                             }
                         });
-                    } else {
-                        alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
-                        return false;
                     }
                 });
             }

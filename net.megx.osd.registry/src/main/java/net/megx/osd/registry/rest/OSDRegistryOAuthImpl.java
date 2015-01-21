@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import net.megx.form.widget.model.FormWidgetResult;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.exceptions.DBNoRecordsException;
 import net.megx.megdb.osdregistry.OSDRegistryService;
@@ -187,17 +188,41 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @Produces(MediaType.TEXT_PLAIN)
   public Response saveOSDSample(@FormParam("json") String sample) {
+    
+    if (sample == null || sample.isEmpty()) {
+      return Response
+          .status(Status.BAD_REQUEST)
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true, "Sample not provided.",
+                  null))).build();
+    }
 
     try {
       osdRegistryService.saveSample(sample);
-      return Response.status(201).entity("sample saved").build();
+      return Response
+          .status(201)
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(false, "Sample saved successfully.",
+                  null))).build();
     } catch (DBGeneralFailureException e) {
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      log.error("DB error, could not save sample.", e);
+      return Response
+          .serverError()
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true,
+                  "Database error, could not save sample.", null))).build();
     } catch (Exception e) {
-      log.error("Could not save sample" + e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      log.error("Could not save sample." + e);
+      return Response
+          .serverError()
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true,
+                  "Server error occured, could not save sample.", null)))
+          .build();
     }
   }
 
@@ -246,24 +271,24 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
             .status(Status.BAD_REQUEST)
             .header("Access-Control-Allow-Origin", "*")
             .entity(
-                toJSON(new Result<String>(true, "Participation not provided.",
-                    "bad-request"))).build();
+                toJSON(new FormWidgetResult(true, "Participation not provided.",
+                    null))).build();
       }
       if (contactName == null || contactName.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
             .header("Access-Control-Allow-Origin", "*")
             .entity(
-                toJSON(new Result<String>(true, "Contact name not provided.",
-                    "bad-request"))).build();
+                toJSON(new FormWidgetResult(true, "Contact name not provided.",
+                    null))).build();
       }
       if (contactEmail == null || contactEmail.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
             .header("Access-Control-Allow-Origin", "*")
             .entity(
-                toJSON(new Result<String>(true, "Contact email not provided.",
-                    "bad-request"))).build();
+                toJSON(new FormWidgetResult(true, "Contact email not provided.",
+                    null))).build();
       }
 
       OSDParticipation participation = new OSDParticipation();
@@ -282,17 +307,30 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
 
     } catch (DBGeneralFailureException e) {
       log.error("DB error, could not save participation", e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      return Response
+          .serverError()
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true,
+                  "Database error, could not save participation", null)))
+          .build();
     } catch (URISyntaxException e) {
       log.error("Wrong URI" + url, e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       log.error("Could not save participation" + e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      return Response
+          .serverError()
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true,
+                  "Server error occured, could not save participation.", null)))
+          .build();
     }
-    return Response.seeOther(uri).build();
+    return Response
+        .status(201)
+        .header("Access-Control-Allow-Origin", "*")
+        .entity(
+            toJSON(new FormWidgetResult(false,
+                "Participation saved successfully.", uri.toString()))).build();
   }
 }
