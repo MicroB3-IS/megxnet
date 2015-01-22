@@ -32,6 +32,7 @@ MegxFormWidget.prototype = {
                         success: function(data, textStatus, jqXHR) {
                         	
                         	if(data.redirectUrl && data.redirectUrl != null){
+                        		alert("Your submission was successfull. Thanks!");
                         		document.location.href = data.redirectUrl;
                         	} else if(!data.redirectUrl || data.redirectUrl == null) {
                         		
@@ -39,7 +40,7 @@ MegxFormWidget.prototype = {
                         			alert(data.message);
                         			document.location.href = ctx.siteUrl;
                         		} else{
-                        			alert("Your submission wah successfull. Thanks!");
+                        			alert("Your submission was successfull. Thanks!");
                             		document.location.href = ctx.siteUrl;
                         		}
                         	}
@@ -105,7 +106,7 @@ MegxFormWidget.prototype = {
                             success: function(data, textStatus, jqXHR) {
                             	
                             	if(data.redirectUrl && data.redirectUrl != null){
-                            		alert("Your submission wah successfull. Thanks!");
+                            		alert("Your submission was successfull. Thanks!");
                             		document.location.href = data.redirectUrl;
                             	} else if(!data.redirectUrl || data.redirectUrl == null) {
                             		
@@ -113,7 +114,7 @@ MegxFormWidget.prototype = {
                             			alert(data.message);
                             			document.location.href = ctx.siteUrl;
                             		} else{
-                            			alert("Your submission wah successfull. Thanks!");
+                            			alert("Your submission was successfull. Thanks!");
                                 		document.location.href = ctx.siteUrl;
                             		}
                             	}

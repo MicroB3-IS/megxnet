@@ -12,7 +12,14 @@
 
 ul {
   list-style-type:disk
-  
+}
+
+#errorMsg {
+	font-size: 18px;
+	color: #FF0000;
+	margin-left: 15px;
+	margin-top: 15px;
+	display: none;
 }
 
 </style>
@@ -21,7 +28,7 @@ ul {
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
 <!-- <script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/jquery.tmpl-1.0.0pre.js"></script> -->
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.min.js"></script>
-
+<div style="padding: 15px">
   <h1>No smartphone? No problem!</h1>
   <h3>Submit your OSD June 2014 observation here</h3>
   <div style="padding: 10px 10px 10px 10px">
@@ -39,6 +46,7 @@ ul {
 
 <a name="form"></a>
   <div id="osd-sample-form"></div>
+  <div id="errorMsg"></div>
 <script>
 	var MegxFormWidget = new MegxFormWidget({
 		 target : "osd-sample-form",
@@ -89,3 +97,4 @@ ul {
     </p>
   </div>
 <p><a href="#form">Back to form</a></p>
+</div>
