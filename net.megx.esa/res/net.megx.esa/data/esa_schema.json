@@ -1,66 +1,6 @@
-﻿{ 
+﻿{
     "title": "OSD Citizen Science Observation Input Form  (v0.1)",
     "description": "Please fill as many data as you have :).",
-    "definitions": {
-        "choice": {
-            "description": "Is parameter measured, to be measured (in future), not to be measured, or not determined if it will be measured?",
-            "type": "String",
-            "required": true,
-            "enum": [
-                "measured",
-                "to be measured",
-                "will not be measured",
-                "not determined"
-            ],
-            "default": "not determined"
-        },
-        "first_name": {
-            "type": "string",
-            "title": "First Name",
-            "required": true
-        },
-        "last_name": {
-            "type": "string",
-            "title": "Last Name",
-            "required": true
-        },
-        "institute": {
-            "type": "string",
-            "title": "Institute",
-            "description": "Please use the full, official name of your institute in English (preferably the one used for site registration).",
-            "required": true,
-            "pattern": "^([^1234506789;\\\\()$%!@^*/=])([^1234506789;\\\\()$%!@^*/=])[^;$%\\\\!@^*\\]\\[=]+$"
-        },
-        "email": {
-            "type": "string",
-            "format": "email",
-            "title": "e-mail",
-            "required": true
-        },
-        "unit": {
-            "type": "string",
-            "title": "Unit",
-            "description": "Please choose an SI conforming unit of measurement.",
-            "required": true
-        },
-        "value": {
-            "title": "Value",
-            "required": true,
-            "type": "number"
-        },
-        "measurement": {
-            "title": "Measurement",
-            "type": "object",
-            "properties": {
-                "value": {
-                    "$ref": "#/definitions/value"
-                },
-                "unit": {
-                    "$ref": "#/definitions/unit"
-                }
-            }
-        }
-    },
     "type": "object",
     "properties": {
         "version": {
@@ -80,40 +20,33 @@
             "description": "Please note down the date on which you took your sample.",
             "format": "date",
             "required": true
-            
-            
-        }, 
+        },
         "time_taken": {
             "title": "Time",
             "description": "Please note down your local time of the moment you took your sample.",
-            "format":"time",
-            "required":true
-            
-            
+            "format": "time",
+            "required": true
         },
         "latitude": {
-            "type": "number",
-            "minimum": -90,
-            "maximum": 90,
             "required": true,
+            "type": "string",
+            "pattern": "^[+-]?[0-9.]+$",
             "description": "Please note down the latitude of the place you took your sample. E.g. -10 for south or +10 for north. It is in decimal degrees as usually reported by GPS devices negative latitude for south, positive latitude for north.",
             "title": "Latitude"
         },
         "longitude": {
-            "minimum": -180,
-            "maximum": 180,
             "required": true,
-            "type": "number",
+            "type": "string",
+            "pattern": "^[+-]?[0-9.]+$",
             "description": "Please note down the longitude of the place you took your sample. E.g. -20 for west or +20 for east. It is in decimal degrees as usually reported by GPS devices negative longitude for west, positive longitude for east.",
             "title": "Longitude"
         },
         "gps_accuracy": {
-            "title" : "GPS Accuracy",
+            "title": "GPS Accuracy",
             "description": "A radius in meter expressing how precise your latitude/longitude values are. Usually provided by GPS devices.",
             "type": "number",
             "required": false
         },
-        
         "depth": {
             "title": "Sampling Depth",
             "description": "The distance below the surface of the water at which a measurement was made or a sample was collected.",
@@ -121,69 +54,83 @@
             "minimum": 0,
             "maximum": 12000,
             "required": true
-         },
-        "sample_name" : {
-            "title" : "Sample name",
+        },
+        "sample_name": {
+            "title": "Sample name",
             "description": "",
             "type": "string",
             "required": true
         },
-        "weather_condition" : {
-            "title" : "Weather condition",
+        "weather_condition": {
+            "title": "Weather condition",
             "description": "Desribe with keywords the current weather condition",
             "type": "string",
-            "enum": ["No data","Clear night","Sunny day","Partly cloudy","Sunny intervals","Dust","Mist","Fog","Cloudy","Overcast","Drizzle","Light rain","Heavy rain","Sleet shower","Sleet","Hail shower","Hail","Light snow","Heavy snow","Thunder shower","Thunder","Tropical storm","Haze"]
+            "enum": [
+                "No data",
+                "Clear night",
+                "Sunny day",
+                "Partly cloudy",
+                "Sunny intervals",
+                "Dust",
+                "Mist",
+                "Fog",
+                "Cloudy",
+                "Overcast",
+                "Drizzle",
+                "Light rain",
+                "Heavy rain",
+                "Sleet shower",
+                "Sleet",
+                "Hail shower",
+                "Hail",
+                "Light snow",
+                "Heavy snow",
+                "Thunder shower",
+                "Thunder",
+                "Tropical storm",
+                "Haze"
+            ]
         },
         "air_temperature": {
             "title": "Air Temperature",
             "required": false,
             "type": "number",
-            
             "description": "Temperature of the air  in degress Celsius"
-             
         },
         "water_temperature": {
             "title": "Water temperature",
             "required": false,
             "type": "number",
-            
             "description": "Temperature of water in degress Celsius"
-             
         },
         "wind_speed": {
             "title": "Wind Speed",
             "required": false,
             "type": "number",
-            
             "description": ""
-             
         },
         "salinity": {
             "required": false,
             "type": "number",
             "description": "Salinity of water at the time of taking the sample in PSU.",
             "title": "Salinity",
-            
             "maximum": 100
         },
         "phosphate": {
             "description": "Phosphate concentration parameters in the water column",
             "title": "Phosphate",
-            
             "type": "number"
         },
         "nitrate": {
             "description": "Nitrate concentration parameters in the water column",
             "title": "Nitrate",
             "type": "number",
-            
             "required": false
         },
         "nitrite": {
             "description": "Nitrite concentration parameters in the water column",
             "title": "Nitrite",
             "required": false,
-            
             "type": "number"
         },
         "ph": {
@@ -191,7 +138,6 @@
             "title": "pH",
             "type": "number",
             "required": false,
-            
             "minimum": 1,
             "maximum": 12
         },
@@ -200,13 +146,20 @@
             "type": "string",
             "description": "Descriptor of the broad ecological context of a sample.",
             "title": "Biome",
-            "enum": [ "Coastal sea area","Estuary","Inland sea","Intertidal area","Lake","Open sea","River" ]
+            "enum": [
+                "Coastal sea area",
+                "Estuary",
+                "Inland sea",
+                "Intertidal area",
+                "Lake",
+                "Open sea",
+                "River"
+            ]
         },
         "secchi_depth": {
             "required": false,
             "type": "number",
             "minimum": 0.1,
-            
             "description": "Descriptor of the broad ecological context of a sample.",
             "title": "Secchi depth"
         },
