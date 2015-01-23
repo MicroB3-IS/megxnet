@@ -182,11 +182,18 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
           Response.Status.INTERNAL_SERVER_ERROR);
     }
   }
-
+  
+  /**
+   * Save the OSD sample and metadata registration.
+   * 
+   * @param sample
+   *          the whole sample form json.
+   * @return Status.BAD_REQUEST
+   *           if the sample json is empty or null.
+   */
   @Path("sample")
   @POST
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-  @Produces(MediaType.TEXT_PLAIN)
   public Response saveOSDSample(@FormParam("json") String sample) {
     
     if (sample == null || sample.isEmpty()) {
@@ -245,8 +252,8 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
    *          the participant date.
    * @param json
    *          the whole participation form json.
-   * @throws WebApplicationException
-   *           if the given contactName,contactEmail or json are empty or null.
+   * @return Status.BAD_REQUEST
+   *           if the given contactName,contactEmail or participationJson are empty or null.
    */
   @Path("participation")
   @POST
