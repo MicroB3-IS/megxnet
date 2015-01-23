@@ -34,7 +34,7 @@ MegxFormWidget.prototype = {
                         	if(data.redirectUrl && data.redirectUrl != null){
                         		alert("Your submission was successfull. Thanks!");
                         		document.location.href = data.redirectUrl;
-                        	} else if(!data.redirectUrl || data.redirectUrl == null) {
+                        	} else {
                         		
                         		if(data.message && data.message != null){
                         			alert(data.message);
@@ -47,18 +47,25 @@ MegxFormWidget.prototype = {
                         },
                         error: function(data, textStatus, jqXHR) {
                         	
-                        	var responseMsg = data.responseJSON;
-                        	
-                        	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
-                        		document.location.href = responseMsg.redirectUrl;
-                        	} else if(!responseMsg.redirectUrl || responseMsg.redirectUrl == null) {
+                        	if(data.responseJSON && data.responseJSON != null){
                         		
-                        		if(responseMsg.message && responseMsg.message != null){
-                        			alert(responseMsg.message);
-                        		} else{
-                        			alert("Server error, please try again later.");
-                        		}
+                        		var responseMsg = data.responseJSON;
+                            	
+                            	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                            		document.location.href = responseMsg.redirectUrl;
+                            	} else {
+                            		
+                            		if(responseMsg.message && responseMsg.message != null){
+                            			$('#errorMsg').text(responseMsg.message).show();
+                            		} else{
+                            			$('#errorMsg').text("Server error, please try again later.").show();
+                            		}
+                            	}
+                        		
+                        	} else {
+                        		$('#errorMsg').text("Server error, please try again later.").show();
                         	}
+                        	
                         }
                     });
                 }
@@ -108,7 +115,7 @@ MegxFormWidget.prototype = {
                             	if(data.redirectUrl && data.redirectUrl != null){
                             		alert("Your submission was successfull. Thanks!");
                             		document.location.href = data.redirectUrl;
-                            	} else if(!data.redirectUrl || data.redirectUrl == null) {
+                            	} else {
                             		
                             		if(data.message && data.message != null){
                             			alert(data.message);
@@ -121,17 +128,23 @@ MegxFormWidget.prototype = {
                             },
                             error: function(data, textStatus, jqXHR) {
                             	
-                            	var responseMsg = data.responseJSON;
-                            	
-                            	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
-                            		document.location.href = responseMsg.redirectUrl;
-                            	} else if(!responseMsg.redirectUrl || responseMsg.redirectUrl == null) {
+                            	if(data.responseJSON && data.responseJSON != null){
                             		
-                            		if(responseMsg.message && responseMsg.message != null){
-                            			$('#errorMsg').text(responseMsg.message).show();
-                            		} else{
-                            			$('#errorMsg').text("Server error, please try again later.").show();
-                            		}
+                            		var responseMsg = data.responseJSON;
+                                	
+                                	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                                		document.location.href = responseMsg.redirectUrl;
+                                	} else {
+                                		
+                                		if(responseMsg.message && responseMsg.message != null){
+                                			$('#errorMsg').text(responseMsg.message).show();
+                                		} else{
+                                			$('#errorMsg').text("Server error, please try again later.").show();
+                                		}
+                                	}
+                            		
+                            	} else {
+                            		$('#errorMsg').text("Server error, please try again later.").show();
                             	}
                             }
                         });
