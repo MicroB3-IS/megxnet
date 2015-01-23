@@ -325,11 +325,34 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
     }
 
-    /**
-     * Stores sample in the database from our web online form
-     * 
-     *
-     */
+  /**
+   * Stores sample in the database from our web online form
+   * 
+   * @param air_temperature the air temperature value
+   * @param biome the biome value
+   * @param comment the comment
+   * @param date_taken the date when the sample is taken
+   * @param fun the real sample or just for fun
+   * @param air_temperature  the air_temperature value
+   * @param gps_accuracy the gps accuracy value
+   * @param json the whole form json
+   * @param latitude the latitude value
+   * @param longitude the longitude value
+   * @param nitrate  the nitrate value
+   * @param nitrite  the nitrite value
+   * @param origin the origin value
+   * @param phosphate the phosphate value
+   * @param ph  the ph value
+   * @param salinity  the salinity value
+   * @param sample_name  the name of the taken sample
+   * @param secchi_depth the secchi depth value
+   * @param submit  the submit
+   * @param time_taken the time when the sample was taken
+   * @param version  the version of the form
+   * @param water_temperature the water temperature value
+   * @param weather_condition  the weather condition
+   * @param wind_speed  the wind speed value
+   */
     @Path("observation")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -363,7 +386,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
               .status(Status.BAD_REQUEST)
               .header("Access-Control-Allow-Origin", "*")
               .entity(
-                  toJSON(new FormWidgetResult(true, "Samples not provided.",
+                  toJSON(new FormWidgetResult(true, "Version not provided.",
                       null))).build();
         }
         if (latitude == null || latitude.isEmpty()) {
@@ -620,7 +643,12 @@ public class EarthSamplingAppAPI extends BaseRestService {
             return toJSON(handleException(e));
         }
     }
-
+    
+  /**
+   * Tweet the message to megx twitter account with the longitude, latitude
+   * values and link to /osd-app/samples page
+   * 
+   */
     private void tweet( Double longitude, Double latitude, Date date ) {
         String link = "https://mb3is.megx.net/osd-app/samples";
 
