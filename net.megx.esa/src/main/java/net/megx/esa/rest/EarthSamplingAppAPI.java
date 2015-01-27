@@ -500,46 +500,26 @@ public class EarthSamplingAppAPI extends BaseRestService {
         String id = UUID.randomUUID().toString();
 
         sample.setId(id);
-        if (airTemperature != null && !airTemperature.equals("")) {
-            sample.setAirTemperature(Double.parseDouble(airTemperature));
-        }
+        sample.setAirTemperature(parseDouble(airTemperature));
         sample.setBiome(biome);
         sample.setComment(comment);
         sample.setSamplingDepth(depth);
         sample.setFun(fun);
-        if (gpsAccuracy != null && !gpsAccuracy.equals("")) {
-            sample.setAccuracy(Double.parseDouble(gpsAccuracy));
-        }
+        sample.setAccuracy(parseDouble(gpsAccuracy));
         sample.setRawData(json);
         sample.setLat(Double.parseDouble(latitude));
         sample.setLon(Double.parseDouble(longitude));
-        if (nitrate != null && !nitrate.equals("")) {
-            sample.setNitrate(Double.parseDouble(nitrate));
-        }
-        if (nitrite != null && !nitrite.equals("")) {
-            sample.setNitrite(Double.parseDouble(nitrite));
-        }
-        if (ph != null && !ph.equals("")) {
-            sample.setPh(Double.parseDouble(ph));
-        }
-        if (phosphate != null && !phosphate.equals("")) {
-            sample.setPhosphate(Double.parseDouble(phosphate));
-        }
-        if (salinity != null && !salinity.equals("")) {
-            sample.setSalinity(Double.parseDouble(salinity));
-        }
+        sample.setNitrate(parseDouble(nitrate));
+        sample.setNitrite(parseDouble(nitrite));
+        sample.setPh(parseDouble(ph));
+        sample.setPhosphate(parseDouble(phosphate));
+        sample.setSalinity(parseDouble(salinity));
         sample.setLabel(sampleName);
-        if (secchiDepth != null && !secchiDepth.equals("")) {
-            sample.setSecchiDepth(Double.parseDouble(secchiDepth));
-        }
+        sample.setSecchiDepth(parseDouble(secchiDepth));
         sample.setAppVersion(version);
-        if (waterTemperature != null && !waterTemperature.equals("")) {
-            sample.setWaterTemperature(Double.parseDouble(waterTemperature));
-        }
+        sample.setWaterTemperature(parseDouble(waterTemperature));
         sample.setWeatherCondition(weatherCondition);
-        if (windSpeed != null && !windSpeed.equals("")) {
-            sample.setWindSpeed(Double.parseDouble(windSpeed));
-        }
+        sample.setWindSpeed(parseDouble(windSpeed));
         sample.setTaken(taken);
         sample.setModified(modified);// test
         sample.setCollectorId("anonymous");
@@ -677,6 +657,14 @@ public class EarthSamplingAppAPI extends BaseRestService {
             return false;
         }
         return true;
+    }
+    
+    private Double parseDouble(String dbl){
+      Double d = null;
+      if(dbl != null && !dbl.equals("")){
+        d = Double.parseDouble(dbl);
+      }
+      return d;
     }
 
     /**
