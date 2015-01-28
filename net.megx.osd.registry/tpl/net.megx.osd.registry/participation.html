@@ -71,12 +71,12 @@ var MegxFormWidget = new MegxFormWidget({
                             data: data,
                             success: function(data, textStatus, jqXHR) {
                             	
-                            	if(data.redirectUrl && data.redirectUrl != null){
+                            	if(data.redirectUrl && data.redirectUrl != ""){
                             		alert("Your submission was successfull. Thanks!");
                             		document.location.href = data.redirectUrl;
                             	} else {
                             		
-                            		if(data.message && data.message != null){
+                            		if(data.message && data.message != ""){
                             			alert(data.message);
                             			document.location.href = ctx.siteUrl;
                             		} else{
@@ -87,15 +87,15 @@ var MegxFormWidget = new MegxFormWidget({
                             },
                             error: function(data, textStatus, jqXHR) {
                             	
-                            	if(data.responseJSON && data.responseJSON != null){
+                            	if(data.responseJSON && data.responseJSON != ""){
                             		
                             		var responseMsg = data.responseJSON;
                                 	
-                                	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                                	if(responseMsg.redirectUrl && responseMsg.redirectUrl != ""){
                                 		document.location.href = responseMsg.redirectUrl;
                                 	} else {
                                 		
-                                		if(responseMsg.message && responseMsg.message != null){
+                                		if(responseMsg.message && responseMsg.message != ""){
                                 			$('#errorMsg').text(responseMsg.message).show();
                                 		} else{
                                 			$('#errorMsg').text("Server error, please try again later.").show();
