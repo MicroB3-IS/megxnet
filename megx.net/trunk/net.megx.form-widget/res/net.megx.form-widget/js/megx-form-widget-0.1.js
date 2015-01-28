@@ -1,81 +1,80 @@
 MegxFormWidget = function(cfg) {
-
+	var self = this;
     Alpaca.defaultUI = "jquery-ui";
     Alpaca.logLevel = Alpaca.ERROR;
-    this.renderForm(cfg);
+    self.renderForm(cfg);
 
 }
-MegxFormWidget.prototype = {
 
-    submitForm: function(field) {
-    	
-    	var form = field.form;
-        var url = form.attributes.action;
-        var ajaxMethod = form.attributes.method;
+MegxFormWidget.prototype.submitForm = function(field){
+	var self = this;
+	var form = field.form;
+    var url = form.attributes.action;
+    var ajaxMethod = form.attributes.method;
 
-        if (form) {
+    if (form) {
 
-            form.registerSubmitHandler(function(e, form) {
-                return false;
-            });
+        form.registerSubmitHandler(function(e, form) {
+            return false;
+        });
 
-            form.buttons.submit.click(function() {
+        form.buttons.submit.click(function() {
 
-            	if (field.isValid(true)) {
+        	if (field.isValid(true)) {
 
-                    var data = field.getValue();
-                    data.json = JSON.stringify(field.getValue());
-                    $.ajax({
-                        type: ajaxMethod,
-                        url: url,
-                        data: data,
-                        success: function(data, textStatus, jqXHR) {
+                var data = field.getValue();
+                data.json = JSON.stringify(field.getValue());
+                $.ajax({
+                    type: ajaxMethod,
+                    url: url,
+                    data: data,
+                    success: function(data, textStatus, jqXHR) {
+                    	
+                    	if(data.redirectUrl && data.redirectUrl != ""){
+                    		alert("Your submission was successfull. Thanks!");
+                    		document.location.href = data.redirectUrl;
+                    	} else {
+                    		
+                    		if(data.message && data.message != ""){
+                    			alert(data.message);
+                    			document.location.href = ctx.siteUrl;
+                    		} else{
+                    			alert("Your submission was successfull. Thanks!");
+                        		document.location.href = ctx.siteUrl;
+                    		}
+                    	}
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                    	
+                    	if(data.responseJSON && data.responseJSON != ""){
+                    		
+                    		var responseMsg = data.responseJSON;
                         	
-                        	if(data.redirectUrl && data.redirectUrl != null){
-                        		alert("Your submission was successfull. Thanks!");
-                        		document.location.href = data.redirectUrl;
+                        	if(responseMsg.redirectUrl && responseMsg.redirectUrl != ""){
+                        		document.location.href = responseMsg.redirectUrl;
                         	} else {
                         		
-                        		if(data.message && data.message != null){
-                        			alert(data.message);
-                        			document.location.href = ctx.siteUrl;
+                        		if(responseMsg.message && responseMsg.message != ""){
+                        			$('#errorMsg').text(responseMsg.message).show();
                         		} else{
-                        			alert("Your submission was successfull. Thanks!");
-                            		document.location.href = ctx.siteUrl;
+                        			$('#errorMsg').text("Server error, please try again later.").show();
                         		}
                         	}
-                        },
-                        error: function(data, textStatus, jqXHR) {
-                        	
-                        	if(data.responseJSON && data.responseJSON != null){
-                        		
-                        		var responseMsg = data.responseJSON;
-                            	
-                            	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
-                            		document.location.href = responseMsg.redirectUrl;
-                            	} else {
-                            		
-                            		if(responseMsg.message && responseMsg.message != null){
-                            			$('#errorMsg').text(responseMsg.message).show();
-                            		} else{
-                            			$('#errorMsg').text("Server error, please try again later.").show();
-                            		}
-                            	}
-                        		
-                        	} else {
-                        		$('#errorMsg').text("Server error, please try again later.").show();
-                        	}
-                        	
-                        }
-                    });
-                }
-            });
-        }
-    },
+                    		
+                    	} else {
+                    		$('#errorMsg').text("Server error, please try again later.").show();
+                    	}
+                    	
+                    }
+                });
+            }
+        });
+    }
+}
 
-    renderForm: function(cfg) {
-
-        var alpacaOptions = {
+MegxFormWidget.prototype.renderForm = function(cfg){
+	var self = this;
+	var alpacaOptions = {
             "optionsSource": cfg.optionsLocation,
             "schemaSource": cfg.schemaLocation,
             "view": {
@@ -88,77 +87,13 @@ MegxFormWidget.prototype = {
             "isDynamicCreation": true
         };
 
-        var postRender = function(field) {
-
-            var form = field.form;
-            var url = form.attributes.action;
-            var ajaxMethod = form.attributes.method;
-
-            if (form) {
-            	
-                form.registerSubmitHandler(function(e, form) {
-                    return false;
-                });
-
-                form.buttons.submit.click(function() {
-
-                    if (field.isValid(true)) {
-
-                        var data = field.getValue();
-                        data.json = JSON.stringify(field.getValue());
-                        $.ajax({
-                            type: ajaxMethod,
-                            url: url,
-                            data: data,
-                            success: function(data, textStatus, jqXHR) {
-                            	
-                            	if(data.redirectUrl && data.redirectUrl != null){
-                            		alert("Your submission was successfull. Thanks!");
-                            		document.location.href = data.redirectUrl;
-                            	} else {
-                            		
-                            		if(data.message && data.message != null){
-                            			alert(data.message);
-                            			document.location.href = ctx.siteUrl;
-                            		} else{
-                            			alert("Your submission was successfull. Thanks!");
-                                		document.location.href = ctx.siteUrl;
-                            		}
-                            	}
-                            },
-                            error: function(data, textStatus, jqXHR) {
-                            	
-                            	if(data.responseJSON && data.responseJSON != null){
-                            		
-                            		var responseMsg = data.responseJSON;
-                                	
-                                	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
-                                		document.location.href = responseMsg.redirectUrl;
-                                	} else {
-                                		
-                                		if(responseMsg.message && responseMsg.message != null){
-                                			$('#errorMsg').text(responseMsg.message).show();
-                                		} else{
-                                			$('#errorMsg').text("Server error, please try again later.").show();
-                                		}
-                                	}
-                            		
-                            	} else {
-                            		$('#errorMsg').text("Server error, please try again later.").show();
-                            	}
-                            }
-                        });
-                    }
-                });
-            }
-        };
 
         var buts = {
             "done": {
                 "validateOnClick": true,
                 "onClick": function() {
                     //        			alert("done clicked."); 
-                    submitForm($("#" + cfg.formId))
+                    self.submitForm($("#" + cfg.formId))
                 }
             },
 
@@ -184,9 +119,9 @@ MegxFormWidget.prototype = {
         if (typeof cfg.postRender != "undefined" && cfg.postRender) {
             alpacaOptions.postRender = cfg.postRender;
         } else {
-            alpacaOptions.postRender = postRender;
+            alpacaOptions.postRender = self.submitForm;
         }
 
         $("#" + cfg.target).alpaca(alpacaOptions);
-    }
+
 }
