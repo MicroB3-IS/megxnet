@@ -13,11 +13,12 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import net.megx.form.widget.model.FormWidgetResult;
 import net.megx.mailer.BaseMailerService;
 import net.megx.mailer.MailMessage;
 import net.megx.megdb.contact.ContactService;
@@ -56,12 +57,50 @@ public class ContactAPI extends BaseRestService {
         .getProperty(PROPERTY_KEY_RECIPIENT_MAILS);
   }
 
+  
+  /**
+   * Save and send the contact form.
+   * 
+   * @param email
+   *          the contact sender email.
+   * @param name
+   *          the sender name.
+   * @param comment
+   *          the sender comment.
+   * @return Status.BAD_REQUEST
+   *           if the given email,name or comment are empty or null.
+   */
   @Path("store-contact")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public Response storeContactMail(@FormParam("email") String email,
       @FormParam("name") String name, @FormParam("comment") String comment,
       @Context HttpServletRequest request) {
+
+    if (email == null || email.isEmpty()) {
+      return Response
+          .status(Status.BAD_REQUEST)
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true, "Email not provided.",
+                  null))).build();
+    }
+    if (name == null || name.isEmpty()) {
+      return Response
+          .status(Status.BAD_REQUEST)
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true, "Name not provided.",
+                  null))).build();
+    }
+    if (comment == null || comment.isEmpty()) {
+      return Response
+          .status(Status.BAD_REQUEST)
+          .header("Access-Control-Allow-Origin", "*")
+          .entity(
+              toJSON(new FormWidgetResult(true, "Comment not provided.",
+                  null))).build();
+    }
 
     Date date = Calendar.getInstance().getTime();
     Contact contact = new Contact();
@@ -80,17 +119,18 @@ public class ContactAPI extends BaseRestService {
       uri = new URI(url);
     } catch (DBGeneralFailureException e) {
       log.error("Could not save mail", e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      return Response.serverError().header("Access-Control-Allow-Origin", "*")
+          .entity(toJSON(new FormWidgetResult(true, "Database error, could not save mail.", null ))).build();
     } catch (URISyntaxException e) {
       log.error("Wrong URI" + url, e);
     } catch (Exception e) {
       log.error("Error occured", e);
-      throw new WebApplicationException(e,
-          Response.Status.INTERNAL_SERVER_ERROR);
+      return Response.serverError().header("Access-Control-Allow-Origin", "*")
+          .entity(toJSON(new FormWidgetResult(true, "Server error occured.", null ))).build();
     }
 
-    return Response.seeOther(uri).build();
+    return Response.ok().header("Access-Control-Allow-Origin", "*")
+        .entity(toJSON(new FormWidgetResult(false, "Contact saved successfully.", uri.toString()))).build();
   }
 
   private void sendMail(String email, String name, String comment)

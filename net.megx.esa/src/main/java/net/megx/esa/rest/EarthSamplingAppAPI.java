@@ -36,11 +36,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
 
 import net.megx.broadcast.proxy.BroadcasterProxy;
 import net.megx.esa.rest.util.SampleDeserializer;
 import net.megx.esa.util.ImageResizer;
+import net.megx.form.widget.model.FormWidgetResult;
 import net.megx.megdb.esa.EarthSamplingAppService;
 import net.megx.model.esa.Sample;
 import net.megx.model.esa.SampleLocationCount;
@@ -49,6 +51,7 @@ import net.megx.model.esa.SamplePhoto;
 import net.megx.model.esa.SampleRow;
 import net.megx.twitter.BaseTwitterService;
 import net.megx.ui.table.json.TableDataResponse;
+import net.megx.ws.core.Result;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
@@ -322,6 +325,34 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
     }
 
+  /**
+   * Stores sample in the database from our web online form
+   * 
+   * @param air_temperature the air temperature value
+   * @param biome the biome value
+   * @param comment the comment
+   * @param date_taken the date when the sample is taken
+   * @param fun the real sample or just for fun
+   * @param air_temperature  the air_temperature value
+   * @param gps_accuracy the gps accuracy value
+   * @param json the whole form json
+   * @param latitude the latitude value
+   * @param longitude the longitude value
+   * @param nitrate  the nitrate value
+   * @param nitrite  the nitrite value
+   * @param origin the origin value
+   * @param phosphate the phosphate value
+   * @param ph  the ph value
+   * @param salinity  the salinity value
+   * @param sample_name  the name of the taken sample
+   * @param secchi_depth the secchi depth value
+   * @param submit  the submit
+   * @param time_taken the time when the sample was taken
+   * @param version  the version of the form
+   * @param water_temperature the water temperature value
+   * @param weather_condition  the weather condition
+   * @param wind_speed  the wind speed value
+   */
     @Path("observation")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -333,8 +364,8 @@ public class EarthSamplingAppAPI extends BaseRestService {
             @FormParam("depth") Double depth, @FormParam("fun") Boolean fun,
             @FormParam("gps_accuracy") String gpsAccuracy,
             @FormParam("json") String json,
-            @FormParam("latitude") Double latitude,
-            @FormParam("longitude") Double longitude,
+            @FormParam("latitude") String latitude,
+            @FormParam("longitude") String longitude,
             @FormParam("nitrate") String nitrate,
             @FormParam("nitrite") String nitrite,
             @FormParam("origin") String origin, @FormParam("ph") String ph,
@@ -350,16 +381,103 @@ public class EarthSamplingAppAPI extends BaseRestService {
             @FormParam("wind_speed") String windSpeed,
             @Context HttpServletRequest request ) {
 
-        if (version == null) {
-            return Response
-                    .status(400)
-                    .entity(toJSON(new Result<String>(true,
-                            "Samples not provided", "bad-request"))).build();
+        if (version == null || version.isEmpty()) {
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true, "Version not provided.",
+                      null))).build();
+        }
+        if (latitude == null || latitude.isEmpty()) {
+          log.error("Latitude parameter not provided.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Latitude parameter not provided.", null)))
+              .build();
+
+        } else if (!latitude.matches("-?\\d{1,2}(\\.\\d+)?")) {
+          log.error("Latitude parameter is not valid number format.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Latitude parameter is not valid number format.",
+                      null))).build();
+
+        } else if (Double.valueOf(latitude) < -90 || Double.valueOf(latitude) > 90) {
+          log.error("Latitude value is out of range.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Latitude value is out of range.", null))).build();
+
+        } else if (longitude == null || longitude.isEmpty()) {
+          log.error("Longitude parameter not provided.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Longitude parameter not provided.", null)))
+              .build();
+
+        } else if (!longitude.matches("-?\\d{1,3}(\\.\\d+)?")) {
+          log.error("Longitude parameter is not valid number format.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Longitude parameter is not valid number format.",
+                      null))).build();
+
+        } else if (Double.valueOf(longitude) < -180 || Double.valueOf(longitude) > 180) {
+          log.error("Longitude value is out of range.");
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true,
+                      "Longitude value is out of range.", null)))
+              .build();
+
+        }
+        
+        if (sampleName == null || sampleName.isEmpty()) {
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true, "Sample Name not provided.",
+                      null))).build();
+        }
+        
+        if (dateTaken == null || dateTaken.isEmpty()) {
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true, "Date not provided.",
+                      null))).build();
+        }
+        
+        if (timeTaken == null || timeTaken.isEmpty()) {
+          return Response
+              .status(Status.BAD_REQUEST)
+              .header("Access-Control-Allow-Origin", "*")
+              .entity(
+                  toJSON(new FormWidgetResult(true, "Time not provided.",
+                      null))).build();
         }
 
         Sample sample = new Sample();
-        Sample sampleToSave = new Sample();
-        Map<String, String> errorMap = new HashMap<String, String>();
         String savedSample = "";
         List<Sample> samplesToBroadcast = new ArrayList<Sample>();
         String sampleCreator = "";
@@ -376,80 +494,50 @@ public class EarthSamplingAppAPI extends BaseRestService {
             taken = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(dateTaken
                     + " " + timeTaken);
         } catch (ParseException e) {
-            log.error("could not parse date", e);
+            log.error("Could not parse date.", e);
         }
 
         String id = UUID.randomUUID().toString();
 
         sample.setId(id);
-        if (airTemperature != null && !airTemperature.equals("")) {
-            sample.setAirTemperature(Double.parseDouble(airTemperature));
-        }
+        sample.setAirTemperature(parseDouble(airTemperature));
         sample.setBiome(biome);
         sample.setComment(comment);
         sample.setSamplingDepth(depth);
         sample.setFun(fun);
-        if (gpsAccuracy != null && !gpsAccuracy.equals("")) {
-            sample.setAccuracy(Double.parseDouble(gpsAccuracy));
-        }
+        sample.setAccuracy(parseDouble(gpsAccuracy));
         sample.setRawData(json);
-        sample.setLat(latitude);
-        sample.setLon(longitude);
-        if (nitrate != null && !nitrate.equals("")) {
-            sample.setNitrate(Double.parseDouble(nitrate));
-        }
-        if (nitrite != null && !nitrite.equals("")) {
-            sample.setNitrite(Double.parseDouble(nitrite));
-        }
-        if (ph != null && !ph.equals("")) {
-            sample.setPh(Double.parseDouble(ph));
-        }
-        if (phosphate != null && !phosphate.equals("")) {
-            sample.setPhosphate(Double.parseDouble(phosphate));
-        }
-        if (salinity != null && !salinity.equals("")) {
-            sample.setSalinity(Double.parseDouble(salinity));
-        }
+        sample.setLat(Double.parseDouble(latitude));
+        sample.setLon(Double.parseDouble(longitude));
+        sample.setNitrate(parseDouble(nitrate));
+        sample.setNitrite(parseDouble(nitrite));
+        sample.setPh(parseDouble(ph));
+        sample.setPhosphate(parseDouble(phosphate));
+        sample.setSalinity(parseDouble(salinity));
         sample.setLabel(sampleName);
-        if (secchiDepth != null && !secchiDepth.equals("")) {
-            sample.setSecchiDepth(Double.parseDouble(secchiDepth));
-        }
+        sample.setSecchiDepth(parseDouble(secchiDepth));
         sample.setAppVersion(version);
-        if (waterTemperature != null && !waterTemperature.equals("")) {
-            sample.setWaterTemperature(Double.parseDouble(waterTemperature));
-        }
+        sample.setWaterTemperature(parseDouble(waterTemperature));
         sample.setWeatherCondition(weatherCondition);
-        if (windSpeed != null && !windSpeed.equals("")) {
-            sample.setWindSpeed(Double.parseDouble(windSpeed));
-        }
+        sample.setWindSpeed(parseDouble(windSpeed));
         sample.setTaken(taken);
         sample.setModified(modified);// test
         sample.setCollectorId("anonymous");
-
-        if (validateSample(sample)) {
-
-            sample.setUserName(sampleCreator);
-            sampleToSave = sample;
-        } else {
-            if (sample.getLabel() != null) {
-                errorMap.put(sample.getId(), "Sample " + sample.getLabel()
-                        + " is missing latitude or longitude");
-            } else {
-                errorMap.put(sample.getId(), "Sample " + sample.getId()
-                        + " is missing latitude, longitude or label.");
-            }
-        }
+        sample.setUserName(sampleCreator);
+        
+        
         try {
-            savedSample = service.storeSingleSample(sampleToSave);
+            savedSample = service.storeSingleSample(sample);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             log.error("Could not save sample", e);
+            return Response.serverError().header("Access-Control-Allow-Origin", "*")
+                .entity(toJSON(new FormWidgetResult(true, "Database error, could not save sample.", null ))).build();
         }
        
         // Broadcast JSON string with saved samples to subscribed clients
         // and tweet about it
-        if (savedSample == sampleToSave.getId()) {
-            samplesToBroadcast.add(sampleToSave);
+        if (savedSample == sample.getId()) {
+            samplesToBroadcast.add(sample);
             this.tweet(sample.getLon(), sample.getLat(), sample.getTaken());
         }
         this.broadcasterProxy.broadcastMessage("/topic/notifications/esa",
@@ -463,10 +551,10 @@ public class EarthSamplingAppAPI extends BaseRestService {
                     + "/osd-app/samples";
             uri = new URI(url);
         } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
             log.error("Wrong URI" + url, e);
         }
-        return Response.seeOther(uri).build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*")
+            .entity(toJSON(new FormWidgetResult(false, "Sample saved successfully.", uri.toString()))).build();
     }
 
     /**
@@ -535,7 +623,12 @@ public class EarthSamplingAppAPI extends BaseRestService {
             return toJSON(handleException(e));
         }
     }
-
+    
+  /**
+   * Tweet the message to megx twitter account with the longitude, latitude
+   * values and link to /osd-app/samples page
+   * 
+   */
     private void tweet( Double longitude, Double latitude, Date date ) {
         String link = "https://mb3is.megx.net/osd-app/samples";
 
@@ -564,6 +657,14 @@ public class EarthSamplingAppAPI extends BaseRestService {
             return false;
         }
         return true;
+    }
+    
+    private Double parseDouble(String dbl){
+      Double d = null;
+      if(dbl != null && !dbl.equals("")){
+        d = Double.parseDouble(dbl);
+      }
+      return d;
     }
 
     /**

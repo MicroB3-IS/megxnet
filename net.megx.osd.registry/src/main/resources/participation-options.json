@@ -43,10 +43,11 @@
             "cols": 30
         },
         "participateDate":{
-        	"helper" : "Please enter date when you like to participate",
-        	"type": "textarea",
-            "rows": 4,
-            "cols": 30
+        	"helper" : "Please note down the date on which you like to participate",
+        	"dateFormat": "yy-mm-dd",
+            "datepicker": {
+                "dateFormat": "yy-mm-dd" 
+            }
         	
         }
     }

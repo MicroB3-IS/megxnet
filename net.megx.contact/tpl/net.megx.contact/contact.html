@@ -1,14 +1,17 @@
 <link rel="stylesheet" href="//code.cloudcms.com/alpaca/1.5.6/bootstrap/alpaca.min.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
-<script src=//code.cloudcms.com/alpaca/1.5.6/bootstrap/alpaca.js></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.min.js"></script>
+<script src=//code.cloudcms.com/alpaca/1.5.6/bootstrap/alpaca.min.js></script>
+<script src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
 
-<div id="contactForm"></div>
+<div id="form-submit-error-msg"></div>
+<div id="contact-form"></div>
 
 <script type="text/javascript">
- var MegxFormWidget = new MegxFormWidget({
-	 target : "contactForm",
-	 schemaLocation : ctx.siteUrl + "/net.megx.contact/data/contact-schema.json",
-	 optionsLocation : ctx.siteUrl + "/net.megx.contact/data/contact-options.json"
- });
+    var MegxFormWidget = new MegxFormWidget({
+        target : "contact-form",
+        errorTarget : "form-submit-error-msg",
+        schemaLocation : ctx.siteUrl  + "/net.megx.contact/data/contact-schema.json",
+        optionsLocation : ctx.siteUrl + "/net.megx.contact/data/contact-options.json",
+        parentView: "bootstrap-create"
+    });
 </script>

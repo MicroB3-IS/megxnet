@@ -41,6 +41,7 @@
         "participateDate": {
             "title": " When would you like to participate?",
             "description": "Report any deviation.",
+            "format":"date",
             "required": false
         }
     }
