@@ -24,12 +24,20 @@ public class OSDSampleSubmissionITCase {
   @Rule
   public TestServer ts = new TestServer();
   private String wsPrefix = "";
+  private String participationPath = "/participation";
 
   @Before
   public void setUp() {
     this.wsPrefix = ts.getWSPrefix() + "/OSDRegistry/v1.0.0";
   }
 
+  /**
+   * Test case for: storing sample and metadata registration successful.
+   * 
+   * @param sample
+   *          the whole sample form json.
+   * @return Status.BAD_REQUEST if the sample json is empty or null.
+   */
   @Test
   @Category({ IntegrationTest.class, RESTServiceTest.class })
   public void successfulOSDSampleSubmission() throws IOException {
@@ -49,6 +57,41 @@ public class OSDSampleSubmissionITCase {
         .contentType(ContentType.URLENC).formParam("json", json)
         // .formParameters()
         .when().post(this.wsPrefix + "/sample").then().statusCode(201).log();
+
+  }
+
+  /**
+   * Test case for: storing sample and metadata registration when json is empty.
+   * 
+   * @param sample
+   *          the whole sample form json.
+   * @return Status.BAD_REQUEST if the sample json is empty or null.
+   */
+  @Test
+  @Category({ IntegrationTest.class, RESTServiceTest.class })
+  public void failOSDSampleSubmission() throws IOException {
+
+    given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+        .contentType(ContentType.URLENC).formParameter("json", "").when()
+        .post(this.wsPrefix + "/sample").then().statusCode(400).log();
+
+  }
+
+  /**
+   * Test case for: storing sample and metadata registration when json is null.
+   * 
+   * @param sample
+   *          the whole sample form json.
+   * @return Status.BAD_REQUEST if the sample json is empty or null.
+   */
+  @Test
+  @Category({ IntegrationTest.class, RESTServiceTest.class })
+  public void failJsonOSDSampleSubmission() throws IOException {
+
+    String json = null;
+    given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+        .contentType(ContentType.URLENC).formParameter("json", json).when()
+        .post(this.wsPrefix + "/sample").then().statusCode(400).log();
 
   }
 
@@ -126,10 +169,11 @@ public class OSDSampleSubmissionITCase {
    * @param funding
    *          the participant funding.
    * @param participateDate
-   *          the participant date.
+   *          the participation date.
    * @param json
    *          the whole participation form json.
-   * @throws WebApplicationException
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
    */
 
   @Test
@@ -150,7 +194,7 @@ public class OSDSampleSubmissionITCase {
 
     given().filter(ResponseLoggingFilter.logResponseTo(System.out))
         .contentType(ContentType.URLENC).formParams(formParams)
-        .post(this.wsPrefix + "/participation").then().statusCode(200).log();
+        .post(this.wsPrefix + participationPath).then().statusCode(201).log();
 
   }
 
@@ -170,15 +214,16 @@ public class OSDSampleSubmissionITCase {
    * @param funding
    *          the participant funding.
    * @param participateDate
-   *          the participant date.
+   *          the participation date.
    * @param json
    *          the whole participation form json.
-   * @throws WebApplicationException
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
    */
 
   @Test
   @Category({ IntegrationTest.class, RESTServiceTest.class })
-  public void failParticipationSave() {
+  public void failNameParticipationSave() {
 
     String participationJson = "{\"contactName\":\"test\",\"contactEmail\":\"test@mail.net\"}";
 
@@ -193,7 +238,7 @@ public class OSDSampleSubmissionITCase {
 
     given().filter(ResponseLoggingFilter.logResponseTo(System.out))
         .contentType(ContentType.URLENC).formParams(formParams)
-        .post(this.wsPrefix + "/participation").then().statusCode(400).log();
+        .post(this.wsPrefix + participationPath).then().statusCode(400).log();
 
   }
 
@@ -213,15 +258,16 @@ public class OSDSampleSubmissionITCase {
    * @param funding
    *          the participant funding.
    * @param participateDate
-   *          the participant date.
+   *          the participation date.
    * @param json
    *          the whole participation form json.
-   * @throws WebApplicationException
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
    */
-  
+
   @Test
   @Category({ IntegrationTest.class, RESTServiceTest.class })
-  public void failParticipationJsonSave() {
+  public void failMissingJsonParticipationSave() {
     HashMap<String, String> formParams = new HashMap<String, String>();
     formParams.put("contactEmail", "test@mail.com");
     formParams.put("contactAddress", "address 33");
@@ -232,6 +278,120 @@ public class OSDSampleSubmissionITCase {
 
     given().filter(ResponseLoggingFilter.logResponseTo(System.out))
         .contentType(ContentType.URLENC).formParams(formParams)
-        .post(this.wsPrefix + "/participation").then().statusCode(400).log();
+        .post(this.wsPrefix + participationPath).then().statusCode(400).log();
+  }
+
+  /**
+   * Test case for: storing participation when json is null.
+   * 
+   * @param contactName
+   *          the participant name.
+   * @param contactEmail
+   *          the participant email.
+   * @param contactAddress
+   *          the participant address.
+   * @param ideas
+   *          the participant ideas about OSD.
+   * @param contributedSamples
+   *          the participant unique samples.
+   * @param funding
+   *          the participant funding.
+   * @param participateDate
+   *          the participation date.
+   * @param json
+   *          the whole participation form json.
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
+   */
+
+  @Test
+  @Category({ IntegrationTest.class, RESTServiceTest.class })
+  public void failJsonParticipationSave() {
+    HashMap<String, String> formParams = new HashMap<String, String>();
+    formParams.put("contactEmail", "test@mail.com");
+    formParams.put("contactAddress", "address 33");
+    formParams.put("ideas", "ideas");
+    formParams.put("contributedSamples", "unique sample");
+    formParams.put("funding", "fundings");
+    formParams.put("participateDate", "My participation date");
+
+    given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+        .contentType(ContentType.URLENC).formParams(formParams)
+        .post(this.wsPrefix + participationPath).then().statusCode(400).log();
+  }
+
+  /**
+   * Test case for: storing participation when contactEmail is null.
+   * 
+   * @param contactName
+   *          the participant name.
+   * @param contactEmail
+   *          the participant email.
+   * @param contactAddress
+   *          the participant address.
+   * @param ideas
+   *          the participant ideas about OSD.
+   * @param contributedSamples
+   *          the participant unique samples.
+   * @param funding
+   *          the participant funding.
+   * @param participateDate
+   *          the participation date.
+   * @param json
+   *          the whole participation form json.
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
+   */
+  @Test
+  @Category({ IntegrationTest.class, RESTServiceTest.class })
+  public void failEmailParticipationSave() {
+    HashMap<String, String> formParams = new HashMap<String, String>();
+    formParams.put("contactEmail", null);
+    formParams.put("contactAddress", "address 33");
+    formParams.put("ideas", "ideas");
+    formParams.put("contributedSamples", "unique sample");
+    formParams.put("funding", "fundings");
+    formParams.put("participateDate", "My participation date");
+
+    given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+        .contentType(ContentType.URLENC).formParams(formParams)
+        .post(this.wsPrefix + participationPath).then().statusCode(400).log();
+  }
+
+  /**
+   * Test case for: storing participation when contactEmail is not provided.
+   * 
+   * @param contactName
+   *          the participant name.
+   * @param contactEmail
+   *          the participant email.
+   * @param contactAddress
+   *          the participant address.
+   * @param ideas
+   *          the participant ideas about OSD.
+   * @param contributedSamples
+   *          the participant unique samples.
+   * @param funding
+   *          the participant funding.
+   * @param participateDate
+   *          the participation date.
+   * @param json
+   *          the whole participation form json.
+   * @return Status.BAD_REQUEST if the contactName,contactEmail and json are empty or
+   *         null.
+   */
+  @Test
+  @Category({ IntegrationTest.class, RESTServiceTest.class })
+  public void failEmailMissingParticipationSave() {
+    HashMap<String, String> formParams = new HashMap<String, String>();
+    formParams.put("contactAddress", "address 33");
+    formParams.put("ideas", "ideas");
+    formParams.put("contributedSamples", "unique sample");
+    formParams.put("funding", "fundings");
+    formParams.put("participateDate", "My participation date");
+
+    given().filter(ResponseLoggingFilter.logResponseTo(System.out))
+        .contentType(ContentType.URLENC).formParams(formParams)
+        .post(this.wsPrefix + participationPath).then().statusCode(400).log();
   }
 }

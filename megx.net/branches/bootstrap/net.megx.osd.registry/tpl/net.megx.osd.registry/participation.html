@@ -15,8 +15,7 @@
 	rel="stylesheet" type="text/css">
 
 
-<div id="errorMsg">You need to be logged in, in case you don't
-	have user you can use this form name and mail to create one.</div>
+<div id="errorMsg"></div>
 <div id="participationForm" style="padding: 15px"></div>
 
 <script type="text/javascript">
@@ -37,6 +36,8 @@ var MegxFormWidget = new MegxFormWidget({
 
         var form = field.form;
         var fieldSet = form.field[0];
+        var url = form.attributes.action;
+        var ajaxMethod = form.attributes.method;
 		
         if (user != null && email != null) {
 
@@ -54,27 +55,64 @@ var MegxFormWidget = new MegxFormWidget({
             
             if (form) {
 
-                form.refreshValidationState(false);
-
                 form.registerSubmitHandler(function(e, form) {
-                        form.validate(true);
-                        form.refreshValidationState(true);
-                        if (form.isFormValid()) {
-                            var json = form.getValue();
-                            var formJson = JSON.stringify(field.getValue());
-                            $('<input/>').attr('name', 'json').attr('value',
-                                formJson).attr('type','hidden').appendTo("#participation-form");
-                        } else {
-                            alert("There is wrong input.  Please make necessary corrections as (hopefully) indicated.");
-                            return false;
-                        }
-                        e.stopPropagation();
-                        return true;
-                    });
+                    return false;
+                });
+
+                form.buttons.submit.click(function() {
+
+                	if (field.isValid(true)) {
+
+                        var data = field.getValue();
+                        data.json = JSON.stringify(field.getValue());
+                        $.ajax({
+                            type: ajaxMethod,
+                            url: url,
+                            data: data,
+                            success: function(data, textStatus, jqXHR) {
+                            	
+                            	if(data.redirectUrl && data.redirectUrl != null){
+                            		alert("Your submission was successfull. Thanks!");
+                            		document.location.href = data.redirectUrl;
+                            	} else {
+                            		
+                            		if(data.message && data.message != null){
+                            			alert(data.message);
+                            			document.location.href = ctx.siteUrl;
+                            		} else{
+                            			alert("Your submission was successfull. Thanks!");
+                                		document.location.href = ctx.siteUrl;
+                            		}
+                            	}
+                            },
+                            error: function(data, textStatus, jqXHR) {
+                            	
+                            	if(data.responseJSON && data.responseJSON != null){
+                            		
+                            		var responseMsg = data.responseJSON;
+                                	
+                                	if(responseMsg.redirectUrl && responseMsg.redirectUrl != null){
+                                		document.location.href = responseMsg.redirectUrl;
+                                	} else {
+                                		
+                                		if(responseMsg.message && responseMsg.message != null){
+                                			$('#errorMsg').text(responseMsg.message).show();
+                                		} else{
+                                			$('#errorMsg').text("Server error, please try again later.").show();
+                                		}
+                                	}
+                            		
+                            	} else {
+                            		$('#errorMsg').text("Server error, please try again later.").show();
+                            	}
+                            }
+                        });
+                    }
+                });
             }
 
         } else {
-        	$('#errorMsg').show();
+        	$('#errorMsg').text("You need to be logged in, in case you don't have user you can use this form name and mail to create one.").show();
         	var userName = field.childrenByPropertyId["contactName"];
         	var userMail = field.childrenByPropertyId["contactEmail"];
         	
