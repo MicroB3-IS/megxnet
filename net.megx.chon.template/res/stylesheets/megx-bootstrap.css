@@ -2,6 +2,10 @@
 
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
 
+a.no-before:before {
+    content: none !important;
+}
+
 html {
     hyphens: auto;
     -webkit-hyphens: auto;
