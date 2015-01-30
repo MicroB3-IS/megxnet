@@ -45,8 +45,10 @@
             <section>
                 <span>&copy 2014 megx.net (v0.5.0)</span>
                 #set($lastModified=$ext.utils.formatDate($this.jcrLastModified,
-                'yyyy-MM-dd')) #if($lastModified) <span class="last-update">last
-                    update $lastModified</span> #end
+                'yyyy-MM-dd')) 
+                #if($lastModified) 
+                <span class="last-update">last update $lastModified</span> 
+                #end
             </section>
         </div>
     </div>
