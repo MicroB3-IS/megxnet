@@ -2,6 +2,13 @@
 
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
 
+html {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
 header {
     z-index: 10;
 }
@@ -52,10 +59,9 @@ nav#main-menu {
     padding-top: 0px;
 }
 
-#logo {
-    margin-top: 20px;
-    display: block;
-    height: 108px;
+.logo {
+   margin: 10px 0;
+   height: 108px;
 }
 
 .footer {
@@ -99,7 +105,7 @@ nav#main-menu {
     color: #f39c12;
 }
 
-main {
+main.container {
     padding-top: 3em;
     padding-bottom: 3em;
 }
@@ -107,7 +113,8 @@ main {
 a[href*="//"]:before {
     /* external link styles*/
     content: "\f08e";
-    padding-right: .5em;
+    padding-right: 4pt;
+    display: inline !important;
 }
 
 .dropdown-toggle:after {
@@ -169,7 +176,13 @@ a[href*="//"]:before {
     }
 }
 
+h2 {
+    font-size: 1.5em;
+}
 
+.jumbotron {
+    background-color: #f5f5f5;
+}
 /*******************************************************************************
  FORM WIDGET
 *******************************************************************************/
