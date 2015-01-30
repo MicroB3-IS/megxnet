@@ -64,8 +64,8 @@ nav#main-menu {
 }
 
 .logo {
-   margin: 10px 0;
-   height: 108px;
+    margin: 10px 0;
+    height: 108px;
 }
 
 .footer {
@@ -93,7 +93,7 @@ nav#main-menu {
     float: right;
 }
 
-.footer-social a:before, .footer-social a:after{
+.footer-social a:before, .footer-social a:after {
     content: none !important;
 }
 
@@ -125,9 +125,7 @@ a[href*="//"]:before {
     padding-left: .5em;
 }
 
-.fa-after:after,
-.fa-before:before,
-a[href*="//"]:before {
+.fa-after:after, .fa-before:before, a[href*="//"]:before {
     display: inline-block;
     font-family: FontAwesome;
     font-style: normal;
@@ -137,7 +135,7 @@ a[href*="//"]:before {
     -moz-osx-font-smoothing: grayscale
 }
 
-@media (max-width: 767px) {
+@media ( max-width : 767px) {
     .dropdown-toggle:after {
         content: '\f054';
         float: right;
@@ -152,7 +150,7 @@ a[href*="//"]:before {
     .dropdown-toggles {
         top: 2px;
     }
-    .dropdown-toggle:after{
+    .dropdown-toggle:after {
         content: '\f078';
     }
     .navbar-nav a {
@@ -160,7 +158,6 @@ a[href*="//"]:before {
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
-    
     .navbar-nav li.active a {
         margin: 0 10px;
         padding-left: 10px !important;
@@ -181,12 +178,17 @@ a[href*="//"]:before {
 }
 
 h2 {
-    font-size: 1.5em;
+    font-size: 35px;
 }
 
 .jumbotron {
     background-color: #f5f5f5;
 }
+
+.embed-responsive {
+    margin: .5em;
+}
+
 /*******************************************************************************
  FORM WIDGET
 *******************************************************************************/
