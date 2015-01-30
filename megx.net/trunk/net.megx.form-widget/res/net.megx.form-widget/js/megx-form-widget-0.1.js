@@ -2,6 +2,7 @@ MegxFormWidget = function(cfg) {
 	var self = this;
     Alpaca.defaultUI = "jquery-ui";
     Alpaca.logLevel = Alpaca.ERROR;
+    self.cfg = cfg;
     self.renderForm(cfg);
 
 }
@@ -19,12 +20,14 @@ MegxFormWidget.prototype.submitForm = function(field){
         });
 
         form.buttons.submit.click(function() {
+        	
+        	form.disableSubmitButton();
 
         	if (field.isValid(true)) {
 
                 var data = field.getValue();
                 data.json = JSON.stringify(field.getValue());
-                $.ajax({
+                jQuery.ajax({
                     type: ajaxMethod,
                     url: url,
                     data: data,
@@ -46,6 +49,9 @@ MegxFormWidget.prototype.submitForm = function(field){
                     },
                     error: function(data, textStatus, jqXHR) {
                     	
+                    	var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
+                    	form.enableSubmitButton();
+                    	
                     	if(data.responseJSON && data.responseJSON != ""){
                     		
                     		var responseMsg = data.responseJSON;
@@ -55,14 +61,14 @@ MegxFormWidget.prototype.submitForm = function(field){
                         	} else {
                         		
                         		if(responseMsg.message && responseMsg.message != ""){
-                        			$('#errorMsg').text(responseMsg.message).show();
+                        			errorElement.text(responseMsg.message).show();
                         		} else{
-                        			$('#errorMsg').text("Server error, please try again later.").show();
+                        			errorElement.text("Server error, please try again later.").show();
                         		}
                         	}
                     		
                     	} else {
-                    		$('#errorMsg').text("Server error, please try again later.").show();
+                    		errorElement.text("Server error, please try again later.").show();
                     	}
                     	
                     }
@@ -93,7 +99,7 @@ MegxFormWidget.prototype.renderForm = function(cfg){
                 "validateOnClick": true,
                 "onClick": function() {
                     //        			alert("done clicked."); 
-                    self.submitForm($("#" + cfg.formId))
+                    self.submitForm(jQuery("#" + cfg.formId))
                 }
             },
 
@@ -122,6 +128,6 @@ MegxFormWidget.prototype.renderForm = function(cfg){
             alpacaOptions.postRender = self.submitForm;
         }
 
-        $("#" + cfg.target).alpaca(alpacaOptions);
+        jQuery("#" + cfg.target).alpaca(alpacaOptions);
 
 }
