@@ -68,7 +68,7 @@
                 To get the full functionality, please, activate JavaScript in your browser!
             </h3>
         </noscript>
-        <main id="main-content" #if (!$this.disableContainerClassOnMainContent || $this.disableContainerClassOnMainContent != 'true') class="container" #end>
+        <main id="main-content" class="#if ($this.isJumbotronPage == 'true') jumbotron-page #else container #end ">
             ${BODY}
         </main>
         #parse('footer-bootstrap.html')
