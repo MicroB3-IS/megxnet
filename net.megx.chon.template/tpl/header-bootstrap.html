@@ -1,10 +1,11 @@
 <header>
     <div class="container logo-bar">
         <a href="$ctx.siteUrl/">
+            <img class="logo" src="$ctx.siteUrl/images/logo.png">
+        </a>
+        <a class="pull-right" href="$ctx.siteUrl/">
             #if($this.showOSDLogo == 'true')
-                <img id="logo" src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
-            #else
-                <img id="logo" src="$ctx.siteUrl/images/logo.png">
+                <img class="logo" src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
             #end
         </a>
     </div>
