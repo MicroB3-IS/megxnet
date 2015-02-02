@@ -6,7 +6,7 @@ MegxFormWidget = function(cfg) {
 }
 
 MegxFormWidget.prototype.submitForm = function(field) {
-  
+
   var self = this;
   var form = field.form;
   var url = form.attributes.action;
@@ -18,13 +18,14 @@ MegxFormWidget.prototype.submitForm = function(field) {
       return false;
     });
     var id = "#" + form.id;
+
     jQuery('button[type="submit"]', id).click(function() {
 
       if (field.isValid(true)) {
 
         var data = field.getValue();
         data.json = JSON.stringify(field.getValue());
-        $.ajax({
+        jQuery.ajax({
           type : ajaxMethod,
           url : url,
           data : data
@@ -56,13 +57,18 @@ MegxFormWidget.prototype.submitForm = function(field) {
 
               if (responseMsg.message && responseMsg.message != "") {
                 errorElement.text(responseMsg.message).show();
+                errorElement.removeClass('hidden');
               } else {
-                errorElement.text("Server error, please try again later.").show();
+                errorElement.text("Server error, please try again later.");
+                errorElement.removeClass('hidden');
               }
             }
           } else {
-            errorElement.text("Server error, please try again later.").show();
+            errorElement.text("Server error, please try again later.");
+            errorElement.removeClass('hidden');
           }
+        }).always(function(data, textStatus, jqXHR) {
+          form.enableSubmitButton();
         });
       }
     });
@@ -87,7 +93,7 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
       "validateOnClick" : true,
       "onClick" : function() {
         // alert("done clicked.");
-        self.submitForm($("#" + cfg.formId))
+        self.submitForm(jQuery("#" + cfg.formId))
       }
     },
 
@@ -116,6 +122,6 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
     alpacaOptions.postRender = self.submitForm;
   }
 
-  $("#" + cfg.target).alpaca(alpacaOptions);
+  jQuery("#" + cfg.target).alpaca(alpacaOptions);
 
 }
