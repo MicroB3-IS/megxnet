@@ -6,6 +6,21 @@ a.no-before:before {
     content: none !important;
 }
 
+.no-word-break {
+    white-space: nowrap;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+}
+
+.no-hyphens: {
+    hyphens: none;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+}
+
 html {
     hyphens: auto;
     -webkit-hyphens: auto;
@@ -189,9 +204,17 @@ h2 {
     background-color: #f5f5f5;
 }
 
+.jumbotron .container *:last-child {
+    margin-bottom: 0 !important;
+}
+
 .jumbotron h1 {
     margin-bottom: 0.5em;
     margin-top: 0;
+}
+
+.jumbotron ul {
+    font-size: 1.25em;
 }
 
 .embed-responsive {
