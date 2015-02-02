@@ -14,6 +14,9 @@ MegxFormWidget.prototype.submitForm = function(field) {
 
   if (form) {
 
+    // move Error bar between form and button bar
+    jQuery('.alpaca-form-buttons-container').prev().append(jQuery('#' + MegxFormWidget.cfg.errorTarget));
+
     form.registerSubmitHandler(function(e, form) {
       return false;
     });
