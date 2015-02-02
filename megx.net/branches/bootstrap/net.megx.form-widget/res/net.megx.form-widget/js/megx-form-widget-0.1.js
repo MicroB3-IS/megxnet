@@ -59,15 +59,15 @@ MegxFormWidget.prototype.submitForm = function(field) {
             } else {
 
               if (responseMsg.message && responseMsg.message != "") {
-                errorElement.text(responseMsg.message).show();
+                errorElement.children('.error-text').text(responseMsg.message).show();
                 errorElement.removeClass('hidden');
               } else {
-                errorElement.text("Server error, please try again later.");
+                errorElement.children('.error-text').text("Server error, please try again later.");
                 errorElement.removeClass('hidden');
               }
             }
           } else {
-            errorElement.text("Server error, please try again later.");
+            errorElement.children('.error-text').text("Server error, please try again later.");
             errorElement.removeClass('hidden');
           }
         }).always(function(data, textStatus, jqXHR) {
