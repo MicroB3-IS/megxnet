@@ -1,19 +1,10 @@
-<style type="text/css">
-#errorMsg {
-	font-size: 18px;
-	color: #FF0000;
-	margin-left: 30px;
-	margin-top: 30px;
-	display: none;
-}
-</style>
 <script type="text/javascript"
 	src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
 <script type="text/javascript"
 	src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
 <link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css"
 	rel="stylesheet" type="text/css">
-
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
 
 <div id="errorMsg"></div>
 <div id="participationForm" style="padding: 15px"></div>
@@ -29,6 +20,7 @@
 
 var MegxFormWidget = new MegxFormWidget({
     target: "participationForm",
+    errorTarget : "errorMsg",
     schemaLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-schema.json",
     optionsLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-options.json",
     formId: "participation-form",
@@ -38,6 +30,8 @@ var MegxFormWidget = new MegxFormWidget({
         var fieldSet = form.field[0];
         var url = form.attributes.action;
         var ajaxMethod = form.attributes.method;
+        
+        var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
 		
         if (user != null && email != null) {
 
@@ -60,12 +54,14 @@ var MegxFormWidget = new MegxFormWidget({
                 });
 
                 form.buttons.submit.click(function() {
+                	
+                	form.disableSubmitButton();
 
                 	if (field.isValid(true)) {
 
                         var data = field.getValue();
                         data.json = JSON.stringify(field.getValue());
-                        $.ajax({
+                        jQuery.ajax({
                             type: ajaxMethod,
                             url: url,
                             data: data,
@@ -86,6 +82,8 @@ var MegxFormWidget = new MegxFormWidget({
                             	}
                             },
                             error: function(data, textStatus, jqXHR) {
+
+                            	form.enableSubmitButton();
                             	
                             	if(data.responseJSON && data.responseJSON != ""){
                             		
@@ -96,14 +94,14 @@ var MegxFormWidget = new MegxFormWidget({
                                 	} else {
                                 		
                                 		if(responseMsg.message && responseMsg.message != ""){
-                                			$('#errorMsg').text(responseMsg.message).show();
+                                			errorElement.text(responseMsg.message).show();
                                 		} else{
-                                			$('#errorMsg').text("Server error, please try again later.").show();
+                                			errorElement.text("Server error, please try again later.").show();
                                 		}
                                 	}
                             		
                             	} else {
-                            		$('#errorMsg').text("Server error, please try again later.").show();
+                            		errorElement.text("Server error, please try again later.").show();
                             	}
                             }
                         });
@@ -112,7 +110,7 @@ var MegxFormWidget = new MegxFormWidget({
             }
 
         } else {
-        	$('#errorMsg').text("You need to be logged in, in case you don't have user you can use this form name and mail to create one.").show();
+        	errorElement.text("You need to be logged in, in case you don't have user you can use this form name and mail to create one.").show();
         	var userName = field.childrenByPropertyId["contactName"];
         	var userMail = field.childrenByPropertyId["contactEmail"];
         	
