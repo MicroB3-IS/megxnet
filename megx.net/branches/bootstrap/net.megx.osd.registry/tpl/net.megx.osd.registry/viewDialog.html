@@ -1,20 +1,46 @@
-<div id="viewDialog">
-	<table class="viewDialogTable">
-		<tr>
-			<td class="viewLabel">Site latitude: </td>
-			<td class="viewValue" id="siteLatVal"></td>
-		</tr>
-		<tr>
-			<td class="viewLabel">Site longitude: </td>
-			<td class="viewValue" id="siteLongVal"></td>
-		</tr>
-		<tr>
-			<td class="viewLabel">Institution latitude: </td>
-			<td class="viewValue" id="institutionLatVal"></td>
-		</tr>
-		<tr>
-			<td class="viewLabel">Institution longitude: </td>
-			<td class="viewValue" id="institutionLongVal"></td>
-		</tr>
-	</table>
+<div class="modal" id="viewDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">OSD participant info</h4>
+            </div>
+            <div class="modal-body no-hyphens">
+                <div class="row">
+                    <div class="col-xs-5">OSD ID</div>
+                    <div id="viewDialog-osdID" class="col-xs-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">Site name</div>
+                    <div id="viewDialog-siteName" class="col-xs-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">Site latitude</div>
+                    <div id="viewDialog-siteLatVal" class="col-xs-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">Site longitude</div>
+                    <div id="viewDialog-siteLongVal" class="col-xs-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">Institution latitude</div>
+                    <div id="viewDialog-institutionLatVal" class="col-xs-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5">Institution longitude</div>
+                    <div id="viewDialog-institutionLongVal" class="col-xs-5"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteDialog-cancelButton" type="button"
+                    class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
+<!-- /.modal -->

@@ -1,6 +1,7 @@
-<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.validate.min.js"></script>
+<script type="text/javascript"
+    src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.min.js"></script>
+<script type="text/javascript"
+    src="$ctx.siteUrl/net.megx.osd.registry/js/jquery.validate.min.js"></script>
 <script type="text/javascript">
   #if($req.id)
   	participantID = '$req.id';
@@ -10,69 +11,129 @@
   #end
 </script>
 
-<form id="participantForm">
-	<table id="osdRegistryInputTable">
-		<tr>
-			<td class="label">OSD ID:</td>
-			<td class="input"><input type="text" name="osdID" id="osdID" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Site name:</td>
-			<td class="input"><input type="text" name="siteName" id="siteName" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Institute name:</td>
-			<td class="input"><input type="text" name="institution" id="institution" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Institute address:</td>
-			<td class="input"><input type="text" name="institutionAddress" id="institutionAddress" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Country:</td>
-			<td class="input"><input type="text" name="country" id="country" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Institute web address:</td>
-			<td class="input"><input type="text" name="institutionWebAddress" id="institutionWebAddress" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Site coordinator:</td>
-			<td class="input"><input type="text" name="siteCoordinator" id="siteCoordinator" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Coordinator email:</td>
-			<td class="input"><input type="text" name="coordinatorEmail" id="coordinatorEmail" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Site latitude:</td>
-			<td class="input"><input type="text" name="siteLat" id="siteLat" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Site longitude:</td>
-			<td class="input"><input type="text" name="siteLong" id="siteLong" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Institute latitude:</td>
-			<td class="input"><input type="text" name="institutionLat" id="institutionLat" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-		<tr>
-			<td class="label">Institute longitude:</td>
-			<td class="input"><input type="text" name="institutionLong" id="institutionLong" /></td>
-			<td class="errorLabelContainer"></td>
-		</tr>
-	</table>
-</form>
+<h3 class="col-sm-12">#if ($req.id) Edit #else Add #end OSD Site</h3>
 
-<input type="button" value="Submit" id="submitOSDParticipant" />
+<form id="participantForm" class="form-horizontal">
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="osdID">OSD ID</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control " id="osdID" name="osdID"
+                placeholder="Enter OSD ID" autofocus="autofocus">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteName">Site name</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteName"
+                name="siteName" placeholder="Enter the site name">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institution">Institute
+            name</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institution"
+                name="institution" placeholder="Enter the name of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionAddress">Institute
+            address</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionAddress"
+                name="institutionAddress"
+                placeholder="Enter the address of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="country">Country</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="country" name="country"
+                placeholder="Enter the country of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionWebAddress">Institute
+            web address</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionWebAddress"
+                name="institutionWebAddress"
+                placeholder="Enter web address of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteCoordinator">Site
+            coordinator</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteCoordinator"
+                name="siteCoordinator"
+                placeholder="Enter name of the site coordinator">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="coordinatorEmail">Coordinator
+            email</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="coordinatorEmail"
+                name="coordinatorEmail"
+                placeholder="Enter email of the site coordinator">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteLat">Site
+            latitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteLat" name="siteLat"
+                placeholder="Enter the latitude of the site">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteLong">Site
+            longitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteLong"
+                name="siteLong" placeholder="Enter the longitude of the site">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionLat">Institute
+            latitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionLat"
+                name="institutionLat"
+                placeholder="Enter the latitude of the insitute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionLong">Institute
+            longitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionLong"
+                name="institutionLong"
+                placeholder="Enter the longitude of the insitute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="alert alert-danger hidden col-sm-2">
+            <span class="glyphicon glyphicon-exclamation-sign"
+                aria-hidden="true"></span> <span class="sr-only">Error:</span> <span
+                class="error-text"></span>
+        </div>
+    </div>
+    <div class="row">
+        <input class="col-sm-offset-2 btn btn-primary" type="button"
+            value="Submit" id="submitOSDParticipant" />
+    </div>
+</form>

@@ -14,7 +14,7 @@ a.no-before:before {
     -ms-hyphens: none;
 }
 
-.no-hyphens: {
+.no-hyphens, #toast-container {
     hyphens: none;
     -webkit-hyphens: none;
     -moz-hyphens: none;
@@ -219,4 +219,8 @@ h2 {
 
 .embed-responsive {
     margin: .5em;
+}
+
+#toast-container>div {
+    opacity: 0.9;
 }
