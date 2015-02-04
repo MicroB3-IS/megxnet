@@ -12,11 +12,19 @@ MegxFormWidget.prototype.submitForm = function(field){
 	var form = field.form;
     var url = form.attributes.action;
     var ajaxMethod = form.attributes.method;
+    
+    var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
 
     if (form) {
 
         form.registerSubmitHandler(function(e, form) {
             return false;
+        });
+        
+        jQuery(".alpaca-fieldset").keyup(function() {
+            if (field.isValid(true)) {
+            	form.enableSubmitButton();
+            }
         });
 
         form.buttons.submit.click(function() {
@@ -49,7 +57,6 @@ MegxFormWidget.prototype.submitForm = function(field){
                     },
                     error: function(data, textStatus, jqXHR) {
                     	
-                    	var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
                     	form.enableSubmitButton();
                     	
                     	if(data.responseJSON && data.responseJSON != ""){
