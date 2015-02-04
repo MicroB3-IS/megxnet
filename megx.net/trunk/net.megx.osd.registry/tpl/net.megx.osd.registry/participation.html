@@ -32,6 +32,12 @@ var MegxFormWidget = new MegxFormWidget({
         var ajaxMethod = form.attributes.method;
         
         var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
+        
+        jQuery(".alpaca-fieldset").keyup(function() {
+            if (field.isValid(true)) {
+            	form.enableSubmitButton();
+            }
+        });
 		
         if (user != null && email != null) {
 
@@ -52,7 +58,7 @@ var MegxFormWidget = new MegxFormWidget({
                 form.registerSubmitHandler(function(e, form) {
                     return false;
                 });
-
+                
                 form.buttons.submit.click(function() {
                 	
                 	form.disableSubmitButton();
