@@ -84,7 +84,6 @@ $(document).ready(function() {
 	            	$journal = $xml.find("Journal"),
 	            	$title = $journal.find("Title");
 	            	
-	            	var journal = 
 	            	rowsToAdd.push({
 	 	                'title': title || '',
 	 	                'authors': authors || '',

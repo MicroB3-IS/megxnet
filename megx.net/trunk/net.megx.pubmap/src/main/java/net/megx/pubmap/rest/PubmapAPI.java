@@ -49,7 +49,6 @@ public class PubmapAPI extends BaseRestService {
       if (articleJson == null || articleJson.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true, "Article not provided.",
                     "bad-request"))).build();
@@ -74,7 +73,7 @@ public class PubmapAPI extends BaseRestService {
       status = "Bookmark successfully stored to server.";
 
       return Response.status(Status.OK)
-          .header("Access-Control-Allow-Origin", "*").entity(toJSON(status))
+          .entity(toJSON(status))
           .build();
 
     } catch (DBGeneralFailureException e) {
@@ -122,7 +121,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Latitude parameter not provided.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Latitude parameter not provided.", "bad-request")))
@@ -132,7 +130,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Latitude parameter is not valid number format.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Latitude parameter is not valid number format.",
@@ -142,7 +139,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Latitude value is out of range.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Latitude value is out of range.", "bad-request"))).build();
@@ -151,7 +147,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Longitude parameter not provided.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Longitude parameter not provided.", "bad-request")))
@@ -161,7 +156,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Longitude parameter is not valid number format.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Longitude parameter is not valid number format.",
@@ -171,7 +165,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("Longitude value is out of range.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "Longitude value is out of range.", "bad-request")))
@@ -182,7 +175,6 @@ public class PubmapAPI extends BaseRestService {
       place = geonamesService.getPlaceName(lat, lon);
 
       return Response.status(Status.OK)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(toJSON(new Result<Place>(place))).build();
 
     } catch (Exception e) {
@@ -207,7 +199,6 @@ public class PubmapAPI extends BaseRestService {
         log.error("WorldRegion parameter not provided.");
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new Result<String>(true,
                     "WorldRegion parameter not provided.", "bad-request")))
@@ -229,7 +220,6 @@ public class PubmapAPI extends BaseRestService {
           log.error("PlaceName parameter not provided.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new Result<String>(true,
                       "PlaceName parameter not provided.", "bad-request")))
@@ -241,7 +231,6 @@ public class PubmapAPI extends BaseRestService {
       }
 
       return Response.status(Status.OK)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(toJSON(new Result<Place>(place))).build();
 
     } catch (DBGeneralFailureException e) {

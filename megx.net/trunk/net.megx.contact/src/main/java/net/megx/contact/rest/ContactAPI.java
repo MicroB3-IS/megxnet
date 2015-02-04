@@ -57,7 +57,6 @@ public class ContactAPI extends BaseRestService {
         .getProperty(PROPERTY_KEY_RECIPIENT_MAILS);
   }
 
-  
   /**
    * Save and send the contact form.
    * 
@@ -67,8 +66,8 @@ public class ContactAPI extends BaseRestService {
    *          the sender name.
    * @param comment
    *          the sender comment.
-   * @return Status.BAD_REQUEST
-   *           if the given email,name or comment are empty or null.
+   * @return Status.BAD_REQUEST if the given email,name or comment are empty or
+   *         null.
    */
   @Path("store-contact")
   @POST
@@ -80,26 +79,23 @@ public class ContactAPI extends BaseRestService {
     if (email == null || email.isEmpty()) {
       return Response
           .status(Status.BAD_REQUEST)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
-              toJSON(new FormWidgetResult(true, "Email not provided.",
-                  null))).build();
+              toJSON(new FormWidgetResult(true, "Email not provided.", null)))
+          .build();
     }
     if (name == null || name.isEmpty()) {
       return Response
           .status(Status.BAD_REQUEST)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
-              toJSON(new FormWidgetResult(true, "Name not provided.",
-                  null))).build();
+              toJSON(new FormWidgetResult(true, "Name not provided.", null)))
+          .build();
     }
     if (comment == null || comment.isEmpty()) {
       return Response
           .status(Status.BAD_REQUEST)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
-              toJSON(new FormWidgetResult(true, "Comment not provided.",
-                  null))).build();
+              toJSON(new FormWidgetResult(true, "Comment not provided.", null)))
+          .build();
     }
 
     Date date = Calendar.getInstance().getTime();
@@ -119,18 +115,27 @@ public class ContactAPI extends BaseRestService {
       uri = new URI(url);
     } catch (DBGeneralFailureException e) {
       log.error("Could not save mail", e);
-      return Response.serverError().header("Access-Control-Allow-Origin", "*")
-          .entity(toJSON(new FormWidgetResult(true, "Database error, could not save mail.", null ))).build();
+      return Response
+          .serverError()
+          .entity(
+              toJSON(new FormWidgetResult(true,
+                  "Database error, could not save mail.", null))).build();
     } catch (URISyntaxException e) {
       log.error("Wrong URI" + url, e);
     } catch (Exception e) {
       log.error("Error occured", e);
-      return Response.serverError().header("Access-Control-Allow-Origin", "*")
-          .entity(toJSON(new FormWidgetResult(true, "Server error occured.", null ))).build();
+      return Response
+          .serverError()
+          .entity(
+              toJSON(new FormWidgetResult(true, "Server error occured.", null)))
+          .build();
     }
 
-    return Response.ok().header("Access-Control-Allow-Origin", "*")
-        .entity(toJSON(new FormWidgetResult(false, "Contact saved successfully.", uri.toString()))).build();
+    return Response
+        .ok()
+        .entity(
+            toJSON(new FormWidgetResult(false, "Contact saved successfully.",
+                uri.toString()))).build();
   }
 
   private void sendMail(String email, String name, String comment)
