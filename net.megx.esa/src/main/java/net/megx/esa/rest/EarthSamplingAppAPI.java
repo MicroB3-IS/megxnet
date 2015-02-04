@@ -384,7 +384,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
         if (version == null || version.isEmpty()) {
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true, "Version not provided.",
                       null))).build();
@@ -393,7 +392,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Latitude parameter not provided.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Latitude parameter not provided.", null)))
@@ -403,7 +401,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Latitude parameter is not valid number format.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Latitude parameter is not valid number format.",
@@ -413,7 +410,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Latitude value is out of range.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Latitude value is out of range.", null))).build();
@@ -422,7 +418,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Longitude parameter not provided.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Longitude parameter not provided.", null)))
@@ -432,7 +427,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Longitude parameter is not valid number format.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Longitude parameter is not valid number format.",
@@ -442,7 +436,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
           log.error("Longitude value is out of range.");
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true,
                       "Longitude value is out of range.", null)))
@@ -453,7 +446,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
         if (sampleName == null || sampleName.isEmpty()) {
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true, "Sample Name not provided.",
                       null))).build();
@@ -462,7 +454,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
         if (dateTaken == null || dateTaken.isEmpty()) {
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true, "Date not provided.",
                       null))).build();
@@ -471,7 +462,6 @@ public class EarthSamplingAppAPI extends BaseRestService {
         if (timeTaken == null || timeTaken.isEmpty()) {
           return Response
               .status(Status.BAD_REQUEST)
-              .header("Access-Control-Allow-Origin", "*")
               .entity(
                   toJSON(new FormWidgetResult(true, "Time not provided.",
                       null))).build();
@@ -530,7 +520,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
             savedSample = service.storeSingleSample(sample);
         } catch (Exception e) {
             log.error("Could not save sample", e);
-            return Response.serverError().header("Access-Control-Allow-Origin", "*")
+            return Response.serverError()
                 .entity(toJSON(new FormWidgetResult(true, "Database error, could not save sample.", null ))).build();
         }
        
@@ -553,7 +543,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
         } catch (URISyntaxException e) {
             log.error("Wrong URI" + url, e);
         }
-        return Response.ok().header("Access-Control-Allow-Origin", "*")
+        return Response.ok()
             .entity(toJSON(new FormWidgetResult(false, "Sample saved successfully.", uri.toString()))).build();
     }
 

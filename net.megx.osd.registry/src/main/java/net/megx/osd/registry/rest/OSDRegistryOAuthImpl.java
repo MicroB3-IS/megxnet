@@ -199,7 +199,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
     if (sample == null || sample.isEmpty()) {
       return Response
           .status(Status.BAD_REQUEST)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(true, "Sample not provided.",
                   null))).build();
@@ -209,7 +208,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       osdRegistryService.saveSample(sample);
       return Response
           .status(201)
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(false, "Sample saved successfully.",
                   null))).build();
@@ -217,7 +215,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       log.error("DB error, could not save sample.", e);
       return Response
           .serverError()
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(true,
                   "Database error, could not save sample.", null))).build();
@@ -225,7 +222,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       log.error("Could not save sample." + e);
       return Response
           .serverError()
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(true,
                   "Server error occured, could not save sample.", null)))
@@ -276,7 +272,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       if (participationJson == null || participationJson.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new FormWidgetResult(true, "Participation not provided.",
                     null))).build();
@@ -284,7 +279,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       if (contactName == null || contactName.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new FormWidgetResult(true, "Contact name not provided.",
                     null))).build();
@@ -292,7 +286,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       if (contactEmail == null || contactEmail.isEmpty()) {
         return Response
             .status(Status.BAD_REQUEST)
-            .header("Access-Control-Allow-Origin", "*")
             .entity(
                 toJSON(new FormWidgetResult(true, "Contact email not provided.",
                     null))).build();
@@ -316,7 +309,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       log.error("DB error, could not save participation", e);
       return Response
           .serverError()
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(true,
                   "Database error, could not save participation", null)))
@@ -327,7 +319,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
       log.error("Could not save participation" + e);
       return Response
           .serverError()
-          .header("Access-Control-Allow-Origin", "*")
           .entity(
               toJSON(new FormWidgetResult(true,
                   "Server error occured, could not save participation.", null)))
@@ -335,7 +326,6 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
     }
     return Response
         .status(201)
-        .header("Access-Control-Allow-Origin", "*")
         .entity(
             toJSON(new FormWidgetResult(false,
                 "Participation saved successfully.", uri.toString()))).build();
