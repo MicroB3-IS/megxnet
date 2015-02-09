@@ -4,16 +4,10 @@
 <script src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
 
 <div id="contact-form"></div>
-<div class="alert alert-danger hidden" id="form-submit-error-msg">
-    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    <span class="sr-only">Error:</span>
-    <span class="error-text"></span>
-</div>
 
 <script type="text/javascript">
     var MegxFormWidget = new MegxFormWidget({
         target : "contact-form",
-        errorTarget : "form-submit-error-msg",
         schemaLocation : ctx.siteUrl  + "/net.megx.contact/data/contact-schema.json",
         optionsLocation : ctx.siteUrl + "/net.megx.contact/data/contact-options.json",
         parentView: "bootstrap-create"

@@ -1,8 +1,8 @@
 MegxFormWidget = function(cfg) {
+  jQuery("<div id='" +cfg.target + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>").insertBefore("#" + cfg.target);
   Alpaca.logLevel = Alpaca.ERROR;
   this.cfg = cfg;
   this.renderForm(cfg);
-
 }
 
 MegxFormWidget.prototype.submitForm = function(field) {
@@ -14,15 +14,19 @@ MegxFormWidget.prototype.submitForm = function(field) {
 
   if (form) {
 
-    // move Error bar between form and button bar
-    jQuery('.alpaca-form-buttons-container').prev().append(jQuery('#' + MegxFormWidget.cfg.errorTarget));
-
     form.registerSubmitHandler(function(e, form) {
       return false;
     });
     var id = "#" + form.id;
 
-    jQuery('button[type="submit"]', id).click(function() {
+    var submitButton = jQuery('button[type="submit"]', id);
+    // hack to change the CSS classes of the submit button
+    // might be possible to do this using Alpaca templates
+    // but could not figure out how
+    submitButton.removeClass("btn-default");
+    submitButton.addClass("btn-primary");
+    
+    submitButton.click(function() {
 
       if (field.isValid(true)) {
 
@@ -48,8 +52,6 @@ MegxFormWidget.prototype.submitForm = function(field) {
             }
           }
         }).error(function(data, textStatus, jqXHR) {
-
-          var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
           if (data.responseJSON) {
 
             var responseMsg = data.responseJSON;
@@ -58,29 +60,27 @@ MegxFormWidget.prototype.submitForm = function(field) {
               document.location.href = responseMsg.redirectUrl;
             } else {
 
-              if (responseMsg.message && responseMsg.message != "") {
-                errorElement.children('.error-text').text(responseMsg.message).show();
-                errorElement.removeClass('hidden');
+              if (responseMsg.message) {
+                toastr.error(responseMsg.message, jqXHR);
               } else {
-                errorElement.children('.error-text').text("Server error, please try again later.");
-                errorElement.removeClass('hidden');
+                toastr.error("Server error, please try again later.", jqXHR);
               }
             }
           } else {
-            errorElement.children('.error-text').text("Server error, please try again later.");
-            errorElement.removeClass('hidden');
+            toastr.error("Server error, please try again later.", jqXHR);
           }
         }).always(function(data, textStatus, jqXHR) {
           form.enableSubmitButton();
         });
       }
     });
+    jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
   }
 }
 
 MegxFormWidget.prototype.renderForm = function(cfg) {
   var self = this;
-
+  
   var alpacaOptions = {
     "optionsSource" : cfg.optionsLocation,
     "schemaSource" : cfg.schemaLocation,
@@ -88,6 +88,7 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
       "parent" : cfg.parentView,
       "displayReadonly" : true,
     },
+    
     "isDynamicCreation" : true
   };
 
