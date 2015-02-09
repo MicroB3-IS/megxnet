@@ -84,7 +84,7 @@ jQuery(document).ready(function() {
             message += " " + cause.message;
           }
         }
-        toastr.error(message, errorThrown)
+        toastr.error(message, errorThrown);
         if (errorHandler) {
           errorHandler.call(this, data, jqXHR, textStatus, errorThrown);
         }
