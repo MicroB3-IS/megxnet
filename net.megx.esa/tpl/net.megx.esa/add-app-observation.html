@@ -136,15 +136,9 @@
         </div>
         <div class="col-sm-7 col-sm-pull-5">
             <div id="osd-sample-form"></div>
-            <div class="alert alert-danger hidden" id="form-submit-error-msg">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    <span class="error-text"></span>
-            </div>
             <script>
                           var MegxFormWidget = new MegxFormWidget({
                             target : "osd-sample-form",
-                            errorTarget : "form-submit-error-msg",
                             schemaLocation : ctx.siteUrl + "/net.megx.esa/data/esa_schema.json",
                             optionsLocation : ctx.siteUrl + "/net.megx.esa/data/esa_options.json",
                             parentView : "bootstrap-create"
