@@ -7,6 +7,7 @@ Bundle-Activator: net.megx.mibig.Activator
 Import-Package: javax.servlet.http;version="2.5.0",
  javax.ws.rs;version="1.0.1",
  javax.ws.rs.core;version="1.0.1",
+ net.megx.form.widget.model,
  net.megx.megdb.exceptions,
  net.megx.megdb.mibig,
  net.megx.model.mibig,
