@@ -7,6 +7,9 @@
 
 <link rel="stylesheet" href="$ctx.siteUrl/net.megx.esa/css/esa.css" />
 <link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
 <!-- alpaca form stuff -->
@@ -31,13 +34,12 @@
 
 <a name="form"></a>
   <div id="osd-sample-form"></div>
-  <div id="errorMsg"></div>
 <script>
 	var MegxFormWidget = new MegxFormWidget({
 		 target : "osd-sample-form",
-		 errorTarget : "errorMsg",
 		 schemaLocation : ctx.siteUrl + "/net.megx.esa/data/esa_schema.json",
-		 optionsLocation : ctx.siteUrl + "/net.megx.esa/data/esa_options.json"
+		 optionsLocation : ctx.siteUrl + "/net.megx.esa/data/esa_options.json",
+		 parentView: "VIEW_JQUERYUI_CREATE"
 	});
     </script>
 

@@ -1,12 +1,12 @@
-<script type="text/javascript"
-	src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
-<script type="text/javascript"
-	src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
-<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css"
-	rel="stylesheet" type="text/css">
+<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
 <link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" type="text/css">
 
-<div id="errorMsg"></div>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.min.js"></script>
+
+
 <div id="participationForm" style="padding: 15px"></div>
 
 <script type="text/javascript">
@@ -20,10 +20,10 @@
 
 var MegxFormWidget = new MegxFormWidget({
     target: "participationForm",
-    errorTarget : "errorMsg",
     schemaLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-schema.json",
     optionsLocation: ctx.siteUrl + "/net.megx.osd.registry/data/participation-options.json",
     formId: "participation-form",
+    parentView: "VIEW_JQUERYUI_CREATE",
     postRender: function(field) {
 
         var form = field.form;
@@ -31,7 +31,10 @@ var MegxFormWidget = new MegxFormWidget({
         var url = form.attributes.action;
         var ajaxMethod = form.attributes.method;
         
-        var errorElement = jQuery('#' + MegxFormWidget.cfg.errorTarget);
+        toastr.options = {
+    			timeOut: 15000,
+    			positionClass: "toast-top-center"
+            };
         
         jQuery(".alpaca-fieldset").keyup(function() {
             if (field.isValid(true)) {
@@ -46,7 +49,6 @@ var MegxFormWidget = new MegxFormWidget({
             var contactEmail = field.childrenByPropertyId["contactEmail"];
             contactEmail.setValue(email);
 
-            
             var contactNameInput = fieldSet[1];
             contactNameInput.readOnly = true;
 
@@ -74,16 +76,24 @@ var MegxFormWidget = new MegxFormWidget({
                             success: function(data, textStatus, jqXHR) {
                             	
                             	if(data.redirectUrl && data.redirectUrl != ""){
-                            		alert("Your submission was successfull. Thanks!");
-                            		document.location.href = data.redirectUrl;
+                            		toastr.info("Your submission was successfull. Thanks!");
+                            		setTimeout(function() {
+                            			document.location.href = data.redirectUrl;
+                            		}, 3000);
+                            		
                             	} else {
                             		
                             		if(data.message && data.message != ""){
-                            			alert(data.message);
-                            			document.location.href = ctx.siteUrl;
+                            			toastr.info(data.message);
+                            			setTimeout(function() {
+                            				document.location.href = ctx.siteUrl;
+                                		}, 3000);
                             		} else{
-                            			alert("Your submission was successfull. Thanks!");
-                                		document.location.href = ctx.siteUrl;
+                            			toastr.info("Your submission was successfull. Thanks!");
+                                		setTimeout(function() {
+                                			document.location.href = ctx.siteUrl;
+                                		}, 3000);
+                                		
                             		}
                             	}
                             },
@@ -100,23 +110,24 @@ var MegxFormWidget = new MegxFormWidget({
                                 	} else {
                                 		
                                 		if(responseMsg.message && responseMsg.message != ""){
-                                			errorElement.text(responseMsg.message).show();
+                                			toastr.error(responseMsg.message, jqXHR);
                                 		} else{
-                                			errorElement.text("Server error, please try again later.").show();
+                                			toastr.error("Server error, please try again later.", jqXHR);
                                 		}
                                 	}
-                            		
                             	} else {
-                            		errorElement.text("Server error, please try again later.").show();
+                            		toastr.error("Server error, please try again later.", jqXHR);
                             	}
                             }
                         });
                     }
                 });
+                jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
             }
 
         } else {
-        	errorElement.text("You need to be logged in, in case you don't have user you can use this form name and mail to create one.").show();
+        	
+        	toastr.info("You need to be logged in, in case you don't have user you can use this form name and mail to create one.");
         	var userName = field.childrenByPropertyId["contactName"];
         	var userMail = field.childrenByPropertyId["contactEmail"];
         	
@@ -128,9 +139,9 @@ var MegxFormWidget = new MegxFormWidget({
         	    	document.location.href = "$ctx.siteUrl/register?userName="+userName.getValue()+"&userMail="+userMail.getValue();
         	    } 
         	});
+        	jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
            	
         }
-
     }
 });
  
