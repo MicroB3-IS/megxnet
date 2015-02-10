@@ -20,16 +20,21 @@
 
         <link rel="shortcut icon" href="../images/icons/favicon.ico" type="image/x-icon" />
 
+        ##  BOOTSTRAP CSS
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        ## BOOTSTRAP EXTENSION CSS
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
-
-        <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/bootstrap-theme.min.css">
+        ## TOASTR CSS
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        ## DATATABLES CSS
+        <link rel="stylesheet" href="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/responsive/1.0.3/css/dataTables.responsive.css">
+        ## MEGX GLOBAL CSS
         <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/megx-bootstrap.css">
-        
 
+        
         <script src="$ctx.siteUrl/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script type="text/javascript">
           ctx = {
@@ -37,24 +42,23 @@
           };
         </script>
         
+        ## TODO all this scripts should be loaded at the bottom of the page
         
-        <!-- include jQuery -->
+        ## include jQuery
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         
+        ## TODO remove
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         
-        <!-- <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.js"></script> -->
-        <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
+        ## required for tables (e.g. browser pages)
+        <script src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/responsive/1.0.3/js/dataTables.responsive.min.js"></script>
+        <script src="//cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+        <script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js"></script>
         
-        <!-- TODO: needed here for browser pages -->
-        <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js" type="text/javascript"></script>
-        <!-- 
-        #foreach($script in $ctx.get('head:scripts'))
-            <script src="$ctx.siteUrl/$script" type="text/javascript"></script>
-        #end 
-         -->
+        ## ???
+        <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
         
         #if ( $ext.settings ) #parse('settings/account/check_profile.html')
         #end
@@ -70,7 +74,7 @@
                 To get the full functionality, please, activate JavaScript in your browser!
             </h3>
         </noscript>
-        <main id="main-content" class="#if ($this.isJumbotronPage == 'true') jumbotron-page #else container #end ">
+        <main id="main-content" class="#if ($this.prop('hasJumbotron','boolean')) jumbotron-page #else container #end ">
             ${BODY}
         </main>
         #parse('footer-bootstrap.html')
