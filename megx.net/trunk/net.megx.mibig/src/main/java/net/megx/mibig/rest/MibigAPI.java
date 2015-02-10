@@ -2,6 +2,7 @@ package net.megx.mibig.rest;
 
 import java.net.URI;
 import java.util.Calendar;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import net.megx.form.widget.model.FormWidgetResult;
 import net.megx.megdb.exceptions.DBGeneralFailureException;
 import net.megx.megdb.mibig.MibigService;
 import net.megx.model.mibig.BgcDetailSubmission;
@@ -28,16 +30,21 @@ import net.megx.ws.core.Result;
 
 @Path("v1/mibig")
 public class MibigAPI extends BaseRestService {
-
+  
+  private static final String PROPERTY_KEY_ACCESS_CONTROL_ALLOW_ORIGIN = "accessControlAllowOrigin";
+  
 	private MibigService service;
-
+	private String accessControlAllowOrigin;
+	
 	@Context
 	private UriInfo uriInfo;
 	@Context
 	HttpServletRequest request;
 
-	public MibigAPI(MibigService service) {
+	public MibigAPI(MibigService service, final Properties mibigConfig) {
 		this.service = service;
+		this.accessControlAllowOrigin = mibigConfig
+        .getProperty(PROPERTY_KEY_ACCESS_CONTROL_ALLOW_ORIGIN);
 	}
 
 	@Path("v1.0.0/bgc-registration")
@@ -45,7 +52,7 @@ public class MibigAPI extends BaseRestService {
 	public Response serviceInfo() {
 		log.debug("getting a bgc submission service info request");
 
-		return Response.ok().header("Access-Control-Allow-Origin", "*")
+		return Response.ok().header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 				.entity("bgc registration up and running").build();
 	}
 
@@ -58,23 +65,23 @@ public class MibigAPI extends BaseRestService {
 
 		int ver = 0;
 		log.debug("getting a bgc submission POST request=" + version);
-
+		    
 		try {
 			if (mibigJson == null || mibigJson.isEmpty()) {
-				return Response
-						.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*")
-						.entity(toJSON(new Result<String>(true,
-								"json not provided", "bad-request"))).build();
+				  return Response
+				          .status(Status.BAD_REQUEST)
+				          .header("Access-Control-Allow-Origin", accessControlAllowOrigin)
+				          .entity(
+				              toJSON(new FormWidgetResult(true, "Json not provided", null)))
+				          .build();
 			}
 			if (version == null || version.isEmpty()) {
 				return Response
-						.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*")
-						.entity(toJSON(new Result<String>(
-								true,
-								"Version parameter not provided. Need a version parameter greater than 0",
-								"bad-request"))).build();
+				          .status(Status.BAD_REQUEST)
+				          .header("Access-Control-Allow-Origin", accessControlAllowOrigin)
+				          .entity(
+				              toJSON(new FormWidgetResult(true, "Version parameter not provided. Need a version parameter greater than 0", null)))
+				          .build();
 			} else {
 				ver = Integer.parseInt(version);
 			}
@@ -96,20 +103,28 @@ public class MibigAPI extends BaseRestService {
 			log.debug("uri absolute=" + u.toASCIIString());
 			log.debug("context path=" + request.getContextPath());
 			log.debug("location=" + location.toString());
-			return Response.seeOther(location)
-					.header("Access-Control-Allow-Origin", "*").build();
+			 return Response
+				        .ok()
+				        .header("Access-Control-Allow-Origin", accessControlAllowOrigin)
+				        .entity(
+				            toJSON(new FormWidgetResult(false, "Bgc registration was successful.",
+				            		location.toString()))).build();
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not store Submission:" + e);
-			return Response.serverError()
-					.header("Access-Control-Allow-Origin", "*")
-					.entity(toJSON("Could not store Submission")).build();
+			return Response
+			          .serverError()
+			          .header("Access-Control-Allow-Origin", accessControlAllowOrigin)
+			          .entity(
+			              toJSON(new FormWidgetResult(true, "Could not store registration", null)))
+			          .build();
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			return Response
-					.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*")
-					.entity(toJSON("Version parameter not a valid number: "
-							+ version)).build();
+			          .status(Status.BAD_REQUEST)
+			          .header("Access-Control-Allow-Origin", accessControlAllowOrigin)
+			          .entity(
+			              toJSON(new FormWidgetResult(true, "Version parameter not a valid number ", null)))
+			          .build();
 		}
 	}
 	
@@ -128,14 +143,14 @@ public class MibigAPI extends BaseRestService {
 			if (mibigJson == null || mibigJson.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 						.entity(toJSON(new Result<String>(true,
 								"json not provided", "bad-request"))).build();
 			}
 			if (version == null || version.isEmpty()) {
 				return Response
 						.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 						.entity(toJSON(new Result<String>(
 								true,
 								"Version parameter not provided. Need a version parameter greater than 0",
@@ -162,17 +177,17 @@ public class MibigAPI extends BaseRestService {
 			log.debug("context path=" + request.getContextPath());
 			log.debug("location=" + location.toString());
 			return Response.seeOther(location)
-					.header("Access-Control-Allow-Origin", "*").build();
+					.header("Access-Control-Allow-Origin", accessControlAllowOrigin).build();
 		} catch (DBGeneralFailureException e) {
 			log.error("Could not store Submission:" + e);
 			return Response.serverError()
-					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 					.entity(toJSON("Could not store Submission")).build();
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			return Response
 					.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 					.entity(toJSON("Version parameter not a valid number: "
 							+ version)).build();
 		}
@@ -184,7 +199,7 @@ public class MibigAPI extends BaseRestService {
 	public Response allowCORS() {
 		return Response
 				.ok()
-				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 				.header("Access-Control-Allow-Methods",
 						"GET,POST,PUT,HEAD,DELETE,OPTIONS")
 				.header("ccess-Control-Allow-Headers",
@@ -200,7 +215,7 @@ public class MibigAPI extends BaseRestService {
 			@DefaultValue("BGC00000") @FormParam("bgc_id") String bgcId) {
 
 		/*
-		 * res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
+		 * res.header('Access-Control-Allow-Origin', req.headers.origin || accessControlAllowOrigin);
 		 * res.header('Access-Control-Allow-Methods',
 		 * 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
 		 * res.header('Access-Control-Allow-Headers',
@@ -209,7 +224,7 @@ public class MibigAPI extends BaseRestService {
 
 		ResponseBuilder r = Response
 				.ok()
-				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Origin", accessControlAllowOrigin)
 				.header("Access-Control-Allow-Methods",
 						"GET,POST,PUT,HEAD,DELETE,OPTIONS")
 				.header("Access-Control-Allow-Headers",
