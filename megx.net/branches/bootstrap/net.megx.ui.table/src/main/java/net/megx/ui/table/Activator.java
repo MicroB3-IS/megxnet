@@ -7,6 +7,7 @@ import org.chon.cms.core.ResTplConfiguredActivator;
 
 public class Activator extends ResTplConfiguredActivator {
 
+  @Deprecated
 	@Override
 	protected void registerExtensions(JCRApplication app) {
 		getBundleContext().registerService(TableRestService.class.getName(),

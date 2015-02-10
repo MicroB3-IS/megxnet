@@ -20,23 +20,6 @@ public class DataTableVelocity {
 
 	public DataTableVelocity(Request req, Response resp, IContentNode node) {
 		this.resp = resp;
-		
-		try {
-			ExtensionUtils.ensureExtenstionVisible("jquery", resp);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		@SuppressWarnings("unchecked")
-		List<String> scrips = (List<String>) resp.getTemplateContext().get("head:scripts");
-		@SuppressWarnings("unchecked")
-		List<String> css = (List<String>) resp.getTemplateContext().get("head:css");
-		
-		css.add("net.megx.ui.table/css/data.table.css");
-		
-		scrips.add("net.megx.ui.table/js/json2.js");
-		scrips.add("net.megx.ui.table/js/jquery.dataTables.js");
-		scrips.add("net.megx.ui.table/js/table.utils.js");
 	}
 	
 	public String render(String tableId) {

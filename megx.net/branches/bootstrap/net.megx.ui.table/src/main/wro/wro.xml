@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+
+  <group name='megx-ui-table-${project.version}.min'>
+    <js>/src/main/web/net.megx.ui.table/js/*</js>
+    <css>/src/main/web/net.megx.ui.table/css/*</css>
+  </group>
+</groups>

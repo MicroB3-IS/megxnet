@@ -12,7 +12,32 @@
   </parent>
 
   <artifactId>net.megx.ui.table</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
 
   <packaging>eclipse-plugin</packaging>
+  
+  <build>
+        <resources>
+            <resource>
+                <directory>src/main/wro</directory>
+                <filtering>true</filtering>
+                <targetPath>../wro/</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <configuration>
+                    <minimize>true</minimize>
+                    <cssDestinationFolder>res/net.megx.ui.table/css</cssDestinationFolder>
+                    <jsDestinationFolder>res/net.megx.ui.table/js</jsDestinationFolder>
+                    <contextFolder>${basedir}</contextFolder>
+                    <wroFile>target/wro/wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
