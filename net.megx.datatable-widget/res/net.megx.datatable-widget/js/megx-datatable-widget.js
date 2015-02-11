@@ -60,4 +60,4 @@ var MegxDatatableWidget = function() {
     };
 
 
-};
+}();

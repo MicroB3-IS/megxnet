@@ -38,7 +38,7 @@ $(document).ready(function() {
 		 	            });
 		            }
 			    	if(rowsToAdd.length === nbRorwsToAdd){
-			    		createDatatable(rowsToAdd)
+			    		createDatatable(rowsToAdd);
 			    	} 
 					
 				}else{
@@ -51,7 +51,7 @@ $(document).ready(function() {
 	
 	function createDatatable(data){
 		
-		MegxDatatableWidget().createTable(
+		MegxDatatableWidget.createTable(
 				{
 					tableDivId:"articlesId",
 					columns:["Title","Authors","Journal","Date","World Region","Place Name","Action"],
