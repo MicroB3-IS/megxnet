@@ -17,4 +17,20 @@
     
     <name>net.megx.datatable-widget</name>
     
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <configuration>
+                    <minimize>true</minimize>
+                    <cssDestinationFolder>res/net.megx.datatable-widget/css</cssDestinationFolder>
+                    <jsDestinationFolder>res/net.megx.datatable-widget/js</jsDestinationFolder>
+                    <contextFolder>${basedir}</contextFolder>
+                    <wroFile>wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
