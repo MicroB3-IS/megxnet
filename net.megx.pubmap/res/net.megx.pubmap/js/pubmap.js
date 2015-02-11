@@ -51,7 +51,7 @@ $(document).ready(function() {
 	
 	function createDatatable(data){
 		
-		var table = new MegxDatatableWidget(
+		MegxDatatableWidget().createTable(
 				{
 					tableDivId:"articlesId",
 					columns:["Title","Authors","Journal","Date","World Region","Place Name","Action"],
