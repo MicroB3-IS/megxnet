@@ -69,9 +69,10 @@ jQuery(document).ready(function() {
       url : url,
       data : data,
       contentType : "application/json",
-      success : function(data) {
-        successHandler.call(this, data);
-      },
+      success :  successHandler,
+//        function(data) {
+//        successHandler.call(this, data);
+//      },
       error : function(jqXHR, textStatus, errorThrown) {
         var message = 'Your request could not be completed.';
         if (jqXHR.status == 500) {
@@ -178,7 +179,7 @@ jQuery(document).ready(function() {
 
   jQuery('#deleteDialog').on('show.bs.modal', function(event) {
     var button = jQuery(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('delete-id') // Extract info from data-* attributes
+    var id = button.data('action-id') // Extract info from data-* attributes
     var modal = jQuery(this)
     modal.find('.modal-body').find('.delete-id').text(id);
     modal.find('#deleteDialog-deleteButton').off().on('click', function(event) {
@@ -191,18 +192,23 @@ jQuery(document).ready(function() {
   });
 
   jQuery('#viewDialog').on('show.bs.modal', function(event) {
+    var dialog = jQuery(this);
+    dialog.find("div[data-attribute]").text("");
+    dialog.find(".loading-animation").css("visibility", "visible");
     var button = jQuery(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('view-id') // Extract info from data-* attributes
-    loadParticipantData(id, populateViewDialog);
+    var id = button.data('action-id') // Extract info from data-* attributes
+    
+    loadParticipantData(id, function bindDataToViewDialog(data) {
+      bindData(data, dialog);
+      dialog.find(".loading-animation").css("visibility", "hidden");
+    });
   });
-
-  var populateViewDialog = function(retrievedData) {
-    jQuery("#viewDialog-osdID").text(retrievedData.osdID);
-    jQuery("#viewDialog-siteName").text(retrievedData.siteName);
-    jQuery("#viewDialog-siteLatVal").text(retrievedData.siteLat);
-    jQuery("#viewDialog-siteLongVal").text(retrievedData.siteLong);
-    jQuery("#viewDialog-institutionLatVal").text(retrievedData.institutionLat);
-    jQuery("#viewDialog-institutionLongVal").text(retrievedData.institutionLong);
+  
+  bindData = function(data, view) {
+    view.find("div[data-attribute]").each(function copyDataToView(){
+      $this = jQuery(this);
+      $this.text(data[$this.data("attribute")]);
+    });
   };
 
   jQuery(".addNewParticipant").click(function() {
