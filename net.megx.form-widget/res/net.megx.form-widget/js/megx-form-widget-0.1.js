@@ -1,4 +1,4 @@
-MegxFormWidget = function(cfg) {
+var MegxFormWidget = function(cfg) {
     jQuery(
             "<div id='" + cfg.target + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>")
         .insertBefore("#" + cfg.target);
@@ -7,7 +7,7 @@ MegxFormWidget = function(cfg) {
     this.cfg = cfg;
     this.renderForm(cfg);
 
-}
+};
 
 MegxFormWidget.prototype.submitForm = function(field) {
 
@@ -17,6 +17,7 @@ MegxFormWidget.prototype.submitForm = function(field) {
     var ajaxMethod = form.attributes.method;
 
     if (form) {
+    	
     	
     	jQuery(".alpaca-fieldset").keyup(function() {
             if (field.isValid(true)) {
@@ -99,7 +100,7 @@ MegxFormWidget.prototype.submitForm = function(field) {
         });
         jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
     }
-}
+};
 
 MegxFormWidget.prototype.renderForm = function(cfg) {
     var self = this;
@@ -128,4 +129,4 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
 
     jQuery("#" + cfg.target).alpaca(alpacaOptions);
 
-}
+};

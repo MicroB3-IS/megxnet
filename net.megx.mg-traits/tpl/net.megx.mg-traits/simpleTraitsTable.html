@@ -33,24 +33,13 @@
 
 <div id="noTraitsSelected"><span>Please select some traits for download first.</span></div>
 
-<table id="simpleTraitsTableId" class="display">
-	<thead>
-		<tr>
-			<th></th>
-			<th>Sample Label</th>
-			<th>Sample Name</th>
-			<th>Environment</th>
-			<th>Size</th>
-			<th>Number of sequences</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
-</table>
+<div id="simpleTraitsTableId"></div>
 
 <form id="sf" action="$ctx.siteUrl/ws/v1/mg-traits/v1.0.0/all" target="csvDownloadTarget" method="POST" style="display: none;">
 	<input type="hidden" class="traitIdsHolder" name="traitIds" />
 </form>
 
 <iframe name="csvDownloadTarget" style="display: none;"></iframe>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.datatable-widget/js/megx-datatable-widget.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/mg-traits.min.js"></script>
