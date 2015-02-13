@@ -1,10 +1,10 @@
 var MegxDatatableWidget = function() {
     var config = {};
+    var tableId = "megx_dataTable_id";
     var generateDatatableHtml = function() {
-        var self = this;
         var tableDiv = document.getElementById(config.tableDivId);
         var table = document.createElement("table");
-        table.id = self.tableId;
+        table.id = tableId;
         table.setAttribute("class", "display");
         var thead = document.createElement("thead");
         var tr = document.createElement("tr");
@@ -26,8 +26,7 @@ var MegxDatatableWidget = function() {
     };
 
     var renderDatatable = function() {
-        var self = this;
-        var tbl = $("#" + self.tableId);
+        var tbl = $("#" + tableId);
         tbl.addClass("megx_dataTable");
         var cfg = {
             "bJQueryUI": true,
@@ -53,7 +52,7 @@ var MegxDatatableWidget = function() {
 
         createTable: function(conf) {
             config = conf || {};
-            this.tableId = "t_" + config.tableDivId;
+            tableId = "tb_" + config.tableDivId;
             generateDatatableHtml();
             renderDatatable();
         }
