@@ -14,7 +14,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         return '<button class="' + BUTTON_CLASSES + ' type="button" data-toggle="modal" data-target="#'
             + button.modal.target + '" data-action-id="' + data + '">' + button.text + '</button>';
       } else {
-        console.error("Definition of view button for table " + tableID + " is incorrect.");
+        console.error("Definition of " + button.text +  " button for table " + tableID + " is incorrect.");
       }
     }
     return "";
