@@ -70,6 +70,10 @@
       /src/main/web/net.megx.ui.table/css/dataTables.responsive.1.0.4.css
     </css>
     <css>
+      /src/main/web/net.megx.ui.table/css/dataTables.fontAwesome.2015-02-16.css
+    </css>
+    <!-- MEGX specific styling -->
+    <css>
         /src/main/web/net.megx.ui.table/css/megx-ui-table.css
     </css>
   </group>
