@@ -1,17 +1,9 @@
-<div>
-	<h3>Map of OSD Participant sites</h3>
-	<div>
-		#parse("net.megx.osd.registry/samplesAndInstitutesMap.html")
-	</div>
-	
-	<h3>Table representation</h3>
-	
-	#if($req.user && $req.servletRequset.isUserInRole("admin"))
-			<!-- <h4><a href="$ctx.siteUrl/osd/add">Add new participant</a></h4> -->
-			<input class="addNewParticipant" type="button" value="Add new participant" style="float: right; margin-bottom: 10px;">
-	#end
-	
-	<div>
-		#parse("net.megx.osd.registry/samplesAndInstitutesTable.html")
-	</div>
-</div>
+
+<section>
+    <h3>Map of OSD Participant sites</h3>
+    #parse("net.megx.osd.registry/samplesAndInstitutesMap.html")
+</section>
+<section>
+    <h3>Table representation</h3>
+    #parse("net.megx.osd.registry/samplesAndInstitutesTable.html")
+</section>

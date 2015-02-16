@@ -16,10 +16,9 @@
             <th>Site latitude</th>
             <th>Site longitude</th>
             <th>Institute latitude</th>
-            <th>Institute longitude</th>
-            #if($req.user && $req.servletRequset.isUserInRole('admin'))
-                <th>Action</th>
-            #end
+            <th>Institute longitude</th> #if($req.user &&
+            $req.servletRequset.isUserInRole('admin'))
+            <th>Action</th> #end
         </tr>
     </thead>
     <tbody>
