@@ -41,7 +41,8 @@
         <script src="$ctx.siteUrl/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script type="text/javascript">
           ctx = {
-            siteUrl : "$ctx.siteUrl"
+            siteUrl : "$ctx.siteUrl",
+            base: "$ctx.base",
           };
         </script>
         
@@ -79,6 +80,8 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+        <script src="$ctx.siteUrl/js/megx.js"></script>
         
         ## DataTables JS 
         #if ($this.prop('hasTable','boolean'))
@@ -86,33 +89,6 @@
         #end
         
         
-        <script src="$ctx.siteUrl/js/plugins.js"></script>
-        <script>
-            jQuery(document).ready(function(){
-                
-                main = jQuery('main');
-                mainMenu = jQuery('#main-menu');
-                mainOriginalPadding = parseInt(main.css("padding-top"));
-                
-                // fix padding of main element depending on whether the navbar is fixed or not
-                mainMenu.on('affixed.bs.affix', function() {
-                   main.css("padding-top", mainMenu.height() + mainOriginalPadding);
-                });
-                mainMenu.on('affix-top.bs.affix', function() {
-                    main.css("padding-top", mainOriginalPadding);
-                });
-
-                // make navbar sticky on-scroll
-                mainMenu.affix({
-                   offset: {
-                     top: jQuery('header').height() - mainMenu.height()
-                   }
-                }); 
-                
-                // set active menu item
-                jQuery('#main-menu-navbar > ul > li:has(a[href|="$ctx.base"])').addClass("active")
-            });
-        </script>
         <!-- google analytics -->
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

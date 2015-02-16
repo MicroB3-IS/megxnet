@@ -69,10 +69,10 @@ jQuery(document).ready(function() {
       url : url,
       data : data,
       contentType : "application/json",
-      success :  successHandler,
-//        function(data) {
-//        successHandler.call(this, data);
-//      },
+      success : successHandler,
+      // function(data) {
+      // successHandler.call(this, data);
+      // },
       error : function(jqXHR, textStatus, errorThrown) {
         var message = 'Your request could not be completed.';
         if (jqXHR.status == 500) {
@@ -186,7 +186,7 @@ jQuery(document).ready(function() {
       deleteParticipant(id)
     });
   });
-  
+
   jQuery('#viewDialog').on('shown.bs.modal', function() {
     jQuery('#viewDialog').find('button').focus();
   });
@@ -197,19 +197,14 @@ jQuery(document).ready(function() {
     dialog.find(".loading-animation").css("visibility", "visible");
     var button = jQuery(event.relatedTarget) // Button that triggered the modal
     var id = button.data('action-id') // Extract info from data-* attributes
-    
+
     loadParticipantData(id, function bindDataToViewDialog(data) {
-      bindData(data, dialog);
+      dialog.bindData(data);
       dialog.find(".loading-animation").css("visibility", "hidden");
     });
   });
+
   
-  bindData = function(data, view) {
-    view.find("div[data-attribute]").each(function copyDataToView(){
-      $this = jQuery(this);
-      $this.text(data[$this.data("attribute")]);
-    });
-  };
 
   jQuery(".addNewParticipant").click(function() {
     window.location.href = ctx.siteUrl + "/osd-registry/add";

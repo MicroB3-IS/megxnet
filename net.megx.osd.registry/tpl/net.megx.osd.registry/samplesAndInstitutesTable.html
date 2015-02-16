@@ -42,39 +42,43 @@
             data : "country",
             width : "7em"
           }, {
+            data: "id",
             width : "8em"
           } ];
           var buttons = {
             toolbarButtons : {
               create : {
                 link : {
-                  url : "ssdfsd/dfggasgasfasdfasfsd/dfsfsdff",
+                  url : "$ctx.siteUrl/osd-registry/add",
                 }
               },
               download : {}
             },
             dataButtons : {
               column : 5,
-              data: "id",
-              edit : {
-                link : {
-                  url : "$ctx.siteUrl/osd-registry/add?id=",
-                }
-              },
               view : {
+                text: "View",
                 modal : {
                   target : 'viewDialog'
                 }
               },
+              #if($req.user && $req.servletRequset.isUserInRole('admin'))
+              edit : {
+                text: "Text",
+                link : {
+                  url : "$ctx.siteUrl/osd-registry/add?id=",
+                }
+              },
               delete : {
+                text: "Delete",
                 modal : {
                   target : 'deleteDialog'
                 }
               },
-            //               "select" : {},
+              #end
             }
           };
-          var table = new MegxTable("sample-and-institute-tables", columns, buttons,
+          var table = new Megx.MegxTable("sample-and-institute-tables", columns, buttons,
               "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", null);
         })();
       });
