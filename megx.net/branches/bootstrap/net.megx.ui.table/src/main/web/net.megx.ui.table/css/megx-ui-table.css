@@ -12,9 +12,9 @@
 [data-tooltip]:before {
     position: absolute;
     bottom: 110%;
-    left: 50%;
-    margin-left: -50px;
-    width: 100px;
+    right: 0%;
+    margin-left: -80px;
+    width: 160px;
     padding: .5em 1.5em;
     border-radius: 4px;
     background-color: #000;
@@ -34,4 +34,26 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
+}
+
+.megx-table-button-bar {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.megx-table-button-bar *:first-child {
+    border-right: 0;
+}
+
+.megx-table-button-bar div.btn-group  *:first-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.dataTables_length {
+    display: inline-table;
+}
+
+.tcell {
+    display: table-cell;
 }
