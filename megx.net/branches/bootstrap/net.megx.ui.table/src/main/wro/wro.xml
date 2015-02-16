@@ -69,5 +69,8 @@
     <css>
       /src/main/web/net.megx.ui.table/css/dataTables.responsive.1.0.4.css
     </css>
+    <css>
+        /src/main/web/net.megx.ui.table/css/megx-ui-table.css
+    </css>
   </group>
 </groups>

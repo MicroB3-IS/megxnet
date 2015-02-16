@@ -3,16 +3,16 @@
  */
 Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguration) {
 
-  BUTTON_CLASSES = "btn btn-xs btn-default";
+  BUTTON_CLASSES = "btn btn-default";
 
-  createButton = function(button, data) {
+  createButton = function(button, data, icon) {
     if (button) {
       if (button.link) {
-        return '<a class="' + BUTTON_CLASSES + '" type="button" data-href="' + button.link.url + data + '">' + button.text
-            + '</a>';
+        return '<a class="' + BUTTON_CLASSES + '" type="button" role="button" data-tooltip="' + button.label+ '" aria-label="'+button.label+'" href="' + button.link.url + data + 
+        '"><span aria-hidden="true" class="fa ' + icon + '"></span></a>';
       } else if (button.modal) {
-        return '<button class="' + BUTTON_CLASSES + ' type="button" data-toggle="modal" data-target="#'
-            + button.modal.target + '" data-action-id="' + data + '">' + button.text + '</button>';
+        return '<button class="' + BUTTON_CLASSES + ' aria-label="' +button.label +'" data-tooltip="' + button.label+ '" type="button" data-toggle="modal" data-target="#'
+            + button.modal.target + '" data-action-id="' + data + '"><span class="fa '+icon+'"></span></button>';
       } else {
         console.error("Definition of " + button.text +  " button for table " + tableID + " is incorrect.");
       }
@@ -21,8 +21,6 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
   }
 
   var table = jQuery('#' + tableID);
-  table.addClass("megx-table");
-
   var defaultConfig = {
     columns : columns,
     responsive : true,
@@ -42,9 +40,10 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         targets : buttons.dataButtons.column,
         render : function(data, type, full, meta) {
           if (type === 'display') {
-            return createButton(buttons.dataButtons.view, data)
-                + createButton(buttons.dataButtons.edit, data)
-                + createButton(buttons.dataButtons.delete, data);
+            return '<div class="btn-group" role="group">' 
+                + createButton(buttons.dataButtons.edit, data, "fa-pencil")
+                + createButton(buttons.dataButtons.delete, data, "fa-trash-o")
+                +'</div>';
           } else {
             return data;
           }
