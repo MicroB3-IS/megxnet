@@ -1,0 +1,37 @@
+/* Hide the tooltip content by default */
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Position tooltip above the element */
+[data-tooltip]:before {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    margin-left: -50px;
+    width: 100px;
+    padding: .5em 1.5em;
+    border-radius: 4px;
+    background-color: #000;
+    color: #fff;
+    text-shadow: none;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: .85em;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    visibility: visible;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+}

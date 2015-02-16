@@ -187,24 +187,6 @@ jQuery(document).ready(function() {
     });
   });
 
-  jQuery('#viewDialog').on('shown.bs.modal', function() {
-    jQuery('#viewDialog').find('button').focus();
-  });
-
-  jQuery('#viewDialog').on('show.bs.modal', function(event) {
-    var dialog = jQuery(this);
-    dialog.find("div[data-attribute]").text("");
-    dialog.find(".loading-animation").css("visibility", "visible");
-    var button = jQuery(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('action-id') // Extract info from data-* attributes
-
-    loadParticipantData(id, function bindDataToViewDialog(data) {
-      dialog.bindData(data);
-      dialog.find(".loading-animation").css("visibility", "hidden");
-    });
-  });
-
-  
 
   jQuery(".addNewParticipant").click(function() {
     window.location.href = ctx.siteUrl + "/osd-registry/add";
