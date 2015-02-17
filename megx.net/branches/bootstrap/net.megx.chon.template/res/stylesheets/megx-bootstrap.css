@@ -28,6 +28,10 @@ html {
     -ms-hyphens: auto;
 }
 
+section {
+    margin-bottom: 2em;
+}
+
 .jumbotron-page {
     margin-bottom: 2.4em;
 }
