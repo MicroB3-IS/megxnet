@@ -19,6 +19,98 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     }
     return "";
   }
+  
+  
+  
+  createToolbarButtons = function(toolbarButtons, oSettings) {
+    
+    createColVisButton = function(oSettings) {
+      
+      // create ColVisButton and extract only button element
+      var init = oSettings.oInit;
+      var colvis = new jQuery.fn.dataTable.ColVis ( oSettings, init.colVis || {} );
+      var colvisButton =  jQuery("button",colvis.button());
+      
+      // change classes to bootstrap classes, add tooltip and icon
+      colvisButton.attr("class","btn btn-default")
+      colvisButton.attr("data-tooltip", "Show/hide columns");
+      jQuery("span", colvisButton).addClass("fa fa-cog");
+      
+      return colvisButton;
+    }
+    
+    createFilterField = function(oSettings) {
+      // create filter field and extract only the input element
+      var filterField = jQuery("input",jQuery.fn.dataTable.ext.internal._fnFeatureHtmlFilter(oSettings));
+      // add placeholder
+      filterField.attr("placeholder", "search");
+      
+      return filterField;
+    }
+    
+    createMegxButton = function(buttonDefinition, iconClass) {
+      var button = jQuery('<a role="button" class="btn btn-default"></a>');
+      if (buttonDefinition.tooltip) {
+        button.attr("data-tooltip", buttonDefinition.tooltip);
+      }
+      button.append(jQuery('<span class="fa">').addClass(iconClass));
+      if (buttonDefinition.link && buttonDefinition.link.url) {
+        button.attr("href", buttonDefinition.link.url);
+      }
+      return button;
+    }
+    
+    createLengthField = function(oSettings) {
+      // create length field and extract only select element
+      var lengthField = jQuery("select", jQuery.fn.dataTable.ext.internal._fnFeatureHtmlLength(oSettings));
+      
+      return lengthField;
+    }
+    
+    createDownloadAllButton = function(downloadAllButton) {
+      if (downloadAllButton) {
+        return createMegxButton(downloadAllButton, "fa-download download-all");
+      } else {
+        return "";
+      }
+    }
+    
+    createDownloadSelectedButton = function(downloadSelectedButton) {
+      if (downloadSelectedButton) {
+        return createMegxButton(downloadSelectedButton, "fa-download");
+      } else {
+        return "";
+      }
+    }
+    
+    createCreateButton = function(createButton) {
+      if (createButton) {
+        return createMegxButton(createButton,"fa-plus-square");
+      } else {
+        return "";
+      }
+    }
+    
+    return jQuery('<div class="row">')
+             .append(
+                  jQuery('<div class="col-xs-5">')
+                    .append(createLengthField(oSettings))
+              ).append(
+                  jQuery('<div class="col-xs-7">')
+                    .append(  
+                        jQuery('<div class="megx-table-button-bar input-group">')
+                        .append(createFilterField(oSettings))
+                        .append(
+                            jQuery('<div class="btn-group btn-group-sm tcell no-word-break">')
+                              .append(createDownloadSelectedButton(toolbarButtons.downloadSelected))
+                              .append(createDownloadAllButton(toolbarButtons.downloadAll))
+                              .append(createColVisButton(oSettings))
+                              .append(createCreateButton(toolbarButtons.create))
+                        )
+                    )
+              );
+    
+  }
 
   var table = jQuery('#' + tableID);
   var defaultConfig = {
@@ -30,15 +122,14 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     width : "100%",
     autoWidth : false,
     defer : true,
-// dom : "R<'pull-right'C><'clearfix'><'row'<'col-sm-6'l><'col-sm-6'f>>" +
-// "<'row'<'col-sm-12'tr>><'row'<'col-md-4'i><'col-md-8'p>>",
-      dom : "R<lM>" +
+    lengthMenu: [ [10, 25, 50, 100], ["10 per page", "25 per page", "50 per page", "100 per page"] ],
+    dom : "R<M>" +
             "<'row'<'col-sm-12'tr>><'row'<'col-md-4'i><'col-md-8'p>>",
     colVis: {
       buttonText: '',
     }
   };
-
+  
   // create buttons
   if (buttons) {
     if (buttons.dataButtons) {
@@ -57,6 +148,15 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       });
     }
   }
+  
+  // create table buttons
+  jQuery.fn.dataTableExt.aoFeatures.push( {
+    "fnInit": function( oSettings ) {
+      return createToolbarButtons(buttons.toolbarButtons || {}, oSettings);
+    },
+    "cFeature": "M",
+    "sFeature": "MegxButtons"
+  } );
 
   if (url) {
     jQuery.extend(defaultConfig, {
@@ -67,28 +167,6 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       serverSide : false,
     });
   }
-  
-  jQuery.fn.dataTableExt.aoFeatures.push( {
-    "fnInit": function( oSettings ) {
-      var init = oSettings.oInit;
-      var colvis = new jQuery.fn.dataTable.ColVis ( oSettings, init.colVis || init.oColVis || {} );
-      var colvisButton =  jQuery("button",colvis.button());
-      colvisButton.attr("class","btn btn-default")
-      colvisButton.attr("data-tooltip", "Show/hide columns");
-      jQuery("span", colvisButton).addClass("fa fa-cog");
-      var filterField = jQuery("input",jQuery.fn.dataTable.ext.internal._fnFeatureHtmlFilter(oSettings));
-      filterField.attr("placeholder", "search");
-        return jQuery('<div class="megx-table-button-bar input-group">').append(filterField)
-          .append(jQuery('<div class="btn-group btn-group-sm tcell">')
-          .append('<button class="btn btn-default" data-tooltip="Download selected"><span class="fa fa-download"></span></button></div>')
-          .append('<button class="btn btn-default" data-tooltip="Download all"><span class="fa fa-cloud-download"></span></button></div>')
-          .append(colvisButton)
-          .append('<button class="btn btn-default" data-tooltip="New Participant"><span class="fa fa-plus-square"></span></button>')
-        );
-    },
-    "cFeature": "M",
-    "sFeature": "MegxButtons"
-} );
   
   this.dataTable = table.DataTable(jQuery.extend({}, defaultConfig, datatablesConfiguration));
 };

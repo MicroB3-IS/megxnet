@@ -29,6 +29,7 @@
   jQuery(document).ready(
       function() {
         (function() {
+          
           var columns = [ {
             data : "osdID",
             width : "5em",
@@ -70,15 +71,19 @@
           } 
           #end
           ];
+          
           var buttons = {
             toolbarButtons : {
+              #if($req.user && $req.servletRequset.isUserInRole('admin'))
               create : {
+                tooltip: "Add Participiant",
                 link : {
                   url : "$ctx.siteUrl/osd-registry/add",
                 }
               },
-              download : {}
+              #end
             },
+            
             #if($req.user && $req.servletRequset.isUserInRole('admin'))
             dataButtons : {
               column : 9,
@@ -95,10 +100,14 @@
                 }
               },
             }
+            
             #end
           };
+          
+          var datatablesConfigOverride = {};
+          
           var table = new Megx.MegxTable("sample-and-institute-tables", columns, buttons,
-              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", null);
+              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", datatablesConfigOverride);
         })();
       });
 </script>

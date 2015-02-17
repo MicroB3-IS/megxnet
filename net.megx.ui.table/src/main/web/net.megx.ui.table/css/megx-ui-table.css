@@ -1,7 +1,6 @@
 /* Hide the tooltip content by default */
-[data-tooltip]:before,
-[data-tooltip]:after {
-  visibility: hidden;
+[data-tooltip]:before, [data-tooltip]:after {
+    visibility: hidden;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
@@ -28,8 +27,7 @@
 }
 
 /* Show tooltip content on hover */
-[data-tooltip]:hover:before,
-[data-tooltip]:hover:after {
+[data-tooltip]:hover:before, [data-tooltip]:hover:after {
     visibility: visible;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -38,11 +36,23 @@
 
 .megx-table-button-bar {
     float: right;
-    margin-bottom: 10px;
 }
 
-.megx-table-button-bar *:first-child {
+.megx-table-button-bar .btn-group {
+    display: table-cell !important;
+}
+
+.megx-table-button-bar .btn-group button, .megx-table-button-bar .btn-group a {
+    display: inline-block !important;
+    float: none !important;
+}
+
+.megx-table-button-bar>*:first-child {
     border-right: 0;
+}
+
+.megx-table-button-bar .download-all {
+    text-shadow:3px -3px 0px #999;
 }
 
 .megx-table-button-bar div.btn-group  *:first-child {
@@ -50,10 +60,7 @@
     border-bottom-left-radius: 0;
 }
 
-.dataTables_length {
-    display: inline-table;
-}
-
-.tcell {
-    display: table-cell;
+/* re-enable word wrap for some datatable elements to prevent overflows on mobile devices*/
+div.dataTables_info, table.dataTable tr.child ul li {
+    white-space: normal;
 }
