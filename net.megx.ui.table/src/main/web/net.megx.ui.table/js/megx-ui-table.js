@@ -202,7 +202,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         targets : buttons.dataButtons.column,
         render : function(data, type, full, meta) {
           if (type === 'display') {
-            return '<div class="btn-group" role="group">' 
+            return '<div class="btn-group btn-group-sm" role="group">' 
                 + createButton(buttons.dataButtons.edit, data, "fa-pencil")
                 + createButton(buttons.dataButtons.delete, data, "fa-trash-o")
                 +'</div>';
