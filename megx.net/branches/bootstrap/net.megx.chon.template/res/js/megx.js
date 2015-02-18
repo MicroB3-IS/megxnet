@@ -42,18 +42,34 @@ toastr.options = {
 // extend jQuery with a simple data binding function
 // the function excepts to find elements with 'data-attribute' attributes and
 // the value of this field is expected to match an attribute of the data
-// object, e.g. an element having data-attribute="id" will get the value of 
+// object, e.g. an element having data-attribute="id" will get the value of
 // data["id"] assigned as text
 jQuery.fn.extend({
-  bindData : function(data) {
+  bindData : function(data, isForm) {
     if (data) {
       this.find("[data-attribute]").each(function copyDataToView() {
         $this = jQuery(this);
-        $this.text(data[$this.data("attribute")]);
+        if (isForm) {
+          $this.val(data[$this.data("attribute")]);
+        } else {
+          $this.text(data[$this.data("attribute")]);
+        }
       });
     } else {
       toastr.error('No data available', 'Error');
     }
+  }
+});
+
+// corresponding method to retrieve the data from the object
+jQuery.fn.extend({
+  getJsonData : function() {
+    json = {};
+    this.find("[data-attribute]").each(function getDataFromView() {
+      $this = jQuery(this);
+      json[$this.data("attribute")] = $this.val();
+    });
+    return json;
   }
 });
 
