@@ -1,4 +1,27 @@
 /**
+ * The MegxTable plugin transforms the table given by tableID to a Datatables
+ * table.
+ * 
+ * @param tableID
+ *          id of the HTML table to be transformed
+ * @param columns
+ *          the column definitions (see Datatables manual), for columns which
+ *          should not be visible initially the following two attributes have to
+ *          be used {@code className: "none"} and {@code visible: false}
+ * @param buttons
+ *          definition of the buttons to be shown. Supports dataButtons and
+ *          toolbarButtons. The following toolbarButtons are supported: download
+ *          selected rows, download all, create new entry, show/hide colums.
+ *          DataButtons are shown in a table column and trigger actions for
+ *          corresponding table row. For further details see the documentation
+ *          in the wiki (@TODO create wiki page and add link here).
+ * @param url
+ *          the URL used by Datatables to retrieve the table data.
+ * @param datatablesConfiguration
+ *          allows to override all Datatables options set by this module. The
+ *          usage of this parameter is discouraged, better extend this module to
+ *          provide the functionality need. If this parameter is used, is must
+ *          be used with extreme care as it can easily break the module.
  * 
  */
 Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguration) {
@@ -61,8 +84,6 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         return context[action](modal.data("action-id"));
       });
     }
- 
-
   }
   
   createToolbarButtons = function(toolbarButtons, oSettings) {
@@ -153,7 +174,6 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
                         )
                     )
               );
-    
   }
 
   var table = jQuery('#' + tableID);
