@@ -158,8 +158,9 @@ jQuery(document).ready(function() {
     loadParticipantData(participantID, populateFormData);
   }
 
-  var deleteParticipant = function(id) {
-    console.log("deleting " + id);
+  //OSD Registry module
+  Megx.osdRegistry = {};
+  Megx.osdRegistry.deleteParticipant = function(id) {
     var url = ctx.siteUrl + "/ws/v1/OSDRegistry/v1.0.0/deleteParticipant";
     var redirectUrl = ctx.siteUrl + "/osd-registry/list";
 
@@ -172,24 +173,5 @@ jQuery(document).ready(function() {
       jQuery('#deleteDialog').modal('hide');
     });
   };
-
-  jQuery('#deleteDialog').on('shown.bs.modal', function() {
-    jQuery('#deleteDialog-cancelButton').focus();
-  });
-
-  jQuery('#deleteDialog').on('show.bs.modal', function(event) {
-    var button = jQuery(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('action-id') // Extract info from data-* attributes
-    var modal = jQuery(this)
-    modal.find('.modal-body').find('.delete-id').text(id);
-    modal.find('#deleteDialog-deleteButton').off().on('click', function(event) {
-      deleteParticipant(id)
-    });
-  });
-
-
-  jQuery(".addNewParticipant").click(function() {
-    window.location.href = ctx.siteUrl + "/osd-registry/add";
-  });
 
 });
