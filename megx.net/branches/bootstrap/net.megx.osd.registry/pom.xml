@@ -31,8 +31,8 @@
                 <artifactId>wro4j-maven-plugin</artifactId>
                 <configuration>
                     <minimize>true</minimize>
-                    <cssDestinationFolder>res/net.megx.ui.table/css</cssDestinationFolder>
-                    <jsDestinationFolder>res/net.megx.ui.table/js</jsDestinationFolder>
+                    <cssDestinationFolder>res/net.megx.osd.registry/css</cssDestinationFolder>
+                    <jsDestinationFolder>res/net.megx.osd.registry/js</jsDestinationFolder>
                     <contextFolder>${basedir}</contextFolder>
                     <wroFile>target/wro/wro.xml</wroFile>
                     <ignoreMissingResources>false</ignoreMissingResources>
