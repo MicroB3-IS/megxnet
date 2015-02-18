@@ -47,7 +47,7 @@ toastr.options = {
 jQuery.fn.extend({
   bindData : function(data) {
     if (data) {
-      this.find("div[data-attribute]").each(function copyDataToView() {
+      this.find("[data-attribute]").each(function copyDataToView() {
         $this = jQuery(this);
         $this.text(data[$this.data("attribute")]);
       });

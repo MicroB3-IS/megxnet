@@ -8,11 +8,25 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
   createButton = function(button, data, icon) {
     if (button) {
       if (button.link) {
-        return '<a class="' + BUTTON_CLASSES + '" type="button" role="button" data-tooltip="' + button.label+ '" aria-label="'+button.label+'" href="' + button.link.url + data + 
-        '"><span aria-hidden="true" class="fa ' + icon + '"></span></a>';
+        return '<a role="button" type="button"'   
+             + ' class="' + BUTTON_CLASSES + '"'     
+             + ' data-tooltip="' + button.label + '"'
+             + ' aria-label="' + button.label + '"'
+             + ' href="' + button.link.url + data + '"'
+             + '><span aria-hidden="true"'
+             + ' class="fa ' + icon + '"'
+             + '></span></a>';
       } else if (button.modal) {
-        return '<button class="' + BUTTON_CLASSES + '" aria-label="' +button.label +'" data-tooltip="' + button.label+ '" type="button" data-toggle="modal" data-target="#'
-            + button.modal.target + '" data-action-id="' + data + '"><span class="fa '+icon+'"></span></button>';
+        
+        return '<button type="button" data-toggle="modal"'
+             + ' class="' + BUTTON_CLASSES + '"' 
+             + ' aria-label="' + button.label + '"'
+             + ' data-tooltip="' + button.label+ '"'
+             + ' data-target="#' + button.modal.target + '"'
+             + ' data-action-id="' + data + '"'
+             + '><span'
+             + ' class="fa ' + icon +'"'
+             + '></span></button>';
       } else {
         console.error("Definition of " + button.text +  " button for table " + tableID + " is incorrect.");
       }
@@ -20,7 +34,36 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     return "";
   }
   
-  
+  registerListenersToModal = function (button) {
+    
+    var modal = jQuery('#' + button.modal.target);
+    
+    // bind data
+    modal.on('show.bs.modal', function(event) {
+      id = jQuery(event.relatedTarget).data("action-id");
+      modal.bindData({"action-id": id});
+      modal.data("action-id", id );
+    });
+    
+    // focus cancel/close button when dialog is shown
+    modal.on('shown.bs.modal', function() {
+      jQuery('[data-dismiss="modal"]', modal).focus();
+    });
+    
+    if (button.modal.callback) {
+      modal.find('#' + button.modal.callback.button).on('click', function(event) {
+        var namespaces = button.modal.callback.action.split(".");
+        var action = namespaces.pop();
+        var context = window;
+        for (var i = 0; i < namespaces.length; i++) {
+            context = context[namespaces[i]];
+        }
+        return context[action](modal.data("action-id"));
+      });
+    }
+ 
+
+  }
   
   createToolbarButtons = function(toolbarButtons, oSettings) {
     
@@ -32,7 +75,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       var colvisButton =  jQuery("button",colvis.button());
       
       // change classes to bootstrap classes, add tooltip and icon
-      colvisButton.attr("class","btn btn-default")
+      colvisButton.attr("class",BUTTON_CLASSES);
       colvisButton.attr("data-tooltip", "Show/hide columns");
       jQuery("span", colvisButton).addClass("fa fa-cog");
       
@@ -49,7 +92,8 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     }
     
     createMegxButton = function(buttonDefinition, iconClass) {
-      var button = jQuery('<a role="button" class="btn btn-default"></a>');
+      var button = jQuery('<a role="button"></a>');
+      button.attr("class", BUTTON_CLASSES);
       if (buttonDefinition.tooltip) {
         button.attr("data-tooltip", buttonDefinition.tooltip);
       }
@@ -133,6 +177,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
   // create buttons
   if (buttons) {
     if (buttons.dataButtons) {
+      // added render information to button column
       jQuery.extend(columns[buttons.dataButtons.column], {
         targets : buttons.dataButtons.column,
         render : function(data, type, full, meta) {
@@ -146,7 +191,16 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
           }
         }
       });
+      
+      // register listener for all modals referred to by the buttons
+      if (buttons.dataButtons.edit.modal) {
+        registerListenersToModal(buttons.dataButtons.edit);
+      }
+      if (buttons.dataButtons.delete.modal) {
+        registerListenersToModal(buttons.dataButtons.delete);
+      }
     }
+    
   }
   
   // create table buttons
