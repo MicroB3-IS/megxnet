@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<groups xmlns="http://www.isdc.ro/wro">
-
-  <group name='osdRegistry.min'>
-    <js>/res/net.megx.osd.registry/js/osdRegistry.js</js>
-  </group>
-</groups>

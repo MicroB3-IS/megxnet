@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OSD Registry
 Bundle-SymbolicName: net.megx.osd.registry
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: net.megx.osd.registry.Activator
 Import-Package: com.google.gson;version="2.2.4",
  javax.jcr;version="2.0.0",
