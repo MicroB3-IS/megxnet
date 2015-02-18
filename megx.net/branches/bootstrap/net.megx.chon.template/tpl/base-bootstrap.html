@@ -36,7 +36,11 @@
         
         ## MEGX GLOBAL CSS
         <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/megx-bootstrap.css">
-
+        
+        ## MEGX MODULE SPECIFIC CSS
+        #if ($this.module)
+        #parse("$this.module/includes/css.html")
+        #end
         
         <script src="$ctx.siteUrl/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script type="text/javascript">
@@ -87,6 +91,12 @@
         #if ($this.prop('hasTable','boolean'))
             <script src="$ctx.siteUrl/net.megx.ui.table/js/megx-ui-table-2.0.0-SNAPSHOT.min.js"></script>
         #end
+        
+        ## MEGX MODULE JS
+        #if ($this.module)
+        #parse("$this.module/includes/js.html")
+        #end
+        
         
         
         <!-- google analytics -->
