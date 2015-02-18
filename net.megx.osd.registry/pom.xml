@@ -14,20 +14,27 @@
 
     <groupId>net.megx</groupId>
     <artifactId>net.megx.osd.registry</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>eclipse-plugin</packaging>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/wro</directory>
+                <filtering>true</filtering>
+                <targetPath>../wro/</targetPath>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>ro.isdc.wro4j</groupId>
                 <artifactId>wro4j-maven-plugin</artifactId>
                 <configuration>
                     <minimize>true</minimize>
-                    <cssDestinationFolder>res/net.megx.osd.registry/stylesheets</cssDestinationFolder>
-                    <jsDestinationFolder>res/net.megx.osd.registry/js</jsDestinationFolder>
+                    <cssDestinationFolder>res/net.megx.ui.table/css</cssDestinationFolder>
+                    <jsDestinationFolder>res/net.megx.ui.table/js</jsDestinationFolder>
                     <contextFolder>${basedir}</contextFolder>
-                    <wroFile>wro.xml</wroFile>
+                    <wroFile>target/wro/wro.xml</wroFile>
                     <ignoreMissingResources>false</ignoreMissingResources>
                 </configuration>
             </plugin>
