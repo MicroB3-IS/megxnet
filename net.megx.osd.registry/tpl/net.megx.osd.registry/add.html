@@ -1,20 +1,25 @@
 <script type="text/javascript">
-  #if($req.id)
-  	participantID = '$req.id';
-  	isInEditMode = true;
-  #else
-  	isInEditMode = false;
-  #end
+  jQuery(function() {
+    Megx.osdRegistry.isInEditMode = #if ($req.id) true #else false #end ;
+    #if ($req.id)
+    Megx.osdRegistry.loadParticipantData('$req.id', function(data) {
+      jQuery('#participantForm').bindData(data,true);
+    });
+    #end
+  });
 </script>
 
 <h3 class="col-sm-12">#if ($req.id) Edit #else Add #end OSD Site</h3>
 
-<form id="participantForm" class="form-horizontal">
+<form id="participantForm" data-attribute="participantForm"
+    class="form-horizontal">
+    <input type="hidden" data-attribute="id" />
     <div class="form-group row">
         <label class="control-label col-sm-2" for="osdID">OSD ID</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control " id="osdID" name="osdID"
-                placeholder="Enter OSD ID" autofocus="autofocus">
+            <input type="text" class="form-control " id="osdID"
+                data-attribute="osdID" name="osdID" placeholder="Enter OSD ID"
+                autofocus="autofocus">
         </div>
         <div class="help-block col-sm-2"></div>
     </div>
@@ -22,7 +27,8 @@
         <label class="control-label col-sm-2" for="siteName">Site name</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="siteName"
-                name="siteName" placeholder="Enter the site name">
+                data-attribute="siteName" name="siteName"
+                placeholder="Enter the site name">
         </div>
         <div class="help-block col-sm-2"></div>
     </div>
@@ -31,7 +37,8 @@
             name</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="institution"
-                name="institution" placeholder="Enter the name of the institute">
+                data-attribute="institution" name="institution"
+                placeholder="Enter the name of the institute">
         </div>
         <div class="help-block col-sm-2"></div>
     </div>
@@ -40,7 +47,7 @@
             address</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="institutionAddress"
-                name="institutionAddress"
+                data-attribute="institutionAddress" name="institutionAddress"
                 placeholder="Enter the address of the institute">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -48,7 +55,8 @@
     <div class="form-group row">
         <label class="control-label col-sm-2" for="country">Country</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" id="country" name="country"
+            <input type="text" class="form-control" id="country"
+                data-attribute="country" name="country"
                 placeholder="Enter the country of the institute">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -58,6 +66,7 @@
             web address</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="institutionWebAddress"
+                data-attribute="institutionWebAddress"
                 name="institutionWebAddress"
                 placeholder="Enter web address of the institute">
         </div>
@@ -68,7 +77,7 @@
             coordinator</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="siteCoordinator"
-                name="siteCoordinator"
+                data-attribute="siteCoordinator" name="siteCoordinator"
                 placeholder="Enter name of the site coordinator">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -78,7 +87,7 @@
             email</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="coordinatorEmail"
-                name="coordinatorEmail"
+                data-attribute="coordinatorEmail" name="coordinatorEmail"
                 placeholder="Enter email of the site coordinator">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -87,7 +96,8 @@
         <label class="control-label col-sm-2" for="siteLat">Site
             latitude</label>
         <div class="col-sm-8">
-            <input type="text" class="form-control" id="siteLat" name="siteLat"
+            <input type="text" class="form-control" id="siteLat"
+                data-attribute="siteLat" name="siteLat"
                 placeholder="Enter the latitude of the site">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -97,7 +107,8 @@
             longitude</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="siteLong"
-                name="siteLong" placeholder="Enter the longitude of the site">
+                data-attribute="siteLong" name="siteLong"
+                placeholder="Enter the longitude of the site">
         </div>
         <div class="help-block col-sm-2"></div>
     </div>
@@ -106,7 +117,7 @@
             latitude</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="institutionLat"
-                name="institutionLat"
+                data-attribute="institutionLat" name="institutionLat"
                 placeholder="Enter the latitude of the insitute">
         </div>
         <div class="help-block col-sm-2"></div>
@@ -116,15 +127,16 @@
             longitude</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" id="institutionLong"
-                name="institutionLong"
+                data-attribute="institutionLong" name="institutionLong"
                 placeholder="Enter the longitude of the insitute">
         </div>
         <div class="help-block col-sm-2"></div>
     </div>
     <div class="row">
         <div class="col-sm-offset-2 col-sm-2">
-            <input class="btn btn-primary" type="button"
-                value="Submit" id="submitOSDParticipant" />
+            <input class="btn btn-primary" type="button" value="Submit"
+                id="submitOSDParticipant"
+                onclick="Megx.osdRegistry.validateParticipantSubmissionForm('$req.id')" />
         </div>
     </div>
 </form>
