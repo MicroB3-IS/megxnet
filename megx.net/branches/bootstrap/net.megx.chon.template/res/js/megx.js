@@ -50,9 +50,9 @@ toastr.options = {
 
 /*
  * Extend jQuery with a simple data binding function the function expects to
- * find elements with 'data-attribute' attributes and the value of this field is
+ * find elements with 'data-megx-bind' attributes and the value of this field is
  * expected to match an attribute of the data object, e.g. an element having
- * data-attribute="id" will get the value of data["id"] assigned as text/value.
+ * data-megx-bind="id" will get the value of data["id"] assigned as text/value.
  * 
  * Bind data to a non-form HTML structure, e.g. a modal dialog:
  * 
@@ -67,12 +67,12 @@ toastr.options = {
 jQuery.fn.extend({
   bindData : function(data, isForm) {
     if (data) {
-      this.find("[data-attribute]").each(function copyDataToView() {
+      this.find("[data-megx-bind]").each(function copyDataToView() {
         $this = jQuery(this);
         if (isForm) {
-          $this.val(data[$this.data("attribute")]);
+          $this.val(data[$this.data("megx-bind")]);
         } else {
-          $this.text(data[$this.data("attribute")]);
+          $this.text(data[$this.data("megx-bind")]);
         }
       });
     } else {
@@ -91,9 +91,9 @@ jQuery.fn.extend({
 jQuery.fn.extend({
   getJsonData : function() {
     json = {};
-    this.find("[data-attribute]").each(function getDataFromView() {
+    this.find("[data-megx-bind]").each(function getDataFromView() {
       $this = jQuery(this);
-      json[$this.data("attribute")] = $this.val();
+      json[$this.data("megx-bind")] = $this.val();
     });
     return json;
   }
