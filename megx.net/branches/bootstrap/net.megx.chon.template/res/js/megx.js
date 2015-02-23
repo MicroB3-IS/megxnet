@@ -1,4 +1,7 @@
-// Avoid `console` errors in browsers that lack a console.
+/*******************************************************************************
+ * CONSOLE STUBS
+ ******************************************************************************/
+/* prevents JS errors in browsers which lack console features */
 (function() {
   var method;
   var noop = function() {
@@ -19,7 +22,9 @@
   }
 }());
 
-// define toastr style for all pages
+/*******************************************************************************
+ * TOASTR defaults
+ ******************************************************************************/
 toastr.options = {
   "closeButton" : true,
   "debug" : false,
@@ -39,11 +44,26 @@ toastr.options = {
   "closeHtml" : '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
 };
 
-// extend jQuery with a simple data binding function
-// the function excepts to find elements with 'data-attribute' attributes and
-// the value of this field is expected to match an attribute of the data
-// object, e.g. an element having data-attribute="id" will get the value of
-// data["id"] assigned as text
+/*******************************************************************************
+ * Data binding
+ ******************************************************************************/
+
+/*
+ * Extend jQuery with a simple data binding function the function expects to
+ * find elements with 'data-attribute' attributes and the value of this field is
+ * expected to match an attribute of the data object, e.g. an element having
+ * data-attribute="id" will get the value of data["id"] assigned as text/value.
+ * 
+ * Bind data to a non-form HTML structure, e.g. a modal dialog:
+ * 
+ * jQuery("deleteDialog").bindData(data);
+ * 
+ * Bind data to HTML form:
+ * 
+ * jQuery("OSDSubmissionForm").bindData(data, true);
+ * 
+ * data is the variable containing the data as a Javascript object.
+ */
 jQuery.fn.extend({
   bindData : function(data, isForm) {
     if (data) {
@@ -61,7 +81,13 @@ jQuery.fn.extend({
   }
 });
 
-// corresponding method to retrieve the data from the object
+/*
+ * Corresponding method to retrieve the values of a form. A Javascript object
+ * containing the values of the form is returned. The caller has to stringify
+ * the result before sending.
+ * 
+ * Example usage: var formData = jQuery("OSDSubmissionForm").getJsonData();
+ */
 jQuery.fn.extend({
   getJsonData : function() {
     json = {};
@@ -73,6 +99,10 @@ jQuery.fn.extend({
   }
 });
 
+/*******************************************************************************
+ * Document ready function of the base template
+ ******************************************************************************/
+/* contains commands which must be executed on each page load */
 jQuery(document).ready(function() {
 
   main = jQuery('main');
@@ -98,5 +128,7 @@ jQuery(document).ready(function() {
   jQuery('#main-menu-navbar > ul > li:has(a[href|="' + ctx.base + '"])').addClass("active")
 });
 
-// define MEGX namespace
+/*******************************************************************************
+ * NAMESPACE DEFINITION
+ ******************************************************************************/
 var Megx = {};
