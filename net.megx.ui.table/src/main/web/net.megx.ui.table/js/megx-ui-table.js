@@ -62,6 +62,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     var modal = jQuery('#' + button.modal.target);
     
     // bind data
+    // show.bs.modal is a bootstrap event
     modal.on('show.bs.modal', function(event) {
       id = jQuery(event.relatedTarget).data("action-id");
       modal.bindData({"action-id": id});
@@ -69,10 +70,12 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     });
     
     // focus cancel/close button when dialog is shown
+    // shown.bs.modal is a bootstrap event
     modal.on('shown.bs.modal', function() {
       jQuery('[data-dismiss="modal"]', modal).focus();
     });
     
+    // @TODO call JS function from string documentation (link?)
     if (button.modal.callback) {
       modal.find('#' + button.modal.callback.button).on('click', function(event) {
         var namespaces = button.modal.callback.action.split(".");
