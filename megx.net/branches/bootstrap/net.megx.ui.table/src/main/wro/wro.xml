@@ -41,10 +41,6 @@
       /src/main/web/net.megx.ui.table/js/natural.1.10.5.js
     </js>
 
-    <!-- depracted -->
-    <!-- <js>/src/main/web/net.megx.ui.table/js/json2.js</js> -->
-    <!-- <js>/src/main/web/net.megx.ui.table/js/table.utils.js</js> -->
-
     <js>
       /src/main/web/net.megx.ui.table/js/megx-ui-table.js
     </js>
