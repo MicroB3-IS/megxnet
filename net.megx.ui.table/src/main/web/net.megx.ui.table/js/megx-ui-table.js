@@ -14,7 +14,8 @@
  *          selected rows, download all, create new entry, show/hide colums.
  *          DataButtons are shown in a table column and trigger actions for
  *          corresponding table row. For further details see the documentation
- *          in the wiki (@TODO create wiki page and add link here).
+ *          in the wiki
+ *          (https://colab.mpi-bremen.de/wiki/display/microb3/net.megx.ui.table).
  * @param url
  *          the URL used by Datatables to retrieve the table data.
  * @param datatablesConfiguration
