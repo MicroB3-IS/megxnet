@@ -26,16 +26,31 @@
  */
 Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguration) {
 
+  /**
+   * Default Bootstrap CSS classes for simple buttons.
+   */
   BUTTON_CLASSES = "btn btn-default";
 
-  createButton = function(button, data, icon) {
+  /**
+   * Creates a dataButton.
+   * 
+   * @param buttonDescription
+   *          the JSON object describing the button to be created
+   * @param data
+   *          the ID of the entry corresponding to the table row
+   * @param icon
+   *          the font-awesome CSS class for the icon (see
+   *          http://fortawesome.github.io/Font-Awesome/icons/)
+   * @returns {String} the HTML code for the button
+   */
+  createButton = function(buttonDescription, data, icon) {
     if (button) {
       if (button.link) {
         return '<a role="button" type="button"'   
              + ' class="' + BUTTON_CLASSES + '"'     
-             + ' data-tooltip="' + button.label + '"'
-             + ' aria-label="' + button.label + '"'
-             + ' href="' + button.link.url + data + '"'
+             + ' data-tooltip="' + buttonDescription.label + '"'
+             + ' aria-label="' + buttonDescription.label + '"'
+             + ' href="' + buttonDescription.link.url + data + '"'
              + '><span aria-hidden="true"'
              + ' class="fa ' + icon + '"'
              + '></span></a>';
@@ -43,20 +58,27 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         
         return '<button type="button" data-toggle="modal"'
              + ' class="' + BUTTON_CLASSES + '"' 
-             + ' aria-label="' + button.label + '"'
-             + ' data-tooltip="' + button.label+ '"'
-             + ' data-target="#' + button.modal.target + '"'
+             + ' aria-label="' + buttonDescription.label + '"'
+             + ' data-tooltip="' + buttonDescription.label+ '"'
+             + ' data-target="#' + buttonDescription.modal.target + '"'
              + ' data-action-id="' + data + '"'
              + '><span'
              + ' class="fa ' + icon +'"'
              + '></span></button>';
       } else {
-        console.error("Definition of " + button.text +  " button for table " + tableID + " is incorrect.");
+        console.error("Definition of " + buttonDescription.text +  " button for table " + tableID + " is incorrect.");
       }
     }
     return "";
   }
   
+  /**
+   * Registers events for a modal dialog.
+   * 
+   * @param button
+   *          the JSON object containing the configuration of the button whichs
+   *          triggers the dialog.
+   */
   registerListenersToModal = function (button) {
     
     var modal = jQuery('#' + button.modal.target);
@@ -74,10 +96,13 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     modal.on('shown.bs.modal', function() {
       jQuery('[data-dismiss="modal"]', modal).focus();
     });
-    
-    // @TODO call JS function from string documentation (link?)
+
+    // bind function given in the button configuration to the primary button of
+    // the dialog
     if (button.modal.callback) {
       modal.find('#' + button.modal.callback.button).on('click', function(event) {
+        // Call JS function from string documentation, based on
+        // http://stackoverflow.com/a/359910
         var namespaces = button.modal.callback.action.split(".");
         var action = namespaces.pop();
         var context = window;
@@ -89,11 +114,32 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     }
   }
   
+  /**
+   * Create toolbar buttons.
+   * 
+   * @param toolbarButtons
+   *          the JSON object defining the toolbar buttons.
+   * @param oSettings
+   *          Datatables setting object - required by some Datatables function
+   *          which will be called in this function
+   * @returns the HTML code of the toolbar for the MegxTable.
+   */
   createToolbarButtons = function(toolbarButtons, oSettings) {
     
+    /**
+     * Creates the show/hide column button from the ColVis extension of
+     * Datatables. The toolbar is created programmatically to gain full control
+     * about its style and positing.
+     * 
+     * @param oSettings
+     *          Databables setting object - required by the constructor of the
+     *          ColVis extension.
+     * @returns the HTML code for the show/hide column button.
+     */
     createColVisButton = function(oSettings) {
       
-      // create ColVisButton and extract only button element
+      // create ColVisButton and extract only the button element and discard the
+      // rest of the generated HTML
       var init = oSettings.oInit;
       var colvis = new jQuery.fn.dataTable.ColVis ( oSettings, init.colVis || {} );
       var colvisButton =  jQuery("button",colvis.button());
@@ -106,15 +152,52 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       return colvisButton;
     }
     
+    /**
+     * Creates the filter field for the toolbar. The field is created
+     * programmatically to gain full control about its style and positioning.
+     * 
+     * @param oSettings
+     *          Databables setting object - required by the constructor of the
+     *          ColVis extension.
+     * @returns the HTML code for the filter field.
+     */
     createFilterField = function(oSettings) {
       // create filter field and extract only the input element
       var filterField = jQuery("input",jQuery.fn.dataTable.ext.internal._fnFeatureHtmlFilter(oSettings));
-      // add placeholder
+      // add placeholder (HTML5 attribute)
       filterField.attr("placeholder", "search");
       
       return filterField;
     }
     
+    /**
+     * Create the select element which is used to set the page size of the
+     * table. The select element is created programmatically to gain full
+     * control about its style and positioning.
+     * 
+     * @param oSettings
+     *          Databables setting object - required by the constructor of the
+     *          ColVis extension.
+     * @returns the HTML code for the select element.
+     */
+    createLengthField = function(oSettings) {
+      // create length field and extract only select element
+      var lengthField = jQuery("select", jQuery.fn.dataTable.ext.internal._fnFeatureHtmlLength(oSettings));
+      
+      return lengthField;
+    }
+    
+    /**
+     * Creates one of the Megx specific buttons in the toolbar (download
+     * selected, download all, create new entry).
+     * 
+     * @param buttonDefinition
+     *          the JSON object containing the definition of the button.
+     * @param iconClass
+     *          the font-awesome CSS class for the icon (see
+     *          http://fortawesome.github.io/Font-Awesome/icons/)
+     * @returns the HTML code for the button
+     */
     createMegxButton = function(buttonDefinition, iconClass) {
       var button = jQuery('<a role="button"></a>');
       button.attr("class", BUTTON_CLASSES);
@@ -128,13 +211,13 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       return button;
     }
     
-    createLengthField = function(oSettings) {
-      // create length field and extract only select element
-      var lengthField = jQuery("select", jQuery.fn.dataTable.ext.internal._fnFeatureHtmlLength(oSettings));
-      
-      return lengthField;
-    }
-    
+    /**
+     * Create the download all button for the toolbar.
+     * 
+     * @param downloadAllButton
+     *          the JSON object describing the button.
+     * @returns the HTML code of the button.
+     */
     createDownloadAllButton = function(downloadAllButton) {
       if (downloadAllButton) {
         return createMegxButton(downloadAllButton, "fa-download download-all");
@@ -143,6 +226,13 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       }
     }
     
+    /**
+     * Create the download selected button for the toolbar.
+     * 
+     * @param downloadSelectedButton
+     *          the JSON object describing the button.
+     * @returns the HTML code of the button.
+     */
     createDownloadSelectedButton = function(downloadSelectedButton) {
       if (downloadSelectedButton) {
         return createMegxButton(downloadSelectedButton, "fa-download");
@@ -151,6 +241,13 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       }
     }
     
+    /**
+     * Create the create button for the toolbar.
+     * 
+     * @param createButton
+     *          the JSON object describing the button.
+     * @returns the HTML code of the button.
+     */
     createCreateButton = function(createButton) {
       if (createButton) {
         return createMegxButton(createButton,"fa-plus-square");
@@ -159,17 +256,26 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       }
     }
     
+    // return the HTML code for the toolbar.
     return jQuery('<div class="row">')
+             // first five columns will contain the page selection widget
              .append(
                   jQuery('<div class="col-xs-5">')
                     .append(createLengthField(oSettings))
               ).append(
+                  // the last seven columdn contain the filter field and the
+                  // toolbar buttons.
                   jQuery('<div class="col-xs-7">')
                     .append(  
+                        // create an input group
                         jQuery('<div class="megx-table-button-bar input-group">')
+                        // from the filter field
                         .append(createFilterField(oSettings))
+                        // and a button group
                         .append(
                             jQuery('<div class="btn-group btn-group-sm tcell no-word-break">')
+                              // containing these buttons (when defined in the
+                              // JSON)
                               .append(createDownloadSelectedButton(toolbarButtons.downloadSelected))
                               .append(createDownloadAllButton(toolbarButtons.downloadAll))
                               .append(createColVisButton(oSettings))
@@ -180,6 +286,9 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
   }
 
   var table = jQuery('#' + tableID);
+  
+  // define the default configuration of the MegxTable,see Datables
+  // documentation for details (http://datatables.net/reference/option/)
   var defaultConfig = {
     columns : columns,
     responsive : true,
@@ -215,7 +324,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
         }
       });
       
-      // register listener for all modals referred to by the buttons
+      // register listener for all modal dialogs referred to by the buttons
       if (buttons.dataButtons.edit.modal) {
         registerListenersToModal(buttons.dataButtons.edit);
       }
@@ -226,7 +335,8 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     
   }
   
-  // create table buttons
+  // create table buttons and register 'M' as representation for the toolbar in
+  // the 'dom' attribute of the Datatables configuration
   jQuery.fn.dataTableExt.aoFeatures.push( {
     "fnInit": function( oSettings ) {
       return createToolbarButtons(buttons.toolbarButtons || {}, oSettings);
@@ -235,6 +345,10 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     "sFeature": "MegxButtons"
   } );
 
+  // if an URL is passed to the MegxTable the default configuration has to be
+  // extended to make Datatables aware that it is supposed to the get the data
+  // via AJAX call. See Datatables documentation for details
+  // (http://datatables.net/reference/option/)
   if (url) {
     jQuery.extend(defaultConfig, {
       "processing" : true,
@@ -245,5 +359,9 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
     });
   }
   
+  // Merge the Datatables configuration created in this function (defaultConfig)
+  // with any overrides specified by the user of the function and create the
+  // Datatables object.
+  // (datatablesConfiguration)
   this.dataTable = table.DataTable(jQuery.extend({}, defaultConfig, datatablesConfiguration));
 };
