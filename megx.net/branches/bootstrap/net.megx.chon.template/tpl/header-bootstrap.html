@@ -1,12 +1,13 @@
 <header>
-    <div class="container logo-bar">
-        <a href="$ctx.siteUrl/" class="col-xs-6"> <img
-            class="logo"
-            src="$ctx.siteUrl/images/logo.png">
-        </a> #if($this.showOSDLogo == 'true') <a href="http://oceansamplingday.org"
-            class="col-xs-6 hidden-xs text-right no-before"> <img class="logo "
-            src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
-        </a> #end
-    </div>
     #parse("pages/fragments/nav_bar-bootstrap.html")
 </header>
+<div class="login-bar">
+    <div class="container text-left">
+        #if($req.user)
+            Welcome $req.user.name!
+        #end
+        #if($req.servletRequset.isUserInRole("cmsAdmin"))
+        <a class="pull-right" href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit this node</a>
+        #end
+    </div>
+</div>

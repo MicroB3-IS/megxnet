@@ -104,28 +104,6 @@ jQuery.fn.extend({
  ******************************************************************************/
 /* contains commands which must be executed on each page load */
 jQuery(document).ready(function() {
-
-  main = jQuery('main');
-  mainMenu = jQuery('#main-menu');
-  mainOriginalPadding = parseInt(main.css("padding-top"));
-
-  // fix padding of main element depending on whether the navbar is fixed or not
-  mainMenu.on('affixed.bs.affix', function() {
-    main.css("padding-top", mainMenu.height() + mainOriginalPadding);
-  });
-  mainMenu.on('affix-top.bs.affix', function() {
-    main.css("padding-top", mainOriginalPadding);
-  });
-
-  // make navbar sticky on-scroll
-  mainMenu.affix({
-    offset : {
-      top : jQuery('header').height() - mainMenu.height()
-    }
-  });
-
-  // set active menu item
-  jQuery('#main-menu-navbar > ul > li:has(a[href|="' + ctx.base + '"])').addClass("active")
 });
 
 /*******************************************************************************

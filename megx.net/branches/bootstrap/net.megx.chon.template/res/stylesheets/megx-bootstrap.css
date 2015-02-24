@@ -2,10 +2,6 @@
 
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
 
-a.no-before:before {
-    content: none !important;
-}
-
 .no-word-break {
     white-space: nowrap;
     hyphens: none;
@@ -28,8 +24,16 @@ html {
     -ms-hyphens: auto;
 }
 
+body {
+    padding-top: 40px; 
+}
+
 section {
     margin-bottom: 2em;
+}
+
+footer section {
+    margin-bottom: 0;
 }
 
 .jumbotron-page {
@@ -37,59 +41,55 @@ section {
 }
 
 header {
-    z-index: 10;
+    width: 100%;
+    z-index: 1000;
+}
+
+.login-bar, 
+.login-bar a {
+    background-color: #777;
+    color: #DDD ;
+}
+
+.navmenu-fixed-right, .navbar-offcanvas {
+    border-width: 0px;
 }
 
 nav#main-menu.navbar {
     border-radius: 0px;
 }
 
-#main-menu.affix-top #logo-small {
-    visibility: hidden;
-}
-
 .navbar-brand {
     padding-right: 5px;
+    height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+/*     float: none; */
+/*     display: inline-block; */
 }
 
-#main-menu.affix img {
-    visibility: visible;
+a.navbar-brand.pull-right {
+    margin-left: 0 !important;
 }
 
-#main-menu #logo-small {
-    height: 50px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+#main-menu .logo-small {
+    height: 32px;
 }
 
 nav#main-menu {
     width: 100%;
-}
-
-#main-menu.affix {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
+    background-color: #f8f8f8;
 }
 
 .navbar {
     margin-bottom: 0px;
+    min-height: 40px;
 }
 
-.navbar-menu-title {
-    color: #777;
-    font-size: 0.6em;
+#main-menu-navbar {
+    min-height: 40px;
 }
 
-.navbar-toggle {
-    padding-top: 0px;
-}
-
-.logo {
-    margin: 10px 0;
-    height: 108px;
-}
 
 .footer {
     background-color: #f5f5f5;
@@ -116,10 +116,6 @@ nav#main-menu {
     float: right;
 }
 
-.footer-social a:before, .footer-social a:after {
-    content: none !important;
-}
-
 .social-facebook:hover {
     color: #3B5998;
 }
@@ -132,9 +128,10 @@ nav#main-menu {
     color: #f39c12;
 }
 
-main.container {
-    padding-top: 3em;
-    padding-bottom: 3em;
+
+#main-content.container {
+    padding-top: 2em;
+    padding-bottom: 2em;
 }
 
 a[href*="//"]:before {
@@ -142,6 +139,16 @@ a[href*="//"]:before {
     content: "\f08e";
     padding-right: 4pt;
     display: inline !important;
+}
+
+a.no-before:before {
+    content: none !important;
+    padding-right: 0;
+    display: inherit !important;
+}
+
+.footer-social a:before, .footer-social a:after {
+    content: none !important;
 }
 
 .dropdown-toggle:after {
@@ -158,12 +165,6 @@ a[href*="//"]:before {
     -moz-osx-font-smoothing: grayscale
 }
 
-@media ( max-width : 767px) {
-    .dropdown-toggle:after {
-        content: '\f054';
-        float: right;
-    }
-}
 
 /* BOOTSTRAP */
 @media ( min-width : 768px) {
@@ -174,29 +175,42 @@ a[href*="//"]:before {
         top: 2px;
     }
     .dropdown-toggle:after {
-        content: '\f078';
+        content: '\f0d7';
+        margin-left: -5px;
     }
-    .navbar-nav a {
-        margin: 0 10px;
-        padding-left: 0px !important;
-        padding-right: 0px !important;
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px !important;
+        padding-right: 5px !important;
     }
-    .navbar-nav li.active a {
-        margin: 0 10px;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+    
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    #main-menu-navbar {
+        text-align: center;
     }
 }
 
 @media ( max-width : 767px) {
+    .dropdown-toggle:after {
+        content: '\f054';
+        float: right;
+    }
     .dropdown-toggle .fa {
         float: right !important;
     }
     .navbar-toggle {
-        margin-left: 0.5em;
+        margin-left: 0px;
+        margin-bottom: 3px;
+        margin-top: 3px;
     }
-    #logo-small {
-        margin-top: 0.35em;
+    .navmenu-brand img {
+        height: 75px;
     }
 }
 
@@ -207,10 +221,6 @@ h2 {
 /*** JUMBOTRON ***/
 .jumbotron {
     background-color: #f5f5f5;
-}
-
-.jumbotron .container *:last-child {
-    margin-bottom: 0 !important;
 }
 
 .jumbotron h1 {
@@ -257,3 +267,4 @@ h2 {
     margin-left: .5em;
     margin-right: .5em;
 }
+
