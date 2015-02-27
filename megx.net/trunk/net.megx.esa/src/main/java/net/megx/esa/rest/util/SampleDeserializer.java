@@ -116,6 +116,10 @@ public class SampleDeserializer implements JsonDeserializer<Sample>{
 		sample.setSalinity(parseDouble(getString("salinity", jo)));
 		sample.setSampleSize(parseInt(getString("sampleSize", jo)));
 		sample.setSecchiDepth(parseDouble(getString("secchiDepth", jo)));
+		sample.setSamplingKit(Boolean.valueOf(getString("samplingKit", jo)));
+		sample.setMyosdNumber(parseInt(getString("myosdNumber", jo)));
+		sample.setFilterOne(parseDouble(getString("filterOne", jo)));
+		sample.setFilterTwo(parseDouble(getString("filterTwo", jo)));
 		
 		//Citizen app specific fields
 		sample.setPhosphate(parseDouble(getString("phosphate", jo)));

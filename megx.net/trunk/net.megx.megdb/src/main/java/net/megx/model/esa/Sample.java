@@ -49,6 +49,10 @@ public class Sample {
 	private SamplePhoto[] photos;
 	private String appVersion;
 	private Boolean fun;
+	private Boolean samplingKit;
+	private Integer myosdNumber;
+	private Double filterOne;
+	private Double filterTwo;
 
 	public String getAppVersion() {
 		return appVersion;
@@ -386,6 +390,38 @@ public class Sample {
 		this.lon = lon;
 	}
 
+	public Boolean getSamplingKit() {
+		return samplingKit;
+	}
+
+	public void setSamplingKit(Boolean samplingKit) {
+		this.samplingKit = samplingKit;
+	}
+
+	public Integer getMyosdNumber() {
+		return myosdNumber;
+	}
+
+	public void setMyosdNumber(Integer myosdNumber) {
+		this.myosdNumber = myosdNumber;
+	}
+
+	public Double getFilterOne() {
+		return filterOne;
+	}
+
+	public void setFilterOne(Double filterOne) {
+		this.filterOne = filterOne;
+	}
+
+	public Double getFilterTwo() {
+		return filterTwo;
+	}
+
+	public void setFilterTwo(Double filterTwo) {
+		this.filterTwo = filterTwo;
+	}
+
 	@Override
 	public int hashCode() {
 		final Integer prime = 31;
@@ -433,7 +469,9 @@ public class Sample {
 				+ lon + ", accuracy=" + accuracy + ", phosphate=" + phosphate
 				+ ", nitrate=" + nitrate + ", nitrite=" + nitrite + ", ph="
 				+ ph + ", photos=" + Arrays.toString(photos) + ", appVersion="
-				+ appVersion + ", fun=" + fun + "]";
+				+ appVersion + ", fun=" + fun + ", samplingKit=" + samplingKit
+				+ ", myosdNumber=" + myosdNumber + ", filterOne=" + filterOne
+				+ ", filterTwo=" + filterTwo + "]";
 	}
 
 }
