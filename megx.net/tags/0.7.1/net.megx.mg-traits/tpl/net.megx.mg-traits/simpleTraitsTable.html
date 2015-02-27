@@ -1,0 +1,45 @@
+#set( $baseWsURL = "${ctx.siteUrl}/ws/v1/mg-traits/v1.0.0" )
+#set( $allURL = "${baseWsURL}/all")
+
+<script type="text/javascript">
+  $(document).ready(function(){
+	  $('.downloadAllTraitsLink').click(function(){
+		  var url = $(this).attr('href');
+		  $.ajax(url,{
+			  headers: {          
+                 Accept : "text/csv; charset=utf-8",         
+                 "Content-Type": "text/csv; charset=utf-8"   
+	 		  },
+			  async: false
+		  });
+	  });
+  });
+</script>
+
+<div>
+	<table style="width: 100%">
+		<tr>
+			<td style="width: 80%;">
+				<span id="errorMessage" class="errorMsg">Could not retrieve data from server. Please contact us and try again later.</span>
+			</td>
+			<td style="width: 20%;">
+				<div class="downloadAllTraits">
+					<a href="$allURL" class="downloadAllTraitsLink">Download All</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="noTraitsSelected"><span>Please select some traits for download first.</span></div>
+
+<div id="simpleTraitsTableId"></div>
+
+<form id="sf" action="$ctx.siteUrl/ws/v1/mg-traits/v1.0.0/all" target="csvDownloadTarget" method="POST" style="display: none;">
+	<input type="hidden" class="traitIdsHolder" name="traitIds" />
+</form>
+
+<iframe name="csvDownloadTarget" style="display: none;"></iframe>
+
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.datatable-widget/js/megx-datatable-widget.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/mg-traits.min.js"></script>

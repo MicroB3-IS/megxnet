@@ -1,0 +1,129 @@
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.min.js"></script>
+
+
+
+<script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js" type="text/javascript"></script>
+
+<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+ 
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+ 
+        <tbody>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>$170,750</td>
+            </tr>
+            <tr>
+                <td>Ashton Cox</td>
+                <td>Junior Technical Author</td>
+                <td>San Francisco</td>
+                <td>66</td>
+                <td>2009/01/12</td>
+                <td>$86,000</td>
+            </tr>
+            <tr>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>2012/03/29</td>
+                <td>$433,060</td>
+            </tr>
+            <tr>
+                <td>Airi Satou</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>2008/11/28</td>
+                <td>$162,700</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+
+<h1>test <a href="#" name="t" class="mx-test">link</a></h1>
+
+
+#set($url = "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants")
+
+$ext.dataTable.renderServerSide(
+	['OSD ID', 'Site name', 'Institution', 'Site coordinator', 'Country', 'Action'], 
+	$url,
+	false,
+	"{
+	 aoColumns: [
+	 {
+	 	mData: 'osdID',
+	 	sClass: 'data-pad',
+	 	sWidth: '80px'
+	 }, { 
+	 	mData: 'siteName',
+	 	sClass: 'data-pad',
+	 	sWidth: '130px'
+	 }, {
+	 	mData: 'institution',
+	 	sClass: 'data-pad',
+	 	sWidth: '220px' 
+	 }, {
+	 	mData: 'siteCoordinator',
+	 	sClass: 'data-pad',
+	 	sWidth: '160px'
+	 }, {
+	 	mData: 'country',
+	 	sClass: 'data-pad',
+	 	sWidth: '110px'
+	 }, {
+	 	mData: 'id',
+	 	sClass: 'center',
+	 	sWidth: '130px',
+	 	mRender: function(id){
+	 		#if($req.user && $req.servletRequset.isUserInRole('admin'))
+	 			var editUrl = '$ctx.siteUrl/osd-registry/add?id=' + id;
+	 			var deleteUrl = '$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/deleteParticipant?id=' + id;
+	 			return '<a href=\'#\' class=\'clicktest\' name=' + id + '>View</a> / <a href=' + editUrl + '>Edit</a> / <a href=\'#\' class=\'deleteParticipantClass\' id=' + id + '>Delete</a>';
+ 			#else
+ 				return '<a href=\'#\' class=\'clicktest\' name=' + id + '>View</a>';
+			#end
+	 	}
+	 }]
+}")
+
+<div id="deleteDialog">
+	<p class="deleteRecordQst">Are you sure you want to delete this record?</p>
+</div>
+
+#parse("net.megx.osd.registry/viewDialog.html")

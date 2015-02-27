@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>parent-microb3-is</artifactId>
+        <groupId>net.megx</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../net.megx/pom.xml</relativePath>
+    </parent>
+
+    <groupId>net.megx</groupId>
+    <artifactId>net.megx.form-widget</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>eclipse-plugin</packaging>
+    <name>net.megx.form-widget</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <configuration>
+                    <minimize>true</minimize>
+                    <jsDestinationFolder>res/net.megx.form-widget/js</jsDestinationFolder>
+                    <contextFolder>${basedir}</contextFolder>
+                    <wroFile>wro.xml</wroFile>
+                    <ignoreMissingResources>false</ignoreMissingResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
