@@ -6,13 +6,15 @@
         "contactName": {
             "title": "Contact Name:",
             "type": "string",
-            "required": true
+            "required": true,
+            "readonly": true
         },
         "contactEmail": {
         	"title": "Contact Email:",
         	"type": "string",
         	"format": "email",
-        	"required": true
+        	"required": true,
+        	"readonly": true
          },
          "contactAddress":{
          	"title": "Contact Address:",

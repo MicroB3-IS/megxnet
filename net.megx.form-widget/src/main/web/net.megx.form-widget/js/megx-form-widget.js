@@ -1,15 +1,15 @@
-MegxFormWidget = function(cfg) {
+Megx.FormWidget = function(cfg) {
   jQuery(
       "<div id='"
           + cfg.target
           + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>")
       .insertBefore("#" + cfg.target);
   Alpaca.logLevel = Alpaca.ERROR;
-  this.cfg = cfg;
+  Megx.FormWidget.cfg = cfg;
   this.renderForm(cfg);
 }
 
-MegxFormWidget.prototype.submitForm = function(field) {
+Megx.FormWidget.prototype.submitForm = function(field) {
 
   var self = this;
   var form = field.form;
@@ -18,10 +18,10 @@ MegxFormWidget.prototype.submitForm = function(field) {
 
   if (form) {
 
-	jQuery(".alpaca-control").keyup(function() {
-		if (field.isValid(true)) {
-			form.enableSubmitButton();
-		}
+    jQuery(".alpaca-control").keyup(function() {
+      if (field.isValid(true)) {
+        form.enableSubmitButton();
+      }
     });
 
     form.registerSubmitHandler(function(e, form) {
@@ -30,7 +30,7 @@ MegxFormWidget.prototype.submitForm = function(field) {
     var id = "#" + form.id;
 
     var submitButton;
-    if (MegxFormWidget.cfg.wizard) {
+    if (Megx.FormWidget.cfg.wizard) {
       submitButton = jQuery('button[data-alpaca-wizard-button-key="submit"]', id);
     } else {
       submitButton = jQuery('button[type="submit"]', id);
@@ -42,9 +42,9 @@ MegxFormWidget.prototype.submitForm = function(field) {
     submitButton.addClass("btn-primary");
 
     submitButton.click(function() {
-      
+
       form.disableSubmitButton();
-	  if (field.isValid(true)) {      
+      if (field.isValid(true)) {
 
         var data = field.getValue();
         data.json = JSON.stringify(field.getValue());
@@ -90,11 +90,11 @@ MegxFormWidget.prototype.submitForm = function(field) {
         });
       }
     });
-    jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
+    jQuery("#" + Megx.FormWidget.cfg.target + "-loading-animation").remove();
   }
 }
 
-MegxFormWidget.prototype.renderForm = function(cfg) {
+Megx.FormWidget.prototype.renderForm = function(cfg) {
   var self = this;
 
   var alpacaOptions = {
@@ -102,7 +102,7 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
     "schemaSource" : cfg.schemaLocation,
     "view" : {
       "parent" : cfg.parentView,
-      "displayReadonly" : true,
+      "displayReadonly" : true
     },
 
     "isDynamicCreation" : true
@@ -117,6 +117,11 @@ MegxFormWidget.prototype.renderForm = function(cfg) {
     alpacaOptions.postRender = cfg.postRender;
   } else {
     alpacaOptions.postRender = self.submitForm;
+  }
+  
+  // pre-fill form if datasource is given
+  if (cfg.data) {
+    alpacaOptions.data = cfg.data;
   }
 
   jQuery("#" + cfg.target).alpaca(alpacaOptions);

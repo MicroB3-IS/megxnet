@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+
+  <group name='megx-form-widget-${project.version}.min'>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/moment.2.9.0.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/bootstrap-datetimepicker.3.1.3.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/handlebars.1.3.0.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/alpaca.1.5.7.min.js</js>
+    <js>/src/main/web/net.megx.form-widget/js/megx-form-widget.js</js>
+
+    <!-- MEGX specific styling -->
+    <css minimize="false">/src/main/web/net.megx.form-widget/css/alpaca.1.5.7.min.css</css>
+    <css minimize="false">/src/main/web/net.megx.form-widget/css/bootstrap-datetimepicker.3.1.3.min.css</css>
+    <css>/src/main/web/net.megx.form-widget/css/megx-form-widget.css</css>
+  </group>
+</groups>

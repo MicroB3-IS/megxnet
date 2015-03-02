@@ -18,12 +18,14 @@
         "date_taken": {
             "title": "Date",
             "description": "Please note down the date on which you took your sample.",
+            "type": "string",
             "format": "date",
             "required": true
         },
         "time_taken": {
             "title": "Time",
             "description": "Please note down your local time of the moment you took your sample.",
+            "type": "string",
             "format": "time",
             "required": true
         },
