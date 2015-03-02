@@ -261,10 +261,3 @@ h2 {
 #toast-container.toast-bottom-full-width>div, #toast-container.toast-top-full-width>div {
     width: 70%
 }
-
-/*** Alpaca ***/
-.alpaca-form-button  {
-    margin-left: .5em;
-    margin-right: .5em;
-}
-

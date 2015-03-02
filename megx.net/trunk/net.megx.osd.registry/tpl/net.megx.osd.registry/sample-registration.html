@@ -1,18 +1,3 @@
-<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
-<link href="$ctx.siteUrl/net.megx.form-widget/css/alpaca-1.1.3.css" rel="stylesheet" type="text/css">
-<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" type="text/css">
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-<!-- TODO: maybe delete -->
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.min.js"></script>
-
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/jquery.tmpl-1.0.0pre.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/alpaca-full-1.1.3.min.js"></script>
-<!-- <script type="text/javascript" src="http://alpacajs.org/lib/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script> 
-This is wrong script,instead loading the script we are loading alpaca index.html and it throws error-->
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.1.js"></script>
-
 <div style="padding: 15px">
 
 	<h1>OSD Sample and Metadata Registration</h1>
@@ -52,10 +37,12 @@ This is wrong script,instead loading the script we are loading alpaca index.html
 </div>
 
 <script>
-	var MegxFormWidget = new MegxFormWidget({
+jQuery(document).ready(function() {
+	new Megx.FormWidget({
 		target : "osd-sample-form",
 		schemaLocation : ctx.siteUrl + "/net.megx.osd.registry/data/osd_schema.json",
 		optionsLocation : ctx.siteUrl + "/net.megx.osd.registry/data/osd_options.json",
-		parentView: "VIEW_JQUERYUI_CREATE",
+		parentView: "bootstrap-create",
 	});
+});
 </script>
