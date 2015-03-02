@@ -1,132 +1,124 @@
-var MegxFormWidget = function(cfg) {
-    jQuery(
-            "<div id='" + cfg.target + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>")
-        .insertBefore("#" + cfg.target);
-    Alpaca.logLevel = Alpaca.ERROR;
-    Alpaca.defaultUI = "jquery-ui";
-    this.cfg = cfg;
-    this.renderForm(cfg);
-
-};
+MegxFormWidget = function(cfg) {
+  jQuery(
+      "<div id='"
+          + cfg.target
+          + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>")
+      .insertBefore("#" + cfg.target);
+  Alpaca.logLevel = Alpaca.ERROR;
+  this.cfg = cfg;
+  this.renderForm(cfg);
+}
 
 MegxFormWidget.prototype.submitForm = function(field) {
 
-    var self = this;
-    var form = field.form;
-    var url = form.attributes.action;
-    var ajaxMethod = form.attributes.method;
+  var self = this;
+  var form = field.form;
+  var url = form.attributes.action;
+  var ajaxMethod = form.attributes.method;
 
-    if (form) {
-    	
-    	
-    	jQuery(".alpaca-fieldset").keyup(function() {
-            if (field.isValid(true)) {
-            	form.enableSubmitButton();
-            }
-        });
+  if (form) {
 
-        form.registerSubmitHandler(function(e, form) {
-            return false;
-        });
-        var id = "#" + form.id;
+	jQuery(".alpaca-control").keyup(function() {
+		if (field.isValid(true)) {
+			form.enableSubmitButton();
+		}
+    });
 
-        var submitButton;
-        if (MegxFormWidget.cfg.wizard) {
-            submitButton = jQuery('.alpaca-wizard-button-done', id);
-        } else {
-            submitButton = jQuery('button[type="submit"]', id);
-        }
-        // hack to change the CSS classes of the submit button
-        // might be possible to do this using Alpaca templates
-        // but could not figure out how
-        submitButton.removeClass("btn-default");
-        submitButton.addClass("btn-primary");
+    form.registerSubmitHandler(function(e, form) {
+      return false;
+    });
+    var id = "#" + form.id;
 
-        submitButton.click(function() {
-        	
-        	form.disableSubmitButton();
-
-            if (field.isValid(true)) {
-
-                var data = field.getValue();
-                data.json = JSON.stringify(field.getValue());
-                jQuery.ajax({
-                    type: ajaxMethod,
-                    url: url,
-                    data: data
-                }).success(function(data, textStatus, jqXHR) {
-
-                    if (data.redirectUrl) {
-                    	toastr.info("Your submission was successfull. Thanks!");
-                    	setTimeout(function() {
-                    		document.location.href = data.redirectUrl;
-                		}, 3000);
-                    } else {
-
-                        if (data.message) {
-                        	toastr.info(data.message);
-                            setTimeout(function() {
-                            	document.location.href = ctx.siteUrl;
-                    		}, 3000);
-                        } else {
-                        	toastr.info("Your submission was successfull. Thanks!");
-                            setTimeout(function() {
-                    			document.location.href = ctx.siteUrl;
-                    		}, 3000);
-                        }
-                    }
-                }).error(function(data, textStatus, jqXHR) {
-                    if (data.responseJSON) {
-
-                        var responseMsg = data.responseJSON;
-
-                        if (responseMsg.redirectUrl) {
-                            document.location.href = responseMsg.redirectUrl;
-                        } else {
-
-                            if (responseMsg.message) {
-                                toastr.error(responseMsg.message, jqXHR);
-                            } else {
-                                toastr.error("Server error, please try again later.", jqXHR);
-                            }
-                        }
-                    } else {
-                        toastr.error("Server error, please try again later.", jqXHR);
-                    }
-                }).always(function(data, textStatus, jqXHR) {
-                    form.enableSubmitButton();
-                });
-            }
-        });
-        jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
+    var submitButton;
+    if (MegxFormWidget.cfg.wizard) {
+      submitButton = jQuery('button[data-alpaca-wizard-button-key="submit"]', id);
+    } else {
+      submitButton = jQuery('button[type="submit"]', id);
     }
-};
+    // hack to change the CSS classes of the submit button
+    // might be possible to do this using Alpaca templates
+    // but could not figure out how
+    submitButton.removeClass("btn-default");
+    submitButton.addClass("btn-primary");
+
+    submitButton.click(function() {
+      
+      form.disableSubmitButton();
+	  if (field.isValid(true)) {      
+
+        var data = field.getValue();
+        data.json = JSON.stringify(field.getValue());
+        jQuery.ajax({
+          type : ajaxMethod,
+          url : url,
+          data : data
+        }).success(function(data, textStatus, jqXHR) {
+
+          if (data.redirectUrl) {
+            alert("Your submission was successfull. Thanks!");
+            document.location.href = data.redirectUrl;
+          } else {
+
+            if (data.message) {
+              alert(data.message);
+              document.location.href = ctx.siteUrl;
+            } else {
+              alert("Your submission was successfull. Thanks!");
+              document.location.href = ctx.siteUrl;
+            }
+          }
+        }).error(function(data, textStatus, jqXHR) {
+          if (data.responseJSON) {
+
+            var responseMsg = data.responseJSON;
+
+            if (responseMsg.redirectUrl) {
+              document.location.href = responseMsg.redirectUrl;
+            } else {
+
+              if (responseMsg.message) {
+                toastr.error(responseMsg.message, jqXHR);
+              } else {
+                toastr.error("Server error, please try again later.", jqXHR);
+              }
+            }
+          } else {
+            toastr.error("Server error, please try again later.", jqXHR);
+          }
+        }).always(function(data, textStatus, jqXHR) {
+          form.enableSubmitButton();
+        });
+      }
+    });
+    jQuery("#" + MegxFormWidget.cfg.target + "-loading-animation").remove();
+  }
+}
 
 MegxFormWidget.prototype.renderForm = function(cfg) {
-    var self = this;
+  var self = this;
 
-    var alpacaOptions = {
-        "optionsSource": cfg.optionsLocation,
-        "schemaSource": cfg.schemaLocation,
-        "view": {
-            "parent": cfg.parentView,
-            "displayReadonly": true,
-        },
+  var alpacaOptions = {
+    "optionsSource" : cfg.optionsLocation,
+    "schemaSource" : cfg.schemaLocation,
+    "view" : {
+      "parent" : cfg.parentView,
+      "displayReadonly" : true,
+    },
 
-        "isDynamicCreation": true
-    };
+    "isDynamicCreation" : true
+  };
 
-    // now adding wizard to view in case we have one
-    if (typeof cfg.wizard != "undefined" && cfg.wizard) {
-        alpacaOptions.view.wizard = cfg.wizard;
-    }
+  // now adding wizard to view in case we have one
+  if (typeof cfg.wizard != "undefined" && cfg.wizard) {
+    alpacaOptions.view.wizard = cfg.wizard;
+  }
 
-    if (typeof cfg.postRender != "undefined" && cfg.postRender) {
-        alpacaOptions.postRender = cfg.postRender;
-    } else {
-        alpacaOptions.postRender = self.submitForm;
-    }
+  if (typeof cfg.postRender != "undefined" && cfg.postRender) {
+    alpacaOptions.postRender = cfg.postRender;
+  } else {
+    alpacaOptions.postRender = self.submitForm;
+  }
 
-    jQuery("#" + cfg.target).alpaca(alpacaOptions);
+  jQuery("#" + cfg.target).alpaca(alpacaOptions);
 
-};
+}

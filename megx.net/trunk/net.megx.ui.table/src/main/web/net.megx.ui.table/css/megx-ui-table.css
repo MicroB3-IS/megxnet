@@ -1,0 +1,66 @@
+/* Hide the tooltip content by default */
+[data-tooltip]:before, [data-tooltip]:after {
+    visibility: hidden;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Position tooltip above the element */
+[data-tooltip]:before {
+    position: absolute;
+    bottom: 110%;
+    right: 0%;
+    margin-left: -80px;
+    width: 160px;
+    padding: .5em 1.5em;
+    border-radius: 4px;
+    background-color: #000;
+    color: #fff;
+    text-shadow: none;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: .85em;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before, [data-tooltip]:hover:after {
+    visibility: visible;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+}
+
+.megx-table-button-bar {
+    float: right;
+}
+
+.megx-table-button-bar .btn-group {
+    display: table-cell !important;
+}
+
+.megx-table-button-bar .btn-group button, .megx-table-button-bar .btn-group a {
+    display: inline-block !important;
+    float: none !important;
+}
+
+.megx-table-button-bar>*:first-child {
+    border-right: 0;
+}
+
+.megx-table-button-bar .download-all {
+    text-shadow:3px -3px 0px #999;
+}
+
+.megx-table-button-bar div.btn-group  *:first-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* re-enable word wrap for some datatable elements to prevent overflows on mobile devices*/
+div.dataTables_info, table.dataTable tr.child ul li {
+    white-space: normal;
+}
