@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+
+  <group name='osdRegistry-${project.version}.min'>
+    <js>/src/main/web/net.megx.osd.registry/js/jquery.validate.min.js</js>
+    <js>/src/main/web/net.megx.osd.registry/js/osdRegistry.js</js>
+    
+    <!-- without including mapwidget.css the OpenLayer JS is broken (WTF?!) -->
+    <!-- needs to be removed once the Map CSS/JS is controlled via the hasMap flag -->
+    <css>/src/main/web/net.megx.osd.registry/stylesheets/mapwidget.css</css>
+    <css>/src/main/web/net.megx.osd.registry/stylesheets/osdRegistry-bootstrap.css</css>
+  </group>
+</groups>

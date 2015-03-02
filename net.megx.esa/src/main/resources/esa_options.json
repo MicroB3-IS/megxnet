@@ -17,13 +17,12 @@
         "version": {
             "type": "hidden"
         },
+        "origin": {
+            "type": "hidden"
+        },
+        
         "date_taken": {
-            
-            "dateFormat": "yy-mm-dd",
-             
-            "datepicker": {
-                "dateFormat": "yy-mm-dd" 
-            }
+            "dateFormat": "yy-mm-dd"
         },
         "time_taken": {
             "maskString": "99:99",
