@@ -164,8 +164,12 @@ a.no-before:before {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }
-
-
+.home-section{
+	margin-top:40px;
+}
+.home-osd-button{
+	margin-top:30px;
+}
 /* BOOTSTRAP */
 @media ( min-width : 768px) {
     .dropdown:hover .dropdown-menu {
