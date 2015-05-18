@@ -18,6 +18,8 @@
  *          (https://colab.mpi-bremen.de/wiki/display/microb3/net.megx.ui.table).
  * @param url
  *          the URL used by Datatables to retrieve the table data.
+ * @param data
+ *          the data used by Datatables to render the table data.
  * @param datatablesConfiguration
  *          allows to override all Datatables options set by this module. The
  *          usage of this parameter is discouraged, better extend this module to
@@ -25,7 +27,7 @@
  *          be used with extreme care as it can easily break the module.
  * 
  */
-Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguration) {
+Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfiguration) {
 
   /**
    * Default Bootstrap CSS classes for simple buttons.
@@ -45,8 +47,8 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
    * @returns {String} the HTML code for the button
    */
   createButton = function(buttonDescription, data, icon) {
-    if (button) {
-      if (button.link) {
+    if (buttonDescription) {
+      if (buttonDescription.link) {
         return '<a role="button" type="button"'   
              + ' class="' + BUTTON_CLASSES + '"'     
              + ' data-tooltip="' + buttonDescription.label + '"'
@@ -55,7 +57,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
              + '><span aria-hidden="true"'
              + ' class="fa ' + icon + '"'
              + '></span></a>';
-      } else if (button.modal) {
+      } else if (buttonDescription.modal) {
         
         return '<button type="button" data-toggle="modal"'
              + ' class="' + BUTTON_CLASSES + '"' 
@@ -236,7 +238,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
      */
     createDownloadSelectedButton = function(downloadSelectedButton) {
       if (downloadSelectedButton) {
-        return createMegxButton(downloadSelectedButton, "fa-download");
+        return createMegxButton(downloadSelectedButton, "fa-download download-selected");
       } else {
         return "";
       }
@@ -359,6 +361,12 @@ Megx.MegxTable = function(tableID, columns, buttons, url, datatablesConfiguratio
       serverSide : false,
     });
   }
+  
+  if (data) {
+	    jQuery.extend(defaultConfig, {
+	      "data" : data
+	    });
+	  }
   
   // Merge the Datatables configuration created in this function (defaultConfig)
   // with any overrides specified by the user of the function and create the
