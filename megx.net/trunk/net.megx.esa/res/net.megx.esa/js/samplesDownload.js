@@ -18,9 +18,8 @@ $(document).ready(function () {
          }
     });
 
-    $('div.dataTables_length').append('<a class="selectAllSamplesLnk" href="#">Select all</a>');
-    $('div.dataTables_length').append('<a class="deselectAllSamplesLnk" href="#">Deselect all</a>');
-    $('div.dataTables_paginate').before('<a class="downloadSelected" href="#">Download selected data</a>');
+    $("[name*='samples-table_length']").after('<a class="selectAllSamplesLnk" href="#">Select all</a>');
+    $("[name*='samples-table_length']").after('<a class="deselectAllSamplesLnk" href="#">Deselect all</a>');
 
     $('a.selectAllSamplesLnk').click(function () {
         var allRows = samplesTable.dataTable().fnGetNodes();
@@ -54,7 +53,7 @@ $(document).ready(function () {
         resizable: false,
         autoOpen: false,
         height: 150,
-        width: 376,
+        width: 400,
         modal: true,
         title: "Download samples",
         buttons: {
@@ -66,7 +65,7 @@ $(document).ready(function () {
 
     $('.ui-dialog').css('z-index', '10000');
     
-    $('a.downloadSelected').click(function () {
+    $('.download-selected').parent().click(function () {
         var allRows = samplesTable.dataTable().fnGetNodes();
         var selectedRows = $(allRows).filter('tr.row_selected');
 

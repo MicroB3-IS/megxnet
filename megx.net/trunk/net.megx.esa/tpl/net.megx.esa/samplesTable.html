@@ -12,12 +12,7 @@
 	</table>
 </div> -->
 
-
-<div id="columnsDialog">
-	<p class='columnEditingNote'>Table cannot contain more than 7 or less than 4 columns due to readability purposes.</p>
-</div>
-
-<div>
+<!-- <div>
 	<table style="width: 100%">
 		<tr>
 			<td style="width: 80%;">
@@ -28,14 +23,15 @@
 			</td>
 		</tr>
 	</table>
-</div>
+</div> -->
 
 <div id="noSamplesSelected"><span>Please select some samples for download first.</span></div>
 
-<table id="samplesTableId" class="display">
+<table id="samples-table" class="table table-striped table-hover table-bordered dt-responsive megx_dataTable">
 	<thead>
 		<tr>
-			<th></th>
+			<th>View details</th>
+			<th>Select to download</th>
 			<th>Observer</th>
 			<th>Sample name</th>
 			<th>Date of creation</th>
@@ -71,6 +67,204 @@
 	</tbody>
 </table>
 
+<script type="text/javascript">
+jQuery(document).ready(
+	    function() {
+	        (function() {
+
+	            var columns = [{
+	                data: 'label',
+	                width: "3em",
+	                render: function(id) {
+	                    return '';
+	                },
+	                sortable: false
+	            }, {
+	                data: 'id',
+	                render: function(id) {
+	                    return '<input class=\'downloadSample\' type=\'checkbox\' value=\'' + id + '\'>';
+	                },
+	                width: "5em",
+	                className: "text-center",
+	                sortable: false
+	            }, {
+	                data: 'collectorId',
+	                width: "7em",
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'label',
+	                width: "7em",
+	            }, {
+	                data: 'taken',
+	                width: "7em",
+	            }, {
+	                data: 'biome',
+	                width: "7em",
+	            }, {
+	                data: 'weatherCondition',
+	                width: "8em",
+	            }, {
+	                data: 'feature',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'airTemperature',
+	                width: "5em",
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'lat',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'lon',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'barcode',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'elevation',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'collection',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'permit',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'material',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'secchiDepth',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'samplingDepth',
+	                width: "7em",
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'waterDepth',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'sampleSize',
+	                className: "none",
+	                visible: false
+	            }, {
+	                data: 'waterTemperature',
+	                width: "5em",
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'conductivity',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'windSpeed',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'salinity',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'comment',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'accuracy',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'phosphate',
+	                className: "none",
+	                visible: false,
+	                className: "none",
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'nitrate',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'nitrite',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'ph',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'id',
+	                className: 'center',
+	                render: function(id) {
+	                    var viewUrl = ctx.siteUrl + '/osd-app/sampleDetails?sampleId=' + id;
+	                    return '<a href=' + viewUrl + ' class=\'viewSampleClass\'>View more</a>';
+	                }
+	            }];
+
+	            var buttons = {
+	                toolbarButtons: {
+	                    downloadSelected: {
+	                        tooltip: "Download Selected",
+	                    }
+	                }
+	            };
+	            var data = {};
+
+	            var datatablesConfigOverride = {};
+
+	            var table = new Megx.MegxTable("samples-table", columns, buttons,
+	                "$ctx.siteUrl/ws/v1/esa/v1.0.0/allSamples", data, datatablesConfigOverride);
+	        })();
+	    });
+</script>
+
 
 <form id="sf" action="$ctx.siteUrl/ws/v1/esa/v1.0.0/downloadSamples.csv" target="csvDownloadTarget" method="POST" style="display: none;">
 	<input type="hidden" class="sampleIdsHolder" name="sampleIds" />
@@ -79,4 +273,4 @@
 <iframe name="csvDownloadTarget" style="display: none;"></iframe>
 
 <script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesTableCustomization.min.js"></script>
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesDownload.min.js"></script>
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.esa/js/samplesDownload.js"></script>
