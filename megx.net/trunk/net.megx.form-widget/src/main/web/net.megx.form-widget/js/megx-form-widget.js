@@ -55,15 +55,15 @@ Megx.FormWidget.prototype.submitForm = function(field) {
         }).success(function(data, textStatus, jqXHR) {
 
           if (data.redirectUrl) {
-            alert("Your submission was successfull. Thanks!");
+            toastr.success("Your submission was successfull. Thanks!");
             document.location.href = data.redirectUrl;
           } else {
 
             if (data.message) {
-              alert(data.message);
+              toastr.success(data.message);
               document.location.href = ctx.siteUrl;
             } else {
-              alert("Your submission was successfull. Thanks!");
+              toastr.success("Your submission was successfull. Thanks!");
               document.location.href = ctx.siteUrl;
             }
           }
