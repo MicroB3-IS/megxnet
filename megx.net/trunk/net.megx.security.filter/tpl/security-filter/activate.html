@@ -1,8 +1,8 @@
-<div style="padding: 15px;">
+<div class="container">
 <h2>Account activation</h2>
 #if ( $ext.registration.activateAccount() )
  <p>Your account has been successfully activated.<br/>
- Please proceed to the <a href="$ctx.siteUrl/login">login</a> page to login to Megx.net.</p>
+ Please proceed to the <a href="$ctx.siteUrl/login" class="btn btn-primary btn-xs">login</a> page to login to Megx.net.</p>
 #else
 	#if ( $ext.registration.reason == "verification-code-missing" )
 		<p>The activation code is missing.<br/>
