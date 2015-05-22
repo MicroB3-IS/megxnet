@@ -83,6 +83,9 @@
 		<result column="ph" property="ph" />
 		<result column="secchi_depth" property="secchiDepth" />
 		<result column="material" property="material" />
+		<result column="myosd_number" property="myosdNumber" />
+		<result column="filter_one" property="filterOne" />
+		<result column="filter_two" property="filterTwo" />
 	</resultMap>
 
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
@@ -174,7 +177,8 @@
 		water_temperature, conductivity,
 		wind_speed, salinity, comment,
 		accuracy,
-		phosphate, nitrate, nitrite, ph, secchi_depth, material
+		phosphate, nitrate, nitrite, ph, secchi_depth, material,
+		myosd_number, filter_one, filter_two
 	</sql>
 
 	<sql id="esa_sample_images_columns_all">

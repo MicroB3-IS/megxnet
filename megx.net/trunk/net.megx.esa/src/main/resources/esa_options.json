@@ -10,7 +10,7 @@
         },
         "buttons": {
             "submit": {},
-            "reset": {} 
+            "reset": {}
         }
     },
     "fields": {
@@ -27,17 +27,36 @@
             "timeFormat": "HH:mm",
             "inputType": "time"
         },
-        "gps_accuracy" : {
+        "gps_accuracy": {
             "allowOptionalEmpty": true
         },
-        "weather_condition":{
-         "type": "select",
-          "data_source": "${megx.site.url}/net.megx.esa/data/weather_options.json"  
+        "sampling_kit": {
+            "type": "checkbox",
+            "rightLabel": "Do you filter water using the MyOSD sampling kit?"
         },
-        "ph":{
+        "myosd_number": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "filter_one": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "filter_two": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "weather_condition": {
+            "type": "select",
+            "data_source": "${megx.site.url}/net.megx.esa/data/weather_options.json"
+        },
+        "ph": {
             "validate": false
         },
-        "secchi_depth":{
+        "secchi_depth": {
             "validate": false
         },
         "comment": {

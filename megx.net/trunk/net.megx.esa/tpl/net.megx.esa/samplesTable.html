@@ -60,6 +60,9 @@
 			<th>Nitrate</th>
 			<th>Nitrite</th>
 			<th>pH</th>
+			<th>MyOsd number</th>
+			<th>Filter one</th>
+			<th>Filter two</th>
 			<th>Action</th>
 		</tr>
 	</thead>
@@ -154,6 +157,8 @@ jQuery(document).ready(
 	                }
 	            }, {
 	                data: 'samplingDepth',
+	                className: "none",
+	                visible: false,
 	                width: "7em",
 	                render: function(id) {
 	                    return id || '-';
@@ -234,6 +239,28 @@ jQuery(document).ready(
 	                }
 	            }, {
 	                data: 'ph',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'myosdNumber',
+	                render: function(id) {
+	                	if(isNaN(id)){
+	                		id = '';
+	                	}
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'filterOne',
+	                className: "none",
+	                visible: false,
+	                render: function(id) {
+	                    return id || '-';
+	                }
+	            }, {
+	                data: 'filterTwo',
 	                className: "none",
 	                visible: false,
 	                render: function(id) {
