@@ -59,13 +59,39 @@
         },
         "sample_name": {
             "title": "Sample name",
-            "description": "",
+            "description": "Please enter a name you want to give to your sample.",
             "type": "string",
             "required": true
         },
+        "sampling_kit" : {
+        	 "description": "Please select if you have filtered water using MyOSD sampling kit.",
+        	 "required": false
+        },
+        "myosd_number": {
+        	"title" : "MyOSD number",
+        	"description" : "Please give the number from your pre-printed labels which you also put on your filters",
+        	"type" : "number",
+        	"required": true,
+        	"dependencies": "sampling_kit"
+          
+        },
+          "filter_one": {
+        	"title" : "Filter1: volume of filtered water(ml)",
+        	"description" : "Please give total amount of water you pumped through the filter. Unit: ml",
+        	"type" : "number",
+        	"required": true,
+        	"dependencies": "sampling_kit"
+        },
+          "filter_two": {
+        	"title" : "Filter2: volume of filtered water(ml)",
+        	"description" : "Please give total amount of water you pumped through the filter. Unit: ml",
+        	"type" : "number",
+            "required": true,
+        	"dependencies": "sampling_kit"
+        },
         "weather_condition": {
             "title": "Weather condition",
-            "description": "Desribe with keywords the current weather condition",
+            "description": "Describe with keywords the current weather condition",
             "type": "string",
             "enum": [
                 "No data",
@@ -97,13 +123,13 @@
             "title": "Air Temperature",
             "required": false,
             "type": "number",
-            "description": "Temperature of the air  in degress Celsius"
+            "description": "Temperature of the air  in degrees Celsius"
         },
         "water_temperature": {
             "title": "Water temperature",
             "required": false,
             "type": "number",
-            "description": "Temperature of water in degress Celsius"
+            "description": "Temperature of water in degrees Celsius"
         },
         "wind_speed": {
             "title": "Wind Speed",

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+jQuery(document).ready(function () {
     //Atmosphere framework specific variables
     var socket = atmosphere;
     var request = {

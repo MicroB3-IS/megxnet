@@ -352,6 +352,10 @@ public class EarthSamplingAppAPI extends BaseRestService {
    * @param water_temperature the water temperature value
    * @param weather_condition  the weather condition
    * @param wind_speed  the wind speed value
+   * @param sampling_kit the sampling kit value
+   * @param myosd_number the my osd number value
+   * @param filter_one the filter one value
+   * @param filter_two the filter two value
    */
     @Path("observation")
     @POST
@@ -379,6 +383,10 @@ public class EarthSamplingAppAPI extends BaseRestService {
             @FormParam("water_temperature") String waterTemperature,
             @FormParam("weather_condition") String weatherCondition,
             @FormParam("wind_speed") String windSpeed,
+            @FormParam("sampling_kit") Boolean samplingKit,
+            @FormParam("myosd_number") String myosdNumber,
+            @FormParam("filter_one") String filterOne,
+            @FormParam("filter_two") String filterTwo,
             @Context HttpServletRequest request ) {
 
         if (version == null || version.isEmpty()) {
@@ -511,10 +519,13 @@ public class EarthSamplingAppAPI extends BaseRestService {
         sample.setWeatherCondition(weatherCondition);
         sample.setWindSpeed(parseDouble(windSpeed));
         sample.setTaken(taken);
-        sample.setModified(modified);// test
+        sample.setModified(modified);
         sample.setCollectorId("anonymous");
         sample.setUserName(sampleCreator);
-        
+        sample.setSamplingKit(samplingKit);
+        sample.setMyosdNumber(parseInteger(myosdNumber));
+        sample.setFilterOne(parseDouble(filterOne));
+        sample.setFilterTwo(parseDouble(filterTwo));
         
         try {
             savedSample = service.storeSingleSample(sample);
@@ -638,7 +649,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
         String tweet = greetings[idx] + "! New observation reached us from "
                 + lat + ", " + lon + " at " + dateTaken + ". See " + link
-                + " @Micro_B3 #osd2014";
+                + " @Micro_B3 #osd2015";
         this.twitterService.geoTweet(tweet, latitude, longitude);
     }
 
@@ -655,6 +666,14 @@ public class EarthSamplingAppAPI extends BaseRestService {
         d = Double.parseDouble(dbl);
       }
       return d;
+    }
+    
+    private Integer parseInteger(String num){
+    	Integer i = null;
+    	if(num != null && !num.equals("")){
+    		i = Integer.parseInt(num);
+    	}
+    	return i;
     }
 
     /**
