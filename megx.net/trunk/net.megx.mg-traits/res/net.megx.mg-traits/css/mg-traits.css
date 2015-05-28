@@ -1,3 +1,7 @@
+#errorMessage{
+	display: none;
+}
+
 .downloadLink{
 	text-align: center;
 	padding-top: 1em;
@@ -7,31 +11,22 @@
 	text-align: right;
 	font-size: 18px;
 }
-.errorMsg{
-	display: none; 
-	font-size: 14px; 
-	color: #FF0000; 
-	margin-left: 234px;
-}
+
 .selectAllTraitsLnk{
 	margin-left: 45px;
-	color: #0000ff !important;
+	color: #337ab7 !important;
 	font-size: 14px;
 }
 .deselectAllTraitsLnk{
 	margin-left: 45px;
-	color: #0000ff !important;
+	color: #337ab7 !important;
 	display: none;
 	font-size: 14px;
 }
 div.dataTables_info{
 	width: 42% !important;
 }
-.downloadSelected{
-	margin-right: 100px;
-	color: #0000ff !important;
-	font-size: 14px;
-}
+
 .downloadSample{
 	font-size: 20px;
 }
