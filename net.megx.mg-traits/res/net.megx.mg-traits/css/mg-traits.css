@@ -1,17 +1,11 @@
 #errorMessage{
 	display: none;
-}
-
-.downloadLink{
-	text-align: center;
-	padding-top: 1em;
-	font-size: 1.5em;
+	margin-bottom:30px;
 }
 .downloadAllTraits{
 	text-align: right;
 	font-size: 18px;
 }
-
 .selectAllTraitsLnk{
 	margin-left: 45px;
 	color: #337ab7 !important;
@@ -26,28 +20,15 @@
 div.dataTables_info{
 	width: 42% !important;
 }
-
-.downloadSample{
-	font-size: 20px;
-}
-.textBold{
-	font-weight: bold;
-}
 #simpleTrait
 {
-font-family:"Trebuchet MS", Arial;
-width:100%;
-border-collapse:collapse;
+	font-family:"Trebuchet MS", Arial;
+	width:100%;
+	border-collapse:collapse;
+	margin-bottom: 30px;
 }
 #simpleTrait td, #simpleTrait th 
 {
-font-size:1em;
-padding:3px 7px 2px 7px;
-}
-
-p.introText {
-    font-size: 15px;
-    text-align: left;
-    padding-left: 10px;
-    padding-right: 10px;
+	font-size:1em;
+	padding:3px 7px 2px 7px;
 }
