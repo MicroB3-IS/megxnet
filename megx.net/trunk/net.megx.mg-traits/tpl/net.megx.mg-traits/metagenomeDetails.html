@@ -32,117 +32,115 @@
 	  $.getJSON( ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/mg" +currentMetagenomeId+ "-someLabel/simple-traits",
 		        function(simpleTrait){
 		  
-		  			if(simpleTrait !== null){
-		        	$( "#sampleName" ).text( simpleTrait.data.sampleName );
-		        	$( "#gcContent" ).text( simpleTrait.data.gcContent );
-		        	$( "#gcVariance" ).text( simpleTrait.data.gcVariance );
-		        	$( "#numOfReads" ).text( simpleTrait.data.numReads );
-		        	$( "#totalNucl" ).text( simpleTrait.data.totalMB );
-		        	$( "#numOfGenes" ).text( simpleTrait.data.numGenes );
-		        	$( "#abRatio" ).text( simpleTrait.data.ABRatio );
-		        	$( "#tf" ).text( simpleTrait.data.percTf );
-		        	$( "#classified" ).text( simpleTrait.data.percClassified );
-		        	$( "#sampleDescription" ).text( simpleTrait.data.sampleDescription );
-		        	$( "#latitude" ).text( simpleTrait.data.sampleLatitude );
-		        	$( "#longitude" ).text( simpleTrait.data.sampleLongitude );
-		        	$( "#environment" ).text( simpleTrait.data.sampleEnvironment );
-		        	$( "#environmentalOntology" ).text( simpleTrait.data.sampleEnvOntology );
+		  			if(simpleTrait){
+			        	$( "#sampleName" ).text( simpleTrait.data.sampleName );
+			        	$( "#gcContent" ).text( simpleTrait.data.gcContent );
+			        	$( "#gcVariance" ).text( simpleTrait.data.gcVariance );
+			        	$( "#numOfReads" ).text( simpleTrait.data.numReads );
+			        	$( "#totalNucl" ).text( simpleTrait.data.totalMB );
+			        	$( "#numOfGenes" ).text( simpleTrait.data.numGenes );
+			        	$( "#abRatio" ).text( simpleTrait.data.ABRatio );
+			        	$( "#tf" ).text( simpleTrait.data.percTf );
+			        	$( "#classified" ).text( simpleTrait.data.percClassified );
+			        	$( "#sampleDescription" ).text( simpleTrait.data.sampleDescription );
+			        	$( "#latitude" ).text( simpleTrait.data.sampleLatitude );
+			        	$( "#longitude" ).text( simpleTrait.data.sampleLongitude );
+			        	$( "#environment" ).text( simpleTrait.data.sampleEnvironment );
+			        	$( "#environmentalOntology" ).text( simpleTrait.data.sampleEnvOntology );
 		  			}
+		        }).fail(function(){
+		        	$('#error-msg').show();
+		        	$('#simpleTrait').hide();
+		        	$('.description-btn').hide();
 		        });
   });
 </script>
-
 <script type=text/javascript src="$ctx.siteUrl/net.megx.mg-traits/js/barCharts.min.js"></script>
 
 
-<div style="margin: 1em;">
-	<h3>Metagenome Description</h3>
-	
-	<div class="downloadLink" style="float:right; margin-right:50px;">
-		<a href="$simpleTraitURL" class="downloadData">Download</a>
+<div class="container">
+	<h3 class="text-primary">Metagenome Description</h3>
+	<div class="row">
+		<div class="col-md-11">
+			<div id="errorMessage" class="text-danger">Metagenome description can't be displayed right now!</div>
+			<table id="simpleTrait">
+				<tr>
+					<td class="text-info">Sample name: <strong><label id="sampleName"></label></strong></td>
+					<td class="text-info">Sample description:<strong> <label id="sampleDescription"></label></strong></td>
+				</tr>
+				<tr>
+					<td class="text-info">Latitude: <strong><label id="latitude"></label></strong></td>
+					<td class="text-info">Longitude: <strong><label id="longitude"></label></strong></td>
+					<td class="text-info">Environment: <strong><label id="environment"></label></strong></td>
+				</tr>
+				<tr>
+					<td class="text-info">Environmental ontology: <strong><label id="environmentalOntology"></label></strong></td>
+					<td class="text-info">GC content: <strong><label id="gcContent"></label></strong></td>
+					<td class="text-info">GC variance: <strong><label id="gcVariance"></label></strong></td>
+				</tr>
+				<tr >
+					<td class="text-info">Number of reads: <strong><label id="numOfReads"></label></strong></td>
+					<td class="text-info">Total nucleotides: <strong><label id="totalNucl"></label></strong></td>
+					<td class="text-info">Number of genes: <strong><label id="numOfGenes"></label></strong></td>
+				</tr>
+				<tr >
+					<td class="text-info">AB ratio: <strong><label id="abRatio"></label></strong></td>
+					<td class="text-info">%TF: <strong><label id="tf"></label></strong></td>
+					<td class="text-info">%Classified: <strong><label id="classified"></label></strong></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="col-md-1">
+			<a href="$simpleTraitURL" class="downloadData description-btn btn btn-primary btn-sm">Download</a>
+		</div>
 	</div>
-	
-	<table id="simpleTrait">
-		<tr>
-			<td><span class="textBold">Sample name: </span><label id="sampleName"></label></td>
-			<td><span class="textBold">Sample description: </span><label id="sampleDescription"></label></td>
-		</tr>
-		<tr>
-			<td><span class="textBold">Latitude: </span><label id="latitude"></label></td>
-			<td><span class="textBold">Longitude: </span><label id="longitude"></label></td>
-			<td><span class="textBold">Environment: </span><label id="environment"></label></td>
-		</tr>
-		<tr>
-			<td><span class="textBold">Environmental ontology: </span><label id="environmentalOntology"></label></td>
-			<td><span class="textBold">GC content: </span><label id="gcContent"></label></td>
-			<td><span class="textBold">GC variance: </span><label id="gcVariance"></label></td>
-		</tr>
-		<tr >
-			<td><span class="textBold">Number of reads: </span><label id="numOfReads"></label></td>
-			<td><span class="textBold">Total nucleotides: </span><label id="totalNucl"></label></td>
-			<td><span class="textBold">Number of genes: </span><label id="numOfGenes"></label></td>
-		</tr>
-		<tr >
-			<td><span class="textBold">AB ratio: </span><label id="abRatio"></label></td>
-			<td><span class="textBold">%TF: </span><label id="tf"></label></td>
-			<td><span class="textBold">%Classified: </span><label id="classified"></label></td>
-		</tr>
-	</table>
 </div>
 
-<div style="margin: 1em;">
-<table style="width: 100%;">
-	<tr>
-		<td style="width: 80%;">
-			<div id="aminoAcidContainer" style="height: auto;" ></div>
-		</td>
-		<td style="width: 20%;">
-			<div class="downloadLink">
-				<a href="$aminoAcidURL" class="downloadData">Download</a>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 80%;">
-			<div id="codonUsageContainer" style="height: auto;" ></div>
-		</td>
-		<td style="width: 20%;">
-			<div class="downloadLink">
-				<a href="$codonUsageURL" class="downloadData">Download</a>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 80%;">
-			<div id="diNucleotideContainer" style="height: auto;" ></div>
-		</td>
-		<td style="width: 20%;">
-			<div class="downloadLink">
-				<a href="$diNucleotideURL" class="downloadData">Download</a>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 80%;">
-			<div id="functionalContainer" style="height: auto;" ></div>
-		</td>
-		<td style="width: 20%;">
-			<div class="downloadLink">
-				<a href="$functionalContainerURL" class="downloadData">Download</a>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td style="width: 80%;">
-			<div id="taxonomyContainer" style="height: auto;" ></div>
-		</td>
-		<td style="width: 20%;">
-			<div class="downloadLink">
-				<a href="$taxonomyURL" class="downloadData">Download</a>
-			</div>
-		</td>
-	</tr>
+<div class="container">
+	<div class="row">
+		<div class="col-md-11">
+			<div id="aminoAcidContainer" ></div>
+		</div>
+		<div class="col-md-1">
+			<a href="$aminoAcidURL" class="downloadData btn btn-primary btn-sm">Download</a>
+		</div>
+	</div>
 	
-</table> 
+	<div class="row">
+		<div class="col-md-11">
+			<div id="codonUsageContainer"></div>
+		</div>
+		<div class="col-md-1">
+			<a href="$codonUsageURL" class="downloadData btn btn-primary btn-sm">Download</a>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-11">
+			<div id="diNucleotideContainer"></div>
+		</div>
+		<div class="col-md-1">
+			<a href="$diNucleotideURL" class="downloadData btn btn-primary btn-sm">Download</a>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-11">
+			<div id="functionalContainer"></div>
+		</div>
+		<div class="col-md-1">
+			<a href="$functionalContainerURL" class="downloadData btn btn-primary btn-sm">Download</a>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-11">
+			<div id="taxonomyContainer"></div>
+		</div>
+		<div class="col-md-1">
+			<a href="$taxonomyURL" class="downloadData btn btn-primary btn-sm">Download</a>
+		</div>	
+	</div>
 </div>
 

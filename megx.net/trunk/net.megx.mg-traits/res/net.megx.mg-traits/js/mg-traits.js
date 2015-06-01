@@ -58,13 +58,12 @@ jQuery(document).ready(
             $.getJSON(ctx.siteUrl + "/ws/v1/mg-traits/v1.0.0/all",
                 function(allTraits, textStatus, jqXHR) {
 
-                    if (allTraits != null) {
+                    if (allTraits) {
 
                         var nbRorwsToAdd = allTraits.data.length;
                         var rowsToAdd = [];
 
                         for (var i = 0; i < allTraits.data.length; i++) {
-
                             rowsToAdd.push({
                                 'id': allTraits.data[i].id,
                                 'sampleLabel': allTraits.data[i].sampleLabel,
@@ -83,8 +82,9 @@ jQuery(document).ready(
                         $("#errorMessage").show();
                     }
 
-                }).error(function() {
-                $("#errorMessage").show();
+                }).fail(function() {
+	                $("#errorMessage").show();
+	                $("#simple-traits-table").hide();
             });
 
 
