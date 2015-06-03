@@ -104,9 +104,10 @@
           };
           
           var datatablesConfigOverride = {};
+          var data = {};
           
           var table = new Megx.MegxTable("sample-and-institute-table", columns, buttons,
-              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", datatablesConfigOverride);
+              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", data, datatablesConfigOverride);
         })();
       });
 </script>
