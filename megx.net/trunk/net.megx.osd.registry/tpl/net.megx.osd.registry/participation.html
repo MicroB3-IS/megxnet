@@ -1,7 +1,8 @@
 #if(($req.user && !$req.user.empty) &&
 ($req.servletRequset.session.getAttribute("userEmail")))
-<div id="participationForm"></div>
-
+<div class="container">
+	<div id="participationForm"></div>
+</div>
 <script type="text/javascript">
   user = '$req.user.name';
   email = '$req.servletRequset.session.getAttribute("userEmail")';
@@ -17,11 +18,13 @@
 </script>
 
 #else
-<h1>Login required</h1>
-<p>
-    You need to be logged in to express your intrest in pariticapting in the
-    Ocean Sampling Day. You can login <a href="$ctx.siteUrl/login">here</a>. If
-    you do not have login data for megx.net, you can register <a
-        href="$ctx.siteUrl/register">here</a>.
-</p>
+<div class="container">
+	<h1>Login required</h1>
+		<p>
+		    You need to be logged in to express your intrest in pariticapting in the
+		    Ocean Sampling Day. You can login <a href="$ctx.siteUrl/login">here</a>. If
+		    you do not have login data for megx.net, you can register <a
+		        href="$ctx.siteUrl/register">here</a>.
+		</p>
+</div>
 #end
