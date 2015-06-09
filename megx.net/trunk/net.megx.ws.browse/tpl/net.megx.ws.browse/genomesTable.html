@@ -1,28 +1,77 @@
-#set($tableUrl = "$ctx.siteUrl/ws/browse/genomesTable")
-#set($csvUrl = "$ctx.siteUrl/ws/browse/genomes.csv")
+<div class="container">
 
-## Render download link
-#parse("net.megx.ws.browse/fragments/down.link.html")
+	<div class="row">
+		<div class="col-md-3 ">
+			<p><a href="http://www.environmentontology.com/"> <img  src="$ctx.siteUrl/net.megx.ws.browse/images/envoLogo.png"/></a></p>
+		</div>
+		<div class="col-md-9">
+			<h3 class="text-primary">Browse genomes by isolation enviroment</h3>
+			<h4 class="text-primary">Click a Location to retrieve environmental data</h4>
+			<p>We manually annotate the genome collection with <a href="http://gensc.org/gc_wiki/index.php/Habitat-Lite">EnvO-Lite</a> terms to offer users further comparative perspectives. The tag-cloud below can be used to sort genomes by EnvO-Lite annotations. Clicking on coordinates in the "Location" column will access environmental data via our mapserver. See our <a href="/megx.net/habitats/habitats.html">Annotation Overview</a> for more details.</p>
+			<p class="text-info">Please note that "marine habitat" refers to marine water!</p>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<table id="genomes-table" class="table table-striped table-hover table-bordered dt-responsive">
+		    <thead>
+		        <tr>
+		            <th>Organism Name</th>
+		            <th>Location</th>
+		            <th>Depth</th>
+		            <th>Date Sampled</th>
+		            <th>EnvO-Lite</th>
+		            <th>TaxID</th>
+		            <th>Genome PID</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+		</table>
+	</div>
+</div>
 
-## Render table
-$ext.dataTable.renderServerSide(
-	["Organism Name", "Location", "Depth", "Date Sampled", "EnvO-Lite", "TaxID", "Genome PID"],
-	$tableUrl,
-	false,
-	"{
-	 aoColumns: [{ 
-	 	mData: 'organismName',
-	 }, { 
-	 	mData: 'location',
-	 }, { 
-	 	mData: 'depth',
-	 }, { 
-	 	mData: 'dateSampled',
-	 }, { 
-	 	mData: 'envOLite',
-	 }, { 
-	 	mData: 'taxID',
-	 }, { 
-	 	mData: 'genomePID',
-	 }]
-}")
+
+
+<script type="text/javascript">
+  jQuery(document).ready(
+      function() {
+        (function() {
+          
+          var columns = [ {
+            data : "organismName",
+            width : "5em",
+          }, {
+            data : "location",
+            width : "8em"
+          }, {
+            data : "depth",
+            width : "14em"
+          }, {
+            data : "dateSampled",
+            width : "10em"
+          }, {
+            data : "envOLite",
+            width : "7em",
+          }, {
+            data: "genomePID",
+          } ];
+          
+          var buttons = {
+            toolbarButtons : {
+            	downloadAll: {
+                    tooltip: "Download full table",
+                    link : {
+                        url : ctx.siteUrl + "/ws/browse/genomes.csv",
+                      }
+                }
+            } };
+          
+          var datatablesConfigOverride = {};
+          var data = {};
+          
+          var table = new Megx.MegxTable("genomes-table", columns, buttons,
+              "$ctx.siteUrl/ws/browse/genomesTable", data, datatablesConfigOverride);
+        })();
+      });
+</script>
