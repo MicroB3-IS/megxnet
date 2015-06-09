@@ -64,6 +64,7 @@ www={type:'sys.public'}
 	mibig={type:'unknown'}
 		bgc-registration={type:'html',template:'net.megx.mibig/bgc-registration.html', baseTemplate:'base-bootstrap.html', hasForm: true, title:'MIBiG Input Form'}
 		bgc-submission={type:'html',template:'net.megx.mibig/bgc-submission.html', title:'MIBiG Submission Done'}
+	genomes={type:'html', template:'net.megx.ws.browse/genomesTable.html', baseTemplate:'base-bootstrap.html', hasTable: true, title:'Prokaryotic Genomes'}	
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}
