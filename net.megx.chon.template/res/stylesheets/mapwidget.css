@@ -1,11 +1,10 @@
 #megxMapWidget{
-	width: 95%;
+	width: 97%;
 	margin-left: auto;
   	margin-right: auto ;
 }
 
 #megxMap{
-	width: 910px;
 	height: 510px;
 	margin-left: auto;
 	margin-right: auto;
@@ -17,7 +16,7 @@
 #layersAccordion{
 	padding-top: 20px;
 	margin-bottom: 20px;
-	width:100%;
+	float: left;
 }
 
 .olMap {

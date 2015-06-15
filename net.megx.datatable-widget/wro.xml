@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<groups xmlns="http://www.isdc.ro/wro">
-
-	<group name='megx-datatable-widget.min'>
-		<js>/res/net.megx.datatable-widget/js/megx-datatable-widget.js</js>
-	</group>
-
-</groups>

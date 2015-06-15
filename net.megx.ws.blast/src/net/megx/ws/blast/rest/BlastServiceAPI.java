@@ -40,13 +40,10 @@ import org.apache.commons.lang.StringUtils;
 import com.google.gson.GsonBuilder;
 
 @Path("v1/megx-blast/v1.0.0")
-// @Path("intern/megx-blast/")
+//@Path("intern/megx-blast/")
 public class BlastServiceAPI extends BaseRestService {
 
 	private BlastService service;
-
-	@Context
-	HttpServletRequest request;
 
 	public BlastServiceAPI(BlastService service) {
 		this.service = service;
@@ -65,7 +62,8 @@ public class BlastServiceAPI extends BaseRestService {
 			@FormParam("biodbLabel") final String biodbLabel,
 			@FormParam("biodbVersion") final String biodbVersion,
 			@FormParam("rawFasta") final String rawFasta,
-			@FormParam("evalue") final double evalue) {
+			@FormParam("evalue") final double evalue,
+			@Context HttpServletRequest request) {
 
 		String customer = "";
 
@@ -98,11 +96,9 @@ public class BlastServiceAPI extends BaseRestService {
 			rb.type("text/csv");
 			return rb.build();
 		} catch (DBGeneralFailureException e) {
-			log.error("Could not store jobs: " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (Exception e) {
-			log.error("Service error for storing jobs: " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -112,24 +108,19 @@ public class BlastServiceAPI extends BaseRestService {
 	@Path("results/unknown/{jid : \\d+}/network/{hitId : \\d+}")
 	@Produces(MediaType.APPLICATION_XML)
 	public String getSubnetGraphml(@PathParam("jid") int jid,
-			@PathParam("hitId") String hitId) {
+			@PathParam("hitId") String hitId,
+			@Context HttpServletRequest request) {
 		String subnetGraphml;
 		try {
 			BlastHits blastHits = service.getSubnetGraphml(jid, hitId);
 			subnetGraphml = blastHits.getSubnetGraphml();
 			return subnetGraphml;
 		} catch (DBGeneralFailureException e) {
-			log.error("Db general error where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -138,7 +129,8 @@ public class BlastServiceAPI extends BaseRestService {
 	@Path("jobs/{blastJobId}")
 	@GET
 	@Produces("text/csv")
-	public Response getBlastJobDetails(@PathParam("blastJobId") int blastJobId) {
+	public Response getBlastJobDetails(@PathParam("blastJobId") int blastJobId,
+			@Context HttpServletRequest request) {
 
 		try {
 			final BlastJob job = service.getBlastJobDetails(blastJobId);
@@ -187,10 +179,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record for id=" + blastJobId + "\n" + e);
+			log.error("No DB no record: for id=" + blastJobId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error for id=" + blastJobId + "\n" + e);
+			log.error("Db exception for id=" + blastJobId + "\n" + e);
 			throw new WebApplicationException(
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -207,7 +199,7 @@ public class BlastServiceAPI extends BaseRestService {
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public BlastJobDetailsToClient getBlastJobtOverview(
-			@PathParam("id") int id) {
+			@PathParam("id") int id, @Context HttpServletRequest request) {
 		try {
 			return new BlastJobDetailsToClient(service.getSuccesfulBlastJob(id));
 		} catch (DBGeneralFailureException e) {
@@ -215,10 +207,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record for id=" + id + "\n" + e);
+			log.error("No DB no record: for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error for id=" + id + "\n" + e);
+			log.error("Db exception for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -229,7 +221,8 @@ public class BlastServiceAPI extends BaseRestService {
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
 	public Response getNeighbours(@PathParam("jid") int jid,
-			@PathParam("hitId") String hitId) {
+			@PathParam("hitId") String hitId,
+			@Context HttpServletRequest request) {
 		try {
 			List<BlastHitsNeighbours> result = service
 					.getNeighbours(jid, hitId);
@@ -254,17 +247,11 @@ public class BlastServiceAPI extends BaseRestService {
 			rb.type("text/csv");
 			return rb.build();
 		} catch (DBGeneralFailureException e) {
-			log.error("Db general error where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error where job id=" + jid + " and hit id="
-					+ hitId + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -274,18 +261,15 @@ public class BlastServiceAPI extends BaseRestService {
 	@Path("dbs")
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<BlastHitsDb> getDatabases() {
+	public List<BlastHitsDb> getDatabases(@Context HttpServletRequest request) {
 		try {
 			return service.getDatabases();
 		} catch (DBGeneralFailureException e) {
-			log.error("Db general error " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB records " + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error " + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -294,7 +278,8 @@ public class BlastServiceAPI extends BaseRestService {
 	@GET
 	@Path("results/unknown/{id : \\d+}/raw")
 	@Produces(MediaType.APPLICATION_XML)
-	public String getResultRaw(@PathParam("id") int id) {
+	public String getResultRaw(@PathParam("id") int id,
+			@Context HttpServletRequest request) {
 		String raw;
 		try {
 			BlastJob blastJob = service.getResultRaw(id);
@@ -305,10 +290,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record for id=" + id + "\n" + e);
+			log.error("No DB no record: for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error for id=" + id + "\n" + e);
+			log.error("Db exception for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
@@ -318,7 +303,8 @@ public class BlastServiceAPI extends BaseRestService {
 	@Path("geographic/{id : \\d+}/raw")
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public BlastJobRawToClient getGeographicRaw(@PathParam("id") int id) {
+	public BlastJobRawToClient getGeographicRaw(@PathParam("id") int id,
+			@Context HttpServletRequest request) {
 		try {
 			return new BlastJobRawToClient(service.getGeographicRaw(id));
 		} catch (DBGeneralFailureException e) {
@@ -326,25 +312,27 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record for id=" + id + "\n" + e);
+			log.error("No DB no record: for id=" + id + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error for id=" + id + "\n" + e);
+			log.error("Db exception for id=" + id + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	
+	
 	/*
 	 * Initial version service for displaying matching-sequence table on result
 	 * page !
 	 */
-
+	
 	@GET
 	@Path("matching-sequences")
 	@Produces("text/csv")
 	@CSVDocument(preserveHeaderColumns = true, columnNameFormat = ColumnNameFormat.FROM_CAMEL_CASE)
-	public List<MatchingSequences> getMatchingSequences() {
+	public List<MatchingSequences> getMatchingSequences(
+			@Context HttpServletRequest request) {
 		try {
 			return service.getMatchingSequences();
 		} catch (DBGeneralFailureException e) {
@@ -352,10 +340,10 @@ public class BlastServiceAPI extends BaseRestService {
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		} catch (DBNoRecordsException e) {
-			log.error("No DB record " + "\n" + e);
+			log.error("No DB no record:"  + "\n" + e);
 			throw new WebApplicationException(e, Response.Status.NO_CONTENT);
 		} catch (Exception e) {
-			log.error("Service error " + "\n" + e);
+			log.error("Db exception "  + "\n" + e);
 			throw new WebApplicationException(e,
 					Response.Status.INTERNAL_SERVER_ERROR);
 		}

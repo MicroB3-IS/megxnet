@@ -1,463 +1,254 @@
+var current = 1;
+var allSamples = 1;
+var currentAuthor = 1;
+var allAuthors = 1;
+
 $(document).ready(function() {
-
-    var latitude;
-    var longitude;
-    var selectedType;
-
-    $('#logout').click(function() {
-        logOut();
-    });
-    
-    $('#placeTypeSelect').change(function() {
-    	
-    	var selected = $(':selected', this);
-        selectedType = selected.parent().attr('label');
-	    $('#placeTypeMsg').hide();
-	    
-	});
-    
-    $('#placeName').keyup(function() {
-    	
-    	if(placeName != ""){
-    		$('#placeNameMsg').hide();
-    	}
-    	
-    });
-
-    $('input:radio[name=rb]').click(function(event) {
-
-        if ($('#decimal').is(':checked')) {
-            $('#bookmarkFormDegrees').hide();
-            $('#bookmarkFormRegionName').hide();
-            $('#bookmarkFormDecimal').fadeIn(250);
-        }
-        if ($('#degrees').is(':checked')) {
-            $('#bookmarkFormDecimal').hide();
-            $('#bookmarkFormRegionName').hide();
-            $('#bookmarkFormDegrees').fadeIn(250);
-        }
-        if ($('#regionName').is(':checked')) {
-            $('#bookmarkFormDecimal').hide();
-            $('#bookmarkFormDegrees').hide();
-            $('#bookmarkFormRegionName').fadeIn(250);
-        }
-    });
-
-    $.validator.addMethod("latDE", function(value, element, param) {
-        if (this.optional(element)) { //This is not a 'required' element and the input is empty
-            return true;
-        }
-        if (validateLat(value)) {
-            return true;
-        }
-        return false;
-    });
-
-    $.validator.addMethod("lonDE", function(value, element, param) {
-        if (this.optional(element)) { //This is not a 'required' element and the input is empty
-            return true;
-        }
-        if (validateLon(value)) {
-            return true;
-        }
-        return false;
-    });
-
-    $('#latitudeDeg, #latitudeMin, #latitudeSec').keyup(function() {
-
-        var latitudeData = {
-            degrees: $('#latitudeDeg').val(),
-            minutes: $('#latitudeMin').val(),
-            seconds: $('#latitudeSec').val(),
-            from: 0,
-            to: 90,
-            msgElement: "latitudeDegMsg"
-        };
-
-        if (latitudeData.degrees >= 90) {
-            $('#latitudeMin').val("");
-            $('#latitudeMin').prop('disabled', true);
-            $('#latitudeSec').val("");
-            $('#latitudeSec').prop('disabled', true);
-        } else {
-            $('#latitudeMin').prop('disabled', false);
-            $('#latitudeSec').prop('disabled', false);
-        }
-
-        latitude = dmsToDegrees(latitudeData);
-
-    });
-
-    $('#longitudeDeg, #longitudeMin, #longitudeSec').keyup(function() {
-
-        var longitudeData = {
-            degrees: $('#longitudeDeg').val(),
-            minutes: $('#longitudeMin').val(),
-            seconds: $('#longitudeSec').val(),
-            from: 0,
-            to: 180,
-            msgElement: "longitudeDegMsg"
-        };
-
-        if (longitudeData.degrees >= 180) {
-            $('#longitudeMin').val("");
-            $('#longitudeMin').prop('disabled', true);
-            $('#longitudeSec').val("");
-            $('#longitudeSec').prop('disabled', true);
-        } else {
-            $('#longitudeMin').prop('disabled', false);
-            $('#longitudeSec').prop('disabled', false);
-        }
-
-        longitude = dmsToDegrees(longitudeData);
-
-    });
-
-    $("#submitBookmark").click(function() {
-
-    	// I have decimal degrees option
-        if ($('#bookmarkFormDecimal').is(':visible')) {
-
-            $("#bookmarkFormDecimal").validate({
-                errorClass: "my-error-class",
-                validClass: "my-valid-class",
-                rules: {
-                    latitudeDec: {
-                        required: true,
-                        latDE: true
-                    },
-                    longitudeDec: {
-                        required: true,
-                        lonDE: true
-                    }
-                },
-                messages: {
-                    latitudeDec: "Latitude value must be in range of 0 to 90.",
-                    longitudeDec: "Longitude value must be in range of 0 to 180."
-                }
-            });
-
-            if ($("#bookmarkFormDecimal").valid()) {
-
-                var lat = $('#latitudeDec').val();
-                var lon = $('#longitudeDec').val();
-
-                if ($('#south').is(':checked')) {
-                    lat = '-' + $('#latitudeDec').val();
-                }
-                if ($('#west').is(':checked')) {
-                    lon = '-' + $('#longitudeDec').val();
-                }
-                
-                findNearby(parseFloat(lat), parseFloat(lon), findNearbyData);
-            }
-            
-        // I have degrees, minutes and seconds option  
-        } else if ($('#bookmarkFormDegrees').is(':visible')) {
-        	
-            if (latitude != null && longitude != null) {
-
-                if ($('#degSouth').is(':checked')) {
-                    latitude *= -1;
-                }
-                if ($('#degWest').is(':checked')) {
-                    longitude *= -1;
-                }
-
-                findNearby(latitude.toFixed(6), longitude.toFixed(6), findNearbyData);
-                
-                latitude = null;
-                longitude = null;
-            } else {
-
-                if (latitude == null) {
-                    $('#latitudeDegMsg').text("Latitude value must be in the range of 0 to 90.").show();
-                }
-                if (longitude == null) {
-                    $('#longitudeDegMsg').text("Longitude value must be in the range of 0 to 180.").show();
-                }
-            }
-        // I don't know the geographic coordinates option
-        } else {
-        	
-        	var worldRegion = $('#placeTypeSelect').val();
-        	var placeName = $('#placeName').val();
-        	
-        	if (worldRegion != null){
-        		
-        		if(selectedType == "Ocean/Sea"){
-        			
-        			findCoordinates(placeName, worldRegion, findCoordinatesData);
-        			
-        		}else if(placeName != ""){
-    				
-            		findCoordinates(placeName, worldRegion, findCoordinatesData);
-            		
-            	} else {
-            		$('#placeNameMsg').text("Please enter place name.").show();
-            	}
-        	
-        	} else {
-        		$('#placeTypeMsg').text("Please select your option.").show();
-        		
-        	}
-        }
-    });
-
+	$("#next_button").hide();
+	$("#back_button").hide();
+	$("#next_button_author").hide();
+	$("#back_button_author").hide();
+	setDateTime("");
 });
 
-function findCoordinatesData(data) {
-	
-	if (data.error) {
+function setDateTime(id) {
+	var currentdate = new Date();
+	$("#time" + id).val(
+			currentdate.getHours() + ":" + currentdate.getMinutes() + ":"
+					+ currentdate.getSeconds());
+	$("#date" + id).val(
+			(currentdate.getMonth() + 1) + "/" + currentdate.getDate() + "/"
+					+ currentdate.getFullYear());
+	$("#date" + id).datepicker();
+}
 
-	    $("#message")
-	        .html(
-	            "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>" + data.errorMsg + "</p>");
-	    $("#message").css("background-color", "#F2DEDE");
-	    $("#message").css("border", "1px solid #EED3D7");
-	    $("#message").css("color", "#B94A48");
-	    $("#message").css("border-radius", "15px");
-	    $("#message").css("padding-left", "10px");
-	    $("input[type=text]").val("");
-	    
-	} else {
+function getSampleHtml(allSamples) {
+	var source = $("#sample-template").html();
+	var template = Handlebars.compile(source);
 
-	    emptyMessageDiv();
-	    var worldRegion = data.worldRegion || 'N/A';
-	    var place = data.placeName || 'N/A';
-	    var lat = data.lat || '';
-	    var lon = data.lon || '';
-
-	    console.log("Country: ", worldRegion, "--- Place: ", place);
-	    console.log("Lat: ", lat, "--- Lon: ", lon);
-
-	    var dataToInsert = collectData(lat, lon, worldRegion, place);
-
-	    insertBookmark(dataToInsert);
-
+	var context = {
+		allSamples : allSamples
 	}
+	var html = template(context);
 
+	return html;
 }
 
-function findCoordinates(placeName, worldRegion, callback) {
+function getAuthorHtml(allAuthors) {
+	var source = $("#author-template").html();
+	var template = Handlebars.compile(source);
 
-    $.ajax({
-        type: "GET",
-        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/coordinates',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: {
-            "q": placeName,
-            "worldRegion" : worldRegion
-        },
-        success: function(placeCoodrdinates) {
-        	emptyMessageDiv();
-            callback(placeCoodrdinates.data);
-        },
-        error: function(a, b, c) {
-            $("#message")
-                .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
-            $("#message").css("background-color", "#F2DEDE");
-            $("#message").css("border", "1px solid #EED3D7");
-            $("#message").css("color", "#B94A48");
-            $("#message").css("border-radius", "15px");
-            $("#message").css("padding-left", "10px");
+	var context = {
+		allAuthors : allAuthors
+	}
+	var html = template(context);
 
-        }
-    });
+	return html;
 }
 
-function findNearbyData(data) {
+function getAllAuthors() {
+	var forename = $('[id^="forename"]');
+	var initials = $('[id^="initials"]');
+	var surename = $('[id^="surename"]');
+	var position = $('[id^="position"]');
+	var objArr = [];
 
-    var worldRegion = data.worldRegion || 'N/A';
-    var place = data.placeName || 'N/A';
-    var lat = data.lat;
-    var lon  = data.lon;
-    
-    console.log("WorldRegion: ",worldRegion,"--- Place: ", place);
-    console.log('Latitude: ' + lat + ' Longitude: ' + lon);
-    
-    var dataToInsert = collectData(lat, lon, worldRegion, place);
-
-    insertBookmark(dataToInsert);
-
+	for (i = 0; i < forename.length; i++) {
+		var obj = {
+			forename : forename[i].value,
+			initials : initials[i].value,
+			surename : surename[i].value,
+			position : position[i].value
+		}
+		objArr.push(obj);
+	}
+	return objArr;
 }
 
-function findNearby(lat, lon, callback) {
+function getAllSamples() {
+	var label = $('[id^="label"]');
+	var region = $('[id^="region"]');
+	var longitude = $('[id^="longitude"]');
+	var latitude = $('[id^="latitude"]');
+	var material = $('[id^="material"]');
+	var depth = $('[id^="depth"]');
+	var date = $('[id^="date"]');
+	var time = $('[id^="time"]');
 
-    $.ajax({
-        type: "GET",
-        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/placename',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: {
-            "lat": lat,
-            "lon": lon
-        },
-        success: function(placeName) {
-        	emptyMessageDiv();
-            callback(placeName.data);
-        },
-        error: function(a, b, c) {
-            $("#message")
-                .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
-            $("#message").css("background-color", "#F2DEDE");
-            $("#message").css("border", "1px solid #EED3D7");
-            $("#message").css("color", "#B94A48");
-            $("#message").css("border-radius", "15px");
-            $("#message").css("padding-left", "10px");
+	var objArr = [];
 
-        }
-    });
+	for (i = 0; i < region.length; i++) {
+		var temp = date[i].value.split("-");
+		var tempTime = time[i].value.split(":");
+		var obj = {
+			label : label[i].value,
+			region : region[i].value,
+			longitude : longitude[i].value,
+			latitude : latitude[i].value,
+			material : material[i].value,
+			depth : depth[i].value,
+			// depthunit : $('#doi').val(),
+			samyear : temp[0],
+			sammonth : temp[1],
+			samday : temp[2],
+			samhour : tempTime[0],
+			sammin : tempTime[1],
+			samsec : tempTime[2]
+		}
+		objArr.push(obj);
+	}
+	return objArr;
 }
 
-function validateLat(value) {
-
-    if (value >= 0 && value <= 90.0 && value.indexOf('-') < 0) {
-        return true;
-    }
-    return false;
+function add(id) {
+	if (id == "sample") {
+		$("#sample" + current).hide();
+		allSamples++;
+		current = allSamples;
+		$("#samples").append(getSampleHtml(allSamples));
+		$("#next_button").hide();
+		if (!($("#back_button").is(":visible"))) {
+			$("#back_button").show();
+		}
+		$("#currentSample").html("current sample :" + current);
+		setDateTime(current);
+	} else {
+		$("#author" + currentAuthor).hide();
+		allAuthors++;
+		currentAuthor = allAuthors;
+		$("#authors").append(getAuthorHtml(allAuthors));
+		$("#next_button_author").hide();
+		if (!($("#back_button_author").is(":visible"))) {
+			$("#back_button_author").show();
+		}
+		$("#currentAuthor").html("Current author :" + currentAuthor);
+		$("#position" + currentAuthor).val(currentAuthor);
+	}
 }
 
-function validateLon(value) {
+function previous(id) {
+	if (id == "sample") {
+		$("#sample" + current).hide();
+		current--;
+		$("#sample" + (current)).show();
 
-    if (value >= 0 && value <= 180.0 && value.indexOf('-') < 0) {
-        return true;
-    }
-    return false;
+		if (current < allSamples) {
+			$("#next_button").show();
+		}
+		if (current == 1) {
+			$("#back_button").hide();
+		}
+		$("#currentSample").html("Current sample :" + current);
+	} else {
+		$("#author" + currentAuthor).hide();
+		currentAuthor--;
+		$("#author" + (currentAuthor)).show();
+
+		if (currentAuthor < allAuthors) {
+			$("#next_button_author").show();
+		}
+		if (currentAuthor == 1) {
+			$("#back_button_author").hide();
+		}
+		$("#curtentAuthor").html("Current author :" + currentAuthor);
+	}
 }
 
-function dmsToDegrees(data) {
+function next(id) {
+	if (id == "sample") {
+		$("#sample" + current).hide();
+		current++;
+		$("#sample" + current).show();
 
-    var res = null;
+		if (current == allSamples) {
+			$("#next_button").hide();
+		}
 
-    var degreesPatt = /^\d+$/g;
-    var minutesPatt = /^\d+$/g;
-    var secondsPatt = /^\d{1,2}(\.\d{1,4})?$/g;
+		if (!($("#back_button").is(":visible"))) {
+			$("#back_button").show();
+		}
+		$("#currentSample").html("current sample :" + current);
+	} else {
+		$("#author" + currentAuthor).hide();
+		currentAuthor++;
+		$("#author" + currentAuthor).show();
 
-    var degreesRes = degreesPatt.test(data.degrees);
-    var minutesRes = minutesPatt.test(data.minutes);
-    var secondsRes = secondsPatt.test(data.seconds);
+		if (currentAuthor == allAuthors) {
+			$("#next_button_author").hide();
+		}
 
-    if (degreesRes && (parseInt(data.degrees) >= data.from && parseInt(data.degrees) <= data.to)) {
-
-        var deg = 0;
-        var min = 0;
-        var sec = 0;
-
-        $('#' + data.msgElement).hide();
-        deg = parseInt(data.degrees);
-
-        if ((minutesRes && (parseInt(data.minutes) >= 0 && parseInt(data.minutes) < 60)) || data.minutes == "") {
-
-            $('#' + data.msgElement).hide();
-
-            if (data.minutes == "") {
-                min = 0;
-            } else {
-                min = parseInt(data.minutes);
-            }
-
-            if ((secondsRes && (parseFloat(data.seconds) >= 0 && parseFloat(data.seconds) < 60)) || data.seconds == "") {
-
-                $('#' + data.msgElement).hide();
-
-                if (data.seconds == "") {
-                    sec = 0;
-                } else {
-                    sec = parseFloat(data.seconds);
-                }
-
-                res = deg + min / 60 + sec / 3600;
-
-            } else {
-                $('#' + data.msgElement).text("Seconds value must be 0 or greater and less than 60.").show();
-            }
-        } else {
-            $('#' + data.msgElement).text("Minutes value must be 0 or greater and less than 60.").show();
-        }
-    } else {
-        $('#' + data.msgElement).text("Degrees value must be in range of " + data.from + " to " + data.to + ".").show();
-    }
-
-    return res;
-}
-
-function logOut() {
-    window.open("/megx.net/admin/logout.do", '_blank');
-    refreshBookmarklet();
-}
-
-function refreshBookmarklet() {
-    document.location.href = document.location.href;
-
+		if (!($("#back_button_author").is(":visible"))) {
+			$("#back_button_author").show();
+		}
+		$("#currentAuthor").html("current author :" + currentAuthor);
+	}
 }
 
 function emptyMessageDiv() {
-    $("#message").html("");
-    $("#message").removeAttr("style")
+	$("#message").html("");
+	$("#message").removeAttr("style")
 }
 
-function insertBookmark(data) {
+function insertBookmark() {
 
-    $.ajax({
-        contentType: 'application/json',
-        data: {
-            "article": JSON.stringify(data)
-        },
-        dataType: 'json',
-        success: function(message) {
-            $("#message")
-                .html(
-                    "<button class='close' type='button' onclick='emptyMessageDiv()'>×</button><p>" + message + "</p>");
-            $("#message").css("background-color", "#DFF0D8");
-            $("#message").css("border", "1px solid #D6E9C6");
-            $("#message").css("color", "#468847");
-            $("#message").css("border-radius", "15px");
-            $("#message").css("padding-left", "10px");
-            $("input[type=text]").val("");
-            $("input[type=text]").prop('disabled', false);
-            $('select').prop('selectedIndex',0);
-
-        },
-        error: function(a, b, c) {
-            $("#message")
-                .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
-            $("#message").css("background-color", "#F2DEDE");
-            $("#message").css("border", "1px solid #EED3D7");
-            $("#message").css("color", "#B94A48");
-            $("#message").css("border-radius", "15px");
-            $("#message").css("padding-left", "10px");
-        },
-        // processData : false,
-        type: 'POST',
-        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/article'
-    });
+		$.ajax({
+				contentType : 'application/json',
+				data : JSON.stringify(collectData()),
+				dataType : 'json',
+				success : function(data) {
+					$("#message")
+							.html(
+									"<button class='close' type='button' onclick='emptyMessageDiv()'>×</button><p>Bookmark successfully stored to server.</p>");
+					$("#message").css("background-color", "#DFF0D8");
+					$("#message").css("border", "1px solid #D6E9C6");
+					$("#message").css("color", "#468847");
+					$("#message").css("border-radius", "15px");
+					$("#message").css("padding-left", "10px");
+					$("input[type=text], textarea").val("");
+				},
+				error : function(a, b, c) {
+					$("#message")
+							.html(
+									"<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
+					$("#message").css("background-color", "#F2DEDE");
+					$("#message").css("border", "1px solid #EED3D7");
+					$("#message").css("color", "#B94A48");
+					$("#message").css("border-radius", "15px");
+					$("#message").css("padding-left", "10px");
+				},
+				// processData : false,
+				type : 'POST',
+				url : ctx.siteUrl + '/ws/pubmap/article/add'
+			});
 }
 
-function collectData(lat, lon, worldRegion, place) {
+function collectData() {
+	var json = {
+		authors : getAllAuthors(),
+		title : $('#title').val(),
+		website : $('#url').val(),
+		abstractUrl : $('#abstractUrl').val(),
+		year : $('#publicationDate').val(),
+		journalArticle : {
+			issue : $('#issue').val(),
+			// isoab : $('#publicationDate').val(),
+			pages : $('#pages').val(),
+			publication : $('#journalName').val(),
+			// volume : $('#publicationDate').val(),
+			month : $('#publicationDate').val(),
+			day : $('#publicationDate').val(),
+			abstractText : $('#abstractText').val(),
+		// eissn : $('#publicationDate').val(),
+		// pissn : $('#publicationDate').val()
+		},
+		identifiers : {
+			doi : $('#doi').val(),
+			pmid : $('#pubmedId').val()
+		},
+		samples : getAllSamples(),
+		abstractUrl : $('#abstractUrl').val(),
+		institute : $('#institute').val()
+	};
 
-    var megxbar = {
-        title: msg.article.title,
-        authors: msg.article.authors,
-        lon: lon,
-        lat: lat
-    };
-
-    var article = {
-        pmid: msg.article.pmid,
-        url: msg.article.url,
-        lon: lon,
-        lat: lat,
-        worldRegion: worldRegion,
-        place: place,
-        megxBarJSON: JSON.stringify(megxbar),
-        articleXML: msg.article.xml
-    };
-
-    return article;
-
+	return json;
 };

@@ -73,7 +73,7 @@ public class DBUserService extends BaseMegdbService implements UserService {
                         return user;
                     }
                 }
-                log.error("did not find user with correct password");
+                log.error("did nor find user with correct password");
                 return null;
             }
 

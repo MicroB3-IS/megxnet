@@ -1,34 +1,58 @@
-#errorMessage{
-	display: none;
-	margin-bottom:30px;
+.downloadLink{
+	text-align: center;
+	padding-top: 1em;
+	font-size: 1.5em;
 }
 .downloadAllTraits{
 	text-align: right;
 	font-size: 18px;
 }
+.errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 234px;
+}
 .selectAllTraitsLnk{
 	margin-left: 45px;
-	color: #337ab7 !important;
+	color: #0000ff !important;
 	font-size: 14px;
 }
 .deselectAllTraitsLnk{
 	margin-left: 45px;
-	color: #337ab7 !important;
+	color: #0000ff !important;
 	display: none;
 	font-size: 14px;
 }
 div.dataTables_info{
 	width: 42% !important;
 }
+.downloadSelected{
+	margin-right: 100px;
+	color: #0000ff !important;
+	font-size: 14px;
+}
+.downloadSample{
+	font-size: 20px;
+}
+.textBold{
+	font-weight: bold;
+}
 #simpleTrait
 {
-	font-family:"Trebuchet MS", Arial;
-	width:100%;
-	border-collapse:collapse;
-	margin-bottom: 30px;
+font-family:"Trebuchet MS", Arial;
+width:100%;
+border-collapse:collapse;
 }
 #simpleTrait td, #simpleTrait th 
 {
-	font-size:1em;
-	padding:3px 7px 2px 7px;
+font-size:1em;
+padding:3px 7px 2px 7px;
+}
+
+p.introText {
+    font-size: 15px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
 }

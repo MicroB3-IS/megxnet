@@ -6,57 +6,41 @@
         "attributes": {
             "id": "osd-form",
             "method": "post",
-            "action": "${megx.site.url}/ws/v1/esa/v1.0.0/observation"
+            "action": "${mvn.site.url}/ws/v1/esa/v1.0.0/observation"
         },
         "buttons": {
             "submit": {},
-            "reset": {}
+            "reset": {} 
         }
     },
     "fields": {
         "version": {
             "type": "hidden"
         },
-        "origin": {
-            "type": "hidden"
-        },
         "date_taken": {
-            "dateFormat": "YY-MM-DD"
+            
+            "dateFormat": "yy-mm-dd",
+             
+            "datepicker": {
+                "dateFormat": "yy-mm-dd" 
+            }
         },
         "time_taken": {
-            "timeFormat": "HH:mm",
-            "inputType": "time"
+            "maskString": "99:99",
+            "timeFormat": "hh:mm",
+            "timeFormatRegex": "^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$"
         },
-        "gps_accuracy": {
+        "gps_accuracy" : {
             "allowOptionalEmpty": true
         },
-        "sampling_kit": {
-            "type": "checkbox",
-            "rightLabel": "Do you filter water using the MyOSD sampling kit?"
+        "weather_condition":{
+         "type": "select",
+          "data_source": "${mvn.site.url}/net.megx.esa/data/weather_options.json"  
         },
-        "myosd_number": {
-            "dependencies": {
-                "sampling_kit": true
-            }
-        },
-        "filter_one": {
-            "dependencies": {
-                "sampling_kit": true
-            }
-        },
-        "filter_two": {
-            "dependencies": {
-                "sampling_kit": true
-            }
-        },
-        "weather_condition": {
-            "type": "select",
-            "data_source": "${megx.site.url}/net.megx.esa/data/weather_options.json"
-        },
-        "ph": {
+        "ph":{
             "validate": false
         },
-        "secchi_depth": {
+        "secchi_depth":{
             "validate": false
         },
         "comment": {

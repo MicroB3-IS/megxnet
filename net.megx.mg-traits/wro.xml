@@ -34,5 +34,8 @@
 	<group name='no-data-to-display.min'>
 		<js>/res/net.megx.mg-traits/js/no-data-to-display.js</js>
 	</group>
+	<group name='traitsDownload.min'>
+		<js>/res/net.megx.mg-traits/js/traitsDownload.js</js>
+	</group>
 
 </groups>

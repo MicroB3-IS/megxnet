@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OSD Registry
 Bundle-SymbolicName: net.megx.osd.registry
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.osd.registry.Activator
 Import-Package: com.google.gson;version="2.2.4",
  javax.jcr;version="2.0.0",
@@ -20,7 +20,6 @@ Import-Package: com.google.gson;version="2.2.4",
  javax.servlet.resources;version="2.5.0",
  javax.ws.rs;version="1.0.1",
  javax.ws.rs.core;version="1.0.1",
- net.megx.form.widget.model,
  net.megx.megdb,
  net.megx.megdb.osdregistry,
  net.megx.model.osdregistry,
@@ -33,4 +32,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.chon.cms.core;bundle-version="1.0.0",
  org.chon.web;bundle-version="1.0.2",
  net.megx.megdb;bundle-version="1.0.0"
-Bundle-ClassPath: .

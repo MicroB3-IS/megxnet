@@ -1,142 +1,60 @@
-<table id="sample-and-institute-table"
-    class="table table-striped table-hover table-bordered dt-responsive">
-    <thead>
-        <tr>
-            <th>OSD ID</th>
-            <th>Site name</th>
-            <th>Institution</th>
-            <th>Site coordinator</th>
-            <th>Country</th>
-            <th>Site latitude</th>
-            <th>Site longitude</th>
-            <th>Institute latitude</th>
-            <th>Institute longitude</th> #if($req.user &&
-            $req.servletRequset.isUserInRole('admin'))
-            <th>Action</th> #end
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<link href="$ctx.siteUrl/net.megx.osd.registry/stylesheets/osdRegistry.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$ctx.siteUrl/net.megx.osd.registry/js/osdRegistry.js"></script>
 
-<script type="text/javascript">
-  jQuery(document).ready(
-      function() {
-        (function() {
-          
-          var columns = [ {
-            data : "osdID",
-            width : "5em",
-            type : "natural"
-          }, {
-            data : "siteName",
-            width : "8em"
-          }, {
-            data : "institution",
-            width : "14em"
-          }, {
-            data : "siteCoordinator",
-            width : "10em"
-          }, {
-            data : "country",
-            width : "7em",
-          }, {
-            data: "siteLat",
-            className: "none",
-            visible: false
-          }, {
-            data: "siteLong",
-            className: "none",
-            visible: false
-          }, {
-            data: "institutionLat",
-            className: "none",
-            visible: false
-          }, {
-            data: "institutionLong",
-            className: "none",
-            visible: false
-          }, 
-          #if($req.user && $req.servletRequset.isUserInRole('admin'))
-          {
-            data: "id",
-            width : "6em",
-            className: "text-center"
-          } 
-          #end
-          ];
-          
-          var buttons = {
-            toolbarButtons : {
-              #if($req.user && $req.servletRequset.isUserInRole('admin'))
-              create : {
-                tooltip: "Add Participiant",
-                link : {
-                  url : "$ctx.siteUrl/osd-registry/add",
-                },
-              },
-              #end
-            },
-            
-            #if($req.user && $req.servletRequset.isUserInRole('admin'))
-            dataButtons : {
-              // column number is zero-based
-              column : 9,
-              edit : {
-                label: "Edit",
-                link : {
-                  url : "$ctx.siteUrl/osd-registry/add?id=",
-                },
-              },
-              delete : {
-                label: "Delete",
-                modal : {
-                  target : 'deleteDialog',
-                  callback: {
-                    button: 'deleteDialog-deleteButton',
-                    action: 'Megx.osdRegistry.deleteParticipant',
-                  },
-                },
-              },
-            }
-            
-            #end
-          };
-          
-          var datatablesConfigOverride = {};
-          var data = {};
-          
-          var table = new Megx.MegxTable("sample-and-institute-table", columns, buttons,
-              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", data, datatablesConfigOverride);
-        })();
-      });
-</script>
 
-<div class="modal" id="deleteDialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Delete OSD Site</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Are you sure you want to delete the site <em
-                        data-megx-bind="action-id"></em>?
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="deleteDialog-cancelButton" type="button"
-                    class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="deleteDialog-deleteButton" type="button"
-                    class="btn btn-primary">Delete Site</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+
+<!--  <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js" type="text/javascript"></script> -->
+<!-- <script src="$ctx.siteUrl/net.megx.ui.table/js/table.utils.js" type="text/javascript"></script> -->
+<script src="//cdn.datatables.net/plug-ins/e9421181788/sorting/natural.js" type="text/javascript"></script>
+
+
+#set($url = "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants")
+
+$ext.dataTable.renderServerSide(
+	['OSD ID', 'Site name', 'Institution', 'Site coordinator', 'Country', 'Action'], 
+	$url,
+	false,
+	"{
+	 aoColumns: [
+	 {
+	 	type: 'natural',
+	 	mData: 'osdID',
+	 	sClass: 'data-pad',
+	 	sWidth: '80px'
+	 }, { 
+	 	mData: 'siteName',
+	 	sClass: 'data-pad',
+	 	sWidth: '130px'
+	 }, {
+	 	mData: 'institution',
+	 	sClass: 'data-pad',
+	 	sWidth: '220px' 
+	 }, {
+	 	mData: 'siteCoordinator',
+	 	sClass: 'data-pad',
+	 	sWidth: '160px'
+	 }, {
+	 	mData: 'country',
+	 	sClass: 'data-pad',
+	 	sWidth: '110px'
+	 }, {
+	 	mData: 'id',
+	 	sClass: 'center',
+	 	sWidth: '130px',
+	 	mRender: function(id){
+	 		#if($req.user && $req.servletRequset.isUserInRole('admin'))
+	 			var editUrl = '$ctx.siteUrl/osd-registry/add?id=' + id;
+	 			var deleteUrl = '$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/deleteParticipant?id=' + id;
+	 			return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a> / <a href=' + editUrl + '>Edit</a> / <a href=\'\' class=\'deleteParticipantClass\' id=' + id + '>Delete</a>';
+ 			#else
+ 				return '<a href=\'\' class=\'viewParticipantClass\' name=' + id + '>View</a>';
+			#end
+	 	}
+	 }]
+}")
+
+<div id="deleteDialog">
+	<p class="deleteRecordQst">Are you sure you want to delete this record?</p>
 </div>
-<!-- /.modal -->
+
+#parse("net.megx.osd.registry/viewDialog.html")

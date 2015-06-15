@@ -49,7 +49,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_TRAIT_OVERVIEW_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_ALL_FINISHED_JOBS_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_SIMPLE_TRAITS_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_FUNCTION_TABLE_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_AMINO_ACID_CONTENT_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_DI_NUCLEOTIDE_ODDS_RATIO_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class MGTraitsAPITest {
 		request.addBodyParameter("sample_env_ontology", p.getProperty("POST_JOB_SAMPLE_ENV_ONTOLOGY"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(201, response.getCode());
+		Assert.assertEquals(response.getCode(), 201);
 	}
 	
 	@Test
@@ -130,7 +130,7 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_CODON_USAGE_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 	
 	@Test
@@ -139,6 +139,6 @@ public class MGTraitsAPITest {
 				p.getProperty("GET_TAXONOMIC_CONTENT_URL"));
 		service.signRequest(accessToken, request);
 		Response response = request.send();
-		Assert.assertEquals(200, response.getCode());
+		Assert.assertEquals(response.getCode(), 200);
 	}
 }

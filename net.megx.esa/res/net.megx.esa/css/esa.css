@@ -1,15 +1,11 @@
-ul {
-  list-style-type:disk
-}
-
 .selectAllSamplesLnk{
 	margin-left: 45px;
-	color: #337ab7 !important;
+	color: #0000ff !important;
 	font-size: 14px;
 }
 .deselectAllSamplesLnk{
 	margin-left: 45px;
-	color: #337ab7 !important;
+	color: #0000ff !important;
 	display: none;
 	font-size: 14px;
 }
@@ -18,8 +14,10 @@ p.columnEditingNote{
 	width: 290px;
 	margin-bottom: 30px;
 }
-.dataTables_info{
-	display: inline;
+.downloadSelected{
+	margin-right: 20px;
+	color: #0000ff !important;
+	font-size: 14px;
 }
 div.dataTables_info{
 	width: 42% !important;
@@ -43,8 +41,6 @@ table.sampleData td.label{
 }
 td.label{
 	padding-right: 20px;
-	color: #4C4C4C;
-	font-size: 12px;
 }
 #sampleDetails{
 	margin: 20px;
@@ -104,7 +100,7 @@ p.tcp{
 }
 .errorMsg{
 	display: none; 
-	font-size: 12px; 
+	font-size: 14px; 
 	color: #FF0000; 
 	margin-left: 234px;
 }
