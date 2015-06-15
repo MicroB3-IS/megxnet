@@ -553,9 +553,9 @@ public class EarthSamplingAppAPI extends BaseRestService {
         Random random = new Random();
         int idx = random.nextInt(greetings.length);
 
-        String tweet = greetings[idx] + "! New observation reached us from "
+        String tweet = greetings[idx] + "! New OSD data reached us from "
                 + lat + ", " + lon + " at " + dateTaken + ". See " + link
-                + " @Micro_B3 #osd2014";
+                + " @Micro_B3 #osd2015";
         this.twitterService.geoTweet(tweet, latitude, longitude);
     }
 
