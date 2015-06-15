@@ -165,7 +165,7 @@
 		salinity, comment, accuracy, phosphate, nitrate, nitrite,
 		ph,
 		secchi_depth,
-		material
+		material, myosd_number, filter_one, filter_two
 	</sql>
 
 	<sql id="esa_sample_row_columns_no_geom">
