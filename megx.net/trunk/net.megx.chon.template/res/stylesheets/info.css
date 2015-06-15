@@ -1,0 +1,25 @@
+.contentTable{
+	width:60%;
+}
+.faqText{
+	vertical-align: top;
+}
+.faqImg{
+	margin: 3px 10px; 
+	float: right;
+	width: 65%;
+	height: 65%;
+}
+.microb3Img{
+	width: 150px;
+}
+.genomicImg{
+	height:60px;
+}
+.relatedTable{
+	border-spacing:0px 5px;
+	border-collapse: separate;
+}
+.relatedTable td{
+	padding:10px;
+}
