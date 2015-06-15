@@ -51,6 +51,9 @@ $(document).ready(function(){
 		$('td.nitrate').html(renderText(data.nitrate, 'mg/l'));
 		$('td.nitrite').html(renderText(data.nitrite, 'mg/l'));
 		$('td.pH').html(renderText(data.ph));
+		$('td.myosdNumber').html(renderText(data.myosdNumber));
+		$('td.filterOne').html(renderText(data.filterOne));
+		$('td.filterTwo').html(renderText(data.filterTwo));
 		$('td.secchiDepth').html(renderText(data.secchiDepth));
 		$('td.comment').html(renderText(data.comment));
 		$('td.project').html(renderText(data.projectId));
