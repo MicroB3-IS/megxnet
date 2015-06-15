@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Table UI Elements
 Bundle-SymbolicName: net.megx.ui.table
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.megx.ui.table.Activator
 Import-Package: javax.jcr;version="2.0.0",
  javax.jcr.lock;version="2.0.0",

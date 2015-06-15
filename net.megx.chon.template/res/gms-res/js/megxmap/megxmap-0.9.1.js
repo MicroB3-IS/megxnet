@@ -213,7 +213,7 @@ Biojs.MegxMapWidget = Biojs
         '<div id="megxMap"></div>',
         '<div id="errorMsg">No layer selected. Please select a layer.</div>',
         '<div id="layersAccordion">',
-        '<div id="newLayer"><button id="manipulateLayers">Add layers to the map</button></div>',
+        '<div id="newLayer"><button id="manipulateLayers">Add layers to the map</button> Add a new layer to the map</div>',
         '</div>',
         '<div id="layerDialog"></div>',
         '<div id="messagesPlaceholder"></div>' ].join('');

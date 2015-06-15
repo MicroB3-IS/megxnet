@@ -58,7 +58,6 @@
 		
 		<!-- OSDRegistry -->
 		<typeAlias type="net.megx.model.osdregistry.OSDParticipant" alias="OSDParticipant" />
-		<typeAlias type="net.megx.model.osdregistry.OSDParticipation" alias="OSDParticipation" />
 		
 		<!-- MGTraits -->
 		<typeAlias type="net.megx.model.mgtraits.MGTraitsResult" alias="MGTraitsResult" />
@@ -80,17 +79,6 @@
 		<typeAlias  type="net.megx.model.blast.BlastHitsNeighbours"  alias="BlastHitsNeighbours"/>
 		<typeAlias  type="net.megx.model.blast.BlastHitsDb"  alias="BlastHitsDb"/>
 		<typeAlias type="net.megx.model.blast.MatchingSequences" alias="MatchingSequences" />
-		
-		<!-- Contact -->
-		<typeAlias type="net.megx.model.contact.Contact" alias="Contact"/>
-		
-		<!-- Pubmap -->
-		<typeAlias type="net.megx.model.pubmap.Article" alias="Article"/>
-		<typeAlias type="net.megx.model.pubmap.Ocean" alias="Ocean"/>
-		
-		<!-- MIBIG -->
-		<typeAlias type="net.megx.model.mibig.MibigSubmission" alias="MibigSubmission"/>
-		<typeAlias type="net.megx.model.mibig.BgcDetailSubmission" alias="BgcDetailSubmission"/>
 	</typeAliases>
 
 	<environments default="main">
@@ -144,11 +132,6 @@
 		
 		<!-- Blast mapper -->
 		<mapper resource="blast/blast-mapper.xml"/>
-		
-		<!-- Contact mapper -->
-		<mapper resource="contact/contact-mapper.xml"/>
-        
-        <mapper resource="mibig/mibig-mapper.xml"/>
 	</mappers>
 	
 </configuration>

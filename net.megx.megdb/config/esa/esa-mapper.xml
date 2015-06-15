@@ -45,10 +45,6 @@
 		<result column="ph" property="ph" />
 		<result column="secchi_depth" property="secchiDepth" />
 		<result column="material" property="material" />
-		<result column="sampling_kit" property="samplingKit" />
-		<result column="myosd_number" property="myosdNumber" />
-		<result column="filter_one" property="filterOne" />
-		<result column="filter_two" property="filterTwo" />
 		<association property="photos" column="id" select="getPhotosForSample" />
 	</resultMap>
 
@@ -83,9 +79,6 @@
 		<result column="ph" property="ph" />
 		<result column="secchi_depth" property="secchiDepth" />
 		<result column="material" property="material" />
-		<result column="myosd_number" property="myosdNumber" />
-		<result column="filter_one" property="filterOne" />
-		<result column="filter_two" property="filterTwo" />
 	</resultMap>
 
 	<resultMap type="ESASamplePhoto" id="esa_sample_photo">
@@ -144,10 +137,6 @@
 		<if test="appVersion != null">app_version,</if>
 		<if test="fun != null">fun,</if>
 		<if test="material != null">material,</if>
-		<if test="samplingKit != null">sampling_kit,</if>
-		<if test="myosdNumber != null">myosd_number,</if>
-		<if test="filterOne != null">filter_one,</if>
-		<if test="filterTwo != null">filter_two,</if> 
 		sample_size,geom
 	</sql>
 
@@ -165,7 +154,7 @@
 		salinity, comment, accuracy, phosphate, nitrate, nitrite,
 		ph,
 		secchi_depth,
-		material, myosd_number, filter_one, filter_two
+		material
 	</sql>
 
 	<sql id="esa_sample_row_columns_no_geom">
@@ -177,8 +166,7 @@
 		water_temperature, conductivity,
 		wind_speed, salinity, comment,
 		accuracy,
-		phosphate, nitrate, nitrite, ph, secchi_depth, material,
-		myosd_number, filter_one, filter_two
+		phosphate, nitrate, nitrite, ph, secchi_depth, material
 	</sql>
 
 	<sql id="esa_sample_images_columns_all">
@@ -339,10 +327,6 @@
 			<if test="appVersion != null">#{appVersion},</if>
 			<if test="fun != null">#{fun},</if>
 			<if test="material != null">#{material},</if>
-			<if test="samplingKit != null">#{samplingKit},</if>
-			<if test="myosdNumber != null">#{myosdNumber},</if>
-			<if test="filterOne != null">#{filterOne},</if>
-			<if test="filterTwo != null">#{filterTwo},</if> 
 			#{sampleSize},
 			ST_PointFromText('POINT(${lon} ${lat})',4326)
 		</trim>

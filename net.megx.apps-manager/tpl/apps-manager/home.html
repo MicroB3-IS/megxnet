@@ -123,7 +123,6 @@ $(document).ready(function(){
 		var isNew = !currentApp.edit; 
 		if(!isNew){
 			$(".apps-edit-panel").show();
-			$(".no-apps-panel").hide();
 			$("#app-name").val(app.name);
 			$("#app-description").val(app.description);
 			$("#app-callback").val(app.callbackUrl);
@@ -144,7 +143,6 @@ $(document).ready(function(){
 		$(".apps-content").hide();
 		$(".apps-static-content").hide();
 		$(".apps-edit-panel").show();
-		$(".no-apps-panel").hide();
 	};
 	
 	var saveApp = function(){
@@ -211,131 +209,126 @@ $(document).ready(function(){
 			$(".apps-static-content").hide();
 			$(".apps-content").show();
 			
-			if(apps.length > 0){
-				for(var i = 0; i < apps.length; i++){
-					var m = [
-					   '<div class="apps-app-wrapper ui-corner-all">',
-					   		'<div class="apps-app-header">', 
-					   			apps[i].name,
-					   			'<div style="float: right;">',
-					   				'<div class="ui-state-default ui-corner-all apps-action-remove"><span class="ui-icon ui-icon-circle-close ">Remove</span></div>',
-					   				'<div class="ui-state-default ui-corner-all apps-action-edit"><span class="ui-icon ui-icon-pencil"></span></div>',
-					   			'</div>',
-					   		'</div>',
-					   		'<div class="apps-app-description">',apps[i].description,'</div>',
-					   		'<div>',
-					   			'<div class="apps-action-details"><span class="ui-icon ui-icon-triangle-1-e apps-expand-details" style="display: inline-block;"></span> Details</div>',
-					   			'<div class="apps-details" style="display: none;">',
-					   			     '<div><label class="apps-label">Desktop App (Out Of Band): </label><span>',apps[i].oob ? 'Yes':'No','</span></div>',
-					   			     '<div><label class="apps-label">Callback URL: </label><span>',(apps[i].callbackUrl ? apps[i].callbackUrl : 'none'),'</span></div>',
-					   			     '<div class="apps-subsection ui-corner-all">',
-					   			     	'<div>This is the application key and secret. Copy these and store them to safe place.</div>',
-					   			    	'<div><label class="apps-label">App Key: </label><span class="apps-secure-info">',apps[i].key,'</span></div>',
-					   			    	'<div><label class="apps-label">Secret: </label><span class="apps-secure-info">',apps[i].secret,'</span></div>',
-					   			     '</div>',
-					   			     '<div class="apps-subsection ui-corner-all">',
-					   			  		'<div><label class="apps-label">Access Token: </label><input type="button" class="apps-action-access-token" value="Generate"/></div>',
-					   			  		'<div class="apps-access-token-panel">',
-					   			  			'<div><label class="apps-label">Token: </label><span class="apps-token apps-secure-info"></span></div>',
-				   			    			'<div><label class="apps-label">Secret: </label><div class="apps-token-secret apps-secure-info" readonly="readonly" style="width: 100%; height: 100px; border: none;"></div></div>',
-					   			  		'</div>',
-					   			     '</div>',
-					   			     '<div style="text-align: right;">',
-					   			     	'<input type="button" class="apps-action-edit" value="Edit"/>',
-					   			        '<input type="button" class="apps-action-remove" value="Remove"/>',
-					   			     '</div>',
-					   			'</div>',
-					   		'</div>',
-					   '</div>'
-					].join('');
+			for(var i = 0; i < apps.length; i++){
+				var m = [
+				   '<div class="apps-app-wrapper ui-corner-all">',
+				   		'<div class="apps-app-header">', 
+				   			apps[i].name,
+				   			'<div style="float: right;">',
+				   				'<div class="ui-state-default ui-corner-all apps-action-remove"><span class="ui-icon ui-icon-circle-close ">Remove</span></div>',
+				   				'<div class="ui-state-default ui-corner-all apps-action-edit"><span class="ui-icon ui-icon-pencil"></span></div>',
+				   			'</div>',
+				   		'</div>',
+				   		'<div class="apps-app-description">',apps[i].description,'</div>',
+				   		'<div>',
+				   			'<div class="apps-action-details"><span class="ui-icon ui-icon-triangle-1-e apps-expand-details" style="display: inline-block;"></span> Details</div>',
+				   			'<div class="apps-details" style="display: none;">',
+				   			     '<div><label class="apps-label">Desktop App (Out Of Band): </label><span>',apps[i].oob ? 'Yes':'No','</span></div>',
+				   			     '<div><label class="apps-label">Callback URL: </label><span>',(apps[i].callbackUrl ? apps[i].callbackUrl : 'none'),'</span></div>',
+				   			     '<div class="apps-subsection ui-corner-all">',
+				   			     	'<div>This is the application key and secret. Copy these and store them to safe place.</div>',
+				   			    	'<div><label class="apps-label">App Key: </label><span class="apps-secure-info">',apps[i].key,'</span></div>',
+				   			    	'<div><label class="apps-label">Secret: </label><span class="apps-secure-info">',apps[i].secret,'</span></div>',
+				   			     '</div>',
+				   			     '<div class="apps-subsection ui-corner-all">',
+				   			  		'<div><label class="apps-label">Access Token: </label><input type="button" class="apps-action-access-token" value="Generate"/></div>',
+				   			  		'<div class="apps-access-token-panel">',
+				   			  			'<div><label class="apps-label">Token: </label><span class="apps-token apps-secure-info"></span></div>',
+			   			    			'<div><label class="apps-label">Secret: </label><div class="apps-token-secret apps-secure-info" readonly="readonly" style="width: 100%; height: 100px; border: none;"></div></div>',
+				   			  		'</div>',
+				   			     '</div>',
+				   			     '<div style="text-align: right;">',
+				   			     	'<input type="button" class="apps-action-edit" value="Edit"/>',
+				   			        '<input type="button" class="apps-action-remove" value="Remove"/>',
+				   			     '</div>',
+				   			'</div>',
+				   		'</div>',
+				   '</div>'
+				].join('');
+				
+				
+				var e = $(m)[0];
+				(function(app, el){
+					$('.apps-action-details',el).click(function(){
+						this._hidden = this._hidden === undefined ? true : this._hidden; 
+						if(this._hidden){
+							$('span',this).removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
+							$('.apps-details', el).show();
+							this._hidden = false;
+						}else{
+							$('span',this).removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
+							$('.apps-details', el).hide();
+							this._hidden = true;
+						}
+					});
+				
+				
+				
+					$('.apps-action-access-token',el).click(function(){
+						manager.generateAccessToken(app.key, function(token){
+							if(token.error){
+								notify('error','','Failed to generate access token. ' +  token.message);
+								return;
+							}
+							$(".apps-token",el).html(token.token);
+							$(".apps-token-secret",el).html(token.secret);
+							$(".apps-access-token-panel",el).show();
+						},
+						function(){
+							notify('error','','Token generation failed!')
+						});
+					});
 					
 					
-					var e = $(m)[0];
-					(function(app, el){
-						$('.apps-action-details',el).click(function(){
-							this._hidden = this._hidden === undefined ? true : this._hidden; 
-							if(this._hidden){
-								$('span',this).removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s');
-								$('.apps-details', el).show();
-								this._hidden = false;
-							}else{
-								$('span',this).removeClass('ui-icon-triangle-1-s').addClass('ui-icon-triangle-1-e');
-								$('.apps-details', el).hide();
-								this._hidden = true;
+					$(".apps-action-remove",el).click(function(){
+						var m = [
+						         '<div class="apps-notify">',
+						         	"You're about to delete ",
+						         	app.name, ".",
+						         	'<p> This means that you no longer will be able to use this application with Megx.',
+						         	'<p> Are you sure you want to continue?',
+						         '</div>'
+						].join('');
+						
+						var del = $(m)[0];
+						$(del).dialog({
+							'title': 'Delete an App',
+							buttons:{
+								'Yes': function(){
+									manager.removeApp(app.key, function(result){
+										if(result.error){
+											notify('error','','Failed to update application ' + app.name + '. ' + result.message);
+											return;
+										}
+										$(del).dialog('close');
+										getAllApps();
+										notify('info','','Application ' + app.name + ' has been deleted.');
+									},function(){
+										notify('error','Application Remove: ', 'The removal of ' + app.name + ' was not successful.');
+										$(del).dialog('close');
+									});
+								},
+								'No': function(){
+									$(del).dialog('close');
+								}
 							}
 						});
+						$(del).dialog('open');
+					});
 					
-					
-					
-						$('.apps-action-access-token',el).click(function(){
-							manager.generateAccessToken(app.key, function(token){
-								if(token.error){
-									notify('error','','Failed to generate access token. ' +  token.message);
-									return;
-								}
-								$(".apps-token",el).html(token.token);
-								$(".apps-token-secret",el).html(token.secret);
-								$(".apps-access-token-panel",el).show();
-							},
-							function(){
-								notify('error','','Token generation failed!')
-							});
-						});
-						
-						
-						$(".apps-action-remove",el).click(function(){
-							var m = [
-							         '<div class="apps-notify">',
-							         	"You're about to delete ",
-							         	app.name, ".",
-							         	'<p> This means that you no longer will be able to use this application with Megx.',
-							         	'<p> Are you sure you want to continue?',
-							         '</div>'
-							].join('');
-							
-							var del = $(m)[0];
-							$(del).dialog({
-								'title': 'Delete an App',
-								buttons:{
-									'Yes': function(){
-										manager.removeApp(app.key, function(result){
-											if(result.error){
-												notify('error','','Failed to update application ' + app.name + '. ' + result.message);
-												return;
-											}
-											$(del).dialog('close');
-											getAllApps();
-											notify('info','','Application ' + app.name + ' has been deleted.');
-										},function(){
-											notify('error','Application Remove: ', 'The removal of ' + app.name + ' was not successful.');
-											$(del).dialog('close');
-										});
-									},
-									'No': function(){
-										$(del).dialog('close');
-									}
-								}
-							});
-							$(del).dialog('open');
-						});
-						
-						$(".apps-action-edit",el).click(function(){
-							currentApp.app = app;
-							currentApp.edit = true;
-							edit();
-						});
-					
-					})(apps[i], e);
-					
-					$('.apps-content').append(e);
-				}
-			}else {
-				$(".no-apps-panel").show();
+					$(".apps-action-edit",el).click(function(){
+						currentApp.app = app;
+						currentApp.edit = true;
+						edit();
+					});
+				
+				})(apps[i], e);
+				
+				$('.apps-content').append(e);
 			}
 		}, function(){
 			notify('error','','Failed to retrieve the list of all your applications.')
 		});
-		
 	};
 	
 	
@@ -364,7 +357,7 @@ $(document).ready(function(){
 });
 </script>
 <div>
-	<h2 style=" margin-left:10px;">Apps Manager</h2>
+	<h2>Apps Manager</h2>
 	<div class="apps-notification"></div>
 	<div>
 		<div style="float: left; margin-left: 25px;">
@@ -389,13 +382,6 @@ $(document).ready(function(){
 					<span style="font-weight: bold;">Create App</span> to create your own App.
 				</p>
 			</div>
-		</div>
-		<div class="no-apps-panel apps-content-panel" style="display: none;">
-			<div class="apps-app-wrapper ui-corner-all">
-				No apps configured yet.
-				 <div class="apps-new-app apps-action" style="font-weight: bold; text-decoration:none;">Create an app here</div>
-				
-				</div>
 		</div>
 		<div class="apps-edit-panel apps-content-panel" style="display: none;">
 				<div class="apps-app-wrapper ui-corner-all">

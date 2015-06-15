@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class SampleRow {
+	private String id;
 	
-	private String id;	
 	private Date taken;
 	private Date modified;
 	private String collectorId;
 	private String label;
-	private String barcode;	
+	
+	private String barcode;
+	
 	private Double elevation;
 	private String biome;
 	private String feature;
@@ -35,9 +37,6 @@ public class SampleRow {
 	private Double nitrate;
 	private Double nitrite;
 	private Double ph;
-	private String myosdNumber;
-	private Double filterOne;
-	private Double filterTwo;
 	
 	public Double getAccuracy() {
 		return accuracy;
@@ -229,24 +228,6 @@ public class SampleRow {
 	public void setPh(Double ph) {
 		this.ph = ph;
 	}
-	public String getMyosdNumber() {
-		return myosdNumber;
-	}
-	public void setMyosdNumber(String myosdNumber) {
-		this.myosdNumber = myosdNumber;
-	}
-	public Double getFilterOne() {
-		return filterOne;
-	}
-	public void setFilterOne(Double filterOne) {
-		this.filterOne = filterOne;
-	}
-	public Double getFilterTwo() {
-		return filterTwo;
-	}
-	public void setFilterTwo(Double filterTwo) {
-		this.filterTwo = filterTwo;
-	}
 	@Override
 	public int hashCode() {
 		final Integer prime = 31;
@@ -286,7 +267,6 @@ public class SampleRow {
 				+ salinity + ", comment=" + comment + ", lat=" + lat + ", lon="
 				+ lon + ", accuracy=" + accuracy + ", phosphate=" + phosphate
 				+ ", nitrate=" + nitrate + ", nitrite=" + nitrite + ", ph="
-				+ ph + ", myosdNumber=" + myosdNumber + ", filterOne=" + filterOne
-				+ ", filterTwo =" + filterTwo +", photos=" + Arrays.toString(photos) + "]";
+				+ ph + ", photos=" + Arrays.toString(photos) + "]";
 	}
 }

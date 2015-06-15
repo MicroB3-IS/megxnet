@@ -1,6 +1,7 @@
 package net.megx.osd.registry;
 
 import net.megx.megdb.osdregistry.OSDRegistryService;
+import net.megx.osd.registry.rest.OSDRegistryAPI;
 import net.megx.osd.registry.rest.OSDRegistryOAuthImpl;
 import net.megx.utils.OSGIUtils;
 
@@ -25,7 +26,7 @@ public class Activator extends ResTplConfiguredActivator {
                     public void serviceAvailable( String name,
                             OSDRegistryService service ) {
                         log.debug("OSDRegistryService service received...");
-                        OSDRegistryOAuthImpl api = new OSDRegistryOAuthImpl(service);
+                        OSDRegistryAPI api = new OSDRegistryOAuthImpl(service);
                         RegUtils.reg(getBundleContext(),
                                 OSDRegistryOAuthImpl.class.getName(), api, null);
                         log.debug("OSD Registry app started.");

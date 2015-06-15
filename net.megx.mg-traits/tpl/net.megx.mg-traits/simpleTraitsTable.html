@@ -1,25 +1,48 @@
+#set( $baseWsURL = "${ctx.siteUrl}/ws/v1/mg-traits/v1.0.0" )
+#set( $allURL = "${baseWsURL}/all")
+
+<script type="text/javascript">
+  $(document).ready(function(){
+	  $('.downloadAllTraitsLink').click(function(){
+		  var url = $(this).attr('href');
+		  $.ajax(url,{
+			  headers: {          
+                 Accept : "text/csv; charset=utf-8",         
+                 "Content-Type": "text/csv; charset=utf-8"   
+	 		  },
+			  async: false
+		  });
+	  });
+  });
+</script>
+
 <div>
-	<table>
+	<table style="width: 100%">
 		<tr>
-			<td class="bg-danger">
-				<span id="errorMessage" class="text-danger text-center">Could not retrieve data from server. Please contact us and try again later.</span>
+			<td style="width: 80%;">
+				<span id="errorMessage" class="errorMsg">Could not retrieve data from server. Please contact us and try again later.</span>
+			</td>
+			<td style="width: 20%;">
+				<div class="downloadAllTraits">
+					<a href="$allURL" class="downloadAllTraitsLink">Download All</a>
+				</div>
 			</td>
 		</tr>
 	</table>
 </div>
 
-<div style="display:none" id="noTraitsSelected"><span>Please select some traits for download first.</span></div>
+<div id="noTraitsSelected"><span>Please select some traits for download first.</span></div>
 
-<table id="simple-traits-table" class="table table-striped table-hover table-bordered dt-responsive megx_dataTable">
+<table id="simpleTraitsTableId" class="display">
 	<thead>
 		<tr>
-			<th>Select to download</th>
+			<th></th>
 			<th>Sample Label</th>
 			<th>Sample Name</th>
 			<th>Environment</th>
 			<th>Size</th>
 			<th>Number of sequences</th>
-			<th>Action</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,5 +54,3 @@
 </form>
 
 <iframe name="csvDownloadTarget" style="display: none;"></iframe>
-
-<script type="text/javascript" src="$ctx.siteUrl/net.megx.mg-traits/js/mg-traits.min.js"></script>

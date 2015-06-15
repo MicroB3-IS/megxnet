@@ -1,12 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>net.megx</groupId>
     <artifactId>parent-microb3-is</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../net.megx/pom.xml</relativePath>
   </parent>
 
   <artifactId>megx.net-web</artifactId>
@@ -22,11 +21,15 @@
     <mvn.megx.version>0.4</mvn.megx.version>
     <plugin.config.dir>config</plugin.config.dir>
 
+    <mvn.host.name>localhost</mvn.host.name>
+    <mvn.host.port>${mvn.tomcat.port}</mvn.host.port>
+    <mvn.site.url>http://${mvn.host.name}:${mvn.host.port}/</mvn.site.url>
     <mvn.megx.war.file.name>megx.net</mvn.megx.war.file.name>
-    <!-- just to skip ant bundle copying, cause this project does not deploy 
-      any bundle -->
+  <!-- just to skip ant bundle copying, cause this project does not deploy   any bundle -->
     <mvn.ant.target.copy-single-bundle.skip>true</mvn.ant.target.copy-single-bundle.skip>
   </properties>
+
+
 
   <repositories>
     <repository>
@@ -58,22 +61,22 @@
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>org.atmosphere</groupId>
       <artifactId>atmosphere-runtime</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>org.atmosphere</groupId>
       <artifactId>wasync</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -86,51 +89,23 @@
     <!-- also used for war file name -->
     <finalName>${mvn.megx.war.file.name}</finalName>
 
-
     <plugins>
-      <!-- This plugin parses the properties file (i.e. default/developer/prod 
-        depending on the active profiel) and makes all properties of this file available 
-        in the pom as maven properites (like they had been declared in the <properties> 
-        </properties> section). This procedure is required for this module as many 
-        of these properties are used to configure the build in the pom (e.g. enforcing 
-        the presence of the configured directories.) -->
       <plugin>
-        <groupId>org.kuali.maven.plugins</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>2.0.1</version>
-        <configuration>
-          <locations>
-            <location>file:${profile.filter.file}</location>
-          </locations>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>read-project-properties</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
+        <groupId>com.github.goldin</groupId>
+        <artifactId>copy-maven-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-setup.kson-to-workdir</id>
             <phase>process-resources</phase>
             <goals>
-              <goal>copy-resources</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${megx.work.dir.path}/config</outputDirectory>
+              <skipIdentical>true</skipIdentical>
               <resources>
                 <resource>
-                  <directory>${plugin.config.dir}</directory>
-                  <includes>
-                    <include>setup.kson</include>
-                  </includes>
-                  <filtering>true</filtering>
+                  <targetPath>${mvn.work.dir.path}/config</targetPath>
+                  <file>${plugin.config.dir}/setup.kson</file>
                 </resource>
               </resources>
             </configuration>
@@ -142,6 +117,46 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules combine.children="append">
+            <requireFilesExist
+                combine.children="append">
+              <message>File must exist in correct version
+              for succesful lauch</message>
+              <files>
+                <file>${mvn.work.dir.path}</file>
+                <file>${mvn.work.dir.path}/repository</file>
+                <file>${mvn.work.dir.path}/plugins</file>
+                <file>${mvn.work.dir.path}/config</file>
+                <file>${mvn.work.dir.path}/config/setup.kson</file>
+                <!-- This is just an indicator if Chon plugins
+                     were build from net.megx.product -->
+                <file>${mvn.work.dir.path}/plugins/org.chon.cms.core_1.0.0.jar</file>
+              </files>
+            </requireFilesExist>
+            <requireProperty>
+              <property>mvn.host.name</property>
+              <message><![CDATA[Missing: Hostname under which the webapp will be published e.g. localhost]]></message>
+              <regex>.*$</regex>
+            </requireProperty>
+            <requireProperty>
+              <property>mvn.host.port</property>
+              <message><![CDATA[Missing: Host port under which the web application will be published e.g. localhost]]></message>
+              <regex>.*$</regex>
+            </requireProperty>
+            <requireProperty>
+              <property>mvn.tomcat.home</property>
+              <message><![CDATA[Missing: The directory of tomcat installation.]]>
+              </message>
+            </requireProperty>
+            <requireProperty>
+              <property>mvn.tomcat.port</property>
+              <message><![CDATA[Missing: The port tomcat is listening to]]>
+              </message>
+            </requireProperty>
+          </rules>
+        </configuration>
+        <!-- standard war lifecycle does not have validate phase -->
         <executions>
           <execution>
             <id>enforce-work-dir</id>
@@ -149,64 +164,24 @@
             <goals>
               <goal>enforce</goal>
             </goals>
-            <configuration>
-              <requireFilesExist>
-                <message><![CDATA[These files must exist in correct version
-                                for succesful launch:
-                                ${megx.work.dir.path}
-                                ${megx.work.dir.path}/repository
-                                ${megx.work.dir.path}/plugins
-                                ${megx.work.dir.path}/config
-                                ]]></message>
-                <files>
-                  <file>${megx.work.dir.path}</file>
-                  <file>${megx.work.dir.path}/repository</file>
-                  <file>${megx.work.dir.path}/plugins</file>
-                  <file>${megx.work.dir.path}/config</file>
-                  <!-- This is just an indicator if Chon plugins were build 
-                    from net.megx.product -->
-                  <file>${megx.work.dir.path}/plugins/org.chon.cms.core_1.0.0.jar</file>
-                </files>
-              </requireFilesExist>
-              <requireProperty>
-                <property>megx.host.name</property>
-                <message><![CDATA[Missing: Hostname under which the webapp will be published e.g. localhost]]></message>
-                <regex>.*$</regex>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.host.port</property>
-                <message><![CDATA[Missing: Host port under which the web application will be published e.g. localhost]]></message>
-                <regex>.*$</regex>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.tomcat.home</property>
-                <message><![CDATA[Missing: The directory of tomcat installation.]]>
-                </message>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.tomcat.port</property>
-                <message><![CDATA[Missing: The port tomcat is listening to]]>
-                </message>
-              </requireProperty>
-            </configuration>
-
           </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
           <execution>
-            <id>enforce-work-dir-kson</id>
+            <id>copy-chon-plugins</id>
             <phase>pre-integration-test</phase>
             <goals>
-              <goal>enforce</goal>
+              <goal>run</goal>
             </goals>
-            <configuration>
-              <requireFilesExist>
-                <message><![CDATA[These files must exist in correct version
-                                for succesful launch:
-                                ${megx.work.dir.path}/config/setup.kson
-                                ]]></message>
-                <files>
-                  <file>${megx.work.dir.path}/config/setup.kson</file>
-                </files>
-              </requireFilesExist>
+            <configuration combine.self="override">
+              <tasks>
+                <echoproperties />
+              </tasks>
             </configuration>
           </execution>
         </executions>
@@ -239,22 +214,25 @@
         <version>1.1.3</version>
         <configuration>
           <container>
-            <containerId>${megx.cargo.container.id}</containerId>
-            <!-- Location of container installation: basically CATALINA.HOME -->
-            <home>${megx.tomcat.home}</home>
+            <containerId>${mvn.cargo.container.id}</containerId>
+            <!-- Location of container installation: basically
+                 CATALINA.HOME -->
+            <home>${mvn.tomcat.home}</home>
             <timeout>300000</timeout>
-            <log>${megx.work.dir.path}/container.log</log>
+            <log>${mvn.work.dir.path}/container.log</log>
           </container>
           <configuration>
             <!-- container configuration -->
             <type>existing</type>
-            <!-- For standalone configuration this is the location where 
-              Cargo will create the configuration and for existing configuration this is 
-              where it is located -->
-            <home>${megx.tomcat.home}</home>
+            <!-- For standalone configuration this is the location
+                 where Cargo
+                 will create the configuration and for existing
+                 configuration this is where
+                 it is located -->
+            <home>${mvn.tomcat.home}</home>
 
             <properties>
-              <cargo.servlet.port>${megx.tomcat.port}</cargo.servlet.port>
+              <cargo.servlet.port>${mvn.tomcat.port}</cargo.servlet.port>
             </properties>
             <deployables>
               <deployable>
@@ -278,31 +256,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>debug</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-maven2-plugin</artifactId>
-            <version>1.1.3</version>
-            <configuration>
-              <configuration>
-                <properties>
-                  <cargo.servlet.port>${megx.tomcat.port}</cargo.servlet.port>
-                  <cargo.jvmargs>
-                    -agentlib:jdwp=transport=dt_socket,server=y,suspend=${megx.tomcat.debug.suspend},address=${megx.tomcat.debug.port}
-                    -Djava.compiler=NONE
-                  </cargo.jvmargs>
-                </properties>
-              </configuration>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>
