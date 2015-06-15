@@ -1,0 +1,44 @@
+#set($userId = "TODO")
+
+#set($url = "$ctx.siteUrl/ws/blast/getBlastJobsTable?userId=$userId")
+
+<div id="blast_list_table" style="margin: 7px;">
+$ext.dataTable.renderServerSide(
+	["Job Name", "Submit Date", "Status", "Program", "# Hits", "Subject Sequences", "Tools"], 
+	$url,
+	false,
+	"{
+	 aoColumns: [{ 
+	 	mData: 'jobName',
+	 	mRender: function(data, type, row) {
+	 		console.log(arguments);
+	 		if( type == 'display' ) {
+	 			return '<a href=\'$ctx.siteUrl/gms/geographic-blast/job?id='+row.jobId+'\'>'+data+'</a>';
+	 		}
+	 		return data;
+	 	}
+	 }, {
+	 	mData: 'submitted',
+	 	mRender: function ( data, type, row ) {
+	 		if(type == 'display') {
+	 			return data.year + '/' + data.month + '/' + data.dayOfMonth + '  ' + data.hourOfDay + ':' + data.minute;
+	 		}
+	 		return data.year + '' + data.month + '' + data.dayOfMonth + '' + data.hourOfDay + '' + data.minute + '' + data.second;
+	 	},
+	 	sClass: 'right'
+	 }, {
+	 	mData: 'status' 
+	 }, {
+	 	mData: 'program'
+	 }, {
+	 	mData: 'hits'
+	 }, {
+	 	mData: 'subjectSequence'
+	 }, {
+	 	mData: null,
+	 	mRender: function ( data, type, row ) {
+	 		return 'TODO: Export'
+	 	}
+	 }]
+}")
+</div>

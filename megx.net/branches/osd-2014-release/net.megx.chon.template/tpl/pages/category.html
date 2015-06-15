@@ -1,0 +1,11 @@
+<h2>$this.description</h2>
+<ul>
+#foreach($c in $this.childs)
+	<li>
+		<a href="$ctx.siteUrl/$c.path">$c.name</a>
+			<div>$c.introText</div>
+		<div class="FR">$ext.utils.formatDate($c.jcrLastModified, "yyyy-MM-dd")</div>
+		<div class="clear"></div>
+	</li>
+#end
+</ul>
