@@ -1,0 +1,110 @@
+.mx-env-param {
+	background-color: green
+}
+
+.mx-site {
+	background-color: RoyalBlue
+}
+
+.mx-sample {
+	background-color: orange
+}
+
+#errorMsg {
+	font-size: 18px;
+	color: #FF0000;
+	margin-left: 30px;
+	margin-top: 30px;
+	display: none;
+}
+
+#osdRegistryInputTable{
+	margin-top: 50px;
+	margin-left: 50px;
+	width: 880px;
+}
+
+#osdRegistryInputTable td.label{
+	vertical-align: middle;
+	width: 150px;
+}
+
+#osdRegistryInputTable td.input{
+	vertical-align: middle;
+	width: 430px;
+}
+
+#osdRegistryInputTable td.errorLabelContainer{
+	vertical-align: middle;
+	width: 300px;
+}
+
+#submitOSDParticipant{
+	width: 416px;
+	float: left;
+	margin-left: 199px;
+	background-color: rgb(236, 233, 216);
+	border-collapse: collapse;
+	border-image-outset: 0px;
+	border-image-repeat: stretch;
+	border-image-slice: 100%;
+	border-image-source: none;
+	border-image-width: 1;
+	border-color: rgb(231, 231, 231);
+	border-style: solid;
+	border-width: 1px;
+	box-sizing: border-box;
+	color: rgb(153, 153, 153);
+	cursor: default;
+	display: block;
+	font-family: Ubuntu, sans-serif;
+	font-size: 13px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	height: 28.3125px;
+	letter-spacing: normal;
+	line-height: 13px;
+	margin-bottom: 2px;
+	margin-right: 0px;
+	margin-top: 2px;
+	padding: 6.65625px;
+}
+
+.participantIDClass{
+	display: none;
+}
+
+p.osdIntroText{
+	font-size: 15px;
+	text-align: left;
+	padding-left: 30px;
+}
+
+table.viewDialogTable{
+	width: 620px;
+}
+
+#viewDialog a{
+	color: #0000FF;
+}
+
+td.viewLabel{
+	width: 160px;
+	font-family: Ubuntu, sans-serif;
+	white-space: nowrap;
+}
+
+td.viewValue{
+	width: 440px;
+	text-align: left;
+	font-family: Ubuntu, sans-serif;
+}
+
+p.deleteRecordQst{
+	font-family: Ubuntu, sans-serif;
+}
+
+.error{
+	color: red;
+}

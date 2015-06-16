@@ -1,0 +1,61 @@
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<p>Marine metagenomics provides an unique opportunity to study marine microorganism communities. The large amount of data available from studies like the <a href="http://camera.calit2.net/about-camera/global-ocean-sampling-expedition">Global Ocean Sampling (GOS) Expedtion</a> is appealing for comparative studies of gene content and it's link to the environment.</p>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<table id="metagenomes-table" class="table table-striped table-hover table-bordered dt-responsive">
+		    <thead>
+		        <tr>
+		            <th>Dataset Name</th>
+		            <th>Location</th>
+		            <th>Depth</th>
+		            <th>Date Sampled</th>
+		            <th>EnvO-Lite</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		    </tbody>
+		</table>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+  jQuery(document).ready(
+      function() {
+        (function() {
+          
+          var columns = [ {
+            data : "datasetName"
+          }, {
+            data : "location"
+          }, {
+            data : "depth"
+          }, {
+            data : "dateSampled"
+          }, {
+            data : "envOLite"
+          } ];
+          
+          var buttons = {
+            toolbarButtons : {
+            	downloadAll: {
+                    tooltip: "Download full table",
+                    link : {
+                        url : ctx.siteUrl + "/ws/browse/metagenomes.csv",
+                      }
+                }
+            } };
+          
+          var datatablesConfigOverride = {};
+          var data = {};
+          
+          var table = new Megx.MegxTable("metagenomes-table", columns, buttons,
+              "$ctx.siteUrl/ws/browse/metagenomesTable", data, datatablesConfigOverride);
+        })();
+      });
+</script>

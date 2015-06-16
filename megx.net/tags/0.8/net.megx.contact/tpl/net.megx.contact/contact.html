@@ -1,0 +1,12 @@
+<div id="contact-form"></div>
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    new Megx.FormWidget({
+        target : "contact-form",
+        schemaLocation : ctx.siteUrl  + "/net.megx.contact/data/contact-schema.json",
+        optionsLocation : ctx.siteUrl + "/net.megx.contact/data/contact-options.json",
+        parentView: "bootstrap-create"
+    });
+});
+</script>

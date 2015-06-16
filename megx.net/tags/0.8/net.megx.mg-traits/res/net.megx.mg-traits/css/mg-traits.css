@@ -1,0 +1,34 @@
+#errorMessage{
+	display: none;
+	margin-bottom:30px;
+}
+.downloadAllTraits{
+	text-align: right;
+	font-size: 18px;
+}
+.selectAllTraitsLnk{
+	margin-left: 45px;
+	color: #337ab7 !important;
+	font-size: 14px;
+}
+.deselectAllTraitsLnk{
+	margin-left: 45px;
+	color: #337ab7 !important;
+	display: none;
+	font-size: 14px;
+}
+div.dataTables_info{
+	width: 42% !important;
+}
+#simpleTrait
+{
+	font-family:"Trebuchet MS", Arial;
+	width:100%;
+	border-collapse:collapse;
+	margin-bottom: 30px;
+}
+#simpleTrait td, #simpleTrait th 
+{
+	font-size:1em;
+	padding:3px 7px 2px 7px;
+}

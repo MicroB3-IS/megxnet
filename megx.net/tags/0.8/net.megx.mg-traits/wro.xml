@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+
+	<group name='barCharts.min'>
+		<js>/res/net.megx.mg-traits/js/aminoAcidBarChart.js</js>
+		<js>/res/net.megx.mg-traits/js/codonUsageBarChart.js</js>
+		<js>/res/net.megx.mg-traits/js/diNucleotideBarChart.js</js>
+		<js>/res/net.megx.mg-traits/js/functionTableBarChart.js</js>
+		<js>/res/net.megx.mg-traits/js/taxonomy.js</js>
+	</group>
+	<group name='scatterPlots.min'>
+		<js>/res/net.megx.mg-traits/js/aminoAcidScatterplot.js</js>
+		<js>/res/net.megx.mg-traits/js/codonUsageScatterplot.js</js>
+		<js>/res/net.megx.mg-traits/js/diNucleotideScatterplot.js</js>
+		<js>/res/net.megx.mg-traits/js/functionalTableScatterplot.js</js>
+		<js>/res/net.megx.mg-traits/js/taxonomicScatterplot.js</js>
+	</group>
+	<group name='crossing-specific-value.min'>
+		<js>/res/net.megx.mg-traits/js/crossing-specific-value.js</js>
+	</group>
+	<group name='exporting.min'>
+		<js>/res/net.megx.mg-traits/js/exporting.js</js>
+	</group>
+	<group name='highcharts.min'>
+		<js>/res/net.megx.mg-traits/js/highcharts.js</js>
+	</group>
+	<group name='highstock.min'>
+		<js>/res/net.megx.mg-traits/js/highstock.js</js>
+	</group>
+	<group name='mg-traits.min'>
+		<js>/res/net.megx.mg-traits/js/mg-traits.js</js>
+	</group>
+	<group name='no-data-to-display.min'>
+		<js>/res/net.megx.mg-traits/js/no-data-to-display.js</js>
+	</group>
+
+</groups>

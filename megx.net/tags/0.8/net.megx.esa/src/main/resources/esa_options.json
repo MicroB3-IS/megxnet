@@ -1,0 +1,66 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "osd-form",
+            "method": "post",
+            "action": "${megx.site.url}/ws/v1/esa/v1.0.0/observation"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {}
+        }
+    },
+    "fields": {
+        "version": {
+            "type": "hidden"
+        },
+        "origin": {
+            "type": "hidden"
+        },
+        "date_taken": {
+            "dateFormat": "YY-MM-DD"
+        },
+        "time_taken": {
+            "timeFormat": "HH:mm",
+            "inputType": "time"
+        },
+        "gps_accuracy": {
+            "allowOptionalEmpty": true
+        },
+        "sampling_kit": {
+            "type": "checkbox",
+            "rightLabel": "Do you filter water using the MyOSD sampling kit?"
+        },
+        "myosd_number": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "filter_one": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "filter_two": {
+            "dependencies": {
+                "sampling_kit": true
+            }
+        },
+        "weather_condition": {
+            "type": "select",
+            "data_source": "${megx.site.url}/net.megx.esa/data/weather_options.json"
+        },
+        "ph": {
+            "validate": false
+        },
+        "secchi_depth": {
+            "validate": false
+        },
+        "comment": {
+            "type": "textarea"
+        }
+    }
+}

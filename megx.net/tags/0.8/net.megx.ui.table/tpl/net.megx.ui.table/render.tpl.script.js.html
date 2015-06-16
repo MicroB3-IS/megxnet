@@ -1,0 +1,28 @@
+<script type="text/javascript">
+
+jQuery(function() {
+	var tbl = $("#"+"$tableId");
+	tbl.addClass("megx_dataTable");
+	var cfg = {
+	    responsive: true,
+		paging: true,
+		ordering: true,
+		"pagingType": "full_numbers",
+	};
+	
+	## if server side
+	#if($url)
+	jQuery.extend(cfg, {
+		"processing": true,
+		"ajax": {
+		  "url": "$url",
+		},
+        "serverSide": $serverSideProcessing,
+        "autoWidth": false,
+    });
+	#end
+	
+	var oTable = tbl.dataTable(jQuery.extend(cfg, $tableConfig));
+});
+
+</script>
