@@ -1,5 +1,5 @@
 ﻿{
-    "title": "OSD Citizen Science Observation Input Form  (v0.2)",
+    "title": "OSD Citizen Science Observation Input Form  (v0.2.1)",
     "description": "Please fill as many data as you have :).",
     "type": "object",
     "properties": {
@@ -46,6 +46,7 @@
         "gps_accuracy": {
             "title": "GPS Accuracy",
             "description": "A radius in meter expressing how precise your latitude/longitude values are. Usually provided by GPS devices.",
+            "minimum": 0,
             "type": "number",
             "required": false
         },
