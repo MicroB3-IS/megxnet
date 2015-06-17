@@ -21,14 +21,18 @@
             "type": "hidden"
         },
         "date_taken": {
-            "dateFormat": "YY-MM-DD"
+            "dateFormat": "YYYY-MM-DD"
         },
         "time_taken": {
             "timeFormat": "HH:mm",
-            "inputType": "time"
+            "inputType": "time",
+            "placeholder": "Please enter your local time in 24 h format hh:mm e.g. 13:21"
         },
         "gps_accuracy": {
             "allowOptionalEmpty": true
+        }, "sample_name" : {
+           "size": 10,
+           "placeholder": "Please enter a name you want to give to your sample."
         },
         "sampling_kit": {
             "type": "checkbox",
