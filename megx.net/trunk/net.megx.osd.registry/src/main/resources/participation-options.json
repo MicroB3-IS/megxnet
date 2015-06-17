@@ -44,9 +44,9 @@
         },
         "participateDate":{
         	"helper" : "Please note down the date on which you like to participate",
-        	"dateFormat": "yy-mm-dd",
+        	"dateFormat": "YYYY-MM-DD",
             "datepicker": {
-                "dateFormat": "yy-mm-dd" 
+                "dateFormat": "YYYY-MM-DD" 
             }
         	
         }

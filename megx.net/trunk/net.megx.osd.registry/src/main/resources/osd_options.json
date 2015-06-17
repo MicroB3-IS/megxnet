@@ -79,7 +79,7 @@
                 },
                 "date": {
                   "hideInitValidationError": true,
-                  "dateFormat": "yy-mm-dd"
+                  "dateFormat": "YYYY-MM-DD"
                 },
                 "time": {
                    "hideInitValidationError": true
