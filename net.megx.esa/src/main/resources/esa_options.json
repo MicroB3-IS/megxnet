@@ -25,7 +25,6 @@
         },
         "time_taken": {
             "timeFormat": "HH:mm",
-            "inputType": "time",
             "placeholder": "Please enter your local time in 24 h format hh:mm e.g. 13:21"
         },
         "gps_accuracy": {

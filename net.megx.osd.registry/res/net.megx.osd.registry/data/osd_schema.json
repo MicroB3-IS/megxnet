@@ -140,7 +140,7 @@
                     "required": false,
                     "type": "string",
                     "description": "Refers to a finite or indefinite activity aiming at collecting data/samples within which OSD sample were taken, e.g. a name of cruise, a time series, a mesocosm experiment.",
-                    "default": "OSD-June-2014",
+                    "default": "OSD-June-2015",
                     "title": "Campaign"
                 },
                 "objective": {
@@ -246,8 +246,6 @@
                     "description": "Local time when the sampling event started. Each CTD cast, net tow, or bucket collection is a distinct event.",
                     "format": "time",
                     "required": true
-                    
-                    
                 },
                 "end_time": {
                     "title": "Time of end of sampling",
