@@ -237,10 +237,9 @@
                 "date": {
                     "title": "Date",
                     "description": "Date when the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                     "type": "string",
                     "format": "date",
                     "required": true
-                    
-                    
                 }, 
                 "start_time": {
                     "title": "Time of start of sampling",
