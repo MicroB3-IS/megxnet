@@ -79,7 +79,7 @@
             "type": "string",
             "readonly": true,
             "required": true,
-            "default": "6"
+            "default": "7"
         },
         "contact": {
             "type": "object",
