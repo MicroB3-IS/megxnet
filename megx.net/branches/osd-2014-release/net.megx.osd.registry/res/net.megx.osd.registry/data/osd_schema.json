@@ -140,7 +140,7 @@
                     "required": false,
                     "type": "string",
                     "description": "Refers to a finite or indefinite activity aiming at collecting data/samples within which OSD sample were taken, e.g. a name of cruise, a time series, a mesocosm experiment.",
-                    "default": "OSD-June-2014",
+                    "default": "OSD-June-2015",
                     "title": "Campaign"
                 },
                 "objective": {
@@ -230,7 +230,7 @@
                 "protocol_label": {
                     "required": true,
                     "type": "string",
-                    "enum": ["NPL022", "NE08"],
+                    "enum": ["NPL022_rnalater", "NE08","MyOSD"],
                     "description": "Identifies the protocol used to produce the sample, e.g. filtration and preservation.",
                     "title": "Protocol Label"
                 },
