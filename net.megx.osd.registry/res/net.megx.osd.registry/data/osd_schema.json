@@ -230,7 +230,7 @@
                 "protocol_label": {
                     "required": true,
                     "type": "string",
-                    "enum": ["NPL022_rnalater", "NE08","MyOSD"],
+                    "enum": ["NPL022_rnalater", "NE08","MyOSD", "pilot"],
                     "description": "Identifies the protocol used to produce the sample, e.g. filtration and preservation.",
                     "title": "Protocol Label"
                 },
