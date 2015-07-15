@@ -1,0 +1,142 @@
+<script type="text/javascript">
+  jQuery(function() {
+    Megx.osdRegistry.isInEditMode = #if ($req.id) true #else false #end ;
+    #if ($req.id)
+    Megx.osdRegistry.loadParticipantData('$req.id', function(data) {
+      jQuery('#participantForm').bindData(data,true);
+    });
+    #end
+  });
+</script>
+
+<h3 class="col-sm-12">#if ($req.id) Edit #else Add #end OSD Site</h3>
+
+<form id="participantForm" data-megx-bind="participantForm"
+    class="form-horizontal">
+    <input type="hidden" data-megx-bind="id" />
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="osdID">OSD ID</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control " id="osdID"
+                data-megx-bind="osdID" name="osdID" placeholder="Enter OSD ID"
+                autofocus="autofocus">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteName">Site name</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteName"
+                data-megx-bind="siteName" name="siteName"
+                placeholder="Enter the site name">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institution">Institute
+            name</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institution"
+                data-megx-bind="institution" name="institution"
+                placeholder="Enter the name of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionAddress">Institute
+            address</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionAddress"
+                data-megx-bind="institutionAddress" name="institutionAddress"
+                placeholder="Enter the address of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="country">Country</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="country"
+                data-megx-bind="country" name="country"
+                placeholder="Enter the country of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionWebAddress">Institute
+            web address</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionWebAddress"
+                data-megx-bind="institutionWebAddress"
+                name="institutionWebAddress"
+                placeholder="Enter web address of the institute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteCoordinator">Site
+            coordinator</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteCoordinator"
+                data-megx-bind="siteCoordinator" name="siteCoordinator"
+                placeholder="Enter name of the site coordinator">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="coordinatorEmail">Coordinator
+            email</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="coordinatorEmail"
+                data-megx-bind="coordinatorEmail" name="coordinatorEmail"
+                placeholder="Enter email of the site coordinator">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteLat">Site
+            latitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteLat"
+                data-megx-bind="siteLat" name="siteLat"
+                placeholder="Enter the latitude of the site">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="siteLong">Site
+            longitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="siteLong"
+                data-megx-bind="siteLong" name="siteLong"
+                placeholder="Enter the longitude of the site">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionLat">Institute
+            latitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionLat"
+                data-megx-bind="institutionLat" name="institutionLat"
+                placeholder="Enter the latitude of the insitute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="institutionLong">Institute
+            longitude</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="institutionLong"
+                data-megx-bind="institutionLong" name="institutionLong"
+                placeholder="Enter the longitude of the insitute">
+        </div>
+        <div class="help-block col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-2">
+            <input class="btn btn-primary" type="button" value="Submit"
+                id="submitOSDParticipant"
+                onclick="Megx.osdRegistry.validateParticipantSubmissionForm('$req.id')" />
+        </div>
+    </div>
+</form>

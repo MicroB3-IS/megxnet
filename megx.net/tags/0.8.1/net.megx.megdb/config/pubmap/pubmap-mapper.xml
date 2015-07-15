@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.megx.megdb.pubmap.mappers.PubMapMapper">
+	<resultMap type="Article" id="pubmap_article">
+		<result column="pmid" property="pmid" />
+		<result column="lon" property="lon" />
+		<result column="lat" property="lat" />
+		<result column="article_xml" property="articleXML" />
+		<result column="user_name" property="userName" />
+		<result column="megxbar" property="megxBarJSON" />
+		<result column="created" property="created" />
+		<result column="world_region" property="worldRegion" />
+		<result column="place" property="place" />
+	</resultMap>
+	
+	<resultMap type="Ocean" id="ocean">
+		<result column="label" property="oceanName" />
+		<result column="lon" property="lon" />
+		<result column="lat" property="lat" />
+	</resultMap>
+
+	<insert id="storeArticle" parameterType="Article">
+		INSERT INTO
+		pubmap.raw_pubmap(pmid, article_xml, user_name, megxbar, created,
+		geom, world_region, place)
+		VALUES (#{pmid}, xmlparse(document #{articleXML}),
+		#{userName},to_json(#{megxBarJSON}),#{created},
+		ST_PointFromText('POINT(${lon} ${lat})',4326),#{worldRegion},#{place})
+	</insert>
+	
+	<select id="getAllArticles" resultMap="pubmap_article">
+		SELECT *
+		FROM pubmap.raw_pubmap
+	</select>
+	
+	<select id="isOcean" parameterType="String" resultType="boolean">
+		SELECT EXISTS (SELECT true FROM elayers.world_regions WHERE label=#{worldRegion} AND region_type='water')
+	</select>
+	
+	<select id="getOceanByName" parameterType="String" resultMap="ocean">
+		SELECT label, st_y(ST_Centroid(geom)) as lat, st_x(ST_Centroid(geom)) as lon
+		FROM elayers.world_regions WHERE label=#{oceanName}
+	</select>
+
+</mapper>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>$this.title</title> #if($ctx.base)
+        <base href="$ctx.base" />
+        #end
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="keywords" content="$!this.keywords">
+        <meta name="description" content="$!this.description">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="dns-prefetch" href="//mb3is.megx.net">
+        <link rel="dns-prefetch" href="//blast2.mpi-bremen.de">
+        <link rel="dns-prefetch" href="//code.jquery.com">
+
+        <link rel="shortcut icon" href="$ctx.siteUrl/images/icons/favicon.ico" type="image/x-icon" />
+
+        ##  BOOTSTRAP CSS
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        ## BOOTSTRAP EXTENSION CSS
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+        ## TOASTR CSS
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+        ## FormWidget CSS
+        #if ($this.prop('hasForm','boolean'))
+        <link rel="stylesheet" href="$ctx.siteUrl/net.megx.form-widget/css/megx-form-widget-0.0.2-SNAPSHOT.min.css">
+        #end
+        
+        ## DATATABLES CSS
+        #if ($this.prop('hasTable','boolean'))
+        <link rel="stylesheet" href="$ctx.siteUrl/net.megx.ui.table/css/megx-ui-table-2.0.0-SNAPSHOT.min.css">
+        #end
+        
+        ## MEGX GLOBAL CSS
+        <link rel="stylesheet" href="$ctx.siteUrl/stylesheets/megx-bootstrap.css">
+        
+        ## MEGX MODULE SPECIFIC CSS
+        #if ($this.module)
+        #parse("$this.module/includes/css.html")
+        #end
+        
+        <script src="$ctx.siteUrl/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script type="text/javascript">
+          ctx = {
+            siteUrl : "$ctx.siteUrl",
+            base: "$ctx.base",
+          };
+        </script>
+        
+        ## TODO all this scripts should be loaded at the bottom of the page
+        
+        ## include jQuery
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        ## required for MegixMapWidget
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        
+        ## ???
+        <script type="text/javascript" src="$ctx.siteUrl/js/jquery.stepy.min.js"></script>
+      
+        ## MapWidget JS 
+        #if ($this.prop('hasMap','boolean'))
+            <script src="$ctx.siteUrl/js/OpenLayers-2.13.1.js" type="text/javascript"></script>
+			<script src="$ctx.siteUrl/gms-res/js/MegxMapWidgetLayers.min.js" type="text/javascript"></script>
+			<script src="$ctx.siteUrl/gms-res/js/Biojs.min.js" type="text/javascript"></script>
+        #end
+        
+        #if ( $ext.settings ) #parse('settings/account/check_profile.html')
+        #end
+        
+    </head>
+    <body lang="en">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        #parse('header-bootstrap.html')
+        <noscript>
+            <h3 style="color: #990000;">
+                To get the full functionality, please, activate JavaScript in your browser!
+            </h3>
+        </noscript>
+        <main id="main-content" class="#if ($this.prop('hasJumbotron','boolean')) jumbotron-page #else container #end ">
+            ${BODY}
+        </main>
+        #parse('footer-bootstrap.html')
+    
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+        <script src="$ctx.siteUrl/js/megx.js"></script>
+
+        ## MEGX MODULE JS
+        #if ($this.module)
+        #parse("$this.module/includes/js.html")
+        #end
+
+        ## FormWidget JS 
+        #if ($this.prop('hasForm','boolean'))
+            <script src="$ctx.siteUrl/net.megx.form-widget/js/megx-form-widget-0.0.2-SNAPSHOT.min.js"></script>
+        #end
+        
+        ## DataTables JS 
+        #if ($this.prop('hasTable','boolean'))
+            <script src="$ctx.siteUrl/net.megx.ui.table/js/megx-ui-table-2.0.0-SNAPSHOT.min.js"></script>
+        #end
+        
+        <!-- google analytics -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            
+            ga('create', 'UA-52107501-1', 'megx.net');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<h1>News</h1>
+<div class="panel-group" id="accordion" role="tablist"
+    aria-multiselectable="true">
+
+#foreach ($newsItem in $this.getChild('acc').getChilds(0,-1,"jcr:lastModified DESC")) 
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading$newsItem.id">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion"
+                    href="#collapse$newsItem.id" aria-expanded="true"
+                    aria-controls="collapse$newsItem.id">$newsItem.title</a>
+                    #if($req.servletRequset.isUserInRole("cmsAdmin"))
+                        <span class="pull-right"><a href="$ctx.siteUrl/admin/content.edit.do?path=$newsItem.absPath">Edit</a></span>
+                    #end
+            </h4>
+        </div>
+        <div id="collapse$newsItem.id" class="panel-collapse collapse #if ($foreach.count == 1) in #end" role="tabpanel"
+            aria-labelledby="heading$newsItem.id">
+            <div class="panel-body">$newsItem.prop('htmlText')</div>
+        </div>
+    </div>
+#end
+</div>

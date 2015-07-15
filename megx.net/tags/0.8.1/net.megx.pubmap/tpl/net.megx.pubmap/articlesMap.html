@@ -1,0 +1,16 @@
+<link href="$ctx.siteUrl/net.megx.pubmap/css/mapwidget.css" rel="stylesheet" type="text/css">
+<script src="$ctx.siteUrl/gms-res/js/megxmap/megxmap-0.9.2.js" type="text/javascript"></script>
+
+<div id="megxMapWidget">
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  var megxMapWidget = new Biojs.MegxMapWidget({
+    target : 'megxMapWidget',
+    layerSet : 'osd-registry',
+    gmsBaseURL : ctx.siteUrl + '/wms',
+    log : false
+  });
+});
+</script>

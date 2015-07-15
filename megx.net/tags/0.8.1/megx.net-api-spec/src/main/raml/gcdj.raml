@@ -1,0 +1,36 @@
+#%RAML 0.8
+---
+title: GCDJ
+# URIL template level one: http://tools.ietf.org/html/rfc6570 
+# http://tools.ietf.org/html/rfc6570#section-2.3
+version: v1
+baseUri: http://gcdj.gensc.org/
+mediaType: application/json
+protocols: [ HTTP, HTTPS ]
+
+
+/schema/{checklist},{package}:
+  get:
+    description: | Returns the actual json optional: {checklist},{package}
+
+/validate?checklist={checklist}&package={package}:
+  post:
+    description: | validates a give GCD json document (parameters optional)
+
+/template/{checklist},{package}:
+  get:
+    description: | Returns a GCD json document, with the full structure, but no values
+
+/checklists:
+  get:
+    description: | Returns a list of available checklist names  
+    example: | 
+
+
+/packages:
+  get: 
+    description: | Returns a list of available package names  
+
+
+#/checklists,packages
+
