@@ -84,7 +84,7 @@
 			reCaptcha: {
 				publicKey: '${net.megx.security.filter.recaptcha.public.key}',
 				privateKey: '${net.megx.security.filter.recaptcha.private.key}',
-				verifyUrl: 'http://www.google.com/recaptcha/api/verify',
+				verifyUrl: 'https://www.google.com/recaptcha/api/siteverify',
 				dgbSkipCaptchaValidation: false
 			},
 			mail:{
