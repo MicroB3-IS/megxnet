@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -32,6 +30,8 @@ import net.megx.security.auth.model.UserVerification;
 import net.megx.security.auth.services.UserService;
 import net.megx.security.auth.web.WebUtils;
 import net.megx.security.crypto.KeySecretProvider;
+import net.megx.security.filter.ui.util.ReCaptchaDeserializer;
+import net.megx.ws.core.BaseRestService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,8 +46,10 @@ import org.chon.core.velocity.VTemplate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.GsonBuilder;
+
 @Path("/register")
-public class RegistrationManager {
+public class RegistrationManager extends BaseRestService {
 
   private UserService userService;
   @SuppressWarnings("unused")
@@ -68,6 +70,8 @@ public class RegistrationManager {
     this.config = config;
     this.activationMailTemplate = vTemplate;
     this.mailerService = mailerService;
+    gson = new GsonBuilder().registerTypeAdapter(ReCaptchaResponse.class,
+        new ReCaptchaDeserializer()).create();
   }
 
   public void setUserService(UserService userService) {
@@ -85,7 +89,6 @@ public class RegistrationManager {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   public String register(@Context HttpServletRequest request,
-      @FormParam("challenge") String challenge,
       @FormParam("response") String response,
       @FormParam("logname") String logname,
       @FormParam("firstName") String firstName,
@@ -117,9 +120,6 @@ public class RegistrationManager {
 
     // TODO: maybe even challenge not test here, because depends if it is
     // activated at all
-    if (challenge == null || challenge == "") {
-      error = true;
-    }
     if (response == null || response == "") {
       error = true;
     }
@@ -153,7 +153,7 @@ public class RegistrationManager {
     }
 
     // now checking captcha
-    if (!verify(challenge, response, remoteIP)) {
+    if (!verify(response, remoteIP)) {
       throw new WebApplicationException(errorResponse("verification-failed",
           "Wrong Captcha input. Please repeat.",
           Response.Status.INTERNAL_SERVER_ERROR));
@@ -231,7 +231,7 @@ public class RegistrationManager {
    * @return true on correct verification or technical problem. False if user
    *         supplied wrong response
    */
-  private boolean verify(String challenge, String response, String remoteIP) {
+  private boolean verify(String response, String remoteIP) {
 
     // TODO: maybe not here
     JSONObject captchaConfig = config.optJSONObject("reCaptcha");
@@ -248,20 +248,18 @@ public class RegistrationManager {
     }
 
     if (log.isDebugEnabled()) {
-      log.debug("Verifying captcha -> Challenge: [" + challenge
-          + "], response=[" + response + "], remoteIP=[" + remoteIP
-          + "], privateKey=[" + privateKey + "]");
+      log.debug("Verifying captcha -> response=[" + response + "], remoteIP=["
+          + remoteIP + "], privateKey=[" + privateKey + "]");
     }
 
     HttpClient client = new DefaultHttpClient();
 
     HttpPost post = new HttpPost(captchaConfig.optString("verifyUrl"));
 
-    List<NameValuePair> params = new ArrayList<NameValuePair>(4);
-    params.add(new BasicNameValuePair("privatekey", privateKey));
-    params.add(new BasicNameValuePair("remoteip", remoteIP));
-    params.add(new BasicNameValuePair("challenge", challenge));
+    List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+    params.add(new BasicNameValuePair("secret", privateKey));
     params.add(new BasicNameValuePair("response", response));
+    params.add(new BasicNameValuePair("remoteip", remoteIP));
 
     try {
       post.setEntity(new UrlEncodedFormEntity(params));
@@ -276,16 +274,22 @@ public class RegistrationManager {
       BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse
           .getEntity().getContent()));
 
-      String line = br.readLine().trim().toLowerCase();
+      ReCaptchaResponse captchaResponse = gson.fromJson(br,
+          ReCaptchaResponse.class);
+
       // check according to
-      // https://developers.google.com/recaptcha/docs/verify
-      if (line != null && "true".equals(line)) {
+      // https://www.google.com/recaptcha/api/siteverify
+      if (captchaResponse.isSuccess()) {
         return true;
-      } else if (line != null && "false".equals(line)) {
-        // read the second line for failure reason
+      } else if (!captchaResponse.isSuccess()) {
+
         log.debug("reCAPTCHA verification failed.");
-        line = br.readLine();
-        log.debug("Reason: " + line);
+        List<String> errMsg = captchaResponse.getErrorMessages();
+        StringBuilder reason = new StringBuilder();
+        for (String string : errMsg) {
+          reason.append(string);
+        }
+        log.debug("Reason: " + reason.toString());
         return false;
       } else {
         log.error("Failed to reach:" + post.getURI().toString());

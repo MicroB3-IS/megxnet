@@ -69,9 +69,9 @@ public class DBUserService extends BaseMegdbService implements UserService {
                     log.debug("Getting user with name: " + user.getLogin());
                     if (PasswordHash.validatePassword(password,
                             user.getPassword())) {
-                        log.error("passwords do not match");
                         return user;
                     }
+                    log.error("passwords do not match");
                 }
                 log.error("did not find user with correct password");
                 return null;

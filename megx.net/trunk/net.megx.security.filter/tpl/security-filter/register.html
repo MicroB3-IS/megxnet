@@ -9,10 +9,17 @@
 	color: #ff0000;
 }
 </style>
-<script type="text/javascript"
-	src="https://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 
 <script type="text/javascript">
+
+	var loadReCaptcha = function() {
+	    // re-captcha widget
+	    grecaptcha.render('recaptcha_widget_wrapper', {
+	          'sitekey' : '$ext.securityFilter.reCaptchaPublicKey'
+	        });
+//		 console.log("grecaptcha is ready!");
+	};
+	
     $(document).ready(function() {
         $('#btn-cancel').click(function() {
             window.location = '$ctx.siteUrl/';
@@ -42,17 +49,6 @@
                 $('#initials').html('');
             }
         }; 
-
-        var loadReCaptcha = function() {
-            // re-captcha widget
-            Recaptcha.create("$ext.securityFilter.reCaptchaPublicKey",
-                "recaptcha_widget_wrapper", {
-                    theme: "clean",
-                    callback: Recaptcha.focus_response_field
-                }
-            );
-        };
-
 
         $('#btn-register').click(function() {
         	N.clear();
@@ -160,8 +156,7 @@
                     lastName: $('input[name=lastName]').val(),
                     initials: $('input[name=initials]').val(),
                     email: $('input[name=email]').val(),
-                    challenge: Recaptcha.get_challenge(),
-                    response: Recaptcha.get_response(),
+                    response: grecaptcha.getResponse(),
                     pass: pass
                 }
             }).fail(function(xhr, textStatus, errorThrown) {
@@ -184,7 +179,7 @@
             return;
         });
 
-        loadReCaptcha();
+        //loadReCaptcha();
 
     });
 </script>
@@ -236,7 +231,7 @@
 			 <span id="initials"></span>
 		</div>
 
-		<div class="form-group" id="recaptcha_widget_wrapper"></div>
+		<div class="form-group g-recaptcha" id="recaptcha_widget_wrapper"></div>
 
 
 		<div class="form-group">
@@ -246,3 +241,6 @@
 	</form>
 	</div>	
 </div>
+<script src="https://www.google.com/recaptcha/api.js?onload=loadReCaptcha&render=explicit"
+   async defer>
+</script>
