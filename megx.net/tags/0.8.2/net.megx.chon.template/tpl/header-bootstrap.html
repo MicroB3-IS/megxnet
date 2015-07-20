@@ -1,0 +1,13 @@
+<header>
+    #parse("pages/fragments/nav_bar-bootstrap.html")
+</header>
+<div class="login-bar">
+    <div class="container text-left">
+        #if($req.user)
+            Welcome $req.user.name!
+        #end
+        #if($req.servletRequset.isUserInRole("cmsAdmin"))
+        <a class="pull-right" href="$ctx.siteUrl/admin/content.edit.do?path=$this.absPath">Edit this node</a>
+        #end
+    </div>
+</div>

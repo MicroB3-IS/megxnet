@@ -1,0 +1,120 @@
+<nav id="main-menu" class="navbar navbar-fixed-top navbar-default " role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+              <button type="button" class="navbar-toggle pull-left" data-toggle="offcanvas" data-target="#main-menu-navbar" data-placement="left" data-canvas="body" aria-controls="main-menu-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand pull-right" href="$ctx.siteUrl/"><img class="logo-small" src="$ctx.siteUrl/images/icons/favicon.ico"></a>
+        </div>
+        <div id="main-menu-navbar" class="navbar-offcanvas offcanvas" aria-expanded="false">
+            <a class="navmenu-brand text-center" href="$ctx.siteUrl/"> <img src="$ctx.siteUrl/images/logo.png"></a>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="$ctx.siteUrl/">Home</a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Info</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="$ctx.siteUrl/portal/about/">About</a></li>
+                        <li><a href="$ctx.siteUrl/portal/tutorial.html">Tutorials</a></li>
+                        <li><a href="$ctx.siteUrl/portal/content">Content</a></li>
+                        <li><a href="$ctx.siteUrl/portal/faq">FAQ</a></li>
+                        <li><a href="$ctx.siteUrl/portal/team/team.html">Team</a></li>
+                        <li><a href="$ctx.siteUrl/portal/news/">News</a></li>
+                        <li><a href="$ctx.siteUrl/portal/related">Related</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">OSD</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="$ctx.siteUrl/osd-registry">OSD Overview</a></li>
+                        <li><a href="http://www.my-osd.org">Citizen Science</span></a></li>
+                        <li><a href="$ctx.siteUrl/osd-app/">OSD Sampling App</a></li>
+                        <li><a href="$ctx.siteUrl/osd-registry/list/">OSD Sites</a></li>
+                        <li><a href="$ctx.siteUrl/osd-app/samples/">OSD Live</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Tools</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="$ctx.siteUrl/gms/">Mapserver</a></li>
+                        <!-- 
+                        <li><a href="$ctx.siteUrl/gms/geographic-blast/">Geographic BLAST</a></li>
+                         -->
+                        <li><a href="$ctx.siteUrl/tools">GIS Tools</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Browse</a>
+                    <ul class="dropdown-menu">
+                       <li><a href="$ctx.siteUrl/browse/genomes">Prokaryotic Genomes</a></li>
+                        <li><a href="$ctx.siteUrl/browse/virus">Phage Genomes</a></li>
+                        <li><a href="$ctx.siteUrl/browse/metagenomes">Metagenomes</a></li>
+                        <li><a href="$ctx.siteUrl/browse/marker-genes">Marker Genes</a></li>
+                        <li><a href="$ctx.siteUrl/browse/sites">Sampling Sites</a></li>
+                        <li><a href="$ctx.siteUrl/mg-traits/">Metagenomic Trait DB</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Edutainment</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="$ctx.siteUrl/edutainment">Overview</a></li>
+                        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer (english)</a></li>
+                        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--DE">Genome Explorer (german)</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Portal</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="$ctx.siteUrl/portal/toolbox.html">Overview</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Maintained</li>
+                        <li><a href="http://www.jcoast.net">JCoast</a></li>
+                        <li><a href="http://www.megx.net/michanthi/michanthi.html">MicHanThi</a></li>
+                        <li><a href="http://www.megx.net/metabar/login.htm">MetaBar</a></li>
+                        <li><a href="http://www.mpi-bremen.de/en/MADA.html">MADA</a></li>
+                        <li><a href="http://www.megx.net/ribalign/index.html">Ribalign</a></li>
+                        <li><a href="http://soma.arb-silva.de">TaxSOM</a></li>
+                        <li><a href="http://www.megx.net/CDinFusion/">CDinFusion</a></li>
+                        <li><a href="http://www.megx.net/FastaValidator/index.html">FastaValidator</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Unmaintained</li>
+                        <li><a href="http://www.megx.net/metalook/index.php">MetaLook</a></li>
+                        <li><a href="http://www.megx.net/metamine/">MetaMine</a></li>
+                        <li><a href="http://www.megx.net/tetra/index.html">TETRA</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="$ctx.siteUrl/contact/">Contact</a>
+                </li>
+                #if($req.user)
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Account</a>
+                    <ul class="dropdown-menu">
+                    <li><a href="$ctx.siteUrl/settings/account" class="settings-header-link">Settings</a></li>
+                        #if($req.servletRequset.isUserInRole("cmsAdmin"))
+                        <li><a href="$ctx.siteUrl/admin/explorer.main.do">CMS Administration</a></li>
+                        #end
+                        #if($req.servletRequset.isUserInRole("admin"))
+                        <li><a href="$ctx.siteUrl/security/admin">Security Administration</a></li>
+                        #end
+                        
+                        <li><a href="$ctx.siteUrl/admin/logout.do">Logout</a></li>
+                    </ul>
+                </li>
+                #else
+                <li><a href="$ctx.siteUrl/login">Log in</a></li>
+                #end
+            </ul>
+            #if($this.showOSDLogo == 'true') 
+              <a href="http://oceansamplingday.org" class="navbar-brand hidden-xs no-before pull-right"> 
+                <img class="logo-small" src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
+              </a>
+            #end
+        </div>
+    </div>
+</nav>
