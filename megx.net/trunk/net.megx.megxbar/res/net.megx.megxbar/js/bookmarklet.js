@@ -1,14 +1,10 @@
 (function Megxbookmarklet() {
 
-    //production
-    var iframeSrc = "https://mb3is.megx.net/bookmark";
-    var targetOrigin = "https://mb3is.megx.net";
-    //iwgate
-//    var iframeSrc = "http://iwgate.poweredbyclear.com:9080/megx.net/bookmark";
-//    var targetOrigin = "http://iwgate.poweredbyclear.com:9080"
-    //development
-//   var iframeSrc = "http://192.168.2.215:8080/megx.net/bookmark";
-//   var targetOrigin = "http://192.168.2.215:8080"
+	var selfSrc = document.getElementById("megxbarbookmarklet").src;
+	var u = new URL(selfSrc);
+    var iframeSrc = selfSrc.replace("net.megx.megxbar/js/bookmarklet.min.js", "bookmark");
+    console.log(iframeSrc);
+    var targetOrigin = u.origin;
 
     var iframeZIndex = 2147483640;
     var body, ifrm, closeButton, closeButtonDiv;
