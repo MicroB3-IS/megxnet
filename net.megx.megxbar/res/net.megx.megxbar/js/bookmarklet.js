@@ -43,8 +43,9 @@
 
     function useCss(el, css) {
         var s = "";
-        for (var p in css)
-            s += p + ":" + css[p] + ";";
+        for (var p in css){ 
+        	s += p + ":" + css[p] + ";";
+        }
         el.style.cssText = el.style.cssText + s
     }
 

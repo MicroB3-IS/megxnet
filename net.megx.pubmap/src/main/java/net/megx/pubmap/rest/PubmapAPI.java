@@ -70,7 +70,7 @@ public class PubmapAPI extends BaseRestService {
       article.setUserName(articleCreator);
 
       service.storeArticle(article);
-      status = "Bookmark successfully stored to server.";
+      status = "Article was successfully saved!";
 
       return Response.status(Status.OK)
           .entity(toJSON(status))
@@ -100,6 +100,23 @@ public class PubmapAPI extends BaseRestService {
     } catch (DBNoRecordsException e) {
       log.error("No Articles exists", e);
       throw new WebApplicationException(e, Response.Status.NO_CONTENT);
+    } catch (Exception e) {
+      log.error("Server error while getting all articles: " + e);
+      throw new WebApplicationException(e,
+          Response.Status.INTERNAL_SERVER_ERROR);
+    }
+  }
+  
+  @Path("articles")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getArticlesByPmid(@QueryParam("pmid") int pmid) {
+    try {
+      return toJSON(new Result<List<Article>>(service.getArticlesByPmid(pmid)));
+    } catch (DBGeneralFailureException e) {
+      log.error("Could not retrieve all Articles from db", e);
+      throw new WebApplicationException(e,
+          Response.Status.INTERNAL_SERVER_ERROR);
     } catch (Exception e) {
       log.error("Server error while getting all articles: " + e);
       throw new WebApplicationException(e,
