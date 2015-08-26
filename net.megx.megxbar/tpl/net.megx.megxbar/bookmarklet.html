@@ -35,6 +35,11 @@
                 try {
                     msg = JSON.parse(event.data);
                     if (msg.type && msg.type == "setarticle") {
+                    	
+                    	#if($req.user)
+                    	notifyUserIfArticleExists(msg.article.pmid);
+                    	#end
+                    	
                         $("#title").html(msg.article.title);
 
                         var auths = msg.article.authors[0];
