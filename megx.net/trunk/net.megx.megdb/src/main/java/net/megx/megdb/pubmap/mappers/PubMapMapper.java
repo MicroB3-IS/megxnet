@@ -13,5 +13,7 @@ public interface PubMapMapper {
 	public Boolean isOcean(String worldRegion);
 	
 	public Ocean getOceanByName(String oceanName);
+	
+	public List<Article> getArticlesByPmid(int pmid);
 
 }

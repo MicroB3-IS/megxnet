@@ -313,6 +313,71 @@ function findNearby(lat, lon, callback) {
     });
 }
 
+function notifyUserIfArticleExists(pmid) {
+
+    $.ajax({
+        type: "GET",
+        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/articles',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: {
+            "pmid": pmid
+        },
+        success: function(articles) {
+        	
+        	if (articles){
+        		if(Object.keys(articles.data).length){
+        			var data = articles.data;
+        			var l = [];
+        			var i = 0;
+        			var worldRegion;
+        			var place;
+        			var lat;
+        			var lon;
+        			
+        			for (i; i < data.length; i++) {	
+        				
+        				worldRegion = data[i].worldRegion || 'N/A';
+        				place = data[i].place || 'N/A';
+        				lat = data[i].lat.toFixed(6);
+        				lon = data[i].lon.toFixed(6);
+        				
+        				
+        				l.push('<li>' + 'World region: ' + worldRegion + '<br>Place: ' + place + '<br>Lat: ' + lat + '<br>Lon: ' + lon + '</li>');
+        			}
+        			var m = [
+				         '<button class=close onclick=emptyMessageDiv() type=button>×</button>',
+				         '<p>This article is already in the database tagged with the locations:</p>',
+				         '<ul>', l, '</ul>',
+				         '<p>If you want to tag this article with additional locations please fill out the form.</p>',
+				         '<p>If you want to report this location as a wrong tag please contact us at megx@mpi-bremen.de.</p>'
+    				].join('');
+        			
+                	$("#message").html(m);
+                	$("#message").css("height", "230px");
+        	    	$("#message").css("background-color", "#DFF0D8");
+        	        $("#message").css("border", "1px solid #D6E9C6");
+        	        $("#message").css("color", "#468847");
+        	        $("#message").css("border-radius", "15px");
+        	        $("#message").css("padding-left", "10px");
+        	        $("#message").css("overflow", "scroll");
+        	        $("#message").css("overflow-x", "hidden");
+        		}
+        	}
+        },
+        error: function(a, b, c) {
+            $("#message")
+                .html(
+                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, we can not check this article already exists.</p>");
+            $("#message").css("background-color", "#F2DEDE");
+            $("#message").css("border", "1px solid #EED3D7");
+            $("#message").css("color", "#B94A48");
+            $("#message").css("border-radius", "15px");
+            $("#message").css("padding-left", "10px");
+        }
+    });
+}
+
 function validateLat(value) {
 
     if (value >= 0 && value <= 90.0 && value.indexOf('-') < 0) {
