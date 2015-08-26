@@ -28,17 +28,16 @@
         "border": "0",
         "background": "transparent",
         "height": "100%",
-        "width": "365px",
+        "width": "375px",
         "top": "0",
         "right": "0",
         "overflow": "hidden"
-
     };
     var closeButtonCss = {
         "position": "fixed",
         "top": "7px",
         "z-index": iframeZIndex + 1,
-        "right": "334px",
+        "right": "343px",
         "cursor": "pointer"
     };
 

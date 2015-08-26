@@ -6,8 +6,8 @@ body {
 	border: 5px solid;
 	border-color: hsl(208, 68%, 79%);
 	border-radius: 5px;
-	height: 100%;
 	overflow: hidden;
+	height:100%;
 }
 .button{
 	border: 2px solid hsl(212, 83%, 32%);
@@ -84,7 +84,6 @@ body {
 	background: hsl(208, 68%, 79%);
 }
 table,tr,th,td {
-	border-spacing:5px;
 	margin: 2px;
 	padding: 0;
 	border: 0;
@@ -115,11 +114,11 @@ table,tr,th,td {
 }
 .my-error-class  {
     color:red;
-    margin-left: 19px;
+    margin-left: 14px;
 }
 .my-valid-class  {
     color:green;
-    margin-left: 19px;
+    margin-left: 14px;
 }
 .coordinatesErrorMsg {
 	display: none; 
@@ -138,4 +137,9 @@ table,tr,th,td {
 	width: 84px;
 	background: hsl(208, 68%, 79%);
 	font-size: 11px;
+}
+.bookmark-content{
+	position: relative;
+    overflow: auto;
+    height: 100%;
 }
