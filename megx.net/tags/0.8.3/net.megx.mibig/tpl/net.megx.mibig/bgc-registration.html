@@ -1,0 +1,70 @@
+<link href="$ctx.siteUrl/net.megx.mibig/css/bgc-registration.css" rel="stylesheet" type="text/css">
+
+<div style="padding: 15px">
+  <h1>MIBiG Annotation Form</h1>
+  <div style="padding: 20px 20px 20px 20px">
+    Please consider the following before you start filling out the form:
+    <ul style="list-style-type: disc;">
+      <li>For MIBiG submission of a biosynthetic gene cluster, a
+        GenBank accession number of the gene cluster or genome entry
+        that contains it is required. If your sequence data is private
+        pending publication, you may submit it to GenBank/EMBL/DDBJ with
+        an embargo until the manuscript is out.</li>
+      <li>Please use Firefox/Chrome/Safari/Opera. Some functions
+        may not work optimally in Internet Explorer.</li>
+      <li>Please provide all information in English.</li>
+      <li>Please enter all decimal values using point notation.</li>
+      <li>Make sure you have an active internet connection when you
+        submit the form.</li>
+      <li>Parts of the form indicated with arrows can be folded and
+        unfolded for optimal readability.</li>
+      <li>Some parts of the form are optional, others are
+        mandatory. Mandatory fields are marked by asterisks.</li>
+      <li>When working on a complex submission, we advise to make
+        offline notes in parallel to filling the form, to avoid losing
+        your gathered data if the session is somehow lost or times out.</li>
+      <li>If you have questions while filling out the form, <a href="mailto:mhmedema@mpi-bremen.de">please
+        do contact us</a>. We will try to respond within 24 hours.</li>
+    </ul>
+
+    <div id="bgc-registration-form"></div>
+  </div>
+
+  <script>
+  jQuery(document).ready(function() {
+    new Megx.FormWidget({
+          "parent": "bootstrap-edit-horizontal",
+          target : "bgc-registration-form",
+          schemaLocation : ctx.siteUrl
+            + "/net.megx.mibig/data/mibig_schema.json",
+          optionsLocation : ctx.siteUrl
+            + "/net.megx.mibig/data/mibig_options.json",
+          parentView: "bootstrap-create",  
+          formId : "mibig-form",
+          wizard : {
+            "renderWizard" : true,
+            "statusBar" : true,
+           
+            //"validation": true, //use wizard template instead to allow validation?
+            "bindings" : {
+              "personal" : 1,
+              "general_params" : 2,
+              "comments" : 3,
+              "embargo" : 3
+            },
+            "steps" : [ {
+              "title" : "Personal",
+              "description" : "Name, E-mail, etc."
+            }, {
+              "title" : "MIBiG Data",
+              "description" : "Annotation of the gene cluster"
+            }, {
+              "title" : "Comments",
+              "description" : "Clarifications, comments, etc."
+            } ]
+          }
+        });
+    });
+    </script>
+    
+</div>

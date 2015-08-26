@@ -1,0 +1,54 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            "id": "participation-form",
+            "method": "post",
+            "action": "${net.megx.osd.registry.participation.action.url}"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {}
+        }
+    },
+    "fields": {
+        "contactName": {
+            "size": 20,
+            "helper": "Please enter your name."
+        },
+        "contactEmail":{
+        	"helper" : "Please enter your email address"
+        },
+        "contactAddress":{
+        	"helper" : "Please enter your contact address"
+        },
+        "ideas":{
+        	"helper" : "Please enter your ideas about OSD",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "contributedSamples":{
+        	"helper" : "Please enter your opinion",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "funding":{
+        	"helper" : "Please enter if you have funding",
+        	"type": "textarea",
+            "rows": 4,
+            "cols": 30
+        },
+        "participateDate":{
+        	"helper" : "Please note down the date on which you like to participate",
+        	"dateFormat": "YYYY-MM-DD",
+            "datepicker": {
+                "dateFormat": "YYYY-MM-DD" 
+            }
+        	
+        }
+    }
+}
