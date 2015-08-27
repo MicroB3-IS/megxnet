@@ -368,7 +368,7 @@ function notifyUserIfArticleExists(pmid) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, we can not check this article already exists.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, we can not check if this article already exists.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
@@ -509,7 +509,9 @@ function collectData(lat, lon, worldRegion, place) {
         title: msg.article.title,
         authors: msg.article.authors,
         lon: lon,
-        lat: lat
+        lat: lat,
+        worldRegion: worldRegion,
+        place: place
     };
 
     var article = {
