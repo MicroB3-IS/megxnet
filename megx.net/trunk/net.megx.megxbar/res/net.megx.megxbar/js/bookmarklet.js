@@ -5,6 +5,7 @@
     var iframeSrc = selfSrc.replace("net.megx.megxbar/js/bookmarklet.min.js", "bookmark");
     console.log(iframeSrc);
     var targetOrigin = u.origin;
+    var getArticleXmlUrl;
 
     var iframeZIndex = 2147483640;
     var body, ifrm, closeButton, closeButtonDiv;
@@ -112,8 +113,15 @@
                 if (document.domain == "www.ncbi.nlm.nih.gov") {
 
                     if (document.getElementById("absid") != null) {
+                    	
+                    	if(document.URL.indexOf('?') === -1)
+                    	{
+                    		getArticleXmlUrl = document.URL + "?report=xml&format=text";
+                    	} else {
+                    		getArticleXmlUrl = document.URL + "&report=xml&format=text";
+                    	}
 
-                        jQuery.get(document.URL + "?report=xml&format=text", function(data) {
+                        jQuery.get(getArticleXmlUrl, function(data) {
 
                             var article = {};
 
