@@ -347,10 +347,10 @@ function notifyUserIfArticleExists(pmid) {
         			}
         			var m = [
 				         '<button class=close onclick=emptyMessageDiv() type=button>×</button>',
-				         '<p>This article is already in the database tagged with the locations:</p>',
+				         '<p>This article is already in the database curated with the location:</p>',
 				         '<ul>', l, '</ul>',
-				         '<p>If you want to tag this article with additional locations please fill out the form.</p>',
-				         '<p>If you want to report this location as a wrong tag please contact us at megx@mpi-bremen.de.</p>'
+				         '<p>If you want to curate this article with additional locations please fill out the form.</p>',
+				         '<p>If you want to report this location as a wrong curation please contact us at megx@mpi-bremen.de.</p>'
     				].join('');
         			
                 	$("#message").html(m);
