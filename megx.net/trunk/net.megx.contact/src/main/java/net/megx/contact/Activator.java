@@ -80,7 +80,7 @@ public class Activator extends ResTplConfiguredActivator {
      * @throws IOException
      *             if an IO error occurs.
      * @throws FileNotFoundException
-     *             if {@code mailer.properties} cannot be found in the
+     *             if {@code contact.properties} cannot be found in the
      *             classpath.
      */
     private final Properties readConfiguration() throws IOException {
