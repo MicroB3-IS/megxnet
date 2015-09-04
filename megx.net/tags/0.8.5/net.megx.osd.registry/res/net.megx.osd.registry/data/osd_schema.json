@@ -1,0 +1,821 @@
+﻿{
+    "title": "OSD Contextual Data Form per Environmental Sample (v1.0)",
+    "description": "Please fill all fields for a sample and submit.",
+    "definitions": {
+        "choice": {
+            "description": "Is parameter measured, to be measured (in future), not to be measured, or not determined if it will be measured?",
+            "type": "String",
+            "required": true,
+            "enum": [
+                "measured",
+                "to be measured",
+                "will not be measured",
+                "not determined"
+            ],
+            "default": "not determined"
+        },
+        "first_name": {
+            "type": "string",
+            "title": "First Name",
+            "required": true
+        },
+        "last_name": {
+            "type": "string",
+            "title": "Last Name",
+            "required": true
+        },
+        "institute": {
+            "type": "string",
+            "title": "Institute",
+            "description": "Please use the full, official name of your institute in English (preferably the one used for site registration).",
+            "required": true,
+            "pattern": "^([^1234506789;\\\\()$%!@^*/=])([^1234506789;\\\\()$%!@^*/=])[^;$%\\\\!@^*\\]\\[=]+$"
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "title": "e-mail",
+            "required": true
+        },
+        "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Please choose an SI conforming unit of measurement.",
+            "required": true
+        },
+        "value": {
+            "title": "Value",
+            "required": true,
+            "type": "number"
+        },
+        "latitude": {
+             "type": "string",
+             "required": "string",
+             "pattern": "^[+-]?[0-9.]+$",
+             "title": "Latitude"
+         },
+         "longitude": {
+              "required": true,
+              "type": "string",
+              "pattern": "^[+-]?[0-9.]+$",
+              "title": "Longitude"
+         },
+        "measurement": {
+            "title": "Measurement",
+            "type": "object",
+            "properties": {
+                "value": {
+                    "$ref": "#/definitions/value"
+                },
+                "unit": {
+                    "$ref": "#/definitions/unit"
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "readonly": true,
+            "required": true,
+            "default": "6"
+        },
+        "contact": {
+            "type": "object",
+            "title": "Primary Contact",
+            "description": "The main contact responsible for sampling and data submission.",
+            "required": false,
+            "properties": {
+                "first_name": {
+                    "$ref": "#/definitions/first_name"
+                },
+                "last_name": {
+                    "$ref": "#/definitions/last_name"
+                },
+                "institute": {
+                    "$ref": "#/definitions/institute"
+                },
+                "email": {
+                    "$ref": "#/definitions/email"
+                }
+            }
+        },
+        "investigators": {
+            "title": "Additional Contacts",
+            "description": "List of people who will appear in the citation of data publications. Please order the list according to authorship.",
+            "type": "array",
+            "uniqueItems": false,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "$ref": "#/definitions/first_name"
+                    },
+                    "last_name": {
+                        "$ref": "#/definitions/last_name"
+                    },
+                    "institute": {
+                        "$ref": "#/definitions/institute"
+                    },
+                    "email": {
+                        "$ref": "#/definitions/email"
+                    }
+                }
+            }
+        },
+        "sampling_site": {
+            "title": "Sampling Site/Event",
+            "type": "object",
+            "properties": {
+                "site_id": {
+                    "title": "Site ID",
+                    "required": true,
+                    "type": "string",
+                    "pattern": "^.+$",
+                    "description": "Refers to the ID of the site/station where data/sample collection is performed. \n Example: OSD1"
+                },
+                "campaign": {
+                    "minLength": 3,
+                    "required": false,
+                    "type": "string",
+                    "description": "Refers to a finite or indefinite activity aiming at collecting data/samples within which OSD sample were taken, e.g. a name of cruise, a time series, a mesocosm experiment.",
+                    "default": "OSD-June-2015",
+                    "title": "Campaign"
+                },
+                "objective": {
+                    "minLength": 1,
+                    "required": false,
+                    "type": "string",
+                    "description": "Describes the scientific context/interest of the sampling activity. This information is useful to generate a short abstract as part of the data set citation.",
+                    "title": "Objective"
+                },
+                "platform": {
+                    "minLength": 1,
+                    "required": true,
+                    "type": "string",
+                    "description": "Refers to the specific unique stage from which the sampling device was deployed. Includes the platform category and platform name.",
+                    "title": "Platform"
+                },
+                "device": {
+                    "title": "Device",
+                    "minLength": 1,
+                    "required": false,
+                    "type": "string",
+                    "description": "Refers to the instrument/gear used to collect the sample or the sensor used to measure environmental parameters."
+                },
+                "method": {
+                    "minLength": 1,
+                    "required": false,
+                    "type": "string",
+                    "description": "Refers to the deployment procedure of the Device.",
+                    "title": "Method"
+                },
+                "site_name": {
+                    "minLength": 2,
+                    "required": true,
+                    "type": "string",
+                    "description": "Refers to the site/station where data/sample collection is performed.",
+                    "title": "Site Name"
+                },
+                "start_coordinates": {
+                   "title": "Start: Geographic Coordinates",
+                   "type": "object",
+                   "properties" : {
+                       "latitude" : {
+                          "$ref": "#/definitions/latitude",
+                          "description": "Latitude (N/S) in decimal degrees of the location where the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       },
+                       "longitude": {
+                           "$ref": "#/definitions/longitude",
+                           "description": "Longitude (W/E) in decimal degrees of the location where the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       }
+                   }
+                },
+                "stop_coordinates": {
+                   "title": "Stop: Geographic Coordinates",
+                   "type": "object",
+                   "properties" : {
+                       "latitude" : {
+                           "description": "Latitude (N/S) in decimal degrees of the location where the sampling event ended and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                          "$ref": "#/definitions/latitude"
+                       },
+                       "longitude": {
+                           "$ref": "#/definitions/longitude",
+                           "description": "Longitude (W/E) in decimal degrees of the location where the sampling event ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+                       }
+                   }
+                },
+                
+                "marine_region": {
+                    "pattern": "^[^;\\]]*$",
+                    "required": false,
+                    "type": "string",
+                    "description": "It characterises the environment, based on the latitude and longitude, by reference to geographic, political, economic or ecological boundaries.",
+                    "title": "Marine Region"
+                }
+            }
+        },
+        "sample": {
+            "title": "Environmental Sample",
+            "type": "object",
+            "properties": {
+                "label": {
+                    "title": "Label",
+                    "minLength": 1,
+                    "required": true,
+                    "type": "string",
+                    "description": "A short informative description of the sample. Must be unique for each sample, (i.e. for each filter generated during sampling)."
+                },
+                "protocol_label": {
+                    "required": true,
+                    "type": "string",
+                    "enum": ["NPL022", "NE08"],
+                    "description": "Identifies the protocol used to produce the sample, e.g. filtration and preservation.",
+                    "title": "Protocol Label"
+                },
+                "date": {
+                    "title": "Date",
+                    "description": "Date when the sampling event started, e.g. each CTD cast, net tow, or bucket collection is a distinct event.",
+                     "type": "string",
+                    "format": "date",
+                    "required": true
+                }, 
+                "start_time": {
+                    "title": "Time of start of sampling",
+                    "description": "Local time when the sampling event started. Each CTD cast, net tow, or bucket collection is a distinct event.",
+                    "format": "time",
+                    "required": true
+                },
+                "end_time": {
+                    "title": "Time of end of sampling",
+                    "description": "Local time when the sampling event ended. Each CTD cast, net tow, or bucket collection is a distinct event.",
+                    "format": "time",
+                    "required": true
+                    
+                    
+                },
+                "depth": {
+                    "minimum": 0,
+                    "maximum": 12000,
+                    "required": true,
+                    "type": "number",
+                    "description": "The distance below the surface of the water at which a measurement was made or a sample was collected in meter.",
+                    "title": "Depth"
+                },
+                "description": {
+                    "minLength": 1,
+                    "required": false,
+                    "type": "string",
+                    "description": "Refers to the extended sample description.",
+                    "title": "Description"
+                },
+                "filters": {
+                    "title": "Filter",
+                    "description": "The filters sub-sampled from the environmental sample.",
+                    "type": "array",
+                    "required": true,
+                    "uniqueItems": false,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "filtration_time": {
+                                "minimum": 5,
+                                "required": false,
+                                "type": "number",
+                                "description": "Refers to the duration in minutes to filter the given sample quantity.",
+                                "title": "Filtration time"
+                            },
+                            "quantity": {
+                                "minimum": 0,
+                                "required": false,
+                                "type": "number",
+                                "description": "Refers to the quantity of environment that was sampled, most often with dimensions Length (incl. volume), Amount, Mass or Time.",
+                                "title": "Quantity"
+                            },
+                            "container": {
+                                "pattern": "^[^;\\]\\[\\\\]*$",
+                                "required": false,
+                                "type": "string",
+                                "description": "Refers to the container in which the sample is stored prior to analysis.",
+                                "title": "Container"
+                            },
+                            "content": {
+                                "minLength": 1,
+                                "required": false,
+                                "type": "string",
+                                "description": "Refers to the content of the sample container. While the sample might target bacteria, the sample content might be a filter or a volume of water.",
+                                "title": "Content"
+                            },
+                            "size-fraction_lower-threshold": {
+                                "required": false,
+                                "type": "number",
+                                "description": "Refers to the mesh/pore size used to retain the sample. Materials smaller than the size threshold are exclude from the sample in in µm.",
+                                "title": "Size Fraction (Lower-Threshold)"
+                            },
+                            "size-fraction_upper-threshold": {
+                                
+                                "required": false,
+                                "type": "number",
+                                "description": "Refers to the mesh/pore size used to pre-filter/pre-sort the sample. Materials larger than the size threshold are excluded from the sample in µm.",
+                                "title": "Size Fraction (Upper-Threshold)"
+                            },
+                            "treatment_chemicals": {
+                                "minLength": 1,
+                                "required": false,
+                                "type": "string",
+                                "description": "Refers to the chemicals added to the sample, in the container, preservatives.",
+                                "title": "Treatment Chemicals"
+                            },
+                            "treatment_storage": {
+                                "minLength": 1,
+                                "required": false,
+                                "type": "string",
+                                "description": "Refers to the conditions in which the sample is stored, e.g. temperature, light conditions, time.",
+                                "title": "Treatment Storage"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "environment": {
+            "title": "Environmental Data",
+            "type": "object",
+            "properties": {
+                "water_temperature": {
+                    "required": true,
+                    "type": "number",
+                    "description": "Temperature of water at the time of taking the sample in degress Celsius",
+                    "title": "Temperature"
+                },
+                "salinity": {
+                    "required": true,
+                    "type": "number",
+                    "description": "Salinity of water at the time of taking the sample in PSU.",
+                    "title": "Salinity",
+                    "minimum": 0,
+                    "maximum": 100
+                },
+                "biome": {
+                    "minLength": 1,
+                    "required": true,
+                    "type": "string",
+                    "description": "Descriptor of the broad ecological context of a sample.",
+                    "title": "Biome"
+                },
+                "feature": {
+                    "minLength": 1,
+                    "required": true,
+                    "type": "string",
+                    "description": "Compared to biome, feature is a descriptor of a geographic aspect or a physical entity that strongly influences the more local environment of a sample.",
+                    "title": "Feature"
+                },
+                "material": {
+                    "minLength": 1,
+                    "required": true,
+                    "type": "string",
+                    "description": "Descriptor of the material that was displaced by the sample, or material in which a sample was embedded, prior to the sampling event.",
+                    "title": "Material"
+                },
+                "phosphate": {
+                    "description": "Phosphate concentration parameters in the water column",
+                    "title": "Phosphate",
+                    "type": "object",
+                    "properties": {
+                        "choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "measurement": {
+                            "$ref": "#/definitions/measurement",
+                            "dependencies": "choice"
+                        }
+                    }
+                },
+                "ph": {
+                    "description": "Alkalinity, acidity and pH of the water column",
+                    "title": "pH",
+                    "type": "object",
+                    "properties": {
+                        "choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "measurement": {
+                            "$ref": "#/definitions/measurement",
+                            "properties": {
+                                "value": {
+                                    "minimum": 1,
+                                    "maximum": 12
+                                },
+                                "unit": {
+                                    "default": "1",
+                                    "required": false,
+                                    "readonly": true
+                                }
+                            },
+                            "dependencies": "choice"
+                        }
+                    }
+                },
+                "nitrate": {
+                    "description": "Nitrate concentration parameters in the water column in µmol/L",
+                    "title": "Nitrate",
+                    "type": "object",
+                    "properties": {
+                        "nitrate-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "nitrate-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "nitrate-choice"
+                        }
+                    }
+                },
+                "carbon_organic_particulate_poc": {
+                    "description": "Particulate organic carbon concentration in the water column in µg/L",
+                    "title": "Carbon organic particulate (POC)",
+                    "type": "object",
+                    "properties": {
+                        "carbon_organic_particulate_poc-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "carbon_organic_particulate_poc-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "carbon_organic_particulate_poc-choice"
+                        }
+                    }
+                },
+                "nitrite": {
+                    "description": "Nitrite concentration parameters in the water column in µmol/L",
+                    "title": "Nitrite",
+                    "type": "object",
+                    "properties": {
+                        "nitrite-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "nitrite-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "nitrite-choice"
+                        }
+                    }
+                },
+                "carbon_organic_dissolved_doc": {
+                    "description": "Dissolved organic carbon concentration in the water column in µmol/L",
+                    "title": "Carbon organic dissolved (DOC)",
+                    "type": "object",
+                    "properties": {
+                        "carbon_organic_dissolved_doc-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "carbon_organic_dissolved_doc-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "carbon_organic_dissolved_doc-choice"
+                        }
+                    }
+                },
+                "nano_microplankton": {
+                    "description": "Abundance of cells in the water column (+other avail. cell properties) in number m^3",
+                    "title": "Nano/Microplankton",
+                    "type": "object",
+                    "properties": {
+                        "nano_microplankton-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "nano_microplankton-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "nano_microplankton-choice"
+                        }
+                    }
+                },
+                "downward_par": {
+                    "description": "Visible waveband radiance and irradiance measurements in the water column in µE/m^2/s",
+                    "title": "Downward PAR",
+                    "type": "object",
+                    "properties": {
+                        "downward_par-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "downward_par-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "downward_par-choice"
+                        }
+                    }
+                },
+                "conductivity": {
+                    "description": "Electrical conductivity of water in mS/cm",
+                    "title": "Conductivity",
+                    "type": "object",
+                    "properties": {
+                        "conductivity-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "conductivity-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "conductivity-choice"
+                        }
+                    }
+                },
+                "primary_production_isotope_uptake": {
+                    "description": "Primary Production in the water column in mg/m^3/d",
+                    "title": "Primary Production (isotope uptake)",
+                    "type": "object",
+                    "properties": {
+                        "primary_production_isotope_uptake-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "primary_production_isotope_uptake-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "primary_production_isotope_uptake-choice"
+                        }
+                    }
+                },
+                "primary_production_oxygen": {
+                    "description": "Primary Production in the water column in mg/m^3/d",
+                    "title": "Primary Production (oxygen)",
+                    "type": "object",
+                    "properties": {
+                        "primary_production_oxygen-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "primary_production_oxygen-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "primary_production_oxygen-choice"
+                        }
+                    }
+                },
+                "dissolved_oxygen_concentration": {
+                    "description": "Dissolved oxygen parameters in the water column in µmol/kg",
+                    "title": "Dissolved oxygen concentration",
+                    "type": "object",
+                    "properties": {
+                        "dissolved_oxygen_concentration-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "dissolved_oxygen_concentration-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "dissolved_oxygen_concentration-choice"
+                        }
+                    }
+                },
+                "nitrogen_organic_particulate_pon": {
+                    "description": "Particulate organic nitrogen concentration in the water column in µg/L",
+                    "title": "Nitrogen organic particulate (PON)",
+                    "type": "object",
+                    "properties": {
+                        "nitrogen_organic_particulate_pon-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "nitrogen_organic_particulate_pon-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "nitrogen_organic_particulate_pon-choice"
+                        }
+                    }
+                },
+                "meso_macroplankton": {
+                    "description": "Abundance of individuals in the water column (+other avail. properties) in number per m^3",
+                    "title": "Meso/Macroplankton",
+                    "type": "object",
+                    "properties": {
+                        "meso_macroplankton-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "meso_macroplankton-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "meso_macroplankton-choice"
+                        }
+                    }
+                },
+                "bacterial_production_isotope_uptake": {
+                    "description": "Bacterial production in the water column in mg/m^3/d",
+                    "title": "Bacterial production (isotope uptake)",
+                    "type": "object",
+                    "properties": {
+                        "bacterial_production_isotope_uptake-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "bacterial_production_isotope_uptake-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "bacterial_production_isotope_uptake-choice"
+                        }
+                    }
+                },
+                "nitrogen_organic_dissolved_don": {
+                    "description": "Dissolved organic nitrogen concentration in the water column in mg/L",
+                    "title": "Nitrogen organic dissolved (DON)",
+                    "type": "object",
+                    "properties": {
+                        "nitrogen_organic_dissolved_don-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "nitrogen_organic_dissolved_don-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "nitrogen_organic_dissolved_don-choice"
+                        }
+                    }
+                },
+                "ammonium": {
+                    "description": "Ammonium concentration parameters in the water column in µmol/L",
+                    "title": "Ammonium",
+                    "type": "object",
+                    "properties": {
+                        "ammonium-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "ammonium-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "ammonium-choice"
+                        }
+                    }
+                },
+                "silicate": {
+                    "description": "Silicate concentration parameters in the water column in µmol/L",
+                    "title": "Silicate",
+                    "type": "object",
+                    "properties": {
+                        "silicate-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "silicate-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "silicate-choice"
+                        }
+                    }
+                },
+                "bacterial_production_respiration": {
+                    "description": "Bacterial production in the water column in mg/m^3/d",
+                    "title": "Bacterial production (respiration)",
+                    "type": "object",
+                    "properties": {
+                        "bacterial_production_respiration-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "bacterial_production_respiration-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "bacterial_production_respiration-choice"
+                        }
+                    }
+                },
+                "turbidity": {
+                    "description": "Transmittance and attenuance of the water column (FTU or NTU)",
+                    "title": "Turbidity",
+                    "type": "object",
+                    "properties": {
+                        "turbidity-choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "turbidity-measurement": {
+                            "title": "Measurement value",
+                            "minimum": 0,
+                            "required": false,
+                            "type": "number",
+                            "dependencies": "turbidity-choice"
+                        }
+                    }
+                },
+                "fluorescence": {
+                    "description": "Raw (volts) or converted (mg Chla/m^3) fluorescence of the water",
+                    "title": "Fluorescence",
+                    "type": "object",
+                    "properties": {
+                        "choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "measurement": {
+                            "$ref": "#/definitions/measurement",
+                            "minimum": 0,
+                            "dependencies": "choice"
+                        }
+                    }
+                },
+                "pigment_concentration": {
+                    "description": "Concentration of pigments (e.g. chlorophyll a) extracted and analysed by fluorometry or HPLC in mg/m^3",
+                    "title": "Pigment concentration",
+                    "type": "object",
+                    "properties": {
+                        "choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "measurement": {
+                            "$ref": "#/definitions/measurement",
+                            "dependencies": "choice"
+                        }
+                    }
+                },
+                "picoplankton_flow_cytometry": {
+                    "description": "Abundance of cells in the water column (+other avail. cell properties) in numeber per m^3",
+                    "title": "Picoplankton (Flow Cytometry)",
+                    "type": "object",
+                    "properties": {
+                        "choice": {
+                            "$ref": "#/definitions/choice"
+                        },
+                        "measurement": {
+                            "title": "Measurement",
+                            "dependencies": "choice",
+                            "type": "array",
+                            "uniqueItems": false,
+                            "items": {
+                            "title": "Taxa",
+                                "type": "object",
+                                "properties": {
+                                    "taxon": {
+                                        "title": "Taxon",
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "value": {
+                                        "$ref": "#/definitions/value"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "other_parameters": {
+                    "description": "Add as many fields as there are other environments parameters measured; Define the parameter according to Table 2g; See list of recommended environmental parameters in Table 1",
+                    "title": "Other Parameters",
+                    "required": false,
+                    "type": "array",
+                    "uniqueItems": false,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "param_name": {
+                                "title": "Parameter Name",
+                                "description": "Name of the Parameter (please use a scientific common name).",
+                                "type": "string"
+                            },
+                            "param_value": {
+                                "title": "Value of Measurement",
+                                "description": "",
+                                "type": "string"
+                            },
+                            "uom": {
+                                "title": "Unit of Measurement",
+                                "description": "Please choose an SI conforming unit of measurement.",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "comment": {
+            "required": false,
+            "type": "string",
+            "description": "Report any deviation.",
+            "title": "Comment"
+        }
+    }
+}
