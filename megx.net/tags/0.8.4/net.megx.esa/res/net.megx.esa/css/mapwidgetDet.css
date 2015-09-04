@@ -1,0 +1,147 @@
+#megxMap{
+	height: 410px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid;
+	border-color: lightgrey; 
+	border-radius: 5px; 
+}
+
+#layersAccordion{
+	padding-top: 20px;
+	width:100%;
+	margin-bottom: 20px;
+	float: left;
+}
+
+
+#newLayer{
+	margin-top: 20px;
+}
+
+.messagesPlaceholder{
+	border: 1px solid; 
+	border-color: grey; 
+	border-radius: 5px; 
+	max-height: 120px; 
+	overflow-y: auto;
+}
+
+.mx-layer-configuration-header {  
+	float:right;
+}
+
+#sampleStats .ui-accordion-header{
+	margin: 20px;
+}
+
+.ui-dialog  .ui-dialog-titlebar-close span {
+	margin-top: -8px;
+	margin-left: -8px;
+}
+
+#sampleStats {
+	margin-bottom: 10px;
+	width: 910px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#sampledOceansContainer {
+	width: 49%;
+	float: right;
+	margin-top: 20px;
+	margin-right: 10px;
+}
+
+.ui-state-default {
+	padding: 0.5em 0.5em 0.5em 0.7em;
+	font-size: 14px;
+}
+
+#sampleStats .ui-state-default {
+	padding: 0.5em 0.5em 0.5em 0.7em;
+	font-size: 14px;
+}
+
+.sampledOceansContent {
+  border: 1px solid #CCC;
+  border-top: 0px;
+  border-radius: 0 0 5px 5px;
+  padding: 20px;
+}
+
+#osdAppTable {
+	width:100%;
+	overflow:auto;
+	
+}
+
+.mx-layer-description{
+	font-size: 11px;
+}
+
+#sampleTableDetContainer{
+	margin-top: 20px;
+	width: 98%;
+	margin-right: auto;
+	margin-left: auto;
+}
+#megxMapWidgetDet {
+	width: 65%;
+	float: left;
+}
+
+#sampleTableData {
+	width: 34%;
+	float: right;
+	height: 410px;
+	overflow: auto;
+	border: 0px;
+  	border-bottom: 1px dashed #CCC;
+  	border-radius: 0 0 5px 5px;
+}
+
+#sampleTableDataDownload {
+	width: 34%;
+	float: right;
+}
+
+#sampleTableDataDownload a{
+	font-size: 12px;
+	padding-left: 5px;
+}
+
+
+#newLayer .ui-state-default {
+	padding: 1px;
+}
+
+#sampleImagesContainer{
+	width: 98%;
+	text-align: left;
+	overflow: auto;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 20px;
+}
+
+#sampleImagesContent {
+  border: 1px solid #CCC;
+  border-top: 0px;
+  border-radius: 0 0 5px 5px;
+  padding-top: 20px;
+}
+
+#sampleImagesContent .sampleImages{
+	overflow: auto;
+	width: 100%;
+}
+
+#errorMsg{
+	display: none; 
+	font-size: 14px; 
+	color: #FF0000; 
+	margin-left: 330px;
+	
+}
