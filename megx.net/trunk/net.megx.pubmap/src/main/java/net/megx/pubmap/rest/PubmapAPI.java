@@ -350,11 +350,11 @@ public class PubmapAPI extends BaseRestService {
       
       for (GeoLocation geoLocation : articleGeoLocations) {
         
-        messageBody.append("• " + "World Region: " + geoLocation.getWorldRegion() + "\n");
-        messageBody.append("• " + "Place: " + geoLocation.getPlace() + "\n");
-        messageBody.append("• " + "Latitude: " + geoLocation.getLat() + "\n");
-        messageBody.append("• " + "Longitude: " + geoLocation.getLon() + "\n");
-        messageBody.append("-----------------------------------------------");
+        messageBody.append("- " + "World Region: " + geoLocation.getWorldRegion() + "\n");
+        messageBody.append("- " + "Place: " + geoLocation.getPlace() + "\n");
+        messageBody.append("- " + "Latitude: " + geoLocation.getLat() + "\n");
+        messageBody.append("- " + "Longitude: " + geoLocation.getLon() + "\n");
+        messageBody.append("-------------------------------------------------------");
         messageBody.append("\n");
         
       }
