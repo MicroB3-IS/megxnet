@@ -37,7 +37,7 @@
                     if (msg.type && msg.type == "setarticle") {
                     	
                     	#if($req.user)
-                    	notifyUserIfArticleExists(msg.article.pmid);
+                    	notifyUserIfArticleExists(msg.article.pmid, reportWrongGeoReference);
                     	#end
                     	
                         $("#title").html(msg.article.title);

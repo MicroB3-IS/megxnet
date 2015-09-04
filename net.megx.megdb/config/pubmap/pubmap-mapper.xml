@@ -37,7 +37,7 @@
 	</select>
 	
 	<select id="getArticlesByPmid" parameterType="int" resultMap="pubmap_article">
-		SELECT st_y(ST_Centroid(geom)) as lat, st_x(ST_Centroid(geom)) as lon, world_region, place
+		SELECT pmid, st_y(ST_Centroid(geom)) as lat, st_x(ST_Centroid(geom)) as lon, world_region, place, megxbar
 		FROM pubmap.raw_pubmap WHERE pmid=#{pmid}
 	</select>
 	

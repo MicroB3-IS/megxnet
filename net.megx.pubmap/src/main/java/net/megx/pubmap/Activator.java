@@ -1,5 +1,11 @@
 package net.megx.pubmap;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import net.megx.mailer.BaseMailerService;
 import net.megx.megdb.pubmap.PubMapService;
 import net.megx.pubmap.geonames.GeonamesService;
 import net.megx.pubmap.geonames.GeonamesServiceImpl;
@@ -49,21 +55,75 @@ public class Activator extends ResTplConfiguredActivator {
 
                   @Override
                   public void serviceAvailable(String name,
-                      GeonamesService geonamesService) {
+                      final GeonamesService geonamesService) {
                     log.debug("GeonamesService service received...");
 
-                    PubmapAPI api = new PubmapAPI(service, geonamesService);
-                    RegUtils.reg(getBundleContext(), PubmapAPI.class.getName(),
-                        api, null);
+                    log.debug("Requesting MailerService service now...");
+                    OSGIUtils.requestService(BaseMailerService.class.getName(),
+                        getBundleContext(),
+                        new OSGIUtils.OnServiceAvailable<BaseMailerService>() {
 
-                    log.debug("PubMapService started.");
+                          @Override
+                          public void serviceAvailable(String name,
+                              BaseMailerService mailerService) {
+                            log.debug("MailerService service received...");
 
+                            try {
+                              final Properties configuration = readConfiguration();
+
+                              PubmapAPI api = new PubmapAPI(service,
+                                  geonamesService, mailerService, configuration);
+                              RegUtils.reg(getBundleContext(),
+                                  PubmapAPI.class.getName(), api, null);
+
+                              log.debug("PubMapService started.");
+                            } catch (final Exception e) {
+                              log.error(
+                                  "Error while initializing PubMapService.", e);
+                              throw new RuntimeException(
+                                  "Error while initializing PubMapService.", e);
+                            }
+                          }
+
+                        });
                   }
 
                 });
           }
 
         });
+  }
+
+  /**
+   * Reads the configuration from {@code pubmap.properties} which has to be
+   * present in the classpath.
+   * 
+   * @throws IOException
+   *           if an IO error occurs.
+   * @throws FileNotFoundException
+   *           if {@code pubmap.properties} cannot be found in the classpath.
+   */
+  private final Properties readConfiguration() throws IOException {
+
+    final Properties properties = new Properties();
+    InputStream inputStream = null;
+
+    try {
+      inputStream = this.getClass().getClassLoader()
+          .getResourceAsStream("pubmap.properties");
+
+      if (inputStream == null) {
+        throw new FileNotFoundException(
+            "property file pubmap.properties not found in the classpath");
+      }
+
+      properties.load(inputStream);
+    } finally {
+      if (inputStream != null) {
+        inputStream.close();
+      }
+    }
+    return properties;
   }
 
   @Override

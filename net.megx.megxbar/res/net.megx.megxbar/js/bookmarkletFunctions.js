@@ -114,6 +114,8 @@ $(document).ready(function() {
     });
 
     $("#submitBookmark").click(function() {
+    	
+    	emptyMessageDiv();
 
     	// I have decimal degrees option
         if ($('#bookmarkFormDecimal').is(':visible')) {
@@ -212,7 +214,7 @@ function findCoordinatesData(data) {
 
 	    $("#message")
 	        .html(
-	            "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>" + data.errorMsg + "</p>");
+	            "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>" + data.errorMsg + "</p>");
 	    $("#message").css("background-color", "#F2DEDE");
 	    $("#message").css("border", "1px solid #EED3D7");
 	    $("#message").css("color", "#B94A48");
@@ -257,13 +259,12 @@ function findCoordinates(placeName, worldRegion, callback) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
             $("#message").css("border-radius", "15px");
             $("#message").css("padding-left", "10px");
-
         }
     });
 }
@@ -281,7 +282,6 @@ function findNearbyData(data) {
     var dataToInsert = collectData(lat, lon, worldRegion, place);
 
     insertBookmark(dataToInsert);
-
 }
 
 function findNearby(lat, lon, callback) {
@@ -302,18 +302,17 @@ function findNearby(lat, lon, callback) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>Something bad happened, bookmark not stored to server.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
             $("#message").css("border-radius", "15px");
             $("#message").css("padding-left", "10px");
-
         }
     });
 }
 
-function notifyUserIfArticleExists(pmid) {
+function notifyUserIfArticleExists(pmid, callback) {
 
     $.ajax({
         type: "GET",
@@ -327,7 +326,13 @@ function notifyUserIfArticleExists(pmid) {
         	
         	if (articles){
         		if(Object.keys(articles.data).length){
+        			
         			var data = articles.data;
+        			var pmid = data[0].pmid;
+        			var megxBarJson = JSON.parse(JSON.parse(data[0].megxBarJSON));
+        			var title = megxBarJson.title;
+        			var authors = megxBarJson.authors.join(', ');
+        			var geoLocations = [];
         			var l = [];
         			var i = 0;
         			var worldRegion;
@@ -342,15 +347,27 @@ function notifyUserIfArticleExists(pmid) {
         				lat = data[i].lat.toFixed(6);
         				lon = data[i].lon.toFixed(6);
         				
+        				geoLocations.push({
+        					'worldRegion': worldRegion,
+        					'place' : place,
+        					'lat' : lat,
+        					'lon' : lon
+        				});
         				
         				l.push('<li>' + 'World region: ' + worldRegion + '<br>Place: ' + place + '<br>Lat: ' + lat + '<br>Lon: ' + lon + '</li>');
         			}
         			var m = [
-				         '<button class=close onclick=emptyMessageDiv() type=button>×</button>',
+				         '<button class="close" onclick="emptyMessageDiv()" type="button" id="close-message">×</button>',
 				         '<p>This article is already in the database curated with the location:</p>',
 				         '<ul>', l, '</ul>',
 				         '<p>If you want to curate this article with additional locations please fill out the form.</p>',
-				         '<p>If you want to report this location as a wrong curation please contact us at megx@mpi-bremen.de.</p>'
+				         '<p>If you want to report this location as a wrong curation please contact us at megx@mpi-bremen.de.</p>',
+				         '<div id="report-field">',
+				         '<label id="report-text-label">Comment:</label>',
+				         '<input type="text" name="report-text" id="report-text">',
+				         '<p id="geo-location-error-msg">Please write your comment.</p>',
+				         '</div>',
+				         '<input type="button" value="Report wrong geo-reference" id="report-button">'
     				].join('');
         			
                 	$("#message").html(m);
@@ -362,19 +379,77 @@ function notifyUserIfArticleExists(pmid) {
         	        $("#message").css("padding-left", "10px");
         	        $("#message").css("overflow", "scroll");
         	        $("#message").css("overflow-x", "hidden");
+        	        
+        	        callback(pmid, title, authors, geoLocations);
         		}
         	}
         },
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Something bad happened, we can not check if this article already exists.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>Something bad happened, we can not check if this article already exists in the database.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");
             $("#message").css("border-radius", "15px");
             $("#message").css("padding-left", "10px");
         }
+    });
+}
+
+function reportWrongGeoReference(pmid, title, authors, geoLocations){
+	
+	$('#report-button').click(function() {
+    	
+    	if ($('#report-field').is(':visible')){
+    		
+    		var comment = $('#report-text').val();
+    		
+    		if(comment){
+    			
+    			$.ajax({
+    		        contentType: 'application/json',
+    		        data: {
+    		            'pmid': pmid,
+    		            'title': title,
+    		            'authors': authors,
+    		            'geoLocations': JSON.stringify(geoLocations),
+    		            'comment': comment
+    		        },
+    		        dataType: 'json',
+    		        success: function(message) {
+    		            $("#message")
+    		                .html(
+    		                    "<button class='close' type='button' id='close-message' onclick='emptyMessageDiv()'>×</button><p>Your report was submitted successfully.</p>");
+    		            $("#message").css("background-color", "#DFF0D8");
+    		            $("#message").css("border", "1px solid #D6E9C6");
+    		            $("#message").css("color", "#468847");
+    		            $("#message").css("border-radius", "15px");
+    		            $("#message").css("padding-left", "10px");
+    		            $("#message").css("height", "auto");
+    		        },
+    		        error: function(a, b, c) {
+    		            $("#message")
+    		                .html(
+    		                    "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>Server error, report not submitted.</p>");
+    		            $("#message").css("background-color", "#F2DEDE");
+    		            $("#message").css("border", "1px solid #EED3D7");
+    		            $("#message").css("color", "#B94A48");
+    		            $("#message").css("border-radius", "15px");
+    		            $("#message").css("padding-left", "10px");
+    		            $("#message").css("height", "auto");
+    		        },
+    		        type: 'POST',
+    		        url: ctx.siteUrl + '/ws/v1/pubmap/v1.0.0/wrong-geo-reference'
+    		    });
+    		} else{
+    			//error msg
+    			$('#geo-location-error-msg').show();
+    		}
+    	} else {
+    		$('#report-field').toggle();
+    		$(this).prop('value', 'Submit report');
+    	}
     });
 }
 
@@ -476,7 +551,7 @@ function insertBookmark(data) {
         success: function(message) {
             $("#message")
                 .html(
-                    "<button class='close' type='button' onclick='emptyMessageDiv()'>×</button><p>" + message + "</p>");
+                    "<button class='close' type='button' id='close-message' onclick='emptyMessageDiv()'>×</button><p>" + message + "</p>");
             $("#message").css("background-color", "#DFF0D8");
             $("#message").css("border", "1px solid #D6E9C6");
             $("#message").css("color", "#468847");
@@ -490,7 +565,7 @@ function insertBookmark(data) {
         error: function(a, b, c) {
             $("#message")
                 .html(
-                    "<button class='close' onclick='emptyMessageDiv()' type='button'>×</button><p>Server error bookmark not stored to server.</p>");
+                    "<button class='close' onclick='emptyMessageDiv()' type='button' id='close-message'>×</button><p>Server error bookmark not stored to server.</p>");
             $("#message").css("background-color", "#F2DEDE");
             $("#message").css("border", "1px solid #EED3D7");
             $("#message").css("color", "#B94A48");

@@ -138,6 +138,32 @@ table,tr,th,td {
 	background: hsl(208, 68%, 79%);
 	font-size: 11px;
 }
+#report-button{
+	border: 1px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	background: hsl(208, 68%, 79%);
+	font-size: 11px;
+}
+#close-message{
+	border: 1px;
+	border-radius: 5px;
+	margin-top: 10px;
+	background: hsl(208, 68%, 79%);
+	font-size: 11px;
+}
+#report-field{
+	display: none;
+}
+#report-text{
+	margin-bottom: 10px;
+	width: 280px;
+}
+#geo-location-error-msg{
+	display: none; 
+	color:red;
+	margin-top: 0px;
+}
 .bookmark-content{
 	position: relative;
     overflow: auto;
