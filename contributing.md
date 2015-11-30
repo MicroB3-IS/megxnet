@@ -84,4 +84,47 @@ If you get to this point and realize and you have no idea what’s going on, don
 git rebase --abort
 ```
 
+However, for MegxNet development purposes we're going to use a wokflow pattern named **Feature Branch Workflow**. 
+
+The core idea behind the **Feature Branch Workflow** is that all feature development should take place in a dedicated branch instead of the master branch. This encapsulation makes it easy for multiple developers to work on a **particular** feature without disturbing the **main** codebase. It also means the master branch will never contain **broken** code, which is a huge advantage for continuous integration environments.
+
+Instead of committing directly on their local master branch, developers create a new branch every time they start work on a new feature. Feature branches should have descriptive names, like _animated-menu-items_ or _issue-#1061_. The idea is to give a clear, highly-focused purpose to each branch.
+
+Once someone completes a feature, they don’t immediately merge it into master. Instead, they push the feature branch to the central server and file a **pull request** asking to merge their additions into master. This gives other developers an opportunity to **review** the changes before they become a part of the main codebase.
+
+Before you start developing a feature, you need an isolated branch to work on. You can request a new branch with the following command:
+
+```
+git checkout -b marys-feature master
+```
+
+This checks out a branch called _marys-feature_ based on master, and the **-b** flag tells Git to create the branch if it doesn’t already exist. On this branch, you edit, stage, and commit changes in the usual fashion, building up your feature with as many commits as necessary:
+
+```
+git status
+git add <some-file>
+git commit
+```
+
+If you were collaborating with other developers, the command below would also give them access to your initial commits.
+
+```
+git push -u origin marys-feature
+```
+
+This command pushes _marys-feature_ to the central repository (origin), and the **-u** flag adds it as a remote tracking branch. After setting up the tracking branch, you can call git push without any parameters to push your feature i.e. `git push`.
+
+### Merging your feature branch into master branch
+
+After you are finished implementing your feature, you file a **pull request** in your Git GUI asking to merge the _marys-feature_ branch into _master_ branch and team members will be notified automatically. Once your changes are accepted, the code merge into the master(stable) branch goes like this:
+
+```
+git checkout master
+git pull
+git pull origin marys-feature
+git push
+```
+
+First, whoever’s performing the merge needs to check out their master branch and make sure it’s **up to date**. Then, _git pull origin marys-feature_ **merges** the central repository’s copy of _marys-feature_. You could also use a simple `git merge marys-feature`, but the command shown above makes sure you’re always pulling the most **up-to-date** version of the feature branch. Finally, the updated master needs to get **pushed back** to origin
+
 ###### _Credits: https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow_
