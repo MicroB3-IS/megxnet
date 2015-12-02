@@ -1,7 +1,5 @@
 # Agreed upon way to work with the MegxNet Git repository
-## Central workflow
-
-Like Subversion, the Centralized Workflow uses a central repository to serve as the single point-of-entry for all changes to the project. Instead of **trunk**, the default development branch is called **master** and all changes are committed into this branch. This workflow doesn’t require any other branches besides **master**.
+## Introduction
 
 Each developer creates a local copy of the entire project. This is accomplished via the `git clone` command:
 
@@ -18,113 +16,172 @@ git status # View the state of the repo
 git add <some-file> # Stage a file
 git commit # Commit a file</some-file>
 ```
+Below we describe our development model when Git is used as a code repository.
 
-Once you finish your feature, he should publish his local commits to the central repository so other team members can access it. He can do this with the `git push` command, like so:
+## Main branches
 
-```
-git push origin master
-```
+At the core, the development model is greatly inspired by existing models out there. The central repo holds two main branches with an **infinite** lifetime:
 
-Remember that **origin** is the remote connection to the central repository that Git created when you cloned it. The **master** argument tells Git to try to make the origin’s master branch look like his local master branch
+* master
+* develop
 
-Let’s see what happens if someone else tries to push his/her feature after you've successfully published your changes to the central repository. He/she can use the exact same **push** command:
+We consider **origin/master** to be the **main** branch where the source code of HEAD always reflects a **production-ready** state.
 
-```
-git push origin master
-```
+We consider **origin/develop** to be the main branch where the source code of HEAD always reflects a state with the **latest** delivered development changes for the next release. Some would call this the _“integration branch”_.
 
-But, since his\her local history has diverged from the central repository, Git will refuse the request with a rather verbose error message:
+When the source code in the develop branch reaches a **stable** point and is ready to be released, all of the changes should be **merged** back into master somehow and then tagged with a release number.
 
-```
-error: failed to push some refs to '/path/to/repo.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-```
+Therefore, each time when changes are merged back into **master**, this is a **new** production release by definition. We tend to be very strict at this, so that theoretically, we could use a Git hook script to automatically build and roll-out our software to our production servers **every time** there was a commit on master.
 
-This prevents the other developer from overwriting official commits. He/she needs to pull your updates into his/her repository, integrate them with his/her local changes, and then try again.
+Next to the main branches **master** and **develop**, our development model uses a variety of supporting branches to aid **parallel** development between team members, ease tracking of features, prepare for production releases and to assist in quickly fixing live production problems. Unlike the main branches, these branches always have a **limited** life time, since they will be **removed** eventually.
 
-He/she can use `git pull` to incorporate upstream changes into her repository. This command is sort of like `svn update`—it pulls the entire upstream commit history into the other developer's local repository and tries to integrate it with his/her local commits:
+## Supporting branches
+The different types of branches we may use are:
 
-```
-git pull --rebase origin master
-```
+* Feature branches
+* Release branches
+* Hotfix branches
 
-The `--rebase` option tells Git to move all of the other developer's commits to the tip of the master branch after synchronising it with the changes from the central repository
+Each of these branches have a **specific** purpose and are bound to strict rules as to which branches may be their originating branch and which branches must be their merge targets. We will walk through them in a minute.
 
-If developers are working on unrelated features, it’s unlikely that the **rebasing** process will generate conflicts. But if it does, Git will pause the **rebase** at the current commit and output the following message, along with some relevant instructions:
+By no means are these branches _“special”_ from a technical perspective. The branch types are categorized by how we use them. They are of course plain old Git branches.
 
-```
-CONFLICT (content): Merge conflict in <some-file>
-```
+### Feature branches
 
-The great thing about Git is that anyone can resolve their own merge conflicts. In our example, one would simply run a git status to see where the problem is. Conflicted files will appear in the **Unmerged** paths section:
+**Feature** branches (or sometimes called **topic** branches) are used to develop new features for the upcoming or a distant future release. When starting development of a feature, the target release in which this feature will be incorporated may well be unknown at that point. The essence of a feature branch is that it exists as long as the feature is in **development**, but will eventually be **merged back* into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment).
+
+When starting work on a new feature, branch off from the **develop** branch. We consider it best practice to name your feature branch after the **ticket** you're currently working on (i.e MB3_IS-665, in case you're using _Jira_ issue tracking system).
 
 ```
-# Unmerged paths:
-# (use "git reset HEAD <some-file>..." to unstage)
-# (use "git add/rm <some-file>..." as appropriate to mark resolution)
-#
-# both modified: <some-file>
+$ git checkout -b MB3_IS-665 develop
+Switched to a new branch "MB3_IS-665"
 ```
 
-Then, he/she’ll edit the file(s) to his/her liking. Once he/she’s happy with the result, he/she can stage the file(s) in the usual fashion and let git rebase do the rest:
+Finished features may be **merged** into the **develop** branch definitely add them to the upcoming release:
 
 ```
-git add <some-file>
-git rebase --continue
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff MB3_IS-665
+Updating ea1b82a..05e9557
+(Summary of changes)
+$ git branch -d MB3_IS-665
+Deleted branch MB3_IS-665 (was 05e9557).
+$ git push origin develop
 ```
 
-And that’s all there is to it. Git will move on to the next commit and repeat the process for any other commits that generate conflicts.
+The `--no-ff` flag causes the merge to always create a new commit object, even if the merge could be performed with a _fast-forward_. This avoids losing information about the historical existence of a feature branch and groups together all commits that together added the feature.
 
-If you get to this point and realize and you have no idea what’s going on, don’t panic. Just execute the following command and you’ll be right back to where you started before you ran `[git pull --rebase](/tutorials/syncing/git-pull)`:
+### Release branches
 
-```
-git rebase --abort
-```
+**Release** branches support **preparation** of a **new** production release. They allow for **last-minute** dotting of i’s and crossing t’s. Furthermore, they allow for **minor** bug fixes and preparing **meta-data** for a release (version number, build dates, etc.). By doing all of this work on a release branch, the develop branch is **cleared** to receive features for the next big release.
 
-However, for MegxNet development purposes we're going to use a wokflow pattern named **Feature Branch Workflow**. 
+The key moment to branch off a new **release** branch from **develop** is when **develop** (almost) reflects the desired state of the new release. At least all features that are targeted for the release-to-be-built must be **merged** in to develop at this point in time.
 
-The core idea behind the **Feature Branch Workflow** is that all feature development should take place in a dedicated branch instead of the master branch. This encapsulation makes it easy for multiple developers to work on a **particular** feature without disturbing the **main** codebase. It also means the master branch will never contain **broken** code, which is a huge advantage for continuous integration environments.
-
-Instead of committing directly on their local master branch, developers create a new branch every time they start work on a new feature. Feature branches should have descriptive names, like _animated-menu-items_ or _issue-#1061_. The idea is to give a clear, highly-focused purpose to each branch.
-
-Once someone completes a feature, they don’t immediately merge it into master. Instead, they push the feature branch to the central server and file a **pull request** asking to merge their additions into master. This gives other developers an opportunity to **review** the changes before they become a part of the main codebase.
-
-Before you start developing a feature, you need an isolated branch to work on. You can request a new branch with the following command:
+**Release** branches are created from the **develop** branch. For example, say version 1.1.5 is the current production release and we have a big release coming up. The state of develop is ready for the _“next release”_ and we have decided that this will become version 1.2 (rather than 1.1.6 or 2.0). So we branch off and give the release branch a name reflecting the new version number:
 
 ```
-git checkout -b marys-feature master
+$ git checkout -b release-1.2 develop
+Switched to a new branch "release-1.2"
+$ ./bump-version.sh 1.2
+Files modified successfully, version bumped to 1.2.
+$ git commit -a -m "Bumped version number to 1.2"
+[release-1.2 74d9424] Bumped version number to 1.2
+1 files changed, 1 insertions(+), 1 deletions(-)
 ```
 
-This checks out a branch called _marys-feature_ based on master, and the **-b** flag tells Git to create the branch if it doesn’t already exist. On this branch, you edit, stage, and commit changes in the usual fashion, building up your feature with as many commits as necessary:
+After creating a new branch and switching to it, we bump the version number. Here, _bump-version.sh_ is a fictional shell script that changes some files in the working copy to reflect the new version. (This can of course be a manual change—the point being that some files change.) Then, the bumped version number is committed.
+
+When the state of the release branch is ready to become a real release, some actions need to be carried out. First, the release branch is **merged** into **master** (since every commit on master is a **new** release by definition, remember). Next, that commit on master must be **tagged** for easy future reference to this historical version. Finally, the changes made on the release branch need to be **merged** back into **develop**, so that future releases also contain these bug fixes.
+
+The first two steps in Git:
 
 ```
-git status
-git add <some-file>
-git commit
+$ git checkout master
+Switched to branch 'master'
+$ git merge --no-ff release-1.2
+Merge made by recursive.
+(Summary of changes)
+$ git tag -a 1.2
 ```
 
-If you were collaborating with other developers, the command below would also give them access to your initial commits.
+The release is now done, and tagged for future reference. 
+
+To keep the changes made in the release branch, we need to merge those back into develop, though. In Git:
 
 ```
-git push -u origin marys-feature
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff release-1.2
+Merge made by recursive.
+(Summary of changes)
 ```
 
-This command pushes _marys-feature_ to the central repository (origin), and the **-u** flag adds it as a remote tracking branch. After setting up the tracking branch, you can call git push without any parameters to push your feature i.e. `git push`.
+This step may well lead to a merge conflict (probably even, since we have changed the version number). If so, fix it and commit.
 
-### Merging your feature branch into master branch
-
-After you are finished implementing your feature, you file a **pull request** in your Git GUI asking to merge the _marys-feature_ branch into _master_ branch and team members will be notified automatically. Once your changes are accepted, the code merge into the master(stable) branch goes like this:
+Now we are really done and the release branch may be removed, since we don’t need it anymore:
 
 ```
-git checkout master
-git pull
-git pull origin marys-feature
-git push
+$ git branch -d release-1.2
+Deleted branch release-1.2 (was ff452fe).
 ```
 
-First, whoever’s performing the merge needs to check out their master branch and make sure it’s **up to date**. Then, _git pull origin marys-feature_ **merges** the central repository’s copy of _marys-feature_. You could also use a simple `git merge marys-feature`, but the command shown above makes sure you’re always pulling the most **up-to-date** version of the feature branch. Finally, the updated master needs to get **pushed back** to origin
+### Hotfix braches
 
-###### _Credits: https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow_
+**Hotfix** branches are very much like release branches in that they are also meant to prepare for a new production release, albeit unplanned. They arise from the necessity to act **immediately** upon an **undesired** state of a live production version. When a **critical** bug in a production version must be resolved immediately, a **hotfix** branch may be branched off from the **corresponding** tag on the master branch that marks the production version.
+
+**Hotfix** branches are created from the **master** branch. For example, say version 1.2 is the current production release running live and causing troubles due to a severe bug. But changes on develop are yet unstable. We may then branch off a **hotfix** branch and start fixing the problem:
+
+```
+$ git checkout -b hotfix-1.2.1 master
+Switched to a new branch "hotfix-1.2.1"
+$ ./bump-version.sh 1.2.1
+Files modified successfully, version bumped to 1.2.1.
+$ git commit -a -m "Bumped version number to 1.2.1"
+[hotfix-1.2.1 41e61bb] Bumped version number to 1.2.1
+1 files changed, 1 insertions(+), 1 deletions(-)
+```
+
+Don’t forget to **bump** the version number after branching off!
+
+Then, fix the bug and commit the fix in one or more separate commits.
+
+```
+$ git commit -m "Fixed severe production problem"
+[hotfix-1.2.1 abbe5d6] Fixed severe production problem
+5 files changed, 32 insertions(+), 17 deletions(-)
+```
+
+When finished, the bugfix needs to be merged back into master, but also needs to be merged back into develop, in order to safeguard that the bugfix is included in the next release as well. This is completely similar to how release branches are finished.
+
+First, update **master** and **tag** the release.
+
+```
+$ git checkout master
+Switched to branch 'master'
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive.
+(Summary of changes)
+$ git tag -a 1.2.1
+```
+
+Next, include the bugfix in **develop**, too:
+
+```
+$ git checkout develop
+Switched to branch 'develop'
+$ git merge --no-ff hotfix-1.2.1
+Merge made by recursive.
+(Summary of changes)
+```
+
+The one exception to the rule here is that, when a release branch currently **exists**, the hotfix changes need to be merged into that release branch, instead of develop. Back-merging the bugfix into the release branch will eventually result in the bugfix being merged into develop too, when the release branch is finished. (If work in develop immediately requires this bugfix and cannot wait for the release branch to be finished, you may safely merge the bugfix into develop now already as well.)
+
+Finally, remove the temporary branch:
+
+```
+$ git branch -d hotfix-1.2.1
+Deleted branch hotfix-1.2.1 (was abbe5d6).
+```
+
+###### _Credits: https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow_, http://nvie.com/posts/a-successful-git-branching-model/
