@@ -17,3 +17,5 @@ net.megx.test.jbehave/.settings/org.eclipse.core.resources.prefs
 net.megx.test.jbehave/dummy.webapp/.project
 net.megx.test.jbehave/dummy.webapp/.settings/org.eclipse.core.resources.prefs
 net.megx.test.jbehave/dummy.webapp/.settings/org.eclipse.jdt.core.prefs
+config/developer/
+net.megx.twitter/properties/
