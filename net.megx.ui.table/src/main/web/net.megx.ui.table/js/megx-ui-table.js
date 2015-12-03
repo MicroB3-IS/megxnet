@@ -32,7 +32,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
   /**
    * Default Bootstrap CSS classes for simple buttons.
    */
-  BUTTON_CLASSES = "btn btn-default";
+  var BUTTON_CLASSES = "btn btn-default";
 
   /**
    * Creates a dataButton.
@@ -46,7 +46,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
    *          http://fortawesome.github.io/Font-Awesome/icons/)
    * @returns {String} the HTML code for the button
    */
-  createButton = function(buttonDescription, data, icon) {
+  var createButton = function(buttonDescription, data, icon) {
     if (buttonDescription) {
       if (buttonDescription.link) {
         return '<a role="button" type="button"'   
@@ -82,7 +82,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
    *          the JSON object containing the configuration of the button whichs
    *          triggers the dialog.
    */
-  registerListenersToModal = function (button) {
+  var registerListenersToModal = function (button) {
     
     var modal = jQuery('#' + button.modal.target);
     
@@ -127,7 +127,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
    *          which will be called in this function
    * @returns the HTML code of the toolbar for the MegxTable.
    */
-  createToolbarButtons = function(toolbarButtons, oSettings) {
+  var createToolbarButtons = function(toolbarButtons, oSettings) {
     
     /**
      * Creates the show/hide column button from the ColVis extension of
@@ -139,7 +139,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          ColVis extension.
      * @returns the HTML code for the show/hide column button.
      */
-    createColVisButton = function(oSettings) {
+    var createColVisButton = function(oSettings) {
       
       // create ColVisButton and extract only the button element and discard the
       // rest of the generated HTML
@@ -164,7 +164,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          ColVis extension.
      * @returns the HTML code for the filter field.
      */
-    createFilterField = function(oSettings) {
+    var createFilterField = function(oSettings) {
       // create filter field and extract only the input element
       var filterField = jQuery("input",jQuery.fn.dataTable.ext.internal._fnFeatureHtmlFilter(oSettings));
       // add placeholder (HTML5 attribute)
@@ -183,7 +183,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          ColVis extension.
      * @returns the HTML code for the select element.
      */
-    createLengthField = function(oSettings) {
+    var createLengthField = function(oSettings) {
       // create length field and extract only select element
       var lengthField = jQuery("select", jQuery.fn.dataTable.ext.internal._fnFeatureHtmlLength(oSettings));
       
@@ -201,7 +201,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          http://fortawesome.github.io/Font-Awesome/icons/)
      * @returns the HTML code for the button
      */
-    createMegxButton = function(buttonDefinition, iconClass) {
+    var createMegxButton = function(buttonDefinition, iconClass) {
       var button = jQuery('<a role="button"></a>');
       button.attr("class", BUTTON_CLASSES);
       if (buttonDefinition.tooltip) {
@@ -221,7 +221,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          the JSON object describing the button.
      * @returns the HTML code of the button.
      */
-    createDownloadAllButton = function(downloadAllButton) {
+    var createDownloadAllButton = function(downloadAllButton) {
       if (downloadAllButton) {
         return createMegxButton(downloadAllButton, "fa-download download-all");
       } else {
@@ -236,7 +236,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          the JSON object describing the button.
      * @returns the HTML code of the button.
      */
-    createDownloadSelectedButton = function(downloadSelectedButton) {
+    var createDownloadSelectedButton = function(downloadSelectedButton) {
       if (downloadSelectedButton) {
         return createMegxButton(downloadSelectedButton, "fa-download download-selected");
       } else {
@@ -251,7 +251,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
      *          the JSON object describing the button.
      * @returns the HTML code of the button.
      */
-    createCreateButton = function(createButton) {
+    var createCreateButton = function(createButton) {
       if (createButton) {
         return createMegxButton(createButton,"fa-plus-square");
       } else {
