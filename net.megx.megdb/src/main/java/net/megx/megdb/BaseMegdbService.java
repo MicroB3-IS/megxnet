@@ -1,6 +1,7 @@
 package net.megx.megdb;
 
 import net.megx.megdb.exceptions.DBGeneralFailureException;
+import net.megx.model.ws.data.WSDataUpdateStatement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -152,5 +153,30 @@ public class BaseMegdbService {
 			session.close();
 			log.debug("Session closed.");
 		}
+	}
+	
+	protected int executeDynamicUpdate(WSDataUpdateStatement parametersObj) throws DBGeneralFailureException{
+		log.debug("Executing dynamic update statement in transaction...");
+		SqlSession session = sessionFactory.openSession();
+		log.debug("Session is opened.");
+		int nbUpdatedRecords = 0;
+		
+		try {
+			log.debug("Executing task...");
+			nbUpdatedRecords = session.update("executeDynamicUpdateStatement", parametersObj);
+			log.debug("Task executed. Committing transaction...");
+			session.commit();
+			log.debug("Transaction committed.");
+		} catch (Exception e) {
+			log.debug("An error occured. The transaction will be rolled back. Exception: ", e);
+			session.rollback(true);
+			log.debug("Transaction has been rolled back.");
+			throw new DBGeneralFailureException(e);
+		} finally{
+			session.close();
+			log.debug("Session closed.");
+		}
+		
+		return nbUpdatedRecords;
 	}
 }

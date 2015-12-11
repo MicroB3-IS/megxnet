@@ -27,7 +27,7 @@
  *          be used with extreme care as it can easily break the module.
  * 
  */
-Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfiguration) {
+Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfiguration, editConfiguration) {
 
   /**
    * Default Bootstrap CSS classes for simple buttons.
@@ -309,6 +309,7 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
     }
   };
   
+  
   // create buttons
   if (buttons) {
     if (buttons.dataButtons) {
@@ -367,6 +368,38 @@ Megx.MegxTable = function(tableID, columns, buttons, url, data, datatablesConfig
 	      "data" : data
 	    });
 	  }
+  
+  if(editConfiguration){
+	  jQuery.extend(defaultConfig, {
+			"createdRow" : function (row, data, dataIndex) {
+				$.each(editConfiguration.tableColumns || [], function(index, currColumnName){
+					$('td',row).eq(currColumnName.columnIndex)
+					.attr('data-name', currColumnName.dbColumnName)
+					.attr('data-id', data.id);
+				});
+				
+				$.fn.editable.defaults.mode = 'inline';
+				
+				$('td', row).editable({
+					type : 'text',
+					url : editConfiguration.updateURL || '',
+					pk : data.id,
+					params : function (params) {
+						var dataToPost = {};
+						
+						dataToPost["idCol"] = editConfiguration.primaryKeyColumn || '';
+						dataToPost["idVal"] = params.pk;
+						dataToPost[params.name] = params.value;
+						
+						return {
+							"updatePayload" : JSON.stringify(dataToPost)
+						};
+					},
+					saveonchange : true
+				});
+			}
+		});
+  }
   
   // Merge the Datatables configuration created in this function (defaultConfig)
   // with any overrides specified by the user of the function and create the

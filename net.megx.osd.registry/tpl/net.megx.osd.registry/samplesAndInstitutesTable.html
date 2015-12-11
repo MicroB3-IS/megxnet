@@ -30,7 +30,8 @@
             type : "natural"
           }, {
             data : "siteName",
-            width : "8em"
+            width : "8em",
+            name : "site_name"
           }, {
             data : "institution",
             width : "14em"
@@ -105,9 +106,29 @@
           
           var datatablesConfigOverride = {};
           var data = {};
+          var enableColumnEditing = true;
           
           var table = new Megx.MegxTable("sample-and-institute-table", columns, buttons,
-              "$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", data, datatablesConfigOverride);
+        			"$ctx.siteUrl/ws/v1/OSDRegistry/v1.0.0/participants", data, datatablesConfigOverride,
+        			{
+		        		updateURL : "$ctx.siteUrl/ws/v1/WsDataApp/v1.0.0/osdregistry/osd_participants",
+		        		primaryKeyColumn : "osd_id",
+		        		tableColumns : [{
+		        				columnIndex : 1,
+		        				dbColumnName : "site_name"
+		        			}, {
+		        				columnIndex : 2,
+		        				dbColumnName : "institution"
+		        			}, {
+		        				columnIndex : 3,
+		        				dbColumnName : "site_coordinator"
+		        			}, {
+		        				columnIndex : 4,
+		        				dbColumnName : "country"
+		        			}
+		        		]
+		        	});
+
         })();
       });
 </script>

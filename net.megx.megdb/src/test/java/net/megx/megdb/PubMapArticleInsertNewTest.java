@@ -7,7 +7,7 @@ public class PubMapArticleInsertNewTest extends PubMapServiceTestBase {
 
 	@Test
 	public void insertAuthor() {
-		pms.insertAuthor(article.getAuthor(0));
+		//pms.insertAuthor(article.getAuthor(0));
 
 	}
 	

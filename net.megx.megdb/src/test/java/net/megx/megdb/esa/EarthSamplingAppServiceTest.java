@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class EarthSamplingAppServiceTest extends DBServiceTest{
-
+/**
 private EarthSamplingAppService earthAppService;
 	
 	private static String FIRST_ID = "1";
@@ -325,5 +325,5 @@ private EarthSamplingAppService earthAppService;
 		Assert.assertTrue(retrievedSample.getModified().compareTo(storedSample.getModified()) == 0);
 		Assert.assertTrue(retrievedSample.getTaken().compareTo(storedSample.getTaken()) == 0);
 	}
-	
+	**/
 }

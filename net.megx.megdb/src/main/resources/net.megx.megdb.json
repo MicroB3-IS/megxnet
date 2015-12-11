@@ -62,6 +62,10 @@
 			class: 'net.megx.megdb.osdregistry.impl.DBOSDRegistryService'
 		},
 		{
+			name: 'net.megx.megdb.ws.data.WSDataService',
+			class: 'net.megx.megdb.ws.data.impl.PostgreSQLWSDataServiceImpl'
+		},
+		{
 			name: 'net.megx.megdb.mgtraits.MGTraitsService',
 			class: 'net.megx.megdb.mgtraits.impl.DBMGTraitsService'
 		},

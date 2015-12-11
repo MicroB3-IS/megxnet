@@ -117,6 +117,8 @@
 		
 		<!-- OSD registry mapper -->
 		<mapper resource="osdregistry/osdregistry-mapper.xml" />
+		
+		<mapper resource="wsdata/wsdata-mapper.xml" />
 
 		<!-- security API DB services mappers -->
 		<mapper resource="security/consumer-mapper.xml" />

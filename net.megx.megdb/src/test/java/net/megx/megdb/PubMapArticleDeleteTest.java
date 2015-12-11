@@ -7,7 +7,7 @@ public class PubMapArticleDeleteTest extends PubMapServiceTestBase {
 
 	@Test
 	public void deleteArticle() {
-		pms.deleteArticle(article);
+		//pms.deleteArticle(article);
 
 	}
 
