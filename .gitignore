@@ -8,7 +8,7 @@ target/
 
 ## Have a developer dir in config but ignore all files therein
 config/developer/**
-
+!config/developer/README
 ## misc undiesered files
 net.megx.esa/res/net.megx.esa/data/esa_options.json
 net.megx.mibig/res/net.megx.mibig/data/mibig_options.json
