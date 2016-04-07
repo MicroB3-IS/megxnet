@@ -5,6 +5,11 @@ target/
 *.prefs
 *.min.js
 *.min.css
+
+## Have a developer dir in config but ignore all files therein
+config/developer/**
+
+## misc undiesered files
 net.megx.esa/res/net.megx.esa/data/esa_options.json
 net.megx.mibig/res/net.megx.mibig/data/mibig_options.json
 net.megx.osd.registry/res/net.megx.osd.registry/data/osd_options.json
@@ -17,5 +22,4 @@ net.megx.test.jbehave/.settings/org.eclipse.core.resources.prefs
 net.megx.test.jbehave/dummy.webapp/.project
 net.megx.test.jbehave/dummy.webapp/.settings/org.eclipse.core.resources.prefs
 net.megx.test.jbehave/dummy.webapp/.settings/org.eclipse.jdt.core.prefs
-config/developer/
 net.megx.twitter/properties/
