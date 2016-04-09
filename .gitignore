@@ -5,7 +5,7 @@ target/
 *.prefs
 *.min.js
 *.min.css
-
+**derby.log
 ## Have a developer dir in config but ignore all files therein
 config/developer/**
 !config/developer/README
