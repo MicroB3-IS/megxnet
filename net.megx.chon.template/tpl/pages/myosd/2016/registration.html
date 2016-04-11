@@ -1,0 +1,62 @@
+<link href="$ctx.siteUrl/stylesheets/mapwidget.css" rel="stylesheet"
+  type="text/css">
+
+<script src="/megx.net/js/OpenLayers-2.13.1.js" type="text/javascript"></script>
+
+
+<div class="container">
+  <h3>Registriere Dich fuer MyOSD 2016 Deutschland</h3> 
+  <div id="myosdMap">
+    
+  </div>
+</div>
+
+<script>
+  $(document).ready(
+      function() {
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+        
+        var left = 6;
+        var bottom = 47.3;
+        var right = 15.1;
+        var top = 55.1;
+
+        var extent = new OpenLayers.Bounds(left, bottom, right, top).transform(
+            fromProjection, toProjection);
+
+        var options = {
+          //maxExtent : extent,
+          restrictedExtent : extent
+
+        };
+        map = new OpenLayers.Map("myosdMap", options);
+        var newLayer = new OpenLayers.Layer.OSM("OSM Layer"
+
+        );
+
+        map.addLayer(newLayer);
+
+        var graticule = new OpenLayers.Control.Graticule();
+        map.addControl(graticule);
+
+        var centerLon = left + ((right - left) / 2);
+        var centerLat = bottom + ((top - bottom) / 2);
+
+        map.setCenter(new OpenLayers.LonLat(centerLon, centerLat).transform(
+            fromProjection, toProjection),6); // 0=relative zoom level
+        //map.setCenter(null,6);
+
+        console.log('centerLon: ' + centerLon + '\ncenterLat: ' + centerLat);
+        console.log('center: ' + map.getCenter().toShortString());
+        console.log('zoom: ' + map.getZoom());
+        console.log('minZoom: ' + map.getMinZoom());
+        console.log('num Zoom levels: ' + map.getNumZoomLevels());
+        console.log('maxresolution: ' + map.getMaxResolution());
+        console.log('current resolution: ' + map.getResolution());
+        console.log('closest zoom for extent: '
+            + map.getZoomForExtent(extent, true));
+
+      });
+</script>
+
