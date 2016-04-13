@@ -12,7 +12,7 @@
   
   
   <groupId>net.megx</groupId>
-  <artifactId>myosd</artifactId>
+  <artifactId>net.megx.myosd</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   

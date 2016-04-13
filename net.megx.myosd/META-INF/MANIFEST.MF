@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: myosd
-Bundle-SymbolicName: myosd
+Bundle-SymbolicName: net.megx.myosd
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: net.megx.myosd.Activator
 Import-Package: org.osgi.framework;version="1.3.0",

@@ -13,7 +13,12 @@ public class Activator extends ResTplConfiguredActivator {
 
     @Override
     protected String getName() {
-        return "myosd";
+        return "net.megx.myosd";
     }
+
+    protected void registerExtensions( JCRApplication app ) {
+        log.debug("myosd Starting up...");
+    }
+
 
 }

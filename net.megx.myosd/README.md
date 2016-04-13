@@ -1,4 +1,4 @@
 
-# README for module myosd
+# README for module net.megx.myosd
 
 
