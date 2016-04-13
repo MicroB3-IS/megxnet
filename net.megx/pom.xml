@@ -83,6 +83,7 @@
     <module>../net.megx.prox</module>
     <module>../net.megx.geo.pfam</module>
     <module>../net.megx.osd.registry</module>
+    <module>../net.megx.myosd</module>
 
     <!-- Earth Sampling App -->
     <module>../net.megx.esa</module>
@@ -213,6 +214,11 @@
         <groupId>net.megx</groupId>
         <artifactId>net.megx.mibig</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+	<groupId>net.megx</groupId>
+	<artifactId>net.megx.myosd</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>net.megx</groupId>
