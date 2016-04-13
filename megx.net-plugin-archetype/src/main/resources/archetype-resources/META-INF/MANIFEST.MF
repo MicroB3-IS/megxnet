@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ${plugin_name}
-Bundle-SymbolicName: ${symbolic_name}
+Bundle-SymbolicName: ${artifactId}
 Bundle-Version: ${version}.qualifier
 Bundle-Activator: ${package}.Activator
 Import-Package: org.osgi.framework;version="1.3.0",

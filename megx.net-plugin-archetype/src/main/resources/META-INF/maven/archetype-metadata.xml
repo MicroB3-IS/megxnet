@@ -12,22 +12,17 @@
     <requiredProperty key="version">
       <defaultValue>0.0.1</defaultValue>
     </requiredProperty>
-    <requiredProperty key="plugin_name">
-      <defaultValue>${artifactId}</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="symbolic_name">
-      <defaultValue>${artifactId}</defaultValue>
-    </requiredProperty>
     <requiredProperty key="chon_activator">
       <defaultValue>ResTplConfiguredActivator</defaultValue>
     </requiredProperty>
     <requiredProperty key="configDir">
       <defaultValue>__config</defaultValue>
     </requiredProperty>
-    <requiredProperty key="package">
-      <defaultValue>${groupId}.${artifactId}</defaultValue>
+    <requiredProperty key="plugin_name">
     </requiredProperty>
-    
+    <requiredProperty key="package">
+      <defaultValue>${groupId}.${plugin_name}</defaultValue>
+    </requiredProperty>
   </requiredProperties>
   
   <fileSets>
