@@ -1,0 +1,93 @@
+{
+    "renderForm": true,
+    "toolbarSticky": true,
+    "form": {
+        "toggleSubmitValidState": true,
+        "attributes": {
+            
+            "method": "post",
+            "action": "${megx.site.url}/ws/v1/OSDRegistry/v1.0.0/sample"
+        },
+        "buttons": {
+            "submit": {},
+            "reset": {}
+        }
+    },
+    "fields": {
+        "version": {
+            "type": "hidden"
+        }, 
+        "firstname" :{
+            "label" : "Vorname",
+            "type": "personalname",
+            "size": 20,
+            "helper": "Bitte gib Deinen Vornamen ein."
+        },
+        "lastname" :{
+            "label" : "Nachname",
+            "type": "personalname",
+            "size": 20,
+            "helper": "Bitte gib Deinen Nachnamen ein."
+        },
+        "username": {
+            "label" : "Benutzername",
+            "type": "personalname",
+            "size": 20,
+            "helper": "Bitte gib einen Benutzernamen ein.",
+            "helpers": ["Bitte gib einen Benutzernamen ein.","Dieser wird auf unseren Web Seiten angezeigt!"]
+        },
+        "kit": {
+            "label": "MyOSD Sampling Kit vorhanden?",
+            "type": "radio",
+            "optionLabels": ["Ja","Nein"],
+            "helper": "Hast Du schon ein MyOSD Sampling Kit?",
+            "dependencies": {
+                "username": "renzo"
+             }
+        },
+        "address" : {
+            "label": "Deine Versandadresse",
+            "id": "input-adress",
+            "fields": {
+                "street": {
+                    "label": "string",
+                    "size": 30
+                },
+                "street_num": {
+                    "label": "string",
+                    "size": 10
+                },
+                "poastal_code": {
+                    "label": "string",
+                    "size": 10
+                },
+                "city": {
+                    "label": "string",
+                    "size": 30
+                }
+            },
+            "dependencies": {
+                "kit": "false"
+             }
+        },
+        "kit_num": {
+            "label": "MyOSD Sampling Kit Nummer",
+            "dependencies": {
+                "kit": "true"
+             }
+             
+        },
+        "placename": {
+            "label": "Ortsname der geplannten Probennahme-Stelle"
+        },
+        "lat": {
+          "label": "Nördlicher oder südlicher Breitengrad",
+          "id": "input-lat"
+        },
+        "lon": {
+            "label": "Östlicher oder westlicher Längengrad",
+            "id": "input-lon"
+        
+        } 
+    }
+}
