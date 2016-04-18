@@ -216,9 +216,9 @@
         <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
-	<groupId>net.megx</groupId>
-	<artifactId>net.megx.myosd</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+        <groupId>net.megx</groupId>
+        <artifactId>net.megx.myosd</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>net.megx</groupId>
@@ -691,6 +691,7 @@
       <id>prod</id>
       <properties>
         <profile.prod.active>true</profile.prod.active>
+        <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
         <profile.filter.file>${profile.filter.dir}/prod.properties</profile.filter.file>
         <profile.config.dir>${project.basedir}/../config</profile.config.dir>
         <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
