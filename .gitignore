@@ -7,11 +7,14 @@ target/
 *.min.css
 **derby.log
 ## Have a developer dir in config but ignore all files therein
+config/prod.properties
 config/developer/**
 !config/developer/README
 ## misc undiesered files
 net.megx.esa/res/net.megx.esa/data/esa_options.json
 net.megx.mibig/res/net.megx.mibig/data/mibig_options.json
+net.megx.myosd/res/net.megx.myosd/myosd-form-schema.json
+net.megx.myosd/res/net.megx.myosd/myosd-form-options.json 
 net.megx.osd.registry/res/net.megx.osd.registry/data/osd_options.json
 net.megx.osd.registry/res/net.megx.osd.registry/data/participation-options.json
 megx.net-plugin-archetype/bin/
