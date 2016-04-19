@@ -1,90 +1,159 @@
-﻿{
-    "title": "MyOSD Teilnehmer Registrierung",
-    "description": "Please fill all fields for a sample and submit.",
-    
-    "type": "object",
-    "properties": {
-        "version": {
-            "type": "string",
-            "readonly": true,
-            "required": true,
-            "default": "1"
-        },
-        "firstname": {
-            "type": "string",
-            "required": true
-        },
-        "lastname": {
-            "type": "string",
-            "required": true
-        },
-        "username": {
-            "type": "string",
-            "required": true
-        },
-        "kit": {
-            "type": "boolean",
-            "enum": [true,false],
-            "required": true,
-            "description": "Hast du "
-        },
-        "address": {
-            "title": "Adress",
-            "type": "object",
-            "properties": {
-                "street": {
-                    "title": "Street Name",
-                    "type": "string",
-                    "required": true
-                },
-                "street_num": {
-                    "title": "House Number",
-                    "type": "string",
-                "   required": true
-                },
-                "poastal_code": {
-                    "title": "Poastal Code",
-                    "type": "string",
-                    "required": true
-                },
-                "city": {
-                    "title": "City Name",
-                    "type": "string",
-                    "required": true
-                }
-            },
-            "dependencies": ["kit"]
-        },
-        "kit_num": {
-            "title": "MyOSD Sampling Kit Number",
-            "type": "integer",
-            "minimum": 271,
-            "maximum": 2000,
-             "dependencies": ["kit"]
-        },
-        "placename": {
-            "title": "Name of Place",
-            "type": "string",
-            "required": true
-        },
-        "lat": {
-            "title": "Latitude in decimal degrees (WGS84)",
-            "type": "number",
-            "minimum": -90.00,
-            "maximum": 90.00,
-            "required": true
-        },
-        "lon": {
-            "title": "Longitude in decimal degrees (WGS84)",
-            "type": "number",
-            "minimum": -180.00,
-            "maximum": 180.00,
-            "required": true
-        }
-        
+﻿{ 
+  "title": "MyOSD Teilnehmer Registrierung",
+  "description": "Please fill all fields for a sample and submit.",
+  "type": "object",
+  "properties": { 
+    "version": { 
+      "type": "string",
+      "readonly": true,
+      "required": true,
+      "default": "1"
     },
-    "dependencies": {
-        "address": ["kit"],
-        "kit_num": ["kit"]
+
+    "firstname": { 
+      "type": "string",
+      "required": true
+    },
+
+    "lastname": { 
+      "type": "string",
+      "required": true
+    },
+
+    "username": { 
+      "type": "string",
+      "required": true
+    },
+
+    "kit": { 
+      "type": "boolean",
+      "enum": 
+      [
+        true,
+        false
+      ],
+
+      "required": true,
+      "description": "Hast du "
+    },
+
+    "address": { 
+      "title": "Adress",
+      "type": "object",
+      "properties": { 
+        "street": { 
+          "title": "Street Name",
+          "type": "string",
+          "required": true
+        },
+
+        "street_num": { 
+          "title": "House Number",
+          "type": "string",
+          "   required": true
+        },
+
+        "poastal_code": { 
+          "title": "Poastal Code",
+          "type": "string",
+          "required": true
+        },
+
+        "city": { 
+          "title": "City Name",
+          "type": "string",
+          "required": true
+        }
+      },
+
+      "dependencies": 
+      [
+        "kit"
+      ]
+    },
+
+    "kit_num": { 
+      "title": "MyOSD Sampling Kit Number",
+      "type": "integer",
+      "minimum": 271,
+      "maximum": 2000,
+      "dependencies": 
+      [
+        "kit"
+      ]
+    },
+
+    "placename": { 
+      "title": "Name of Place",
+      "type": "string",
+      "required": true
+    },
+
+    "lat": { 
+      "title": "Latitude in decimal degrees (WGS84)",
+      "type": "number",
+      "minimum": -90.00,
+      "maximum": 90.00,
+      "required": true
+    },
+
+    "lon": { 
+      "title": "Longitude in decimal degrees (WGS84)",
+      "type": "number",
+      "minimum": -180.00,
+      "maximum": 180.00,
+      "required": true
+    },
+
+    "bounds": { 
+      "type": "string",
+      "readonly": true,
+      "required": true,
+      "default": ""
+    },
+
+    "terms": { 
+      "title": "terms",
+      "type": "object",
+      "properties": { 
+        "terms_agree": { 
+          "title": "Agree to Terms of Condition",
+          "type": "boolean",
+          "required": true
+        },
+
+        "osd_agree": { 
+          "title": "OSD raffle agree",
+          "type": "boolean"
+          
+        },
+
+        "sensebox_agree": { 
+          "title": "Open Senseboxe agree",
+          "type": "boolean",
+          "required": true
+        },
+
+        "sensebox_terms": { 
+          "title": "",
+          "type": "text",
+          "required": true,
+          "readonly": true,
+          "default": "Ich verpflichte mich, im Falle eines Gewinns, die Open Sense Box auch aufzustellen."
+        }
+      }
     }
+  },
+
+  "dependencies": { 
+    "address": 
+    [
+      "kit"
+    ],
+
+    "kit_num": 
+    [
+      "kit"
+    ]
+  }
 }

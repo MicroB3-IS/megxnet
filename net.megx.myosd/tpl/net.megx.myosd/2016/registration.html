@@ -7,14 +7,10 @@
 
 
 <div class="container">
-  <h3>Registriere Dich fuer MyOSD 2016 Deutschland</h3>
+  <h3>Registriere Dich für MyOSD 2016 Deutschland</h3>
 
-  <div id="myosdMap"></div>
 
   <div id="myosd-registration-form"></div>
-
-
-
 </div>
 
 <script type="text/javascript">
@@ -27,37 +23,56 @@
             Megx.myosd.mapEventHandler = function(event) {
               console.log("map event type" + event.type);
             }
-
-            Megx.myosd.featureEventHandler = function(event) {
+            
+            Megx.myosd.updateFeature = function(feature) {
+              console.log("updating Feature");
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercProjection = new OpenLayers.Projection("EPSG:900913");
 
-              console.log("map event type" + event.type);
-              //               console.log("map event " + event.toSource()  );
-              var map = event.feature.layer.map;
+              //var map = feature.layer.map;
 
               // create a WKT reader/parser/writer          
               var wkt = new OpenLayers.Format.WKT();
 
               // write out the feature's geometry in WKT format
-              var out = wkt.write(event.feature);
-              
-              var nameField = Megx.myosd.formControl.childrenByPropertyId["firstname"];
-              nameField.setValue(out);
+              var out = wkt.write(feature);
+
               console.log(out);
-              console.log(event.feature);
+              //console.log(feature);
               console.log("transpoint: "
-                  + event.feature.geometry.getCentroid().transform(
+                  + feature.geometry.getCentroid().transform(
                       mercProjection, wgsProjection));
-              console.log(event.feature.lonlat);
+              console.log(feature.lonlat);
+              var pointWGS = feature.geometry.getCentroid().transform(
+                  mercProjection, wgsProjection);
+              console.log(pointWGS);
+
+              var bounds = feature.geometry.getBounds();
+
+              bounds = new OpenLayers.Feature.Vector(bounds.toGeometry()
+                  .transform(mercProjection, wgsProjection));
+
+              console.log("Bounds:");
+              console.log(bounds);
+
+              var boundsField = Megx.myosd.formControl.childrenByPropertyId["bounds"];
+              boundsField.setValue("hi" + wkt.write(bounds));
+
+              var longField = Megx.myosd.formControl.childrenByPropertyId["lon"];
+              longField.setValue(pointWGS.x);
+
+              var latField = Megx.myosd.formControl.childrenByPropertyId["lat"];
+              latField.setValue(pointWGS.y);
 
               var pointControl = map.getControl("pcid");
-              //pointControl.deactivate();
-              //               var pixel = event.xy;
-              //var coord = event.feature.getBounds().getCenterLonLat();
-              //console.log("lon:" + coord.lon + "\nlat:" + coord.lat);
-
+              pointControl.deactivate();
             }
+
+            Megx.myosd.featureAddedEventHandler = function(event) {
+
+              console.log("map event type" + event.type);
+              Megx.myosd.updateFeature(event.feature);
+             }
 
             Megx.myosd.mapCreate = function() {
               var fromProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
@@ -75,11 +90,6 @@
                 //maxExtent : extent,
                 displayProjection : fromProjection,
                 restrictedExtent : extent,
-                eventListeners : {
-                //                   "moveend" : Megx.myosd.mapEventHandler,
-                //                   "zoomend" : Megx.myosd.mapEventHandler,
-                //                   "changebaselayer" : Megx.myosd.mapEventHandler
-                }
               };
 
               map = new OpenLayers.Map("myosdMap", options);
@@ -88,7 +98,7 @@
               var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
                 projection : map.displayProjection,
                 eventListeners : {
-                  "featureadded" : Megx.myosd.featureEventHandler,
+                  "featureadded" : Megx.myosd.featureAddedEventHandler,
                   "onFeatureInsert" : Megx.myosd.mapEventHandler,
                   "featureselected" : Megx.myosd.mapEventHandler,
                   "featureunselected" : Megx.myosd.mapEventHandler
@@ -107,8 +117,9 @@
                   });
 
               var dragControl = new OpenLayers.Control.DragFeature(vectorLayer,
-                  null, {
-                    id : "dfid"
+                  {
+                    id : "dfid",
+                    onComplete : Megx.myosd.updateFeature
                   });
 
               var featureSelectControl = new OpenLayers.Control.SelectFeature(
@@ -125,6 +136,7 @@
               map.addControl(pointControl);
               map.addControl(dragControl);
               map.addControl(featureSelectControl);
+              map.addControl(new OpenLayers.Control.MousePosition());
               pointControl.activate();
               dragControl.activate();
 
@@ -140,15 +152,17 @@
 
             var prender = function(field) {
               var self = this;
-             //create a public reference 
-             Megx.myosd.formControl = field;
+              //create a public reference 
+              Megx.myosd.formControl = field;
               var form = field.form;
+
               
-              var url = form.attributes.action;
-              var ajaxMethod = form.attributes.method;
-
+             
               if (form) {
-
+                var url = form.attributes.action;
+                var ajaxMethod = form.attributes.method;
+                form.disableSubmitButton();
+                
                 jQuery(".alpaca-control").keyup(function() {
                   if (field.isValid(true)) {
                     form.enableSubmitButton();
@@ -176,7 +190,7 @@
                 submitButton
                     .click(function() {
 
-                      form.disableSubmitButton();
+                      
                       if (field.isValid(true)) {
 
                         var data = field.getValue();
@@ -193,16 +207,16 @@
                                   if (data.redirectUrl) {
                                     toastr
                                         .success("Your submission was successfull. Thanks!");
-                                    document.location.href = data.redirectUrl;
+                                    //document.location.href = data.redirectUrl;
                                   } else {
 
                                     if (data.message) {
                                       toastr.success(data.message);
-                                      document.location.href = ctx.siteUrl;
+                                      //document.location.href = ctx.siteUrl;
                                     } else {
                                       toastr
                                           .success("Your submission was successfull. Thanks!");
-                                      document.location.href = ctx.siteUrl;
+                                      //document.location.href = ctx.siteUrl;
                                     }
                                   }
                                 })
@@ -213,7 +227,7 @@
                                     var responseMsg = data.responseJSON;
 
                                     if (responseMsg.redirectUrl) {
-                                      document.location.href = responseMsg.redirectUrl;
+                                      //document.location.href = responseMsg.redirectUrl;
                                     } else {
 
                                       if (responseMsg.message) {
@@ -239,7 +253,8 @@
                     });
 
               }
-            }
+              Megx.myosd.mapCreate();
+            } // end prender
 
             var d = new Megx.FormWidget({
               target : "myosd-registration-form",
@@ -249,19 +264,29 @@
                   + "/net.megx.myosd/myosd-form-options.json",
               parentView : "bootstrap-create",
 
-              postRender : prender
+              postRender : prender,
+
+              "layout" : {
+                "template" : ctx.siteUrl
+                    + "/net.megx.myosd/registration-form-layout-template.html",
+                "bindings" : {
+                  "firstname" : "mx-myosd-user",
+                  "lastname" : "mx-myosd-user",
+                  "username" : "mx-myosd-user",
+                  "kit" : "mx-myosd-kit-left",
+                  "address" : "mx-myosd-kit-right",
+                  "kit_num" : "mx-myosd-kit-right",
+                  "placename" : "mx-myosd-map-right",
+                  "lat" : "mx-myosd-map-right",
+                  "lon" : "mx-myosd-map-right",
+                  "terms" : "mx-myosd-terms"
+
+                }
+              }
             });
 
             //     d.sayName();
             d.renderForm();
-            Megx.myosd.mapCreate();
 
-            var res = jQuery("#myosd-registration-form").alpaca("exists");
-            console.log("exists:" + res);
-
-            var formControl = jQuery("#myosd-registration-form").alpaca("get");
-
-            jQuery("#test").before('<div id="myolkk"><h1>hallo</h2></div>');
           });
 </script>
-
