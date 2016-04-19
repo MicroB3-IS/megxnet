@@ -19,7 +19,6 @@ Megx.FormWidget.prototype.submitForm = function(field) {
   var url = form.attributes.action;
   var ajaxMethod = form.attributes.method;
 
-
   if (form) {
 
     jQuery(".alpaca-control").keyup(function() {
@@ -95,14 +94,14 @@ Megx.FormWidget.prototype.submitForm = function(field) {
         });
       }
     });
-    
+
   }
 }
 
 Megx.FormWidget.prototype.renderForm = function() {
   var self = this;
 
-  //gettting config from static context
+  // gettting config from static context
   var cfg = Megx.FormWidget.cfg;
 
   var alpacaOptions = {
@@ -127,15 +126,22 @@ Megx.FormWidget.prototype.renderForm = function() {
     alpacaOptions.postRender = self.submitForm;
   }
 
+  if (typeof cfg.layout != "undefined" && cfg.layout) {
+    alpacaOptions.view.layout = cfg.layout;
+  }
+
   // pre-fill form if datasource is given
   if (cfg.data) {
     alpacaOptions.data = cfg.data;
   }
-  // add loading animation 
-  var animId = cfg.target  + "-loading-animation"; 
+  // add loading animation
+  var animId = cfg.target + "-loading-animation";
   jQuery(
-   '<div id="'+ animId + '"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading form</div>').insertBefore("#" + cfg.target);
-  //actual loading of alpaca based form
+      '<div id="'
+          + animId
+          + '"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading form</div>')
+      .insertBefore("#" + cfg.target);
+  // actual loading of alpaca based form
   Alpaca.logLevel = Alpaca.ERROR;
   jQuery("#" + cfg.target).alpaca(alpacaOptions);
   jQuery("#" + animId).remove();
