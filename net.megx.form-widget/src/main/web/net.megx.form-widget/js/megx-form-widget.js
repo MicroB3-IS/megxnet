@@ -126,6 +126,11 @@ Megx.FormWidget.prototype.renderForm = function() {
   if (typeof cfg.layout != "undefined" && cfg.layout) {
     alpacaOptions.view.layout = cfg.layout;
   }
+  
+  if (typeof cfg.locale != "undefined" && cfg.locale) {
+
+    alpacaOptions.view.locale = cfg.locale;
+  }
 
   // pre-fill form if datasource is given
   if (cfg.data) {
