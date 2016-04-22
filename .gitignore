@@ -5,6 +5,8 @@ target/
 *.prefs
 *.min.js
 *.min.css
+!alpaca*.min.js
+!alpaca*.min.css
 **derby.log
 ## Have a developer dir in config but ignore all files therein
 config/prod.properties
