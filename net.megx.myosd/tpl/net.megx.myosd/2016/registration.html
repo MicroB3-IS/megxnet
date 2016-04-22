@@ -27,7 +27,7 @@
             Megx.myosd.updateFeature = function(feature) {
               console.log("updating Feature with layer" + feature.layer);
               var layer = feature.layer;
-              
+
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercProjection = new OpenLayers.Projection("EPSG:900913");
 
@@ -111,7 +111,7 @@
                   "featureunselected" : Megx.myosd.mapEventHandler
                 }
               });
-              
+
               vectorLayer.preFeatureInsert = function(feature) {
                 console.log("removing all features");
                 this.removeAllFeatures();
@@ -296,6 +296,8 @@
 
               postRender : prender,
 
+              "locale" : "de_DE",
+
               "layout" : {
                 "template" : ctx.siteUrl
                     + "/net.megx.myosd/registration-form-layout-template.html",
@@ -318,7 +320,6 @@
               }
             });
 
-            //     d.sayName();
             d.renderForm();
 
           });

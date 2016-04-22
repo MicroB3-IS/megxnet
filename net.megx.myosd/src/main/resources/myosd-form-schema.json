@@ -220,17 +220,5 @@
         }
       }
     }
-  },
-
-  "dependencies": { 
-    "address": 
-    [
-      "kit"
-    ],
-
-    "kit_num": 
-    [
-      "kit"
-    ]
   }
 }
