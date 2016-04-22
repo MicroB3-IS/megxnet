@@ -8,9 +8,6 @@ Megx.FormWidget = function(cfg) {
 
 };
 
-Megx.FormWidget.prototype.sayName = function() {
-  alert(this.cfg);
-}
 
 Megx.FormWidget.prototype.submitForm = function(field) {
 
