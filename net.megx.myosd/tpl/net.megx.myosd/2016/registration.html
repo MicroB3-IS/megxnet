@@ -23,9 +23,11 @@
             Megx.myosd.mapEventHandler = function(event) {
               console.log("map event type" + event.type);
             }
-            
+
             Megx.myosd.updateFeature = function(feature) {
-              console.log("updating Feature");
+              console.log("updating Feature with layer" + feature.layer);
+              var layer = feature.layer;
+              
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercProjection = new OpenLayers.Projection("EPSG:900913");
 
@@ -40,8 +42,8 @@
               console.log(out);
               //console.log(feature);
               console.log("transpoint: "
-                  + feature.geometry.getCentroid().transform(
-                      mercProjection, wgsProjection));
+                  + feature.geometry.getCentroid().transform(mercProjection,
+                      wgsProjection));
               console.log(feature.lonlat);
               var pointWGS = feature.geometry.getCentroid().transform(
                   mercProjection, wgsProjection);
@@ -65,14 +67,14 @@
               latField.setValue(pointWGS.y);
 
               var pointControl = map.getControl("pcid");
-              pointControl.deactivate();
+              //pointControl.deactivate();
             }
 
             Megx.myosd.featureAddedEventHandler = function(event) {
 
               console.log("map event type" + event.type);
               Megx.myosd.updateFeature(event.feature);
-             }
+            }
 
             Megx.myosd.mapCreate = function() {
               var fromProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
@@ -100,10 +102,20 @@
                 eventListeners : {
                   "featureadded" : Megx.myosd.featureAddedEventHandler,
                   "onFeatureInsert" : Megx.myosd.mapEventHandler,
+                  "beforefeatureadded" : function(feature) {
+                    //console.log(feature);
+                    console.log("hi layer");
+                    console.log(feature.layer);
+                  },
                   "featureselected" : Megx.myosd.mapEventHandler,
                   "featureunselected" : Megx.myosd.mapEventHandler
                 }
               });
+              
+              vectorLayer.preFeatureInsert = function(feature) {
+                console.log("removing all features");
+                this.removeAllFeatures();
+              }
 
               vectorLayer.events.on({
                 'featureselected' : Megx.myosd.mapEventHandler,
@@ -156,13 +168,32 @@
               Megx.myosd.formControl = field;
               var form = field.form;
 
-              
-             
+              var termsAgreeField = field.childrenByPropertyId["terms"].childrenByPropertyId["terms_agree"];
+
+              if (termsAgreeField.options) {
+                termsAgreeField.options.validator = function(callback) {
+                  var value = this.getValue();
+                  // console.log("value=" + value);
+                  if (value === false) {
+                    console.log("false value");
+                    callback({
+
+                      "status" : false,
+                      "message" : "Du kannst nur teilnehmen, wenn Du den Teilnahembedingungen zustimmst!"
+                    });
+                    return;
+                  }
+
+                  callback({
+                    "status" : true
+                  });
+                }
+              }
               if (form) {
                 var url = form.attributes.action;
                 var ajaxMethod = form.attributes.method;
                 form.disableSubmitButton();
-                
+
                 jQuery(".alpaca-control").keyup(function() {
                   if (field.isValid(true)) {
                     form.enableSubmitButton();
@@ -190,7 +221,6 @@
                 submitButton
                     .click(function() {
 
-                      
                       if (field.isValid(true)) {
 
                         var data = field.getValue();

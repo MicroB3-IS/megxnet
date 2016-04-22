@@ -3,7 +3,7 @@
   "toolbarSticky": true,
   "form": { 
     "toggleSubmitValidState": true,
-    "attributes": {  
+    "attributes": { 
       "method": "post",
       "action": "http://httpbin.org/post"
     },
@@ -53,7 +53,7 @@
       "label": "E-Mail Adresse",
       "type": "email",
       "size": 20,
-      "helper": "Bitte gib Deinen Nachnamen ein."
+      "helper": "Für Rückfragen und Status Meldungen"
     },
 
     "kit": { 
@@ -70,6 +70,7 @@
         "username": "renzo"
       }
     },
+
     "post_station": { 
       "label": "Direkt zu Dir oder an eine Packstation?",
       "type": "radio",
@@ -84,14 +85,16 @@
         "kit": "false"
       }
     },
+
     "address": { 
       "label": "Deine Versandadresse",
       "id": "input-adress",
-      "fields": {
-       "name": { 
+      "fields": { 
+        "name": { 
           "label": "Name des Empfaengers",
           "size": 30
         },
+
         "street": { 
           "label": "Strasse",
           "size": 30
@@ -117,21 +120,23 @@
         "post_station": "post"
       }
     },
+
     "station": { 
       "label": "Deine Packstation",
       "id": "input-adress",
-      "fields": {
-       "name": { 
-          "label": "Name des Empfaengers",
-          "size": 30
-        },
-        "street": { 
-          "label": "Strasse",
+      "fields": { 
+        "name": { 
+          "label": "Name des Empfängers",
           "size": 30
         },
 
-        "street_num": { 
-          "label": "Hausnummer",
+        "post_num": { 
+          "label": "Postnummer",
+          "size": 30
+        },
+
+        "station_num": { 
+          "label": "Packstation:",
           "size": 10
         },
 
@@ -150,6 +155,7 @@
         "post_station": "station"
       }
     },
+
     "kit_num": { 
       "label": "MyOSD Sampling Kit Nummer",
       "dependencies": { 
@@ -158,16 +164,22 @@
     },
 
     "placename": { 
-      "label": "Ortsname der geplannten Probennahme-Stelle"
+      "label": "Name der geplannten Probennahme-Stelle",
+      "placeholder": "Duhnen, Nordsee",
+      "helper": "Gib einen so genauen Namen wie möglich ein. "
     },
 
     "lat": { 
       "label": "Nördlicher oder südlicher Breitengrad",
+      "placeholder": "53.882778",
+      "readonly": true,
       "id": "input-lat"
     },
 
     "lon": { 
       "label": "Östlicher oder westlicher Längengrad",
+      "placeholder": "8.645556",
+      "readonly": true,
       "id": "input-lon"
     },
 
@@ -176,24 +188,30 @@
       "fields": { 
         "terms_agree": { 
           "label": "MyOSD Teilnahme?",
-          "rightLabel": "Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> zu."
+          "optionLabels": 
+          [
+            "<strong>Ja!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> zu.",
+            "<strong>Nein!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> nicht zu."
+          ]
+          
         },
 
         "osd_agree": { 
-          "label": "iPAD Verlosung?",
+          "label": "iPad mini Verlosung",
           "type": "checkbox",
-          "rightLabel": "Ja, ich nehme an der iPAD Verlosung teil!"
+          "rightLabel": "Ja, ich nehme an der iPad mini Verlosung teil!"
         },
 
         "sensebox_agree": { 
           "label": "senseBox Verlosung?",
-          "rightLabel": "Ja, ich nehme an der senseBox Verlosung teil",
+          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"senseBox:home\">senseBox:home</a> Verlosung teil",
           "type": "checkbox"
         },
 
         "sensebox_terms": { 
           "label": "",
-          "type": "text",
+          "rightLabel": "Ich verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"senseBox:home\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">Open senseBox Projekt</a>",
+          "type": "checkbox",
           "required": true
         }
       }

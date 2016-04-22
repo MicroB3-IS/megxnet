@@ -27,6 +27,7 @@
 
     "email": { 
       "type": "string",
+      "format": "email",
       "required": true
     },
 
@@ -90,11 +91,13 @@
           "required": true
         }
       },
+
       "dependencies": 
       [
         "post_station"
       ]
     },
+
     "station": { 
       "title": "Adress",
       "type": "object",
@@ -105,16 +108,18 @@
           "required": true
         },
 
-        "street": { 
-          "title": "Street Name",
-          "type": "string",
+        "post_num": { 
+          "title": "Post Number",
+          "type": "integer",
+          "minimum": "1",
           "required": true
         },
 
-        "street_num": { 
-          "title": "House Number",
-          "type": "string",
-          "   required": true
+        "station_num": { 
+          "title": "Station Number",
+          "type": "integer",
+          "minimum": "1",
+          "required": true
         },
 
         "poastal_code": { 
@@ -135,6 +140,7 @@
         "post_station"
       ]
     },
+
     "kit_num": { 
       "title": "MyOSD Sampling Kit Number",
       "type": "integer",
@@ -182,26 +188,35 @@
         "terms_agree": { 
           "title": "Agree to Terms of Condition",
           "type": "boolean",
+          "enum": 
+          [
+            true,
+            false
+          ],
+
+          "disallow": 
+          [
+            "false"
+          ],
+
           "required": true
         },
 
         "osd_agree": { 
-          "title": "OSD raffle agree",
+          "title": "MyOSD raffle agree",
           "type": "boolean"
         },
 
         "sensebox_agree": { 
           "title": "Open Senseboxe agree",
           "type": "boolean",
-          "required": true
+          "required": false
         },
 
         "sensebox_terms": { 
-          "title": "",
-          "type": "text",
-          "required": true,
-          "readonly": true,
-          "default": "Ich verpflichte mich, im Falle eines Gewinns, die Open Sense Box auch aufzustellen."
+          "title": "senseBox:Home",
+          "type": "boolean",
+          "required": false
         }
       }
     }
