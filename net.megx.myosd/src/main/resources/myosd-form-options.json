@@ -10,11 +10,11 @@
 
     "buttons": { 
       "submit": { 
-        
+        "title" : "Registrieren"
       },
 
       "reset": { 
-        
+        "title" : "Abbrechen"
       }
     }
   },
@@ -91,7 +91,7 @@
       "id": "input-adress",
       "fields": { 
         "name": { 
-          "label": "Name des Empfaengers",
+          "label": "Name des Empfängers",
           "size": 30
         },
 
@@ -158,15 +158,17 @@
 
     "kit_num": { 
       "label": "MyOSD Sampling Kit Nummer",
+      "helper": "Bitte trage Deine MyOSD Sampling Kit Nummer ein. Diese findest Du auf den Aufklebern im Kit.",
+      "placeholder": "200",
       "dependencies": { 
         "kit": "true"
       }
     },
 
     "placename": { 
-      "label": "Name der geplannten Probennahme-Stelle",
+      "label": "Name der geplanten Probennahme-Stelle",
       "placeholder": "Duhnen, Nordsee",
-      "helper": "Gib einen so genauen Namen wie möglich ein. "
+      "helper": "Gib den Namen bitte so genau wie möglich ein."
     },
 
     "lat": { 
@@ -204,13 +206,13 @@
 
         "sensebox_agree": { 
           "label": "senseBox Verlosung?",
-          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"senseBox:home\">senseBox:home</a> Verlosung teil",
+          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> Verlosung teil",
           "type": "checkbox"
         },
 
         "sensebox_terms": { 
           "label": "",
-          "rightLabel": "Ich verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"senseBox:home\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">Open senseBox Projekt</a>",
+          "rightLabel": "Ich verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"https://github.com/sensebox/oer/wiki/sensebox_home\">Open senseBox Projekt</a>",
           "type": "checkbox",
           "required": true
         }

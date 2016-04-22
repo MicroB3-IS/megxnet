@@ -58,7 +58,7 @@
               console.log(bounds);
 
               var boundsField = Megx.myosd.formControl.childrenByPropertyId["bounds"];
-              boundsField.setValue("hi" + wkt.write(bounds));
+              boundsField.setValue(wkt.write(bounds));
 
               var longField = Megx.myosd.formControl.childrenByPropertyId["lon"];
               longField.setValue(pointWGS.x);
@@ -179,7 +179,7 @@
                     callback({
 
                       "status" : false,
-                      "message" : "Du kannst nur teilnehmen, wenn Du den Teilnahembedingungen zustimmst!"
+                      "message" : "Du kannst nur teilnehmen, wenn Du den Teilnahmebedingungen zustimmst!"
                     });
                     return;
                   }
@@ -224,6 +224,9 @@
                       if (field.isValid(true)) {
 
                         var data = field.getValue();
+                        var successMessage = "<p>Du hast Dich erfolgreich registriert :)</p>"
+                            + "<p>Danke für Deine Teilnahme am MyOSD2016</p>" +
+                            "<p>Wir freuen uns schon!</p>";
                         data.json = JSON.stringify(field.getValue());
                         jQuery
                             .ajax({
@@ -236,7 +239,7 @@
 
                                   if (data.redirectUrl) {
                                     toastr
-                                        .success("Your submission was successfull. Thanks!");
+                                        .success(successMessage);
                                     //document.location.href = data.redirectUrl;
                                   } else {
 
@@ -245,7 +248,7 @@
                                       //document.location.href = ctx.siteUrl;
                                     } else {
                                       toastr
-                                          .success("Your submission was successfull. Thanks!");
+                                          .success(successMessage);
                                       //document.location.href = ctx.siteUrl;
                                     }
                                   }
