@@ -45,9 +45,15 @@
       "helper": "Bitte gib einen Benutzernamen ein.",
       "helpers": 
       [
-        "Bitte gib einen Benutzernamen ein.",
-        "Dieser wird auf unseren Web Seiten angezeigt!"
+        "Beachte, dass dieser wird auf unseren Web Seiten angezeigt wird!"
       ]
+    },
+
+    "email": { 
+      "label": "E-Mail Adresse",
+      "type": "email",
+      "size": 20,
+      "helper": "Bitte gib Deinen Nachnamen ein."
     },
 
     "kit": { 
@@ -64,11 +70,28 @@
         "username": "renzo"
       }
     },
+    "post_station": { 
+      "label": "Direkt zu Dir oder an eine Packstation?",
+      "type": "radio",
+      "optionLabels": 
+      [
+        "Direkt",
+        "An Packstation"
+      ],
 
+      "helper": "Hast Du schon ein MyOSD Sampling Kit?",
+      "dependencies": { 
+        "kit": "false"
+      }
+    },
     "address": { 
       "label": "Deine Versandadresse",
       "id": "input-adress",
-      "fields": { 
+      "fields": {
+       "name": { 
+          "label": "Name des Empfaengers",
+          "size": 30
+        },
         "street": { 
           "label": "Strasse",
           "size": 30
@@ -91,10 +114,42 @@
       },
 
       "dependencies": { 
-        "kit": "false"
+        "post_station": "post"
       }
     },
+    "station": { 
+      "label": "Deine Packstation",
+      "id": "input-adress",
+      "fields": {
+       "name": { 
+          "label": "Name des Empfaengers",
+          "size": 30
+        },
+        "street": { 
+          "label": "Strasse",
+          "size": 30
+        },
 
+        "street_num": { 
+          "label": "Hausnummer",
+          "size": 10
+        },
+
+        "poastal_code": { 
+          "label": "Postleitzahl",
+          "size": 10
+        },
+
+        "city": { 
+          "label": "Stadt",
+          "size": 30
+        }
+      },
+
+      "dependencies": { 
+        "post_station": "station"
+      }
+    },
     "kit_num": { 
       "label": "MyOSD Sampling Kit Nummer",
       "dependencies": { 

@@ -25,6 +25,11 @@
       "required": true
     },
 
+    "email": { 
+      "type": "string",
+      "required": true
+    },
+
     "kit": { 
       "type": "boolean",
       "enum": 
@@ -33,14 +38,73 @@
         false
       ],
 
+      "required": true
+    },
+
+    "post_station": { 
+      "type": "string",
+      "enum": 
+      [
+        "post",
+        "station"
+      ],
+
       "required": true,
-      "description": "Hast du "
+      "dependencies": 
+      [
+        "kit"
+      ]
     },
 
     "address": { 
       "title": "Adress",
       "type": "object",
       "properties": { 
+        "name": { 
+          "title": "Name",
+          "type": "string",
+          "required": true
+        },
+
+        "street": { 
+          "title": "Street Name",
+          "type": "string",
+          "required": true
+        },
+
+        "street_num": { 
+          "title": "House Number",
+          "type": "string",
+          "required": true
+        },
+
+        "poastal_code": { 
+          "title": "Poastal Code",
+          "type": "string",
+          "required": true
+        },
+
+        "city": { 
+          "title": "City Name",
+          "type": "string",
+          "required": true
+        }
+      },
+      "dependencies": 
+      [
+        "post_station"
+      ]
+    },
+    "station": { 
+      "title": "Adress",
+      "type": "object",
+      "properties": { 
+        "name": { 
+          "title": "Name",
+          "type": "string",
+          "required": true
+        },
+
         "street": { 
           "title": "Street Name",
           "type": "string",
@@ -68,10 +132,9 @@
 
       "dependencies": 
       [
-        "kit"
+        "post_station"
       ]
     },
-
     "kit_num": { 
       "title": "MyOSD Sampling Kit Number",
       "type": "integer",
@@ -125,7 +188,6 @@
         "osd_agree": { 
           "title": "OSD raffle agree",
           "type": "boolean"
-          
         },
 
         "sensebox_agree": { 
