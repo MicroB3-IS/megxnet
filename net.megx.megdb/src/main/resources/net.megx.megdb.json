@@ -76,6 +76,10 @@
 		{
 			name: 'net.megx.megdb.mibig.MibigService',
 			class: 'net.megx.megdb.mibig.impl.DBMibgService'
-		}
+		},
+    {
+      name: 'net.megx.megdb.myosd.MyOsdDbService',
+      class: 'net.megx.megdb.myosd.impl.MyOsdDbServiceImpl'
+    }
 	]
 }
