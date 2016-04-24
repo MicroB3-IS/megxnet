@@ -96,7 +96,7 @@ public class Activator extends JCRAppConfgEnabledActivator {
 
 	protected BaseMegdbService registerBaseDBService(
 			Class<? extends BaseMegdbService> cls, Class<?> registerAs,
-			SqlSessionFactory factory) {
+			SqlSessionFactory factory ) {
 		try {
 			BaseMegdbService dbService = cls.newInstance();
 			dbService.setSqlSessionFactory(factory);
