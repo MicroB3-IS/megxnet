@@ -6,7 +6,6 @@ import net.megx.megdb.AdminMyBatisMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Rule;
 import org.junit.Test;
-import org.omg.PortableInterceptor.SUCCESSFUL;
 
 public class DbConnectionTest {
 

@@ -1,9 +1,12 @@
 package net.megx.megdb.myosd;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+
 public interface MyOsdDbService {
 
+  public void setSqlSessionFactory(SqlSessionFactory factory);
   
-  void saveParticipant(String json);
+  public void saveParticipant(MyOsdParticipantRegistration participant);
   
   
 }

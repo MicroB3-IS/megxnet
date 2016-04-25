@@ -20,7 +20,7 @@ public class TestDb extends ExternalResource {
   @Override
   public void before() throws ClassNotFoundException, IOException {
     Class<?> pgDriver = null;
-    ;
+    ; 
     try {
       pgDriver = Class.forName("org.postgresql.Driver");
     } catch (ClassNotFoundException e) {
@@ -33,7 +33,7 @@ public class TestDb extends ExternalResource {
     Properties testProperties = new Properties();
     testProperties.load(Resources.getResourceAsReader(MYBATIS_PROPERTIES));
     
-    System.out.println(testProperties.toString());
+//    System.out.println(testProperties.toString());
 
     factory = new SqlSessionFactoryBuilder().build(Resources
         .getResourceAsReader(MYBATIS_CONFIG_XML), testProperties);
