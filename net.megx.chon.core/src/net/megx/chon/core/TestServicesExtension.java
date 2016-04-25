@@ -25,7 +25,6 @@ import org.chon.web.mpac.Action;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-import com.iw.megx.ws.service.mixsws.MixsWsService;
 
 public class TestServicesExtension implements Extension {
 
@@ -49,8 +48,7 @@ public class TestServicesExtension implements Extension {
 
 	@Override
 	public Object getTplObject(Request req, Response resp, IContentNode node) {
-		ServiceReference ref = context.getServiceReference(MixsWsService.class.getName());
-		return context.getService(ref);
+	  return null;
 	}
 
 }
