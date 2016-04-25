@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>net.megx</groupId>
@@ -9,20 +9,16 @@
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../net.megx/pom.xml</relativePath>
   </parent>
-  
+
   <groupId>net.megx</groupId>
   <artifactId>megx.net-workdir</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
-  
+
   <name>megx.net-workdir</name>
-  
+
   <dependencies>
-    <dependency>
-      <groupId>net.megx</groupId>
-      <artifactId>net.megx.blast</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+    
     <dependency>
       <groupId>net.megx</groupId>
       <artifactId>net.megx.apps-manager</artifactId>
@@ -148,11 +144,7 @@
       <artifactId>net.megx.user-settings</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <groupId>net.megx</groupId>
-      <artifactId>net.megx.ws.blast</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+   
     <dependency>
       <groupId>net.megx</groupId>
       <artifactId>net.megx.ws.browse</artifactId>
@@ -189,28 +181,28 @@
       <scope>runtime</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
-	<artifactId>maven-assembly-plugin</artifactId>
-	<executions>
-	  <execution>
-	    <id>megx-workdir-assembly</id>
-	    <phase>verify</phase>
-	    <goals>
-	      <goal>single</goal>
-	    </goals>
-	    <configuration>
-	      <appendAssemblyId>false</appendAssemblyId>
-	      <finalName>${project.artifactId}_assembled_workdir</finalName>
-	      <descriptors>
-		<descriptor>src/assembly/bin.xml</descriptor>
-	      </descriptors>
-	      <attach>false</attach>
-	    </configuration>
-	  </execution>
-	</executions>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>megx-workdir-assembly</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>${project.artifactId}_assembled_workdir</finalName>
+              <descriptors>
+                <descriptor>src/assembly/bin.xml</descriptor>
+              </descriptors>
+              <attach>false</attach>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
