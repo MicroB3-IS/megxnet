@@ -70,6 +70,7 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     p.setRawJson(json);
     p.setMyOsdId(myosdId);
     p.setVersion(version);
+    p.setUserName(userName);
     p.setBothEmails(email, emailRepeat);
 
     String contactLink = "<a href=\"mailto:myosd-contact@microb3.eu\">myosd-contact@microb3.eu</a>";
