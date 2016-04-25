@@ -200,8 +200,8 @@ a.olControlZoomOut {
               pointControl.activate();
               dragControl.activate();
 
-              //           var graticule = new OpenLayers.Control.Graticule();
-              //           map.addControl(graticule);
+              // var graticule = new OpenLayers.Control.Graticule();
+              //  map.addControl(graticule);
 
               var centerLon = left + ((right - left) / 2);
               var centerLat = bottom + ((top - bottom) / 2);
@@ -240,14 +240,9 @@ a.olControlZoomOut {
               if (form) {
                 var url = form.attributes.action;
                 var ajaxMethod = form.attributes.method;
-                form.disableSubmitButton();
-
-                jQuery(".alpaca-control").keyup(function() {
-                  if (field.isValid(true)) {
-                    form.enableSubmitButton();
-                  }
-                });
-
+                //form.disableSubmitButton();
+                form.enableSubmitButton();
+                
                 form.registerSubmitHandler(function(e, form) {
                   return false;
                 });
@@ -296,7 +291,13 @@ a.olControlZoomOut {
 
                 submitButton
                     .click(function() {
+                      field.refreshValidationState(true);
 
+                      if (!field.isValid(true)) {
+                        field.focus();
+                        form.enableSubmitButton();
+                        return;
+                      }
                       if (field.isValid(true)) {
 
                         var data = field.getValue();

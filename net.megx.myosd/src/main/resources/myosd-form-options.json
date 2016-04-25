@@ -8,7 +8,7 @@
       "action": "${megx.host.context.path}ws/v1/myosd/v1.0.0/participants"
     },
 
-    "buttons": {  
+    "buttons": { 
       "submit": { 
         "title": "Registrieren"
       },
@@ -27,6 +27,7 @@
     "firstname": { 
       "label": "Vorname",
       "type": "personalname",
+      "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Bitte gib Deinen Vornamen ein."
     },
@@ -34,6 +35,7 @@
     "lastname": { 
       "label": "Nachname",
       "type": "personalname",
+      "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Bitte gib Deinen Nachnamen ein."
     },
@@ -41,23 +43,27 @@
     "username": { 
       "label": "Benutzername",
       "type": "personalname",
+      "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Bitte gib einen Benutzernamen ein.",
       "helpers": 
       [
-        "Beachte, dieser wird auf unseren Web Seiten angezeigt wird!"
+        "Beachte, dieser wird auf unseren Web Seiten angezeigt!"
       ]
     },
 
     "email": { 
       "label": "E-Mail Adresse",
+      "disallowOnlyEmptySpaces": true,
       "type": "email",
       "size": 20,
       "helper": "Für Rückfragen und Statusmeldungen"
     },
+
     "email_repeat": { 
       "label": "E-Mail Wiederholung",
       "type": "email",
+      "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Um sicher zu gehen, dass wir Deine richtige Adresse bekommen!"
     },
@@ -65,16 +71,14 @@
     "kit": { 
       "label": "Hast Du schon ein MyOSD Sampling Kit?",
       "type": "radio",
+      "hideInitValidationError": false,
       "optionLabels": 
       [
         "Ja",
         "Nein"
       ],
 
-      "helper": "Hast Du schon ein MyOSD Sampling Kit?",
-      "dependencies": { 
-        "username": "renzo"
-      }
+      "helper": "Hast Du schon ein MyOSD Sampling Kit?"
     },
 
     "post_station": { 
@@ -98,26 +102,31 @@
       "fields": { 
         "name": { 
           "label": "Name des Empfängers",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         },
 
         "street": { 
           "label": "Strasse",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         },
 
         "street_num": { 
           "label": "Hausnummer",
+          "disallowOnlyEmptySpaces": true,
           "size": 10
         },
 
         "poastal_code": { 
           "label": "Postleitzahl",
+          "disallowOnlyEmptySpaces": true,
           "size": 10
         },
 
         "city": { 
           "label": "Stadt",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         }
       },
@@ -133,26 +142,31 @@
       "fields": { 
         "name": { 
           "label": "Name des Empfängers",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         },
 
         "post_num": { 
           "label": "Postnummer",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         },
 
         "station_num": { 
           "label": "Packstation:",
+          "disallowOnlyEmptySpaces": true,
           "size": 10
         },
 
         "poastal_code": { 
           "label": "Postleitzahl",
+          "disallowOnlyEmptySpaces": true,
           "size": 10
         },
 
         "city": { 
           "label": "Stadt",
+          "disallowOnlyEmptySpaces": true,
           "size": 30
         }
       },
@@ -173,6 +187,7 @@
 
     "placename": { 
       "label": "Name der geplanten Probennahme-Stelle",
+      "disallowOnlyEmptySpaces": true,
       "placeholder": "Duhnen, Nordsee",
       "helper": "Gib den Namen bitte so genau wie möglich ein."
     },
@@ -204,7 +219,7 @@
         },
 
         "osd_agree": { 
-          "label": "iPad mini Verlosung",
+          "label": "iPad Mini Verlosung",
           "type": "checkbox",
           "rightLabel": "Ja, ich nehme an der iPad Mini Verlosung teil!"
         },

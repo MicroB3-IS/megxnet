@@ -37,11 +37,6 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     this.db = myOsdDbService;
   }
 
-  @Path("bye")
-  @GET
-  public String hi() {
-    return "hi, warum get das?";
-  }
 
   @Path("participants")
   @GET
@@ -79,8 +74,8 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     ResponseBuilder b = null;
     if (!p.isValidEmail()) {
       b = failure("Problem mit der email.",
-          "<p>Hast Du villeicht nicht die selbe email eingeben?</p>"
-              + contactHtml);
+          "<p>Hast Du vielleicht nicht die selbe email eingegeben?</p>")
+              ;
       return b.build();
     }
 

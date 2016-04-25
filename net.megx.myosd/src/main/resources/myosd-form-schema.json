@@ -62,7 +62,7 @@
     },
 
     "address": { 
-      "title": "Adress",
+      "title": "Address",
       "type": "object",
       "properties": { 
         "name": { 
@@ -85,7 +85,7 @@
 
         "poastal_code": { 
           "title": "Poastal Code",
-          "type": "string",
+          "type": "integer",
           "required": true
         },
 
@@ -103,7 +103,7 @@
     },
 
     "station": { 
-      "title": "Adress",
+      "title": "Address",
       "type": "object",
       "properties": { 
         "name": { 
@@ -128,13 +128,14 @@
 
         "poastal_code": { 
           "title": "Poastal Code",
-          "type": "string",
+          "type": "integer",
           "required": true
         },
 
         "city": { 
           "title": "City Name",
           "type": "string",
+          "pattern": "[^0123456789]+",
           "required": true
         }
       },
@@ -150,6 +151,7 @@
       "type": "integer",
       "minimum": 271,
       "maximum": 2000,
+      "required": true,
       "dependencies": 
       [
         "kit"
