@@ -89,7 +89,7 @@
 
     <plugins>
       <!-- This plugin parses the properties file (i.e. default/developer/prod 
-        depending on the active profiel) and makes all properties of this file available 
+        depending on the active profile) and makes all properties of this file available 
         in the pom as maven properites (like they had been declared in the <properties> 
         </properties> section). This procedure is required for this module as many 
         of these properties are used to configure the build in the pom (e.g. enforcing 
@@ -145,49 +145,51 @@
         <executions>
           <execution>
             <id>enforce-work-dir</id>
-            <phase>pre-integration-test</phase>
+            <phase>validate</phase>
             <goals>
               <goal>enforce</goal>
             </goals>
             <configuration>
-              <requireFilesExist>
-                <message><![CDATA[These files must exist in correct version
+              <rules>
+                <requireFilesExist>
+                  <message><![CDATA[These files must exist in correct version
                                 for succesful launch:
                                 ${megx.work.dir.path}
                                 ${megx.work.dir.path}/repository
                                 ${megx.work.dir.path}/plugins
                                 ${megx.work.dir.path}/config
                                 ]]></message>
-                <files>
-                  <file>${megx.work.dir.path}</file>
-                  <file>${megx.work.dir.path}/repository</file>
-                  <file>${megx.work.dir.path}/plugins</file>
-                  <file>${megx.work.dir.path}/config</file>
-                  <!-- This is just an indicator if Chon plugins were build 
-                    from net.megx.product -->
-                  <file>${megx.work.dir.path}/plugins/org.chon.cms.core_1.0.0.jar</file>
-                </files>
-              </requireFilesExist>
-              <requireProperty>
-                <property>megx.host.name</property>
-                <message><![CDATA[Missing: Hostname under which the webapp will be published e.g. localhost]]></message>
-                <regex>.*$</regex>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.host.port</property>
-                <message><![CDATA[Missing: Host port under which the web application will be published e.g. localhost]]></message>
-                <regex>.*$</regex>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.tomcat.home</property>
-                <message><![CDATA[Missing: The directory of tomcat installation.]]>
-                </message>
-              </requireProperty>
-              <requireProperty>
-                <property>megx.tomcat.port</property>
-                <message><![CDATA[Missing: The port tomcat is listening to]]>
-                </message>
-              </requireProperty>
+                  <files>
+                    <file>${megx.work.dir.path}</file>
+                    <file>${megx.work.dir.path}/repository</file>
+                    <file>${megx.work.dir.path}/plugins</file>
+                    <!-- <file>${megx.work.dir.path}/config</file>  -->
+                    <!-- This is just an indicator if Chon plugins were build 
+                      from net.megx.product -->
+                    <file>${megx.work.dir.path}/plugins/org.choncms.bnd-libs_1.2.0.jar</file>
+                  </files>
+                </requireFilesExist>
+                <requireProperty>
+                  <property>megx.host.name</property>
+                  <message><![CDATA[Missing: Hostname under which the webapp will be published e.g. localhost]]></message>
+                  <regex>.*$</regex>
+                </requireProperty>
+                <requireProperty>
+                  <property>megx.host.port</property>
+                  <message><![CDATA[Missing: Host port under which the web application will be published e.g. localhost]]></message>
+                  <regex>.*$</regex>
+                </requireProperty>
+                <requireProperty>
+                  <property>megx.tomcat.home</property>
+                  <message><![CDATA[Missing: The directory of tomcat installation.]]>
+                  </message>
+                </requireProperty>
+                <requireProperty>
+                  <property>megx.tomcat.port</property>
+                  <message><![CDATA[Missing: The port tomcat is listening to]]>
+                  </message>
+                </requireProperty>
+              </rules>
             </configuration>
 
           </execution>
