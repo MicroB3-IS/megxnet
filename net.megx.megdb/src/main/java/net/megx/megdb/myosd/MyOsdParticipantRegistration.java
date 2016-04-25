@@ -28,8 +28,44 @@ public interface MyOsdParticipantRegistration {
 
   public abstract void setVersion(int version);
 
-  public String getEmail();
+  public abstract String getEmail();
 
-  public void setEmail(String email);
+  public abstract void setBothEmails(String email, String emailRepeat);
 
+  public abstract boolean isValidEmail();
+  
+  
+
+  public abstract boolean isValidRegistration();
+
+  public abstract String getUserName();
+
+  public abstract void setUserName(String userName);
+
+  public abstract boolean isKit();
+
+  public abstract void setKit(Boolean kit);
+
+  public abstract String getPostStation();
+
+  public abstract void setPostStation(String postStation);
+
+  public abstract String getReceiverName();
+
+  public abstract void setReceiverName(String receiverName);
+
+  public abstract boolean isTermsAgree();
+
+  public abstract void setTermsAgree(boolean termsAgree);
+
+  public abstract boolean isOsdAgree();
+
+  public abstract void setOsdAgree(boolean osdAgree);
+
+  public abstract boolean isSenseboxAgree();
+
+  public abstract void setSenseboxAgree(boolean senseboxAgree);
+
+  public abstract boolean indicatesAddress();
+  
 }

@@ -6,11 +6,15 @@
 <mapper namespace="net.megx.megdb.myosd.impl.MyOsdMyBatisMapper">
 
   <insert id="saveParticipant" parameterType="net.megx.megdb.myosd.MyOsdParticipantRegistration">
-    insert into
-    myosd.registrations
-    (raw, email, myosd_id, schema_version)
-    VALUES
-    (#{rawJson}::json, #{email}::text, #{myOsdId}::integer, #{version}::integer);
+    insert into myosd.registrations (
+    raw, email, user_name,
+    <if test="myOsdId > 270">myosd_id,</if>
+    schema_version
+    ) VALUES (
+    #{rawJson}::json, #{email}::text, #{userName},
+    <if test="myOsdId > 270">#{myOsdId}::integer,</if>
+    #{version}::integer
+    )
 
   </insert>
 

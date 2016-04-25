@@ -39,4 +39,4 @@
 		VALUES (#{bgcId}, #{raw}::json, #{version})
 	</insert>
 
-</mapper>
+</mapper> 

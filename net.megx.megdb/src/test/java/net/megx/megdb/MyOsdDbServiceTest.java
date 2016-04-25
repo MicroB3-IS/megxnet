@@ -7,6 +7,9 @@ import net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl;
 import net.megx.megdb.myosd.impl.MyOsdDbServiceImpl;
 
 import org.apache.ibatis.exceptions.PersistenceException;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -15,34 +18,73 @@ public class MyOsdDbServiceTest {
   @Rule
   public TestDb db = new TestDb();
 
-  @Test(expected=PersistenceException.class)
-  public void saveEmptyParticpant() {
+  // pr = participant registration
+  private MyOsdParticipantRegistration prEmpty = null;
+  private MyOsdParticipantRegistration prValid = null;
 
-    MyOsdParticipantRegistration participant = new MyOsdParticipantDTOImpl();
+  private MyOsdDbService myosd = null;
 
-    MyOsdDbService service = new MyOsdDbServiceImpl();
-    service.setSqlSessionFactory(db.getSqlSessionFactory());
+  @Before
+  public void setupParticipants() {
+    myosd = new MyOsdDbServiceImpl();
+    myosd.setSqlSessionFactory(db.getSqlSessionFactory());
 
-    service.saveParticipant(participant);
+    prEmpty = new MyOsdParticipantDTOImpl();
+
+    prValid = new MyOsdParticipantDTOImpl();
+    prValid.setBothEmails("test@test.de", "test@test.de");
+    prValid.setUserName("renzo");
+    prValid.setRawJson("{}");
+    int v = 1;
+    prValid.setVersion(v);
+    int num = 0;
+    prValid.setMyOsdId(num);
   }
 
   @Test
-  public void saveMinimumParticpant() {
+  public void isValidRegistration() {
+    assertTrue("Not a valid registration", prValid.isValidRegistration());
+  }
 
-    MyOsdParticipantRegistration participant = new MyOsdParticipantDTOImpl();
-    participant.setEmail("test@test.de");
-    participant.setRawJson("{}");
-    int v = 1;
-    participant.setVersion(v);
-    int num = 271;
-    participant.setMyOsdId(num);
-    
-    MyOsdDbService service = new MyOsdDbServiceImpl();
-    service.setSqlSessionFactory(db.getSqlSessionFactory());
+  @Test(expected = PersistenceException.class)
+  public void saveEmptyParticpant() {
+    myosd.saveParticipant(prEmpty);
+  }
 
-    service.saveParticipant(participant);
+  @Test
+  @Ignore("not ready yet")
+  public void checkEmailExists() {
+    // myosd.checkEmailExists();
+  }
+
+  @Test
+  public void saveValidParticpant() {
+
+    myosd.saveParticipant(prValid);
+
+  }
+
+  @Test
+  public void acceptCorrectEmails() {
+    MyOsdParticipantRegistration pr = new MyOsdParticipantDTOImpl();
+    pr.setBothEmails("renzo@test.de", "renzo@test.de");
+    assertTrue(pr.isValidEmail());
+  }
+
+  @Test
+  public void doNotAcceptWrongEmails() {
+    MyOsdParticipantRegistration pr = new MyOsdParticipantDTOImpl();
+    pr.setBothEmails("zo@test.de", "renzo@test.de");
+    assertFalse("Not same emails", pr.isValidEmail());
     
-    assertTrue(true);
+    pr.setBothEmails(null, "renzo@test.de");
+    assertFalse("First email null", pr.isValidEmail());
+    
+    pr.setBothEmails("", "renzo@test.de");
+    assertFalse("first email empty", pr.isValidEmail());
+    
+    pr.setBothEmails("renzo@test.de", null);
+    assertFalse("second email null", pr.isValidEmail());
     
   }
 }
