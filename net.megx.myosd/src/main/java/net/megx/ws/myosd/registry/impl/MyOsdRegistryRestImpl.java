@@ -60,23 +60,41 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response saveParticipant(@FormParam("json") String json,
       @FormParam("kit_num") int myosdId, @FormParam("version") int version,
-      @FormParam("email") String email) {
-    
+      @FormParam("email") String email,
+      @FormParam("email_repeat") String emailRepeat,
+      @FormParam("username") String userName) {
+
     log.debug("save participant: " + json);
+
     MyOsdParticipantRegistration p = new MyOsdParticipantDTOImpl();
     p.setRawJson(json);
     p.setMyOsdId(myosdId);
     p.setVersion(version);
-    p.setEmail(email);
+    p.setBothEmails(email, emailRepeat);
+
+    String contactLink = "<a href=\"mailto:myosd-contact@microb3.eu\">myosd-contact@microb3.eu</a>";
+    String contactHtml = "<p>Bitte schreib uns dazu an " + contactLink + "!<p>";
 
     ResponseBuilder b = null;
+    if (!p.isValidEmail()) {
+      b = failure("Problem mit der email.",
+          "<p>Hast Du villeicht nicht die selbe email eingeben?</p>"
+              + contactHtml);
+      return b.build();
+    }
+
     try {
       db.saveParticipant(p);
       b = success("Vielen Dank!");
+      return b.build();
     } catch (Exception e) {
       // TODO Auto-generated catch block
       log.error("Could save particpant", e);
       b = failure("Ein Problem ist aufgetreten :(");
+    }
+
+    if (b == null) {
+      b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);
     }
     return b.build();
   }
@@ -84,12 +102,17 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
   private ResponseBuilder success(String message) {
     return Response.ok().entity(
         toJSON(new FormWidgetResult(false, message, null)));
-
   }
 
   private ResponseBuilder failure(String message) {
-    return Response.status(Status.FORBIDDEN).entity(
+    return Response.status(Status.BAD_REQUEST).entity(
         toJSON(new FormWidgetResult(true, message, null)));
+
+  }
+
+  private ResponseBuilder failure(String title, String message) {
+    return Response.status(Status.BAD_REQUEST).entity(
+        toJSON(new FormWidgetResult(true, message, null, title)));
 
   }
 
