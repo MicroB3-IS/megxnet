@@ -1,6 +1,59 @@
 <link href="$ctx.siteUrl/stylesheets/mapwidget.css" rel="stylesheet"
   type="text/css">
 
+<style type="text/css">
+<!--
+standard OpenLayers OSM style
+-->
+div.olControlZoom, div.olControlTextButtonPanel {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+div.olControlZoom a {
+    font-size: 18px;
+    line-height: 19px;
+    height: 22px;
+    width:22px;
+    padding: 0;
+}
+div.olControlZoom a, div.olControlTextButtonPanel .olButton {
+    display: block;
+    margin: 1px;
+    color: white;
+    font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    background: #130085; /* fallback for IE - IE6 requires background shorthand*/
+    background: rgba(0, 60, 136, 0.5);
+    filter: alpha(opacity=80);
+}
+div.olControlZoom a:hover, div.olControlTextButtonPanel .olButton:hover {
+    background: #130085; /* fallback for IE */
+    background: rgba(0, 60, 136, 0.7);
+    filter: alpha(opacity=100);
+}
+@media only screen and (max-width: 600px) {
+    div.olControlZoom a:hover, div.olControlTextButtonPanel .olButton:hover {
+        background: rgba(0, 60, 136, 0.5);
+    }
+}
+a.olControlZoomIn {
+    border-radius: 4px 4px 0 0;
+}
+a.olControlZoomOut {
+    border-radius: 0 0 4px 4px;
+}
+
+</style>
+
+
+
+
 <script src="$ctx.siteUrl/js/OpenLayers-2.13.1.js"
   type="text/javascript"></script>
 
@@ -21,17 +74,15 @@
             Megx.myosd = {};
 
             Megx.myosd.mapEventHandler = function(event) {
-              console.log("map event type" + event.type);
+              //console.log("map event type" + event.type);
             }
 
             Megx.myosd.updateFeature = function(feature) {
-              console.log("updating Feature with layer" + feature.layer);
+              //console.log("updating Feature with layer" + feature.layer);
               var layer = feature.layer;
 
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercProjection = new OpenLayers.Projection("EPSG:900913");
-
-              //var map = feature.layer.map;
 
               // create a WKT reader/parser/writer          
               var wkt = new OpenLayers.Format.WKT();
@@ -39,23 +90,16 @@
               // write out the feature's geometry in WKT format
               var out = wkt.write(feature);
 
-              console.log(out);
-              //console.log(feature);
-              console.log("transpoint: "
-                  + feature.geometry.getCentroid().transform(mercProjection,
-                      wgsProjection));
-              console.log(feature.lonlat);
               var pointWGS = feature.geometry.getCentroid().transform(
                   mercProjection, wgsProjection);
-              console.log(pointWGS);
+              //console.log(pointWGS);
 
               var bounds = feature.geometry.getBounds();
 
               bounds = new OpenLayers.Feature.Vector(bounds.toGeometry()
                   .transform(mercProjection, wgsProjection));
 
-              console.log("Bounds:");
-              console.log(bounds);
+              //console.log("Bounds:" + bounds);
 
               var boundsField = Megx.myosd.formControl.childrenByPropertyId["bounds"];
               boundsField.setValue(wkt.write(bounds));
@@ -67,12 +111,10 @@
               latField.setValue(pointWGS.y);
 
               var pointControl = map.getControl("pcid");
-              //pointControl.deactivate();
             }
 
             Megx.myosd.featureAddedEventHandler = function(event) {
-
-              console.log("map event type" + event.type);
+              //console.log("map event type" + event.type);
               Megx.myosd.updateFeature(event.feature);
             }
 
@@ -225,8 +267,13 @@
 
                         var data = field.getValue();
                         var successMessage = "<p>Du hast Dich erfolgreich registriert :)</p>"
-                            + "<p>Danke für Deine Teilnahme am MyOSD2016</p>" +
-                            "<p>Wir freuen uns schon!</p>";
+                            + "<p>Danke für Deine Teilnahme am MyOSD Deutschland 2016</p>"
+                            + "<p>Wir freuen uns schon!</p>";
+                        var errorMessage = "<p>Leider ist beim Speichern Deiner Daten ein Fehler aufgetreten :(</p>"
+                            + "<p>Bitte probier es nochmal!</p>"
+                            + "<p>Und schreib uns bitte, damit wir Bescheid wissen: "+ 
+                            "<a href=\"mailto:myosd-contact@microb3.eu\">myosd-contact@microb3.eu</a>"
+                            + "</p>";
                         data.json = JSON.stringify(field.getValue());
                         jQuery
                             .ajax({
@@ -234,25 +281,22 @@
                               url : url,
                               data : data
                             })
-                            .success(
-                                function(data, textStatus, jqXHR) {
+                            .success(function(data, textStatus, jqXHR) {
 
-                                  if (data.redirectUrl) {
-                                    toastr
-                                        .success(successMessage);
-                                    //document.location.href = data.redirectUrl;
-                                  } else {
+                              if (data.redirectUrl) {
+                                toastr.success(successMessage);
+                                //document.location.href = data.redirectUrl;
+                              } else {
 
-                                    if (data.message) {
-                                      toastr.success(data.message);
-                                      //document.location.href = ctx.siteUrl;
-                                    } else {
-                                      toastr
-                                          .success(successMessage);
-                                      //document.location.href = ctx.siteUrl;
-                                    }
-                                  }
-                                })
+                                //if (data.message) {
+                                  //toastr.success(data.message);
+                                  //document.location.href = ctx.siteUrl;
+                                //} else {
+                                  toastr.success(successMessage);
+                                  //document.location.href = ctx.siteUrl;
+                                //}
+                              }
+                            })
                             .error(
                                 function(data, textStatus, jqXHR) {
                                   if (data.responseJSON) {
@@ -269,14 +313,14 @@
                                       } else {
                                         toastr
                                             .error(
-                                                "Server error, please try again later.",
+                                                errorMessage,
                                                 jqXHR);
                                       }
                                     }
                                   } else {
                                     toastr
                                         .error(
-                                            "Server error, please try again later.",
+                                            errorMessage,
                                             jqXHR);
                                   }
                                 }).always(function(data, textStatus, jqXHR) {
@@ -309,6 +353,7 @@
                   "lastname" : "mx-myosd-user",
                   "username" : "mx-myosd-user",
                   "email" : "mx-myosd-user",
+                  "email_repeat" : "mx-myosd-user",
                   "kit" : "mx-myosd-kit-left",
                   "post_station" : "mx-myosd-kit-left",
                   "kit_num" : "mx-myosd-kit-right",

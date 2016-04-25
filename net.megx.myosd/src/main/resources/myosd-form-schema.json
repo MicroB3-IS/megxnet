@@ -24,8 +24,12 @@
       "type": "string",
       "required": true
     },
-
     "email": { 
+      "type": "string",
+      "format": "email",
+      "required": true
+    },
+    "email_repeat": { 
       "type": "string",
       "format": "email",
       "required": true
@@ -209,12 +213,6 @@
 
         "sensebox_agree": { 
           "title": "Open Senseboxe agree",
-          "type": "boolean",
-          "required": false
-        },
-
-        "sensebox_terms": { 
-          "title": "senseBox:Home",
           "type": "boolean",
           "required": false
         }

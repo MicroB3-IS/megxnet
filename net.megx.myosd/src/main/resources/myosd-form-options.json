@@ -5,16 +5,16 @@
     "toggleSubmitValidState": true,
     "attributes": { 
       "method": "post",
-      "action": "http://httpbin.org/post"
+      "action": "${megx.host.context.path}ws/v1/myosd/v1.0.0/participants"
     },
 
-    "buttons": { 
+    "buttons": {  
       "submit": { 
-        "title" : "Registrieren"
+        "title": "Registrieren"
       },
 
       "reset": { 
-        "title" : "Abbrechen"
+        "title": "Nochmal von vorne"
       }
     }
   },
@@ -45,7 +45,7 @@
       "helper": "Bitte gib einen Benutzernamen ein.",
       "helpers": 
       [
-        "Beachte, dass dieser wird auf unseren Web Seiten angezeigt wird!"
+        "Beachte, dieser wird auf unseren Web Seiten angezeigt wird!"
       ]
     },
 
@@ -53,7 +53,13 @@
       "label": "E-Mail Adresse",
       "type": "email",
       "size": 20,
-      "helper": "Für Rückfragen und Status Meldungen"
+      "helper": "Für Rückfragen und Statusmeldungen"
+    },
+    "email_repeat": { 
+      "label": "E-Mail Wiederholung",
+      "type": "email",
+      "size": 20,
+      "helper": "Um sicher zu gehen, dass wir Deine richtige Adresse bekommen!"
     },
 
     "kit": { 
@@ -72,15 +78,15 @@
     },
 
     "post_station": { 
-      "label": "Direkt zu Dir oder an eine Packstation?",
+      "label": "Wohin sollen wir das MyOSD Sampling Kit schicken?",
       "type": "radio",
       "optionLabels": 
       [
-        "Direkt",
-        "An Packstation"
+        "Nach Hause",
+        "Packstation"
       ],
 
-      "helper": "Hast Du schon ein MyOSD Sampling Kit?",
+      "helper": "Zu Dir nach Hause oder an eine Packstation ?",
       "dependencies": { 
         "kit": "false"
       }
@@ -195,26 +201,18 @@
             "<strong>Ja!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> zu.",
             "<strong>Nein!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> nicht zu."
           ]
-          
         },
 
         "osd_agree": { 
           "label": "iPad mini Verlosung",
           "type": "checkbox",
-          "rightLabel": "Ja, ich nehme an der iPad mini Verlosung teil!"
+          "rightLabel": "Ja, ich nehme an der iPad Mini Verlosung teil!"
         },
 
         "sensebox_agree": { 
           "label": "senseBox Verlosung?",
-          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> Verlosung teil",
+          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> Verlosung teil und verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"https://github.com/sensebox/oer/wiki/sensebox_home\">Open senseBox Projekt</a>.",
           "type": "checkbox"
-        },
-
-        "sensebox_terms": { 
-          "label": "",
-          "rightLabel": "Ich verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"https://github.com/sensebox/oer/wiki/sensebox_home\">Open senseBox Projekt</a>",
-          "type": "checkbox",
-          "required": true
         }
       }
     }

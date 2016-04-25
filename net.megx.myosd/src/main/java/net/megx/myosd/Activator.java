@@ -1,9 +1,7 @@
 package net.megx.myosd;
 
 import net.megx.megdb.myosd.MyOsdDbService;
-import net.megx.megdb.myosd.impl.MyOsdDbServiceImpl;
 import net.megx.utils.OSGIUtils;
-import net.megx.ws.myosd.registry.MyOsdRegistry;
 import net.megx.ws.myosd.registry.impl.MyOsdRegistryRestImpl;
 
 import org.apache.commons.logging.Log;
@@ -20,30 +18,29 @@ public class Activator extends ResTplConfiguredActivator {
   protected void registerExtensions(JCRApplication app) {
     log.debug("MyOSD Registry Starting up...");
     // getting MegDb storage service
-    // OSGIUtils.requestService(MyOsdDbService.class.getName(),
-    // getBundleContext(),
-    // new OSGIUtils.OnServiceAvailable<MyOsdDbService>() {
-    //
-    // @Override
-    // public void serviceAvailable( String name,
-    // MyOsdDbService service ) {
-    // log.debug(" service received...");
-    //MyOsdRegistryRestImpl api = new MyOsdRegistryRestImpl();
-   // RegUtils.reg(getBundleContext(), MyOsdDbServiceImpl.class.getName(), api,
-     //   null);
-    // log.debug(" app started.");
-    // }
-    //
-    // });
+    OSGIUtils.requestService(MyOsdDbService.class.getName(),
+        getBundleContext(), new OSGIUtils.OnServiceAvailable<MyOsdDbService>() {
+
+          @Override
+          public void serviceAvailable(String name, MyOsdDbService service) {
+            log.debug(" service received...");
+            MyOsdRegistryRestImpl api = new MyOsdRegistryRestImpl(service);
+            RegUtils.reg(getBundleContext(),
+                MyOsdRegistryRestImpl.class.getName(), api, null);
+            log.debug(" app started.");
+          }
+
+        });
     log.debug("MyOSD Registry service started.");
   }
-  
-  protected void onAppAdded(org.osgi.framework.BundleContext context, JCRApplication app) {
+
+  protected void onAppAdded(org.osgi.framework.BundleContext context,
+      JCRApplication app) {
     super.onAppAdded(context, app);
-    MyOsdRegistryRestImpl api = new MyOsdRegistryRestImpl();
-    RegUtils.reg(getBundleContext(), MyOsdRegistryRestImpl.class.getName(), api,null);
+    //MyOsdRegistryRestImpl api = new MyOsdRegistryRestImpl();
+    //RegUtils.reg(getBundleContext(), MyOsdRegistryRestImpl.class.getName(),
+    //    api, null);
   };
-  
 
   @Override
   protected String getName() {
