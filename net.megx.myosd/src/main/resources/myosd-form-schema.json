@@ -68,6 +68,7 @@
         "name": { 
           "title": "Name",
           "type": "string",
+          "pattern": "^[^0123456789;%#]*$",
           "required": true
         },
 
@@ -85,7 +86,9 @@
 
         "poastal_code": { 
           "title": "Poastal Code",
-          "type": "integer",
+          "type": "string",
+          "minLength": 4,
+          "pattern": "^[0-9]*$",
           "required": true
         },
 
@@ -110,6 +113,7 @@
         "name": { 
           "title": "Name",
           "type": "string",
+          "pattern": "^[^0123456789;%#]*$",
           "required": true
         },
 
@@ -129,14 +133,16 @@
 
         "poastal_code": { 
           "title": "Poastal Code",
-          "type": "integer",
+          "type": "string",
+          "minLength": 4,
+          "pattern": "^[0-9]*$",
           "required": true
         },
 
         "city": { 
           "title": "City Name",
           "type": "string",
-          "pattern": "[^0123456789]+",
+          "pattern": "^[^0123456789;%#]*$",
           "required": true
         }
       },
