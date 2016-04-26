@@ -8,5 +8,10 @@ public interface MyOsdDbService {
   
   public void saveParticipant(MyOsdParticipantRegistration participant);
   
+  public MyOsdParticipantRegistration participantByName(String name);
+  
+  public MyOsdParticipantRegistration participantByEmail(String email);
+  
+  public MyOsdParticipantRegistration participantByMyOsdId(int myOsdId);
   
 }

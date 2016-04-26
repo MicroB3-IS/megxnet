@@ -23,4 +23,46 @@ public class MyOsdDbServiceImpl extends BaseMegdbService implements MyOsdDbServi
     }
   }
 
+  @Override
+  public MyOsdParticipantRegistration participantByName(String name) {
+    SqlSession session = super.sessionFactory.openSession();
+    MyOsdParticipantRegistration p = null;
+    try {
+      MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
+      p = mapper.participantByName(name);
+      session.commit();
+    } finally {
+      session.close();
+    }
+    return p;
+  }
+
+  @Override
+  public MyOsdParticipantRegistration participantByEmail(String email) {
+    SqlSession session = super.sessionFactory.openSession();
+    MyOsdParticipantRegistration p = null;
+    try {
+      MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
+      p = mapper.participantByEmail(email);
+      session.commit();
+    } finally {
+      session.close();
+    }
+    return p;
+  }
+
+  @Override
+  public MyOsdParticipantRegistration participantByMyOsdId(int myOsdId) {
+    SqlSession session = super.sessionFactory.openSession();
+    MyOsdParticipantRegistration p = null;
+    try {
+      MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
+      p = mapper.participantByMyOsdId(myOsdId);
+      session.commit();
+    } finally {
+      session.close();
+    }
+    return p;
+  }
+
 }

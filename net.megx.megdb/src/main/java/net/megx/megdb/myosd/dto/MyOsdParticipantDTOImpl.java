@@ -7,7 +7,7 @@ import net.megx.megdb.myosd.MyOsdParticipantRegistration;
 public class MyOsdParticipantDTOImpl implements MyOsdParticipantRegistration {
 
   private int id;
-  private int myOsdId = 0;
+  private Integer myOsdId;
   private Date submitted;
   private Date modified;
   private String rawJson;
@@ -15,7 +15,7 @@ public class MyOsdParticipantDTOImpl implements MyOsdParticipantRegistration {
   private String email = "";
   private boolean isValidEmail = false;
 
-  private String placeName = "";
+  private String placeName = ""; 
   
   private String firstName = "";
 
@@ -166,7 +166,8 @@ public class MyOsdParticipantDTOImpl implements MyOsdParticipantRegistration {
     return this.email;
   }
 
-  private void setEmail(String email) {
+  @Override
+  public void setEmail(String email) {
     this.email = email;
   }
 
@@ -308,5 +309,7 @@ public class MyOsdParticipantDTOImpl implements MyOsdParticipantRegistration {
   public void setSenseboxAgree(boolean senseboxAgree) {
     this.senseboxAgree = senseboxAgree;
   }
+
+
 
 }

@@ -30,6 +30,8 @@ public interface MyOsdParticipantRegistration {
 
   public abstract String getEmail();
 
+  abstract void setEmail(String email);
+
   public abstract void setBothEmails(String email, String emailRepeat);
 
   public abstract boolean isValidEmail();
