@@ -72,21 +72,45 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     String contactHtml = "<p>Bitte schreib uns dazu an " + contactLink + "!<p>";
 
     ResponseBuilder b = null;
+    
+    
     if (!p.isValidEmail()) {
-      b = failure("Problem mit der email.",
+      b = failure("Ungleiche email Angaben.",
           "<p>Hast Du vielleicht nicht die selbe email eingegeben?</p>")
               ;
       return b.build();
     }
 
     try {
+      
+      MyOsdParticipantRegistration duplicate = null;
+      String dupMsg = "Doppelter Eintrag";
+      String prefix = "Hast Du Dich schon registriert? Wir haben schon einen Eintrag mit ";
+      duplicate = db.participantByEmail(p.getEmail());
+      if ( duplicate != null) {
+        b = failure(dupMsg, prefix + "der email: " + p.getEmail());
+        return b.build();
+      }
+      duplicate = db.participantByName(p.getUserName());
+      if ( duplicate != null) {
+        b = failure(dupMsg, prefix + "diesem Benutzernamen: " + p.getUserName());
+        return b.build();
+      }
+      
+      duplicate = db.participantByMyOsdId(p.getMyOsdId());
+      if ( duplicate != null ) {
+        b = failure(dupMsg, prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId());
+        return b.build();
+      }
+      
+      
       db.saveParticipant(p);
       b = success("Vielen Dank!");
       return b.build();
     } catch (Exception e) {
       // TODO Auto-generated catch block
-      log.error("Could save particpant", e);
-      b = failure("Ein Problem ist aufgetreten :(");
+      log.error("Could not save particpant", e);
+      b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);
     }
 
     if (b == null) {
