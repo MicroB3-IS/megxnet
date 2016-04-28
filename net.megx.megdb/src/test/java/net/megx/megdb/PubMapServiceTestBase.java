@@ -19,6 +19,7 @@ public class PubMapServiceTestBase extends MyBatisTestBase {
 		dbpms.setSqlSessionFactory(sqlSessionFactory);
 	    // cast to interface for better testing
 		pms = (PubMapService) dbpms;
+		pms.getAllArticles();
 	}
  
 	

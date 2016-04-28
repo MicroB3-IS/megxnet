@@ -1,0 +1,4 @@
+{
+  path: '$resources/net.megx.myosd',
+  exampleProperty: 'Example Val',
+}

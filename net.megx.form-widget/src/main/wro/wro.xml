@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <groups xmlns="http://www.isdc.ro/wro">
-
-  <group name='megx-form-widget-${project.version}.min'>
+ 
+  <group name='megx-form-widget-0.0.2-SNAPSHOT.min'>
     <js minimize="false">/src/main/web/net.megx.form-widget/js/moment.2.10.3.min.js</js>
     <js minimize="false">/src/main/web/net.megx.form-widget/js/bootstrap-datetimepicker.4.14.30.min.js</js>
     <js minimize="false">/src/main/web/net.megx.form-widget/js/handlebars.3.0.3.min.js</js>
     <js minimize="false">/src/main/web/net.megx.form-widget/js/alpaca.1.5.9.min.js</js>
-    <js>/src/main/web/net.megx.form-widget/js/megx-form-widget.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/megx-form-widget.js</js>
 
     <!-- MEGX specific styling -->
     <css minimize="false">/src/main/web/net.megx.form-widget/css/alpaca.1.5.9.min.css</css>
+    <css minimize="false">/src/main/web/net.megx.form-widget/css/bootstrap-datetimepicker.4.14.30.min.css</css>
+    <css>/src/main/web/net.megx.form-widget/css/megx-form-widget.css</css>
+  </group>
+  
+    <group name='megx-form-widget-${project.version}.min'>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/moment.2.10.3.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/bootstrap-datetimepicker.4.14.30.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/handlebars-v4.0.5.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/alpaca.1.5.17.min.js</js>
+    <js minimize="false">/src/main/web/net.megx.form-widget/js/megx-form-widget.js</js>
+
+    <!-- MEGX specific styling -->
+    <css minimize="false">/src/main/web/net.megx.form-widget/css/alpaca.1.5.17.min.css</css>
     <css minimize="false">/src/main/web/net.megx.form-widget/css/bootstrap-datetimepicker.4.14.30.min.css</css>
     <css>/src/main/web/net.megx.form-widget/css/megx-form-widget.css</css>
   </group>

@@ -1,13 +1,13 @@
+// root namespace
+Megx = Megx || {};
+
 Megx.FormWidget = function(cfg) {
-  jQuery(
-      "<div id='"
-          + cfg.target
-          + "-loading-animation'><span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> Loading form</div>")
-      .insertBefore("#" + cfg.target);
-  Alpaca.logLevel = Alpaca.ERROR;
+  // add to static context, cause need to have access from static Alpaca
+  // context
   Megx.FormWidget.cfg = cfg;
-  this.renderForm(cfg);
-}
+
+};
+
 
 Megx.FormWidget.prototype.submitForm = function(field) {
 
@@ -31,7 +31,8 @@ Megx.FormWidget.prototype.submitForm = function(field) {
 
     var submitButton;
     if (Megx.FormWidget.cfg.wizard) {
-      submitButton = jQuery('button[data-alpaca-wizard-button-key="submit"]', id);
+      submitButton = jQuery('button[data-alpaca-wizard-button-key="submit"]',
+          id);
     } else {
       submitButton = jQuery('button[type="submit"]', id);
     }
@@ -90,12 +91,15 @@ Megx.FormWidget.prototype.submitForm = function(field) {
         });
       }
     });
-    jQuery("#" + Megx.FormWidget.cfg.target + "-loading-animation").remove();
+
   }
 }
 
-Megx.FormWidget.prototype.renderForm = function(cfg) {
+Megx.FormWidget.prototype.renderForm = function() {
   var self = this;
+
+  // gettting config from static context
+  var cfg = Megx.FormWidget.cfg;
 
   var alpacaOptions = {
     "optionsSource" : cfg.optionsLocation,
@@ -118,12 +122,30 @@ Megx.FormWidget.prototype.renderForm = function(cfg) {
   } else {
     alpacaOptions.postRender = self.submitForm;
   }
+
+  if (typeof cfg.layout != "undefined" && cfg.layout) {
+    alpacaOptions.view.layout = cfg.layout;
+  }
   
+  if (typeof cfg.locale != "undefined" && cfg.locale) {
+
+    alpacaOptions.view.locale = cfg.locale;
+  }
+
   // pre-fill form if datasource is given
   if (cfg.data) {
     alpacaOptions.data = cfg.data;
   }
-
+  // add loading animation
+  var animId = cfg.target + "-loading-animation";
+  jQuery(
+      '<div id="'
+          + animId
+          + '"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading form</div>')
+      .insertBefore("#" + cfg.target);
+  // actual loading of alpaca based form
+  Alpaca.logLevel = Alpaca.ERROR;
   jQuery("#" + cfg.target).alpaca(alpacaOptions);
+  jQuery("#" + animId).remove();
 
 }

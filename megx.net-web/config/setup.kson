@@ -1,4 +1,7 @@
-www={type:'sys.public'}
+www={type:'sys.public'} 
+	myosd={type: 'unknown', title: 'My Ocean Sampling Day'}
+		2016={type: 'unknown', title: 'My Ocean Sampling Day 2016'}
+			    registration.html={type: 'html', template: 'net.megx.myosd/2016/registration.html', baseTemplate: 'base-bootstrap.html', title:'MyOSD Registrierung', hasForm: true}
 	gms={type: 'html', template: 'pages/gms.html', baseTemplate: 'base-bootstrap.html', hasMap: true, title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type: 'html', template: 'net.megx.blast/megx-blast-submission.html'}
 			job={type:'html', template:'net.megx.blast/running.html', title: 'Running'}

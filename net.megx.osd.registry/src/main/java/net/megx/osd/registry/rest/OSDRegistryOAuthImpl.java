@@ -78,6 +78,12 @@ public class OSDRegistryOAuthImpl extends BaseRestService {
           Response.Status.INTERNAL_SERVER_ERROR);
     }
   }
+  
+  @Path("hello")
+  @GET
+  public String hi() {
+    return "hi, warum get das?";
+  }
 
   /*
    * (non-Javadoc)

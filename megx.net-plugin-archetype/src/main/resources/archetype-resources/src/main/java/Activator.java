@@ -19,4 +19,10 @@ public class Activator extends ${chon_activator} {
         return "${artifactId}";
     }
 
+    @Override
+    protected void registerExtensions( JCRApplication app ) {
+        log.debug("${plugin_name} Starting up...");
+    }
+
+
 }

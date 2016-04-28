@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.megx.megdb.myosd.impl.MyOsdMyBatisMapper">
+
+
+  <sql id="allParticipantColumns">raw, email, user_name, myosd_id, schema_version</sql>
+  <sql id="table">myosd.registrations</sql>
+
+  <insert id="saveParticipant" parameterType="net.megx.megdb.myosd.MyOsdParticipantRegistration">
+    insert into myosd.registrations (
+    raw, email, user_name,
+    <if test="myOsdId > 270">myosd_id,</if>
+    schema_version
+    ) VALUES (
+    #{rawJson}::json, #{email}::text,
+    #{userName},
+    <if test="myOsdId > 270">#{myOsdId}::integer,</if>
+    #{version}::integer
+    )
+  </insert>
+
+  <resultMap id="participantResultMap" type="net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl">
+    <id property="id" column="id" />
+    <result property="myOsdId" column="myosd_id" />
+    <result property="email" column="email" />
+    <result property="userName" column="user_name" />
+    <result property="version" column="schema_version" />
+    <result property="rawJson" column="raw" />
+    <result column="submitted" property="submitted" />
+    <result column="modified" property="modified" />
+  </resultMap>
+
+  <select id="participantByName" parameterType="String"
+    resultMap="participantResultMap">
+    select
+    <include refid="allParticipantColumns" />
+    FROM <include refid="table"/>
+    WHERE user_name = #{name}
+  </select>
+
+
+  <select id="participantByEmail" parameterType="String"
+    resultMap="participantResultMap">
+    select
+    <include refid="allParticipantColumns" />
+    FROM <include refid="table"/>
+    WHERE email = #{email}
+  </select>
+  
+    <select id="participantByMyOsdId" parameterType="int"
+    resultMap="participantResultMap">
+    select
+    <include refid="allParticipantColumns" />
+    FROM <include refid="table"/>
+    WHERE myosd_id = #{myOsdId}
+  </select>
+
+</mapper>

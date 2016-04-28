@@ -11,7 +11,7 @@
 
   <groupId>net.megx</groupId>
   <artifactId>net.megx.form-widget</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <name>net.megx.form-widget</name>
 

@@ -14,6 +14,15 @@
 	border-radius: 5px; 
 }
 
+#myosdMap{
+  width: 455px;
+  height: 570px;
+  
+  margin-right: auto;
+  border: 1px solid;
+  border-color: lightgrey; 
+  border-radius: 5px; 
+}
 #layersAccordion{
 	padding-top: 20px;
 	margin-bottom: 20px;

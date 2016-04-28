@@ -1,0 +1,1 @@
+This directorie contains configuration specific for developers. Git ignores any other File in this directory, so that no specific configuration file in this directory gets commited to the repository
