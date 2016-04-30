@@ -779,6 +779,7 @@
         </plugins>
       </build>
     </profile>
+    
     <profile>
       <id>default</id>
       <properties>
@@ -793,9 +794,11 @@
       <activation>
         <activeByDefault>false</activeByDefault>
         <file>
-          <!-- Do not use ${profile.filter.file} in this section. During 
-            profile activation only system properties are available but no maven properties. 
-            Profile will silently always be activated if file is missing. -->
+          <!-- Do not use ${profile.filter.file} in this
+               section. During profile activation only system
+               properties are available but no maven properties.
+               Otherwise this profile will silently ALWAYS be activated if file is
+               missing. -->
           <missing>../config/developer/${user.name}.properties</missing>
         </file>
       </activation>
@@ -831,9 +834,10 @@
       <activation>
         <activeByDefault>false</activeByDefault>
         <file>
-          <!-- Do not use ${profile.filter.file} in this section. During 
-            profile activation only system properties are available but no maven properties. 
-            Profile will silently never be activated. -->
+          <!-- Do not use ${profile.filter.file} in this
+               section. During profile activation only system
+               properties are available but no maven properties.
+               Otherwiese this profile will silently NEVER be activated. -->
           <exists>../config/developer/${user.name}.properties</exists>
         </file>
       </activation>
