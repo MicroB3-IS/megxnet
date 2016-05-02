@@ -195,7 +195,7 @@
             </goals>
             <configuration>
               <appendAssemblyId>false</appendAssemblyId>
-              <finalName>${project.artifactId}_assembled_workdir</finalName>
+              <finalName>${megx.work.dir.name}</finalName>
               <descriptors>
                 <descriptor>src/assembly/bin.xml</descriptor>
               </descriptors>
