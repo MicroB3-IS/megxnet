@@ -85,12 +85,8 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
       
       MyOsdParticipantRegistration duplicate = null;
       String dupMsg = "Doppelter Eintrag";
-      String prefix = "Hast Du Dich schon registriert? Wir haben schon einen Eintrag mit ";
-      duplicate = db.participantByEmail(p.getEmail());
-      if ( duplicate != null) {
-        b = failure(dupMsg, prefix + "der email: " + p.getEmail());
-        return b.build();
-      }
+      String prefix = "Wir haben schon einen Eintrag mit ";
+
       duplicate = db.participantByName(p.getUserName());
       if ( duplicate != null) {
         b = failure(dupMsg, prefix + "diesem Benutzernamen: " + p.getUserName());
