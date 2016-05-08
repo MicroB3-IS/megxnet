@@ -749,6 +749,7 @@
         <profile.filter.file>${profile.filter.dir}/prod.properties</profile.filter.file>
         <profile.config.dir>${project.basedir}/../config</profile.config.dir>
         <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
+        <megx.work.dir.name>megx-${env}-workdir</megx.work.dir.name>
       </properties>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -785,6 +786,7 @@
         <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
         <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
         <profile.filter.file>${profile.config.dir}/developer/${user.name}.properties</profile.filter.file>
+        <megx.work.dir.name>megx-${env}-workdir</megx.work.dir.name>
       </properties>
       <activation>
         <activeByDefault>false</activeByDefault>
