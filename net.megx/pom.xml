@@ -37,8 +37,10 @@
     <tycho.groupid>org.eclipse.tycho</tycho.groupid>
     <wagon.version>2.5</wagon.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <!-- all user defined properties get the mvn prefix -->
+    <profile.filter.file>${basedir}/../config/megx.properties</profile.filter.file>
+    <skipTests>true</skipTests>
+    <env>demo</env>
+    <megx.work.dir.name>megx-${env}-workdir</megx.work.dir.name>
 
     <!-- If failed copy of bundle to plugins dir should fail the maven build -->
     <mvn.ant.failonerror>true</mvn.ant.failonerror>
@@ -469,9 +471,6 @@
         </plugin>
 
 
-
-
-
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
@@ -494,17 +493,13 @@
                   number or
                   -SNAPSHOT.</regexMessage>
               </requireProperty>
-              <evaluateBeanshell>
-                <message><![CDATA[Only one of the three build profiles 'prod', 'default', and 'developer' must be active. To build for production use -P 'prod,!developer,!default']]></message>
-                <condition><![CDATA[
-                                    int count = 0;
-                                    count += Boolean.valueOf("${profile.default.active}")   ? 1 : 0;
-                                    count += Boolean.valueOf("${profile.prod.active}")      ? 1 : 0;
-                                    count += Boolean.valueOf("${profile.developer.active}") ? 1 : 0;
-                                    count == 1;
-                                    ]]>
-                </condition>
-              </evaluateBeanshell>
+              <requireFilesExist>
+                <message>${profile.filter.file}
+                  must exist.</message>
+                <files>
+                  <file>${profile.filter.file}</file>
+                </files>
+              </requireFilesExist>
             </rules>
             <fail>true</fail>
           </configuration>
@@ -748,9 +743,8 @@
 
   <profiles>
     <profile>
-      <id>prod</id>
+      <id>production</id>
       <properties>
-        <profile.prod.active>true</profile.prod.active>
         <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
         <profile.filter.file>${profile.filter.dir}/prod.properties</profile.filter.file>
         <profile.config.dir>${project.basedir}/../config</profile.config.dir>
@@ -758,6 +752,10 @@
       </properties>
       <activation>
         <activeByDefault>false</activeByDefault>
+        <property>
+          <name>env</name>
+          <value>prod</value>
+        </property>
       </activation>
       <build>
         <plugins>
@@ -779,50 +777,10 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>default</id>
-      <properties>
-        <profile.default.active>true</profile.default.active>
-        <profile.config.dir>${project.basedir}/../config</profile.config.dir>
-        <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
-        <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
-        <profile.filter.file>${profile.filter.dir}/default.properties</profile.filter.file>
-      </properties>
-      <!-- This profile only gets automatically activated if a user specific 
-        properties file is missing -->
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <file>
-          <!-- Do not use ${profile.filter.file} in this section. During 
-            profile activation only system properties are available but no maven properties. 
-            Profile will silently always be activated if file is missing. -->
-          <missing>../config/developer/${user.name}.properties</missing>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <configuration>
-              <rules combine.children="append">
-                <requireFilesExist>
-                  <message>${profile.filter.file}
-                    must exist.</message>
-                  <files>
-                    <file>${profile.filter.file}</file>
-                  </files>
-                </requireFilesExist>
-              </rules>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
+
     <profile>
       <id>developer</id>
       <properties>
-        <profile.developer.active>true</profile.developer.active>
         <profile.config.dir>${project.basedir}/../config</profile.config.dir>
         <profile.checkstyle.file>${profile.config.dir}/megx_checks.xml</profile.checkstyle.file>
         <profile.filter.dir>${project.basedir}/../config</profile.filter.dir>
@@ -830,12 +788,10 @@
       </properties>
       <activation>
         <activeByDefault>false</activeByDefault>
-        <file>
-          <!-- Do not use ${profile.filter.file} in this section. During 
-            profile activation only system properties are available but no maven properties. 
-            Profile will silently never be activated. -->
-          <exists>../config/developer/${user.name}.properties</exists>
-        </file>
+        <property>
+          <name>env</name>
+          <value>dev</value>
+        </property>
       </activation>
       <build>
         <plugins>

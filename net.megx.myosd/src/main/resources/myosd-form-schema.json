@@ -12,17 +12,20 @@
 
     "firstname": { 
       "type": "string",
+      "pattern": "^[^0123456789;%#]*$",
       "required": true
     },
 
     "lastname": { 
       "type": "string",
+      "pattern": "^[^0123456789;%#]*$",
       "required": true
     },
 
     "username": { 
       "type": "string",
-      "required": true
+      "required": true,
+      "minLength": 2
     },
     "email": { 
       "type": "string",

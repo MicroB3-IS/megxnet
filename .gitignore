@@ -1,4 +1,9 @@
-*.settings
+.metadata
+tmp/
+*.tmp
+*.bak
+*.swp
+.settings/
 *.project
 *.classpath
 target/
@@ -12,7 +17,8 @@ target/
 config/prod.properties
 config/developer/**
 !config/developer/README
-## misc undiesered files
+
+## misc undesired files
 net.megx.esa/res/net.megx.esa/data/esa_options.json
 net.megx.mibig/res/net.megx.mibig/data/mibig_options.json
 net.megx.myosd/res/net.megx.myosd/myosd-form-schema.json

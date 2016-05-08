@@ -1,7 +1,7 @@
 { 
   "renderForm": true,
   "toolbarSticky": true,
-  "form": { 
+  "form": {  
     "toggleSubmitValidState": true,
     "attributes": { 
       "method": "post",
@@ -42,7 +42,7 @@
 
     "username": { 
       "label": "Benutzername",
-      "type": "personalname",
+      "id": "username",
       "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Bitte gib einen Benutzernamen ein.",
@@ -54,6 +54,7 @@
 
     "email": { 
       "label": "E-Mail Adresse",
+      "id": "email",
       "disallowOnlyEmptySpaces": true,
       "type": "email",
       "size": 20,
@@ -66,6 +67,7 @@
       "disallowOnlyEmptySpaces": true,
       "size": 20,
       "helper": "Um sicher zu gehen, dass wir Deine richtige Adresse bekommen!"
+      
     },
 
     "kit": { 
@@ -184,6 +186,7 @@
 
     "kit_num": { 
       "label": "MyOSD Sampling Kit Nummer",
+      "id" : "kit_num",
       "helper": "Bitte trage Deine MyOSD Sampling Kit Nummer ein. Diese findest Du auf den Aufklebern im Kit.",
       "placeholder": "200",
       "dependencies": { 

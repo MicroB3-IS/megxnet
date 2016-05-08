@@ -1,5 +1,7 @@
 package net.megx.megdb.myosd;
 
+import net.megx.megdb.myosd.impl.MyOsdMyBatisMapper;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 
 public interface MyOsdDbService {

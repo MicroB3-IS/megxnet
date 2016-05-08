@@ -37,7 +37,6 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     this.db = myOsdDbService;
   }
 
-
   @Path("participants")
   @GET
   public String getAllParticipants() {
@@ -72,38 +71,32 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     String contactHtml = "<p>Bitte schreib uns dazu an " + contactLink + "!<p>";
 
     ResponseBuilder b = null;
-    
-    
+
     if (!p.isValidEmail()) {
       b = failure("Ungleiche email Angaben.",
-          "<p>Hast Du vielleicht nicht die selbe email eingegeben?</p>")
-              ;
+          "<p>Hast Du vielleicht nicht die selbe email eingegeben?</p>");
       return b.build();
     }
 
     try {
-      
+
       MyOsdParticipantRegistration duplicate = null;
       String dupMsg = "Doppelter Eintrag";
-      String prefix = "Hast Du Dich schon registriert? Wir haben schon einen Eintrag mit ";
-      duplicate = db.participantByEmail(p.getEmail());
-      if ( duplicate != null) {
-        b = failure(dupMsg, prefix + "der email: " + p.getEmail());
-        return b.build();
-      }
+      String prefix = "Wir haben schon einen Eintrag mit ";
+
       duplicate = db.participantByName(p.getUserName());
-      if ( duplicate != null) {
-        b = failure(dupMsg, prefix + "diesem Benutzernamen: " + p.getUserName());
+      if (duplicate != null) {
+        b = failure(dupMsg, prefix + "diesem Benutzernamen: " + p.getUserName(), "dup_username");
         return b.build();
       }
-      
+
       duplicate = db.participantByMyOsdId(p.getMyOsdId());
-      if ( duplicate != null ) {
-        b = failure(dupMsg, prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId());
+      if (duplicate != null) {
+        b = failure(dupMsg,
+            prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId(), "dup_myosd_id");
         return b.build();
       }
-      
-      
+
       db.saveParticipant(p);
       b = success("Vielen Dank!");
       return b.build();
@@ -121,19 +114,24 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
 
   private ResponseBuilder success(String message) {
     return Response.ok().entity(
-        toJSON(new FormWidgetResult(false, message, null)));
+        toJSON(new FormWidgetResult(false, message,
+            FormWidgetResult.NO_REDIRECT)));
   }
 
   private ResponseBuilder failure(String message) {
-    return Response.status(Status.BAD_REQUEST).entity(
-        toJSON(new FormWidgetResult(true, message, null)));
+    return failure(null, message, null);
 
   }
 
   private ResponseBuilder failure(String title, String message) {
-    return Response.status(Status.BAD_REQUEST).entity(
-        toJSON(new FormWidgetResult(true, message, null, title)));
+    return failure(title, message, null);
+  }
 
+  private ResponseBuilder failure(String title, String message,
+      String dataErrorCode) {
+    return Response.status(Status.BAD_REQUEST).entity(
+        toJSON(new FormWidgetResult(true, message,
+            FormWidgetResult.NO_REDIRECT, title, dataErrorCode)));
   }
 
 }
