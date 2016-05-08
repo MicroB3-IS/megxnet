@@ -225,7 +225,7 @@ a.olControlZoomOut {
               }, speed);
             }
 
-            //no erver errors at beginning
+            //no server errors at beginning
             Megx.myosd.serverError.userName = false;
 
             Megx.myosd.termsAgreeFieldValidator = function(callback) {
@@ -308,21 +308,29 @@ a.olControlZoomOut {
               var userNameField = field.childrenByPropertyId["username"];
               if (userNameField.options) {
                 userNameField.options.validator = Megx.myosd.userNameFieldValidator;
-                userNameField.on("change", function() {
+                var vf = function() {
                   Megx.myosd.serverError.userName = false;
                   this.isValid(true);
                   this.refreshValidationState(true);
-                });
+                  form.enableSubmitButton();
+
+                }
+                userNameField.on("change", vf);
+                userNameField.on("blur", vf);
               }
 
               var kitNumField = field.childrenByPropertyId["kit_num"];
               if (kitNumField.options) {
                 kitNumField.options.validator = Megx.myosd.kitNumFieldValidator;
-                kitNumField.on("change", function() {
+                var vf = function() {
                   Megx.myosd.serverError.kitNum = false;
                   this.isValid(true);
                   this.refreshValidationState(true);
-                });
+                  form.enableSubmitButton();
+
+                }
+                kitNumField.on("change", vf);
+                kitNumField.on("blur", vf);
               }
 
               if (form) {

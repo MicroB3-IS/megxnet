@@ -24,7 +24,8 @@
 
     "username": { 
       "type": "string",
-      "required": true
+      "required": true,
+      "minLength": 2
     },
     "email": { 
       "type": "string",
