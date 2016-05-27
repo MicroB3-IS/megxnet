@@ -134,7 +134,7 @@ nav#main-menu {
     padding-bottom: 2em;
 }
 
-a[href*="//"]:before {
+a[href^="http"]:before {
     /* external link styles*/
     content: "\f08e";
     padding-right: 4pt;
@@ -155,7 +155,7 @@ a.no-before:before {
     padding-left: .5em;
 }
 
-.fa-after:after, .fa-before:before, a[href*="//"]:before {
+.fa-after:after, .fa-before:before, a[href^="http"]:before {
     display: inline-block;
     font-family: FontAwesome;
     font-style: normal;
