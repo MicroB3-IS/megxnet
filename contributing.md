@@ -20,12 +20,14 @@ Below we describe our development model when Git is used as a code repository.
 
 ## Main branches
 
+
 At the core, the development model is greatly inspired by existing
 models out there. The central repo holds two main branches with an
 **infinite** lifetime:
 
 * master
 * develop
+
 
 We consider **origin/master** to be the **main** branch where the
 source code of HEAD always reflects a **production-ready** state.
@@ -52,6 +54,7 @@ for production releases and to assist in quickly fixing live
 production problems. Unlike the main branches, these branches always
 have a **limited** life time, since they will be **removed**
 eventually.
+
 
 ## Supporting branches
 The different types of branches we may use are:
@@ -86,6 +89,7 @@ branch. We consider it best practice to name your feature branch after
 the **ticket** you're currently working on (i.e MB3_IS-665, in case
 you're using _Jira_ issue tracking system).
 
+
 ```
 $ git checkout -b MB3_IS-665 develop
 Switched to a new branch "MB3_IS-665"
@@ -93,6 +97,7 @@ Switched to a new branch "MB3_IS-665"
 
 Finished features may be **merged** into the **develop** branch
 definitely add them to the upcoming release:
+
 
 ```
 $ git checkout develop
