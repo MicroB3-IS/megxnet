@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,18 @@ import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openid4java.association.AssociationException;
@@ -348,7 +357,131 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	}
 	
-	private static class GoogleLoginProvider extends BaseLoginProvider{
+	private class GoogleLoginProvider extends BaseLoginProvider{
+		
+		private static final String CFG_AUTH_URI = "api.auth.uri";
+		private static final String ATTR_STATE = "GoogleLoginProvider.STATE";
+		private static final String CFG_ACCESS_TOKEN_URL = "access.token.url";
+		private static final String CFG_USER_INFO_URL = "user.info.url";
+		
+		@Override
+		public void initialize(Map<String, String> config, String provider) {
+			super.initialize(config, provider);
+			
+		}
+		
+		@Override
+		public void processExternalLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, StopFilterException, SecurityException {
+			if(keySecretProvider == null){
+				throw new SecurityException("KeySecretProvider service is not yet available!", HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+			}
+			String state = keySecretProvider.getRandomSequence(24);
+			String oauthUrl = new StringBuilder().append(config.get(CFG_AUTH_URI))
+					.append("?client_id=").append(config.get(CFG_APP_KEY)) // the client id from the api console registration
+					.append("&response_type=code")
+					.append("&scope=openid%20email") // scope is the api permissions we are requesting
+					.append("&redirect_uri=").append(getCallbackUrl(request)) // the servlet that google redirects to after authorization
+					.append("&state=")
+					.append(state)//this can be anything to help correlate the response
+					.append("&access_type=offline") // here we are asking to access to user's data while they are not signed in
+					.append("&approval_prompt=force") // this requires them to verify which account to use, if they are already signed in
+					.toString(); 
+			putInSession(request, ATTR_STATE, state);
+				
+			response.sendRedirect(oauthUrl);
+			throw new StopFilterException();
+		}
+
+		@Override
+		public void processLoginCallback(HttpServletRequest request,
+				HttpServletResponse response) throws IOException, ServletException,
+				SecurityException, StopFilterException {
+			String state = getFromSession(request, ATTR_STATE);
+			if(state == null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			String error = request.getParameter("error");
+			if(error != null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			String retrievedState = request.getParameter("state");
+			if(retrievedState == null || !state.equals(retrievedState)){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			
+			// google returns a code that can be exchanged for a access token
+			String code = request.getParameter("code");
+			Map<String,String> bodyMap = new HashMap<String,String>();
+			bodyMap.put("code", code);
+			bodyMap.put("client_id", config.get(CFG_APP_KEY));
+			bodyMap.put("client_secret", config.get(CFG_APP_SECRET));
+			bodyMap.put("redirect_uri", getCallbackUrl(request, true));
+			bodyMap.put("grant_type", "authorization_code");
+			// get the access token by post to Google
+			String body = post(config.get(CFG_USER_INFO_URL), bodyMap);
+			
+			JSONObject jsonObject = null;
+			String accessToken = null;
+			
+			try{
+				jsonObject = new JSONObject(body);
+				accessToken = (String) jsonObject.get("access_token");
+			} catch (JSONException e){
+				throw new ServletException(e);
+			}
+			
+			String json = get(new StringBuilder(config.get(CFG_ACCESS_TOKEN_URL)).append(accessToken).toString());
+			try {
+				JSONObject user = new JSONObject(json);
+				request.setAttribute("logname", user.optString("id"));
+				request.setAttribute("firstName", user.optString("given_name"));
+				request.setAttribute("lastName", user.optString("family_name"));
+				request.setAttribute("email", user.optString("email"));
+				request.setAttribute("externalId", user.getString("id"));
+			} catch (JSONException e) {
+				log.debug(e);
+				throw new SecurityException(e);
+			}
+
+		}
+		
+		public String get(String url) throws ClientProtocolException, IOException, SecurityException {
+			return execute(new HttpGet(url));
+		}
+		
+		// makes a POST request to url with form parameters and returns body as a string
+		public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException, SecurityException {	
+			HttpPost request = new HttpPost(url);
+				
+			List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+			
+			for (String key : formParameters.keySet()) {
+				nvps.add(new BasicNameValuePair(key, formParameters.get(key)));	
+			}
+
+			request.setEntity(new UrlEncodedFormEntity(nvps));
+			
+			return execute(request);
+		}
+		
+		// makes request and checks response code for 200
+		private String execute(HttpRequestBase request) throws ClientProtocolException, IOException, SecurityException {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpResponse response = httpClient.execute(request);
+		    
+			HttpEntity entity = response.getEntity();
+		    String body = EntityUtils.toString(entity);
+
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new SecurityException("Expected 200 but got " + response.getStatusLine().getStatusCode() + ", with body " + body, HttpServletResponse.SC_UNAUTHORIZED);
+			}
+
+		    return body;
+		}
+		
+	}
+	
+	/** private static class GoogleLoginProvider extends BaseLoginProvider{
 		
 		private ConsumerManager consumerManager;
 		
@@ -465,7 +598,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		    }
 		}
 		
-	}
+	} **/
 
 	
 	private class FacebookLoginProvider extends BaseLoginProvider{
