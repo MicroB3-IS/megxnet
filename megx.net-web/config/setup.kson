@@ -1,13 +1,12 @@
-www={type:'sys.public'} 
+www={type:'sys.public'}
 	myosd={type: 'unknown', title: 'My Ocean Sampling Day'}
 		2016={type: 'unknown', title: 'My Ocean Sampling Day 2016'}
-			    registration.html={type: 'html', template: 'net.megx.myosd/2016/registration.html', baseTemplate: 'base-bootstrap.html', title:'MyOSD Registrierung', hasForm: true}
+					registration.html={type: 'html', template: 'net.megx.myosd/2016/registration.html', baseTemplate: 'base-bootstrap.html', title:'MyOSD Registrierung', hasForm: true}
 	gms={type: 'html', template: 'pages/gms.html', baseTemplate: 'base-bootstrap.html', hasMap: true, title: ".:: Genes Mapserver - Home ::." }
 		geographic-blast={type: 'html', template: 'net.megx.blast/megx-blast-submission.html'}
 			job={type:'html', template:'net.megx.blast/running.html', title: 'Running'}
 			result={type:'html', template:'net.megx.blast/blast-result.html', title: 'Blast Results'}
 		geographic-pfam={type:'html', template:'net.megx.geo.pfam/index.html', title:'Geographic PFAM'}
-
 		tools={type: 'category', title: '.:: megx.net - GIS tools ::.'}
 			woa.html={type: 'megx.module.woa', title: ".:: megx.net - GIS tools -- WOA05 Interpolator ::."}
 			woa.csv={type: 'megx.module.woa'}
@@ -15,10 +14,8 @@ www={type:'sys.public'}
 			wod.csv={type: 'megx.module.wod'}
 	feed={type: 'category'}
 		megxnet-news.xml={type:'rss'}
-	
 	oauth={type:'html', template:'security-filter/oauth/oauth.html'}
 		authorize={type:'megx.module.oauth.authorize', title:'Application Authorization'}
-		
 	login={type:'html', template:'security-filter/login.html', baseTemplate: 'base-bootstrap.html', title:'Login'}
 	register={type:'html', template:'security-filter/register.html', title:'Create Account'}
 		doRegistration={type: 'megx.module.login.registration', title: 'Account Created'}
@@ -59,6 +56,9 @@ www={type:'sys.public'}
 		samples={type:'html', template:'net.megx.mg-traits/metagenomicSamples.html', baseTemplate: 'base-bootstrap.html', hasTable: true, title:'Simple Traits'}
 		sampleDetails={type:'html', template:'net.megx.mg-traits/metagenomeDetails.html', title:'Metagenome description'}
 		traits-summary={type:'html', template:'net.megx.mg-traits/traitsScatterplot.html', title:'Traits Summary'}
+	edutainment={type:'html', template:'pages/edutainment/overview.html', baseTemplate:'base-bootstrap.html', title:'Edutainment Section'}
+		genome-explorer={type:'html', template:'pages/edutainment/genome-explorer/englisch-version.html', baseTemplate:'base-bootstrap.html', title:'Genome Explorer'}
+			de={type:'html', template:'pages/edutainment/genome-explorer/german-version.html', baseTemplate:'base-bootstrap.html', title:'Genom Explorer'}
 	contact={type:'html',template:'net.megx.contact/contact.html',baseTemplate:'base-bootstrap.html', hasForm: true, title:'Contact'}
 	portal={type: 'unknown'}
 		about={type:'html',template:'pages/info/about.html', baseTemplate:'base-bootstrap.html',title:'About'}
@@ -75,15 +75,14 @@ www={type:'sys.public'}
 		metagenomes={type:'html', template:'net.megx.ws.browse/metagenomesTable.html', baseTemplate:'base-bootstrap.html', hasTable: true, title:'Metagenomes'}
 		marker-genes={type:'html', template:'net.megx.ws.browse/markerGenesTable.html', baseTemplate:'base-bootstrap.html', hasTable: true, title:'Marker Genes'}
 		sites={type:'html', template:'net.megx.ws.browse/samplingSitesTable.html', baseTemplate:'base-bootstrap.html', hasTable: true, title:'Sampling Sites'}
-	tools={type:'html', template:'pages/tools/tools.html', baseTemplate:'base-bootstrap.html', title:'GIS Tools'}	
-	edutainment={type:'html', template:'pages/edutainment/edutainment.html', baseTemplate:'base-bootstrap.html', title:'Edutainment'}	
+	tools={type:'html', template:'pages/tools/tools.html', baseTemplate:'base-bootstrap.html', title:'GIS Tools'}
 home={type:'sys.home'}
 	jveljanovski={type:'user'}
 	rkottman={type:'user'}
 	guest={type:'user'}
 	jveljan.gmail.com={type:'user'}
 	pjonoski={type:'user'}
-	
+
 root={type:'sys.root'}
 
 usr={type:'sys.usr'}
@@ -127,13 +126,13 @@ etc={type:'sys.etc'}
 			default.properties={type: 'config', template: 'pages/category.html'}
 		nt:file={type:'typeDesc', renderer: 'org.chon.cms.model.renderers.FileNodeRenderer', contentNode: 'org.chon.cms.core.model.types.FileContentNode'}
 			default.properties={type: 'config'}
-			
+
 		menu.item.category={type:'typeDesc'}
 		menu.item.local={type:'typeDesc'}
 		menu.item.external={type:'typeDesc'}
-		
+
 		unknown={type:'typeDesc'}
-		
+
 		megx.module.oauth.authorize={bubbleToParent: false, type: 'typeDesc', renderer: 'net.megx.security.filter.http.TemplatePageRenderer', contentNode: 'net.megx.security.filter.http.impl.AuthorizePageNode'}
 		megx.module.login.registration={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.RegisterPageNode'}
 		megx.error.page={type:'typeDesc', renderer:'net.megx.security.filter.http.TemplatePageRenderer',contentNode:'net.megx.security.filter.http.impl.ExceptionPageNode'}
