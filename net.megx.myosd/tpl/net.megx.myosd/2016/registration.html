@@ -91,7 +91,7 @@ a.olControlZoomOut {
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercProjection = new OpenLayers.Projection("EPSG:900913");
 
-              // create a WKT reader/parser/writer          
+              // create a WKT reader/parser/writer
               var wkt = new OpenLayers.Format.WKT();
 
               // write out the feature's geometry in WKT format
@@ -126,8 +126,8 @@ a.olControlZoomOut {
             }
 
             Megx.myosd.mapCreate = function() {
-              var fromProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
-              var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+              var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
+              var mercatorProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 
               var left = 6;
               var bottom = 47.3;
@@ -135,17 +135,46 @@ a.olControlZoomOut {
               var top = 55.1;
 
               var extent = new OpenLayers.Bounds(left, bottom, right, top)
-                  .transform(fromProjection, toProjection);
+                  .transform(wgsProjection, mercatorProjection);
 
               var options = {
                 //maxExtent : extent,
-                displayProjection : fromProjection,
+                displayProjection : wgsProjection,
+                projection : mercatorProjection,
                 restrictedExtent : extent,
               };
 
               map = new OpenLayers.Map("myosdMap", options);
 
               var newLayer = new OpenLayers.Layer.OSM("OSM Layer");
+
+              var myOsdStyle = new OpenLayers.StyleMap({
+                "default" : new OpenLayers.Style({
+                  fillColor : "#336699",
+                  fillOpacity : 0.8,
+                  strokeColor : "#336699",
+                  strokeOpacity : 0.8,
+                  pointRadius: 6
+                })
+              });
+
+              var myosdLayer = new OpenLayers.Layer.Vector("WFS", {
+                projection : wgsProjection,
+                styleMap: myOsdStyle,
+                strategies : [ new OpenLayers.Strategy.BBOX() ],
+                protocol : new OpenLayers.Protocol.WFS({
+                  url : "${ext.megx.gmsBaseUrl}/gms",
+                  version : "1.0.0",
+                  geometryName : "geom",
+                  featureType : "myosd-registry",
+                  srsName : "EPSG:900913",
+                  featurePrefix : "ms",
+                  featureNS : "http://mapserver.gis.umn.edu/mapserver"
+                //featureNS : "http://mapserver.gis.umn.edu/mapserver"
+                })
+
+              });
+
               var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
                 projection : map.displayProjection,
                 eventListeners : {
@@ -169,7 +198,7 @@ a.olControlZoomOut {
                 'featureselected' : Megx.myosd.mapEventHandler,
                 'featureunselected' : Megx.myosd.mapEventHandler
               });
-              map.addLayers([ newLayer, vectorLayer ]);
+              map.addLayers([ newLayer, vectorLayer, myosdLayer ]);
 
               var pointControl = new OpenLayers.Control.DrawFeature(
                   vectorLayer, OpenLayers.Handler.Point, {
@@ -204,7 +233,7 @@ a.olControlZoomOut {
               var centerLat = bottom + ((top - bottom) / 2);
 
               map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
-                  .transform(fromProjection, toProjection), 6); // 0=relative zoom level
+                  .transform(wgsProjection, mercatorProjection), 6); // 0=relative zoom level
             }
 
             Megx.myosd.scrollMiddleScreen = function(el) {
@@ -290,7 +319,7 @@ a.olControlZoomOut {
 
             var prender = function(field) {
               var self = this;
-              //create a public reference 
+              //create a public reference
               Megx.myosd.formControl = field;
               var form = field.form;
 
