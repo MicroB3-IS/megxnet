@@ -9,7 +9,7 @@
 <section>
 	<h3>$this.title</h3>
 	<h4>##$this.desription</h4>
-	<h5>$this.introText</h5>	
+	<h5>$this.introText</h5>
 </section>
 <div class="clear"></div>
 #end
@@ -17,6 +17,24 @@
 	$this.htmlText
 <div class="clear"></div>
 </section>
+
+yes it is
+
+<ul>
+#foreach( $p in $app.AppProperties)
+    <li>$p</li>
+#end
+</ul>
+
+<p> now extension </p>
+
+url = $ext.megx.gmsBaseUrl
+
+<ul>
+#foreach( $p in $ext)
+    <li>$p</li>
+#end
+</ul>
 
 
 <!---->
