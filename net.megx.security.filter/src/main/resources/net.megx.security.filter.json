@@ -59,7 +59,11 @@
 						'api.userInfoURL': 'https://api.twitter.com/1.1/account/verify_credentials.json'
 					},
 					'google.com':{
-						'openId.userSuppliedString': 'https://www.google.com/accounts/o8/id'
+						'app.key': '${net.megx.security.filter.google.app.key}', 
+						'app.secret': '${net.megx.security.filter.google.app.secret}',
+						'api.auth.uri': 'https://accounts.google.com/o/oauth2/auth',
+						'access.token.url': 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=',
+						'user.info.url': 'https://accounts.google.com/o/oauth2/token'
 					},
 					'facebook.com': {
 						'app.key': '${net.megx.security.filter.facebook.app.key}',

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,27 +29,20 @@ import net.megx.utils.OSGIUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openid4java.association.AssociationException;
-import org.openid4java.consumer.ConsumerException;
-import org.openid4java.consumer.ConsumerManager;
-import org.openid4java.consumer.VerificationResult;
-import org.openid4java.discovery.Discovery;
-import org.openid4java.discovery.DiscoveryException;
-import org.openid4java.discovery.DiscoveryInformation;
-import org.openid4java.discovery.Identifier;
-import org.openid4java.message.AuthRequest;
-import org.openid4java.message.AuthSuccess;
-import org.openid4java.message.MessageException;
-import org.openid4java.message.ParameterList;
-import org.openid4java.message.ax.AxMessage;
-import org.openid4java.message.ax.FetchRequest;
-import org.openid4java.message.ax.FetchResponse;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TwitterApi;
 import org.scribe.model.OAuthRequest;
@@ -348,125 +342,129 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	}
 	
-	private static class GoogleLoginProvider extends BaseLoginProvider{
+	private class GoogleLoginProvider extends BaseLoginProvider{
 		
-		private ConsumerManager consumerManager;
-		
-		private static final String CFG_USER_SUPPLIED_STRING = "openId.userSuppliedString";
-		
-		private static final String ATTR_DISCOVERED = GoogleLoginProvider.class.getName() + ".ATTR_DISCOVERED";
+		private static final String CFG_AUTH_URI = "api.auth.uri";
+		private static final String ATTR_STATE = "GoogleLoginProvider.STATE";
+		private static final String CFG_ACCESS_TOKEN_URL = "access.token.url";
+		private static final String CFG_USER_INFO_URL = "user.info.url";
 		
 		@Override
 		public void initialize(Map<String, String> config, String provider) {
 			super.initialize(config, provider);
-			consumerManager = new ConsumerManager();
+			
 		}
 		
 		@Override
-		public void processExternalLogin(HttpServletRequest request,
-				HttpServletResponse response) throws IOException,
-				StopFilterException, ServletException {
-			try {
-				@SuppressWarnings("unchecked")
-				List<Discovery> discoveries = consumerManager.discover(config.get(CFG_USER_SUPPLIED_STRING));
-				DiscoveryInformation information = consumerManager.associate(discoveries);
-				putInSession(request, ATTR_DISCOVERED, information);
-				
-				AuthRequest authRequest = consumerManager.authenticate(information, getCallbackUrl(request));
-				FetchRequest fetchRequest = FetchRequest.createFetchRequest();
-				fetchRequest.addAttribute("email",
-	                    "http://schema.openid.net/contact/email",
-	                    true); 
-				fetchRequest.addAttribute("firstName", "http://axschema.org/namePerson/first", true);
-				fetchRequest.addAttribute("lastName", "http://axschema.org/namePerson/last", true);
-				authRequest.addExtension(fetchRequest);
-				response.sendRedirect(authRequest.getDestinationUrl(true));
-				throw new StopFilterException();
-			} catch (DiscoveryException e) {
-				throw new ServletException(e);
-			} catch (MessageException e) {
-				throw new ServletException(e);
-			} catch (ConsumerException e) {
-				throw new ServletException(e);
+		public void processExternalLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, StopFilterException, SecurityException {
+			if(keySecretProvider == null){
+				throw new SecurityException("KeySecretProvider service is not yet available!", HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 			}
+			String state = keySecretProvider.getRandomSequence(24);
+			String oauthUrl = new StringBuilder().append(config.get(CFG_AUTH_URI))
+					.append("?client_id=").append(config.get(CFG_APP_KEY)) // the client id from the api console registration
+					.append("&response_type=code")
+					.append("&scope=openid%20email") // scope is the api permissions we are requesting
+					.append("&redirect_uri=").append(getCallbackUrl(request)) // the servlet that google redirects to after authorization
+					.append("&state=")
+					.append(state)//this can be anything to help correlate the response
+					.append("&access_type=offline") // here we are asking to access to user's data while they are not signed in
+					.append("&approval_prompt=force") // this requires them to verify which account to use, if they are already signed in
+					.toString(); 
+			putInSession(request, ATTR_STATE, state);
+				
+			response.sendRedirect(oauthUrl);
+			throw new StopFilterException();
 		}
 
 		@Override
 		public void processLoginCallback(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, ServletException,
 				SecurityException, StopFilterException {
-			ParameterList openidResp = new ParameterList(request.getParameterMap());
-			DiscoveryInformation information = getFromSession(request, ATTR_DISCOVERED);
+			String state = getFromSession(request, ATTR_STATE);
+			if(state == null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			String error = request.getParameter("error");
+			if(error != null){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
+			String retrievedState = request.getParameter("state");
+			if(retrievedState == null || !state.equals(retrievedState)){
+				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
+			}
 			
-			// extract the receiving URL from the HTTP request
-			String queryString = request.getQueryString();
-		    StringBuffer receivingURL = request.getRequestURL();
-		    if (queryString != null && queryString.length() > 0)
-		        receivingURL.append("?").append(request.getQueryString());
-
-		    // verify the response
-		    VerificationResult verification;
-			try {
-				verification = consumerManager.verify(receivingURL.toString(), openidResp, information);
-			} catch (MessageException e) {
-				throw new ServletException(e);
-			} catch (DiscoveryException e) {
-				throw new ServletException(e);
-			} catch (AssociationException e) {
+			// google returns a code that can be exchanged for a access token
+			String code = request.getParameter("code");
+			Map<String,String> bodyMap = new HashMap<String,String>();
+			bodyMap.put("code", code);
+			bodyMap.put("client_id", config.get(CFG_APP_KEY));
+			bodyMap.put("client_secret", config.get(CFG_APP_SECRET));
+			bodyMap.put("redirect_uri", getCallbackUrl(request, true));
+			bodyMap.put("grant_type", "authorization_code");
+			// get the access token by post to Google
+			String body = post(config.get(CFG_USER_INFO_URL), bodyMap);
+			
+			JSONObject jsonObject = null;
+			String accessToken = null;
+			
+			try{
+				jsonObject = new JSONObject(body);
+				accessToken = (String) jsonObject.get("access_token");
+			} catch (JSONException e){
 				throw new ServletException(e);
 			}
+			
+			String json = get(new StringBuilder(config.get(CFG_ACCESS_TOKEN_URL)).append(accessToken).toString());
+			try {
+				JSONObject user = new JSONObject(json);
+				request.setAttribute("logname", user.optString("id"));
+				request.setAttribute("firstName", user.optString("given_name"));
+				request.setAttribute("lastName", user.optString("family_name"));
+				request.setAttribute("email", user.optString("email"));
+				request.setAttribute("externalId", user.getString("id"));
+			} catch (JSONException e) {
+				log.debug(e);
+				throw new SecurityException(e);
+			}
 
-		    // examine the verification result and extract the verified identifier
-		    Identifier verified = verification.getVerifiedId();
+		}
+		
+		public String get(String url) throws ClientProtocolException, IOException, SecurityException {
+			return execute(new HttpGet(url));
+		}
+		
+		// makes a POST request to url with form parameters and returns body as a string
+		public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException, SecurityException {	
+			HttpPost request = new HttpPost(url);
+				
+			List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+			
+			for (String key : formParameters.keySet()) {
+				nvps.add(new BasicNameValuePair(key, formParameters.get(key)));	
+			}
 
-		    if (verified != null){
-		    	AuthSuccess authSuccess =
-                        (AuthSuccess) verification.getAuthResponse();
+			request.setEntity(new UrlEncodedFormEntity(nvps));
+			
+			return execute(request);
+		}
+		
+		// makes request and checks response code for 200
+		private String execute(HttpRequestBase request) throws ClientProtocolException, IOException, SecurityException {
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpResponse response = httpClient.execute(request);
+		    
+			HttpEntity entity = response.getEntity();
+		    String body = EntityUtils.toString(entity);
 
-                if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX))
-                {
-                    FetchResponse fetchResp = null;;
-					try {
-						fetchResp = (FetchResponse) authSuccess
-						        .getExtension(AxMessage.OPENID_NS_AX);
-					} catch (MessageException e) {
-						throw new ServletException(e);
-					}
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new SecurityException("Expected 200 but got " + response.getStatusLine().getStatusCode() + ", with body " + body, HttpServletResponse.SC_UNAUTHORIZED);
+			}
 
-                    @SuppressWarnings("unchecked")
-					List<String> emails = fetchResp.getAttributeValues("email");
-                    String email = emails.get(0);
-                    request.setAttribute("email", email);
-                    request.setAttribute("externalId", email);
-                    
-                    String firstName = email;
-                    @SuppressWarnings("unchecked")
-					List<String> firstNames = fetchResp.getAttributeValues("firstName");
-                    if(firstNames != null && firstNames.size() > 0){
-                    	firstName = firstNames.get(0);
-                    }
-                    if("".equals(firstName.trim())){
-                    	firstName = email;
-                    }
-                    request.setAttribute("firstName", firstName);
-                    
-                    String lastName = null;
-                    @SuppressWarnings("unchecked")
-					List<String> lastNames = fetchResp.getAttributeValues("lastName");
-                    if(firstNames != null && firstNames.size() > 0){
-                    	lastName = lastNames.get(0);
-                    }
-                    
-                    request.setAttribute("lastName", lastName);
-                }
-		    }else{
-		        // OpenID authentication failed
-		    	throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
-		    }
+		    return body;
 		}
 		
 	}
-
 	
 	private class FacebookLoginProvider extends BaseLoginProvider{
 		
