@@ -1,0 +1,4 @@
+{
+	"gmsBaseUrl": "${megx.gms.base.url}",
+	"path": "$resources/net.megx.chon.template"
+}

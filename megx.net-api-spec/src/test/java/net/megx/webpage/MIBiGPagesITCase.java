@@ -1,6 +1,6 @@
 package net.megx.webpage;
 
-import static com.jayway.restassured.RestAssured.get;
+import static io.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.containsString;
 import net.megx.test.TestServer;
 import net.megx.test.categories.WebPageTest;

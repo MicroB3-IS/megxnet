@@ -5,14 +5,14 @@
 	<div id="megxMapWidget">
 		<h3>Genes Mapserver</h3>
 	</div>
-</div>	
+</div>
 <script type="text/javascript">
 $(document).ready(function () {
   //the only required parameter is the layerSet to be rendered
   var megxMapWidget = new Biojs.MegxMapWidget({
     target : 'megxMapWidget',
     layerSet : 'gms',
-    gmsBaseURL : ctx.siteUrl + '/wms',
+    gmsBaseURL : '${ext.megx.gmsBaseUrl}/gms',
     log : true
   });
 });

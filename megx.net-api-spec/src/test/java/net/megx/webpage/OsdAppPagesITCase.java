@@ -1,7 +1,7 @@
 package net.megx.webpage;
 
-import static com.jayway.restassured.RestAssured.get;
-import static com.jayway.restassured.RestAssured.head;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.head;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import net.megx.test.categories.AvailabilityTest;

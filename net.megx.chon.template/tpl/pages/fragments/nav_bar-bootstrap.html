@@ -24,7 +24,9 @@
                         <li><a href="$ctx.siteUrl/portal/content">Content</a></li>
                         <li><a href="$ctx.siteUrl/portal/faq">FAQ</a></li>
                         <li><a href="$ctx.siteUrl/portal/team/team.html">Team</a></li>
+                        <!--
                         <li><a href="$ctx.siteUrl/portal/news/">News</a></li>
+                         -->
                         <li><a href="$ctx.siteUrl/portal/related">Related</a></li>
                     </ul>
                 </li>
@@ -42,7 +44,7 @@
                     <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Tools</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/gms/">Mapserver</a></li>
-                        <!-- 
+                        <!--
                         <li><a href="$ctx.siteUrl/gms/geographic-blast/">Geographic BLAST</a></li>
                          -->
                         <li><a href="$ctx.siteUrl/tools">GIS Tools</a></li>
@@ -63,8 +65,8 @@
                     <a class="dropdown-toggle fa-after" data-toggle="dropdown" href="#">Edutainment</a>
                     <ul class="dropdown-menu">
                         <li><a href="$ctx.siteUrl/edutainment">Overview</a></li>
-                        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--EN">Genome Explorer (english)</a></li>
-                        <li><a href="$ctx.siteUrl/edutainment/Genome-Explorer--DE">Genome Explorer (german)</a></li>
+                        <li><a href="$ctx.siteUrl/edutainment/genome-explorer">Genome Explorer (english)</a></li>
+                        <li><a href="$ctx.siteUrl/edutainment/genome-explorer/de">Genome Explorer (german)</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -102,7 +104,7 @@
                         #if($req.servletRequset.isUserInRole("admin"))
                         <li><a href="$ctx.siteUrl/security/admin">Security Administration</a></li>
                         #end
-                        
+
                         <li><a href="$ctx.siteUrl/admin/logout.do">Logout</a></li>
                     </ul>
                 </li>
@@ -110,8 +112,8 @@
                 <li><a href="$ctx.siteUrl/login">Log in</a></li>
                 #end
             </ul>
-            #if($this.showOSDLogo == 'true') 
-              <a href="http://oceansamplingday.org" class="navbar-brand hidden-xs no-before pull-right"> 
+            #if($this.showOSDLogo == 'true')
+              <a href="http://oceansamplingday.org" class="navbar-brand hidden-xs no-before pull-right">
                 <img class="logo-small" src="$ctx.siteUrl/net.megx.osd.registry/images/OSD_logo.png">
               </a>
             #end

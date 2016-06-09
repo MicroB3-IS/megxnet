@@ -1,7 +1,7 @@
 package net.megx.webpage;
 
-import static com.jayway.restassured.RestAssured.head;
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.head;
+import static io.restassured.RestAssured.given;
 
 import java.util.HashMap;
 
@@ -14,9 +14,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.jayway.restassured.builder.ResponseSpecBuilder;
-import com.jayway.restassured.filter.log.ResponseLoggingFilter;
-import com.jayway.restassured.specification.ResponseSpecification;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.specification.ResponseSpecification;
 
 public class RegistrationITCase {
 
