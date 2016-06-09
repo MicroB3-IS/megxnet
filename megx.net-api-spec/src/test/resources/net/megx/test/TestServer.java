@@ -1,9 +1,9 @@
 package net.megx.test;
 
 import org.junit.rules.ExternalResource;
-import com.jayway.restassured.authentication.AuthenticationScheme;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.authentication.OAuthScheme;
+import io.restassured.authentication.AuthenticationScheme;
+import io.restassured.RestAssured;
+import io.restassured.authentication.OAuthScheme;
 
 /**
  * JUnit Rule to set-up the remote HTTP Server configuration against which the
@@ -33,7 +33,7 @@ public class TestServer extends ExternalResource {
 		RestAssured.basePath = "${megx.test.base.path}";
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		// RestAssured.rootPath = "x.y.z";
-		
+		System.out.println("Testing against=" + RestAssured.baseURI + RestAssured.port + RestAssured.basePath);
 		esaOAuthScheme = new OAuthScheme();
 		esaOAuthScheme.setConsumerKey(ESA_CONSUMER_KEY);
 		esaOAuthScheme.setConsumerSecret(ESA_CONSUMER_SECRET);
