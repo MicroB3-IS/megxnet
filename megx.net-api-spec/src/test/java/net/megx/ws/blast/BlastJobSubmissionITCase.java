@@ -1,6 +1,6 @@
 package net.megx.ws.blast;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.jayway.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 
 public class BlastJobSubmissionITCase {
 

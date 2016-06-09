@@ -5,7 +5,7 @@ package net.megx.test.categories;
  * test that a HEAD on web page returns HTTP code 200. Usually these test are
  * shallow and fast tests.
  * 
- * @author rkottman
+ * @author renzo.kottmann@gmail.com
  * 
  */
 public interface AvailabilityTest extends IntegrationTest {};

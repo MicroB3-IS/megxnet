@@ -1,6 +1,6 @@
 package net.megx.ws.esa;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,10 +16,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.authentication.AuthenticationScheme;
-import com.jayway.restassured.filter.log.ResponseLoggingFilter;
-import com.jayway.restassured.http.ContentType;
+import io.restassured.RestAssured;
+import io.restassured.authentication.AuthenticationScheme;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
 
 public class EarthSamplingAppITCase {
 

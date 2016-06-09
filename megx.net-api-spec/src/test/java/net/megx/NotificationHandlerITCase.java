@@ -55,7 +55,6 @@ public class NotificationHandlerITCase {
 
 			try {
 				socket.on(Event.OPEN, new Function<String>() {
-					@Override
 					public void on(String t) {
 						// WebSocket channel has been successfully established
 						Assert.assertEquals(t, CHANNEL_ESTABLISHED);
