@@ -102,6 +102,23 @@ public class SecurityFilter implements Filter {
             
             String requestPath = null;
             try {
+                requestPath = WebUtils.getRequestPath(httpRequest, true);
+                /*
+                 * If the user tries to reach the application with the megx.site.url without the leading '/'
+                 * chon somewhere along the way throws error 500, WebUtils.getAppURL(httpRequest) returns the
+                 * application URL with the leading '/'
+                 * Adding '/' to megx.site.url causes many links in the app to contain double slash '//'
+                 * e.x: .../megx.net//login 
+                 */
+                if(requestPath.isEmpty()){
+                	httpResponse.sendRedirect(WebUtils.getAppURL(httpRequest));
+        			return;
+                }
+            } catch (URISyntaxException e) {
+                log.error("Wrong URI: " + e.getMessage());
+                throw new ServletException(e);
+            }
+            try {
                 requestPath = WebUtils.getRequestPath(httpRequest, false);
             } catch (URISyntaxException e) {
                 log.error("Wrong URI: " + e.getMessage());

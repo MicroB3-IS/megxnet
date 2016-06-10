@@ -364,11 +364,11 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			String oauthUrl = new StringBuilder().append(config.get(CFG_AUTH_URI))
 					.append("?client_id=").append(config.get(CFG_APP_KEY)) // the client id from the api console registration
 					.append("&response_type=code")
-					.append("&scope=openid%20email") // scope is the api permissions we are requesting
+					.append("&scope=openid%20email%20profile") // scope is the api permissions we are requesting
 					.append("&redirect_uri=").append(getCallbackUrl(request)) // the servlet that google redirects to after authorization
 					.append("&state=")
 					.append(state)//this can be anything to help correlate the response
-					.append("&access_type=offline") // here we are asking to access to user's data while they are not signed in
+					//.append("&access_type=offline") // here we are asking to access to user's data while they are not signed in
 					.append("&approval_prompt=force") // this requires them to verify which account to use, if they are already signed in
 					.toString(); 
 			putInSession(request, ATTR_STATE, state);

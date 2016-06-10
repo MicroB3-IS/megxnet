@@ -11,6 +11,11 @@
 	padding: 15px;
 	font-size: 0.9em;
 }
+
+input.dark{
+	color:black;
+}
+
 @media(max-width: 980px){
 	input[type='submit']{
 		width: 100%;
@@ -123,7 +128,7 @@
 			to access some of your resources on Megx?
 		</p>
 		<div>
-			<input type="submit" value="Allow">
+			<input type="submit" value="Allow" class="dark">
 		</div>
 		<div class="sub-info">
 			<a href="$ctx.siteUrl/">Deny Access</a> to $req.getServletRequset().getAttribute('oauth.consumer.name' )
