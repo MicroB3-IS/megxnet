@@ -1,93 +1,92 @@
-﻿{ 
+﻿{
   "title": "MyOSD Teilnehmer Registrierung",
   "description": "Please fill all fields for a sample and submit.",
   "type": "object",
-  "properties": { 
-    "version": { 
+  "properties": {
+    "version": {
       "type": "string",
       "readonly": true,
       "required": true,
       "default": "1"
     },
 
-    "firstname": { 
+    "firstname": {
       "type": "string",
       "pattern": "^[^0123456789;%#]*$",
       "required": true
     },
 
-    "lastname": { 
+    "lastname": {
       "type": "string",
       "pattern": "^[^0123456789;%#]*$",
       "required": true
     },
 
-    "username": { 
+    "username": {
       "type": "string",
       "required": true,
       "minLength": 2
     },
-    "email": { 
+    "email": {
       "type": "string",
       "format": "email",
       "required": true
     },
-    "email_repeat": { 
+    "email_repeat": {
       "type": "string",
       "format": "email",
       "required": true
     },
 
-    "kit": { 
+    "kit": {
       "type": "boolean",
-      "enum": 
+      "enum":
       [
-        true,
-        false
+        true
       ],
-
+      "default":true,
       "required": true
     },
 
-    "post_station": { 
+    "post_station": {
       "type": "string",
-      "enum": 
+      "enum":
       [
         "post",
         "station"
       ],
 
       "required": true,
-      "dependencies": 
+      "dependencies":
       [
         "kit"
       ]
     },
 
-    "address": { 
+    "address": {
       "title": "Address",
       "type": "object",
-      "properties": { 
-        "name": { 
+      "properties": {
+        "name": {
           "title": "Name",
           "type": "string",
           "pattern": "^[^0123456789;%#]*$",
           "required": true
         },
 
-        "street": { 
+        "street": {
           "title": "Street Name",
           "type": "string",
           "required": true
         },
 
-        "street_num": { 
+        "street_num": {
           "title": "House Number",
           "type": "string",
           "required": true
         },
 
-        "poastal_code": { 
+        "poastal_code": {
           "title": "Poastal Code",
           "type": "string",
           "minLength": 4,
@@ -95,7 +94,7 @@
           "required": true
         },
 
-        "city": { 
+        "city": {
           "title": "City Name",
           "pattern": ".*[^0123456789]+.*",
           "type": "string",
@@ -103,38 +102,38 @@
         }
       },
 
-      "dependencies": 
+      "dependencies":
       [
         "post_station"
       ]
     },
 
-    "station": { 
+    "station": {
       "title": "Address",
       "type": "object",
-      "properties": { 
-        "name": { 
+      "properties": {
+        "name": {
           "title": "Name",
           "type": "string",
           "pattern": "^[^0123456789;%#]*$",
           "required": true
         },
 
-        "post_num": { 
+        "post_num": {
           "title": "Post Number",
           "type": "integer",
           "minimum": "1",
           "required": true
         },
 
-        "station_num": { 
+        "station_num": {
           "title": "Station Number",
           "type": "integer",
           "minimum": "1",
           "required": true
         },
 
-        "poastal_code": { 
+        "poastal_code": {
           "title": "Poastal Code",
           "type": "string",
           "minLength": 4,
@@ -142,7 +141,7 @@
           "required": true
         },
 
-        "city": { 
+        "city": {
           "title": "City Name",
           "type": "string",
           "pattern": "^[^0123456789;%#]*$",
@@ -150,31 +149,31 @@
         }
       },
 
-      "dependencies": 
+      "dependencies":
       [
         "post_station"
       ]
     },
 
-    "kit_num": { 
+    "kit_num": {
       "title": "MyOSD Sampling Kit Number",
       "type": "integer",
       "minimum": 271,
       "maximum": 2000,
       "required": true,
-      "dependencies": 
+      "dependencies":
       [
         "kit"
       ]
     },
 
-    "placename": { 
+    "placename": {
       "title": "Name of Place",
       "type": "string",
       "required": true
     },
 
-    "lat": { 
+    "lat": {
       "title": "Latitude in decimal degrees (WGS84)",
       "type": "number",
       "minimum": -90.00,
@@ -182,7 +181,7 @@
       "required": true
     },
 
-    "lon": { 
+    "lon": {
       "title": "Longitude in decimal degrees (WGS84)",
       "type": "number",
       "minimum": -180.00,
@@ -190,27 +189,27 @@
       "required": true
     },
 
-    "bounds": { 
+    "bounds": {
       "type": "string",
       "readonly": true,
       "required": true,
       "default": ""
     },
 
-    "terms": { 
+    "terms": {
       "title": "terms",
       "type": "object",
-      "properties": { 
-        "terms_agree": { 
+      "properties": {
+        "terms_agree": {
           "title": "Agree to Terms of Condition",
           "type": "boolean",
-          "enum": 
+          "enum":
           [
             true,
             false
           ],
 
-          "disallow": 
+          "disallow":
           [
             "false"
           ],
@@ -218,12 +217,12 @@
           "required": true
         },
 
-        "osd_agree": { 
+        "osd_agree": {
           "title": "MyOSD raffle agree",
           "type": "boolean"
         },
 
-        "sensebox_agree": { 
+        "sensebox_agree": {
           "title": "Open Senseboxe agree",
           "type": "boolean",
           "required": false
