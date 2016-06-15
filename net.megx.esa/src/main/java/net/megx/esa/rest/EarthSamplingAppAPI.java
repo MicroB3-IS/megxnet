@@ -796,6 +796,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 			}
 			return toJSON(r);
 		} catch (Exception e) {
+		  log.error("Could not load ciziten config", e);
 			return toJSON(handleException(e));
 		}
 	}
