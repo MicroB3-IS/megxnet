@@ -72,9 +72,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 /**
- * 
+ *
  * @author borce.jadrovski
- * 
+ *
  */
 @Path("v1/esa/v1.0.0")
 public class EarthSamplingAppAPI extends BaseRestService {
@@ -158,7 +158,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return JSON formatted string of the all of the samples stored in DB.
 	 */
 	@GET
@@ -249,7 +249,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return JSON formatted string of a sample stored in DB.
 	 */
 	@GET
@@ -306,7 +306,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param ID
 	 *            of the collector of the samples
 	 * @return JSON formatted string of the samples created by the collector if
@@ -327,7 +327,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
 	/**
 	 * Stores sample in the database from our web online form
-	 * 
+	 *
 	 * @param air_temperature
 	 *            the air temperature value
 	 * @param biome
@@ -584,7 +584,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	/**
 	 * Stores samples in the database. These samples are being transferred from
 	 * the user's device.
-	 * 
+	 *
 	 * @param samplesJson
 	 *            JSON formatted string representing the samples to be stored in
 	 *            the database.
@@ -651,7 +651,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	/**
 	 * Tweet the message to megx twitter account with the longitude, latitude
 	 * values and link to /osd-app/samples page
-	 * 
+	 *
 	 */
 	private void tweet(Double longitude, Double latitude, Date date) {
 		String link = "https://mb3is.megx.net/osd-app/samples";
@@ -672,7 +672,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 
 		String tweet = greetings[idx] + "! New observation reached us from "
 				+ lat + ", " + lon + " at " + dateTaken + ". See " + link
-				+ " @Micro_B3 #osd2015";
+				+ " @Micro_B3 #osd #myosd";
 		this.twitterService.geoTweet(tweet, latitude, longitude);
 	}
 
@@ -702,7 +702,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	/**
 	 * Store a single photo that belongs to already saved sample in the
 	 * database.
-	 * 
+	 *
 	 * @param request
 	 *            Contains the binary data for the photo to be saved along with
 	 *            the photos' UUID, MIME type and path properties.
@@ -769,7 +769,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	/**
 	 * Retrieve the configuration that will be used by the Citizen version of
 	 * the client application.
-	 * 
+	 *
 	 * @return JSON formatted string of the configuration to be used by the
 	 *         client application.
 	 */
@@ -803,7 +803,7 @@ public class EarthSamplingAppAPI extends BaseRestService {
 	/**
 	 * Retrieve the configuration that will be used by the Scientist version of
 	 * the client application.
-	 * 
+	 *
 	 * @return JSON formatted string of the configuration to be used by the
 	 *         client application.
 	 */

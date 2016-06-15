@@ -108,9 +108,16 @@
                         <li><a href="$ctx.siteUrl/admin/logout.do">Logout</a></li>
                     </ul>
                 </li>
-                #else
-                <li><a href="$ctx.siteUrl/login">Log in</a></li>
-                #end
+                #else 
+                #if($this.path != "login")
+       				#if( $req.getServletRequset().getQueryString() )
+        				#set( $queryString = "?${req.getServletRequset().getQueryString()}")
+         			#else
+          				#set( $queryString = "")
+        			#end
+    				<li><a href="$ctx.siteUrl/login?redirectURL=$req.getServletRequset().getRequestURI().substring($req.getServletRequset().getContextPath().length())$queryString">log in</a> <li>
+    			#end
+ 			#end
             </ul>
             #if($this.showOSDLogo == 'true')
               <a href="http://oceansamplingday.org" class="navbar-brand hidden-xs no-before pull-right">
