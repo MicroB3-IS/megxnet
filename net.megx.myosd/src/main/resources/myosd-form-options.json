@@ -5,7 +5,7 @@
     "toggleSubmitValidState": true,
     "attributes": {
       "method": "post",
-      "action": "${megx.host.context.path}/ws/v1/myosd/v1.0.0/participants"
+      "action": "${megx.site.url}/ws/v1/myosd/v1.0.0/participants"
     },
 
     "buttons": {
