@@ -24,9 +24,9 @@ import net.oauth.server.OAuthServlet;
 
 public class OAuth1Services extends BaseOAuthServices{
 
-	
+
 	private WebAuthenticationHandler oAuthHandler;
-	
+
 	@Override
 	public void processRequestTokenRequest(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException{
@@ -34,7 +34,7 @@ public class OAuth1Services extends BaseOAuthServices{
 			OAuthMessage message = OAuthServlet.getMessage(request, null);
 			OAuthConsumer consumer = getConsumer(message.getConsumerKey());
 			OAuthAccessor accessor = new OAuthAccessor(consumer);
-			
+
 			validateMessage(message, accessor);
 			Token requestToken = tokenServices.generateRequestToken(consumer.consumerKey);
 			accessor.requestToken = requestToken.getToken();
@@ -51,6 +51,7 @@ public class OAuth1Services extends BaseOAuthServices{
                              out);
             out.close();
 		}catch (Exception e) {
+
 			try{
 			handleException(e, request, response, true);
 			}catch (SecurityException se) {
@@ -70,7 +71,7 @@ public class OAuth1Services extends BaseOAuthServices{
 			throw new ServletException("invalid_method");
 		}
 	}
-	
+
 	private void processAuthorization_GET(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException, SecurityException {
 		OAuthMessage requestMessage = OAuthServlet.getMessage(request, null);
@@ -83,54 +84,55 @@ public class OAuth1Services extends BaseOAuthServices{
                  sendToAuthorizePage(request, response, requestToken);
             }
 		}catch (Exception e) {
+		  log.error("OAuth issue with" + requestMessage.toString());
 			handleException(e, request, response, true);
 		}
-		
+
 	}
-	
-	private void returnToConsumer(HttpServletRequest request, 
+
+	private void returnToConsumer(HttpServletRequest request,
             HttpServletResponse response, OAuthAccessor accessor)
     throws IOException, ServletException, SecurityException {
         // send the user back to site's callBackUrl
         String callback = request.getParameter("oauth_callback");
-        if("none".equals(callback) 
-            && accessor.consumer.callbackURL != null 
+        if("none".equals(callback)
+            && accessor.consumer.callbackURL != null
                 && accessor.consumer.callbackURL.length() > 0){
             // first check if we have something in our properties file
             callback = accessor.consumer.callbackURL;
         }
-        
+
         if( "none".equals(callback) || "oob".equals(callback)) {
             // no call back it must be a client
         	request.setAttribute("oauth.consumer.name", accessor.consumer.getProperty("name"));
         	request.setAttribute("oauth.verifier", accessor.getProperty("oauth_verifier"));
         	request.setAttribute("oauth.token.authorized", true);
-        	
+
         } else {
             // if callback is not passed in, use the callback from config
             if(callback == null || callback.length() <=0 ){
                 callback = accessor.consumer.callbackURL;
                 if(callback == null || "none".equals(callback)){
-                	callback = accessor.getProperty("oauth_callback") != null ? 
+                	callback = accessor.getProperty("oauth_callback") != null ?
                 			accessor.getProperty("oauth_callback").toString() : "none";
                 }
             }
             String token = accessor.requestToken;
             if (token != null) {
-                callback = OAuth.addParameters(callback, OAuth.OAUTH_TOKEN, token, 
+                callback = OAuth.addParameters(callback, OAuth.OAUTH_TOKEN, token,
                 		OAuth.OAUTH_VERIFIER, (String)accessor.getProperty(OAuth.OAUTH_VERIFIER));
             }
-            
+
             response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", callback);
             response.flushBuffer();
-            
+
             //WebContextUtils.getSecurityContext(request).storeLastRequestedURL(callback);
             //response.sendRedirect(callback);
         }
     }
 
-	private void sendToAuthorizePage(HttpServletRequest request, 
+	private void sendToAuthorizePage(HttpServletRequest request,
             HttpServletResponse response, OAuthAccessor accessor)
     throws IOException, ServletException{
         String callback = request.getParameter("oauth_callback");
@@ -147,7 +149,7 @@ public class OAuth1Services extends BaseOAuthServices{
         request.setAttribute("oauth.request.token", accessor.requestToken);
         request.setAttribute("oauth.verifier", accessor.getProperty("oauth_verifier"));
     }
-	
+
 	private void processAuthorization_POST(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException, SecurityException {
 		OAuthMessage requestMessage = OAuthServlet.getMessage(request, null);
@@ -157,15 +159,15 @@ public class OAuth1Services extends BaseOAuthServices{
 			if(context == null){
 				// the filter should not let you in. If you got this far without authenticating, well... bad
 				//response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-				
+
 				// anyway - let us try again
 				 sendToAuthorizePage(request, response, requestToken);
 				return;
 			}
-			
+
 			String userLogin = context.getAuthentication().getUserPrincipal().toString();
 			tokenServices.authorizeRequestToken(requestToken.requestToken, userLogin);
-			
+
 			// return to consumer
 			returnToConsumer(request, response, requestToken);
 		}catch (Exception e) {
@@ -179,7 +181,7 @@ public class OAuth1Services extends BaseOAuthServices{
 		try{
 			OAuthMessage message = OAuthServlet.getMessage(request, null);
 			String verifier = message.getParameter(OAuth.OAUTH_VERIFIER);
-			OAuthAccessor accessor =getAccessorForRequestToken(message.getToken()); 
+			OAuthAccessor accessor =getAccessorForRequestToken(message.getToken());
 			getValidator().validateMessage(message, accessor);
 			String storedVerifier = (String)accessor.getProperty(OAuth.OAUTH_VERIFIER);
 			if(storedVerifier != null){
@@ -190,8 +192,8 @@ public class OAuth1Services extends BaseOAuthServices{
 			if(!Boolean.TRUE.equals(accessor.getProperty("authorized"))){
 				throw new OAuthProblemException("permission_denied");
 			}
-			
-			
+
+
 			Token accessToken = tokenServices.generateAccessToken(accessor.consumer.consumerKey, accessor.requestToken);
 			OutputStream out = response.getOutputStream();
             OAuth.formEncode(OAuth.newList("oauth_token", accessToken.getToken(),
@@ -230,5 +232,5 @@ public class OAuth1Services extends BaseOAuthServices{
 	public void setoAuthHandler(WebAuthenticationHandler oAuthHandler) {
 		this.oAuthHandler = oAuthHandler;
 	}
-	
+
 }
