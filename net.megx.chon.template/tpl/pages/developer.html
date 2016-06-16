@@ -1,0 +1,40 @@
+<div class="container">
+
+
+<table>
+
+    <tr><td>ServerName</td><td>${req.servletRequset.ServerName}</td></tr>
+    <tr><td>context path</td><td>${req.servletRequset.getContextPath()}</td></tr>
+    <tr><td>Path Info</td><td>${req.servletRequset.getPathInfo()}</td></tr>
+    <tr><td>Remote host</td><td>${req.servletRequset.getRemoteHost()}</td></tr>
+
+</table>
+
+
+
+pagecontext= ${req.getPageContext()}
+
+<table>
+#foreach( $item in $req.getPageContext() )
+    <tr><td>$item</td></tr>
+#end
+</table>
+
+#foreach( $key in ${req.getPageContext().keySet()} )
+    <li>Key: $key -> Value: $req.getPageContext().get($key)</li>
+#end
+
+
+servlet attributes
+<ul>
+#foreach( $key in ${req.servletRequset.getAttributeNames()} )
+    <li>Key: $key -> Value: ${req.servletRequset.getAttribute( ${key} )}</li>
+#end
+</ul>
+
+</div>
+
+
+
+
+
