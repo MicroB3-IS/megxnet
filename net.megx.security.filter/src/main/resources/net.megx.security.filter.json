@@ -54,12 +54,12 @@
 				enabled: true,
 				providers:{
 					'twitter.com': {
-						'app.key': '${net.megx.security.filter.twitter.app.key}', 
+						'app.key': '${net.megx.security.filter.twitter.app.key}',
 						'app.secret': '${net.megx.security.filter.twitter.app.secret}',
 						'api.userInfoURL': 'https://api.twitter.com/1.1/account/verify_credentials.json'
 					},
 					'google.com':{
-						'app.key': '${net.megx.security.filter.google.app.key}', 
+						'app.key': '${net.megx.security.filter.google.app.key}',
 						'app.secret': '${net.megx.security.filter.google.app.secret}',
 						'api.auth.uri': 'https://accounts.google.com/o/oauth2/auth',
 						'access.token.url': 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=',
@@ -93,8 +93,8 @@
 			},
 			mail:{
 				address: '${net.megx.security.filter.mail.address}',
-				dbgSkipActivation: false,
-				dgbActivateAccount: false,
+				dbgSkipActivation: true,
+				dgbActivateAccount: true,
 				activationMail: {
 					subject: 'megx.net account activation',
 					template: 'security-filter/activation-mail.vm',
@@ -139,7 +139,7 @@
 			feedback:{
 				requestValidity: 1200000,
 				maxNumberOfRequests: 50
-			} 
+			}
 		}
 	}
 }
