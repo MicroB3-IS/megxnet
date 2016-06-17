@@ -60,20 +60,20 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 	private Map<String, ExternalLoginProvider> providers = new HashMap<String, ExternalLoginSecurityEntrypoint.ExternalLoginProvider>();
 
 	private KeySecretProvider keySecretProvider;
-	
-	
-	
+
+
+
 
 	@Override
 	public void doFilter(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException,
 			SecurityException, StopFilterException {
 		String requestPath;
-		
+
 		 if (log.isDebugEnabled()) {
 	            log.debug(" ExternalLoginSecurityEntrypoint active.");
 	        }
-		
+
 		try {
 			requestPath = WebUtils.getRequestPath(request, false);
 		} catch (URISyntaxException e) {
@@ -99,24 +99,24 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		request.setAttribute("provider", provider);
 		log.debug("Processing callback...");
 		ExternalLoginProvider loginProvider = getProvider(provider);
-		
+
 		if(log.isDebugEnabled()) {
 			log.debug("Using login provider: " + loginProvider);
 		}
-		
+
 		loginProvider.processLoginCallback(request, response);
-		
+
 		log.debug("Processed with the provider. Passing down to the login handler...");
 		Authentication authentication = externalLoginHandler
 				.createAuthentication(request);
-		
+
 		if(log.isDebugEnabled())
 			log.debug("Authentication created: " + authentication);
-		
+
 		if(authentication != null){
 			saveAuthentication(authentication, request);
 			log.debug("Authentication saved to security context.");
-			
+
 		}
 		SecurityContext securityContext = WebContextUtils.getSecurityContext(request);
 		if(securityContext != null){
@@ -150,15 +150,15 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 	@Override
 	protected void doInitialize() {
-		
-		
+
+
 		registerProvider("twitter.com", new TwitterLoginProvder());
 		registerProvider("google.com", new GoogleLoginProvider());
 		registerProvider("facebook.com", new FacebookLoginProvider());
-		
-		
+
+
 		OSGIUtils.requestServices(context, new OSGIUtils.OnServicesAvailable() {
-			
+
 			@Override
 			public void servicesAvailable(Map<String, Object> services) {
 				ExternalLoginSecurityEntrypoint.this.externalLoginHandler = (ExternalLoginHandler) services.get(ExternalLoginHandler.class.getName());
@@ -172,9 +172,9 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		Map<String, String> cfgMap = new HashMap<String, String>();
 		JSONObject providersCfg = config.optJSONObject("providers");
 		providersCfg = (providersCfg != null) ? providersCfg : new JSONObject();
-		
+
 		JSONObject cfg = providersCfg.optJSONObject(providerName);
-		
+
 		if(cfg != null){
 			String [] names = JSONObject.getNames(cfg);
 			if(names != null){
@@ -211,15 +211,15 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 	public static abstract class BaseLoginProvider implements
 			ExternalLoginProvider {
 
-		
+
 		public static final String CFG_APP_KEY = "app.key";
 		public static final String CFG_APP_SECRET = "app.secret";
-		
-		
+
+
 		protected Map<String, String> config;
 		private String provider;
 		protected Log log = LogFactory.getLog(getClass());
-		
+
 		public void initialize(Map<String, String> config, String provider) {
 			this.config = config;
 			this.provider = provider;
@@ -246,7 +246,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			String baseUrl = WebUtils.getFullContextURL(request);
 			return baseUrl + (fromCallback ? "" : "/callback" ) + "?provider="+provider;
 		}
-		
+
 		protected void redirectToHome(HttpServletResponse response) throws IOException{
 			response.sendRedirect("/");
 		}
@@ -258,11 +258,11 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				.getName() + ".ATTR_OAUTH_SERVICE";
 		private static String ATTR_OAUTH_REQ_TOKEN = TwitterLoginProvder.class
 				.getName() + ".ATTR_OAUTH_REQ_TOKEN";
-		
+
 		private static Pattern FULL_NAME_PATTERN = Pattern.compile("\\b*(\\w+)(.*)");
-		
+
 		private static String CFG_USER_INFO_URL = "api.userInfoURL";
-		
+
 		@Override
 		public void processExternalLogin(HttpServletRequest request,
 				HttpServletResponse response) throws IOException, StopFilterException {
@@ -274,15 +274,15 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					apiSecret(config.get(CFG_APP_SECRET)).
 					callback(getCallbackUrl(request)).
 					build();
-			
+
 			putInSession(request, ATTR_OAUTH_SERVICE, oAuthService);
-			
+
 			Token requestToken = oAuthService.getRequestToken();
-			
+
 			putInSession(request, ATTR_OAUTH_REQ_TOKEN, requestToken);
-			
+
 			String authorizationUrl = oAuthService.getAuthorizationUrl(requestToken);
-			
+
 			response.sendRedirect(authorizationUrl);
 			throw new StopFilterException();
 		}
@@ -301,16 +301,16 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 						OAuthRequest oaRequest = new OAuthRequest(Verb.GET, config.get(CFG_USER_INFO_URL));
 						oAuthService.signRequest(accessToken, oaRequest);
 						Response resp = oaRequest.send();
-						
+
 						if ( !resp.isSuccessful() ) {
 							throw new SecurityException("Twitter authentication error", resp.getCode());
 						}
-						
+
 						String resultJson = resp.getBody();
 						if(log.isDebugEnabled()) {
 							log.debug("Repsonse code: " + resp.getCode());
 							log.debug("Twitter auth result: " + resultJson);
-							
+
 						}
 						try {
 							JSONObject result = new JSONObject(resultJson);
@@ -341,20 +341,20 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 		}
 
 	}
-	
+
 	private class GoogleLoginProvider extends BaseLoginProvider{
-		
+
 		private static final String CFG_AUTH_URI = "api.auth.uri";
 		private static final String ATTR_STATE = "GoogleLoginProvider.STATE";
 		private static final String CFG_ACCESS_TOKEN_URL = "access.token.url";
 		private static final String CFG_USER_INFO_URL = "user.info.url";
-		
+
 		@Override
 		public void initialize(Map<String, String> config, String provider) {
 			super.initialize(config, provider);
-			
+
 		}
-		
+
 		@Override
 		public void processExternalLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, StopFilterException, SecurityException {
 			if(keySecretProvider == null){
@@ -370,9 +370,9 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 					.append(state)//this can be anything to help correlate the response
 					//.append("&access_type=offline") // here we are asking to access to user's data while they are not signed in
 					.append("&approval_prompt=force") // this requires them to verify which account to use, if they are already signed in
-					.toString(); 
+					.toString();
 			putInSession(request, ATTR_STATE, state);
-				
+
 			response.sendRedirect(oauthUrl);
 			throw new StopFilterException();
 		}
@@ -393,7 +393,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			if(retrievedState == null || !state.equals(retrievedState)){
 				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 			}
-			
+
 			// google returns a code that can be exchanged for a access token
 			String code = request.getParameter("code");
 			Map<String,String> bodyMap = new HashMap<String,String>();
@@ -404,17 +404,17 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			bodyMap.put("grant_type", "authorization_code");
 			// get the access token by post to Google
 			String body = post(config.get(CFG_USER_INFO_URL), bodyMap);
-			
+
 			JSONObject jsonObject = null;
 			String accessToken = null;
-			
+
 			try{
 				jsonObject = new JSONObject(body);
 				accessToken = (String) jsonObject.get("access_token");
 			} catch (JSONException e){
 				throw new ServletException(e);
 			}
-			
+
 			String json = get(new StringBuilder(config.get(CFG_ACCESS_TOKEN_URL)).append(accessToken).toString());
 			try {
 				JSONObject user = new JSONObject(json);
@@ -429,31 +429,31 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			}
 
 		}
-		
+
 		public String get(String url) throws ClientProtocolException, IOException, SecurityException {
 			return execute(new HttpGet(url));
 		}
-		
+
 		// makes a POST request to url with form parameters and returns body as a string
-		public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException, SecurityException {	
+		public String post(String url, Map<String,String> formParameters) throws ClientProtocolException, IOException, SecurityException {
 			HttpPost request = new HttpPost(url);
-				
+
 			List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-			
+
 			for (String key : formParameters.keySet()) {
-				nvps.add(new BasicNameValuePair(key, formParameters.get(key)));	
+				nvps.add(new BasicNameValuePair(key, formParameters.get(key)));
 			}
 
 			request.setEntity(new UrlEncodedFormEntity(nvps));
-			
+
 			return execute(request);
 		}
-		
+
 		// makes request and checks response code for 200
 		private String execute(HttpRequestBase request) throws ClientProtocolException, IOException, SecurityException {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = httpClient.execute(request);
-		    
+
 			HttpEntity entity = response.getEntity();
 		    String body = EntityUtils.toString(entity);
 
@@ -463,16 +463,16 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 
 		    return body;
 		}
-		
+
 	}
-	
+
 	private class FacebookLoginProvider extends BaseLoginProvider{
-		
+
 		private static final String CFG_LOGIN_DIALOG_URL = "dialog.url";
 		private static final String CFG_ACCESS_TOKEN_URL = "access.token.url";
 		private static final String ATTR_STATE = "FacebookLoginProvider.STATE";
 		private static final String CFG_USER_INFO_URL = "user.info.url";
-		
+
 		@Override
 		public void processExternalLogin(HttpServletRequest request,
 				HttpServletResponse response) throws IOException,
@@ -481,17 +481,17 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				throw new SecurityException("KeySecretProvider service is not yet available!", HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 			}
 			String state = keySecretProvider.getRandomSequence(24);
-			String callbackUrl = getCallbackUrl(request);
-			String appId = config.get(CFG_APP_KEY);
-			String url = config.get(CFG_LOGIN_DIALOG_URL);
-			url += "?client_id=" + appId + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") + 
+			String callbackUrl = getCallbackUrl(request).trim();
+			String appId = config.get(CFG_APP_KEY).trim();
+			String url = config.get(CFG_LOGIN_DIALOG_URL).trim();
+			url += "?client_id=" + appId + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") +
 					"&state="+state +
 					"&scope=email";
 			if(log.isDebugEnabled())
 				log.debug(" ### Redirecting to Facebook login dialog: " + url);
-			
+
 			putInSession(request, ATTR_STATE, state);
-			
+
 			response.sendRedirect(url);
 			throw new StopFilterException();
 		}
@@ -508,17 +508,17 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			if(retrievedState == null || !state.equals(retrievedState)){
 				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 			}
-			
+
 			String error = request.getParameter("error");
 			if(error != null){
 				throw new SecurityException(request.getParameter("error_reason"), HttpServletResponse.SC_UNAUTHORIZED);
 			}
-			
+
 			String accessTokenUrl = config.get(CFG_ACCESS_TOKEN_URL);
 			String facebookCode = request.getParameter("code");
-			
-			accessTokenUrl += "?code="+facebookCode + 
-					"&client_id=" + config.get(CFG_APP_KEY) + 
+
+			accessTokenUrl += "?code="+facebookCode +
+					"&client_id=" + config.get(CFG_APP_KEY) +
 					"&client_secret="+config.get(CFG_APP_SECRET) +
 					"&redirect_uri=" + URLEncoder.encode(getCallbackUrl(request, true), "UTF-8");
 			if(log.isDebugEnabled())
@@ -526,7 +526,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			HttpClient client = new DefaultHttpClient();
 			HttpGet get = new HttpGet(accessTokenUrl);
 			HttpResponse httpResponse = client.execute(get);
-			
+
 			BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
 			String line = reader.readLine();
 			String accessToken = null;
@@ -538,7 +538,7 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				}
 			}
 			//List<NameValuePair> vals =  URLEncodedUtils.parse(httpResponse.getEntity());
-			
+
 			//for(NameValuePair pair: vals){
 			//	if("access_token".equals(pair.getName())){
 			//		accessToken = pair.getValue();
@@ -548,20 +548,20 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 			if(accessToken == null){
 				throw new SecurityException(HttpServletResponse.SC_UNAUTHORIZED);
 			}
-			
+
 			String userInfoUrl = config.get(CFG_USER_INFO_URL);
 			userInfoUrl += "?access_token="+accessToken;
 			if(log.isDebugEnabled())
 				log.debug("Generated user info url: " + userInfoUrl);
-			
+
 			get = new HttpGet(userInfoUrl);
 			httpResponse = client.execute(get);
-			
+
 			String content = new Scanner(httpResponse.getEntity().getContent(), "UTF-8").useDelimiter("\\Z").next();
-			
+
 			if(log.isDebugEnabled())
 				log.debug("Got response content: " + content);
-			
+
 			try {
 				JSONObject user = new JSONObject(content);
 				request.setAttribute("logname", user.optString("id"));
@@ -574,6 +574,6 @@ public class ExternalLoginSecurityEntrypoint extends BaseSecurityEntrypoint {
 				throw new SecurityException(e);
 			}
 		}
-		
+
 	}
 }
