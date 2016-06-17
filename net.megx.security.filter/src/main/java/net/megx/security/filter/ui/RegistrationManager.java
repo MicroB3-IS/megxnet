@@ -47,6 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 @Path("/register")
 public class RegistrationManager extends BaseRestService {
@@ -93,8 +94,8 @@ public class RegistrationManager extends BaseRestService {
       @FormParam("logname") String logname,
       @FormParam("firstName") String firstName,
       @FormParam("lastName") String lastName, @FormParam("email") String email,
-      @FormParam("initials") String initials, @FormParam("pass") String password)
-      throws JSONException {
+      @FormParam("initials") String initials,
+      @FormParam("pass") String password) throws JSONException {
 
     String remoteIP = request.getRemoteAddr();
 
@@ -138,11 +139,9 @@ public class RegistrationManager extends BaseRestService {
       existing = userService.getUserByUserId(logname);
 
     } catch (Exception e) {
-      throw new WebApplicationException(
-          errorResponse(
-              "query-exception",
-              "An error occured during checking the submitted user data. Please try again.",
-              Response.Status.INTERNAL_SERVER_ERROR));
+      throw new WebApplicationException(errorResponse("query-exception",
+          "An error occured during checking the submitted user data. Please try again.",
+          Response.Status.INTERNAL_SERVER_ERROR));
     }
 
     if (existing != null) {
@@ -158,6 +157,16 @@ public class RegistrationManager extends BaseRestService {
           "Wrong Captcha input. Please repeat.",
           Response.Status.INTERNAL_SERVER_ERROR));
     }
+
+    // now need config to decide if email verification or not
+
+    final JSONObject mailConfig = config.optJSONObject("mail");
+
+    if (mailConfig == null) {
+      throw new IllegalArgumentException("Mail not configured.");
+    }
+    boolean debugSkipValidationEmail = mailConfig
+        .optBoolean("dbgSkipActivation", false);
 
     User user = new User();
     user.setLogin(logname);
@@ -176,19 +185,32 @@ public class RegistrationManager extends BaseRestService {
 
     user.setRoles(roles);
 
-    // now sending activation email
-    try {
+    if (debugSkipValidationEmail) {
+      user.setDisabled(false);
+      try {
+        userService.addUser(user);
+      } catch (Exception e) {
+        log.error(e);
+        throw new WebApplicationException(errorResponse("user-add-failed",
+            "Couldn't register you. Please try registering again.",
+            Response.Status.INTERNAL_SERVER_ERROR));
+      }
+    } else {
+      // now sending activation email
+      try {
 
-      UserVerification verification = userService.addPendingUser(user);
+        UserVerification verification = userService.addPendingUser(user);
 
-      sendActivationMail(request, verification, user);
+        this.sendActivationMail(request, verification, user, mailConfig);
 
-    } catch (Exception e) {
-      log.error(e);
-      throw new WebApplicationException(errorResponse("user-add-failed",
-          "Couldn't register you. Please try registering again.",
-          Response.Status.INTERNAL_SERVER_ERROR));
+      } catch (Exception e) {
+        log.error(e);
+        throw new WebApplicationException(errorResponse("user-add-failed",
+            "Couldn't register you. Please try registering again.",
+            Response.Status.INTERNAL_SERVER_ERROR));
+      }
     }
+
     JSONObject suscessMsg = new JSONObject();
     suscessMsg.put("message", "registered");
     return suscessMsg.toString();
@@ -221,7 +243,7 @@ public class RegistrationManager extends BaseRestService {
   /**
    * Verifies the google reCAPTCHA and returns true on successful verification
    * and if any problem occurred in order not to degrade user experience
-   * 
+   *
    * @param challenge
    *          reCAPTCHA challenge
    * @param response
@@ -271,8 +293,8 @@ public class RegistrationManager extends BaseRestService {
     HttpResponse httpResponse = null;
     try {
       httpResponse = client.execute(post);
-      BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse
-          .getEntity().getContent()));
+      BufferedReader br = new BufferedReader(
+          new InputStreamReader(httpResponse.getEntity().getContent()));
 
       ReCaptchaResponse captchaResponse = gson.fromJson(br,
           ReCaptchaResponse.class);
@@ -310,9 +332,8 @@ public class RegistrationManager extends BaseRestService {
   }
 
   protected void sendActivationMail(HttpServletRequest request,
-      UserVerification verification, User user) throws Exception {
-
-    final JSONObject mailConfig = config.optJSONObject("mail");
+      UserVerification verification, User user, JSONObject mailConfig)
+      throws Exception {
 
     if (mailConfig == null) {
       throw new IllegalArgumentException("Mail not configured.");
@@ -323,8 +344,8 @@ public class RegistrationManager extends BaseRestService {
       throw new IllegalArgumentException("Activation mail is not configured.");
     }
 
-    boolean debugSkipValidationEmail = mailConfig.optBoolean(
-        "dbgSkipActivation", false);
+    boolean debugSkipValidationEmail = mailConfig
+        .optBoolean("dbgSkipActivation", false);
     if (debugSkipValidationEmail) {
       if (mailConfig.optBoolean("dgbActivateAccount", false)) {
         userService.commitPending(user, verification.getVerificationValue(),
@@ -351,8 +372,8 @@ public class RegistrationManager extends BaseRestService {
     String subject = activationMailTemplate.formatStr(
         activationEMail.optString("subject"), params,
         "::activation-mail:subject");
-    String body = activationMailTemplate.format(
-        activationEMail.optString("template"), params, params);
+    String body = activationMailTemplate
+        .format(activationEMail.optString("template"), params, params);
     message.setSubject(subject);
     message.setMessageBody(body);
     mailerService.send(message);
