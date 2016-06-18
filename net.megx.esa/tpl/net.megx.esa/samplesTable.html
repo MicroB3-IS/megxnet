@@ -97,16 +97,17 @@ jQuery(document).ready(
 	                visible: false
 	            }, {
 	                data: 'label',
-	                width: "7em",
+	                width: "7em"
 	            }, {
 	                data: 'taken',
 	                width: "7em",
+	                sortable: true
 	            }, {
 	                data: 'biome',
-	                width: "7em",
+	                width: "7em"
 	            }, {
 	                data: 'weatherCondition',
-	                width: "8em",
+	                width: "8em"
 	            }, {
 	                data: 'feature',
 	                className: "none",
@@ -281,7 +282,11 @@ jQuery(document).ready(
 	            };
 	            var data = {};
 
-	            var datatablesConfigOverride = {};
+	            var datatablesConfigOverride = {
+	                "order" : [[ 4, 'desc' ]],
+	                "paging" : true,
+	                "ordering" : true
+	            };
 
 	            var table = new Megx.MegxTable("samples-table", columns, buttons,
 	                "$ctx.siteUrl/ws/v1/esa/v1.0.0/allSamples", data, datatablesConfigOverride);
