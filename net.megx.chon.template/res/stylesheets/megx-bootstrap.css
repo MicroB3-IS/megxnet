@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
+@import url(//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Ubuntu+Condensed);
 
 .no-word-break {
     white-space: nowrap;
@@ -25,7 +25,7 @@ html {
 }
 
 body {
-    padding-top: 40px; 
+    padding-top: 40px;
 }
 
 section {
@@ -45,7 +45,7 @@ header {
     z-index: 1000;
 }
 
-.login-bar, 
+.login-bar,
 .login-bar a {
     background-color: #777;
     color: #DDD ;
@@ -165,10 +165,10 @@ a.no-before:before {
     -moz-osx-font-smoothing: grayscale
 }
 .home-section{
-	margin-top:40px;
+  margin-top:40px;
 }
 .home-osd-button{
-	margin-top:30px;
+  margin-top:30px;
 }
 /* BOOTSTRAP */
 @media ( min-width : 768px) {
@@ -188,7 +188,7 @@ a.no-before:before {
         padding-left: 5px !important;
         padding-right: 5px !important;
     }
-    
+
     .navbar .navbar-nav {
         display: inline-block;
         float: none;
@@ -236,20 +236,29 @@ h2 {
     font-size: 1.25em;
 }
 
-/*** ANIMATION for loading icons ***/
-.glyphicon-refresh-animate {
-    -animation: spin .7s infinite linear;
-    -webkit-animation: spin2 .7s infinite linear;
+.fa-spin-custom, .glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
 }
-
-@-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
-
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 
 /*** REPSONSIVE EMBED ***/
