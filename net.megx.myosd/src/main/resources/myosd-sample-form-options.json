@@ -1,0 +1,244 @@
+{
+  "renderForm": true,
+  "toolbarSticky": true,
+  "form": {
+    "toggleSubmitValidState": true,
+    "attributes": {
+      "method": "post",
+      "action": "${megx.site.url}/ws/v1/myosd/v1.0.0/participants"
+    },
+
+    "buttons": {
+      "submit": {
+        "title": "Registrieren"
+      },
+
+      "reset": {
+        "title": "Nochmal von vorne"
+      }
+    }
+  },
+
+  "fields": {
+    "version": {
+      "type": "hidden"
+    },
+
+    "firstname": {
+      "label": "Vorname",
+      "type": "personalname",
+      "disallowOnlyEmptySpaces": true,
+      "size": 20,
+      "helper": "Bitte gib Deinen Vornamen ein."
+    },
+
+    "lastname": {
+      "label": "Nachname",
+      "type": "personalname",
+      "disallowOnlyEmptySpaces": true,
+      "size": 20,
+      "helper": "Bitte gib Deinen Nachnamen ein."
+    },
+
+    "username": {
+      "label": "Benutzername",
+      "id": "username",
+      "disallowOnlyEmptySpaces": true,
+      "size": 20,
+      "helper": "Bitte gib einen Benutzernamen ein.",
+      "helpers":
+      [
+        "Beachte, dieser wird auf unseren Web Seiten angezeigt!"
+      ]
+    },
+
+    "email": {
+      "label": "E-Mail Adresse",
+      "id": "email",
+      "disallowOnlyEmptySpaces": true,
+      "type": "email",
+      "size": 20,
+      "helper": "Für Rückfragen und Statusmeldungen"
+    },
+
+    "email_repeat": {
+      "label": "E-Mail Wiederholung",
+      "type": "email",
+      "disallowOnlyEmptySpaces": true,
+      "size": 20,
+      "helper": "Um sicher zu gehen, dass wir Deine richtige Adresse bekommen!"
+
+    },
+
+    "kit": {
+      "label": "Hast Du schon ein MyOSD Sampling Kit?",
+      "type": "radio",
+      "hideInitValidationError": false,
+      "optionLabels":
+      [
+        "Ja",
+        "Nein"
+      ],
+
+      "helper": "Hast Du schon ein MyOSD Sampling Kit?"
+    },
+
+    "post_station": {
+      "label": "Wohin sollen wir das MyOSD Sampling Kit schicken?",
+      "type": "radio",
+      "optionLabels":
+      [
+        "Nach Hause",
+        "Packstation"
+      ],
+
+      "helper": "Zu Dir nach Hause oder an eine Packstation ?",
+      "dependencies": {
+        "kit": "false"
+      }
+    },
+
+    "address": {
+      "label": "Deine Versandadresse",
+      "id": "input-adress",
+      "fields": {
+        "name": {
+          "label": "Name des Empfängers",
+          "type": "personalname",
+          "helper":"Nur Buchstaben sind erlaubt.",
+          "disallowOnlyEmptySpaces": true,
+          "size": 30
+        },
+
+        "street": {
+          "label": "Strasse",
+          "disallowOnlyEmptySpaces": true,
+          "size": 30
+        },
+
+        "street_num": {
+          "label": "Hausnummer",
+          "disallowOnlyEmptySpaces": true,
+          "size": 10
+        },
+
+        "poastal_code": {
+          "label": "Postleitzahl",
+          "disallowOnlyEmptySpaces": true,
+          "size": 10
+        },
+
+        "city": {
+          "label": "Stadt",
+          "disallowOnlyEmptySpaces": true,
+          "helper":"Nur Buchstaben sind erlaubt.",
+          "size": 30
+        }
+      },
+
+      "dependencies": {
+        "post_station": "post"
+      }
+    },
+
+    "station": {
+      "label": "Deine Packstation",
+      "id": "input-adress",
+      "fields": {
+        "name": {
+          "label": "Name des Empfängers",
+          "type": "personalname",
+          "disallowOnlyEmptySpaces": true,
+          "helper":"Nur Buchstaben sind erlaubt.",
+          "size": 30
+        },
+
+        "post_num": {
+          "label": "Postnummer",
+          "disallowOnlyEmptySpaces": true,
+          "size": 30
+        },
+
+        "station_num": {
+          "label": "Packstation:",
+          "disallowOnlyEmptySpaces": true,
+          "size": 10
+        },
+
+        "poastal_code": {
+          "label": "Postleitzahl",
+          "disallowOnlyEmptySpaces": true,
+          "size": 10
+        },
+
+        "city": {
+          "label": "Stadt",
+          "disallowOnlyEmptySpaces": true,
+          "helper":"Nur Buchstaben sind erlaubt.",
+          "size": 30
+        }
+      },
+
+      "dependencies": {
+        "post_station": "station"
+      }
+    },
+
+    "kit_num": {
+      "label": "MyOSD Sampling Kit Nummer",
+      "id" : "kit_num",
+      "helper": "Bitte trage Deine MyOSD Sampling Kit Nummer ein. Diese findest Du auf den Aufklebern im Kit.",
+      "placeholder": "200",
+      "dependencies": {
+        "kit": "true"
+      }
+    },
+
+    "placename": {
+      "label": "Name der geplanten Probennahme-Stelle",
+      "disallowOnlyEmptySpaces": true,
+      "placeholder": "Duhnen, Nordsee",
+      "helper": "Gib den Namen bitte so genau wie möglich ein."
+    },
+
+    "lat": {
+      "label": "Nördlicher oder südlicher Breitengrad",
+      "placeholder": "53.882778",
+      "readonly": true,
+      "id": "input-lat"
+    },
+
+    "lon": {
+      "label": "Östlicher oder westlicher Längengrad",
+      "placeholder": "8.645556",
+      "readonly": true,
+      "id": "input-lon"
+    },
+
+    "terms": {
+      "label": "Teilnahme",
+      "fields": {
+        "terms_agree": {
+          "label": "MyOSD Teilnahme?",
+          "optionLabels":
+          [
+            "<strong>Ja!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> zu.",
+            "<strong>Nein!</strong> Ich stimme den <a target=\"_blank\" href=\"http://www.my-osd.org/teilnahme-bedingungen\">Teilnahmebedingungen</a> nicht zu."
+          ]
+        },
+
+        "osd_agree": {
+          "label": "iPad Mini Verlosung",
+          "type": "checkbox",
+          "rightLabel": "Ja, ich nehme an der iPad Mini Verlosung teil!"
+        },
+
+        "sensebox_agree": {
+          "label": "senseBox Verlosung?",
+          "rightLabel": "Ja, ich nehme an der <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> Verlosung teil und verpflichte mich, im Falle eines Gewinns, die <a target=\"_blank\" href=\"http://www.sensebox.de/de/products/\">senseBox:home</a> aufzustellen und in Betrieb zu nehmen. Mehr Informationen zum <a target=\"_blank\" href=\"https://github.com/sensebox/oer/wiki/sensebox_home\">Open senseBox Projekt</a>.",
+          "type": "checkbox"
+        }
+      }
+    }
+  }
+}

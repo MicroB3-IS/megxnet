@@ -8,7 +8,7 @@
 
   <sql id="allParticipantColumns">raw, email, user_name, myosd_id, schema_version</sql>
   <sql id="table">myosd.registrations</sql>
-  
+
   <resultMap id="participantResultMap" type="net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl">
     <id property="id" column="id" />
     <result property="myOsdId" column="myosd_id" />
@@ -19,11 +19,20 @@
     <result column="submitted" property="submitted" />
     <result column="modified" property="modified" />
   </resultMap>
-  
+
+
+
+  <insert id="saveSample" parameterType="net.megx.megdb.myosd.MyOsdSample">
+  INSERT INTO myosd.samples( myosd_id, raw_json)
+      VALUES (
+    #{myOsdId}::integer,
+    #{rawJson}::json)
+    );
+  </insert>
 
   <insert id="saveParticipant" parameterType="net.megx.megdb.myosd.MyOsdParticipantRegistration">
-  select myosd.ins_myosd_regisration( 
-    #{email}::text, 
+  select myosd.ins_myosd_regisration(
+    #{email}::text,
     #{userName},
     #{myOsdId}::integer,
     #{version}::integer,
@@ -34,7 +43,7 @@
     select myosd.upd_myosd_regisrations_from_json()
   </select>
 
-  
+
   <select id="participantByName" parameterType="String"
     resultMap="participantResultMap">
     select
@@ -51,7 +60,7 @@
     FROM <include refid="table"/>
     WHERE email = #{email}
   </select>
-  
+
     <select id="participantByMyOsdId" parameterType="int"
     resultMap="participantResultMap">
     select

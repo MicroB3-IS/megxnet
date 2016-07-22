@@ -1,19 +1,19 @@
 package net.megx.megdb.myosd;
 
-import net.megx.megdb.myosd.impl.MyOsdMyBatisMapper;
-
 import org.apache.ibatis.session.SqlSessionFactory;
 
 public interface MyOsdDbService {
 
   public void setSqlSessionFactory(SqlSessionFactory factory);
-  
+
+  public void saveSample(MyOsdSample sample);
+
   public void saveParticipant(MyOsdParticipantRegistration participant);
-  
+
   public MyOsdParticipantRegistration participantByName(String name);
-  
+
   public MyOsdParticipantRegistration participantByEmail(String email);
-  
+
   public MyOsdParticipantRegistration participantByMyOsdId(int myOsdId);
-  
+
 }

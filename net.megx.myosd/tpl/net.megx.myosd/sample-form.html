@@ -1,0 +1,513 @@
+<link href="$ctx.siteUrl/stylesheets/mapwidget.css" rel="stylesheet"
+  type="text/css">
+
+<style type="text/css">
+<!--
+standard OpenLayers OSM style
+-->div.olControlZoom,div.olControlTextButtonPanel {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 2px;
+}
+
+div.olControlZoom a {
+  font-size: 18px;
+  line-height: 19px;
+  height: 22px;
+  width: 22px;
+  padding: 0;
+}
+
+div.olControlZoom a,div.olControlTextButtonPanel .olButton {
+  display: block;
+  margin: 1px;
+  color: white;
+  font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica,
+    sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  background: #130085;
+  /* fallback for IE - IE6 requires background shorthand*/
+  background: rgba(0, 60, 136, 0.5);
+  filter: alpha(opacity = 80);
+}
+
+div.olControlZoom a:hover,div.olControlTextButtonPanel .olButton:hover {
+  background: #130085; /* fallback for IE */
+  background: rgba(0, 60, 136, 0.7);
+  filter: alpha(opacity = 100);
+}
+
+@media only screen and (max-width: 600px) {
+  div.olControlZoom a:hover,div.olControlTextButtonPanel .olButton:hover {
+    background: rgba(0, 60, 136, 0.5);
+  }
+}
+
+a.olControlZoomIn {
+  border-radius: 4px 4px 0 0;
+}
+
+a.olControlZoomOut {
+  border-radius: 0 0 4px 4px;
+}
+</style>
+
+
+
+
+<script src="$ctx.siteUrl/js/OpenLayers-2.13.1.js"
+  type="text/javascript"></script>
+
+
+
+<div class="container">
+  <h3>MyOSD Sample Registrierung</h3>
+
+  <div id="myosd-registration-form"></div>
+</div>
+
+<script type="text/javascript">
+  $(document)
+      .ready(
+          function() {
+            Megx = Megx || {};
+            Megx.myosd = {};
+            Megx.myosd.serverError = {};
+
+            Megx.myosd.mapEventHandler = function(event) {
+              //console.log("map event type" + event.type);
+            }
+
+            Megx.myosd.updateFeature = function(feature) {
+              //console.log("updating Feature with layer" + feature.layer);
+              var layer = feature.layer;
+
+              var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
+              var mercProjection = new OpenLayers.Projection("EPSG:900913");
+
+              // create a WKT reader/parser/writer
+              var wkt = new OpenLayers.Format.WKT();
+
+              // write out the feature's geometry in WKT format
+              var out = wkt.write(feature);
+
+              var pointWGS = feature.geometry.getCentroid().transform(
+                  mercProjection, wgsProjection);
+              //console.log(pointWGS);
+
+              var bounds = feature.geometry.getBounds();
+
+              bounds = new OpenLayers.Feature.Vector(bounds.toGeometry()
+                  .transform(mercProjection, wgsProjection));
+
+              //console.log("Bounds:" + bounds);
+
+              var boundsField = Megx.myosd.formControl.childrenByPropertyId["bounds"];
+              boundsField.setValue(wkt.write(bounds));
+
+              var longField = Megx.myosd.formControl.childrenByPropertyId["lon"];
+              longField.setValue(pointWGS.x);
+
+              var latField = Megx.myosd.formControl.childrenByPropertyId["lat"];
+              latField.setValue(pointWGS.y);
+
+              var pointControl = map.getControl("pcid");
+            }
+
+            Megx.myosd.featureAddedEventHandler = function(event) {
+              //console.log("map event type" + event.type);
+              Megx.myosd.updateFeature(event.feature);
+            }
+
+            Megx.myosd.mapCreate = function() {
+              var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
+              var mercatorProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+              var left = 6;
+              var bottom = 47.3;
+              var right = 15.1;
+              var top = 55.1;
+
+              var extent = new OpenLayers.Bounds(left, bottom, right, top)
+                  .transform(wgsProjection, mercatorProjection);
+
+              var options = {
+                //maxExtent : extent,
+                displayProjection : wgsProjection,
+                projection : mercatorProjection,
+                restrictedExtent : extent,
+              };
+
+              map = new OpenLayers.Map("myosdMap", options);
+
+              var newLayer = new OpenLayers.Layer.OSM("OSM Layer");
+
+              var myOsdStyle = new OpenLayers.StyleMap({
+                "default" : new OpenLayers.Style({
+                  fillColor : "#336699",
+                  fillOpacity : 0.8,
+                  strokeColor : "#336699",
+                  strokeOpacity : 0.8,
+                  pointRadius: 6
+                })
+              });
+
+              var myosdLayer = new OpenLayers.Layer.Vector("WFS", {
+                projection : wgsProjection,
+                styleMap: myOsdStyle,
+                strategies : [ new OpenLayers.Strategy.BBOX() ],
+                protocol : new OpenLayers.Protocol.WFS({
+                  url : "${ext.megx.gmsBaseUrl}/gms",
+                  version : "1.0.0",
+                  geometryName : "geom",
+                  featureType : "myosd-registry",
+                  srsName : "EPSG:900913",
+                  featurePrefix : "ms",
+                  featureNS : "http://mapserver.gis.umn.edu/mapserver"
+                })
+
+              });
+
+              var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
+                projection : map.displayProjection,
+                eventListeners : {
+                  "featureadded" : Megx.myosd.featureAddedEventHandler,
+                  "onFeatureInsert" : Megx.myosd.mapEventHandler,
+                  "beforefeatureadded" : function(feature) {
+                    //console.log(feature);
+                    //console.log(feature.layer);
+                  },
+                  "featureselected" : Megx.myosd.mapEventHandler,
+                  "featureunselected" : Megx.myosd.mapEventHandler
+                }
+              });
+
+              vectorLayer.preFeatureInsert = function(feature) {
+                console.log("removing all features");
+                this.removeAllFeatures();
+              }
+
+              vectorLayer.events.on({
+                'featureselected' : Megx.myosd.mapEventHandler,
+                'featureunselected' : Megx.myosd.mapEventHandler
+              });
+              map.addLayers([ newLayer, vectorLayer, myosdLayer ]);
+
+              var pointControl = new OpenLayers.Control.DrawFeature(
+                  vectorLayer, OpenLayers.Handler.Point, {
+                    id : "pcid"
+                  });
+
+              var dragControl = new OpenLayers.Control.DragFeature(vectorLayer,
+                  {
+                    id : "dfid",
+                    onComplete : Megx.myosd.updateFeature
+                  });
+
+              var featureSelectControl = new OpenLayers.Control.SelectFeature(
+                  vectorLayer, {
+                    clickout : false,
+                    toggle : false,
+                    multiple : false,
+                    hover : false,
+                    toggleKey : "ctrlKey", // ctrl key removes from selection
+                    multipleKey : "shiftKey", // shift key adds to selection
+                    box : true
+                  })
+
+              map.addControl(pointControl);
+              map.addControl(dragControl);
+              map.addControl(featureSelectControl);
+              map.addControl(new OpenLayers.Control.MousePosition());
+              pointControl.activate();
+              dragControl.activate();
+
+              var centerLon = left + ((right - left) / 2);
+              var centerLat = bottom + ((top - bottom) / 2);
+
+              map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
+                  .transform(wgsProjection, mercatorProjection), 6); // 0=relative zoom level
+            }
+
+            Megx.myosd.scrollMiddleScreen = function(el) {
+
+              var elOffset = el.offset().top;
+              var elHeight = el.height();
+              var windowHeight = $(window).height();
+              var offset;
+
+              if (elHeight < windowHeight) {
+                offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+              } else {
+                offset = elOffset;
+              }
+              var speed = 700;
+              $('html, body').animate({
+                scrollTop : offset
+              }, speed);
+            }
+
+            //no server errors at beginning
+            Megx.myosd.serverError.userName = false;
+
+            Megx.myosd.termsAgreeFieldValidator = function(callback) {
+              var value = this.getValue();
+              if (value === false) {
+                callback({
+                  "status" : false,
+                  "message" : "Du kannst nur teilnehmen, wenn Du den Teilnahmebedingungen zustimmst!"
+                });
+                return;
+              }
+
+              callback({
+                "status" : true
+              });
+            }
+
+            Megx.myosd.userNameFieldValidator = function(callback) {
+              if (Megx.myosd.serverError.userName === true
+                  || Megx.myosd.serverError.oldValue === this.getValue()) {
+                callback({
+                  "status" : false,
+                  "message" : "Benutzername exisitiert bereits."
+                });
+                return;
+              }
+              callback({
+                "status" : true
+              });
+            }
+            Megx.myosd.kitNumFieldValidator = function(callback) {
+
+              if (Megx.myosd.serverError.kitNum === true
+                  || Megx.myosd.serverError.oldValue === this.getValue()) {
+                callback({
+                  "status" : false,
+                  "message" : "Die MyOSD Nummer ist bereits registriert."
+                });
+                return;
+              }
+              callback({
+                "status" : true
+              });
+            }
+
+            Megx.myosd.emailRepeatValidator = function(callback) {
+              var email = this.getParent().childrenByPropertyId["email"]
+                  .getValue();
+              var value = this.getValue();
+              if (value === email) {
+                callback({
+                  "status" : true,
+                });
+                return;
+              }
+
+              callback({
+                "status" : false,
+                "message" : "Beide Email-Adressen muessen identisch sein!"
+              });
+            }
+
+            var prender = function(field) {
+              var self = this;
+              //create a public reference
+              Megx.myosd.formControl = field;
+              var form = field.form;
+
+              // adding some custom validators
+              var termsAgreeField = field.childrenByPropertyId["terms"].childrenByPropertyId["terms_agree"];
+              if (termsAgreeField.options) {
+                termsAgreeField.options.validator = Megx.myosd.termsAgreeFieldValidator;
+              }
+
+              var emailRepeatField = field.childrenByPropertyId["email_repeat"];
+              if (emailRepeatField.options) {
+                emailRepeatField.options.validator = Megx.myosd.emailRepeatValidator;
+              }
+
+              var userNameField = field.childrenByPropertyId["username"];
+              if (userNameField.options) {
+                userNameField.options.validator = Megx.myosd.userNameFieldValidator;
+                var vf = function() {
+                  Megx.myosd.serverError.userName = false;
+                  this.isValid(true);
+                  this.refreshValidationState(true);
+                  form.enableSubmitButton();
+
+                }
+                userNameField.on("change", vf);
+                userNameField.on("blur", vf);
+              }
+
+              var kitNumField = field.childrenByPropertyId["kit_num"];
+              if (kitNumField.options) {
+                kitNumField.options.validator = Megx.myosd.kitNumFieldValidator;
+                var vf = function() {
+                  Megx.myosd.serverError.kitNum = false;
+                  this.isValid(true);
+                  this.refreshValidationState(true);
+                  form.enableSubmitButton();
+
+                }
+                kitNumField.on("change", vf);
+                kitNumField.on("blur", vf);
+              }
+
+              if (form) {
+                var url = form.attributes.action;
+                var ajaxMethod = form.attributes.method;
+                //form.disableSubmitButton();
+                form.enableSubmitButton();
+
+                form.registerSubmitHandler(function(e, form) {
+                  return false;
+                });
+                var id = "#" + form.id;
+
+                var submitButton;
+                if (Megx.FormWidget.cfg.wizard) {
+                  submitButton = jQuery(
+                      'button[data-alpaca-wizard-button-key="submit"]', id);
+                } else {
+                  submitButton = jQuery('button[type="submit"]', id);
+                }
+                // hack to change the CSS classes of the submit button
+                // might be possible to do this using Alpaca templates
+                // but could not figure out how
+                submitButton.removeClass("btn-default");
+                submitButton.addClass("btn-primary");
+
+                var errorHandler = function(jqXHR, textStatus, data) {
+                  //data = jqXHR here, and jqXHR is the error thrown
+
+                  var errorMessage = "<p>Leider ist beim Speichern Deiner Daten ein Fehler aufgetreten :(</p>"
+                      + "<p>Bitte probier es nochmal!</p>"
+                      + "<p>Und schreib uns bitte, damit wir Bescheid wissen: "
+                      + "<a href=\"mailto:myosd-contact@microb3.eu\">myosd-contact@microb3.eu</a>"
+                      + "</p>";
+
+                  var title = data;
+                  var errorCode = '';
+                  if (jqXHR.responseJSON) {
+                    var response = jqXHR.responseJSON;
+
+                    if (response.message) {
+                      errorMessage = response.message;
+                    }
+                    if (response.title) {
+                      title = response.title;
+                    }
+                    if (response.redirectUrl) {
+                      //document.location.href = responseMsg.redirectUrl;
+                    }
+                    if (response.code) {
+                      errorCode = response.code;
+                    }
+                  }
+                  toastr.error(errorMessage, title);
+                  //var emailField = Megx.myosd.formControl.childrenByPropertyId["email"];
+                  if (errorCode === "dup_username") {
+                    Megx.myosd.serverError.userName = true;
+                    Megx.myosd.serverError.oldValue = userNameField.getValue();
+
+                    Megx.myosd.scrollMiddleScreen($("#username"));
+                  }
+                  if (errorCode === "dup_myosd_id") {
+                    Megx.myosd.serverError.kitNum = true;
+                    Megx.myosd.serverError.oldValue = kitNumField.getValue();
+                    Megx.myosd.scrollMiddleScreen($("#kit_num"));
+
+                  }
+                  console.log("old val=" + Megx.myosd.serverError.oldValue)
+                  Megx.myosd.formControl.isValid(true);
+                  Megx.myosd.formControl.refreshValidationState(true);
+                }
+
+                submitButton
+                    .click(function() {
+                      field.refreshValidationState(true);
+
+                      if (!field.isValid(true)) {
+                        field.focus();
+                        form.enableSubmitButton();
+                        return;
+                      }
+                      if (field.isValid(true)) {
+
+                        var data = field.getValue();
+
+                        data.json = JSON.stringify(field.getValue());
+                        jQuery
+                            .ajax({
+                              type : ajaxMethod,
+                              url : url,
+                              data : data
+                            })
+                            .success(
+                                function(data, textStatus, jqXHR) {
+                                  var successMessage = "<p>Du hast Dich erfolgreich registriert :)</p>"
+                                      + "<p>Danke für Deine Teilnahme am MyOSD Deutschland 2016</p>"
+                                      + "<p>Wir freuen uns schon!</p>";
+                                  toastr.success(successMessage);
+                                  setTimeout(
+                                      function() {
+                                        document.location.href = "http://www.my-osd.org/registrierung/danke/";
+                                      }, 2000);
+
+                                }).error(errorHandler).always(
+                                function(data, textStatus, jqXHR) {
+                                  form.enableSubmitButton();
+                                });
+                      }
+                    });
+
+              }
+              Megx.myosd.mapCreate();
+            } // end prender
+
+            var d = new Megx.FormWidget({
+              target : "myosd-registration-form",
+              schemaLocation : ctx.siteUrl
+                  + "/net.megx.myosd/myosd-sample-form-schema.json",
+              optionsLocation : ctx.siteUrl
+                  + "/net.megx.myosd/myosd-sample-form-options.json",
+              parentView : "bootstrap-create",
+
+              postRender : prender,
+
+              "locale" : "de_DE",
+
+              "layout" : {
+                "template" : ctx.siteUrl
+                    + "/net.megx.myosd/sample-form-layout-template.html",
+                "bindings" : {
+                  "firstname" : "mx-myosd-user",
+                  "lastname" : "mx-myosd-user",
+                  "username" : "mx-myosd-user",
+                  "email" : "mx-myosd-user",
+                  "email_repeat" : "mx-myosd-user",
+                  "kit" : "mx-myosd-kit-left",
+                  "post_station" : "mx-myosd-kit-left",
+                  "kit_num" : "mx-myosd-kit-right",
+                  "address" : "mx-myosd-kit-right",
+                  "station" : "mx-myosd-kit-right",
+                  "placename" : "mx-myosd-map-right",
+                  "lat" : "mx-myosd-map-right",
+                  "lon" : "mx-myosd-map-right",
+                  "terms" : "mx-myosd-terms"
+
+                }
+              }
+            });
+
+            d.renderForm();
+
+          });
+</script>
