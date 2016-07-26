@@ -8,7 +8,6 @@ Megx.FormWidget = function(cfg) {
 
 };
 
-
 Megx.FormWidget.prototype.submitForm = function(field) {
 
   var self = this;
@@ -16,90 +15,131 @@ Megx.FormWidget.prototype.submitForm = function(field) {
   var url = form.attributes.action;
   var ajaxMethod = form.attributes.method;
 
-  if (form) {
+  form.enableSubmitButton();
 
-    jQuery(".alpaca-control").keyup(function() {
-      if (field.isValid(true)) {
-        form.enableSubmitButton();
-      }
-    });
+  if (form) {
 
     form.registerSubmitHandler(function(e, form) {
       return false;
     });
     var id = "#" + form.id;
 
-    var submitButton;
-    if (Megx.FormWidget.cfg.wizard) {
-      submitButton = jQuery('button[data-alpaca-wizard-button-key="submit"]',
-          id);
-    } else {
-      submitButton = jQuery('button[type="submit"]', id);
-    }
-    // hack to change the CSS classes of the submit button
-    // might be possible to do this using Alpaca templates
-    // but could not figure out how
+    var submitButton = form.getButtonEl("submit");
+
     submitButton.removeClass("btn-default");
     submitButton.addClass("btn-primary");
 
-    submitButton.click(function() {
+    submitButton
+        .click(function() {
 
-      form.disableSubmitButton();
-      if (field.isValid(true)) {
 
-        var data = field.getValue();
-        data.json = JSON.stringify(field.getValue());
-        jQuery.ajax({
-          type : ajaxMethod,
-          url : url,
-          data : data
-        }).success(function(data, textStatus, jqXHR) {
+          field.refreshValidationState(true);
 
-          if (data.redirectUrl) {
-            toastr.success("Your submission was successfull. Thanks!");
-            document.location.href = data.redirectUrl;
-          } else {
+          if ( ! form.isFormValid() ) {
 
-            if (data.message) {
-              toastr.success(data.message);
-              document.location.href = ctx.siteUrl;
-            } else {
-              toastr.success("Your submission was successfull. Thanks!");
-              document.location.href = ctx.siteUrl;
-            }
+            toastr.error("Some field(s) above are not correct or missing. <br /> Please scroll up and apply corrections.", "Form Error", {
+              "closeButton" : true,
+              "positionClass" : "toast-bottom-center",
+              "timeOut" : 0,
+              "extendedTimeOut" : 0,
+            });
+
+            form.focus();
+            return;
           }
-        }).error(function(data, textStatus, jqXHR) {
-          if (data.responseJSON) {
 
-            var responseMsg = data.responseJSON;
+          if (form.isFormValid(true)) {
 
-            if (responseMsg.redirectUrl) {
-              document.location.href = responseMsg.redirectUrl;
-            } else {
+            var data = field.getValue();
+            data.json = JSON.stringify(field.getValue());
+            jQuery
+                .ajax({
+                  type : ajaxMethod,
+                  url : url,
+                  dataType : "json",
+                  data : data
+                })
+                .done(
+                    function(data, textStatus, jqXHR) {
 
-              if (responseMsg.message) {
-                toastr.error(responseMsg.message, jqXHR);
-              } else {
-                toastr.error("Server error, please try again later.", jqXHR);
-              }
-            }
-          } else {
-            toastr.error("Server error, please try again later.", jqXHR);
-          }
-        }).always(function(data, textStatus, jqXHR) {
-          form.enableSubmitButton();
-        });
-      }
-    });
+                      var buttonHtml = "<br /><button onclick=\"javascript:location.reload(true)\" type=\"button\" class=\"btn btn-primary clear\">Reload</button>";
+                      var msg = "Your submission was successfull. Thanks! <br /> Click to reload page"
+                          + buttonHtml;
+                      // default redirect to itself
+                      var redirectUrl = document.location.href;
 
+                      if (data.message) {
+                        msg = data.message + buttonHtml;
+                      }
+
+                      var title = data.title ? data.title : "Success";
+
+                      if (data.redirectUrl) {
+                        redirectUrl = data.redirectUrl;
+                      }
+
+                      toastr.success(msg, title, {
+                        "closeButton" : true,
+                        "positionClass" : "toast-bottom-center",
+                        "timeOut" : 0,
+                        "extendedTimeOut" : 0
+                      });
+
+                      form.disableSubmitButton();
+
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                  form.enableSubmitButton();
+                  var data = {};
+
+                  var msg = "Server error, please try again later.";
+
+                  if (jqXHR.responseJSON) {
+                    data = jqXHR.responseJSON;
+                  }
+
+                  var redirectUrl = document.location.href;
+
+                  if (data.message) {
+                    msg = data.message;
+                  }
+
+                  var title = data.title ? data.title : textStatus;
+                  title = title + " " + errorThrown;
+
+                  if (data.redirectUrl) {
+                    redirectUrl = data.redirectUrl;
+                  }
+
+                  toastr.error(msg, title, {
+                    "closeButton" : true,
+                    "positionClass" : "toast-bottom-center",
+                    "timeOut" : 0,
+                    "extendedTimeOut" : 0,
+                  });
+
+                }).always(function(data, textStatus, jqXHR) {
+                });
+          }// end if(isValid)
+        }); // end submit click
+    if ($(id).alpaca("exists")) {
+      jQuery("#" + Megx.FormWidget.animId).remove();
+    }
   }
 }
 
 Megx.FormWidget.prototype.renderForm = function() {
-  var self = this;
 
-  // gettting config from static context
+  // getting config from static context
   var cfg = Megx.FormWidget.cfg;
+  // add loading animation
+  Megx.FormWidget.animId = cfg.target + "-loading-animation";
+  jQuery(
+      '<div id="'
+          + Megx.FormWidget.animId
+          + '"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate glyphicon-spin"></span> Loading form</div>')
+      .insertBefore("#" + cfg.target);
+
+  var self = this;
 
   var alpacaOptions = {
     "optionsSource" : cfg.optionsLocation,
@@ -126,7 +166,7 @@ Megx.FormWidget.prototype.renderForm = function() {
   if (typeof cfg.layout != "undefined" && cfg.layout) {
     alpacaOptions.view.layout = cfg.layout;
   }
-  
+
   if (typeof cfg.locale != "undefined" && cfg.locale) {
 
     alpacaOptions.view.locale = cfg.locale;
@@ -136,16 +176,9 @@ Megx.FormWidget.prototype.renderForm = function() {
   if (cfg.data) {
     alpacaOptions.data = cfg.data;
   }
-  // add loading animation
-  var animId = cfg.target + "-loading-animation";
-  jQuery(
-      '<div id="'
-          + animId
-          + '"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading form</div>')
-      .insertBefore("#" + cfg.target);
+
   // actual loading of alpaca based form
   Alpaca.logLevel = Alpaca.ERROR;
   jQuery("#" + cfg.target).alpaca(alpacaOptions);
-  jQuery("#" + animId).remove();
 
 }
