@@ -603,6 +603,7 @@
               <goal>enforce</goal>
             </goals>
           </execution>
+	  <!--
           <execution>
             <id>install-phase-not-allowed</id>
             <phase>install</phase>
@@ -619,6 +620,7 @@
               </rules>
             </configuration>
           </execution>
+	  -->
           <execution>
             <id>deploy-phase-not-allowed</id>
             <phase>deploy</phase>
