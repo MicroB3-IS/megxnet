@@ -2,7 +2,8 @@
   "renderForm": true,
   "toolbarSticky": true,
   "form": {
-    "toggleSubmitValidState": true,
+    "toggleSubmitValidState": false,
+
     "attributes": {
       "id": "osd-form",
       "method": "post",
@@ -77,12 +78,33 @@
 
         "objective": {
           "type": "textarea"
+        },
+
+        "stop_coordinates": {
+          "fields": {
+            "latitude": {
+              "fields": {
+                "direction": {
+                  "hideNone": true
+                }
+              }
+            },
+
+            "longitude": {
+              "fields": {
+                "direction": {
+                  "hideNone": true
+                }
+              }
+            }
+          }
         }
       }
     },
 
     "sample": {
-      "collapsed": true,
+      "collapsed": false,
+      "hideInitValidationError": false,
       "fieldClass": "mx-sample",
       "fields": {
         "protocol_label": {
@@ -112,15 +134,23 @@
         },
 
         "filters": {
+          "label": "Filter Details (at least four filters must be added. The order is from filter 1 to filter n)",
           "toolbarSticky": true,
+          "actionbarStyle": "bottom",
+          "collapsible": false,
           "collapsed": false,
-          "hideInitValidationError": true,
+          "hideToolbarWithChildren": false,
+          "hideInitValidationError": false,
           "itemLabel": "Filter",
           "fields": {
             "item": {
               "fields": {
                 "filtration_time": {
+                  "label": "Filtration Time in minutes (m)"
+                },
 
+                "quantity": {
+                  "label": "Filtration Volume in Millilitre (mL)"
                 }
               }
             }
@@ -131,14 +161,15 @@
 
     "environment": {
       "collapsed": true,
+      "hideInitValidationError": true,
       "fieldClass": "mx-env-param",
       "fields": {
         "salinity": {
-          "hideInitValidationError": true
+          "hideInitValidationError": false
         },
 
         "phosphate": {
-          "hideInitValidationError": true,
+          "hideInitValidationError": false,
           "fields": {
             "measurement": {
               "dependencies": {
