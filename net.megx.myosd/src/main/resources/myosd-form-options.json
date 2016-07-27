@@ -6,16 +6,6 @@
     "attributes": {
       "method": "post",
       "action": "${megx.site.url}/ws/v1/myosd/v1.0.0/participants"
-    },
-
-    "buttons": {
-      "submit": {
-        "title": "Registrieren"
-      },
-
-      "reset": {
-        "title": "Nochmal von vorne"
-      }
     }
   },
 
