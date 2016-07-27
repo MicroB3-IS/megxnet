@@ -70,7 +70,7 @@
         },
 
         "value": {
-          "title": "Latitude",
+          "title": "Latitude (decimal degrees)",
           "type": "number",
           "minimum": 0,
           "maximum": 90
@@ -91,7 +91,7 @@
         },
 
         "value": {
-          "title": "Longitude",
+          "title": "Longitude (decimal degrees)",
           "type": "number",
           "minimum": 0,
           "maximum": 180
@@ -290,7 +290,7 @@
                 }
               },
 
-              "description": "Latitude (N/S) in decimal degrees of the location where the sampling event ended and ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
+              "description": "Latitude (N/S) in decimal degrees of the location where the sampling event ended, e.g. each CTD cast, net tow, or bucket collection is a distinct event."
             },
 
             "longitude": {
@@ -369,7 +369,7 @@
         },
 
         "timezone_name": {
-          "title": "Timezone of samling site",
+          "title": "Timezone of sampling site",
           "description": "The timezone name of the sampling site. Necessary for correct time handling.",
           "required": true
         },
@@ -380,7 +380,7 @@
           "required": true,
           "type": "number",
           "description": "The distance below the surface of the water at which a measurement was made or a sample was collected in meter.",
-          "title": "Depth"
+          "title": "Depth (m)"
         },
 
         "description": {
@@ -479,7 +479,7 @@
           "required": true,
           "type": "number",
           "description": "Temperature of water at the time of taking the sample in degress Celsius",
-          "title": "Temperature"
+          "title": "Temperature (&#8451;)"
         },
 
         "salinity": {
@@ -503,6 +503,7 @@
           "minLength": 1,
           "required": true,
           "type": "string",
+
           "description": "Compared to biome, feature is a descriptor of a geographic aspect or a physical entity that strongly influences the more local environment of a sample.",
           "title": "Feature"
         },
@@ -511,13 +512,14 @@
           "minLength": 1,
           "required": true,
           "type": "string",
+          "default" : "water",
           "description": "Descriptor of the material that was displaced by the sample, or material in which a sample was embedded, prior to the sampling event.",
           "title": "Material"
         },
 
         "phosphate": {
           "description": "Phosphate concentration parameters in the water column",
-          "title": "Phosphate",
+          "title": "Phosphate (&#956;mol/L)",
           "type": "object",
           "properties": {
             "choice": {
@@ -562,7 +564,7 @@
 
         "nitrate": {
           "description": "Nitrate concentration parameters in the water column in µmol/L",
-          "title": "Nitrate",
+          "title": "Nitrate (&#956;mol/L)",
           "type": "object",
           "properties": {
             "nitrate-choice": {
@@ -581,7 +583,7 @@
 
         "carbon_organic_particulate_poc": {
           "description": "Particulate organic carbon concentration in the water column in µg/L",
-          "title": "Carbon organic particulate (POC)",
+          "title": "Carbon organic particulate (POC) (&#956;g/L)",
           "type": "object",
           "properties": {
             "carbon_organic_particulate_poc-choice": {
@@ -600,7 +602,7 @@
 
         "nitrite": {
           "description": "Nitrite concentration parameters in the water column in µmol/L",
-          "title": "Nitrite",
+          "title": "Nitrite (&#956;mol/L)",
           "type": "object",
           "properties": {
             "nitrite-choice": {
@@ -619,7 +621,7 @@
 
         "carbon_organic_dissolved_doc": {
           "description": "Dissolved organic carbon concentration in the water column in µmol/L",
-          "title": "Carbon organic dissolved (DOC)",
+          "title": "Carbon organic dissolved (DOC) (&#956;mol/L)",
           "type": "object",
           "properties": {
             "carbon_organic_dissolved_doc-choice": {
@@ -638,7 +640,7 @@
 
         "nano_microplankton": {
           "description": "Abundance of cells in the water column (+other avail. cell properties) in number m^3",
-          "title": "Nano/Microplankton",
+          "title": "Nano/Microplankton (#/m&#179;)",
           "type": "object",
           "properties": {
             "nano_microplankton-choice": {
@@ -695,7 +697,7 @@
 
         "primary_production_isotope_uptake": {
           "description": "Primary Production in the water column in mg/m^3/d",
-          "title": "Primary Production (isotope uptake)",
+          "title": "Primary Production (isotope uptake) (mg/m&#179;/d)",
           "type": "object",
           "properties": {
             "primary_production_isotope_uptake-choice": {
@@ -714,7 +716,7 @@
 
         "primary_production_oxygen": {
           "description": "Primary Production in the water column in mg/m^3/d",
-          "title": "Primary Production (oxygen)",
+          "title": "Primary Production (oxygen) (mg/m&#179;/d)",
           "type": "object",
           "properties": {
             "primary_production_oxygen-choice": {
@@ -733,7 +735,7 @@
 
         "dissolved_oxygen_concentration": {
           "description": "Dissolved oxygen parameters in the water column in µmol/kg",
-          "title": "Dissolved oxygen concentration",
+          "title": "Dissolved oxygen concentration (&#956;mol/kg)",
           "type": "object",
           "properties": {
             "dissolved_oxygen_concentration-choice": {
@@ -752,7 +754,7 @@
 
         "nitrogen_organic_particulate_pon": {
           "description": "Particulate organic nitrogen concentration in the water column in µg/L",
-          "title": "Nitrogen organic particulate (PON)",
+          "title": "Nitrogen organic particulate (PON) (&#956;g/L)",
           "type": "object",
           "properties": {
             "nitrogen_organic_particulate_pon-choice": {
@@ -771,7 +773,7 @@
 
         "meso_macroplankton": {
           "description": "Abundance of individuals in the water column (+other avail. properties) in number per m^3",
-          "title": "Meso/Macroplankton",
+          "title": "Meso/Macroplankton (#/m&#179;)",
           "type": "object",
           "properties": {
             "meso_macroplankton-choice": {
@@ -789,8 +791,8 @@
         },
 
         "bacterial_production_isotope_uptake": {
-          "description": "Bacterial production in the water column in mg/m^3/d",
-          "title": "Bacterial production (isotope uptake)",
+          "description": "Bacterial production in the water column in (mg/m&#179;/d)",
+          "title": "Bacterial production (isotope uptake) (mg/m&#179;/d)",
           "type": "object",
           "properties": {
             "bacterial_production_isotope_uptake-choice": {
@@ -809,7 +811,7 @@
 
         "nitrogen_organic_dissolved_don": {
           "description": "Dissolved organic nitrogen concentration in the water column in mg/L",
-          "title": "Nitrogen organic dissolved (DON)",
+          "title": "Nitrogen organic dissolved (DON) (mg/L)",
           "type": "object",
           "properties": {
             "nitrogen_organic_dissolved_don-choice": {
@@ -828,7 +830,7 @@
 
         "ammonium": {
           "description": "Ammonium concentration parameters in the water column in µmol/L",
-          "title": "Ammonium",
+          "title": "Ammonium (&#956;mol/L)",
           "type": "object",
           "properties": {
             "ammonium-choice": {
@@ -847,7 +849,7 @@
 
         "silicate": {
           "description": "Silicate concentration parameters in the water column in µmol/L",
-          "title": "Silicate",
+          "title": "Silicate (&#956;mol/L)",
           "type": "object",
           "properties": {
             "silicate-choice": {
@@ -865,8 +867,8 @@
         },
 
         "bacterial_production_respiration": {
-          "description": "Bacterial production in the water column in mg/m^3/d",
-          "title": "Bacterial production (respiration)",
+          "description": "Bacterial production in the water column in mg/m&#179;/d",
+          "title": "Bacterial production (respiration) (mg/m&#179;/d)",
           "type": "object",
           "properties": {
             "bacterial_production_respiration-choice": {
@@ -921,7 +923,7 @@
 
         "pigment_concentration": {
           "description": "Concentration of pigments (e.g. chlorophyll a) extracted and analysed by fluorometry or HPLC in mg/m^3",
-          "title": "Pigment concentration",
+          "title": "Pigment concentration (mg/m&#179;)",
           "type": "object",
           "properties": {
             "choice": {
@@ -937,7 +939,7 @@
 
         "picoplankton_flow_cytometry": {
           "description": "Abundance of cells in the water column (+other avail. cell properties) in numeber per m^3",
-          "title": "Picoplankton (Flow Cytometry)",
+          "title": "Picoplankton (Flow Cytometry) (#/m&#179;)",
           "type": "object",
           "properties": {
             "choice": {

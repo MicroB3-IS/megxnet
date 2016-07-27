@@ -167,7 +167,19 @@
         "salinity": {
           "hideInitValidationError": false
         },
+        "biome": {
+          "hideInitValidationError": false,
+          "helper": "Descriptor of the broad ecological context of a sample."
+        },
+        "feature": {
+          "hideInitValidationError": false,
+          "helper": "Compared to biome, feature is a descriptor of a geographic aspect or a physical entity that strongly influences the more local environment of a sample."
+        },
+        "material": {
+          "hideInitValidationError": false,
 
+          "helper" : "Descriptor of the material that was displaced by the sample, or material in which a sample was embedded, prior to the sampling event."
+        },
         "phosphate": {
           "hideInitValidationError": false,
           "fields": {
