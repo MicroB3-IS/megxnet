@@ -4,7 +4,7 @@
 <style type="text/css">
 <!--
 standard OpenLayers OSM style
--->div.olControlZoom,div.olControlTextButtonPanel {
+-->div.olControlZoom, div.olControlTextButtonPanel {
   position: absolute;
   top: 8px;
   left: 8px;
@@ -21,7 +21,7 @@ div.olControlZoom a {
   padding: 0;
 }
 
-div.olControlZoom a,div.olControlTextButtonPanel .olButton {
+div.olControlZoom a, div.olControlTextButtonPanel .olButton {
   display: block;
   margin: 1px;
   color: white;
@@ -36,14 +36,16 @@ div.olControlZoom a,div.olControlTextButtonPanel .olButton {
   filter: alpha(opacity = 80);
 }
 
-div.olControlZoom a:hover,div.olControlTextButtonPanel .olButton:hover {
+div.olControlZoom a:hover, div.olControlTextButtonPanel .olButton:hover
+  {
   background: #130085; /* fallback for IE */
   background: rgba(0, 60, 136, 0.7);
   filter: alpha(opacity = 100);
 }
 
 @media only screen and (max-width: 600px) {
-  div.olControlZoom a:hover,div.olControlTextButtonPanel .olButton:hover {
+  div.olControlZoom a:hover, div.olControlTextButtonPanel .olButton:hover
+    {
     background: rgba(0, 60, 136, 0.5);
   }
 }
@@ -66,9 +68,9 @@ a.olControlZoomOut {
 
 
 <div class="container">
-  <h3>MyOSD Sample Registrierung</h3>
+  <h3>MyOSD Sample Registration</h3>
 
-  <div id="myosd-registration-form"></div>
+  <div id="myosd-sample-registration-form"></div>
 </div>
 
 <script type="text/javascript">
@@ -81,6 +83,51 @@ a.olControlZoomOut {
 
             Megx.myosd.mapEventHandler = function(event) {
               //console.log("map event type" + event.type);
+            }
+
+            Megx.myosd.createDisplayFeature = function(lat, lon) {
+
+              if ( typeof lat === 'undefined' || ! lat) {
+                console.error("lat does not exist");
+                return;
+              }
+
+              if ( typeof lon === 'undefined' || ! lon) {
+                console.error("lon does not exist");
+                return;
+              }
+
+              if (lat < -90 || lat > 90) {
+                console.error("lat out of range=%s", lat);
+                return;
+              }
+
+              if (lon < -180 || lon > 180) {
+                console.error("lon out of range=%s", lon);
+                return;
+              }
+
+              console.log("creating feature on map with lat=%s lon=%s", lat,
+                  lon);
+
+              var lonLat = new OpenLayers.LonLat(lon, lat).transform(
+              // transform from WGS 1984
+              new OpenLayers.Projection("EPSG:4326"),
+              // to Spherical Mercator Projection
+              map.getProjectionObject());
+
+              var point = new OpenLayers.Geometry.Point(lonLat.lon, lonLat.lat);
+
+              var pointFeature = new OpenLayers.Feature.Vector(point);
+
+              var mLayers = map.getLayersByName("vLayer");
+
+              if ( mLayers.length === 1 ) {
+                mLayers[0].removeAllFeatures();
+                mLayers[0].addFeatures([ pointFeature ]);
+              }
+
+              map.setCenter(lonLat, 8);
             }
 
             Megx.myosd.updateFeature = function(feature) {
@@ -100,28 +147,12 @@ a.olControlZoomOut {
                   mercProjection, wgsProjection);
               //console.log(pointWGS);
 
-              var bounds = feature.geometry.getBounds();
-
-              bounds = new OpenLayers.Feature.Vector(bounds.toGeometry()
-                  .transform(mercProjection, wgsProjection));
-
-              //console.log("Bounds:" + bounds);
-
-              var boundsField = Megx.myosd.formControl.childrenByPropertyId["bounds"];
-              boundsField.setValue(wkt.write(bounds));
-
               var longField = Megx.myosd.formControl.childrenByPropertyId["lon"];
               longField.setValue(pointWGS.x);
 
               var latField = Megx.myosd.formControl.childrenByPropertyId["lat"];
               latField.setValue(pointWGS.y);
 
-              var pointControl = map.getControl("pcid");
-            }
-
-            Megx.myosd.featureAddedEventHandler = function(event) {
-              //console.log("map event type" + event.type);
-              Megx.myosd.updateFeature(event.feature);
             }
 
             Megx.myosd.mapCreate = function() {
@@ -153,13 +184,22 @@ a.olControlZoomOut {
                   fillOpacity : 0.8,
                   strokeColor : "#336699",
                   strokeOpacity : 0.8,
-                  pointRadius: 6
+                  pointRadius : 6
                 })
               });
 
+              var vectorLayer = new OpenLayers.Layer.Vector("vLayer", {
+                projection : map.displayProjection
+              });
+
+              vectorLayer.preFeatureInsert = function(feature) {
+                console.log("removing all features");
+                this.removeAllFeatures();
+              }
+
               var myosdLayer = new OpenLayers.Layer.Vector("WFS", {
                 projection : wgsProjection,
-                styleMap: myOsdStyle,
+                styleMap : myOsdStyle,
                 strategies : [ new OpenLayers.Strategy.BBOX() ],
                 protocol : new OpenLayers.Protocol.WFS({
                   url : "${ext.megx.gmsBaseUrl}/gms",
@@ -173,41 +213,11 @@ a.olControlZoomOut {
 
               });
 
-              var vectorLayer = new OpenLayers.Layer.Vector("Vector Layer", {
-                projection : map.displayProjection,
-                eventListeners : {
-                  "featureadded" : Megx.myosd.featureAddedEventHandler,
-                  "onFeatureInsert" : Megx.myosd.mapEventHandler,
-                  "beforefeatureadded" : function(feature) {
-                    //console.log(feature);
-                    //console.log(feature.layer);
-                  },
-                  "featureselected" : Megx.myosd.mapEventHandler,
-                  "featureunselected" : Megx.myosd.mapEventHandler
-                }
+              var vectorLayer = new OpenLayers.Layer.Vector("vLayer", {
+                projection : map.displayProjection
               });
 
-              vectorLayer.preFeatureInsert = function(feature) {
-                console.log("removing all features");
-                this.removeAllFeatures();
-              }
-
-              vectorLayer.events.on({
-                'featureselected' : Megx.myosd.mapEventHandler,
-                'featureunselected' : Megx.myosd.mapEventHandler
-              });
-              map.addLayers([ newLayer, vectorLayer, myosdLayer ]);
-
-              var pointControl = new OpenLayers.Control.DrawFeature(
-                  vectorLayer, OpenLayers.Handler.Point, {
-                    id : "pcid"
-                  });
-
-              var dragControl = new OpenLayers.Control.DragFeature(vectorLayer,
-                  {
-                    id : "dfid",
-                    onComplete : Megx.myosd.updateFeature
-                  });
+              map.addLayers([ newLayer,vectorLayer ]);
 
               var featureSelectControl = new OpenLayers.Control.SelectFeature(
                   vectorLayer, {
@@ -220,19 +230,15 @@ a.olControlZoomOut {
                     box : true
                   })
 
-              map.addControl(pointControl);
-              map.addControl(dragControl);
               map.addControl(featureSelectControl);
               map.addControl(new OpenLayers.Control.MousePosition());
-              pointControl.activate();
-              dragControl.activate();
 
               var centerLon = left + ((right - left) / 2);
               var centerLat = bottom + ((top - bottom) / 2);
 
               map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
                   .transform(wgsProjection, mercatorProjection), 6); // 0=relative zoom level
-            }
+            } // end Megx.myosd.mapCreate
 
             Megx.myosd.scrollMiddleScreen = function(el) {
 
@@ -255,110 +261,11 @@ a.olControlZoomOut {
             //no server errors at beginning
             Megx.myosd.serverError.userName = false;
 
-            Megx.myosd.termsAgreeFieldValidator = function(callback) {
-              var value = this.getValue();
-              if (value === false) {
-                callback({
-                  "status" : false,
-                  "message" : "Du kannst nur teilnehmen, wenn Du den Teilnahmebedingungen zustimmst!"
-                });
-                return;
-              }
-
-              callback({
-                "status" : true
-              });
-            }
-
-            Megx.myosd.userNameFieldValidator = function(callback) {
-              if (Megx.myosd.serverError.userName === true
-                  || Megx.myosd.serverError.oldValue === this.getValue()) {
-                callback({
-                  "status" : false,
-                  "message" : "Benutzername exisitiert bereits."
-                });
-                return;
-              }
-              callback({
-                "status" : true
-              });
-            }
-            Megx.myosd.kitNumFieldValidator = function(callback) {
-
-              if (Megx.myosd.serverError.kitNum === true
-                  || Megx.myosd.serverError.oldValue === this.getValue()) {
-                callback({
-                  "status" : false,
-                  "message" : "Die MyOSD Nummer ist bereits registriert."
-                });
-                return;
-              }
-              callback({
-                "status" : true
-              });
-            }
-
-            Megx.myosd.emailRepeatValidator = function(callback) {
-              var email = this.getParent().childrenByPropertyId["email"]
-                  .getValue();
-              var value = this.getValue();
-              if (value === email) {
-                callback({
-                  "status" : true,
-                });
-                return;
-              }
-
-              callback({
-                "status" : false,
-                "message" : "Beide Email-Adressen muessen identisch sein!"
-              });
-            }
-
             var prender = function(field) {
               var self = this;
               //create a public reference
               Megx.myosd.formControl = field;
               var form = field.form;
-
-              // adding some custom validators
-              var termsAgreeField = field.childrenByPropertyId["terms"].childrenByPropertyId["terms_agree"];
-              if (termsAgreeField.options) {
-                termsAgreeField.options.validator = Megx.myosd.termsAgreeFieldValidator;
-              }
-
-              var emailRepeatField = field.childrenByPropertyId["email_repeat"];
-              if (emailRepeatField.options) {
-                emailRepeatField.options.validator = Megx.myosd.emailRepeatValidator;
-              }
-
-              var userNameField = field.childrenByPropertyId["username"];
-              if (userNameField.options) {
-                userNameField.options.validator = Megx.myosd.userNameFieldValidator;
-                var vf = function() {
-                  Megx.myosd.serverError.userName = false;
-                  this.isValid(true);
-                  this.refreshValidationState(true);
-                  form.enableSubmitButton();
-
-                }
-                userNameField.on("change", vf);
-                userNameField.on("blur", vf);
-              }
-
-              var kitNumField = field.childrenByPropertyId["kit_num"];
-              if (kitNumField.options) {
-                kitNumField.options.validator = Megx.myosd.kitNumFieldValidator;
-                var vf = function() {
-                  Megx.myosd.serverError.kitNum = false;
-                  this.isValid(true);
-                  this.refreshValidationState(true);
-                  form.enableSubmitButton();
-
-                }
-                kitNumField.on("change", vf);
-                kitNumField.on("blur", vf);
-              }
 
               if (form) {
                 var url = form.attributes.action;
@@ -366,23 +273,29 @@ a.olControlZoomOut {
                 //form.disableSubmitButton();
                 form.enableSubmitButton();
 
-                form.registerSubmitHandler(function(e, form) {
-                  return false;
+                field.childrenByPropertyId["latitude"].on("change", function() {
+                  var lon = this.getParent().childrenByPropertyId["longitude"];
+                  if (lon === 'undefined' || ! lon ) {
+                    return;
+                  }
+                  Megx.myosd.createDisplayFeature(this.getValue(), lon.getValue());
                 });
+
+                field.childrenByPropertyId["longitude"].on("change", function() {
+
+                  var lat = this.getParent().childrenByPropertyId["latitude"];
+                  if (lat === 'undefined' || ! lat ) {
+                    console.error("coulnt' get lat value");
+                    return;
+                  }
+                  Megx.myosd.createDisplayFeature(lat.getValue(),this.getValue());
+              });
+
+
+
                 var id = "#" + form.id;
 
-                var submitButton;
-                if (Megx.FormWidget.cfg.wizard) {
-                  submitButton = jQuery(
-                      'button[data-alpaca-wizard-button-key="submit"]', id);
-                } else {
-                  submitButton = jQuery('button[type="submit"]', id);
-                }
-                // hack to change the CSS classes of the submit button
-                // might be possible to do this using Alpaca templates
-                // but could not figure out how
-                submitButton.removeClass("btn-default");
-                submitButton.addClass("btn-primary");
+                var submitButton = form.getButtonEl("submit");
 
                 var errorHandler = function(jqXHR, textStatus, data) {
                   //data = jqXHR here, and jqXHR is the error thrown
@@ -473,7 +386,7 @@ a.olControlZoomOut {
             } // end prender
 
             var d = new Megx.FormWidget({
-              target : "myosd-registration-form",
+              target : "myosd-sample-registration-form",
               schemaLocation : ctx.siteUrl
                   + "/net.megx.myosd/myosd-sample-form-schema.json",
               optionsLocation : ctx.siteUrl
@@ -482,26 +395,15 @@ a.olControlZoomOut {
 
               postRender : prender,
 
-              "locale" : "de_DE",
-
               "layout" : {
                 "template" : ctx.siteUrl
                     + "/net.megx.myosd/sample-form-layout-template.html",
                 "bindings" : {
-                  "firstname" : "mx-myosd-user",
-                  "lastname" : "mx-myosd-user",
-                  "username" : "mx-myosd-user",
-                  "email" : "mx-myosd-user",
-                  "email_repeat" : "mx-myosd-user",
-                  "kit" : "mx-myosd-kit-left",
-                  "post_station" : "mx-myosd-kit-left",
-                  "kit_num" : "mx-myosd-kit-right",
-                  "address" : "mx-myosd-kit-right",
-                  "station" : "mx-myosd-kit-right",
-                  "placename" : "mx-myosd-map-right",
-                  "lat" : "mx-myosd-map-right",
-                  "lon" : "mx-myosd-map-right",
-                  "terms" : "mx-myosd-terms"
+                  "contact" : "mx-myosd-user",
+                  "participants" : "mx-myosd-user",
+                  "placename" : "mx-myosd-map-left",
+                  "latitude" : "mx-myosd-map-left",
+                  "longitude" : "mx-myosd-map-left"
 
                 }
               }

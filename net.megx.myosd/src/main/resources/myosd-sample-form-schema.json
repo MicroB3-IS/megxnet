@@ -1,13 +1,119 @@
 ﻿{
-  "title": "MyOSD Teilnehmer Registrierung",
+  "title": "MyOSD Sample Registration",
   "description": "Please fill all fields for a sample and submit.",
+  "definitions": {
+
+
+    "first_name": {
+      "type": "string",
+      "title": "First Name",
+      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$",
+      "required": true
+    },
+
+    "last_name": {
+      "type": "string",
+      "title": "Last Name",
+      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$",
+      "required": true
+    },
+
+    "institute": {
+      "type": "string",
+      "title": "Institute",
+      "description": "Please use the full, official name of your institute in English (preferably the one used for site registration).",
+      "required": true,
+      "pattern": "^([^1234506789;\\\\()$%!@^*/=])([^1234506789;\\\\()$%!@^*/=])[^;$%\\\\!@^*\\]\\[=]+$"
+    },
+
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "e-mail",
+      "required": true
+    },
+
+    "unit": {
+      "type": "string",
+      "title": "Unit",
+      "description": "Please choose an SI conforming unit of measurement.",
+      "required": true
+    },
+
+    "value": {
+      "title": "Value",
+      "required": true,
+      "type": "number"
+    },
+
+
+
+    "measurement": {
+      "title": "Measurement",
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/definitions/value"
+        },
+
+        "unit": {
+          "$ref": "#/definitions/unit"
+        }
+      }
+    }
+  },
+
   "type": "object",
-  "properties": {
-    "version": {
+    "properties": {
+      "version": {
       "type": "string",
       "readonly": true,
       "required": true,
       "default": "1"
+    },
+
+    "contact": {
+      "type": "object",
+      "title": "Primary Contact",
+      "description": "The main contact responsible for sampling and data submission.",
+      "required": false,
+      "properties": {
+        "first_name": {
+          "title" : "First Name",
+          "$ref": "#/definitions/first_name"
+        },
+
+        "last_name": {
+          "$ref": "#/definitions/last_name"
+        },
+
+        "email": {
+          "$ref": "#/definitions/email"
+        }
+      }
+    },
+
+    "participants": {
+      "title": "Additional Participants",
+      "description": "List of people who will appear in the citation of data publications. Please order the list according to authorship.",
+      "type": "array",
+      "uniqueItems": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "$ref": "#/definitions/first_name"
+          },
+
+          "last_name": {
+            "$ref": "#/definitions/last_name"
+          },
+
+          "email": {
+            "$ref": "#/definitions/email"
+          }
+        }
+      }
     },
 
     "firstname": {
@@ -22,212 +128,26 @@
       "required": true
     },
 
-    "username": {
-      "type": "string",
-      "required": true,
-      "minLength": 2
-    },
-    "email": {
-      "type": "string",
-      "format": "email",
-      "required": true
-    },
-    "email_repeat": {
-      "type": "string",
-      "format": "email",
-      "required": true
-    },
-
-    "kit": {
-      "type": "boolean",
-      "enum":
-      [
-        true
-      ],
-      "default":true,
-      "required": true
-    },
-
-    "post_station": {
-      "type": "string",
-      "enum":
-      [
-        "post",
-        "station"
-      ],
-
-      "required": true,
-      "dependencies":
-      [
-        "kit"
-      ]
-    },
-
-    "address": {
-      "title": "Address",
-      "type": "object",
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "pattern": "^[^0123456789;%#]*$",
-          "required": true
-        },
-
-        "street": {
-          "title": "Street Name",
-          "type": "string",
-          "required": true
-        },
-
-        "street_num": {
-          "title": "House Number",
-          "type": "string",
-          "required": true
-        },
-
-        "poastal_code": {
-          "title": "Poastal Code",
-          "type": "string",
-          "minLength": 4,
-          "pattern": "^[0-9]*$",
-          "required": true
-        },
-
-        "city": {
-          "title": "City Name",
-          "pattern": ".*[^0123456789]+.*",
-          "type": "string",
-          "required": true
-        }
-      },
-
-      "dependencies":
-      [
-        "post_station"
-      ]
-    },
-
-    "station": {
-      "title": "Address",
-      "type": "object",
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "pattern": "^[^0123456789;%#]*$",
-          "required": true
-        },
-
-        "post_num": {
-          "title": "Post Number",
-          "type": "integer",
-          "minimum": "1",
-          "required": true
-        },
-
-        "station_num": {
-          "title": "Station Number",
-          "type": "integer",
-          "minimum": "1",
-          "required": true
-        },
-
-        "poastal_code": {
-          "title": "Poastal Code",
-          "type": "string",
-          "minLength": 4,
-          "pattern": "^[0-9]*$",
-          "required": true
-        },
-
-        "city": {
-          "title": "City Name",
-          "type": "string",
-          "pattern": "^[^0123456789;%#]*$",
-          "required": true
-        }
-      },
-
-      "dependencies":
-      [
-        "post_station"
-      ]
-    },
-
-    "kit_num": {
-      "title": "MyOSD Sampling Kit Number",
-      "type": "integer",
-      "minimum": 271,
-      "maximum": 2000,
-      "required": true,
-      "dependencies":
-      [
-        "kit"
-      ]
-    },
-
     "placename": {
       "title": "Name of Place",
       "type": "string",
       "required": true
     },
 
-    "lat": {
-      "title": "Latitude in decimal degrees (WGS84)",
-      "type": "number",
-      "minimum": -90.00,
-      "maximum": 90.00,
-      "required": true
+    "latitude": {
+       "title": "Latitude (decimal degrees)",
+       "type": "number",
+       "required": true,
+       "minimum": 0,
+       "maximum": 90
     },
 
-    "lon": {
-      "title": "Longitude in decimal degrees (WGS84)",
-      "type": "number",
-      "minimum": -180.00,
-      "maximum": 180.00,
-      "required": true
-    },
-
-    "bounds": {
-      "type": "string",
-      "readonly": true,
-      "required": true,
-      "default": ""
-    },
-
-    "terms": {
-      "title": "terms",
-      "type": "object",
-      "properties": {
-        "terms_agree": {
-          "title": "Agree to Terms of Condition",
-          "type": "boolean",
-          "enum":
-          [
-            true,
-            false
-          ],
-
-          "disallow":
-          [
-            "false"
-          ],
-
-          "required": true
-        },
-
-        "osd_agree": {
-          "title": "MyOSD raffle agree",
-          "type": "boolean"
-        },
-
-        "sensebox_agree": {
-          "title": "Open Senseboxe agree",
-          "type": "boolean",
-          "required": false
-        }
-      }
+    "longitude": {
+       "title": "Longitude (decimal degrees)",
+       "type": "number",
+       "required": true,
+       "minimum": 0,
+       "maximum": 180
     }
   }
 }
