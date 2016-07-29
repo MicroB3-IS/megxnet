@@ -413,7 +413,7 @@
               },
 
               "quantity": {
-                "minimum": 50,
+                "minimum": 30,
                 "required": true,
                 "type": "number",
                 "description": "Refers to the quantity of environment that was sampled, most often with dimensions Length (incl. volume), Amount, Mass or Time.",
