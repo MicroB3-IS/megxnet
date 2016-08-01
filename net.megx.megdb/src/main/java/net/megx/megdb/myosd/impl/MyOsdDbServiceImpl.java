@@ -1,24 +1,59 @@
 package net.megx.megdb.myosd.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
 import net.megx.megdb.BaseMegdbService;
 import net.megx.megdb.myosd.MyOsdDbService;
+import net.megx.megdb.myosd.MyOsdMyBatisMapper;
 import net.megx.megdb.myosd.MyOsdParticipantRegistration;
 import net.megx.megdb.myosd.MyOsdSample;
+import net.megx.megdb.myosd.dto.MyOsdSampleImpl;
 
-public class MyOsdDbServiceImpl extends BaseMegdbService implements MyOsdDbService {
+public class MyOsdDbServiceImpl extends BaseMegdbService
+    implements MyOsdDbService {
 
   public void saveSample(MyOsdSample sample) {
     SqlSession session = super.sessionFactory.openSession();
     try {
       MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
-      mapper.saveSample(sample);
+      mapper.sampleByMyOsdId(sample);
       session.commit();
     } finally {
       session.close();
     }
+  }
+
+  public MyOsdSample sampleByMyOsdId(MyOsdSample sample) {
+    SqlSession session = super.sessionFactory.openSession();
+
+    try {
+      MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
+      sample = mapper.sampleByMyOsdId(sample);
+      session.commit();
+      session.close();
+    } finally {
+      session.close();
+    }
+    return sample;
+  }
+
+  @Override
+  public List<MyOsdSample> getSamples() {
+    SqlSession session = super.sessionFactory.openSession();
+
+    List<MyOsdSample> result = new ArrayList<MyOsdSample>();
+    try {
+      MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
+      result = mapper.getSamples();
+      session.commit();
+      session.close();
+    } finally {
+      session.close();
+    }
+    return result;
   }
 
   public void saveParticipant(MyOsdParticipantRegistration participant) {
@@ -40,6 +75,7 @@ public class MyOsdDbServiceImpl extends BaseMegdbService implements MyOsdDbServi
       MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
       p = mapper.participantByName(name);
       session.commit();
+      session.close();
     } finally {
       session.close();
     }

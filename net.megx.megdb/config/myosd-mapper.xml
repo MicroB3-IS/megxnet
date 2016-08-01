@@ -3,11 +3,12 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="net.megx.megdb.myosd.impl.MyOsdMyBatisMapper">
+<mapper namespace="net.megx.megdb.myosd.MyOsdMyBatisMapper">
 
 
   <sql id="allParticipantColumns">raw, email, user_name, myosd_id, schema_version</sql>
-  <sql id="table">myosd.registrations</sql>
+  <sql id="participant">myosd.registrations</sql>
+  <sql id="sample_curation">myosd.sample_curation_overview</sql>
 
   <resultMap id="participantResultMap" type="net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl">
     <id property="id" column="id" />
@@ -30,6 +31,20 @@
     );
   </insert>
 
+<select id="getSamples" parameterType="net.megx.megdb.myosd.MyOsdSample" resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
+    select
+      myosd_id, row_to_json(sam) as rawJson
+    FROM <include refid="sample_curation"/> AS sam
+    WHERE myosd_id = #{myOsdId}
+  </select>
+
+  <select id="sampleByMyOsdId" parameterType="net.megx.megdb.myosd.MyOsdSample" resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
+    select
+      myosd_id, row_to_json(sam) as rawJson
+    FROM <include refid="sample_curation"/> AS sam
+    WHERE myosd_id = #{myOsdId}
+  </select>
+
   <insert id="saveParticipant" parameterType="net.megx.megdb.myosd.MyOsdParticipantRegistration">
   select myosd.ins_myosd_regisration(
     #{email}::text,
@@ -39,16 +54,17 @@
     #{rawJson}::json);
   </insert>
 
+<!--
  <select id="updParticipantFromJson" >
     select myosd.upd_myosd_regisrations_from_json()
   </select>
-
+ -->
 
   <select id="participantByName" parameterType="String"
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="table"/>
+    FROM <include refid="participant"/>
     WHERE user_name = #{name}
   </select>
 
@@ -57,7 +73,7 @@
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="table"/>
+    FROM <include refid="participant"/>
     WHERE email = #{email}
   </select>
 
@@ -65,7 +81,7 @@
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="table"/>
+    FROM <include refid="participant"/>
     WHERE myosd_id = #{myOsdId}
   </select>
 
