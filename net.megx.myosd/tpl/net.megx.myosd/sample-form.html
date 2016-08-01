@@ -72,7 +72,8 @@ a.olControlZoomOut {
 
   <div id="myosd-sample-registration-form"></div>
 </div>
-
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
 <script type="text/javascript">
   $(document)
       .ready(
@@ -80,6 +81,21 @@ a.olControlZoomOut {
             Megx = Megx || {};
             Megx.myosd = {};
             Megx.myosd.serverError = {};
+
+            Megx.getQueryStringValue = function (key) {
+
+              return unescape(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + escape(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+            }
+
+            var myOsdId = Megx.getQueryStringValue('id');
+            console.log("myosdId=" + myOsdId);
+
+            if (typeof myOsdId === 'undefined' || ! myOsdId) {
+              document.getElementById("myosd-sample-registration-form").innerHTML = "<h1>No MyOSD given.</h1>";
+
+              console.error("no myosdId - can not render form");
+              return;
+            }
 
             Megx.myosd.mapEventHandler = function(event) {
               //console.log("map event type" + event.type);
@@ -156,6 +172,7 @@ a.olControlZoomOut {
             }
 
             Megx.myosd.mapCreate = function() {
+              console.log("rendering map");
               var wgsProjection = new OpenLayers.Projection("EPSG:4326"); // transform from WGS 1984
               var mercatorProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 
@@ -164,8 +181,7 @@ a.olControlZoomOut {
               var right = 15.1;
               var top = 55.1;
 
-              var extent = new OpenLayers.Bounds(left, bottom, right, top)
-                  .transform(wgsProjection, mercatorProjection);
+              var extent = new OpenLayers.Bounds(left, bottom, right, top).transform(wgsProjection, mercatorProjection);
 
               var options = {
                 //maxExtent : extent,
@@ -195,7 +211,7 @@ a.olControlZoomOut {
               vectorLayer.preFeatureInsert = function(feature) {
                 console.log("removing all features");
                 this.removeAllFeatures();
-              }
+              };
 
               var myosdLayer = new OpenLayers.Layer.Vector("WFS", {
                 projection : wgsProjection,
@@ -228,7 +244,7 @@ a.olControlZoomOut {
                     toggleKey : "ctrlKey", // ctrl key removes from selection
                     multipleKey : "shiftKey", // shift key adds to selection
                     box : true
-                  })
+                  });
 
               map.addControl(featureSelectControl);
               map.addControl(new OpenLayers.Control.MousePosition());
@@ -238,6 +254,7 @@ a.olControlZoomOut {
 
               map.setCenter(new OpenLayers.LonLat(centerLon, centerLat)
                   .transform(wgsProjection, mercatorProjection), 6); // 0=relative zoom level
+                  console.log("end create map") ;
             } // end Megx.myosd.mapCreate
 
             Megx.myosd.scrollMiddleScreen = function(el) {
@@ -273,25 +290,70 @@ a.olControlZoomOut {
                 //form.disableSubmitButton();
                 form.enableSubmitButton();
 
-                field.childrenByPropertyId["latitude"].on("change", function() {
-                  var lon = this.getParent().childrenByPropertyId["longitude"];
+                //getting some alpaca fields
+                var fStartLat = field.childrenByPropertyId["start_lat"];
+                if (fStartLat === 'undefined' || ! fStartLat ) {
+                  console.error("start_lat field is missing. Another name?")
+                }
+
+                var fStartLon = field.childrenByPropertyId["start_lon"];
+                if (fStartLon === 'undefined' || ! fStartLon ) {
+                  console.error("start_lon field is missing. Another name?")
+                }
+                var fSalinity = field.childrenByPropertyId["salinity"];
+                if (fSalinity === 'undefined' || ! fSalinity ) {
+                  console.error("salinity field is missing. Another name?")
+                }
+                var fRegSalinity = field.childrenByPropertyId["reg_salinity"];
+                if (fRegSalinity === 'undefined' || ! fRegSalinity ) {
+                  console.error("registered salinity field is missing. Another name?")
+                }
+                var fPh = field.childrenByPropertyId["ph"];
+                if (fPh === 'undefined' || ! fPh ) {
+                  console.error("ph field is missing. Another name?")
+                }
+                var fRegPh = field.childrenByPropertyId["reg_ph"];
+                if (fRegPh === 'undefined' || ! fRegPh ) {
+                  console.error("registered ph field is missing. Another name?")
+                }
+
+                // pre-setting field values
+                if ( field.childrenByPropertyId["app_start_lon"] ) {
+                  fStartLon.setValue( field.childrenByPropertyId["app_start_lon"].getValue() );
+                }
+                if ( field.childrenByPropertyId["app_start_lat"] ) {
+                  fStartLat.setValue( field.childrenByPropertyId["app_start_lat"].getValue() );
+                }
+
+                if ( fRegSalinity.getValue() != 'NaN' ) {
+                  fSalinity.setValue( fRegSalinity.getValue() );
+                }
+                if ( fRegPh.getValue() != 'NaN' ) {
+                  fPh.setValue( fRegPh.getValue() );
+                }
+                var displayByLat = function() {
+                  var lon = this.getParent().childrenByPropertyId["start_lon"];
                   if (lon === 'undefined' || ! lon ) {
                     return;
                   }
                   Megx.myosd.createDisplayFeature(this.getValue(), lon.getValue());
-                });
+                };
 
-                field.childrenByPropertyId["longitude"].on("change", function() {
+                var displayByLon = function() {
+                  var lat = this.getParent().childrenByPropertyId["start_lat"];
 
-                  var lat = this.getParent().childrenByPropertyId["latitude"];
                   if (lat === 'undefined' || ! lat ) {
-                    console.error("coulnt' get lat value");
-                    return;
+                      console.error("could not get lat value");
+                      return;
                   }
                   Megx.myosd.createDisplayFeature(lat.getValue(),this.getValue());
-              });
+                };
 
+                fStartLat.on("change", displayByLat);
+                fStartLat.on("focus", displayByLat);
 
+                fStartLon.on("change", displayByLon);
+                fStartLon.on("blur", displayByLon);
 
                 var id = "#" + form.id;
 
@@ -382,6 +444,7 @@ a.olControlZoomOut {
                     });
 
               }
+
               Megx.myosd.mapCreate();
             } // end prender
 
@@ -391,24 +454,213 @@ a.olControlZoomOut {
                   + "/net.megx.myosd/myosd-sample-form-schema.json",
               optionsLocation : ctx.siteUrl
                   + "/net.megx.myosd/myosd-sample-form-options.json",
-              parentView : "bootstrap-create",
+              parentView : "bootstrap-edit",
 
               postRender : prender,
+
+              dataSource : ctx.siteUrl + "/ws/v1/myosd/v1.0.0/sample/" + myOsdId,
+
+              "view" : {
+                "parent" : "bootstrap-edit",
+                "displayReadonly" : true,
+                "fields": {
+                  "/myosd_id" : {
+                    "templates" : {
+                      "control-text": "<strong>MyOSD ID:{{{data}}}</strong>"
+                    }
+                  },
+                  "/reg_kit_sending_date" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_kit_arrival_date" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_full_name" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_email" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_place_name" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_latitude" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_longitude" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_start_lat" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_start_lon" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_accuracy" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_sampling_depth" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_salinity" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_salinity" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_phosphate" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/reg_ph" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_ph" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_nitrate" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_nitrite" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_filter_one" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_filter_two" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_weather_condition" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_air_temperature" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_water_depth" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  }
+                  ,
+                  "/app_wind_speed" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  }
+
+                }
+              },
 
               "layout" : {
                 "template" : ctx.siteUrl
                     + "/net.megx.myosd/sample-form-layout-template.html",
                 "bindings" : {
+                  "myosd_id": "myosd-id",
+
+                  "reg_kit_sending_date": "mx-myosd-user",
+                  "reg_kit_arrival_date": "mx-myosd-user",
+                  "kit_arrival_date": "mx-myosd-user",
+                  "reg_full_name" : "mx-myosd-user",
+                  "reg_email" : "mx-myosd-user",
                   "contact" : "mx-myosd-user",
+                  "contact" : "mx-myosd-user",
+
                   "participants" : "mx-myosd-user",
-                  "placename" : "mx-myosd-map-left",
-                  "latitude" : "mx-myosd-map-left",
-                  "longitude" : "mx-myosd-map-left"
+
+                  "reg_place_name" : "mx-myosd-map-left",
+                  "place_name" : "mx-myosd-map-left",
+                  "start_lat" : "mx-myosd-map-left",
+                  "reg_latitude" : "mx-myosd-map-left",
+                  "app_start_lat" : "mx-myosd-map-left",
+                  "start_lon" : "mx-myosd-map-left",
+                  "reg_longitude" : "mx-myosd-map-left",
+                  "app_start_lon" : "mx-myosd-map-left",
+                  "app_accuracy" : "mx-myosd-map-left",
+                  "max_uncertain" : "mx-myosd-map-left",
+
+                  "biome": "mx-myosd-data",
+                  "local_date": "mx-myosd-data",
+                  "local_start": "mx-myosd-data",
+
+                  "app_sampling_depth": "mx-myosd-data",
+                  "sample_depth": "mx-myosd-data",
+
+                  "water_temperature": "mx-myosd-data",
+
+                  "reg_salinity": "mx-myosd-data",
+                  "app_salinity": "mx-myosd-data",
+                  "salinity": "mx-myosd-data",
+                  "reg_ph": "mx-myosd-data",
+                  "app_ph": "mx-myosd-data",
+                  "ph": "mx-myosd-data",
+
+                  "app_phosphate": "mx-myosd-data",
+                  "phosphate": "mx-myosd-data",
+
+                  "app_nitrate": "mx-myosd-data",
+                  "nitrate": "mx-myosd-data",
+                  "app_nitrite": "mx-myosd-data",
+                  "nitrite": "mx-myosd-data",
+                  "app_weather_condition": "mx-myosd-data",
+                  "weather_condition": "mx-myosd-data",
+                  "app_water_depth": "mx-myosd-data",
+                  "water_depth": "mx-myosd-data",
+                  "app_air_temperature": "mx-myosd-data",
+                  "air_temperature": "mx-myosd-data",
+                  "app_wind_speed": "mx-myosd-data",
+                  "wind_speed": "mx-myosd-data",
+                  "other_params": "mx-myosd-data",
+                  "app_filter_one": "mx-myosd-data",
+                  "app_filter_two": "mx-myosd-data",
+                  "filters": "mx-myosd-data",
+                  "remarks": "mx-myosd-data"
 
                 }
               }
             });
-
             d.renderForm();
 
           });

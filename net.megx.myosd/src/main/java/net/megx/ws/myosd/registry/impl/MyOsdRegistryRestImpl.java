@@ -1,5 +1,7 @@
 package net.megx.ws.myosd.registry.impl;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -34,7 +36,8 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
   private MyOsdDbService db;
 
   private String contactLink = "<a href=\"mailto:myosd-contact@microb3.eu\">myosd-contact@microb3.eu</a>";
-  private String contactHtml = "<p>Bitte schreib uns dazu an " + contactLink + "!<p>";
+  private String contactHtml = "<p>Bitte schreib uns dazu an " + contactLink
+      + "!<p>";
 
   public MyOsdRegistryRestImpl() {
   }
@@ -72,8 +75,6 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     p.setVersion(version);
     p.setUserName(userName);
     p.setBothEmails(email, emailRepeat);
-
-
 
     ResponseBuilder b = null;
 
@@ -120,6 +121,27 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
   }
 
   @Path("sample/{kitNum}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getSample(@PathParam("kitNum") int myOsdId) {
+
+
+    ResponseBuilder b = null;
+    MyOsdSample sam = new MyOsdSampleImpl();
+    sam.setMyOsdId(myOsdId);
+
+    try {
+      sam = db.sampleByMyOsdId(sam);
+      b = Response.ok().entity( sam.getRawJson() );
+    } catch (Exception e) {
+      log.error("Could not get sample=" + myOsdId, e);
+      b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);
+    }
+
+    return b.build();
+  }
+
+  @Path("sample/{kitNum}")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -144,14 +166,13 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
       String dupMsg = "Doppelter Eintrag";
       String prefix = "Wir haben schon einen Eintrag mit ";
 
-
-//      duplicate = db.participantByMyOsdId(p.getMyOsdId());
-//      if (duplicate != null) {
-//        b = failure(dupMsg,
-//            prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId(),
-//            "dup_myosd_id");
-//        return b.build();
-//      }
+      // duplicate = db.participantByMyOsdId(p.getMyOsdId());
+      // if (duplicate != null) {
+      // b = failure(dupMsg,
+      // prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId(),
+      // "dup_myosd_id");
+      // return b.build();
+      // }
 
       db.saveSample(sample);
       b = success("Vielen Dank!");

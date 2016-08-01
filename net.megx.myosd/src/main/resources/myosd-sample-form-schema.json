@@ -2,8 +2,6 @@
   "title": "MyOSD Sample Registration",
   "description": "Please fill all fields for a sample and submit.",
   "definitions": {
-
-
     "first_name": {
       "type": "string",
       "title": "First Name",
@@ -46,8 +44,6 @@
       "type": "number"
     },
 
-
-
     "measurement": {
       "title": "Measurement",
       "type": "object",
@@ -64,12 +60,50 @@
   },
 
   "type": "object",
-    "properties": {
-      "version": {
+  "properties": {
+    "version": {
       "type": "string",
       "readonly": true,
       "required": true,
       "default": "1"
+    },
+
+    "myosd_id": {
+      "type": "string",
+      "required": true,
+      "readonly": true
+    },
+
+    "reg_kit_sending_date": {
+      "title": "Registered Kit sending date:",
+      "type": "string",
+      "required": false,
+      "readonly": true
+    },
+
+    "reg_kit_arrival_date": {
+      "title": "Registered Kit arrival date:",
+      "type": "string",
+      "required": false,
+      "readonly": true
+    },
+
+    "kit_arrival_date": {
+      "title": "Kit arrival date",
+      "type": "string",
+      "required": false
+    },
+
+    "reg_full_name": {
+      "title": "Full Name of first registered Participant",
+      "type": "string",
+      "required": false
+    },
+
+    "reg_email": {
+      "title": "Email of first registered Participant",
+      "type": "string",
+      "required": false
     },
 
     "contact": {
@@ -79,7 +113,7 @@
       "required": false,
       "properties": {
         "first_name": {
-          "title" : "First Name",
+          "title": "First Name",
           "$ref": "#/definitions/first_name"
         },
 
@@ -116,38 +150,356 @@
       }
     },
 
-    "firstname": {
+    "reg_place_name": {
+      "title": "Registered Name of Place",
       "type": "string",
-      "pattern": "^[^0123456789;%#]*$",
-      "required": true
+      "required": false
     },
 
-    "lastname": {
-      "type": "string",
-      "pattern": "^[^0123456789;%#]*$",
-      "required": true
-    },
-
-    "placename": {
+    "place_name": {
       "title": "Name of Place",
       "type": "string",
       "required": true
     },
 
-    "latitude": {
-       "title": "Latitude (decimal degrees)",
-       "type": "number",
-       "required": true,
-       "minimum": 0,
-       "maximum": 90
+    "reg_latitude": {
+      "title": "Registered Latitude:",
+      "type": "string",
+      "readonly": true,
+      "required": false
     },
 
-    "longitude": {
-       "title": "Longitude (decimal degrees)",
-       "type": "number",
-       "required": true,
-       "minimum": 0,
-       "maximum": 180
+    "app_start_lat": {
+      "title": "OSD APP Latitude:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "start_lat": {
+      "title": "Latitude (decimal degrees)",
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "maximum": 90
+    },
+
+    "reg_longitude": {
+      "title": "Registered Longitude",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "app_start_lon": {
+      "title": "OSD App Longitude:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "start_lon": {
+      "title": "Longitude (decimal degrees)",
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "maximum": 180
+    },
+
+    "app_accuracy": {
+      "title": "OSD App GPS Accuracy:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "max_uncertain": {
+      "title": "GPS Accuracy (Genauigkeit) (m)",
+      "type": "number",
+      "required": true,
+      "minimum": 0
+    },
+
+    "biome": {
+      "minLength": 1,
+      "required": true,
+      "type": "string",
+      "description": "Descriptor of the broad ecological context of a sample.",
+      "title": "Biome"
+    },
+
+    "local_date": {
+      "required": true,
+      "type": "number",
+      "minimum": 17,
+      "maximum": 24,
+      "title": "Date Sample Taken"
+    },
+
+    "local_start": {
+      "required": true,
+      "type": "string",
+      "title": "Time Sample Taken (hh:mm)"
+    },
+
+    "app_sampling_depth": {
+      "title": "OSD App Sample Depth (m):",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "sample_depth": {
+      "title": "Sampling Depth (m)",
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "maximum": 180
+    },
+
+    "water_temperature": {
+      "required": true,
+      "type": "number",
+      "description": "Temperature of water at the time of taking the sample in degress Celsius",
+      "title": "Temperature (&#8451;)"
+    },
+
+    "reg_salinity": {
+      "title": "OSD Registration Salinity:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "app_salinity": {
+      "title": "OSD App Salinity:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "salinity": {
+      "required": true,
+      "type": "number",
+      "description": "Salinity of water at the time of taking the sample in PSU.",
+      "title": "Salinity",
+      "minimum": -1,
+      "maximum": 100
+    },
+
+    "reg_ph": {
+      "title": "OSD Registration ph:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "app_ph": {
+      "title": "OSD App ph:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "ph": {
+      "description": "Alkalinity, acidity and pH of the water column",
+      "title": "pH",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 12
+    },
+
+    "feature": {
+      "minLength": 1,
+      "required": false,
+      "type": "string",
+      "description": "Compared to biome, feature is a descriptor of a geographic aspect or a physical entity that strongly influences the more local environment of a sample.",
+      "title": "Feature"
+    },
+
+    "material": {
+      "minLength": 1,
+      "required": false,
+      "type": "string",
+      "default": "water",
+      "description": "Descriptor of the material that was displaced by the sample, or material in which a sample was embedded, prior to the sampling event.",
+      "title": "Material"
+    },
+
+    "app_phosphate": {
+      "title": "OSD App Phosphate TAKE CARE different unit (mg/L):",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "phosphate": {
+      "description": "Phosphate concentration parameters in the water column",
+      "title": "Phosphate (&#956;mol/L)",
+      "type": "number",
+      "minimum": 0
+    },
+
+    "app_nitrate": {
+      "title": "OSD App Nitrate TAKE CARE different unit (mg/L):",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "nitrate": {
+      "description": "Nitrate concentration parameters in the water column in µmol/L",
+      "title": "Nitrate (&#956;mol/L)",
+      "type": "number",
+      "minimum": 0
+    },
+
+    "app_nitrite": {
+      "title": "OSD App Nitrite TAKE CARE different unit (mg/L):",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "nitrite": {
+      "description": "Nitrite concentration parameters in the water column in µmol/L",
+      "title": "Nitrite (&#956;mol/L)",
+      "type": "number",
+      "minimum": 0
+    },
+
+    "app_weather_condition": {
+      "title": "OSD App Weather Condition:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "weather_condition": {
+      "title": "Weather Condition",
+      "type": "string",
+      "required": false
+    },
+
+    "app_water_depth": {
+      "title": "OSD App Water Column Depth:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "water_depth": {
+      "title": "Water Column Depth (m)",
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "maximum": 10000
+    },
+
+    "app_air_temperature": {
+      "type": "string",
+      "readonly": true,
+      "title": "OSD App Air Temperature (&#8451;):"
+    },
+
+    "air_temperature": {
+      "type": "number",
+      "maximum": 60,
+      "title": "Air Temperature (&#8451;)"
+    },
+
+    "app_wind_speed": {
+      "type": "string",
+      "readonly": true,
+      "title": "OSD App Wind Speed (km/h):"
+    },
+
+    "wind_speed": {
+      "type": "number",
+      "maximum": 0,
+      "title": "Wind Speed (km/h)"
+    },
+
+    "other_params": {
+      "description": "Add as many fields as there are other environments parameters measured; Define the parameter according to Table 2g; See list of recommended environmental parameters in Table 1",
+      "title": "Other Parameters",
+      "required": false,
+      "type": "array",
+      "uniqueItems": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "param_name": {
+            "title": "Parameter Name",
+            "description": "Name of the Parameter (please use a scientific common name).",
+            "type": "string"
+          },
+
+          "param_value": {
+            "title": "Value of Measurement",
+            "description": "",
+            "type": "string"
+          },
+
+          "uom": {
+            "title": "Unit of Measurement",
+            "description": "Please choose an SI conforming unit of measurement.",
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "app_filter_one": {
+      "title": "OSD App Filter One Volume:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "app_filter_two": {
+      "title": "OSD App Filter Two Volume:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
+    "filters": {
+      "title": "Filters",
+      "description": "The filters sub-sampled from the environmental sample.",
+      "type": "array",
+      "required": true,
+      "uniqueItems": false,
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "filtration_time": {
+            "minimum": 1,
+            "maximum": 120,
+            "required": true,
+            "type": "number",
+            "description": "Refers to the duration in minutes to filter the given sample quantity.",
+            "title": "Filtration time (min)"
+          },
+
+          "quantity": {
+            "minimum": 30,
+            "required": true,
+            "type": "number",
+            "description": "Refers to the quantity of environment that was sampled, most often with dimensions Length (incl. volume), Amount, Mass or Time.",
+            "title": "Filter volume (ml)"
+          }
+        }
+      }
+    },
+
+    "remarks": {
+      "required": false,
+      "type": "string",
+      "description": "Report any deviation.",
+      "title": "Comment"
     }
   }
 }

@@ -37,13 +37,22 @@
       "type": "email",
       "size": 20
     },
-    "latitude": {
+
+    "start_lat": {
       "id": "lat"
     },
-    "longitude": {
+
+    "start_lon": {
       "id": "lon"
+    },
+
+    "local_start": {
+      "type": "time",
+      "dateFormat": "hh:mm"
+    },
+
+    "remarks": {
+      "type": "textarea"
     }
-
-
   }
 }
