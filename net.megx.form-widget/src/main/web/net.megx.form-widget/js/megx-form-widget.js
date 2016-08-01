@@ -163,22 +163,32 @@ Megx.FormWidget.prototype.renderForm = function() {
     alpacaOptions.postRender = self.submitForm;
   }
 
+
+  if (typeof cfg.view != "undefined" && cfg.view) {
+    alpacaOptions.view = cfg.view;
+  }
+  if (typeof cfg.locale != "undefined" && cfg.locale) {
+    alpacaOptions.view.locale = cfg.locale;
+  }
+
   if (typeof cfg.layout != "undefined" && cfg.layout) {
     alpacaOptions.view.layout = cfg.layout;
   }
 
-  if (typeof cfg.locale != "undefined" && cfg.locale) {
 
-    alpacaOptions.view.locale = cfg.locale;
-  }
-
-  // pre-fill form if datasource is given
-  if (cfg.data) {
+  // pre-fill form if data is given
+  if (typeof cfg.data != "undefined" && cfg.data && !cfg.dataSource) {
     alpacaOptions.data = cfg.data;
+  }
+//pre-fill form if datasource is given
+  if (typeof cfg.dataSource != "undefined" && cfg.dataSource && !cfg.data) {
+//    console.log("datSource=%s",cfg.dataSource);
+    alpacaOptions.dataSource = cfg.dataSource;
+  } else {
+    console.log("No dataSource");
   }
 
   // actual loading of alpaca based form
   Alpaca.logLevel = Alpaca.ERROR;
   jQuery("#" + cfg.target).alpaca(alpacaOptions);
-
 }
