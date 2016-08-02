@@ -25,8 +25,7 @@
 
 
   <insert id="saveSample" parameterType="net.megx.megdb.myosd.MyOsdSample">
-    select
-    myosd.ins_sample( #{myOsdId}::integer, #{rawJson}::json);
+    select myosd.ins_sample( #{myOsdId}::integer, #{rawJson}::json);
   </insert>
 
   <select id="getSamples" parameterType="net.megx.megdb.myosd.MyOsdSample"

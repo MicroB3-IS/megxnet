@@ -22,6 +22,7 @@ public class MyOsdDbServiceImpl extends BaseMegdbService
       MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
       mapper.saveSample(sample);
       session.commit();
+      session.close();
     } finally {
       session.close();
     }
@@ -29,16 +30,16 @@ public class MyOsdDbServiceImpl extends BaseMegdbService
 
   public MyOsdSample sampleByMyOsdId(MyOsdSample sample) {
     SqlSession session = super.sessionFactory.openSession();
-
+    MyOsdSample result = null;
     try {
       MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
-      sample = mapper.sampleByMyOsdId(sample);
+      result = mapper.sampleByMyOsdId(sample);
       session.commit();
       session.close();
     } finally {
       session.close();
     }
-    return sample;
+    return result;
   }
 
   @Override
