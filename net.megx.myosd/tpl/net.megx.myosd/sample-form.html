@@ -74,6 +74,12 @@ a.olControlZoomOut {
 </div>
 <script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+
+
+
 <script type="text/javascript">
   $(document)
       .ready(
@@ -91,8 +97,29 @@ a.olControlZoomOut {
             console.log("myosdId=" + myOsdId);
 
             if (typeof myOsdId === 'undefined' || ! myOsdId) {
-              document.getElementById("myosd-sample-registration-form").innerHTML = "<h1>No MyOSD given.</h1>";
 
+              document.getElementById("myosd-sample-registration-form").innerHTML = "<h1>No MyOSD given: <div id='id-form'></div></h1>";
+
+              $("#id-form").alpaca({
+                "options": {
+                  "name": "id",
+                  "form": {
+                    "attributes": {
+                      "method": "get",
+                      "action": ctx.siteUrl + "/myosd/sample"
+                    },
+                    "buttons": {
+                      "submit": {
+                          "title": "Bring it on!"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "title": "id",
+                    "type": "integer"
+                }
+            });
               console.error("no myosdId - can not render form");
               return;
             }
@@ -289,7 +316,9 @@ a.olControlZoomOut {
                 var ajaxMethod = form.attributes.method;
                 //form.disableSubmitButton();
                 form.enableSubmitButton();
-
+                form.registerSubmitHandler(function(e, form) {
+                  return false;
+                });
                 //getting some alpaca fields
                 var fStartLat = field.childrenByPropertyId["start_lat"];
                 if (fStartLat === 'undefined' || ! fStartLat ) {
@@ -441,10 +470,13 @@ a.olControlZoomOut {
                         return;
                       }
                       if (field.isValid(true)) {
-
+                        form.disableSubmitButton();
                         var data = field.getValue();
 
+
                         data.json = JSON.stringify(field.getValue());
+                        console.log("data.json=")
+                        console.log(data.json)
                         jQuery
                             .ajax({
                               type : ajaxMethod,
@@ -459,7 +491,7 @@ a.olControlZoomOut {
                                   toastr.success(successMessage);
                                   setTimeout(
                                       function() {
-                                        document.location.href = "http://www.my-osd.org/registrierung/danke/";
+                                        document.location.href =  ctx.siteUrl + "/myosd/sample";
                                       }, 2000);
 
                                 }).error(errorHandler).always(
@@ -470,7 +502,9 @@ a.olControlZoomOut {
                     });
 
               }
-
+              if ($(id).alpaca("exists")) {
+                jQuery("#" + Megx.FormWidget.animId).remove();
+              }
               Megx.myosd.mapCreate();
             } // end prender
 

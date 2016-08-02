@@ -258,6 +258,7 @@
 
     "local_start": {
       "required": true,
+      "format": "date",
       "type": "string",
       "title": "Time Sample Taken (hh:mm)"
     },

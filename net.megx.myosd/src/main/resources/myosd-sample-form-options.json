@@ -100,7 +100,8 @@
 
     "local_start": {
       "type": "time",
-      "dateFormat": "hh:mm"
+      "dateFormat": "HH:mm"
+
     },
 
     "remarks": {

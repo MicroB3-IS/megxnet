@@ -158,13 +158,24 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
 
     try {
 
+      MyOsdSample duplicate = null;
+      String dupMsg = "Doppelter Eintrag";
+      String prefix = "We already curated  ";
+
+      duplicate = db.sampleByMyOsdId(sample);
+
+      if (duplicate != null && sample.getMyOsdId().equals(duplicate)) {
+        b = failure(dupMsg, prefix + sample.getMyOsdId(),
+            "dup_myosd_id");
+        return b.build();
+      }
       db.saveSample(sample);
       b = success("Sample " + myOsdId + " saved succesfully");
       return b.build();
 
     } catch (Exception e) {
       log.error("Could not save sample", e);
-      b = failure("Could NOT save sample data!");
+      b = failure("DB ERROR: Could NOT save sample data!");
     }
 
     if (b == null) {
