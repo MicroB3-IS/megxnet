@@ -141,50 +141,35 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
     return b.build();
   }
 
-  @Path("sample/{kitNum}")
+  @Path("sample")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-  public Response saveSample(@PathParam("kitNum") int myOsdId,
+  public Response saveSample(@FormParam("myosd_id") int myOsdId,
       @FormParam("json") String json) {
 
-    log.debug("save sample: " + json);
+    log.debug("save sample myosd= " + myOsdId + " json=" + json);
 
     MyOsdSample sample = new MyOsdSampleImpl();
     sample.setRawJson(json);
     sample.setMyOsdId(myOsdId);
 
-    // p.setVersion(version);
-    // p.setUserName(userName);
-    // p.setBothEmails(email, emailRepeat);
-
     ResponseBuilder b = null;
 
     try {
 
-      MyOsdParticipantRegistration duplicate = null;
-      String dupMsg = "Doppelter Eintrag";
-      String prefix = "Wir haben schon einen Eintrag mit ";
-
-      // duplicate = db.participantByMyOsdId(p.getMyOsdId());
-      // if (duplicate != null) {
-      // b = failure(dupMsg,
-      // prefix + "dieser MyOSD Sampling Kit Nummer: " + p.getMyOsdId(),
-      // "dup_myosd_id");
-      // return b.build();
-      // }
-
       db.saveSample(sample);
-      b = success("Vielen Dank!");
+      b = success("Sample " + myOsdId + " saved succesfully");
       return b.build();
+
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       log.error("Could not save sample", e);
-      b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);
+      b = failure("Could NOT save sample data!");
     }
 
     if (b == null) {
-      b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);
+      b = failure("Could NOT save sample data!");
+      log.error("result = null: Could not save sample");
     }
     return b.build();
 

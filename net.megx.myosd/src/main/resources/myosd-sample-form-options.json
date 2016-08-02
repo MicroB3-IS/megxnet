@@ -4,7 +4,7 @@
   "form": {
     "attributes": {
       "method": "post",
-      "action": "${megx.site.url}/ws/v1/myosd/v1.0.0/samples"
+      "action": "${megx.site.url}/ws/v1/myosd/v1.0.0/sample"
     },
 
     "buttons": {
@@ -17,6 +17,17 @@
   "fields": {
     "version": {
       "type": "hidden"
+    },
+
+    "kit_arrival_date": {
+      "focus": true,
+      "type": "date",
+      "maskString": "9999-99-99",
+      "picker": {
+        "format": "YYYY-MM-DD"
+      },
+
+      "manualEntry": false
     },
 
     "firstname": {
@@ -40,6 +51,47 @@
 
     "start_lat": {
       "id": "lat"
+    },
+
+    "biome": {
+      "optionLabels":
+      [
+        "Gezeitenzone = Intertidal area",
+        "Binnenmeer = Inland sea",
+        "Flussmündung ins Meer = Estuary",
+        "Meeresküste = Coastal sea area",
+        "Offenes Meer = Open sea",
+        "See = Lake",
+        "Fluss = River"
+      ]
+    },
+
+    "weather_condition": {
+      "optionLabels":
+      [
+        "Leichter Regen = Light rain",
+        "Leichter Schneefall = Light snow",
+        "Sturm = Thunder",
+        "Sonnig = Sunny day",
+        "Hagel = Hail",
+        "Heiter bis wolkig = Partly cloudy",
+        "Starker Schneefall = Heavy snow",
+        "Sonnige Abschnitte = Sunny intervals",
+        "Bedeckt = Overcast",
+        "Hagelschauer = Hail shower",
+        "Staubig = Dust",
+        "Nebel = Fog",
+        "Dunst = Haze",
+        "Graupelschauer = Sleet shower",
+        "Tropischer Sturm = Tropical storm",
+        "Feuchter Nebel = Mist",
+        "Wolkig = Cloudy",
+        "Niesel = Drizzle",
+        "Gewitterschauer = Thunder shower",
+        "Klare Nacht = Clear night",
+        "Schneeregen = Sleet",
+        "Starker Regen = Heavy rain"
+      ]
     },
 
     "start_lon": {

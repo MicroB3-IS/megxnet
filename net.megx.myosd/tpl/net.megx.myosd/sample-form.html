@@ -316,21 +316,47 @@ a.olControlZoomOut {
                 if (fRegPh === 'undefined' || ! fRegPh ) {
                   console.error("registered ph field is missing. Another name?")
                 }
+                var fmaxUncertain = field.childrenByPropertyId["max_uncertain"];
+                if (fmaxUncertain === 'undefined' || ! fmaxUncertain ) {
+                  console.error("registered fmaxUncertain field is missing. Another name?")
+                }
 
+                var fsampleDepth = field.childrenByPropertyId["sample_depth"];
+                if (fsampleDepth === 'undefined' || ! fsampleDepth ) {
+                  console.error("registered fsampleDepth field is missing. Another name?")
+                }
                 // pre-setting field values
+                if ( field.childrenByPropertyId["reg_kit_arrival_date"] ) {
+                  field.childrenByPropertyId["kit_arrival_date"].setValue( field.childrenByPropertyId["reg_kit_arrival_date"].getValue() );
+                }
                 if ( field.childrenByPropertyId["app_start_lon"] ) {
                   fStartLon.setValue( field.childrenByPropertyId["app_start_lon"].getValue() );
                 }
                 if ( field.childrenByPropertyId["app_start_lat"] ) {
                   fStartLat.setValue( field.childrenByPropertyId["app_start_lat"].getValue() );
                 }
+                if ( field.childrenByPropertyId["app_accuracy"] ) {
+                  fmaxUncertain.setValue( field.childrenByPropertyId["app_accuracy"].getValue() );
+                }
+                if ( field.childrenByPropertyId["app_biome"] ) {
+                  field.childrenByPropertyId["biome"].setValue( field.childrenByPropertyId["app_biome"].getValue() );
+                }
 
+
+                if ( field.childrenByPropertyId["app_sampling_depth"] ) {
+                  fsampleDepth.setValue( field.childrenByPropertyId["app_sampling_depth"].getValue() );
+                }
+                if ( field.childrenByPropertyId["app_water_temperature"] ) {
+                  field.childrenByPropertyId["water_temperature"].setValue( field.childrenByPropertyId["app_water_temperature"].getValue() );
+                }
                 if ( fRegSalinity.getValue() != 'NaN' ) {
                   fSalinity.setValue( fRegSalinity.getValue() );
                 }
                 if ( fRegPh.getValue() != 'NaN' ) {
                   fPh.setValue( fRegPh.getValue() );
                 }
+
+
                 var displayByLat = function() {
                   var lon = this.getParent().childrenByPropertyId["start_lon"];
                   if (lon === 'undefined' || ! lon ) {
@@ -481,7 +507,7 @@ a.olControlZoomOut {
                   },
                   "/reg_full_name" : {
                     "templates" : {
-                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                      "control-text": "<span><i style='font-family: comic-sans'>{{{data}}}</i></span>"
                     }
                   },
                   "/reg_email" : {
@@ -519,7 +545,19 @@ a.olControlZoomOut {
                       "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
                     }
                   },
+
+                  "/app_biome" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+
                   "/app_sampling_depth" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_water_temperature" : {
                     "templates" : {
                       "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
                     }
@@ -583,9 +621,13 @@ a.olControlZoomOut {
                     "templates" : {
                       "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
                     }
-                  }
-                  ,
+                  },
                   "/app_wind_speed" : {
+                    "templates" : {
+                      "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
+                    }
+                  },
+                  "/app_comment" : {
                     "templates" : {
                       "control-text": "<i style='font-family: comic-sans'>{{{data}}}</i>"
                     }
@@ -599,8 +641,6 @@ a.olControlZoomOut {
                     + "/net.megx.myosd/sample-form-layout-template.html",
                 "bindings" : {
                   "myosd_id": "myosd-id",
-
-                  "reg_kit_sending_date": "mx-myosd-user",
                   "reg_kit_arrival_date": "mx-myosd-user",
                   "kit_arrival_date": "mx-myosd-user",
                   "reg_full_name" : "mx-myosd-user",
@@ -621,6 +661,7 @@ a.olControlZoomOut {
                   "app_accuracy" : "mx-myosd-map-left",
                   "max_uncertain" : "mx-myosd-map-left",
 
+                  "app_biome": "mx-myosd-data",
                   "biome": "mx-myosd-data",
                   "local_date": "mx-myosd-data",
                   "local_start": "mx-myosd-data",
@@ -628,6 +669,7 @@ a.olControlZoomOut {
                   "app_sampling_depth": "mx-myosd-data",
                   "sample_depth": "mx-myosd-data",
 
+                  "app_water_temperature": "mx-myosd-data",
                   "water_temperature": "mx-myosd-data",
 
                   "reg_salinity": "mx-myosd-data",
@@ -656,6 +698,7 @@ a.olControlZoomOut {
                   "app_filter_one": "mx-myosd-data",
                   "app_filter_two": "mx-myosd-data",
                   "filters": "mx-myosd-data",
+                  "app_comment": "mx-myosd-data",
                   "remarks": "mx-myosd-data"
 
                 }

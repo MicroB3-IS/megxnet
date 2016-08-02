@@ -5,15 +5,13 @@
     "first_name": {
       "type": "string",
       "title": "First Name",
-      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$",
-      "required": true
+      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$"
     },
 
     "last_name": {
       "type": "string",
       "title": "Last Name",
-      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$",
-      "required": true
+      "pattern": "^[^0123456789;%#\\\\()$%!@^*/=]*$"
     },
 
     "institute": {
@@ -27,8 +25,7 @@
     "email": {
       "type": "string",
       "format": "email",
-      "title": "e-mail",
-      "required": true
+      "title": "e-mail"
     },
 
     "unit": {
@@ -62,9 +59,10 @@
   "type": "object",
   "properties": {
     "version": {
+      "title": "schema version",
       "type": "string",
       "readonly": true,
-      "required": true,
+      "required": false,
       "default": "1"
     },
 
@@ -91,6 +89,7 @@
     "kit_arrival_date": {
       "title": "Kit arrival date",
       "type": "string",
+      "format": "date",
       "required": false
     },
 
@@ -114,14 +113,17 @@
       "properties": {
         "first_name": {
           "title": "First Name",
+          "required": true,
           "$ref": "#/definitions/first_name"
         },
 
         "last_name": {
+          "required": true,
           "$ref": "#/definitions/last_name"
         },
 
         "email": {
+          "required": true,
           "$ref": "#/definitions/email"
         }
       }
@@ -216,23 +218,41 @@
     "max_uncertain": {
       "title": "GPS Accuracy (Genauigkeit) (m)",
       "type": "number",
-      "required": true,
+      "required": false,
       "minimum": 0
     },
 
+    "app_biome": {
+      "title": "OSD App Biome:",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
     "biome": {
+      "title": "Biome",
       "minLength": 1,
       "required": true,
       "type": "string",
-      "description": "Descriptor of the broad ecological context of a sample.",
-      "title": "Biome"
+      "enum":
+      [
+        "Intertidal area",
+        "Inland sea",
+        "Estuary",
+        "Coastal sea area",
+        "Open sea",
+        "Lake",
+        "River"
+      ],
+
+      "description": "Descriptor of the broad ecological context of a sample."
     },
 
     "local_date": {
       "required": true,
       "type": "number",
-      "minimum": 17,
-      "maximum": 24,
+      "minimum": 15,
+      "maximum": 27,
       "title": "Date Sample Taken"
     },
 
@@ -255,6 +275,12 @@
       "required": true,
       "minimum": 0,
       "maximum": 180
+    },
+
+    "app_water_temperature": {
+      "type": "string",
+      "readonly": true,
+      "title": "OSD App Temperature (&#8451;):"
     },
 
     "water_temperature": {
@@ -305,7 +331,7 @@
       "description": "Alkalinity, acidity and pH of the water column",
       "title": "pH",
       "type": "number",
-      "minimum": 0,
+      "minimum": -1,
       "maximum": 12
     },
 
@@ -378,6 +404,32 @@
     "weather_condition": {
       "title": "Weather Condition",
       "type": "string",
+      "enum":
+      [
+        "Light rain",
+        "Light snow",
+        "Thunder",
+        "Sunny day",
+        "Hail",
+        "Partly cloudy",
+        "Heavy snow",
+        "Sunny intervals",
+        "Overcast",
+        "Hail shower",
+        "Dust",
+        "Fog",
+        "Haze",
+        "Sleet shower",
+        "Tropical storm",
+        "Mist",
+        "Cloudy",
+        "Drizzle",
+        "Thunder shower",
+        "Clear night",
+        "Sleet",
+        "Heavy rain"
+      ],
+
       "required": false
     },
 
@@ -391,7 +443,7 @@
     "water_depth": {
       "title": "Water Column Depth (m)",
       "type": "number",
-      "required": true,
+      "required": false,
       "minimum": 0,
       "maximum": 10000
     },
@@ -493,6 +545,13 @@
           }
         }
       }
+    },
+
+    "app_comment": {
+      "required": false,
+      "type": "string",
+      "readonly": true,
+      "title": "OSD App remarks:"
     },
 
     "remarks": {
