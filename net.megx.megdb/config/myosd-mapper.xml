@@ -10,7 +10,8 @@
   <sql id="participant">myosd.registrations</sql>
   <sql id="sample_curation">myosd.sample_curation_overview</sql>
 
-  <resultMap id="participantResultMap" type="net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl">
+  <resultMap id="participantResultMap"
+    type="net.megx.megdb.myosd.dto.MyOsdParticipantDTOImpl">
     <id property="id" column="id" />
     <result property="myOsdId" column="myosd_id" />
     <result property="email" column="email" />
@@ -24,29 +25,33 @@
 
 
   <insert id="saveSample" parameterType="net.megx.megdb.myosd.MyOsdSample">
-  INSERT INTO myosd.samples( myosd_id, raw_json)
-      VALUES (
-    #{myOsdId}::integer,
-    #{rawJson}::json)
-    );
+    select
+    myosd.ins_sample( #{myOsdId}::integer, #{rawJson}::json);
   </insert>
 
-<select id="getSamples" parameterType="net.megx.megdb.myosd.MyOsdSample" resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
+  <select id="getSamples" parameterType="net.megx.megdb.myosd.MyOsdSample"
+    resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
     select
-      myosd_id, row_to_json(sam) as rawJson
-    FROM <include refid="sample_curation"/> AS sam
+    myosd_id, row_to_json(sam) as rawJson
+    FROM
+    <include refid="sample_curation" />
+    AS sam
     WHERE myosd_id = #{myOsdId}
   </select>
 
-  <select id="sampleByMyOsdId" parameterType="net.megx.megdb.myosd.MyOsdSample" resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
+  <select id="sampleByMyOsdId" parameterType="net.megx.megdb.myosd.MyOsdSample"
+    resultType="net.megx.megdb.myosd.dto.MyOsdSampleImpl">
     select
-      myosd_id, row_to_json(sam) as rawJson
-    FROM <include refid="sample_curation"/> AS sam
+    myosd_id, row_to_json(sam) as rawJson
+    FROM
+    <include refid="sample_curation" />
+    AS sam
     WHERE myosd_id = #{myOsdId}
   </select>
 
   <insert id="saveParticipant" parameterType="net.megx.megdb.myosd.MyOsdParticipantRegistration">
-  select myosd.ins_myosd_regisration(
+    select
+    myosd.ins_myosd_regisration(
     #{email}::text,
     #{userName},
     #{myOsdId}::integer,
@@ -54,17 +59,15 @@
     #{rawJson}::json);
   </insert>
 
-<!--
- <select id="updParticipantFromJson" >
-    select myosd.upd_myosd_regisrations_from_json()
-  </select>
- -->
+  <!-- <select id="updParticipantFromJson" > select myosd.upd_myosd_regisrations_from_json()
+    </select> -->
 
   <select id="participantByName" parameterType="String"
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="participant"/>
+    FROM
+    <include refid="participant" />
     WHERE user_name = #{name}
   </select>
 
@@ -73,15 +76,17 @@
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="participant"/>
+    FROM
+    <include refid="participant" />
     WHERE email = #{email}
   </select>
 
-    <select id="participantByMyOsdId" parameterType="int"
+  <select id="participantByMyOsdId" parameterType="int"
     resultMap="participantResultMap">
     select
     <include refid="allParticipantColumns" />
-    FROM <include refid="participant"/>
+    FROM
+    <include refid="participant" />
     WHERE myosd_id = #{myOsdId}
   </select>
 
