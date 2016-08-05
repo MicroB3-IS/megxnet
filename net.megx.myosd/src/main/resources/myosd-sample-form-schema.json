@@ -248,19 +248,26 @@
       "description": "Descriptor of the broad ecological context of a sample."
     },
 
+    "app_taken": {
+      "title": "OSD App: Time Sample taken TAKE CARE IT IS GREENWICH TIME add two hours for german local time :",
+      "type": "string",
+      "readonly": true,
+      "required": false
+    },
+
     "local_date": {
       "required": true,
       "type": "number",
       "minimum": 15,
       "maximum": 27,
-      "title": "Date Sample Taken"
+      "title": "DAY  Sample Taken"
     },
 
     "local_start": {
       "required": true,
       "format": "date",
       "type": "string",
-      "title": "Time Sample Taken (hh:mm)"
+      "title": "Time Sample Taken (hh:mm) in GERMAN TIMEZONE"
     },
 
     "app_sampling_depth": {
@@ -469,7 +476,7 @@
 
     "wind_speed": {
       "type": "number",
-      "maximum": 0,
+      "minimum": 0,
       "title": "Wind Speed (km/h)"
     },
 
@@ -528,21 +535,21 @@
       "items": {
         "type": "object",
         "properties": {
+          "quantity": {
+            "minimum": 0,
+            "required": true,
+            "type": "number",
+            "description": "Refers to the quantity of environment that was sampled, most often with dimensions Length (incl. volume), Amount, Mass or Time.",
+            "title": "Filter volume (ml)"
+          },
+
           "filtration_time": {
-            "minimum": 1,
+            "minimum": 0,
             "maximum": 120,
             "required": true,
             "type": "number",
             "description": "Refers to the duration in minutes to filter the given sample quantity.",
             "title": "Filtration time (min)"
-          },
-
-          "quantity": {
-            "minimum": 30,
-            "required": true,
-            "type": "number",
-            "description": "Refers to the quantity of environment that was sampled, most often with dimensions Length (incl. volume), Amount, Mass or Time.",
-            "title": "Filter volume (ml)"
           }
         }
       }
