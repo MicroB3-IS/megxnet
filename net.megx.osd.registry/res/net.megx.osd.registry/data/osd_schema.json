@@ -488,7 +488,7 @@
           "description": "Salinity of water at the time of taking the sample in PSU.",
           "title": "Salinity",
           "minimum": 0,
-          "maximum": 100
+          "maximum": 400
         },
 
         "biome": {
