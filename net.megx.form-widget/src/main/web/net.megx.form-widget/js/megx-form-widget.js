@@ -5,7 +5,7 @@ Megx.FormWidget = function(cfg) {
   // add to static context, cause need to have access from static Alpaca
   // context
   Megx.FormWidget.cfg = cfg;
-
+  this.renderForm();
 };
 
 Megx.FormWidget.prototype.submitForm = function(field) {
