@@ -1,0 +1,4 @@
+{
+  path: '$resources/net.megx.selenium.tests',
+  exampleProperty: 'Example Value',
+}
