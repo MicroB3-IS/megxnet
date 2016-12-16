@@ -63,7 +63,7 @@
       "type": "string",
       "readonly": true,
       "required": false,
-      "default": "1"
+      "default": "2"
     },
 
     "myosd_id": {
@@ -118,12 +118,12 @@
         },
 
         "last_name": {
-          "required": true,
+          "required": false,
           "$ref": "#/definitions/last_name"
         },
 
         "email": {
-          "required": true,
+          "required": false,
           "$ref": "#/definitions/email"
         }
       }
@@ -161,7 +161,7 @@
     "place_name": {
       "title": "Name of Place",
       "type": "string",
-      "required": true
+      "required": false
     },
 
     "reg_latitude": {
@@ -242,7 +242,8 @@
         "Coastal sea area",
         "Open sea",
         "Lake",
-        "River"
+        "River",
+        "brackish pond"
       ],
 
       "description": "Descriptor of the broad ecological context of a sample."
@@ -264,7 +265,7 @@
     },
 
     "local_start": {
-      "required": true,
+      "required": false,
       "format": "date",
       "type": "string",
       "title": "Time Sample Taken (hh:mm) in GERMAN TIMEZONE"
@@ -292,7 +293,7 @@
     },
 
     "water_temperature": {
-      "required": true,
+      "required": false,
       "type": "number",
       "description": "Temperature of water at the time of taking the sample in degress Celsius",
       "title": "Temperature (&#8451;)"
@@ -313,7 +314,7 @@
     },
 
     "salinity": {
-      "required": true,
+      "required": false,
       "type": "number",
       "description": "Salinity of water at the time of taking the sample in PSU.",
       "title": "Salinity",
