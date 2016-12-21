@@ -190,8 +190,14 @@
           "minLength": 3,
           "required": true,
           "type": "string",
+          "enum":
+          [
+            "OSD-June-2015",
+            "MYOSD-June-2015",
+            "OSD-June-2016"
+          ],
           "description": "Refers to a finite or indefinite activity aiming at collecting data/samples within which OSD sample were taken, e.g. a name of cruise, a time series, a mesocosm experiment.",
-          "default": "OSD-June-2016",
+          "default": "none",
           "title": "Campaign"
         },
 
@@ -397,7 +403,7 @@
           "type": "array",
           "required": true,
           "uniqueItems": false,
-          "minItems": 4,
+          "minItems": 2,
           "maxItems": 8,
           "items": {
             "type": "object",
@@ -476,14 +482,14 @@
       "type": "object",
       "properties": {
         "water_temperature": {
-          "required": true,
+          "required": false,
           "type": "number",
           "description": "Temperature of water at the time of taking the sample in degress Celsius",
           "title": "Temperature (&#8451;)"
         },
 
         "salinity": {
-          "required": true,
+          "required": false,
           "type": "number",
           "description": "Salinity of water at the time of taking the sample in PSU.",
           "title": "Salinity",
