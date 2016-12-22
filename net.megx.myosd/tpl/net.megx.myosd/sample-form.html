@@ -320,6 +320,8 @@ a.olControlZoomOut {
                   return false;
                 });
                 //getting some alpaca fields
+
+
                 var fStartLat = field.childrenByPropertyId["start_lat"];
                 if (fStartLat === 'undefined' || ! fStartLat ) {
                   console.error("start_lat field is missing. Another name?")
@@ -355,6 +357,13 @@ a.olControlZoomOut {
                   console.error("registered fsampleDepth field is missing. Another name?")
                 }
                 // pre-setting field values
+                console.log("myosdid=" + myOsdId)
+                var fmid = field.childrenByPropertyId["myosd_id"];
+                console.log("mosdid field val=" + fmid.getValue());
+                if ( fmid ) {
+                  field.childrenByPropertyId["myosd_id"].setValue( myOsdId );
+                }
+
                 if ( field.childrenByPropertyId["reg_kit_arrival_date"] ) {
                   field.childrenByPropertyId["kit_arrival_date"].setValue( field.childrenByPropertyId["reg_kit_arrival_date"].getValue() );
                 }
@@ -509,6 +518,9 @@ a.olControlZoomOut {
             } // end prender
 
             var d = new Megx.FormWidget({
+              data : {
+                "myosd_id": myOsdId
+              },
               target : "myosd-sample-registration-form",
               schemaLocation : ctx.siteUrl
                   + "/net.megx.myosd/myosd-sample-form-schema.json",
@@ -526,7 +538,7 @@ a.olControlZoomOut {
                 "fields": {
                   "/myosd_id" : {
                     "templates" : {
-                      "control-text": "<strong>MyOSD ID:{{{data}}}</strong>"
+                      "control-text": "<strong>MyOSD ID:{{{data}}} and=" + myOsdId + "</strong>"
                     }
                   },
                   "/reg_kit_sending_date" : {

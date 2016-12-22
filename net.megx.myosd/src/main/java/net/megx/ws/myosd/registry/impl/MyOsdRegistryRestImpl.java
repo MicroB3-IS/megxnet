@@ -132,7 +132,11 @@ public class MyOsdRegistryRestImpl extends BaseRestService {
 
     try {
       sam = db.sampleByMyOsdId(sam);
-      b = Response.ok().entity( sam.getRawJson() );
+      b = Response.ok();
+      if (sam != null) {
+        b = Response.ok().entity( sam.getRawJson() );
+      }
+
     } catch (Exception e) {
       log.error("Could not get sample=" + myOsdId, e);
       b = failure("Irgendwas ging auf unserem Server schief.", contactHtml);

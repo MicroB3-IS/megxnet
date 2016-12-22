@@ -34,6 +34,7 @@ public class MyOsdDbServiceImpl extends BaseMegdbService
     try {
       MyOsdMyBatisMapper mapper = session.getMapper(MyOsdMyBatisMapper.class);
       result = mapper.sampleByMyOsdId(sample);
+
       session.commit();
       session.close();
     } finally {
