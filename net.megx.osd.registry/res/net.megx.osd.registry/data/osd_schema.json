@@ -194,7 +194,8 @@
           [
             "OSD-June-2015",
             "MYOSD-June-2015",
-            "OSD-June-2016"
+            "OSD-June-2016",
+            "MYOSD-June-2016"
           ],
           "description": "Refers to a finite or indefinite activity aiming at collecting data/samples within which OSD sample were taken, e.g. a name of cruise, a time series, a mesocosm experiment.",
           "default": "none",
