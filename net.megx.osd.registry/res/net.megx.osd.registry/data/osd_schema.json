@@ -411,7 +411,7 @@
 
             "properties": {
               "filtration_time": {
-                "minimum": 5,
+                "minimum": 1,
                 "maximum": 120,
                 "required": true,
                 "type": "number",
